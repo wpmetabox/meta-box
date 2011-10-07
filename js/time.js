@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	$('.rw-time').each(function(){
+	$('.rwmb-time').each(function(){
 		var $this = $(this),
 			format = $this.attr('rel');
 

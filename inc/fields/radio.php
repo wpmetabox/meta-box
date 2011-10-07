@@ -1,11 +1,11 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Radio_Field' ) ) {
+if ( !class_exists( 'RWMB_Radio_Field' ) ) {
 
-	class RW_Meta_Box_Radio_Field {
+	class RWMB_Radio_Field {
 
 		/**
-		 * Show HTML markup for radio field
+		 * Get field end HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
@@ -13,7 +13,7 @@ if ( !class_exists( 'RW_Meta_Box_Radio_Field' ) ) {
 		static function html( $field, $meta ) {
 			$html = '';
 			foreach ( $field['options'] as $key => $value ) {
-				$html .= "<input type='radio' class='rw-radio' name='{$field['id']}' value='$key'" . checked( $meta, $key, false ) . " /> $value ";
+				$html .= "<input type='radio' class='rwmb-radio' name='{$field['id']}' value='$key'" . checked( $meta, $key, false ) . " /> $value ";
 			}
 
 			return $html;

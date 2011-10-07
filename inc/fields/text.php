@@ -1,17 +1,17 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Text_Field' ) ) {
+if ( !class_exists( 'RWMB_Text_Field' ) ) {
 
-	class RW_Meta_Box_Text_Field {
+	class RWMB_Text_Field {
 
 		/**
-		 * Show HTML markup for text field
+		 * Get field end HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
 		 */
 		static function html( $field, $meta ) {
-			return "<input type='text' class='rw-text' name='{$field['id']}' id='{$field['id']}' value='$meta' size='30' />";
+			return "<input type='text' class='rwmb-text' name='{$field['id']}' id='{$field['id']}' value='$meta' size='30' />";
 		}
 	}
 }

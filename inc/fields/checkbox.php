@@ -1,17 +1,39 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Checkbox_Field' ) ) {
+if ( !class_exists( 'RWMB_Checkbox_Field' ) ) {
 
-	class RW_Meta_Box_Checkbox_Field {
+	class RWMB_Checkbox_Field {
 
 		/**
-		 * Show HTML markup for checkbox field
+		 * Additional actions for checkbox field
+		 */
+		static function add_actions( ) {
+			/**
+			 * Change wrapper HTML
+			 * Use priority = 1 to allow other scripts change this value
+			 */
+			add_filter( "rwmb_checkbox_end_html", array( __CLASS__, 'end_html' ), 1, 3 );
+		}
+
+		/**
+		 * Get field end HTML
+		 * @param $end_html
+		 * @param $field
+		 * @param $meta
+		 * @return string
+		 */
+		static function end_html( $end_html, $field, $meta ) {
+			return " <span class='description'>{$field['desc']}</span></td>";
+		}
+
+		/**
+		 * Get field HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
 		 */
 		static function html( $field, $meta ) {
-			return "<input type='checkbox' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked( !empty( $meta ), true, false ) . " />";
+			return "<input type='checkbox' class='rwmb-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked( !empty( $meta ), true, false ) . " />";
 		}
 	}
 }

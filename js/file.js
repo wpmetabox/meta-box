@@ -1,19 +1,34 @@
 jQuery(document).ready(function($) {
 	// Add more file
-	$('.rw-add-file').click(function() {
-		var $first = $(this).parent().find('.file-input:first');
-		$first.clone().insertAfter($first).show();
+	$('.rwmb-add-file').click(function() {
+		var $this = $(this),
+			$first = $this.parent().find('.file-input:first');
+
+		$first.clone().insertBefore($this);
+
 		return false;
 	});
 
 	// Delete file via Ajax
-	$('.rw-upload').delegate('.rw-delete-file', 'click', function() {
+	$('.rwmb-uploaded').delegate('.rwmb-delete-file', 'click', function() {
 		var $this = $(this),
 			$parent = $this.parent(),
-			data = $this.attr('rel');
-		$.post(ajaxurl, {action: 'rw_delete_file', data: data}, function(response) {
-			response == '0' ? (alert('File has been successfully deleted.'),$parent.remove()) : alert('You do NOT have permission to delete this file.');
-		});
+			field_id = $this.parents('.rwmb-field').find('.field-id').val(),
+			data = {
+				action: 'rwmb_delete_file',
+				_wpnonce: $('#nonce-delete-file_' + field_id).val(),
+				post_id: $('.rwmb-post-id:first').val(),
+				field_id: field_id,
+				attachment_id: $this.attr('rel')
+			};
+
+		$.post(ajaxurl, data, function(response) {
+			if ('success' == response.status)
+				$parent.remove();
+			else
+				alert(response.message);
+		}, 'json');
+
 		return false;
 	});
 });

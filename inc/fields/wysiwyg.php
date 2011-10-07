@@ -1,44 +1,47 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Wysiwyg_Field' ) ) {
+if ( !class_exists( 'RWMB_Wysiwyg_Field' ) ) {
 
-	class RW_Meta_Box_Wysiwyg_Field {
+	class RWMB_Wysiwyg_Field {
 
 		/**
-		 * Enqueue scripts and styles for select field
+		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'rw-meta-box-wysiwyg', RW_META_BOX_CSS . 'wysiwyg.css', RW_META_BOX_VER );
+			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS . 'wysiwyg.css', RWMB_VER );
 		}
 
 		/**
-		 * Add actions for WYSIWYG field
+		 * Add field actions
 		 */
 		static function add_actions( ) {
+			// Add TinyMCE script
 			add_action( 'admin_print_footer-post.php', 'wp_tiny_mce', 25 );
 			add_action( 'admin_print_footer-post-new.php', 'wp_tiny_mce', 25 );
+
+			// Change field value on save
+			add_action( 'rwmb_wysiwyg_value', array( __CLASS__, 'value' ), 1, 3 );
 		}
 
 		/**
-		 * Show HTML markup for checkbox field
+		 * Change field value on save
+		 * @param $new
+		 * @param $field
+		 * @param $old
+		 * @return string
+		 */
+		static function value( $new, $field, $old ) {
+			return wpautop( $new );
+		}
+
+		/**
+		 * Get field end HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
 		 */
 		static function html( $field, $meta ) {
-			return "<textarea class='rw-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
-		}
-
-		/**
-		 * Save WYSIWYG field
-		 * @param $post_id
-		 * @param $field
-		 * @param $old
-		 * @param $new
-		 */
-		static function save( $post_id, $field, $old, $new ) {
-			$new = wpautop( $new );
-			RW_Meta_Box::save_field( $post_id, $field, $old, $new );
+			return "<textarea class='rwmb-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
 		}
 	}
 }

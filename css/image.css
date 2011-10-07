@@ -1,5 +1,8 @@
 /* Uploaded image */
-.rw-images li {
+.rwmb-images {
+	overflow: hidden;
+}
+.rwmb-images li {
 	margin: 0 10px 10px 0;
 	float: left;
 	width: 150px;
@@ -9,11 +12,11 @@
 	cursor: move;
 	position: relative;
 }
-.rw-images img {
+.rwmb-images img {
 	width: 150px;
 	height: 100px;
 }
-.rw-images a {
+.rwmb-images a {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -21,11 +24,4 @@
 	background: #000;
 	font-weight: bold;
 	padding: 5px;
-}
-
-/* Upload button */
-.rw-upload-button {
-	float: left;
-	clear: both;
-	margin-top: 10px;
 }

@@ -9,36 +9,31 @@ Author URI: http://www.deluxeblogtips.com
 */
 
 // Script version, used to add version for scripts and styles
-if ( !defined( 'RW_META_BOX_VER' ) )
-	define( 'RW_META_BOX_VER', '4.0' );
+if ( !defined( 'RWMB_VER' ) )
+	define( 'RWMB_VER', '4.0' );
 
 // Define plugin URLs, for fast enqueuing scripts and styles
-if ( !defined( 'RW_META_BOX_URL' ) )
-	define( 'RW_META_BOX_URL', plugin_dir_url( __FILE__ ) );
-if ( !defined( 'RW_META_BOX_JS' ) )
-	define( 'RW_META_BOX_JS', trailingslashit( RW_META_BOX_URL . 'js' ) );
-if ( !defined( 'RW_META_BOX_CSS' ) )
-	define( 'RW_META_BOX_CSS', trailingslashit( RW_META_BOX_URL . 'css' ) );
+if ( !defined( 'RWMB_URL' ) )
+	define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
+if ( !defined( 'RWMB_JS' ) )
+	define( 'RWMB_JS', trailingslashit( RWMB_URL . 'js' ) );
+if ( !defined( 'RWMB_CSS' ) )
+	define( 'RWMB_CSS', trailingslashit( RWMB_URL . 'css' ) );
 
 // Plugin paths, for including files
-if ( !defined( 'RW_META_BOX_PATH' ) )
-	define( 'RW_META_BOX_PATH', plugin_dir_path( __FILE__ ) );
-if ( !defined( 'RW_META_BOX_INC' ) )
-	define( 'RW_META_BOX_INC', trailingslashit( RW_META_BOX_PATH . 'inc' ) );
-if ( !defined( 'RW_META_BOX_FIELDS' ) )
-	define( 'RW_META_BOX_FIELDS', trailingslashit( RW_META_BOX_INC . 'fields' ) );
+if ( !defined( 'RWMB_PATH' ) )
+	define( 'RWMB_PATH', plugin_dir_path( __FILE__ ) );
+if ( !defined( 'RWMB_INC' ) )
+	define( 'RWMB_INC', trailingslashit( RWMB_PATH . 'inc' ) );
+if ( !defined( 'RWMB_FIELDS' ) )
+	define( 'RWMB_FIELDS', trailingslashit( RWMB_INC . 'fields' ) );
 
-// Global array of field class instances
-global $rw_meta_box_field_objects;
-$rw_meta_box_field_objects = array( );
+// Plugin textdomain
+if ( !defined( 'RWMB_TEXTDOMAIN' ) )
+	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
 
-// Include field classes and create field class instances
-$supported_types = array( 'text', 'textarea', 'checkbox', 'checkbox_list', 'radio', 'select', 'wysiwyg', 'file', 'image', 'date', 'time', 'color' );
-foreach ( $supported_types as $type ) {
-	$file = RW_META_BOX_FIELDS . "{$type}.php";
-	if ( !file_exists( $file ) )
-		continue;
-
+// Include field classes
+foreach ( glob( RWMB_FIELDS . '*.php' ) as $file ) {
 	require_once $file;
 }
 
@@ -70,6 +65,9 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			// List of meta box field types
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
+			// Load translation file
+			add_action('plugins_loaded', array( __CLASS__, 'plugins_loaded' ) );
+
 			// Enqueue common scripts and styles
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
 			add_action( 'admin_print_styles-post-new.php', array( __CLASS__, 'admin_print_styles' ) );
@@ -94,10 +92,17 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		}
 
 		/**
+		 * Load plugin translation
+		 */
+		static function plugins_loaded( ) {
+			load_plugin_textdomain( RWMB_TEXTDOMAIN, false, basename( RWMB_PATH ) . '/lang/' );
+		}
+
+		/**
 		 * Enqueue common scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'rw-meta-box', RW_META_BOX_CSS . 'style.css', RW_META_BOX_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS . 'style.css', RWMB_VER );
 		}
 
 		/**************************************************
@@ -119,7 +124,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		function show( ) {
 			global $post;
 
-			wp_nonce_field( "save_meta_box-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
+			$this->show_hidden_fields( );
 			echo '<table class="form-table">';
 
 			foreach ( $this->fields as $field ) {
@@ -135,13 +140,39 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$field_html = '';
 				if ( method_exists( $class, 'html' ) )
 					$field_html = call_user_func( array( $class, 'html' ), $field, $meta );
-				$field_html = apply_filters( "rw_meta_box_{$field['id']}_html", $field_html );
+
+				/**
+				 * Apply filter to field HTML
+				 * 1st filter applies to all fields with the same type
+				 * 2nd filter applies to current field only
+				 */
+				$field_html = apply_filters( "rwmb_{$field['type']}_html", $field_html, $field, $meta );
+				$field_html = apply_filters( "rwmb_{$field['id']}_html", $field_html, $field, $meta );
 
 				$end = self::show_field_end( $field, $meta );
 
-				echo "<tr>{$begin}{$field_html}{$end}</tr>";
+				/**
+				 * Apply filter to field wrapper
+				 * This allow users to change whole HTML markup of the field wrapper (i.e. table row)
+				 * 1st filter applies to all fields with the same type
+				 * 2nd filter applies to current field only
+				 */
+				$html = apply_filters( "rwmb_{$field['type']}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
+
+				echo "<tr>{$html}</tr>";
 			}
 			echo '</table>';
+		}
+
+		/**
+		 * Show hidden fields like nonce, post ID, etc.
+		 */
+		function show_hidden_fields() {
+			global $post;
+
+			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
+			echo "<input type='hidden' class='rwmb-post-id' value='{$post->ID}' />";
 		}
 
 		/**
@@ -152,12 +183,20 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		 */
 		static function show_field_begin( $field, $meta ) {
 			$html = <<<HTML
-<th class="rw-label">
+<th class="rwmb-label">
 	<label for="{$field['id']}">{$field['name']}</label><br />
 </th>
-<td class="rw-field">
+<td class="rwmb-field">
 HTML;
-			$html = apply_filters( "rw_meta_box_{$field['id']}_begin", $html, $field, $meta );
+			/**
+			 * Apply filter to field begin HTML
+			 * 1st filter applies to all fields
+			 * 2nd filter applies to all fields with the same type
+			 * 3rd filter applies to current field only
+			 */
+			$html = apply_filters( "rwmb_begin_html", $html, $field, $meta );
+			$html = apply_filters( "rwmb_{$field['type']}_begin_html", $html, $field, $meta );
+			$html = apply_filters( "rwmb_{$field['id']}_begin_html", $html, $field, $meta );
 
 			return $html;
 		}
@@ -171,7 +210,15 @@ HTML;
 		static function show_field_end( $field, $meta ) {
 			$html = "<p class='description'>{$field['desc']}</p></td>";
 
-			$html = apply_filters( "rw_meta_box_{$field['id']}_begin", $html );
+			/**
+			 * Apply filter to field begin HTML
+			 * 1st filter applies to all fields
+			 * 2nd filter applies to all fields with the same type
+			 * 3rd filter applies to current field only
+			 */
+			$html = apply_filters( "rwmb_end_html", $html, $field, $meta );
+			$html = apply_filters( "rwmb_{$field['type']}_end_html", $html, $field, $meta );
+			$html = apply_filters( "rwmb_{$field['id']}_end_html", $html, $field, $meta );
 
 			return $html;
 		}
@@ -183,7 +230,7 @@ HTML;
 		/**
 		 * Save data from meta box
 		 * @param $post_id Post ID
-		 * @return
+		 * @return int|null
 		 */
 		function save_post( $post_id ) {
 			global $post_type;
@@ -205,7 +252,7 @@ HTML;
 			}
 
 			// Verify nonce
-			check_admin_referer( "save_meta_box-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
+			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			foreach ( $this->fields as $field ) {
 				$name = $field['id'];
@@ -213,8 +260,13 @@ HTML;
 				$old = get_post_meta( $post_id, $name, !$field['multiple'] );
 				$new = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array( ) : '' );
 
-				// Use filter to change field value
-				$new = apply_filters( "rw_meta_box_{$field['id']}_value", $new );
+				/**
+				 * Use filter to change field value
+				 * 1st filter applies to all fields with the same type
+				 * 2nd filter applies to current field only
+				 */
+				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
+				$new = apply_filters( "rwmb_{$field['id']}_value", $new, $field, $old );
 
 				// Call defined method to save meta value, if there's no methods, call common one
 				$class = self::get_class_name( $field['type'] );
@@ -277,6 +329,11 @@ HTML;
 					'desc' => '',
 					'format' => $format
 				) );
+
+				// Allow field class add/change default field values
+				$class = self::get_class_name( $field['type'] );
+				if ( method_exists( $class, 'normalize' ) )
+					$field = call_user_func( array( $class, 'normalize' ), $field );
 			}
 
 			return $meta_box;
@@ -289,15 +346,26 @@ HTML;
 		 */
 		static function get_class_name( $type ) {
 			$type = ucwords( $type );
-			$class = "RW_Meta_Box_{$type}_Field";
+			$class = "RWMB_{$type}_Field";
 
 			if ( class_exists( $class ) )
 				return $class;
 			else
 				return false;
 		}
+
+		/**
+		 * Format Ajax response
+		 * @param $message
+		 * @param $status
+		 * @return string
+		 */
+		static function format_response( $message, $status ) {
+			$json = array(
+				'message' => $message,
+				'status' => $status
+			);
+			return json_encode( $json );
+		}
 	}
 }
-
-// Demo
-include 'usage.php';

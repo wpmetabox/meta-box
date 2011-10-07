@@ -1,20 +1,20 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Color_Field' ) ) {
+if ( !class_exists( 'RWMB_Color_Field' ) ) {
 
-	class RW_Meta_Box_Color_Field {
+	class RWMB_Color_Field {
 
 		/**
-		 * Enqueue scripts and styles for color field
+		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'farbtastic' );
+			wp_enqueue_style( 'rwmb-color', RWMB_CSS . 'color.css', array( 'farbtastic' ), RWMB_VER );
 
-			wp_enqueue_script( 'rw-meta-box-color', RW_META_BOX_JS . 'color.js', array( 'farbtastic' ), RW_META_BOX_VER, true );
+			wp_enqueue_script( 'rwmb-color', RWMB_JS . 'color.js', array( 'farbtastic' ), RWMB_VER, true );
 		}
 
 		/**
-		 * Show HTML markup for color field
+		 * Get field HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
@@ -23,11 +23,11 @@ if ( !class_exists( 'RW_Meta_Box_Color_Field' ) ) {
 			if ( empty( $meta ) )
 				$meta = '#';
 			$html = <<<HTML
-<input class="rw-color" type="text" name="{$field['id']}" id="{$field['id']}" value="$meta" size="8" />
-<a href="#" class="rw-color-select" rel="{$field['id']}">%s</a>
-<div style="display: none" class="rw-color-picker" rel="{$field['id']}"></div>
+<input class="rwmb-color" type="text" name="{$field['id']}" id="{$field['id']}" value="{$meta}" size="8" />
+<a href="#" class="rwmb-color-select" rel="{$field['id']}">%s</a>
+<div class="rwmb-color-picker" rel="{$field['id']}"></div>
 HTML;
-			$html = sprintf( $html, __( 'Select a color' ) );
+			$html = sprintf( $html, __( 'Select a color', RWMB_TEXTDOMAIN ) );
 			return $html;
 		}
 	}

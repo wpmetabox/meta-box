@@ -1,11 +1,12 @@
 Changelog:
 - 4.0:
+  + strongly refactor code
   + create/check better nonce for each meta box
-  + use local JS/CSS files instead of Google CDN version for datepicker and timepicker fields (for better control if conflict occurs)
-  + remove get_jqueryui_version(), has_field(), is_edit_page() functions
+  + use local JS/CSS libs instead of remote files for better control if conflict occurs
   + separate field functions (enqueue scripts and styles, add actions, show, save) into separated classes
-  + use filters ("rw_meta_box_{$field['id']}_html") to let user change HTML of fields
-  + use filters ("rw_meta_box_{$field['id']}_value") to validate/change field values instead of validation class
+  + use filters to let user change HTML of fields
+  + use filters to validate/change field values instead of validation class
+  + don't use Ajax on image upload as it's buggy and complicated. Revert to default upload
 - 3.2.2:
   + fix WYSIWYG field for custom post type without 'editor' support. Thanks Jamie, Eugene and Selin Online. (http://disq.us/2hzgsk)
   + change some helper function to static as they're shared between objects
@@ -15,7 +16,7 @@ Changelog:
 - 3.2:
   + move js and css codes to separated files (rewrite js code for fields, too)
   + allow to add multiple images to image meta field with selection, modified from "Fast Insert Image" plugin
-  + remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta-box.css' file. All fields now has the class 'rw-$type', and table cells have class 'rw-label' and 'rw-field'
+  + remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta-box.css' file. All fields now has the class 'rw-$type', and table cells have class 'rwmb-label' and 'rwmb-field'
   + allow to use file uploader for images as well, regarding http://disq.us/1k2lwf
   + when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post. Regarding http://disq.us/1nppyi
   + change hook for adding meta box to 'add_meta_boxes', according Codex. Required WP 3.0+

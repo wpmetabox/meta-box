@@ -1,11 +1,11 @@
 <?php
 
-if ( !class_exists( 'RW_Meta_Box_Checkbox_List_Field' ) ) {
+if ( !class_exists( 'RWMB_Checkbox_List_Field' ) ) {
 
-	class RW_Meta_Box_Checkbox_List_Field {
+	class RWMB_Checkbox_List_Field {
 
 		/**
-		 * Show HTML markup for checkbox list field
+		 * Get field HTML
 		 * @param $field
 		 * @param $meta
 		 * @return string
@@ -15,7 +15,7 @@ if ( !class_exists( 'RW_Meta_Box_Checkbox_List_Field' ) ) {
 				$meta = (array) $meta;
 			$html = array( );
 			foreach ( $field['options'] as $key => $value ) {
-				$html[] = "<input type='checkbox' class='rw-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> $value";
+				$html[] = "<input type='checkbox' class='rwmb-checkbox-list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> $value";
 			}
 			return implode( '<br />', $html );
 		}

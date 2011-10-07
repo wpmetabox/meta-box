@@ -1,3 +1,6 @@
-.rw-label {
+.rwmb-label {
 	width: 20%;
+}
+.rwmb-field h4 {
+	margin-top: 0;
 }
