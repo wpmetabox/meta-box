@@ -50,12 +50,13 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 		}
 
 		/**
-		 * Show HTML markup for file field
-		 * @param $field
+		 * Get field HTML
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function html( $field, $meta ) {
+		static function html( $html, $meta, $field ) {
 
 			if ( !is_array( $meta ) )
 				$meta = (array) $meta;
@@ -86,12 +87,12 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 
 		/**
 		 * Save file field
+		 * @param $new
+		 * @param $old
 		 * @param $post_id
 		 * @param $field
-		 * @param $old
-		 * @param $new
 		 */
-		static function save( $post_id, $field, $old, $new ) {
+		static function save( $new, $old, $post_id, $field ) {
 			$name = $field['id'];
 			if ( empty( $_FILES[$name] ) )
 				return;

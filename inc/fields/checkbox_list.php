@@ -6,11 +6,12 @@ if ( !class_exists( 'RWMB_Checkbox_List_Field' ) ) {
 
 		/**
 		 * Get field HTML
-		 * @param $field
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function html( $field, $meta ) {
+		static function html( $html, $meta, $field ) {
 			if ( !is_array( $meta ) )
 				$meta = (array) $meta;
 			$html = array( );

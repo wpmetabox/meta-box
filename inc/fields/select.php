@@ -13,11 +13,12 @@ if ( !class_exists( 'RWMB_Select_Field' ) ) {
 
 		/**
 		 * Get field end HTML
-		 * @param $field
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function html( $field, $meta ) {
+		static function html( $html, $meta, $field ) {
 			if ( !is_array( $meta ) )
 				$meta = (array) $meta;
 			$html = "<select class='rwmb-select' name='{$field['id']}" . ( $field['multiple'] ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";

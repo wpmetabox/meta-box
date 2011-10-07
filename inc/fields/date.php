@@ -18,11 +18,12 @@ if ( !class_exists( 'RWMB_Date_Field' ) ) {
 
 		/**
 		 * Get field HTML
-		 * @param $field
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function html( $field, $meta ) {
+		static function html( $html, $meta, $field ) {
 			return "<input type='text' class='rwmb-date' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='$meta' size='30' />";
 		}
 	}
