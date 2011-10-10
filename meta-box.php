@@ -141,7 +141,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$begin = self::show_field_begin( $field, $meta );
 
 				// Call separated methods for displaying each type of field
-				$field_html = self::apply_class_filters( $field, 'html', '', $meta );
+				$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
 
 				/**
 				 * Apply filter to field HTML
@@ -261,7 +261,7 @@ HTML;
 				$new = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array( ) : '' );
 
 				// Allow field class change the value
-				$new = self::apply_class_filters( $field, 'value' , $new, $old );
+				$new = self::apply_field_class_filters( $field, 'value' , $new, $old );
 
 				/**
 				 * Use filter to change field value
@@ -272,7 +272,7 @@ HTML;
 				$new = apply_filters( "rwmb_{$field['id']}_value", $new, $field, $old );
 
 				// Call defined method to save meta value, if there's no methods, call common one
-				self::do_class_actions( $field, 'save', $new, $old, $post_id );
+				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
 			}
 		}
 
@@ -330,7 +330,7 @@ HTML;
 				) );
 
 				// Allow field class add/change default field values
-				$field = self::apply_class_filters( $field, 'normalize_field', $field );
+				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 			}
 
 			return $meta_box;
@@ -358,7 +358,7 @@ HTML;
 		 * @param $value
 		 * @return mixed
 		 */
-		static function apply_class_filters( $field, $method_name, $value ) {
+		static function apply_field_class_filters( $field, $method_name, $value ) {
 			$args = array_slice( func_get_args( ), 2 );
 			$args[] = $field;
 
@@ -381,7 +381,7 @@ HTML;
 		 * @param $method_name
 		 * @return mixed
 		 */
-		static function do_class_actions( $field, $method_name ) {
+		static function do_field_class_actions( $field, $method_name ) {
 			$args = array_slice( func_get_args( ), 2 );
 			$args[] = $field;
 
