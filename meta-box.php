@@ -261,7 +261,7 @@ HTML;
 				$new = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array( ) : '' );
 
 				// Allow field class change the value
-				$new = self::apply_field_class_filters( $field, 'value' , $new, $old );
+				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
 
 				/**
 				 * Use filter to change field value
