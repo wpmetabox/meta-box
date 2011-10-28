@@ -86,7 +86,7 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 		 * @param $old
 		 * @param $new
 		 */
-		static function save( $post_id, $field, $old, $new ) {
+		static function save( $new, $old, $post_id, $field ) {
 			wp_set_post_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
 	}
