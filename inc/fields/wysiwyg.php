@@ -8,7 +8,7 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) ) {
 		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS . 'wysiwyg.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', RWMB_VER );
 		}
 
 		/**

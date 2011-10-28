@@ -8,9 +8,9 @@ if ( !class_exists( 'RWMB_Color_Field' ) ) {
 		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'rwmb-color', RWMB_CSS . 'color.css', array( 'farbtastic' ), RWMB_VER );
+			wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'farbtastic' ), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-color', RWMB_JS . 'color.js', array( 'farbtastic' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'farbtastic' ), RWMB_VER, true );
 		}
 
 		/**

@@ -8,7 +8,7 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_script( 'rwmb-file', RWMB_JS . 'file.js', array( 'jquery' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
 		}
 
 		/**

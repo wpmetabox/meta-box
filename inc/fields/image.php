@@ -11,9 +11,9 @@ if ( !class_exists( 'RWMB_Image_Field' ) ) {
 			// Enqueue same scripts and styles as for file field
 			parent::admin_print_styles( );
 
-			wp_enqueue_style( 'rwmb-image', RWMB_CSS . 'image.css', array( ), RWMB_VER );
+			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array( ), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-image', RWMB_JS . 'image.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
 		}
 
 		/**

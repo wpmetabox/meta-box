@@ -15,25 +15,25 @@ if ( !defined( 'RWMB_VER' ) )
 // Define plugin URLs, for fast enqueuing scripts and styles
 if ( !defined( 'RWMB_URL' ) )
 	define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
-if ( !defined( 'RWMB_JS' ) )
-	define( 'RWMB_JS', trailingslashit( RWMB_URL . 'js' ) );
-if ( !defined( 'RWMB_CSS' ) )
-	define( 'RWMB_CSS', trailingslashit( RWMB_URL . 'css' ) );
+if ( !defined( 'RWMB_JS_URL' ) )
+	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
+if ( !defined( 'RWMB_CSS_URL' ) )
+	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
 // Plugin paths, for including files
-if ( !defined( 'RWMB_PATH' ) )
-	define( 'RWMB_PATH', plugin_dir_path( __FILE__ ) );
-if ( !defined( 'RWMB_INC' ) )
-	define( 'RWMB_INC', trailingslashit( RWMB_PATH . 'inc' ) );
-if ( !defined( 'RWMB_FIELDS' ) )
-	define( 'RWMB_FIELDS', trailingslashit( RWMB_INC . 'fields' ) );
+if ( !defined( 'RWMB_DIR' ) )
+	define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
+if ( !defined( 'RWMB_INC_DIR' ) )
+	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
+if ( !defined( 'RWMB_FIELDS_DIR' ) )
+	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
 
 // Plugin textdomain
 if ( !defined( 'RWMB_TEXTDOMAIN' ) )
 	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
 
 // Include field classes
-foreach ( glob( RWMB_FIELDS . '*.php' ) as $file ) {
+foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file ) {
 	require_once $file;
 }
 
@@ -100,14 +100,14 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		 * Load plugin translation
 		 */
 		static function plugins_loaded( ) {
-			load_plugin_textdomain( RWMB_TEXTDOMAIN, false, basename( RWMB_PATH ) . '/lang/' );
+			load_plugin_textdomain( RWMB_TEXTDOMAIN, false, basename( RWMB_DIR ) . '/lang/' );
 		}
 
 		/**
 		 * Enqueue common scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_style( 'rwmb', RWMB_CSS . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
 		}
 
 		/**************************************************
@@ -230,7 +230,7 @@ HTML;
 
 		/**
 		 * Save data from meta box
-		 * @param $post_id Post ID
+		 * @param int $post_id Post ID
 		 * @return int|null
 		 */
 		function save_post( $post_id ) {
@@ -305,7 +305,7 @@ HTML;
 
 		/**
 		 * Normalize parameters for meta box
-		 * @param $meta_box Meta box definition
+		 * @param array $meta_box Meta box definition
 		 * @return Normalized meta box
 		 */
 		static function normalize( $meta_box ) {
