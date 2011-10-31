@@ -130,7 +130,8 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			global $post;
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
-			echo '<table class="form-table">';
+            echo '<div class="form-table">'; // AGM!!! Change TABLE to DIV
+			//echo '<table class="form-table">';
 
 			foreach ( $this->fields as $field ) {
 				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
@@ -162,9 +163,12 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$html = apply_filters( "rwmb_{$field['type']}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
 				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
 
-				echo "<tr>{$html}</tr>";
+				//echo "<tr>{$html}</tr>";
+                // Display label and input in DIV and allow user-defined class append
+           		echo "<div class=\"rwmb-field".(isset($field['class'])?" ".$field['class']:"")."\">{$html}</div>"; // AGM!!! Change TABLE to DIV
 			}
-			echo '</table>';
+			//echo '</table>';
+			echo '</div>'; // AGM!!! Change TABLE to DIV
 		}
 
 		/**
@@ -184,10 +188,10 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		 */
 		static function show_field_begin( $field, $meta ) {
 			$html = <<<HTML
-<th class="rwmb-label">
+<div class="rwmb-label">
 	<label for="{$field['id']}">{$field['name']}</label><br />
-</th>
-<td class="rwmb-field">
+</div>
+<div class="rwmb-input">
 HTML;
 			/**
 			 * Apply filter to field begin HTML
@@ -209,7 +213,8 @@ HTML;
 		 * @return string
 		 */
 		static function show_field_end( $field, $meta ) {
-			$html = "<p class='description'>{$field['desc']}</p></td>";
+			//$html = "<p class='description'>{$field['desc']}</p></td>";
+			$html = "<p class='description'>{$field['desc']}</p></div>"; // AGM!!! Change TABLE to DIV
 
 			/**
 			 * Apply filter to field begin HTML
