@@ -1,6 +1,16 @@
-.rwmb-label {
-	width: 20%;
+.rwmb-field{
+    margin: 10px 0;
 }
-.rwmb-field h4 {
+.rwmb-label, .rwmb-input {
+    display: inline-block;
+    vertical-align: top;
+}
+.rwmb-label{
+	width: 25%;
+}
+.rwmb-input {
+    width: 75%;
+}
+.rwmb-input h4 {
 	margin-top: 0;
 }
