@@ -1,12 +1,12 @@
-.rwmb-field{
+.rwmb-field {
     margin: 10px 0;
 }
 .rwmb-label, .rwmb-input {
     display: inline-block;
     vertical-align: top;
 }
-.rwmb-label{
-	width: 25%;
+.rwmb-label {
+	width: 24.5%;
 }
 .rwmb-input {
     width: 75%;
