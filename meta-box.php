@@ -163,7 +163,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
 
                 // Display label and input in DIV and allow user-defined class append
-           		echo "<div class=\"rwmb-field\"" . ( isset( $field['class'] ) ? " {$field['class']}" : '') . "\">{$html}</div>"; // AGM!!! Change TABLE to DIV
+           		echo "<div class=\"rwmb-field" . ( isset( $field['class'] ) ? " {$field['class']}" : '') . "\">{$html}</div>"; // AGM!!! Change TABLE to DIV
 			}
 			echo '</div>'; // AGM!!! Change TABLE to DIV
 		}
