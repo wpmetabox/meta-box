@@ -23,7 +23,8 @@ if ( !class_exists( 'RWMB_Checkbox_Field' ) ) {
 		 * @return string
 		 */
 		static function end_html( $end_html, $field, $meta ) {
-			return " <span class='description'>{$field['desc']}</span></td>";
+			//return " <span class='description'>{$field['desc']}</span></td>";
+			return " <span class='description'>{$field['desc']}</span></div>"; // AGM!!! TABLE to DIV change
 		}
 
 		/**
