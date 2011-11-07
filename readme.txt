@@ -1,6 +1,6 @@
 === Meta Box ===
 Contributors: rilwis
-Donate link: http://example.com/
+Donate link: http://goo.gl/EWjsD
 Tags: comments, spam
 Requires at least: 3.0
 Tested up to: 3.2.1
