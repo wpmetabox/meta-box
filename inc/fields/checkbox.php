@@ -36,5 +36,18 @@ if ( !class_exists( 'RWMB_Checkbox_Field' ) ) {
 		static function html( $html, $meta, $field ) {
 			return "<input type='checkbox' class='rwmb-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked( !empty( $meta ), true, false ) . " />";
 		}
+
+		/**
+		 * Set the value of checkbox to 1 or 0 instead of 'checked' and empty string
+		 * This prevents using default value once the checkbox has been unchecked (https://github.com/rilwis/meta-box/issues/6)
+		 * @param $new
+		 * @param $old
+		 * @param $post_id
+		 * @param $field
+		 * @return int
+		 */
+		static function value( $new, $old, $post_id, $field ) {
+			return empty( $new ) ? 0 : 1;
+		}
 	}
 }

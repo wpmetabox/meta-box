@@ -129,12 +129,16 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		function show( ) {
 			global $post;
 
+			$saved = self::has_been_saved( $post->ID, $this->fields );
+
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
             echo '<div class="form-table">'; // AGM!!! Change TABLE to DIV
 
 			foreach ( $this->fields as $field ) {
 				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
-				$meta = empty( $meta ) ? $field['std'] : $meta;
+
+				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
+				$meta = ( !$saved && '' === $meta || array( ) === $meta ) ? $field['std'] : $meta;
 
 				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
@@ -288,7 +292,7 @@ HTML;
 			$name = $field['id'];
 
 			delete_post_meta( $post_id, $name );
-			if ( $new === '' || $new === array( ) )
+			if ( '' === $new || array( ) === $new )
 				return;
 
 			if ( $field['multiple'] ) {
@@ -409,6 +413,23 @@ HTML;
 				'status' => $status
 			);
 			return json_encode( $json );
+		}
+
+		/**
+		 * Check if meta box has been saved
+		 * This helps saving empty value in meta fields (for text box, check box, etc.)
+		 * @param $post_id
+		 * @param $fields
+		 */
+		static function has_been_saved( $post_id, $fields ) {
+			$saved = false;
+			foreach ( $fields as $field ) {
+				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) ) {
+					$saved = true;
+					break;
+				}
+			}
+			return $saved;
 		}
 	}
 }

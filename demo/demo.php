@@ -160,7 +160,8 @@ $meta_boxes[] = array(
 			'name' => 'About WordPress',    // File type: checkbox
 			'id' => $prefix . 'love_wp',
 			'type' => 'checkbox',
-			'desc' => 'I love WordPress'
+			'desc' => 'I love WordPress',
+			'std' => 1                      // Value can be 0 or 1
 		),
 		array(
 			'name' => 'Categories',
