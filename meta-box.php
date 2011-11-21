@@ -90,9 +90,16 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Load plugin translation
+		 * @link http://wordpress.stackexchange.com/questions/33312/how-to-translate-plural-forms-for-themes-plugins-with-poedit/33314#33314 Translation Tutorial by the author
 		 */
-		static function plugins_loaded( ) {
-			load_plugin_textdomain( RWMB_TEXTDOMAIN, false, basename( RWMB_DIR ) . '/lang/' );
+		static function plugins_loaded( ) {	
+			// l10n translation files
+			$dir		= basename( RWMB_DIR );
+			// in plugins directory
+			$l10n_file	= load_plugin_textdomain( RWMB_TEXTDOMAIN, false, "{$dir}/lang" );
+			// in mu-plugins directory
+			if ( ! $l10n_file )
+				load_muplugin_textdomain( RWMB_TEXTDOMAIN, "{$dir}/lang" );
 		}
 
 		/**
