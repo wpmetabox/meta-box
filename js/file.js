@@ -22,12 +22,13 @@ jQuery(document).ready(function($) {
 				attachment_id: $this.attr('rel')
 			};
 
-		$.post(ajaxurl, data, function(response) {
-			if ('success' == response.status)
-				$parent.remove();
+		$.post(ajaxurl, data, function(r) {
+			var res = wpAjax.parseAjaxResponse(r, 'ajax-response');
+			if (res.errors)
+				alert(res.responses[0].errors[0].message);
 			else
-				alert(response.message);
-		}, 'json');
+				$parent.remove();
+		}, 'xml');
 
 		return false;
 	});

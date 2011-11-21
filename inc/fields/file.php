@@ -8,7 +8,7 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 		 * Enqueue scripts and styles
 		 */
 		static function admin_print_styles( ) {
-			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -44,9 +44,9 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 			$ok = $ok && wp_delete_attachment( $attachment_id );
 
 			if ( $ok )
-				die( RW_Meta_Box::format_response( '', 'success' ) );
+				RW_Meta_Box::ajax_response( '', 'success' );
 			else
-				die( RW_Meta_Box::format_response( __( 'Cannot delete file. Something\'s wrong.', RWMB_TEXTDOMAIN ), 'error' ) );
+				RW_Meta_Box::ajax_response( __( 'Cannot delete file. Something\'s wrong.', RWMB_TEXTDOMAIN ), 'error' );
 		}
 
 		/**

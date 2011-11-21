@@ -14,9 +14,11 @@ jQuery(document).ready(function($) {
 			update: function (){
 				data.order = $this.sortable('serialize');
 
-				$.post(ajaxurl, data, function(response){
-					alert(response.message);
-				}, 'json');
+				$.post(ajaxurl, data, function(r){
+					var res = wpAjax.parseAjaxResponse(r, 'ajax-response');
+					if (!res.errors)
+						alert(res.responses[0].data);
+				}, 'xml');
 			}
 		});
 	});

@@ -13,7 +13,7 @@ if ( !class_exists( 'RWMB_Image_Field' ) ) {
 
 			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array( ), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -48,7 +48,7 @@ if ( !class_exists( 'RWMB_Image_Field' ) ) {
 				) );
 			}
 
-			die( RW_Meta_Box::format_response( 'Order saved.', 'success' ) );
+			RW_Meta_Box::ajax_response( __( 'Order saved.', RWMB_TEXTDOMAIN ), 'success' );
 		}
 
 		/**

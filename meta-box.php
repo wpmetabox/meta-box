@@ -8,39 +8,31 @@ Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 */
 
-// Script version, used to add version for scripts and styles
-if ( !defined( 'RWMB_VER' ) )
-	define( 'RWMB_VER', '4.0' );
-
-// Define plugin URLs, for fast enqueuing scripts and styles
-if ( !defined( 'RWMB_URL' ) )
-	define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
-if ( !defined( 'RWMB_JS_URL' ) )
-	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
-if ( !defined( 'RWMB_CSS_URL' ) )
-	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
-
-// Plugin paths, for including files
-if ( !defined( 'RWMB_DIR' ) )
-	define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
-if ( !defined( 'RWMB_INC_DIR' ) )
-	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
-if ( !defined( 'RWMB_FIELDS_DIR' ) )
-	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
-
-// Plugin textdomain
-if ( !defined( 'RWMB_TEXTDOMAIN' ) )
-	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
-
-// Include field classes
-foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file ) {
-	require_once $file;
-}
-
 /**
  * Meta Box Class
  */
 if ( !class_exists( 'RW_Meta_Box' ) ) {
+
+	// Script version, used to add version for scripts and styles
+	define( 'RWMB_VER', '4.0' );
+
+	// Define plugin URLs, for fast enqueuing scripts and styles
+	define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
+	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
+	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
+
+	// Plugin paths, for including files
+	define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
+	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
+	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
+
+	// Plugin textdomain
+	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
+
+	// Include field classes
+	foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file ) {
+		require_once $file;
+	}
 
 	class RW_Meta_Box {
 
@@ -66,7 +58,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
-			add_action('plugins_loaded', array( __CLASS__, 'plugins_loaded' ) );
+			add_action( 'plugins_loaded', array( __CLASS__, 'plugins_loaded' ) );
 
 			// Enqueue common scripts and styles
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
@@ -140,7 +132,9 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 				$meta = ( !$saved && '' === $meta || array( ) === $meta ) ? $field['std'] : $meta;
 
-				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
+				// Escape attributes for non-wysiwyg fields
+				if ( $field['type'] != 'wysiwyg' )
+					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
 				$begin = self::show_field_begin( $field, $meta );
 
@@ -407,12 +401,11 @@ HTML;
 		 * @param $status
 		 * @return string
 		 */
-		static function format_response( $message, $status ) {
-			$json = array(
-				'message' => $message,
-				'status' => $status
-			);
-			return json_encode( $json );
+		static function ajax_response( $message, $status ) {
+			$response = array( 'what' => 'meta-box' );
+			$response['data'] = 'error' === $status ? new WP_Error( 'error', $message ) : $message;
+			$x = new WP_Ajax_Response( $response );
+			$x->send( );
 		}
 
 		/**
@@ -420,6 +413,7 @@ HTML;
 		 * This helps saving empty value in meta fields (for text box, check box, etc.)
 		 * @param $post_id
 		 * @param $fields
+		 * @return bool
 		 */
 		static function has_been_saved( $post_id, $fields ) {
 			$saved = false;

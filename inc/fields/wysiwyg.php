@@ -15,9 +15,13 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) ) {
 		 * Add field actions
 		 */
 		static function add_actions( ) {
-			// Add TinyMCE script
-			add_action( 'admin_print_footer-post.php', 'wp_tiny_mce', 25 );
-			add_action( 'admin_print_footer-post-new.php', 'wp_tiny_mce', 25 );
+			// Add TinyMCE script for WP version < 3.3
+			global $wp_version;
+
+			if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
+				add_action( 'admin_print_footer-post.php', 'wp_tiny_mce', 25 );
+				add_action( 'admin_print_footer-post-new.php', 'wp_tiny_mce', 25 );
+			}
 		}
 
 		/**
@@ -40,7 +44,19 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) ) {
 		 * @return string
 		 */
 		static function html( $html, $meta, $field ) {
-			return "<textarea class='rwmb-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
+			global $wp_version;
+
+			if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
+
+				return "<textarea class='rwmb-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
+			} else {
+				// Use new wp_editor() since WP 3.3
+
+				// Using output buffering because wp_editor() echos directly
+				ob_start( );
+				wp_editor( $meta, $field['id'], array( 'editor_class' => 'rwmb-wysiwyg' ) );
+				return ob_get_clean( );
+			}
 		}
 	}
 }
