@@ -3,7 +3,7 @@
 Plugin Name: Meta Box
 Plugin URI: http://www.deluxeblogtips.com/meta-box-script-for-wordpress/
 Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WordPress 3.0. Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, file, image, date, time, color
-Version: 4.0
+Version: 4.0.1
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 */
