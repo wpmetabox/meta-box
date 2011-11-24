@@ -92,7 +92,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		 * Load plugin translation
 		 * @link http://wordpress.stackexchange.com/questions/33312/how-to-translate-plural-forms-for-themes-plugins-with-poedit/33314#33314 Translation Tutorial by the author
 		 */
-		static function plugins_loaded( ) {	
+		static function plugins_loaded( ) {
 			// l10n translation files
 			$dir		= basename( RWMB_DIR );
 			// in plugins directory
@@ -143,7 +143,17 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				if ( $field['type'] != 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
-				$begin = self::show_field_begin( $field, $meta );
+				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
+
+				/**
+				 * Apply filter to field begin HTML
+				 * 1st filter applies to all fields
+				 * 2nd filter applies to all fields with the same type
+				 * 3rd filter applies to current field only
+				 */
+				$begin = apply_filters( "rwmb_begin_html", $begin, $field, $meta );
+				$begin = apply_filters( "rwmb_{$field['type']}_begin_html", $begin, $field, $meta );
+				$begin = apply_filters( "rwmb_{$field['id']}_begin_html", $begin, $field, $meta );
 
 				// Call separated methods for displaying each type of field
 				$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
@@ -156,7 +166,17 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$field_html = apply_filters( "rwmb_{$field['type']}_html", $field_html, $field, $meta );
 				$field_html = apply_filters( "rwmb_{$field['id']}_html", $field_html, $field, $meta );
 
-				$end = self::show_field_end( $field, $meta );
+				$end = self::apply_field_class_filters( $field, 'end_html', '', $meta );
+
+				/**
+				 * Apply filter to field end HTML
+				 * 1st filter applies to all fields
+				 * 2nd filter applies to all fields with the same type
+				 * 3rd filter applies to current field only
+				 */
+				$end = apply_filters( "rwmb_end_html", $end, $field, $meta );
+				$end = apply_filters( "rwmb_{$field['type']}_end_html", $end, $field, $meta );
+				$end = apply_filters( "rwmb_{$field['id']}_end_html", $end, $field, $meta );
 
 				/**
 				 * Apply filter to field wrapper
@@ -184,48 +204,30 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Show begin HTML markup for fields
-		 * @param $field
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function show_field_begin( $field, $meta ) {
+		static function begin_html( $html, $meta, $field ) {
 			$html = <<<HTML
 <div class="rwmb-label">
 	<label for="{$field['id']}">{$field['name']}</label><br />
 </div>
 <div class="rwmb-input">
 HTML;
-			/**
-			 * Apply filter to field begin HTML
-			 * 1st filter applies to all fields
-			 * 2nd filter applies to all fields with the same type
-			 * 3rd filter applies to current field only
-			 */
-			$html = apply_filters( "rwmb_begin_html", $html, $field, $meta );
-			$html = apply_filters( "rwmb_{$field['type']}_begin_html", $html, $field, $meta );
-			$html = apply_filters( "rwmb_{$field['id']}_begin_html", $html, $field, $meta );
-
 			return $html;
 		}
 
 		/**
 		 * Show end HTML markup for fields
-		 * @param $field
+		 * @param $html
 		 * @param $meta
+		 * @param $field
 		 * @return string
 		 */
-		static function show_field_end( $field, $meta ) {
+		static function end_html( $html, $meta, $field ) {
 			$html = "<p class='description'>{$field['desc']}</p></div>"; // AGM!!! Change TABLE to DIV
-
-			/**
-			 * Apply filter to field begin HTML
-			 * 1st filter applies to all fields
-			 * 2nd filter applies to all fields with the same type
-			 * 3rd filter applies to current field only
-			 */
-			$html = apply_filters( "rwmb_end_html", $html, $field, $meta );
-			$html = apply_filters( "rwmb_{$field['type']}_end_html", $html, $field, $meta );
-			$html = apply_filters( "rwmb_{$field['id']}_end_html", $html, $field, $meta );
 
 			return $html;
 		}
