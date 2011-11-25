@@ -102,8 +102,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$dir		= basename( RWMB_DIR );
 			$dir		= "{$dir}/lang";
 			$domain		= RWMB_TEXTDOMAIN;
-			$local		= get_local();
-			$l10n_file	= "{$dir}/{$domain}-{$local}.mo";
+			$l10n_file	= "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
 			// in plugins directory
 			load_textdomain( $domain, $l10n_file );
