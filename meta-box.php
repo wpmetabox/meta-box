@@ -17,12 +17,14 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 	define( 'RWMB_VER', '4.0' );
 
 	// Define plugin URLs, for fast enqueuing scripts and styles
-	define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
+	if ( ! defined ('RWMB_URL') )
+		define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
 	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
 	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
 	// Plugin paths, for including files
-	define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
+	if ( ! defined ('RWMB_DIR') )
+		define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
 	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
 	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
 
@@ -47,7 +49,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		 */
 		function __construct( $meta_box ) {
 			// Run script only in admin area
-			if ( !is_admin( ) )
+			if ( ! is_admin( ) )
 				return;
 
 			// Assign meta box values to local variables and add it's missed values
@@ -58,7 +60,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
-			add_action( 'plugins_loaded', array( __CLASS__, 'plugins_loaded' ) );
+			add_action( 'init', array( __CLASS__, 'language' ), 20 );
 
 			// Enqueue common scripts and styles
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
@@ -90,16 +92,20 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Load plugin translation
+		 * 
 		 * @link http://wordpress.stackexchange.com/questions/33312/how-to-translate-plural-forms-for-themes-plugins-with-poedit/33314#33314 Translation Tutorial by the author
+		 * @since 3.0
+		 * @return void
 		 */
-		static function plugins_loaded( ) {
+		static function language( ) {
 			// l10n translation files
 			$dir		= basename( RWMB_DIR );
+			$dir		= "{$dir}/lang";
+			$domain		= RWMB_TEXTDOMAIN;
+			$l10n_file	= "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
+
 			// in plugins directory
-			$l10n_file	= load_plugin_textdomain( RWMB_TEXTDOMAIN, false, "{$dir}/lang" );
-			// in mu-plugins directory
-			if ( ! $l10n_file )
-				load_muplugin_textdomain( RWMB_TEXTDOMAIN, "{$dir}/lang" );
+			load_textdomain( $domain, $l10n_file );
 		}
 
 		/**
