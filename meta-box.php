@@ -100,14 +100,13 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 		static function language( ) {
 			// l10n translation files
 			$dir		= basename( RWMB_DIR );
+			$dir		= "{$dir}/lang";
+			$domain		= RWMB_TEXTDOMAIN;
+			$local		= get_local();
+			$l10n_file	= "{$dir}/{$domain}-{$local}.mo";
+
 			// in plugins directory
-			$l10n_file	= load_plugin_textdomain( RWMB_TEXTDOMAIN, false, "{$dir}/lang" );
-			// in themes directory
-			if ( ! $l10n_file )
-				$l10n_file	= load_theme_textdomain( RWMB_TEXTDOMAIN, "{$dir}/lang" );
-			// in mu-plugins directory
-			if ( ! $l10n_file )
-				load_muplugin_textdomain( RWMB_TEXTDOMAIN, "{$dir}/lang" );
+			load_textdomain( $domain, $l10n_file );
 		}
 
 		/**
