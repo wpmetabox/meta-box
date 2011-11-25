@@ -24,7 +24,7 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 		 * @param $field
 		 * @return array
 		 */
-		static function normalize( $field ) {
+		static function normalize_field( $field ) {
 			// Default query arguments for get_terms() function
 			$default_args = array(
 				'hide_empty' => false
@@ -47,6 +47,7 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 
 		/**
 		 * Get field HTML
+		 * @param $html
 		 * @param $field
 		 * @param $meta
 		 * @return string
@@ -238,7 +239,12 @@ $meta_boxes[] = array(
 	)
 );
 
-// Register meta boxes
-foreach ( $meta_boxes as $meta_box ) {
-	new RW_Meta_Box( $meta_box );
+/**
+ * Register meta boxes
+ * Make sure there's no errors when the plugin is deactivated or during upgrade
+ */
+if ( class_exists( 'RW_Meta_Box' ) ) {
+	foreach ( $meta_boxes as $meta_box ) {
+		new RW_Meta_Box( $meta_box );
+	}
 }
