@@ -1,16 +1,19 @@
 .rwmb-field {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 .rwmb-label, .rwmb-input {
-    display: inline-block;
-    vertical-align: top;
+	display: inline-block;
+	vertical-align: top;
 }
 .rwmb-label {
 	width: 24.5%;
 }
 .rwmb-input {
-    width: 75%;
+	width: 75%;
 }
 .rwmb-input h4 {
 	margin-top: 0;
+}
+.rwmb-textarea {
+	resize: vertical;
 }
