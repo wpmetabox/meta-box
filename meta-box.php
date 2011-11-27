@@ -60,7 +60,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
-			add_action( 'init', array( __CLASS__, 'language' ), 20 );
+			add_action( 'admin_init', array( __CLASS__, 'load_textdomain' ) );
 
 			// Enqueue common scripts and styles
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
@@ -92,17 +92,17 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Load plugin translation
-		 * 
+		 *
 		 * @link http://wordpress.stackexchange.com/questions/33312/how-to-translate-plural-forms-for-themes-plugins-with-poedit/33314#33314 Translation Tutorial by the author
 		 * @since 3.0
 		 * @return void
 		 */
-		static function language( ) {
+		static function load_textdomain( ) {
 			// l10n translation files
-			$dir		= basename( RWMB_DIR );
-			$dir		= "{$dir}/lang";
-			$domain		= RWMB_TEXTDOMAIN;
-			$l10n_file	= "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
+			$dir       = basename( RWMB_DIR );
+			$dir       = "{$dir}/lang";
+			$domain    = RWMB_TEXTDOMAIN;
+			$l10n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
 			// in plugins directory
 			load_textdomain( $domain, $l10n_file );
