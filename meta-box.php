@@ -137,6 +137,15 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
+
+			/**
+			 * Allow users to add custom code before meta box content
+			 * 1st action applies to all meta box
+			 * 2nd action applies to only current meta box
+			 */
+			do_action( 'rwmb_before' );
+			do_action( "rwmb_before_{$this->meta_box['id']}" );
+
             echo '<div class="form-table">'; // AGM!!! Change TABLE to DIV
 
 			foreach ( $this->fields as $field ) {
@@ -197,6 +206,14 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
            		echo "<div class=\"rwmb-field" . ( isset( $field['class'] ) ? " {$field['class']}" : '') . "\">{$html}</div>"; // AGM!!! Change TABLE to DIV
 			}
 			echo '</div>'; // AGM!!! Change TABLE to DIV
+
+			/**
+			 * Allow users to add custom code after meta box content
+			 * 1st action applies to all meta box
+			 * 2nd action applies to only current meta box
+			 */
+			do_action( 'rwmb_after' );
+			do_action( "rwmb_after_{$this->meta_box['id']}" );
 		}
 
 		/**
