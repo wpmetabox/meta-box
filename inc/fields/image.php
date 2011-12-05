@@ -1,27 +1,33 @@
 <?php
 
-if ( !class_exists( 'RWMB_Image_Field' ) ) {
-
-	class RWMB_Image_Field extends RWMB_File_Field {
-
+if ( ! class_exists( 'RWMB_Image_Field' ) ) 
+{
+	class RWMB_Image_Field extends RWMB_File_Field 
+	{
 		/**
 		 * Enqueue scripts and styles
+		 * 
+		 * @return	void
 		 */
-		static function admin_print_styles( ) {
+		static function admin_print_styles( ) 
+		{
 			// Enqueue same scripts and styles as for file field
-			parent::admin_print_styles( );
+			parent :: admin_print_styles( );
 
-			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array( ), RWMB_VER );
+			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL.'image.css', array( ), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL.'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
 		 * Add actions
+		 * 
+		 * @return	void
 		 */
-		static function add_actions( ) {
+		static function add_actions( ) 
+		{
 			// Do same actions as file field
-			parent::add_actions( );
+			parent :: add_actions( );
 
 			// Reorder images via Ajax
 			add_action( 'wp_ajax_rwmb_reorder_images', array( __CLASS__, 'wp_ajax_reorder_images' ) );
@@ -29,47 +35,54 @@ if ( !class_exists( 'RWMB_Image_Field' ) ) {
 
 		/**
 		 * Ajax callback for reordering images
+		 * 
+		 * @return	void
 		 */
-		static function wp_ajax_reorder_images( ) {
-			$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
-			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-			$order = isset( $_POST['order'] ) ? $_POST['order'] : 0;
+		static function wp_ajax_reorder_images( ) 
+		{
+			$post_id	= isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+			$field_id	= isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
+			$order		= isset( $_POST['order'] ) ? $_POST['order'] : 0;
 
 			check_admin_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
-			$items = $items['item'];
-			$order = 1;
-			foreach ( $items as $item ) {
+			$items		= $items['item'];
+			$order		= 1;
+			foreach ( $items as $item ) 
+			{
 				wp_update_post( array(
-					'ID' => $item,
-					'post_parent' => $post_id,
-					'menu_order' => $order++
+					'ID'			=> $item,
+					'post_parent'	=> $post_id,
+					'menu_order'	=> $order++
 				) );
 			}
 
-			RW_Meta_Box::ajax_response( __( 'Order saved.', RWMB_TEXTDOMAIN ), 'success' );
+			RW_Meta_Box :: ajax_response( __( 'Order saved.', RWMB_TEXTDOMAIN ), 'success' );
 		}
 
 		/**
 		 * Get field HTML
-		 * @param $html
-		 * @param $meta
-		 * @param $field
-		 * @return string
+		 * 
+		 * @param	(unknown_type)	$html	| 
+		 * @param	(unknown_type)	$meta	| 
+		 * @param	(unknown_type)	$field	| 
+		 * @return	(string)		$html	| 
 		 */
-		static function html( $html, $meta, $field ) {
+		static function html( $html, $meta, $field ) 
+		{
 			global $wpdb;
 
-			if ( !is_array( $meta ) )
+			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$html = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
+			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
 			// Re-arrange images with 'menu_order', thanks Onur
-			if ( !empty( $meta ) ) {
+			if ( ! empty( $meta ) ) 
+			{
 				$html .= '<h4>' . __( 'Uploaded images', RWMB_TEXTDOMAIN ) . '</h4>';
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
@@ -80,7 +93,9 @@ if ( !class_exists( 'RWMB_Image_Field' ) ) {
 					AND ID in ($meta)
 					ORDER BY menu_order ASC
 				" );
-				foreach ( $images as $image ) {
+
+				foreach ( $images as $image ) 
+				{
 					$src = wp_get_attachment_image_src( $image );
 					$src = $src[0];
 
