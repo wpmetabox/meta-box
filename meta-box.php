@@ -344,8 +344,8 @@ HTML;
 			foreach ( $meta_box['fields'] as &$field ) {
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
 				$std = $multiple ? array( ) : '';
-				$format = 'date' == $field['type'] AND $field['type'] ? $field['type'] : 'yy-mm-dd'; 
-				$format = 'time' == $field['type'] AND $field['type'] ? $field['type'] : 'hh:mm';
+				$format = 'date' == $field['type'] AND $field['format'] ? $field['format'] : 'yy-mm-dd'; 
+				$format = 'time' == $field['type'] AND $field['format'] ? $field['format'] : 'hh:mm';
 
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
