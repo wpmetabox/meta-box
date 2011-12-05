@@ -104,12 +104,14 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			$domain    = RWMB_TEXTDOMAIN;
 			$l10n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
-			// in plugins directory
+			// in themes/plugins/mu-plugins directory
 			load_textdomain( $domain, $l10n_file );
 		}
 
 		/**
 		 * Enqueue common scripts and styles
+		 * 
+		 * @return void
 		 */
 		static function admin_print_styles( ) {
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
@@ -121,6 +123,8 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Add meta box for multiple post types
+		 * 
+		 * @return void
 		 */
 		function add_meta_boxes( ) {
 			foreach ( $this->meta_box['pages'] as $page ) {
@@ -130,6 +134,8 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Callback function to show fields in meta box
+		 * 
+		 * @return void
 		 */
 		function show( ) {
 			global $post;
@@ -218,6 +224,8 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Show hidden fields like nonce, post ID, etc.
+		 * 
+		 * @return string
 		 */
 		static function dbx_post_sidebar() {
 			global $post;
@@ -227,6 +235,7 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 
 		/**
 		 * Show begin HTML markup for fields
+		 * 
 		 * @param $html
 		 * @param $meta
 		 * @param $field
@@ -313,6 +322,7 @@ HTML;
 		 * @param $old
 		 * @param $post_id
 		 * @param $field
+		 * @return void
 		 */
 		static function save( $new, $old, $post_id, $field ) {
 			$name = $field['id'];
@@ -351,7 +361,8 @@ HTML;
 			foreach ( $meta_box['fields'] as &$field ) {
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
 				$std = $multiple ? array( ) : '';
-				$format = 'date' == $field['type'] ? 'yy-mm-dd' : ( 'time' == $field['type'] ? 'hh:mm' : '' );
+				$format = 'date' == $field['type'] AND $field['format'] ? $field['format'] : 'yy-mm-dd'; 
+				$format = 'time' == $field['type'] AND $field['format'] ? $field['format'] : 'hh:mm';
 
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
