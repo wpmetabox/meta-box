@@ -15,8 +15,8 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		static function html( $html, $meta, $field ) 
 		{
 			$val	 = " value='{$meta}'";
-			$name	 = " name='{$field['id']}";
-			$id		 = " id='{$field['id']}";
+			$name	 = " name='{$field['id']}'";
+			$id		 = " id='{$field['id']}'";
 			$html	.= "<input type='text' class='rwmb-text'{$name}{$id}{$val} size='30' />";
 
 			return $html;
