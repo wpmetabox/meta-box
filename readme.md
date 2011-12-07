@@ -1,10 +1,15 @@
 Meta Box
 =======================
 Contributors: rilwis, franz-josef-kaiser, Omnicia
+
 Donate link: http://goo.gl/EWjsD
+
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
+
 Requires at least: 3.0
+
 Tested up to: 3.3 beta 3
+
 Stable tag: trunk
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
@@ -17,6 +22,7 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 * Create meta box for editing pages in WordPress.
 * Compatible with custom post types since WordPress 3.0.
 * Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, file, image, date, time, color
+
 
 [Project page](http://www.deluxeblogtips.com/meta-box-script-for-wordpress/)
 
@@ -39,8 +45,8 @@ Changelog
 --------------------------------------
 
 ### 4.0.1 ###
-* Change format_response() to ajax_response() and use WP_Ajax_Response class to control the ajax response
-* Use wp_editor() built-in with WP 3.3 (with fallback)
+* Change `format_response()` to `ajax_response()` and use WP_Ajax_Response class to control the ajax response
+* Use `wp_editor()` built-in with WP 3.3 (with fallback)
 
 ### 4.0 ###
 * strongly refactor code
