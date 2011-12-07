@@ -21,12 +21,12 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 
 * Create meta box for editing pages in WordPress.
 * Compatible with custom post types since WordPress 3.0.
-* Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, file, image, date, time, color
+* **Support input types:** text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, file, image, date, time, color.
 
-
+### Links ###
 * [Project page](http://www.deluxeblogtips.com/meta-box-script-for-wordpress/)
 * [Project on GitHub](https://github.com/rilwis/meta-box)
-* [Documentation](https://github.com/rilwis/meta-box/wiki)
+* [Documentation (Wiki)](https://github.com/rilwis/meta-box/wiki)
 
 Installation
 --------------------------------------
