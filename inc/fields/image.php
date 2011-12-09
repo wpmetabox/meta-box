@@ -1,5 +1,4 @@
 <?php
-
 if ( ! class_exists( 'RWMB_Image_Field' ) ) 
 {
 	class RWMB_Image_Field extends RWMB_File_Field 
@@ -58,7 +57,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				) );
 			}
 
-			RW_Meta_Box :: ajax_response( __( 'Order saved.', RWMB_TEXTDOMAIN ), 'success' );
+			RW_Meta_Box :: ajax_response( __( 'Order saved', RWMB_TEXTDOMAIN ), 'success' );
 		}
 
 		/**
@@ -76,6 +75,12 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
+			$i18n_msg		= _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_del_file	= _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_delete	= _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_title		= _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_more		= _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
+
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
@@ -83,7 +88,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			// Re-arrange images with 'menu_order', thanks Onur
 			if ( ! empty( $meta ) ) 
 			{
-				$html .= '<h4>' . __( 'Uploaded images', RWMB_TEXTDOMAIN ) . '</h4>';
+				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
 				$meta = implode( ',', $meta );
@@ -101,7 +106,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 					$html .= "<li id='item_{$image}'>
 						<img src='{$src}' />
-						<a title='" . __( 'Delete this image', RWMB_TEXTDOMAIN ) . "' class='rwmb-delete-file' href='#' rel='$image'>" . __( 'Delete', RWMB_TEXTDOMAIN ) . "</a>
+						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
 					</li>";
 				}
 
@@ -109,10 +114,11 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			}
 
 			// Show form upload
-			$html .= "<h4>" . __( 'Upload new images', RWMB_TEXTDOMAIN ) . "</h4>
+			$html .= "
+			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
 				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>" . __( 'Add more file', RWMB_TEXTDOMAIN ) . "</a>
+				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
 			</div>";
 
 			return $html;
