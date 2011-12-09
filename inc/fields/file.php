@@ -62,7 +62,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			}
 			else
 			{
-				RW_Meta_Box :: ajax_response( __( 'Cannot delete file. Something\'s wrong.', RWMB_TEXTDOMAIN ), 'error' );
+				RW_Meta_Box :: ajax_response( __( "Error: Cannot delete file", RWMB_TEXTDOMAIN ), 'error' );
 			}
 		}
 
@@ -79,25 +79,35 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
+			$i18n_msg		= _x( 'Uploaded files', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_del_file	= _x( 'Delete this file', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_delete	= _x( 'Delete', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_title		= _x( 'Upload files', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_more		= _x( 'Add another file', 'file upload', RWMB_TEXTDOMAIN );
+
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
-			if ( !empty( $meta ) ) {
-				$html .= '<h4>' . __( 'Uploaded files', RWMB_TEXTDOMAIN ) . '</h4>';
+			if ( !empty( $meta ) ) 
+			{
+				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';
 
-				foreach ( $meta as $attachment_id ) {
-					$html .= "<li>" . wp_get_attachment_link( $attachment_id ) . " (<a class='rwmb-delete-file' href='#' rel='$attachment_id'>" . __( 'Delete', RWMB_TEXTDOMAIN ) . "</a>)</li>";
+				foreach ( $meta as $attachment_id ) 
+				{
+					$attachment = wp_get_attachment_link( $attachment_id );
+					$html .= "<li>{$attachment} (<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$attachment_id}'>{$i18n_delete}</a>)</li>";
 				}
 
 				$html .= '</ol>';
 			}
 
 			// Show form upload
-			$html .= "<h4>" . __( 'Upload new files', RWMB_TEXTDOMAIN ) . "</h4>
+			$html .= "
+			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
 				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>" . __( 'Add more file', RWMB_TEXTDOMAIN ) . "</a>
+				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
 			</div>";
 
 			return $html;
@@ -113,33 +123,33 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field ) 
 		{
-			$name = $field['id'];
+			$name	= $field['id'];
 			if ( empty( $_FILES[ $name ] ) )
 				return;
 
-			$files = self::fix_file_array( $_FILES[ $name ] );
+			$files	= self::fix_file_array( $_FILES[ $name ] );
 
-			foreach ( $files as $fileitem ) 
+			foreach ( $files as $file_item ) 
 			{
-				$file		= wp_handle_upload( $fileitem, array( 'test_form' => false ) );
+				$file		= wp_handle_upload( $file_item, array( 'test_form' => false ) );
 
 				if ( ! isset( $file['file'] ) )
 					continue;
 
-				$filename	= $file['file'];
+				$file_name	= $file['file'];
 
 				$attachment	= array(
 					'post_mime_type'	=> $file['type'],
 					'guid'				=> $file['url'],
 					'post_parent'		=> $post_id,
-					'post_title'		=> preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+					'post_title'		=> preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
 					'post_content'		=> ''
 				);
-				$id			= wp_insert_attachment( $attachment, $filename, $post_id );
+				$id			= wp_insert_attachment( $attachment, $file_name, $post_id );
 
 				if ( ! is_wp_error( $id ) ) 
 				{
-					wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $filename ) );
+					wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_name ) );
 
 					// Save file ID in meta field
 					add_post_meta( $post_id, $name, $id, false );
