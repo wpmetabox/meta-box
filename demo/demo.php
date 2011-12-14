@@ -191,7 +191,6 @@ $meta_boxes[] = array(
 			'type' => 'wysiwyg',             // Field type: WYSIWYG editor
 			'std' => '<b>It\'s great!</b>',
 			'desc' => 'Do you think so?',
-			'style' => 'width: 300px; height: 400px'
 		),
 		array(
 			'name' => 'Upload your source code',
