@@ -115,14 +115,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function load_textdomain() 
 		{
-			// l10n translation files
+			// l18n translation files
 			$dir       = basename( RWMB_DIR );
 			$dir       = "{$dir}/lang";
 			$domain    = RWMB_TEXTDOMAIN;
-			$l10n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
+			$l18n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
 			// in themes/plugins/mu-plugins directory
-			load_textdomain( $domain, $l10n_file );
+			load_textdomain( $domain, $l18n_file );
 		}
 
 		/**
