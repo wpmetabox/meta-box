@@ -12,6 +12,9 @@ Omnicia
 
 [click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)
 
+Meta Info
+--------------------------------------
+
 **Tags:** meta-box, custom-fields, custom-field, meta, meta-boxes
 
 **Requires at least:** 3.0
