@@ -71,15 +71,15 @@ Changelog
 * move js and css codes to separated files (rewrite js code for fields, too)
 * allow to add multiple images to image meta field with selection, modified from "Fast Insert Image" plugin
 * remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta=box.css' file. All fields now has the class 'rw=$type', and table cells have class 'rwmb=label' and 'rwmb=field'
-* allow to use file uploader for images as well, regarding [link](http://disq.us/1k2lwf
-* when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post. Regarding [link](http://disq.us/1nppyi
+* allow to use file uploader for images as well, regarding [link](http://disq.us/1k2lwf)
+* when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post. Regarding [link](http://disq.us/1nppyi)
 * change hook for adding meta box to 'add_meta_boxes', according Codex. Required WP 3.0+
 * fix image uploading when custom post type doesn't support "editor"
-* fix show many alerts when delete files, regarding [link](http://disq.us/1lolgb
+* fix show many alerts when delete files, regarding [link](http://disq.us/1lolgb)
 * fix js comma missing bug when implement multiple fields with same type
 * fix order of uploaded images, thank Onur
 * fix deleting new uploaded image
-* fix bug when save meta value = zero (0), regarding [link](http://disq.us/1tg008
+* fix bug when save meta value = zero (0), regarding [link](http://disq.us/1tg008)
 * some minor changes such as = add 'id' attribute to fields, show uploaded images as thumbnail, add script to header of post.php and post=new.php only
 
 ### 3.1 ###
