@@ -1,6 +1,6 @@
 Meta Box
 =======================
-**Contributors:**
+### Contributors ###
 
 [Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer,
 
@@ -8,25 +8,17 @@ Meta Box
 
 Omnicia
 
-**Donate link:**
+### Donate link: ###
 
 [click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)
 
-**Tags:** 
+**Tags:** meta-box, custom-fields, custom-field, meta, meta-boxes
 
-meta-box, custom-fields, custom-field, meta, meta-boxes
+**Requires at least:** 3.0
 
-**Requires at least:**
+**Tested up to:** 3.3 beta 3
 
- 3.0
-
-**Tested up to:** 
-
-3.3 beta 3
-
-**Stable tag:**
-
-trunk
+**Stable tag:** trunk
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
 
