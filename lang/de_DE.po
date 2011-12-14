@@ -1,0 +1,97 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box Script For WordPress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-12-09 01:57+0100\n"
+"PO-Revision-Date: 2011-12-09 01:58+0100\n"
+"Last-Translator: Franz Josef Kaiser <franzjosef@unserkaiser.at>\n"
+"Language-Team: Franz Josef Kaiser <24-7@gmx.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: AUSTRIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: ../inc/fields\n"
+
+#: ../inc/fields/color.php:36
+msgid "Select a color"
+msgstr "Farbe wählen"
+
+#: ../inc/fields/file.php:65
+msgid "Error: Cannot delete file"
+msgstr "Fehler: Datei kann nicht gelöscht werden"
+
+#: ../inc/fields/file.php:82
+#, fuzzy
+msgctxt "file upload"
+msgid "Uploaded files"
+msgstr "Dateien fertig geladen"
+
+#: ../inc/fields/file.php:83
+msgctxt "file upload"
+msgid "Delete this file"
+msgstr "Datei löschen"
+
+#: ../inc/fields/file.php:84
+#, fuzzy
+msgctxt "file upload"
+msgid "Delete"
+msgstr "Löschen"
+
+#: ../inc/fields/file.php:85
+msgctxt "file upload"
+msgid "Upload files"
+msgstr "Datei hochladen"
+
+#: ../inc/fields/file.php:86
+msgctxt "file upload"
+msgid "Add another file"
+msgstr "Weitere Datei"
+
+#: ../inc/fields/image.php:60
+#, fuzzy
+msgid "Order saved"
+msgstr "Reihenfolge gespeichert"
+
+#: ../inc/fields/image.php:78
+#, fuzzy
+msgctxt "image upload"
+msgid "Uploaded files"
+msgstr "Dateien fertig geladen"
+
+#: ../inc/fields/image.php:79
+msgctxt "image upload"
+msgid "Delete this file"
+msgstr "Datei löschen"
+
+#: ../inc/fields/image.php:80
+#, fuzzy
+msgctxt "image upload"
+msgid "Delete"
+msgstr "Löschen"
+
+#: ../inc/fields/image.php:81
+msgctxt "image upload"
+msgid "Upload files"
+msgstr "Dateien hochladen"
+
+#: ../inc/fields/image.php:82
+msgctxt "image upload"
+msgid "Add another file"
+msgstr "Weitere Datei"
+
+#~ msgid "Cannot delete file. Something's wrong."
+#~ msgstr "Fehler: Datei kann nicht gelöscht werden."
+
+#~ msgid "Upload new files"
+#~ msgstr "Neue Dateien hochladen"
+
+#~ msgid "Uploaded images"
+#~ msgstr "Bilder fertig geladen"
+
+#~ msgid "Upload new images"
+#~ msgstr "Neue Bilder hochladen"

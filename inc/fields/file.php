@@ -1,20 +1,26 @@
 <?php
 
-if ( !class_exists( 'RWMB_File_Field' ) ) {
-
-	class RWMB_File_Field {
-
+if ( ! class_exists( 'RWMB_File_Field' ) ) 
+{
+	class RWMB_File_Field 
+	{
 		/**
 		 * Enqueue scripts and styles
+		 * 
+		 * @return void
 		 */
-		static function admin_print_styles( ) {
+		static function admin_print_styles() 
+		{
 			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
 		 * Add actions
+		 * 
+		 * @return void
 		 */
-		static function add_actions( ) {
+		static function add_actions() 
+		{
 			// Add data encoding type for file uploading
 			add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
 
@@ -24,18 +30,25 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 
 		/**
 		 * Add data encoding type for file uploading
+		 *
+		 * @return void
 		 */
-		static function post_edit_form_tag( ) {
+		static function post_edit_form_tag() 
+		{
 			echo ' enctype="multipart/form-data"';
 		}
 
 		/**
 		 * Ajax callback for deleting files.
-		 * Modified from a function used by "Verve Meta Boxes" plugin (http://goo.gl/LzYSq)
+		 * Modified from a function used by "Verve Meta Boxes" plugin
+		 *
+		 * @link http://goo.gl/LzYSq
+		 * @return void
 		 */
-		static function wp_ajax_delete_file( ) {
-			$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
-			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
+		static function wp_ajax_delete_file() 
+		{
+			$post_id       = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+			$field_id      = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
 
 			check_admin_referer( "rwmb-delete-file_{$field_id}" );
@@ -46,40 +59,52 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
 			else
-				RW_Meta_Box::ajax_response( __( 'Cannot delete file. Something\'s wrong.', RWMB_TEXTDOMAIN ), 'error' );
+				RW_Meta_Box::ajax_response( __( "Error: Cannot delete file", RWMB_TEXTDOMAIN ), 'error' );
 		}
 
 		/**
 		 * Get field HTML
-		 * @param $html
-		 * @param $meta
-		 * @param $field
+		 *
+		 * @param string $html
+		 * @param mixed  $meta
+		 * @param array  $field
+		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) {
-
-			if ( !is_array( $meta ) )
+		static function html( $html, $meta, $field )
+		{
+			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$html = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
+			$i18n_msg      = _x( 'Uploaded files', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_del_file = _x( 'Delete this file', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_delete   = _x( 'Delete', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_title    = _x( 'Upload files', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_more     = _x( 'Add another file', 'file upload', RWMB_TEXTDOMAIN );
+
+			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
-			if ( !empty( $meta ) ) {
-				$html .= '<h4>' . __( 'Uploaded files', RWMB_TEXTDOMAIN ) . '</h4>';
+			if ( !empty( $meta ) ) 
+			{
+				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';
 
-				foreach ( $meta as $attachment_id ) {
-					$html .= "<li>" . wp_get_attachment_link( $attachment_id ) . " (<a class='rwmb-delete-file' href='#' rel='$attachment_id'>" . __( 'Delete', RWMB_TEXTDOMAIN ) . "</a>)</li>";
+				foreach ( $meta as $attachment_id ) 
+				{
+					$attachment = wp_get_attachment_link( $attachment_id );
+					$html .= "<li>{$attachment} (<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$attachment_id}'>{$i18n_delete}</a>)</li>";
 				}
 
 				$html .= '</ol>';
 			}
 
 			// Show form upload
-			$html .= "<h4>" . __( 'Upload new files', RWMB_TEXTDOMAIN ) . "</h4>
+			$html .= "
+			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
 				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>" . __( 'Add more file', RWMB_TEXTDOMAIN ) . "</a>
+				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
 			</div>";
 
 			return $html;
@@ -87,35 +112,41 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 
 		/**
 		 * Save file field
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
+		 *
+		 * @param mixed $new
+		 * @param mixed $old
+		 * @param int   $post_id
+		 * @param array $field
 		 */
-		static function save( $new, $old, $post_id, $field ) {
+		static function save( $new, $old, $post_id, $field ) 
+		{
 			$name = $field['id'];
-			if ( empty( $_FILES[$name] ) )
+			if ( empty( $_FILES[ $name ] ) )
 				return;
 
-			$files = self::fix_file_array( $_FILES[$name] );
+			$files	= self::fix_file_array( $_FILES[ $name ] );
 
-			foreach ( $files as $fileitem ) {
-				$file = wp_handle_upload( $fileitem, array( 'test_form' => false ) );
+			foreach ( $files as $file_item )
+			{
+				$file = wp_handle_upload( $file_item, array( 'test_form' => false ) );
 
-				if ( !isset( $file['file'] ) )
+				if ( ! isset( $file['file'] ) )
 					continue;
-				$filename = $file['file'];
+
+				$file_name = $file['file'];
 
 				$attachment = array(
 					'post_mime_type' => $file['type'],
-					'guid' => $file['url'],
-					'post_parent' => $post_id,
-					'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-					'post_content' => ''
+					'guid'           => $file['url'],
+					'post_parent'    => $post_id,
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+					'post_content'   => ''
 				);
-				$id = wp_insert_attachment( $attachment, $filename, $post_id );
-				if ( !is_wp_error( $id ) ) {
-					wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $filename ) );
+				$id = wp_insert_attachment( $attachment, $file_name, $post_id );
+
+				if ( ! is_wp_error( $id ) )
+				{
+					wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_name ) );
 
 					// Save file ID in meta field
 					add_post_meta( $post_id, $name, $id, false );
@@ -128,13 +159,18 @@ if ( !class_exists( 'RWMB_File_Field' ) ) {
 		 *	 $_FILES['field']['key']['index']
 		 * To the more standard and appropriate:
 		 *	 $_FILES['field']['index']['key']
-		 * @param $files
+		 *
+		 * @param array $files
+		 *
 		 * @return array
 		 */
-		static function fix_file_array( $files ) {
-			$output = array( );
-			foreach ( $files as $key => $list ) {
-				foreach ( $list as $index => $value ) {
+		static function fix_file_array( $files )
+		{
+			$output = array();
+			foreach ( $files as $key => $list )
+			{
+				foreach ( $list as $index => $value )
+				{
 					$output[$index][$key] = $value;
 				}
 			}
