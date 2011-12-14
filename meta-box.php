@@ -220,7 +220,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Display label and input in DIV and allow user-defined class append
 				$class  = 'rwmb-field';
-				$class .= add_cssclass( $field['class'], $class );
+				if ( $field['class'] )
+					$class .= add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
