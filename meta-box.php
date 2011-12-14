@@ -146,8 +146,6 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 			do_action( 'rwmb_before' );
 			do_action( "rwmb_before_{$this->meta_box['id']}" );
 
-            echo '<div class="form-table">'; // AGM!!! Change TABLE to DIV
-
 			foreach ( $this->fields as $field ) {
 				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
 
@@ -203,9 +201,8 @@ if ( !class_exists( 'RW_Meta_Box' ) ) {
 				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
 
                 // Display label and input in DIV and allow user-defined class append
-           		echo "<div class=\"rwmb-field" . ( isset( $field['class'] ) ? " {$field['class']}" : '') . "\">{$html}</div>"; // AGM!!! Change TABLE to DIV
+           		echo "<div class=\"rwmb-field" . ( isset( $field['class'] ) ? " {$field['class']}" : '') . "\">{$html}</div>";
 			}
-			echo '</div>'; // AGM!!! Change TABLE to DIV
 
 			/**
 			 * Allow users to add custom code after meta box content
