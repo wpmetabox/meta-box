@@ -113,7 +113,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * @link http://wordpress.stackexchange.com/a/33314 Translation Tutorial by the author
 		 * @return void
 		 */
-		static function load_textdomain() {
+		static function load_textdomain() 
+		{
 			// l10n translation files
 			$dir       = basename( RWMB_DIR );
 			$dir       = "{$dir}/lang";
