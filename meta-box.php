@@ -113,15 +113,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * @link http://wordpress.stackexchange.com/a/33314 Translation Tutorial by the author
 		 * @return void
 		 */
-		static function load_textdomain() {
-			// l10n translation files
+		static function load_textdomain() 
+		{
+			// l18n translation files
 			$dir       = basename( RWMB_DIR );
 			$dir       = "{$dir}/lang";
 			$domain    = RWMB_TEXTDOMAIN;
-			$l10n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
+			$l18n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
 			// in themes/plugins/mu-plugins directory
-			load_textdomain( $domain, $l10n_file );
+			load_textdomain( $domain, $l18n_file );
 		}
 
 		/**
@@ -219,7 +220,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Display label and input in DIV and allow user-defined class append
 				$class  = 'rwmb-field';
-				$class .= add_cssclass( $field['class'], $class );
+				if ( isset( $field['class'] ) )
+					$class .= add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
@@ -273,7 +275,9 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field ) 
 		{
-			$html = "<p class='description'>{$field['desc']}</p></div>";
+			$html  = ! empty( $field['desc'] ) ? "<p class='description'>{$field['desc']}</p>" : '';
+			// Closes the container
+			$html .= '</div>';
 
 			return $html;
 		}

@@ -1,8 +1,19 @@
 Meta Box
 =======================
-**Contributors:** rilwis, franz-josef-kaiser, Omnicia
+### Contributors ###
 
-**Donate link:** http://goo.gl/EWjsD
+[Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer,
+
+[Franz Josef Kaiser](http://unserkaiser.com),
+
+Omnicia
+
+### Donate link: ###
+
+[click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)
+
+Meta Info
+--------------------------------------
 
 **Tags:** meta-box, custom-fields, custom-field, meta, meta-boxes
 
@@ -56,7 +67,7 @@ Changelog
 * don't use Ajax on image upload as it's buggy and complicated. Revert to default upload
 
 ### 3.2.2 ###
-* fix WYSIWYG field for custom post type without 'editor' support. Thanks Jamie, Eugene and Selin Online. (http =//disq.us/2hzgsk)
+* fix WYSIWYG field for custom post type without 'editor' support. Thanks Jamie, Eugene and Selin Online. [link](http://disq.us/2hzgsk)
 * change some helper function to static as they're shared between objects
 
 ### 3.2.1 ###
@@ -67,15 +78,15 @@ Changelog
 * move js and css codes to separated files (rewrite js code for fields, too)
 * allow to add multiple images to image meta field with selection, modified from "Fast Insert Image" plugin
 * remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta=box.css' file. All fields now has the class 'rw=$type', and table cells have class 'rwmb=label' and 'rwmb=field'
-* allow to use file uploader for images as well, regarding http =//disq.us/1k2lwf
-* when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post. Regarding http =//disq.us/1nppyi
+* allow to use file uploader for images as well, regarding [link](http://disq.us/1k2lwf)
+* when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post. Regarding [link](http://disq.us/1nppyi)
 * change hook for adding meta box to 'add_meta_boxes', according Codex. Required WP 3.0+
 * fix image uploading when custom post type doesn't support "editor"
-* fix show many alerts when delete files, regarding http =//disq.us/1lolgb
+* fix show many alerts when delete files, regarding [link](http://disq.us/1lolgb)
 * fix js comma missing bug when implement multiple fields with same type
 * fix order of uploaded images, thank Onur
 * fix deleting new uploaded image
-* fix bug when save meta value = zero (0), regarding http =//disq.us/1tg008
+* fix bug when save meta value = zero (0), regarding [link](http://disq.us/1tg008)
 * some minor changes such as = add 'id' attribute to fields, show uploaded images as thumbnail, add script to header of post.php and post=new.php only
 
 ### 3.1 ###
@@ -83,22 +94,22 @@ Changelog
 * allow to reorder uploaded images (credit to Kai)
 * save attach ID instead of url (credit to Stewart Duffy)
 * escape fields value (credit to Stewart Duffy)
-* add 'style' attribute to fields, allow user quick style fields (like height, width, etc.) (credit to Anders Larsson http =//disq.us/1eg4kp)
+* add 'style' attribute to fields, allow user quick style fields (like height, width, etc.) (credit to Anders Larsson [link](http://disq.us/1eg4kp))
 * wrap ajax callbacks into the class
 * fix jquery UI conflict (for time picker, color picker, contextual help)
 * fix notice error for checking post type
 
 ### 3.0.1 ###
 * save uploaded images and files' urls in meta fields
-* fix date picker bug to not show saved value (http =//disq.us/1cg6mx)
-* fix check_admin_referer for non=supported post types (http =//goo.gl/B6cah)
+* fix date picker bug to not show saved value [link](http://disq.us/1cg6mx)
+* fix check_admin_referer for non=supported post types [link](http://goo.gl/B6cah)
 * refactor code for showing fields
 
 ### 3.0 ###
 * separate functions for checking, displaying and saving each type of field; allow developers easily extend the class
-* add 'checkbox_list' (credit to Jan Fabry http =//goo.gl/9sDAx), 'color', 'date', 'time' types. The 'taxonomy' type is added as an example of extending class (credit to Manny Fresh http =//goo.gl/goGfm)
+* add 'checkbox_list' (credit to Jan Fabry [link](http://goo.gl/9sDAx)), 'color', 'date', 'time' types. The 'taxonomy' type is added as an example of extending class (credit to Manny Fresh [link](http://goo.gl/goGfm))
 * show uploaded files as well as allow to add/delete attached files
-* delete attached files when post is deleted (credit to Kai http =//goo.gl/9gfvd)
+* delete attached files when post is deleted (credit to Kai [link](http://goo.gl/9gfvd))
 * validation function MUST return the value instead of true, false
 * change the way of definition 'radio', 'select' field type to make it more simpler, allow multiple selection of select box
 * improved some codes, fix code to not show warnings when in debugging mode
@@ -107,7 +118,7 @@ Changelog
 * fix bug of not receiving value for select box
 
 ### 2.4 ###
-* (image upload features are credit to Kai http =//twitter.com/ungestaltbar)
+* (image upload features are credit to Kai [link](http://twitter.com/ungestaltbar))
 * change image upload using meta fields to using default WP gallery
 * add delete button for images, using ajax
 * allow to upload multiple images
@@ -117,7 +128,7 @@ Changelog
 * add wysiwyg editor type, improve check for upload fields, change context and priority attributes to optional
 
 ### 2.2 ###
-* add enctype to post form (fix upload bug), thanks to http =//goo.gl/PWWNf
+* add enctype to post form (fix upload bug), thanks to [link](http://goo.gl/PWWNf)
 
 ### 2.1 ###
 * add file upload, image upload support
