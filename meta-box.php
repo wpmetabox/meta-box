@@ -546,7 +546,7 @@ function rw_debug( $input, $print_or_export = 'print' )
 function rw_debug_print()
 {
 	global $rw_debug;
-	if ( ! $rw_debug )
+	if ( ! $rw_debug OR ( is_user_logged_in() AND is_user_admin() ) )
 		return;
 
 	$html  = '<h3>RW_Meta_Box Debug:</h3><pre>';
