@@ -521,3 +521,42 @@ HTML;
 		}
 	}
 }
+
+
+/**
+ * Adds [whatever] to the global debug array
+ * 
+ * @param unknown_type | $input
+ * @param string | $print_or_export
+ * @return array | $html
+ */
+function rw_debug( $input, $print_or_export = 'print' )
+{
+	global $rw_debug;
+
+	$html = 'print' === $print_or_export ? print_r( $input, true ) : var_export( $input, true ); 
+
+	return $rw_debug[] = $html;
+}
+/**
+ * Prints or exports the content of the global debug array at the 'shutdown' hook
+ * 
+ * @return string | $html
+ */
+function rw_debug_print()
+{
+	global $rw_debug;
+	if ( ! $rw_debug )
+		return;
+
+	$html  = '<h3>RW_Meta_Box Debug:</h3><pre>';
+	foreach ( $rw_debug as $debug )
+	{
+		$html .= "{$debug}<hr />";
+	}
+	$html .= '</pre>';
+
+	print $html;
+	exit;
+}
+add_action( 'shutdown', 'rw_debug_print', 999 );
