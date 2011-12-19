@@ -4,17 +4,6 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 {
 	class RWMB_Checkbox_Field 
 	{
-		/**
-		 * Additional actions for checkbox field
-		 *
-		 * @return void
-		 */
-		static function add_actions()
-		{
-			// Filter: Change wrapper HTML
-			// Use priority = 1 to allow other scripts change this value
-			add_filter( "rwmb_checkbox_end_html", array( __CLASS__, 'end_html' ), 1, 3 );
-		}
 
 		/**
 		 * Get field end HTML
