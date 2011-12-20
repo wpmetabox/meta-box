@@ -8,6 +8,16 @@ Meta Box
 
 Omnicia
 
+ruanmer
+
+PerWiklander
+
+erodesign
+
+funkedgeek
+
+[See full list of angels!](https://github.com/rilwis/meta-box/contributors)
+
 ### Donate link: ###
 
 [click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)

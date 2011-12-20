@@ -1,5 +1,5 @@
 === Meta Box ===
-Contributors: rilwis, franz-josef-kaiser, Omnicia
+Contributors: rilwis, franz-josef-kaiser, Omnicia, erodesign, funkedgeek, PerWiklander, ruanmer
 Donate link: http://goo.gl/EWjsD
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
