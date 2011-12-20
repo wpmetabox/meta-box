@@ -20,18 +20,18 @@ jQuery( document ).ready( function($)
 		$( label ).append( ': <span id="' + id + '-label"></span>' );
 		update	= $( '#' + id + '-label' );
 
-		if ( 'undefined' === $( input ).val() || null === typeof $( input ).val() )
+		if ( ! $( input ).val() || 'undefined' === $( input ).val() || null === typeof $( input ).val() )
 		{
 			$( input ).val( $( el ).slider( "values", 0 ) );
-			$( update ).val( "0" );
+			$( update ).text( "0" );
 		}
 		else
 		{
-			value = $( input ).val();console.log( value );
+			value = $( input ).val();
 			$( update ).text( value );
-			if ( 0 < format.length )
-				$( update ).append( ' ' + format );
 		}
+		if ( 0 < format.length )
+			$( update ).append( ' ' + format );
 
 		el.slider(
 		{
@@ -42,6 +42,5 @@ jQuery( document ).ready( function($)
 				$( update ).text( ui.value + ' ' + format );
 			}
 		} );
-		//console.log( $( label + ' span' ) );
 	});
 } );
