@@ -29,7 +29,7 @@ Meta Info
 
 **Requires at least:** 3.0
 
-**Tested up to:** 3.3 beta 3
+**Tested up to:** 3.3
 
 **Stable tag:** trunk
 
