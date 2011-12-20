@@ -3,7 +3,7 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, erodesign, funkedgeek, PerWik
 Donate link: http://goo.gl/EWjsD
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
-Tested up to: 3.3 beta 3
+Tested up to: 3.3
 Stable tag: trunk
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
@@ -39,6 +39,10 @@ To change meta box definition, please see comments in `demo.php`.
 == Screenshots ==
 
 == Changelog ==
+
+= 4.0.2 =
+* Reformat code to make more readable
+* Fix bugs of checkbox field and date field
 
 = 4.0.1 =
 * Change format_response() to ajax_response() and use WP_Ajax_Response class to control the ajax response
