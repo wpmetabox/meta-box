@@ -63,6 +63,10 @@ To change meta box definition, please see comments in `demo.php`.
 Changelog
 --------------------------------------
 
+### 4.0.2 ###
+* Reformat code to make more readable
+* Fix bugs of checkbox field and date field
+
 ### 4.0.1 ###
 * Change `format_response()` to `ajax_response()` and use WP_Ajax_Response class to control the ajax response
 * Use `wp_editor()` built-in with WP 3.3 (with fallback)
