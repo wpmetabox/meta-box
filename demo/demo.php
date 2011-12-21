@@ -18,6 +18,11 @@
  */
 if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 	class RWMB_Taxonomy_Field {
+		
+		static function admin_print_styles( ) {
+			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', RWMB_VER );
+			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+		}
 
 		/**
 		 * Add default value for 'taxonomy' field
@@ -39,8 +44,12 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 				$field['options']['type'] = 'checkbox_list';
 
 			// If field is shown as checkbox list, add multiple value
-			if ( 'checkbox_list' == $field['options']['type'] )
+			if ( 'checkbox_list' == $field['options']['type'] ||  'checkbox_tree' == $field['options']['type'])
 				$field['multiple'] = true;
+				
+			if('checkbox_tree' == $field['options']['type'] && !isset( $field['options']['args']['parent'] ) ) {
+				$field['options']['args']['parent'] = 0;
+			}
 
 			return $field;
 		}
@@ -67,6 +76,9 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 				foreach ( $terms as $term ) {
 					$html .= "<input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . " /> {$term->name}<br/>";
 				}
+			} //Checkbox Tree
+			elseif ( 'checkbox_tree' == $options['type'] ) {
+				$html .= self::walk_checkbox_tree($meta, $field, true);
 			}
 			// Select
 			else {
@@ -77,6 +89,24 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 				$html .= "</select>";
 			}
 
+			return $html;
+		}
+		
+		static function walk_checkbox_tree($meta, $field, $active = false) {
+			$options = $field['options'];
+			$terms = get_terms( $options['taxonomy'], $options['args'] );
+			$count = count($terms);
+			$html = '';
+			$hidden = (!$active ? 'hidden' : '');
+			if ( $count > 0 ){
+				$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
+				foreach ( $terms as $term ) {
+					$html .= "<li> <input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . disabled($active,false,false) . " /> {$term->name}";
+					$field['options']['args']['parent'] = $term->term_id;
+					$html .= self::walk_checkbox_tree($meta, $field, (in_array( $term->term_id, $meta))) . "</li>";					 
+				}
+				$html .= "</ul>";
+			}			
 			return $html;
 		}
 
