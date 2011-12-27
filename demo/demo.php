@@ -16,20 +16,30 @@
  *
  * Note: The class name must be in format "RWMB_{$field_type}_Field"
  */
-if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
-	class RWMB_Taxonomy_Field {
-		
-		static function admin_print_styles( ) {
+if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
+{
+	class RWMB_Taxonomy_Field
+	{
+		/**
+		 * Enqueue scripts and styles
+		 *
+		 * @return void
+		 */
+		static function admin_print_styles()
+		{
 			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', RWMB_VER );
 			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
 		 * Add default value for 'taxonomy' field
+		 *
 		 * @param $field
+		 *
 		 * @return array
 		 */
-		static function normalize_field( $field ) {
+		static function normalize_field( $field )
+		{
 			// Default query arguments for get_terms() function
 			$default_args = array(
 				'hide_empty' => false
@@ -46,22 +56,24 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 			// If field is shown as checkbox list, add multiple value
 			if ( 'checkbox_list' == $field['options']['type'] ||  'checkbox_tree' == $field['options']['type'])
 				$field['multiple'] = true;
-				
-			if('checkbox_tree' == $field['options']['type'] && !isset( $field['options']['args']['parent'] ) ) {
+
+			if('checkbox_tree' == $field['options']['type'] && !isset( $field['options']['args']['parent'] ) )
 				$field['options']['args']['parent'] = 0;
-			}
 
 			return $field;
 		}
 
 		/**
 		 * Get field HTML
+		 *
 		 * @param $html
 		 * @param $field
 		 * @param $meta
+		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) {
+		static function html( $html, $meta, $field )
+		{
 			global $post;
 
 			$options = $field['options'];
@@ -72,18 +84,24 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 
 			$html = '';
 			// Checkbox_list
-			if ( 'checkbox_list' == $options['type'] ) {
-				foreach ( $terms as $term ) {
+			if ( 'checkbox_list' == $options['type'] )
+			{
+				foreach ( $terms as $term )
+				{
 					$html .= "<input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . " /> {$term->name}<br/>";
 				}
-			} //Checkbox Tree
-			elseif ( 'checkbox_tree' == $options['type'] ) {
+			}
+			//Checkbox Tree
+			elseif ( 'checkbox_tree' == $options['type'] )
+			{
 				$html .= self::walk_checkbox_tree($meta, $field, true);
 			}
 			// Select
-			else {
+			else
+			{
 				$html .= "<select name='{$field['id']}" . ( $field['multiple'] ? "[]' multiple='multiple' style='height: auto;'" : "'" ) . ">";
-				foreach ( $terms as $term ) {
+				foreach ( $terms as $term )
+				{
 					$html .= "<option value='{$term->term_id}'" . selected( in_array( $term->term_id, $meta ), true, false ) . ">{$term->name}</option>";
 				}
 				$html .= "</select>";
@@ -91,22 +109,34 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 
 			return $html;
 		}
-		
-		static function walk_checkbox_tree($meta, $field, $active = false) {
+
+		/**
+		 * Walker for displaying checkboxes in treeformat
+		 *
+		 * @param $meta
+		 * @param $field
+		 * @param bool $active
+		 *
+		 * @return string
+		 */
+		static function walk_checkbox_tree( $meta, $field, $active = false )
+		{
 			$options = $field['options'];
 			$terms = get_terms( $options['taxonomy'], $options['args'] );
 			$count = count($terms);
 			$html = '';
-			$hidden = (!$active ? 'hidden' : '');
-			if ( $count > 0 ){
+			$hidden = ( !$active ? 'hidden' : '' );
+			if ( $count > 0 )
+			{
 				$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
-				foreach ( $terms as $term ) {
+				foreach ( $terms as $term )
+				{
 					$html .= "<li> <input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . disabled($active,false,false) . " /> {$term->name}";
 					$field['options']['args']['parent'] = $term->term_id;
-					$html .= self::walk_checkbox_tree($meta, $field, (in_array( $term->term_id, $meta))) . "</li>";					 
+					$html .= self::walk_checkbox_tree($meta, $field, (in_array( $term->term_id, $meta))) . "</li>";
 				}
 				$html .= "</ul>";
-			}			
+			}
 			return $html;
 		}
 
@@ -117,7 +147,8 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
 		 * @param $old
 		 * @param $new
 		 */
-		static function save( $new, $old, $post_id, $field ) {
+		static function save( $new, $old, $post_id, $field )
+		{
 			wp_set_post_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
 	}
@@ -132,7 +163,9 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) ) {
  */
 $prefix = '_';
 
-$meta_boxes = array( );
+global $meta_boxes;
+
+$meta_boxes = array();
 
 // First meta box
 $meta_boxes[] = array(
@@ -201,7 +234,7 @@ $meta_boxes[] = array(
 			'options' => array(
 				'taxonomy' => 'category',   // Taxonomy name
 				'type' => 'checkbox_list',  // How to show taxonomy: 'checkbox_list' (default) or 'select'. Optional
-				'args' => array( ),         // Additional arguments for get_terms() function
+				'args' => array(),         // Additional arguments for get_terms() function
 			),
 			'desc' => 'Choose One Category'
 		)
@@ -268,12 +301,25 @@ $meta_boxes[] = array(
 	)
 );
 
+// Hook to 'admin_init' to make sure the meta box class is loaded before (in case using the meta box class in another plugin)
+// This is also helpful for some conditionals like checking page template, categories, etc.
+add_action( 'admin_init', 'your_prefix_register_meta_boxes' );
+
 /**
  * Register meta boxes
- * Make sure there's no errors when the plugin is deactivated or during upgrade
+ *
+ * @return void
  */
-if ( class_exists( 'RW_Meta_Box' ) ) {
-	foreach ( $meta_boxes as $meta_box ) {
-		new RW_Meta_Box( $meta_box );
+function your_prefix_register_meta_boxes()
+{
+	global $meta_boxes;
+
+	// Make sure there's no errors when the plugin is deactivated or during upgrade
+	if ( class_exists( 'RW_Meta_Box' ) )
+	{
+		foreach ( $meta_boxes as $meta_box )
+		{
+			new RW_Meta_Box( $meta_box );
+		}
 	}
 }

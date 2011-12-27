@@ -1,3 +1,6 @@
+/* =Styles for 'normal' meta boxes
+-------------------------------------------------------------- */
+
 .rwmb-field {
 	margin: 10px 0;
 }
@@ -6,7 +9,7 @@
 	vertical-align: top;
 }
 .rwmb-label {
-	width: 24.5%;
+	width: 24%;
 }
 .rwmb-input {
 	width: 75%;
@@ -16,4 +19,11 @@
 }
 .rwmb-textarea {
 	resize: vertical;
+}
+
+/* =Styles for 'side' meta boxes
+-------------------------------------------------------------- */
+
+#side-sortables .rwmb-label, #side-sortables .rwmb-input {
+	width: 100%;
 }

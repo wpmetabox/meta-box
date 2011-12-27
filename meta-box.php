@@ -9,33 +9,33 @@ Author URI: http://www.deluxeblogtips.com
 */
 
 // Meta Box Class
-if ( ! class_exists( 'RW_Meta_Box' ) ) 
+if ( ! class_exists( 'RW_Meta_Box' ) )
 {
 	// Script version, used to add version for scripts and styles
-	define( 'RWMB_VER', '4.0' );
+	define( 'RWMB_VER', '4.0.2' );
 
 	// Define plugin URLs, for fast enqueuing scripts and styles
 	if ( ! defined( 'RWMB_URL' ) )
 		define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
-	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL.'js' ) );
-	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL.'css' ) );
+	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
+	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
 	// Plugin paths, for including files
 	if ( ! defined( 'RWMB_DIR' ) )
 		define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
-	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR.'inc' ) );
-	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR.'fields' ) );
+	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
+	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
 
 	// Plugin textdomain
 	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
 
 	// Include field classes
-	foreach ( glob( RWMB_FIELDS_DIR.'*.php' ) as $file )
+	foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )
 	{
 		require_once $file;
 	}
 
-	class RW_Meta_Box 
+	class RW_Meta_Box
 	{
 		/**
 		 * Meta box information
@@ -61,7 +61,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return \RW_Meta_Box
 		 */
-		function __construct( $meta_box ) 
+		function __construct( $meta_box )
 		{
 			// Run script only in admin area
 			if ( ! is_admin() )
@@ -113,7 +113,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * @link http://wordpress.stackexchange.com/a/33314 Translation Tutorial by the author
 		 * @return void
 		 */
-		static function load_textdomain() 
+		static function load_textdomain()
 		{
 			// l18n translation files
 			$dir       = basename( RWMB_DIR );
@@ -121,7 +121,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$domain    = RWMB_TEXTDOMAIN;
 			$l18n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
 
-			// in themes/plugins/mu-plugins directory
+			// In themes/plugins/mu-plugins directory
 			load_textdomain( $domain, $l18n_file );
 		}
 
@@ -130,9 +130,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles() 
+		static function admin_print_styles()
 		{
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL.'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
 		}
 
 		/**************************************************
@@ -157,7 +157,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		function show() 
+		function show()
 		{
 			global $post;
 
@@ -171,7 +171,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			do_action( 'rwmb_before' );
 			do_action( "rwmb_before_{$this->meta_box['id']}" );
 
-			foreach ( $this->fields as $field ) 
+			foreach ( $this->fields as $field )
 			{
 				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
 
@@ -219,7 +219,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
 
 				// Display label and input in DIV and allow user-defined class append
-				$class  = 'rwmb-field';
+				$class = 'rwmb-field';
 				if ( isset( $field['class'] ) )
 					$class .= add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
@@ -237,7 +237,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		static function dbx_post_sidebar() 
+		static function dbx_post_sidebar()
 		{
 			global $post;
 
@@ -253,11 +253,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return string
 		 */
-		static function begin_html( $html, $meta, $field ) 
+		static function begin_html( $html, $meta, $field )
 		{
 			$html = <<<HTML
 <div class="rwmb-label">
-	<label for="{$field['id']}">{$field['name']}</label><br />
+	<label for="{$field['id']}">{$field['name']}</label>
 </div>
 <div class="rwmb-input">
 HTML;
@@ -273,7 +273,7 @@ HTML;
 		 *
 		 * @return string
 		 */
-		static function end_html( $html, $meta, $field ) 
+		static function end_html( $html, $meta, $field )
 		{
 			$html  = ! empty( $field['desc'] ) ? "<p class='description'>{$field['desc']}</p>" : '';
 			// Closes the container
@@ -293,7 +293,7 @@ HTML;
 		 *
 		 * @return int|void
 		 */
-		function save_post( $post_id ) 
+		function save_post( $post_id )
 		{
 			global $post_type;
 			$post_type_object = get_post_type_object( $post_type );
@@ -304,10 +304,10 @@ HTML;
 			// - current post type is supported
 			// - user has proper capability
 			if (
-				( defined( 'DOING_AUTOSAVE' ) AND DOING_AUTOSAVE )
-				OR ( ! isset( $_POST['post_ID'] ) OR $post_id != $_POST['post_ID'] )
-				OR ( ! in_array( $post_type, $this->meta_box['pages'] ) )
-				OR ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+				( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+				|| ( ! isset( $_POST['post_ID'] ) || $post_id != $_POST['post_ID'] )
+				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
+				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 				)
 			{
 				return $post_id;
@@ -316,7 +316,7 @@ HTML;
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
-			foreach ( $this->fields as $field ) 
+			foreach ( $this->fields as $field )
 			{
 				$name = $field['id'];
 				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
@@ -346,12 +346,12 @@ HTML;
 		 *
 		 * @return void
 		 */
-		static function save( $new, $old, $post_id, $field ) 
+		static function save( $new, $old, $post_id, $field )
 		{
 			$name = $field['id'];
 
 			delete_post_meta( $post_id, $name );
-			if ( '' === $new OR array() === $new )
+			if ( '' === $new || array() === $new )
 				return;
 
 			if ( $field['multiple'] )
@@ -378,7 +378,7 @@ HTML;
 		 *
 		 * @return array $meta_box Normalized meta box
 		 */
-		static function normalize( $meta_box ) 
+		static function normalize( $meta_box )
 		{
 			// Set default values for meta box
 			$meta_box = wp_parse_args( $meta_box, array(
@@ -388,7 +388,7 @@ HTML;
 			) );
 
 			// Set default values for fields
-			foreach ( $meta_box['fields'] as &$field ) 
+			foreach ( $meta_box['fields'] as &$field )
 			{
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
 				$std      = $multiple ? array() : '';
@@ -415,7 +415,7 @@ HTML;
 		 *
 		 * @return bool|string Field class name OR false on failure
 		 */
-		static function get_class_name( $type ) 
+		static function get_class_name( $type )
 		{
 			$type	= ucwords( $type );
 			$class	= "RWMB_{$type}_Field";
@@ -435,7 +435,7 @@ HTML;
 		 *
 		 * @return mixed $value
 		 */
-		static function apply_field_class_filters( $field, $method_name, $value ) 
+		static function apply_field_class_filters( $field, $method_name, $value )
 		{
 			$args	= array_slice( func_get_args(), 2 );
 			$args[]	= $field;
@@ -444,13 +444,9 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
-			{
 				$value = call_user_func_array( array( $class, $method_name ), $args );
-			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
-			{
 				$value = call_user_func_array( array( __CLASS__, $method_name ), $args );
-			}
 
 			return $value;
 		}
@@ -463,7 +459,7 @@ HTML;
 		 *
 		 * @return mixed
 		 */
-		static function do_field_class_actions( $field, $method_name ) 
+		static function do_field_class_actions( $field, $method_name )
 		{
 			$args   = array_slice( func_get_args(), 2 );
 			$args[] = $field;
@@ -472,13 +468,9 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
-			{
 				call_user_func_array( array( $class, $method_name ), $args );
-			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
-			{
 				call_user_func_array( array( __CLASS__, $method_name ), $args );
-			}
 		}
 
 		/**
@@ -506,12 +498,12 @@ HTML;
 		 *
 		 * @return bool
 		 */
-		static function has_been_saved( $post_id, $fields ) 
+		static function has_been_saved( $post_id, $fields )
 		{
 			$saved = false;
-			foreach ( $fields as $field ) 
+			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) ) 
+				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) )
 				{
 					$saved = true;
 					break;
@@ -522,41 +514,42 @@ HTML;
 	}
 }
 
-
 /**
  * Adds [whatever] to the global debug array
- * 
- * @param unknown_type | $input
- * @param string | $print_or_export
- * @return array | $html
+ *
+ * @param mixed  $input
+ * @param string $print_or_export
+ *
+ * @return array
  */
-function rw_debug( $input, $print_or_export = 'print' )
+function rwmb_debug( $input, $print_or_export = 'print' )
 {
-	global $rw_debug;
+	global $rwmb_debug;
 
-	$html = 'print' === $print_or_export ? print_r( $input, true ) : var_export( $input, true ); 
+	$html = 'print' === $print_or_export ? print_r( $input, true ) : var_export( $input, true );
 
-	return $rw_debug[] = $html;
+	return $rwmb_debug[] = $html;
 }
+
 /**
  * Prints or exports the content of the global debug array at the 'shutdown' hook
- * 
- * @return string | $html
+ *
+ * @return void
  */
-function rw_debug_print()
+function rwmb_debug_print()
 {
-	global $rw_debug;
-	if ( ! $rw_debug OR ( is_user_logged_in() AND is_user_admin() ) )
+	global $rwmb_debug;
+	if ( ! $rwmb_debug || ( is_user_logged_in() && is_user_admin() ) )
 		return;
 
 	$html  = '<h3>RW_Meta_Box Debug:</h3><pre>';
-	foreach ( $rw_debug as $debug )
+	foreach ( $rwmb_debug as $debug )
 	{
 		$html .= "{$debug}<hr />";
 	}
 	$html .= '</pre>';
 
-	print $html;
-	exit;
+	die( $html );
 }
-add_action( 'shutdown', 'rw_debug_print', 999 );
+
+add_action( 'shutdown', 'rwmb_debug_print', 999 );
