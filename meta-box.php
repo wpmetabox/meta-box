@@ -17,20 +17,20 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 	// Define plugin URLs, for fast enqueuing scripts and styles
 	if ( ! defined( 'RWMB_URL' ) )
 		define( 'RWMB_URL', plugin_dir_url( __FILE__ ) );
-	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
-	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
+	define( 'RWMB_JS_URL', trailingslashit( RWMB_URL.'js' ) );
+	define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL.'css' ) );
 
 	// Plugin paths, for including files
 	if ( ! defined( 'RWMB_DIR' ) )
 		define( 'RWMB_DIR', plugin_dir_path( __FILE__ ) );
-	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
-	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
+	define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR.'inc' ) );
+	define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR.'fields' ) );
 
 	// Plugin textdomain
 	define( 'RWMB_TEXTDOMAIN', 'rwmb' );
 
 	// Include field classes
-	foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )
+	foreach ( glob( RWMB_FIELDS_DIR.'*.php' ) as $file )
 	{
 		require_once $file;
 	}
@@ -132,7 +132,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function admin_print_styles() 
 		{
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL.'style.css', RWMB_VER );
 		}
 
 		/**************************************************
@@ -176,7 +176,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
 
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-				$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+				$meta = ( !$saved && '' === $meta OR array() === $meta ) ? $field['std'] : $meta;
 
 				// Escape attributes for non-wysiwyg fields
 				if ( $field['type'] != 'wysiwyg' )
@@ -304,11 +304,11 @@ HTML;
 			// - current post type is supported
 			// - user has proper capability
 			if (
-				( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-				|| ( ! isset( $_POST['post_ID'] ) OR $post_id != $_POST['post_ID'] )
-				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
-				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
-			)
+				( defined( 'DOING_AUTOSAVE' ) AND DOING_AUTOSAVE )
+				OR ( ! isset( $_POST['post_ID'] ) OR $post_id != $_POST['post_ID'] )
+				OR ( ! in_array( $post_type, $this->meta_box['pages'] ) )
+				OR ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+				)
 			{
 				return $post_id;
 			}
@@ -351,7 +351,7 @@ HTML;
 			$name = $field['id'];
 
 			delete_post_meta( $post_id, $name );
-			if ( '' === $new || array() === $new )
+			if ( '' === $new OR array() === $new )
 				return;
 
 			if ( $field['multiple'] )
@@ -444,9 +444,13 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
+			{
 				$value = call_user_func_array( array( $class, $method_name ), $args );
+			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
+			{
 				$value = call_user_func_array( array( __CLASS__, $method_name ), $args );
+			}
 
 			return $value;
 		}
@@ -468,9 +472,13 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
+			{
 				call_user_func_array( array( $class, $method_name ), $args );
+			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
+			{
 				call_user_func_array( array( __CLASS__, $method_name ), $args );
+			}
 		}
 
 		/**
@@ -513,3 +521,42 @@ HTML;
 		}
 	}
 }
+
+
+/**
+ * Adds [whatever] to the global debug array
+ * 
+ * @param unknown_type | $input
+ * @param string | $print_or_export
+ * @return array | $html
+ */
+function rw_debug( $input, $print_or_export = 'print' )
+{
+	global $rw_debug;
+
+	$html = 'print' === $print_or_export ? print_r( $input, true ) : var_export( $input, true ); 
+
+	return $rw_debug[] = $html;
+}
+/**
+ * Prints or exports the content of the global debug array at the 'shutdown' hook
+ * 
+ * @return string | $html
+ */
+function rw_debug_print()
+{
+	global $rw_debug;
+	if ( ! $rw_debug OR ( is_user_logged_in() AND is_user_admin() ) )
+		return;
+
+	$html  = '<h3>RW_Meta_Box Debug:</h3><pre>';
+	foreach ( $rw_debug as $debug )
+	{
+		$html .= "{$debug}<hr />";
+	}
+	$html .= '</pre>';
+
+	print $html;
+	exit;
+}
+add_action( 'shutdown', 'rw_debug_print', 999 );
