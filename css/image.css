@@ -6,7 +6,7 @@
 	margin: 0 10px 10px 0;
 	float: left;
 	width: 150px;
-	height: 100px;
+	height: 150px;
 	text-align: center;
 	border: 3px solid #ccc;
 	cursor: move;
@@ -14,7 +14,7 @@
 }
 .rwmb-images img {
 	width: 150px;
-	height: 100px;
+	height: 150px;
 }
 .rwmb-images a {
 	position: absolute;
@@ -25,3 +25,8 @@
 	font-weight: bold;
 	padding: 5px;
 }
+/*.rwmb-image-loading {
+	display: inline-block;
+	max-width: 32px;
+	max-height: 32px;
+}*/
