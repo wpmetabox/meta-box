@@ -1,0 +1,19 @@
+/* CSS Document */
+div.rwmb-drag-drop {
+	border: 4px dashed #DDD;
+	height: 200px;
+	border-image: initial;	
+}
+
+div.rwmb-drag-drop-inside {
+	margin: 70px auto 0;
+	width: 200px;
+}
+
+div.rwmb-drag-drop-inside p {
+	text-align: center;
+	display: block;
+	font-size: 20px;
+	margin: 5px 0;
+	color: #AAA;	
+}
