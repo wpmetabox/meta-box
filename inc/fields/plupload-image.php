@@ -186,7 +186,11 @@ HTML;
 
 				$meta	= implode( ',', $meta );
 				// Need to suppress errors if there are no images to far
-				if ( empty( $meta ) )
+				if ( 
+					empty( $meta ) 
+					AND ( defined('WP_DEBUG') AND WP_DEBUG )
+					AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY ) 
+				)
 					$wpdb->suppress_errors = true;
 
 				$images	= $wpdb->get_col( "
@@ -197,6 +201,13 @@ HTML;
 					ORDER BY menu_order 
 					ASC
 				" );
+
+				// Move debug back in to not interrupt other debug stuff from other plugins
+				if ( 
+					defined('WP_DEBUG') 
+					AND WP_DEBUG
+				)
+					$wpdb->suppress_errors = false;
 
 				foreach ( $images as $image ) 
 				{
