@@ -35,7 +35,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			// you can use WP's wp_handle_upload() function:
 			$file = $_FILES['async-upload'];
-			$file_attr = wp_handle_upload( $file, array( 'test_form' => false ) );
+			$file_attr = wp_handle_upload( $file, array('test_form'=>true, 'action' => 'plupload_image_upload') );
 			$attachment = array(
 				'post_mime_type'	=> $file_attr['type'],
 				'post_title'		=> preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
@@ -59,9 +59,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					'what'			=>'rwmb_image_response',
 					'data'			=> $id,
 					'supplemental'	=> array(
-						'att_id'		=> $id,
-						'att_thumbnail'	=>  $src[0],
-						'att_edit_link'	=> get_edit_post_link($id)
+						'thumbnail'	=>  $src[0],
+						'edit_link'	=> get_edit_post_link($id)
 					)
 				) );
 				$response->send();
@@ -71,7 +70,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		}
 
 		/**
-		 * Add default value for 'taxonomy' field
+		 * Add default value for 'image' field
 		 * 
 		 * @param $field
 		 * 
@@ -115,6 +114,12 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					'post_id'		=> $post->ID
 				)
 
+			));
+			
+			//Links to loading and error images to allow preloading
+			wp_localize_script('rwmb-plupload-image','rwmb_plupload_status_icons', array(
+				'error' =>  RWMB_URL . "img/image-error.gif",
+				'loading' =>  RWMB_URL . "img/image-loading.gif"
 			));
 		}
 
@@ -163,19 +168,17 @@ HTML;
 			$i18n_msg		= _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_del_file	= _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_delete	= _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_edit		= _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_title		= _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_more		= _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
 			// Filter to change the drag & drop box background string
 			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', RWMB_TEXTDOMAIN ) );
 			$i18n_select	= _x( 'Select Files', RWMB_TEXTDOMAIN );
-			$loading_img	= RWMB_URL."img/image-loading.gif" ;
-			$error_img		= RWMB_URL."img/image-error.gif";
 			$img_prefix		= "{$field['id']}";
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
-			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
-			$html .= "<input type='hidden' class='rwmb-image-prefix' value='{$img_prefix}' />";
+			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
 
 			// Re-arrange images with 'menu_order', thanks Onur
 			if ( ! empty( $meta ) ) 
@@ -217,16 +220,15 @@ HTML;
 					$html .= "
 					<li id='item_{$image}'>
 						<img src='{$src}' />
-						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
+						<div class='rwmb-image-bar'><a href = '{$link}'>{$i18n_edit}</a> | <a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a></div>
 					</li>";
 				}
 
-				// @todo What about the id=""?
+
 				$html .= "
 				<li id='item_' class='hidden rwmb-image-template'>
-					<img id='' class='rwmb-image-loading' src='{$loading_img}' />
-					<img id='' class='rwmb-image-error hidden' src='{$error_img}' />
-					<a title='{$i18n_del_file}' class='rwmb-delete-file hidden' href='#' rel=''>{$i18n_delete}</a>
+					<img id='' class='rwmb-image' src='' />
+					<div class='rwmb-image-bar'><a href = '{$link}'>{$i18n_edit}</a> | <a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a></div>
 				</li>";
 
 				$html .= '</ul>';
