@@ -102,7 +102,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 				foreach ( $images as $image ) 
 				{
-					$src = wp_get_attachment_image_src( $image );
+					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
 					$src = $src[0];
 
 					$html .= "<li id='item_{$image}'>
