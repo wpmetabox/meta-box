@@ -1,5 +1,18 @@
 jQuery( document ).ready( function($)
 {
+	//Load loading and error images
+	for(x in rwmb_plupload_status_icons)
+	{
+		$('<img />')
+			.load(
+				function(){
+					$('body').append( $(this) );
+				}
+			)
+			.hide()
+			.attr('src', rwmb_plupload_status_icons[x]);	
+	};
+	
 	// Object containing all the plupload uploaders
 	var 
 		rwmb_image_uploaders	= {},
@@ -58,23 +71,22 @@ jQuery( document ).ready( function($)
 							.clone( true )
 							.removeClass( 'hidden' )
 							.removeClass( 'rwmb-image-template' )
-							.find( 'img.rwmb-image-loading' )
-							.attr( 'id',file.id )
+							.find('img.rwmb-image')
+							.attr('id',file.id)
+							.attr('src', rwmb_plupload_status_icons['loading'])
 							.end()
-							.insertBefore( template );	
+							.insertBefore(template);	
 						if ( file.size >= max )
 						{
 							$( 'img#' + file.id )
-								.addClass( 'hidden' )
-								.siblings( 'img.rwmb-image-error' )
-								.removeClass( 'hidden' )
-								.closest( 'li' )
-								.delay( 1600 )
+								.attr('src', rwmb_plupload_status_icons['error'])
+								.closest('li')
+								.delay(1600)
 								.fadeOut(
 									'slow', 
 									function() 
 									{
-										$( this ).remove();
+										$(this).remove();
 									}
 								);
 						}
@@ -89,7 +101,24 @@ jQuery( document ).ready( function($)
 			'Error', 
 			function( up, e ) 
 			{
-				up.removeFile( e.file );
+				template =  $( "#" + up.settings.container ).find( 'li.rwmb-image-template' );
+				template
+					.clone(true)
+					.removeClass('hidden')
+					.removeClass('rwmb-image-template')
+					.find('img.rwmb-image')
+					.attr('src', rwmb_plupload_status_icons['error'])
+					.end()
+					.insertBefore(template)
+					.delay(1600)
+					.fadeOut(
+						'slow', 
+						function() 
+						{
+							$(this).remove();
+						}
+					);	
+				up.removeFile(e.file);
 			}
 		);
 
@@ -103,28 +132,30 @@ jQuery( document ).ready( function($)
 				{
 					res		= res.responses[0];
 					img_id	= res.data;
-					img_src	= res.supplemental.att_thumbnail;
-					$( 'img#' + file.id )
-						.attr( 'src', img_src )
-						.siblings( 'a.rwmb-delete-file' )
-						.removeClass( 'hidden' )
-						.attr( 'rel', img_id )
-						.closest( 'li' )
-						.attr( 'id', 'item_' + img_id );
+					img_src	= res.supplemental.thumbnail;
+					img_edit = res.supplemental.edit_link;
+					$('img#'+file.id)
+						.attr('src',img_src)
+						.siblings('div.rwmb-image-bar')
+						.removeClass('hidden')
+						.find('a.rwmb-edit-file')
+						.attr('href',img_edit)
+						.siblings('a.rwmb-delete-file')
+						.attr('rel',img_id)
+						.closest('li')
+						.attr('id','item_' + img_id);
 				}
 				else
 				{
-					$( 'img#' + file.id )
-						.addClass( 'hidden' )
-						.siblings( 'img.rwmb-image-error' )
-						.removeClass( 'hidden' )
-						.closest( 'li' )
-						.delay( 1600 )
+					$('img#'+file.id)
+						.attr('src', rwmb_plupload_status_icons[loading])
+						.closest('li')
+						.delay(1600)
 						.fadeOut(
 							'slow', 
 							function() 
 							{
-								$( this ).remove();
+								$(this).remove();
 							}
 						);
 				}

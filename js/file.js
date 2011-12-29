@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 	// Delete file via Ajax
 	$('.rwmb-uploaded').delegate('.rwmb-delete-file', 'click', function() {
 		var $this = $(this),
-			$parent = $this.parent(),
+			$parent = $this.closest('li'),
 			field_id = $this.parents('.rwmb-field').find('.field-id').val(),
 			data = {
 				action: 'rwmb_delete_file',
