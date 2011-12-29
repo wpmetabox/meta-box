@@ -14,7 +14,6 @@ jQuery( document ).ready( function($)
 		'mouseenter mouseleave', 
 		function() 
 		{
-			console.log( $( '.rwmb-uploaded' ).children().length );
 			if ( 1 < $( '.rwmb-uploaded' ).children().length )
 				$( '.rwmb-uploaded-title' ).removeClass( 'hidden' );
 		}
