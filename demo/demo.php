@@ -266,6 +266,12 @@ $meta_boxes[] = array(
 			'desc' => 'Screenshots of problems, warnings, etc.',
 			'id' => $prefix . 'screenshot',
 			'type' => 'image'                // Field type: image upload
+		),
+		array(
+			'name' => 'Screenshots (plupload)',
+			'desc' => 'Screenshots of problems, warnings, etc.',
+			'id' => $prefix . 'screenshot',
+			'type' => 'plupload_image'                // Field type: plupload image upload
 		)
 	)
 );
