@@ -17,7 +17,8 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		{
 			$name  = " name='{$field['id']}'";
 			$id    = " id='{$field['id']}'";
-			$html .= "<textarea class='rwmb-textarea large-text'{$name}{$id} cols='60' rows='10'>{$meta}</textarea>";
+			$style = " style='{$field['style']}'";
+			$html .= "<textarea class='rwmb-textarea large-text'{$name}{$id}{$style} cols='60' rows='10'>{$meta}</textarea>";
 
 			return $html;
 		}
