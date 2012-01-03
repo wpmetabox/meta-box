@@ -216,6 +216,7 @@ HTML;
 				{
 					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
 					$src = $src[0];
+					$link = get_edit_post_link( $image );
 
 					$html .= "
 					<li id='item_{$image}'>
@@ -228,7 +229,9 @@ HTML;
 				$html .= "
 				<li id='item_' class='hidden rwmb-image-template'>
 					<img id='' class='rwmb-image' src='' />
-					<div class='rwmb-image-bar'><a href = '{$link}'>{$i18n_edit}</a> | <a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a></div>
+					<a title='{$i18n_edit}' class'rwmb-edit-file' href = '{$link}'>{$i18n_edit}</a> | 
+					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
+				</div>
 				</li>";
 
 				$html .= '</ul>';
