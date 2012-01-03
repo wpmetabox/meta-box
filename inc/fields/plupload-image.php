@@ -221,7 +221,10 @@ HTML;
 					$html .= "
 					<li id='item_{$image}'>
 						<img src='{$src}' />
-						<div class='rwmb-image-bar'><a href = '{$link}'>{$i18n_edit}</a> | <a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a></div>
+						<div class='rwmb-image-bar'>
+							<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> | 
+							<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
+						</div>
 					</li>";
 				}
 
@@ -229,11 +232,11 @@ HTML;
 				$html .= "
 				<li id='item_' class='hidden rwmb-image-template'>
 					<img id='' class='rwmb-image' src='' />
-					<a title='{$i18n_edit}' class'rwmb-edit-file' href = '{$link}'>{$i18n_edit}</a> | 
-					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-				</div>
+					<div class='rwmb-image-bar hidden'>
+						<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> | 
+						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel=''>{$i18n_delete}</a>
+					</div>
 				</li>";
-
 				$html .= '</ul>';
 			}
 
