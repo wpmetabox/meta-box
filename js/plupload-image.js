@@ -23,12 +23,20 @@ jQuery( document ).ready( function($)
 	if ( 1 == $( '.rwmb-uploaded' ).children().length )
 		$( '.rwmb-uploaded-title' ).addClass( 'hidden' );
 	// Check on mouseenter & -leave if we got files and add the "Uploaded files" title
-	jQuery( '.rwmb-drag-drop' ).bind( 
+	$( '.rwmb-drag-drop' ).bind( 
 		'mouseenter mouseleave', 
 		function() 
 		{
 			if ( 1 < $( '.rwmb-uploaded' ).children().length )
 				$( '.rwmb-uploaded-title' ).removeClass( 'hidden' );
+		}
+	);
+	$( '.rwmb-delete-file' ).bind( 
+		'click',
+		function()
+		{
+			if ( 1 >= $( '.rwmb-uploaded' ).children().length )
+				$( '.rwmb-uploaded-title' ).addClass( 'hidden' );
 		}
 	);
 
