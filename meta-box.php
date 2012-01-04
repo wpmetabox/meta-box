@@ -341,7 +341,7 @@ HTML;
 		 *
 		 * @param mixed $new
 		 * @param mixed $old
-		 * @param int   $post_id
+		 * @param int $post_id
 		 * @param array $field
 		 *
 		 * @return void
