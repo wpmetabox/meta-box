@@ -218,10 +218,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$html = apply_filters( "rwmb_{$field['type']}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
 				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
 
-				// Display label and input in DIV and allow user-defined class append
+				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
 				if ( isset( $field['class'] ) )
-					$class .= add_cssclass( $field['class'], $class );
+					$class .= $this->add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
@@ -392,7 +392,7 @@ HTML;
 			{
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
 				$std      = $multiple ? array() : '';
-				$format   = 'date' == $field['type'] ? 'yy-mm-dd' : ( 'time' == $field['type'] ? 'hh:mm' : '' );
+				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
 
 				$field = wp_parse_args( $field, array(
 					'multiple'=> $multiple,
@@ -444,9 +444,13 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
+			{
 				$value = call_user_func_array( array( $class, $method_name ), $args );
+			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
+			{
 				$value = call_user_func_array( array( __CLASS__, $method_name ), $args );
+			}
 
 			return $value;
 		}
@@ -468,9 +472,13 @@ HTML;
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field['type'] );
 			if ( method_exists( $class, $method_name ) )
+			{
 				call_user_func_array( array( $class, $method_name ), $args );
+			}
 			elseif ( method_exists( __CLASS__, $method_name ) )
+			{
 				call_user_func_array( array( __CLASS__, $method_name ), $args );
+			}
 		}
 
 		/**
@@ -510,6 +518,23 @@ HTML;
 				}
 			}
 			return $saved;
+		}
+
+		/**
+		 * Adds a css class
+		 * Mainly a copy of the core admin menu function
+		 * As the core fn is only meant to be used by core internally,
+		 * we copy it here - in case core changes functionality or drops the fn.
+		 * 
+		 * @param string $add
+		 * @param string $class
+		 * @return $class
+		 */
+		function add_cssclass( $add, $class ) 
+		{
+			$class = empty( $class ) ? $add : $class .= " {$add}";
+
+			return $class;
 		}
 	}
 }
