@@ -228,13 +228,23 @@ $meta_boxes[] = array(
 			'std' => 1                      // Value can be 0 or 1
 		),
 		array(
+			'id' => $prefix . 'invisible',
+			'type' => 'hidden',             // File type: hidden
+			'std' => 'no, i\m visible',     // Hidden field must have predefined value
+		),
+		array(
+			'name' => 'Your favorite password',
+			'id' => $prefix . 'pass',
+			'type' => 'password',           // File type: password
+		),
+		array(
 			'name' => 'Categories',
 			'id' => $prefix . 'cats',
 			'type' => 'taxonomy',           // File type: taxonomy
 			'options' => array(
 				'taxonomy' => 'category',   // Taxonomy name
 				'type' => 'checkbox_list',  // How to show taxonomy: 'checkbox_list' (default) or 'select'. Optional
-				'args' => array(),         // Additional arguments for get_terms() function
+				'args' => array(),          // Additional arguments for get_terms() function
 			),
 			'desc' => 'Choose One Category'
 		)
@@ -270,8 +280,8 @@ $meta_boxes[] = array(
 		array(
 			'name' => 'Screenshots (plupload)',
 			'desc' => 'Screenshots of problems, warnings, etc.',
-			'id' => $prefix . 'screenshot',
-			'type' => 'plupload_image'                // Field type: plupload image upload
+			'id' => $prefix . 'screenshot2',
+			'type' => 'plupload_image'       // Field type: plupload image upload
 		)
 	)
 );
@@ -302,6 +312,12 @@ $meta_boxes[] = array(
 			'name' => 'When do you get up?',
 			'id' => $prefix . 'getdown',
 			'type' => 'time',                // Field type: time
+			'format' => 'hh:mm:ss'           // Time format, default hh:mm. Optional. See: http://goo.gl/hXHWz
+		),
+		array(
+			'name' => 'When were you born?',
+			'id' => $prefix . 'born_time',
+			'type' => 'datetime',            // Field type: datetime
 			'format' => 'hh:mm:ss'           // Time format, default hh:mm. Optional. See: http://goo.gl/hXHWz
 		)
 	)
