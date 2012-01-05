@@ -268,8 +268,8 @@ HTML;
 		 * Show end HTML markup for fields
 		 *
 		 * @param string $html
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
