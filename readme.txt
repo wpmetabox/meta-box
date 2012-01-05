@@ -22,6 +22,8 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 
 [Documentation](https://github.com/rilwis/meta-box/wiki)
 
+[SUPPORT](https://meta-box.tenderapp.com)
+
 == Installation ==
 
 1. Unzip the download package
