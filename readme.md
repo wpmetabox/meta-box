@@ -22,6 +22,12 @@ funkedgeek
 
 [click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)
 
+### SUPPORT: ###
+
+The guys (and girls) over at TenderApp have been so friendly to give us a free support account.
+
+[Drop your support Qs at TenderApp!](https://meta-box.tenderapp.com)
+
 Meta Info
 --------------------------------------
 

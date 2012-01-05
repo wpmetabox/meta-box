@@ -173,13 +173,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
+				$meta = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
 
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-				$meta = ( !$saved && '' === $meta OR array() === $meta ) ? $field['std'] : $meta;
+				$meta = ( ! $saved && '' === $meta OR array() === $meta ) ? $field['std'] : $meta;
 
 				// Escape attributes for non-wysiwyg fields
-				if ( $field['type'] != 'wysiwyg' )
+				if ( $field['type'] !== 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
 				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
@@ -221,7 +221,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
 				if ( isset( $field['class'] ) )
-					$class .= $this->add_cssclass( $field['class'], $class );
+					$class = $this->add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
@@ -527,12 +527,12 @@ HTML;
 		 * we copy it here - in case core changes functionality or drops the fn.
 		 * 
 		 * @param string $add
-		 * @param string $class
+		 * @param string $class | Class name - Default: empty
 		 * @return $class
 		 */
-		function add_cssclass( $add, $class ) 
+		function add_cssclass( $add, $class = '' ) 
 		{
-			$class = empty( $class ) ? $add : $class .= " {$add}";
+			$class .= empty( $class ) ? $add : " {$add}";
 
 			return $class;
 		}
