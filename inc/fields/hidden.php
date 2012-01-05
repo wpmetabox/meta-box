@@ -1,8 +1,8 @@
 <?php
 
-if ( ! class_exists( 'RWMB_Hidden_Field' ) ) 
+if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 {
-	class RWMB_Hidden_Field 
+	class RWMB_Hidden_Field
 	{
 		/**
 		 * Show begin HTML markup for fields
@@ -27,12 +27,12 @@ if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			$val   = " value='{$meta}'";
 			$name  = " name='{$field['id']}'";
 			$id    = " id='{$field['id']}'";
-			$html .= "<input type='hidden' class='rwmb-text rwmb-hidden'{$name}{$id}{$val} size='30' />";
+			$html .= "<input type='hidden' class='rwmb-hidden'{$name}{$id}{$val} />";
 
 			return $html;
 		}
