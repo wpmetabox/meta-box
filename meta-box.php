@@ -329,13 +329,21 @@ HTML;
 		public function add_clones( $end_html, $field, $meta )
 		{
 			$ID		= str_replace( '[]', '', $field['id'] );
+
+			# @internal @todo radio always has more than one input field
+			# Plupload isn't worth it, date, slider don't work
+			# Checkbox is missing the label - is it necessary?
+			$type	= $field['type'];
+			if ( in_array( $field['type'], array( 'checkbox', 'hidden', 'disabled', 'password' ) ) )
+				$type = 'input';
+
 			$script	= <<<HTML
 <script type="text/javascript">
 jQuery( document ).ready( function($) 
 {
 	var
-		 {$ID}_container	= $( 'input[id="{$field['id']}"]' ).parent()
-		,{$ID}_fields		= $( {$ID}_container ).find( 'input[id^="{$field['id']}"]' )
+		 {$ID}_container	= $( '{$type}[id="{$field['id']}"]' ).parent()
+		,{$ID}_fields		= $( {$ID}_container ).find( '{$type}[id^="{$field['id']}"]' )
 		,{$ID}_first		= $( {$ID}_fields ).first()
 		,field_clone		= null
 		,field_counter		= 0
@@ -354,7 +362,7 @@ jQuery( document ).ready( function($)
 		event.preventDefault();
 
 		// Update fields container
-		{$ID}_fields	= $( {$ID}_container ).find( 'input[name^="{$ID}"]' );
+		{$ID}_fields	= $( {$ID}_container ).find( '{$type}[name^="{$ID}"]' );
 		field_counter	= {$ID}_fields.length - 1;
 
 		// Only delete fields as long as we got more than one field
@@ -381,7 +389,7 @@ jQuery( document ).ready( function($)
 		event.preventDefault();
 
 		// Update fields container
-		{$ID}_fields	= $( {$ID}_container ).find( 'input[name^="{$ID}"]' );
+		{$ID}_fields	= $( {$ID}_container ).find( '{$type}[name^="{$ID}"]' );
 		field_counter	= {$ID}_fields.length + 1;
 
 		// Clone the field
