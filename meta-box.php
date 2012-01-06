@@ -354,8 +354,6 @@ jQuery( document ).ready( function($)
 	;
 	// Hide remove button if only one field present
 	remove_button.hide();
-	// Append clear break to avoid lining up small form elements
-	{$ID}_first.after( '<br class="clear" />' );
 
 	// REMOVE
 	remove_button.bind( 'click', function( event )
@@ -401,7 +399,7 @@ jQuery( document ).ready( function($)
 		// Move Clone
 		field_clone.appendTo( {$ID}_container );
 		// Clear for next Clone
-		field_clone.after( '<br class="clear" />' );
+		remove_button.before( '<br class="clear" />' );
 
 		// Move buttons
 		if ( 1 < field_counter )
