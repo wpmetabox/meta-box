@@ -157,7 +157,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		function show()
+		public function show()
 		{
 			global $post;
 
@@ -173,7 +173,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$meta = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
+				$name = $this->clean_id( $field['id'] );
+				$name = $name ? $name : $field['id'];
+
+				$meta = get_post_meta( $post->ID, $name, ! $field['multiple'] );
 
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 				$meta = ( ! $saved && '' === $meta OR array() === $meta ) ? $field['std'] : $meta;
@@ -181,30 +184,22 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Escape attributes for non-wysiwyg fields
 				if ( $field['type'] !== 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-
-				if ( ! is_array( $meta ) )
-				{
-					$meta_data		= array( $meta );
-				}
-				else 
-				{
-					$meta_data		= $meta;
-					$field['id']	= "{$field['id']}[]";
-				}
-				$counter	= count( $meta );
-
+_dump($name);
 				$html = '';
+				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
 					// Add css multi field buttons if the id has "[]" appended
-					if ( strstr( $field['id'], '[]' ) )
+					if ( $name )
 					{
-						$id = str_replace( '[]', '', $field['id'] );
-						add_filter( "rwmb_{$id}_end_html", array( &$this, 'add_clones' ), 10, 3 );
+						add_filter( "rwmb_{$name}_end_html", array( &$this, 'add_clones' ), 10, 3 );
 					}
-
+_dump($meta);
+#_dump($i);	
 					// Get the field(s) mark-up
-					$html .= $this->get_mark_up( $field, $meta_data[ $i ] );
+					$meta  = isset( $meta[ $i ] ) ? $meta[ $i ] : $meta;
+
+					$html .= $this->get_mark_up( $field, $meta );
 				}
 
 				// Display label and input in DIV and allow user-defined classes to be appended
@@ -237,7 +232,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			// Prepare filter names:
 			$filter_type	= $field['type'];
-			$filter_id		= str_replace( '[]', '', $field['id'] );
+			$filter_id		= self::clean_id( $field['id'] );
 
 			$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
 
@@ -309,7 +304,7 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field )
 		{
-			$id		 = str_replace( '[]', '', $field['id'] );
+			$id		 = self::clean_id( $field['id'] );
 			$html	 = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 			// Closes the container
 			$html	.= '</div>';
@@ -328,13 +323,13 @@ HTML;
 		 */
 		public function add_clones( $end_html, $field, $meta )
 		{
-			$ID		= str_replace( '[]', '', $field['id'] );
+			$id		= $this->clean_id( $field['id'] );
 
 			# @internal @todo radio always has more than one input field
 			# Plupload isn't worth it, date, slider don't work
 			# Checkbox is missing the label - is it necessary?
 			$type	= $field['type'];
-			if ( in_array( $field['type'], array( 'checkbox', 'hidden', 'disabled', 'password' ) ) )
+			if ( in_array( $field['type'], array( 'text', 'checkbox', 'hidden', 'disabled', 'password' ) ) )
 				$type = 'input';
 
 			$script	= <<<HTML
@@ -342,19 +337,19 @@ HTML;
 jQuery( document ).ready( function($) 
 {
 	var
-		 {$ID}_container	= $( '{$type}[id="{$field['id']}"]' ).parent()
-		,{$ID}_fields		= $( {$ID}_container ).find( '{$type}[id^="{$field['id']}"]' )
-		,{$ID}_first		= $( {$ID}_fields ).first()
+		 {$id}_container	= $( '{$type}[id="{$field['id']}"]' ).parent()
+		,{$id}_fields		= $( {$id}_container ).find( '{$type}[id^="{$field['id']}"]' )
+		,{$id}_first		= $( {$id}_fields ).first()
 		,field_clone		= null
 		,field_counter		= 0
 		,last_el			= null
-		,add_button			= $( "#add_{$ID}" )
-		,remove_button		= $( "#remove_{$ID}" )
-		,desc				= $( "#{$ID}_description" )
+		,add_button			= $( "#add_{$id}" )
+		,remove_button		= $( "#remove_{$id}" )
+		,desc				= $( "#{$id}_description" )
 	;
 	// Hide remove button if only one field present
 	remove_button.hide();
-
+console.log( {$id}_fields );
 	// REMOVE
 	remove_button.bind( 'click', function( event )
 	{
@@ -362,22 +357,22 @@ jQuery( document ).ready( function($)
 		event.preventDefault();
 
 		// Update fields container
-		{$ID}_fields	= $( {$ID}_container ).find( '{$type}[name^="{$ID}"]' );
-		field_counter	= {$ID}_fields.length - 1;
+		{$id}_fields	= $( {$id}_container ).find( '{$type}[name^="{$id}"]' );
+		field_counter	= {$id}_fields.length - 1;
 
 		// Only delete fields as long as we got more than one field
 		if ( 0 < field_counter )
-			$( {$ID}_fields.last() ).remove();
+			$( {$id}_fields.last() ).remove();
 
 		// Move buttons
 		if ( 1 < field_counter )
 		{
-			add_button.insertAfter( {$ID}_fields.last() );
-			remove_button.insertAfter( {$ID}_fields.last() );
+			add_button.insertAfter( {$id}_fields.last() );
+			remove_button.insertAfter( {$id}_fields.last() );
 		}
 		else
 		{
-			add_button.insertAfter( {$ID}_fields.first() );
+			add_button.insertAfter( {$id}_fields.first() );
 			remove_button.hide();
 		}
 	} );
@@ -389,15 +384,15 @@ jQuery( document ).ready( function($)
 		event.preventDefault();
 
 		// Update fields container
-		{$ID}_fields	= $( {$ID}_container ).find( '{$type}[name^="{$ID}"]' );
-		field_counter	= {$ID}_fields.length + 1;
+		{$id}_fields	= $( {$id}_container ).find( '{$type}[name^="{$id}"]' );
+		field_counter	= {$id}_fields.length + 1;
 
 		// Clone the field
-		field_clone = $( {$ID}_first ).clone();
+		field_clone = $( {$id}_first ).clone();
 		// Add the counter nr. to the clone id
-		field_clone.attr( 'id', "{$ID}_" + field_counter + "[]" );
+		field_clone.attr( 'id', "{$id}_" + field_counter + "[]" );
 		// Move Clone
-		field_clone.appendTo( {$ID}_container );
+		field_clone.appendTo( {$id}_container );
 		// Clear for next Clone
 		remove_button.before( '<br class="clear" />' );
 
@@ -412,8 +407,8 @@ jQuery( document ).ready( function($)
 		}
 		else
 		{
-			add_button.insertAfter( {$ID}_fields.last() );
-			remove_button.insertAfter( {$ID}_fields.last() );
+			add_button.insertAfter( {$id}_fields.last() );
+			remove_button.insertAfter( {$id}_fields.last() );
 		}
 	} );
 } );
@@ -422,8 +417,8 @@ HTML;
 
 			$buttons  = get_submit_button(
 				 __( '&#8211;', RWMB_TEXTDOMAIN )
-				,"button-secondary delete remove_{$ID}"
-				,"remove_{$ID}"
+				,"button-secondary delete remove_{$id}"
+				,"remove_{$id}"
 				,false
 				,array(
 					'style' => 'display:inline; float:right;'
@@ -431,8 +426,8 @@ HTML;
 			);
 			$buttons .= get_submit_button(
 				 __( '+', RWMB_TEXTDOMAIN )
-				,"button-primary add_{$ID}"
-				,"add_{$ID}"
+				,"button-primary add_{$id}"
+				,"add_{$id}"
 				,false
 				,array(
 					'style' => 'display:inline; float:right;'
@@ -478,9 +473,9 @@ HTML;
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $field['id'];
+				$name = $this->clean_id( $field['id'] );
 				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
-				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
+				$new  = isset( $_POST[ $name ] ) ? $_POST[ $name ] : ( $field['multiple'] ? array() : '' );
 
 				// Allow field class change the value
 				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
@@ -489,11 +484,11 @@ HTML;
 				// 1st filter applies to all fields with the same type
 				// 2nd filter applies to current field only
 				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
-				$new = apply_filters( "rwmb_{$field['id']}_value", $new, $field, $old );
+				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
 
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
-			}exit;
+			}
 		}
 
 		/**
@@ -508,7 +503,7 @@ HTML;
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$name = $field['id'];
+			$name = ! self::clean_id( $field['id'] ) ? $field['id'] : self::clean_id( $field['id'] );
 
 			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
@@ -671,7 +666,7 @@ HTML;
 			$saved = false;
 			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) )
+				if ( get_post_meta( $post_id, self::clean_id( $field['id'] ), !$field['multiple'] ) )
 				{
 					$saved = true;
 					break;
@@ -690,11 +685,25 @@ HTML;
 		 * @param string $class | Class name - Default: empty
 		 * @return $class
 		 */
-		function add_cssclass( $add, $class = '' ) 
+		public function add_cssclass( $add, $class = '' ) 
 		{
 			$class .= empty( $class ) ? $add : " {$add}";
 
 			return $class;
+		}
+
+		/**
+		 * Helper function for multi/clone field IDs
+		 * 
+		 * @param array $field
+		 * @return mixed bool/string | false if no replacement OR clean version without the appending "[]" for clone fields
+		 */
+		public function clean_id( $id )
+		{
+			if ( ! strstr( $id, '[]' ) )
+				return false;
+
+			return str_replace( '[]', '', $id );
 		}
 	}
 }
