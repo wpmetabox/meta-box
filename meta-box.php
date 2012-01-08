@@ -173,8 +173,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $this->clean_id( $field['id'] );
-				$name = $name ? $name : $field['id'];
+				$name = $this->maybe_clean_id( $field['id'] );
 
 				$meta = get_post_meta( $post->ID, $name, ! $field['multiple'] );
 
@@ -184,22 +183,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Escape attributes for non-wysiwyg fields
 				if ( $field['type'] !== 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-_dump($name);
+
 				$html = '';
 				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
 					// Add css multi field buttons if the id has "[]" appended
-					if ( $name )
+					if ( $this->needs_clean_id( $field['id'] ) )
 					{
 						add_filter( "rwmb_{$name}_end_html", array( &$this, 'add_clones' ), 10, 3 );
 					}
-_dump($meta);
-#_dump($i);	
-					// Get the field(s) mark-up
-					$meta  = isset( $meta[ $i ] ) ? $meta[ $i ] : $meta;
 
-					$html .= $this->get_mark_up( $field, $meta );
+					// Get the field(s) mark-up
+					$meta_data  = is_array( $meta ) ? $meta[ $i ] : $meta;
+
+					$html .= $this->get_mark_up( $field, $meta_data );
 				}
 
 				// Display label and input in DIV and allow user-defined classes to be appended
@@ -230,9 +228,9 @@ _dump($meta);
 
 		public static function get_mark_up( $field, $meta )
 		{
-			// Prepare filter names:
+			// Prepare filter names
 			$filter_type	= $field['type'];
-			$filter_id		= self::clean_id( $field['id'] );
+			$filter_id		= self::maybe_clean_id( $field['id'] );
 
 			$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
 
@@ -304,7 +302,7 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field )
 		{
-			$id		 = self::clean_id( $field['id'] );
+			$id		 = self::maybe_clean_id( $field['id'] );
 			$html	 = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 			// Closes the container
 			$html	.= '</div>';
@@ -323,7 +321,7 @@ HTML;
 		 */
 		public function add_clones( $end_html, $field, $meta )
 		{
-			$id		= $this->clean_id( $field['id'] );
+			$id		= $this->maybe_clean_id( $field['id'] );
 
 			# @internal @todo radio always has more than one input field
 			# Plupload isn't worth it, date, slider don't work
@@ -349,7 +347,7 @@ jQuery( document ).ready( function($)
 	;
 	// Hide remove button if only one field present
 	remove_button.hide();
-console.log( {$id}_fields );
+
 	// REMOVE
 	remove_button.bind( 'click', function( event )
 	{
@@ -473,7 +471,7 @@ HTML;
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $this->clean_id( $field['id'] );
+				$name = $this->maybe_clean_id( $field['id'] );
 				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
 				$new  = isset( $_POST[ $name ] ) ? $_POST[ $name ] : ( $field['multiple'] ? array() : '' );
 
@@ -503,7 +501,7 @@ HTML;
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$name = ! self::clean_id( $field['id'] ) ? $field['id'] : self::clean_id( $field['id'] );
+			$name = self::maybe_clean_id( $field['id'] );
 
 			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
@@ -666,7 +664,7 @@ HTML;
 			$saved = false;
 			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, self::clean_id( $field['id'] ), !$field['multiple'] ) )
+				if ( get_post_meta( $post_id, self::maybe_clean_id( $field['id'] ), ! $field['multiple'] ) )
 				{
 					$saved = true;
 					break;
@@ -695,15 +693,26 @@ HTML;
 		/**
 		 * Helper function for multi/clone field IDs
 		 * 
-		 * @param array $field
-		 * @return mixed bool/string | false if no replacement OR clean version without the appending "[]" for clone fields
+		 * @param string $id | field ID
+		 * @return string $id | clean version without the appending "[]" for clone fields OR returns input
 		 */
-		public function clean_id( $id )
+		public function maybe_clean_id( $id )
 		{
 			if ( ! strstr( $id, '[]' ) )
-				return false;
+				return $id;
 
 			return str_replace( '[]', '', $id );
+		}
+
+		/**
+		 * Helper function to check for multi/clone field IDs
+		 * 
+		 * @param string $id | field ID
+		 * @return bool | false if no replacement needed
+		 */
+		public function needs_clean_id( $id )
+		{
+			return ! strstr( $id, '[]' ) ? false : true;
 		}
 	}
 }
