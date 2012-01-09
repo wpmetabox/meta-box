@@ -189,9 +189,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
+					// Attach the label only to the first field
+					if ( $i == 0 )
+					{
+						add_filter( "rwmb_{$name}_begin_html", array( &$this, 'begin_html_label' ), 10, 3 );
+					}
 					// Attach the description only to the last field
 					if ( $i === $counter - 1 )
+					{
 						add_filter( "rwmb_{$name}_end_html", array( &$this, 'end_html_desc' ), 10, 3 );
+					}
 
 					// Add css multi field buttons only if the id has "[]" appended
 					if ( 
@@ -292,13 +299,35 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			$html = <<<HTML
+			$html .= '<div class="rwmb-input">';
+
+			return $html;
+		}
+
+		/**
+		 * Show begin HTML markup for fields
+		 *
+		 * @param string $html
+		 * @param mixed  $meta
+		 * @param array  $field
+		 *
+		 * @return string
+		 */
+		static function begin_html_label( $html, $field, $meta )
+		{
+			if (
+				! isset( $field['name'] ) 
+				OR empty( $field['name'] ) 
+			)
+				return $html;
+
+			$label = <<<HTML
 <div class="rwmb-label">
 	<label for="{$field['id']}">{$field['name']}</label>
 </div>
-<div class="rwmb-input">
 HTML;
-			return $html;
+
+			return "{$label}{$html}";
 		}
 
 		/**
@@ -313,7 +342,7 @@ HTML;
 		static function end_html( $html, $meta, $field )
 		{
 			// Closes the container
-			$html	.= '</div>';
+			$html .= '</div>';
 
 			return $html;
 		}
