@@ -77,7 +77,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Load translation file
 			add_action( 'admin_init', array( __CLASS__, 'load_textdomain' ) );
 
-			// Enqueue common scripts and styles
+			// Enqueue common styles and scripts
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
 			add_action( 'admin_print_styles-post-new.php', array( __CLASS__, 'admin_print_styles' ) );
 
@@ -126,13 +126,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
-		 * Enqueue common scripts and styles
+		 * Enqueue common styles
 		 *
 		 * @return void
 		 */
 		static function admin_print_styles()
 		{
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL.'style.css', RWMB_VER );
+			wp_enqueue_script( 'rwmb', RWMB_JS_URL.'clones.js', RWMB_VER );
 		}
 
 		/**************************************************
@@ -202,6 +203,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
+				if ( $this->needs_clean_id( $field['id'] ) )
+					$class = $this->add_cssclass( 'rwmb-clone', $class );
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
 				echo "<div class='{$class}'>{$html}</div>";
@@ -321,118 +324,30 @@ HTML;
 		 */
 		public function add_clones( $end_html, $field, $meta )
 		{
-			$id		= $this->maybe_clean_id( $field['id'] );
-
-			# @internal @todo radio always has more than one input field
-			# Plupload isn't worth it, date, slider don't work
-			# Checkbox is missing the label - is it necessary?
-			$type	= $field['type'];
-			if ( in_array( $field['type'], array( 'text', 'checkbox', 'hidden', 'disabled', 'password' ) ) )
-				$type = 'input';
-
-			$script	= <<<HTML
-<script type="text/javascript">
-jQuery( document ).ready( function($) 
-{
-	var
-		 {$id}_container	= $( '{$type}[id="{$field['id']}"]' ).parent()
-		,{$id}_fields		= $( {$id}_container ).find( '{$type}[id^="{$field['id']}"]' )
-		,{$id}_first		= $( {$id}_fields ).first()
-		,field_clone		= null
-		,field_counter		= 0
-		,last_el			= null
-		,add_button			= $( "#add_{$id}" )
-		,remove_button		= $( "#remove_{$id}" )
-		,desc				= $( "#{$id}_description" )
-	;
-	// Hide remove button if only one field present
-	remove_button.hide();
-
-	// REMOVE
-	remove_button.bind( 'click', function( event )
-	{
-		// Prevent redirect
-		event.preventDefault();
-
-		// Update fields container
-		{$id}_fields	= $( {$id}_container ).find( '{$type}[name^="{$id}"]' );
-		field_counter	= {$id}_fields.length - 1;
-
-		// Only delete fields as long as we got more than one field
-		if ( 0 < field_counter )
-			$( {$id}_fields.last() ).remove();
-
-		// Move buttons
-		if ( 1 < field_counter )
-		{
-			add_button.insertAfter( {$id}_fields.last() );
-			remove_button.insertAfter( {$id}_fields.last() );
-		}
-		else
-		{
-			add_button.insertAfter( {$id}_fields.first() );
-			remove_button.hide();
-		}
-	} );
-
-	// ADD
-	add_button.bind( 'click', function( event )
-	{
-		// Prevent redirect
-		event.preventDefault();
-
-		// Update fields container
-		{$id}_fields	= $( {$id}_container ).find( '{$type}[name^="{$id}"]' );
-		field_counter	= {$id}_fields.length + 1;
-
-		// Clone the field
-		field_clone = $( {$id}_first ).clone();
-		// Add the counter nr. to the clone id
-		field_clone.attr( 'id', "{$id}_" + field_counter + "[]" );
-		// Move Clone
-		field_clone.appendTo( {$id}_container );
-		// Clear for next Clone
-		remove_button.before( '<br class="clear" />' );
-
-		// Move buttons
-		if ( 1 < field_counter )
-		{
-			add_button.insertAfter( field_clone );
-			remove_button.show();
-			remove_button.insertAfter( field_clone );
-			// Move the description
-			desc.remove().insertAfter( add_button );
-		}
-		else
-		{
-			add_button.insertAfter( {$id}_fields.last() );
-			remove_button.insertAfter( {$id}_fields.last() );
-		}
-	} );
-} );
-</script>
-HTML;
+			$id = $this->maybe_clean_id( $field['id'] );
 
 			$buttons  = get_submit_button(
 				 __( '&#8211;', RWMB_TEXTDOMAIN )
-				,"button-secondary delete remove_{$id}"
-				,"remove_{$id}"
+				,"rwmb-button button-secondary delete remove_clone"
+				,"remove_{$id}_clone"
 				,false
 				,array(
-					'style' => 'display:inline; float:right;'
+					 'style'	=> 'display:inline; float:right;'
+					,'rel'		=> $id
 				 )
 			);
 			$buttons .= get_submit_button(
 				 __( '+', RWMB_TEXTDOMAIN )
-				,"button-primary add_{$id}"
-				,"add_{$id}"
+				,"rwmb-button button-primary add_clone"
+				,"add_{$id}_clone"
 				,false
 				,array(
-					'style' => 'display:inline; float:right;'
+					 'style'	=> 'display:inline; float:right;'
+					,'rel'		=> $id
 				 )
 			);
 
-			return "{$script}{$buttons}{$end_html}";
+			return "{$buttons}{$end_html}";
 		}
 
 		/**************************************************

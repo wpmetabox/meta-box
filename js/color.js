@@ -2,7 +2,7 @@ jQuery( document ).ready( function($)
 {
 	$( '.rwmb-color-picker' ).each( function() 
 	{
-		var $this = $( this ), id = $this.attr('rel');
+		var $this = $( this ), id = $this.attr( 'rel' );
 
 		$this.farbtastic( '#' + id );
 	} );

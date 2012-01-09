@@ -20,7 +20,11 @@ jQuery( document ).ready( function($)
 		$( label ).append( ': <span id="' + id + '-label"></span>' );
 		update	= $( '#' + id + '-label' );
 
-		if ( ! $( input ).val() || 'undefined' === $( input ).val() || null === typeof $( input ).val() )
+		if ( 
+			! $( input ).val() 
+			|| 'undefined' === $( input ).val() 
+			|| null === typeof $( input ).val() 
+			)
 		{
 			$( input ).val( $( el ).slider( "values", 0 ) );
 			$( update ).text( "0" );
