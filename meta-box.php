@@ -189,10 +189,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
-					// Add css multi field buttons if the id has "[]" appended
-					if ( $this->needs_clean_id( $field['id'] ) )
+					// Add css multi field buttons only if the id has "[]" appended
+					if ( 
+						$this->needs_clean_id( $field['id'] )
+						AND $i === $counter - 1 
+						)
 					{
-						add_filter( "rwmb_{$name}_end_html", array( &$this, 'add_clones' ), 10, 3 );
+						add_filter( "rwmb_{$name}_end_html", array( &$this, 'add_clone_buttons' ), 10, 3 );
 					}
 
 					// Get the field(s) mark-up
@@ -322,7 +325,7 @@ HTML;
 		 * @param unknown_type $meta
 		 * @return string $html
 		 */
-		public function add_clones( $end_html, $field, $meta )
+		public function add_clone_buttons( $end_html, $field, $meta )
 		{
 			$id = $this->maybe_clean_id( $field['id'] );
 
@@ -331,20 +334,14 @@ HTML;
 				,"rwmb-button button-secondary delete remove_clone"
 				,"remove_{$id}_clone"
 				,false
-				,array(
-					 'style'	=> 'display:inline; float:right;'
-					,'rel'		=> $id
-				 )
+				,array( 'rel' => $id )
 			);
 			$buttons .= get_submit_button(
 				 __( '+', RWMB_TEXTDOMAIN )
 				,"rwmb-button button-primary add_clone"
 				,"add_{$id}_clone"
 				,false
-				,array(
-					 'style'	=> 'display:inline; float:right;'
-					,'rel'		=> $id
-				 )
+				,array( 'rel' => $id )
 			);
 
 			return "{$buttons}{$end_html}";

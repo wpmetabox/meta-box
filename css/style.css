@@ -20,6 +20,10 @@
 .rwmb-textarea {
 	resize: vertical;
 }
+.rwmb-button {
+	display: inline;
+	float: right;
+}
 
 /* =Styles for 'side' meta boxes
 -------------------------------------------------------------- */

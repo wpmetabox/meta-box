@@ -3,7 +3,7 @@ jQuery( document ).ready( function($)
 	$( '.rwmb-clone' ).each( function() 
 	{ 
 		var
-			$this			= $( this )
+			 $this			= $( this )
 			,container_id	= $this.attr( 'rel' )
 			,clone_fields	= $this.find( ':input' ).not( '.rwmb-button' )
 			,clone_first	= $( clone_fields ).first()
