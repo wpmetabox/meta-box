@@ -189,6 +189,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
+					// Attach the description only to the last field
+					if ( $i === $counter - 1 )
+						add_filter( "rwmb_{$name}_end_html", array( &$this, 'end_html_desc' ), 10, 3 );
+
 					// Add css multi field buttons only if the id has "[]" appended
 					if ( 
 						$this->needs_clean_id( $field['id'] )
@@ -308,17 +312,36 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field )
 		{
-			$id		 = self::maybe_clean_id( $field['id'] );
-			$html	 = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 			// Closes the container
 			$html	.= '</div>';
 
 			return $html;
 		}
 
+
+		/**
+		 * Show description HTML markup for fields
+		 * Hooks on the flight into the "rwmb_{$field_id}_end_html" filter before the closing div
+		 *
+		 * @param string $html
+		 * @param mixed $meta
+		 * @param array $field
+		 *
+		 * @return string
+		 */
+		static function end_html_desc( $html, $field, $meta )
+		{
+			$id		= self::maybe_clean_id( $field['id'] );
+			$desc	= '';
+			if ( ! empty( $field['desc'] ) )
+				$desc = "<p id='{$id}_description' class='description'>{$field['desc']}</p>";
+
+			return "{$desc}{$html}";
+		}
+
 		/**
 		 * Callback function to add clone buttons on demand
-		 * Hooks on the flight into the `rwmb_ID_end_html` filter
+		 * Hooks on the flight into the "rwmb_{$field_id}_end_html" filter before the closing div
 		 * 
 		 * @param string $end_html
 		 * @param array $field
