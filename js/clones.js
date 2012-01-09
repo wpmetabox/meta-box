@@ -6,12 +6,12 @@ jQuery( document ).ready( function($)
 			 $this			= $( this )
 			,container_id	= $this.attr( 'rel' )
 			,clone_fields	= $this.find( ':input' ).not( '.rwmb-button' )
-			,clone_first	= $( clone_fields ).first()
+			,field_counter	= clone_fields.length
+			,clone_first	= 1 >= field_counter ? $( clone_fields ).first() : $( clone_fields ).last()
 			,clone_first_id	= $( clone_first ).attr( 'id' ).replace( '[]', '' )
 			,clone_last		= $( clone_fields ).last()
 			,clone_last_id	= $( clone_last ).attr( 'id' ).replace( '[]', '' )
 			,field_clone	= 0
-			,field_counter	= clone_fields.length
 			,add_button		= $this.find( '#add_' + clone_first_id + '_clone'  )
 			,remove_button	= $this.find( '#remove_' + clone_first_id + '_clone'  )
 			,desc			= $this.find( '#' + clone_first_id + '_description' )
@@ -72,7 +72,7 @@ jQuery( document ).ready( function($)
 			// Add the counter nr. to the clone id
 			field_clone.attr( 'id', clone_first_id + "_" + field_counter + "[]" );
 			// Move Clone
-			field_clone.appendTo( $this.find( '.rwmb-input' ) );
+			field_clone.appendTo( $this.find( '.rwmb-input' ).last() );
 			// Add clear break for next Clone
 			remove_button.before( '<br class="clear" />' );
 
