@@ -167,13 +167,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			// Allow users to add custom code before meta box content
-			// 1st action applies to all meta box
+			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_before' );
 			do_action( "rwmb_before_{$this->meta_box['id']}" );
 
-			foreach ( $this->fields as $field )
+			$field_counter = count( $this->fields );
+			for ( $j = 0; $j <= $field_counter - 1; $j++ )
 			{
+				$field = $this->fields[ $j ];
+
 				$name = $this->maybe_clean_id( $field['id'] );
 
 				$meta = get_post_meta( $post->ID, $name, ! $field['multiple'] );
@@ -185,20 +188,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				if ( $field['type'] !== 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
+				// Attach the label only to the first field
+				if ( $j <= $field_counter - 1 )
+					$this->label( $field );
+
 				$html = '';
 				$counter = count( $meta );
 				for ( $i = 0; $i <= $counter - 1; $i++ )
 				{
-					// Attach the label only to the first field
-					if ( $i == 0 )
-					{
-						add_filter( "rwmb_{$name}_begin_html", array( &$this, 'begin_html_label' ), 10, 3 );
-					}
 					// Attach the description only to the last field
 					if ( $i === $counter - 1 )
-					{
 						add_filter( "rwmb_{$name}_end_html", array( &$this, 'end_html_desc' ), 10, 3 );
-					}
 
 					// Add css multi field buttons only if the id has "[]" appended
 					if ( 
@@ -221,11 +221,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$class = $this->add_cssclass( 'rwmb-clone', $class );
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
-				echo "<div class='{$class}'>{$html}</div>";
+		 		// If the 'name' argument is not set, or empty, the div will be hidden
+				if ( ! isset( $field['name'] ) OR empty( $field['name'] ) )
+					$class = $this->add_cssclass( 'hidden', $class );
+				echo "<div class='{$class}' rel='{$name}'>{$html}</div>";
 			}
 
 			// Allow users to add custom code after meta box content
-			// 1st action applies to all meta box
+			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
@@ -299,35 +302,43 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			$html .= '<div class="rwmb-input">';
+			$html .= "<div class='rwmb-input'>";
 
 			return $html;
 		}
 
 		/**
-		 * Show begin HTML markup for fields
+		 * Show label HTML markup for fields
+		 * If the 'name' argument is not set, or empty, the div will be hidden
 		 *
-		 * @param string $html
-		 * @param mixed  $meta
 		 * @param array  $field
 		 *
-		 * @return string
+		 * @return string $label
 		 */
-		static function begin_html_label( $html, $field, $meta )
+		static function label( $field )
 		{
 			if (
 				! isset( $field['name'] ) 
 				OR empty( $field['name'] ) 
 			)
-				return $html;
+				return;
+
+			$class = 'rwmb-label';
+			if ( isset( $field['class'] ) )
+			{
+				if ( empty( $field['class'] ) )
+					$class = self::add_cssclass( 'hidden', $class );
+
+				$class = self::add_cssclass( $field['class'], $class );
+			}
 
 			$label = <<<HTML
-<div class="rwmb-label">
+<div class="{$class}">
 	<label for="{$field['id']}">{$field['name']}</label>
 </div>
 HTML;
 
-			return "{$label}{$html}";
+			return print $label;
 		}
 
 		/**
@@ -351,6 +362,7 @@ HTML;
 		/**
 		 * Show description HTML markup for fields
 		 * Hooks on the flight into the "rwmb_{$field_id}_end_html" filter before the closing div
+		 * If the 'name' argument is not set, or empty, the div will be hidden
 		 *
 		 * @param string $html
 		 * @param mixed $meta
@@ -361,9 +373,17 @@ HTML;
 		static function end_html_desc( $html, $field, $meta )
 		{
 			$id		= self::maybe_clean_id( $field['id'] );
+
+			$class	= 'description';
+			if ( 
+				! isset( $field['name'] ) 
+				OR empty( $field['name'] )
+			) 
+				$class = self::add_cssclass( 'hidden', $class );
+
 			$desc	= '';
 			if ( ! empty( $field['desc'] ) )
-				$desc = "<p id='{$id}_description' class='description'>{$field['desc']}</p>";
+				$desc = "<p id='{$id}_description' class='{$class}'>{$field['desc']}</p>";
 
 			return "{$desc}{$html}";
 		}
@@ -382,16 +402,16 @@ HTML;
 			$id = $this->maybe_clean_id( $field['id'] );
 
 			$buttons  = get_submit_button(
-				 __( '&#8211;', RWMB_TEXTDOMAIN )
-				,"rwmb-button button-secondary delete remove_clone"
-				,"remove_{$id}_clone"
+				 __( '+', RWMB_TEXTDOMAIN )
+				,"rwmb-button button-primary add-clone"
+				,"add_{$id}_clone"
 				,false
 				,array( 'rel' => $id )
 			);
 			$buttons .= get_submit_button(
-				 __( '+', RWMB_TEXTDOMAIN )
-				,"rwmb-button button-primary add_clone"
-				,"add_{$id}_clone"
+				 __( '&#8211;', RWMB_TEXTDOMAIN )
+				,"rwmb-button button-secondary delete remove-clone"
+				,"remove_{$id}_clone"
 				,false
 				,array( 'rel' => $id )
 			);
