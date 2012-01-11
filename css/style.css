@@ -4,7 +4,8 @@
 .rwmb-field {
 	margin: 10px 0;
 }
-.rwmb-label, .rwmb-input {
+.rwmb-label, 
+.rwmb-input {
 	display: inline-block;
 	vertical-align: top;
 }
@@ -20,10 +21,21 @@
 .rwmb-textarea {
 	resize: vertical;
 }
+.rwmb-button {
+	display: inline;
+	float: right;
+}
+/* Hidden labels, :input fields, buttons */
+.rwmb-label.hidden,
+.rwmb-input.hidden,
+.hidden .rwmb-button {
+	display: none;
+}
 
 /* =Styles for 'side' meta boxes
 -------------------------------------------------------------- */
 
-#side-sortables .rwmb-label, #side-sortables .rwmb-input {
+#side-sortables .rwmb-label, 
+#side-sortables .rwmb-input {
 	width: 100%;
 }

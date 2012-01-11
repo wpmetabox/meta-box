@@ -77,7 +77,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Load translation file
 			add_action( 'admin_init', array( __CLASS__, 'load_textdomain' ) );
 
-			// Enqueue common scripts and styles
+			// Enqueue common styles and scripts
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
 			add_action( 'admin_print_styles-post-new.php', array( __CLASS__, 'admin_print_styles' ) );
 
@@ -126,13 +126,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
-		 * Enqueue common scripts and styles
+		 * Enqueue common styles
 		 *
 		 * @return void
 		 */
 		static function admin_print_styles()
 		{
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL.'style.css', RWMB_VER );
+			wp_enqueue_script( 'rwmb', RWMB_JS_URL.'clones.js', RWMB_VER );
 		}
 
 		/**************************************************
@@ -157,7 +158,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		function show()
+		public function show()
 		{
 			global $post;
 
@@ -166,14 +167,19 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			// Allow users to add custom code before meta box content
-			// 1st action applies to all meta box
+			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_before' );
 			do_action( "rwmb_before_{$this->meta_box['id']}" );
 
-			foreach ( $this->fields as $field )
+			$field_counter = count( $this->fields );
+			for ( $j = 0; $j <= $field_counter - 1; $j++ )
 			{
-				$meta = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
+				$field = $this->fields[ $j ];
+
+				$name = $this->maybe_clean_id( $field['id'] );
+
+				$meta = get_post_meta( $post->ID, $name, ! $field['multiple'] );
 
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 				$meta = ( ! $saved && '' === $meta OR array() === $meta ) ? $field['std'] : $meta;
@@ -182,51 +188,47 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				if ( $field['type'] !== 'wysiwyg' )
 					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
-				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
+				// Attach the label only to the first field
+				if ( $j <= $field_counter - 1 )
+					$this->label( $field );
 
-				// Apply filter to field begin HTML
-				// 1st filter applies to all fields
-				// 2nd filter applies to all fields with the same type
-				// 3rd filter applies to current field only
-				$begin = apply_filters( "rwmb_begin_html", $begin, $field, $meta );
-				$begin = apply_filters( "rwmb_{$field['type']}_begin_html", $begin, $field, $meta );
-				$begin = apply_filters( "rwmb_{$field['id']}_begin_html", $begin, $field, $meta );
+				$html = '';
+				$counter = count( $meta );
+				for ( $i = 0; $i <= $counter - 1; $i++ )
+				{
+					// Attach the description only to the last field
+					if ( $i === $counter - 1 )
+						add_filter( "rwmb_{$name}_end_html", array( &$this, 'end_html_desc' ), 10, 3 );
 
-				// Call separated methods for displaying each type of field
-				$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
+					// Add css multi field buttons only if the id has "[]" appended
+					if ( 
+						$this->needs_clean_id( $field['id'] )
+						AND $i === $counter - 1 
+						)
+					{
+						add_filter( "rwmb_{$name}_end_html", array( &$this, 'add_clone_buttons' ), 10, 3 );
+					}
 
-				// Apply filter to field HTML
-				// 1st filter applies to all fields with the same type
-				// 2nd filter applies to current field only
-				$field_html = apply_filters( "rwmb_{$field['type']}_html", $field_html, $field, $meta );
-				$field_html = apply_filters( "rwmb_{$field['id']}_html", $field_html, $field, $meta );
+					// Get the field(s) mark-up
+					$meta_data  = is_array( $meta ) ? $meta[ $i ] : $meta;
 
-				$end = self::apply_field_class_filters( $field, 'end_html', '', $meta );
-
-				// Apply filter to field end HTML
-				// 1st filter applies to all fields
-				// 2nd filter applies to all fields with the same type
-				// 3rd filter applies to current field only
-				$end = apply_filters( "rwmb_end_html", $end, $field, $meta );
-				$end = apply_filters( "rwmb_{$field['type']}_end_html", $end, $field, $meta );
-				$end = apply_filters( "rwmb_{$field['id']}_end_html", $end, $field, $meta );
-
-				// Apply filter to field wrapper
-				// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
-				// 1st filter applies to all fields with the same type
-				// 2nd filter applies to current field only
-				$html = apply_filters( "rwmb_{$field['type']}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
-				$html = apply_filters( "rwmb_{$field['id']}_wrapper_html", $html, $field, $meta );
+					$html .= $this->get_mark_up( $field, $meta_data );
+				}
 
 				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
+				if ( $this->needs_clean_id( $field['id'] ) )
+					$class = $this->add_cssclass( 'rwmb-clone', $class );
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
-				echo "<div class='{$class}'>{$html}</div>";
+		 		// If the 'hidden' argument is set and TRUE, the div will be hidden
+				if ( isset( $field['hidden'] ) AND $field['hidden'] )
+					$class = $this->add_cssclass( 'hidden', $class );
+				echo "<div class='{$class}' rel='{$name}'>{$html}</div>";
 			}
 
 			// Allow users to add custom code after meta box content
-			// 1st action applies to all meta box
+			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
@@ -244,6 +246,51 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			echo "<input type='hidden' class='rwmb-post-id' value='{$post->ID}' />";
 		}
 
+		public static function get_mark_up( $field, $meta )
+		{
+			// Prepare filter names
+			$filter_type	= $field['type'];
+			$filter_id		= self::maybe_clean_id( $field['id'] );
+
+			$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
+
+			// Apply filter to field begin HTML
+			// 1st filter applies to all fields
+			// 2nd filter applies to all fields with the same type
+			// 3rd filter applies to current field only
+			$begin = apply_filters( "rwmb_begin_html", $begin, $field, $meta );
+			$begin = apply_filters( "rwmb_{$filter_type}_begin_html", $begin, $field, $meta );
+			$begin = apply_filters( "rwmb_{$filter_id}_begin_html", $begin, $field, $meta );
+
+			// Call separated methods for displaying each type of field
+			$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
+
+			// Apply filter to field HTML
+			// 1st filter applies to all fields with the same type
+			// 2nd filter applies to current field only
+			$field_html = apply_filters( "rwmb_{$filter_type}_html", $field_html, $field, $meta );
+			$field_html = apply_filters( "rwmb_{$filter_id}_html", $field_html, $field, $meta );
+
+			$end = self::apply_field_class_filters( $field, 'end_html', '', $meta );
+
+			// Apply filter to field end HTML
+			// 1st filter applies to all fields
+			// 2nd filter applies to all fields with the same type
+			// 3rd filter applies to current field only
+			$end = apply_filters( "rwmb_end_html", $end, $field, $meta );
+			$end = apply_filters( "rwmb_{$filter_type}_end_html", $end, $field, $meta );
+			$end = apply_filters( "rwmb_{$filter_id}_end_html", $end, $field, $meta );
+
+			// Apply filter to field wrapper
+			// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
+			// 1st filter applies to all fields with the same type
+			// 2nd filter applies to current field only
+			$html = apply_filters( "rwmb_{$filter_type}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+			$html = apply_filters( "rwmb_{$filter_id}_wrapper_html", $html, $field, $meta );
+
+			return $html;
+		}
+
 		/**
 		 * Show begin HTML markup for fields
 		 *
@@ -255,13 +302,43 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			$html = <<<HTML
-<div class="rwmb-label">
+			$html .= "<div class='rwmb-input'>";
+
+			return $html;
+		}
+
+		/**
+		 * Show label HTML markup for fields
+		 * If the 'name' argument is not set, or empty, the div will be hidden
+		 *
+		 * @param array  $field
+		 *
+		 * @return string $label
+		 */
+		static function label( $field )
+		{
+			if (
+				! isset( $field['name'] ) 
+				OR empty( $field['name'] ) 
+			)
+				return;
+
+			$class = 'rwmb-label';
+			if ( isset( $field['class'] ) )
+			{
+				if ( empty( $field['class'] ) )
+					$class = self::add_cssclass( 'hidden', $class );
+
+				$class = self::add_cssclass( $field['class'], $class );
+			}
+
+			$label = <<<HTML
+<div class="{$class}">
 	<label for="{$field['id']}">{$field['name']}</label>
 </div>
-<div class="rwmb-input">
 HTML;
-			return $html;
+
+			return print $label;
 		}
 
 		/**
@@ -275,11 +352,66 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field )
 		{
-			$html  = ! empty( $field['desc'] ) ? "<p class='description'>{$field['desc']}</p>" : '';
 			// Closes the container
 			$html .= '</div>';
 
 			return $html;
+		}
+
+
+		/**
+		 * Show description HTML markup for fields
+		 * Hooks on the flight into the "rwmb_{$field_id}_end_html" filter before the closing div
+		 * If the 'name' argument is not set, or empty, the div will be hidden
+		 *
+		 * @param string $html
+		 * @param mixed $meta
+		 * @param array $field
+		 *
+		 * @return string
+		 */
+		static function end_html_desc( $html, $field, $meta )
+		{
+			$id		= self::maybe_clean_id( $field['id'] );
+
+			$class	= 'description';
+			if ( isset( $field['desc'] ) AND empty( $field['desc'] ) ) 
+				$class = self::add_cssclass( 'hidden', $class );
+
+			$desc = "<p id='{$id}_description' class='{$class}'>{$field['desc']}</p>";
+
+			return "{$desc}{$html}";
+		}
+
+		/**
+		 * Callback function to add clone buttons on demand
+		 * Hooks on the flight into the "rwmb_{$field_id}_end_html" filter before the closing div
+		 * 
+		 * @param string $end_html
+		 * @param array $field
+		 * @param unknown_type $meta
+		 * @return string $html
+		 */
+		public function add_clone_buttons( $end_html, $field, $meta )
+		{
+			$id = $this->maybe_clean_id( $field['id'] );
+
+			$buttons  = get_submit_button(
+				 __( '+', RWMB_TEXTDOMAIN )
+				,"rwmb-button button-primary add-clone"
+				,"add_{$id}_clone"
+				,false
+				,array( 'rel' => $id )
+			);
+			$buttons .= get_submit_button(
+				 __( '&#8211;', RWMB_TEXTDOMAIN )
+				,"rwmb-button button-secondary delete remove-clone"
+				,"remove_{$id}_clone"
+				,false
+				,array( 'rel' => $id )
+			);
+
+			return "{$buttons}{$end_html}";
 		}
 
 		/**************************************************
@@ -318,9 +450,9 @@ HTML;
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $field['id'];
+				$name = $this->maybe_clean_id( $field['id'] );
 				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
-				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
+				$new  = isset( $_POST[ $name ] ) ? $_POST[ $name ] : ( $field['multiple'] ? array() : '' );
 
 				// Allow field class change the value
 				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
@@ -329,7 +461,7 @@ HTML;
 				// 1st filter applies to all fields with the same type
 				// 2nd filter applies to current field only
 				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
-				$new = apply_filters( "rwmb_{$field['id']}_value", $new, $field, $old );
+				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
 
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
@@ -348,7 +480,7 @@ HTML;
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$name = $field['id'];
+			$name = self::maybe_clean_id( $field['id'] );
 
 			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
@@ -511,7 +643,7 @@ HTML;
 			$saved = false;
 			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) )
+				if ( get_post_meta( $post_id, self::maybe_clean_id( $field['id'] ), ! $field['multiple'] ) )
 				{
 					$saved = true;
 					break;
@@ -530,11 +662,36 @@ HTML;
 		 * @param string $class | Class name - Default: empty
 		 * @return $class
 		 */
-		function add_cssclass( $add, $class = '' ) 
+		public function add_cssclass( $add, $class = '' ) 
 		{
 			$class .= empty( $class ) ? $add : " {$add}";
 
 			return $class;
+		}
+
+		/**
+		 * Helper function for multi/clone field IDs
+		 * 
+		 * @param string $id | field ID
+		 * @return string $id | clean version without the appending "[]" for clone fields OR returns input
+		 */
+		public function maybe_clean_id( $id )
+		{
+			if ( ! strstr( $id, '[]' ) )
+				return $id;
+
+			return str_replace( '[]', '', $id );
+		}
+
+		/**
+		 * Helper function to check for multi/clone field IDs
+		 * 
+		 * @param string $id | field ID
+		 * @return bool | false if no replacement needed
+		 */
+		public function needs_clean_id( $id )
+		{
+			return ! strstr( $id, '[]' ) ? false : true;
 		}
 	}
 }
