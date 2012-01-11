@@ -221,8 +221,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$class = $this->add_cssclass( 'rwmb-clone', $class );
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
-		 		// If the 'name' argument is not set, or empty, the div will be hidden
-				if ( ! isset( $field['name'] ) OR empty( $field['name'] ) )
+		 		// If the 'hidden' argument is set and TRUE, the div will be hidden
+				if ( isset( $field['hidden'] ) AND $field['hidden'] )
 					$class = $this->add_cssclass( 'hidden', $class );
 				echo "<div class='{$class}' rel='{$name}'>{$html}</div>";
 			}
@@ -375,15 +375,10 @@ HTML;
 			$id		= self::maybe_clean_id( $field['id'] );
 
 			$class	= 'description';
-			if ( 
-				! isset( $field['name'] ) 
-				OR empty( $field['name'] )
-			) 
+			if ( isset( $field['desc'] ) AND empty( $field['desc'] ) ) 
 				$class = self::add_cssclass( 'hidden', $class );
 
-			$desc	= '';
-			if ( ! empty( $field['desc'] ) )
-				$desc = "<p id='{$id}_description' class='{$class}'>{$field['desc']}</p>";
+			$desc = "<p id='{$id}_description' class='{$class}'>{$field['desc']}</p>";
 
 			return "{$desc}{$html}";
 		}
