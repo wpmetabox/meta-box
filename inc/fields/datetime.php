@@ -36,8 +36,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name = "name='{$field['id']}";
-			$name .= ( $field['multiple'] || $field['clone'])? "[]'" : "'";
+			$name = "name='{$field['name']}'";
 			$id    = " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
 			$val   = " value='$meta'";
