@@ -58,10 +58,12 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		static function html( $html, $meta, $field ) 
 		{
 			global $wp_version;
+			$name = "name='{$field['id']}";
+			$name .= ( $field['multiple'] || $field['clone'])? "[]'" : "'";
 
 			if ( version_compare( $wp_version, '3.2.1' ) < 1 ) 
 			{
-				return "<textarea class='rwmb-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
+				return "<textarea class='rwmb-wysiwyg theEditor large-text' {$name} id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
 			} 
 			else 
 			{

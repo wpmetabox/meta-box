@@ -28,9 +28,11 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		{
 			if ( empty( $meta ) )
 				$meta = '#';
+			$name = "name='{$field['id']}";
+			$name .= ( $field['multiple'] || $field['clone'])? "[]'" : "'";
 
 			$html = <<<HTML
-<input class="rwmb-color" type="text" name="{$field['id']}" id="{$field['id']}" value="{$meta}" size="8" />
+<input class="rwmb-color" type="text" {$name} id="{$field['id']}" value="{$meta}" size="8" />
 <a href="#" class="rwmb-color-select" rel="{$field['id']}">%s</a>
 <div class="rwmb-color-picker" rel="{$field['id']}"></div>
 HTML;
