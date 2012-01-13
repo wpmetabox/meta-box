@@ -211,7 +211,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						$meta_data = is_array( $meta ) ? $meta[ $i ] : $meta;
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
-						$input_html = self::is_cloneable( $field ) ? '<div class="rwmb-clone">' : '';
+						$input_html = '<div class="rwmb-clone">';
 
 						// Call separated methods for displaying each type of field
 						$input_html .= self::apply_field_class_filters( $field, 'html', '', $meta_data );
