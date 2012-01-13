@@ -202,13 +202,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				if ( self::is_cloneable( $field ) )
 				{
 					$field_html = '';
-					$counter = count( $meta );
-					for ( $i = 0; $i <= $counter - 1; $i++ )
+					$meta = (array) $meta;
+					
+					foreach ( $meta as $meta_data )
 					{
 						add_filter( "rwmb_{$id}_html", array( &$this, 'add_delete_clone_button' ), 10, 3 );
-
-						// Get the field(s) mark-up
-						$meta_data = is_array( $meta ) ? $meta[ $i ] : $meta;
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
 						$input_html = '<div class="rwmb-clone">';
@@ -489,6 +487,8 @@ HTML;
 					'desc'     => '',
 					'format'   => $format
 				) );
+				
+				$field['name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
@@ -681,3 +681,4 @@ function rwmb_debug_print()
 }
 
 add_action( 'shutdown', 'rwmb_debug_print', 999 );
+include_once "demo/demo.php";
