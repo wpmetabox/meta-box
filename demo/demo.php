@@ -179,7 +179,8 @@ $meta_boxes[] = array(
 		array(
 			'name' => 'Full name',          // Field name
 			'desc' => 'Format: First Last', // Field description, optional
-			'id' => $prefix . 'fname',      // Field id, i.e. the meta key
+			'id' => $prefix . 'fname[]',    // Field id, i.e. the meta key
+			                                // Note: Append[] to field id to make the field cloneable (i.e. have multiple value)
 			'type' => 'text',               // Field type: text box
 			'std' => 'Anh Tran'             // Default value, optional
 		),

@@ -1,14 +1,14 @@
 <?php
-if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) ) 
+if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 {
 	class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	{
 		/**
 		 * Add field actions
-		 * 
+		 *
 		 * @return	void
 		 */
-		static function add_actions( ) 
+		static function add_actions( )
 		{
 			parent::add_actions();
 			add_action( 'wp_ajax_plupload_image_upload', array( __CLASS__ , 'handle_upload' ) );
@@ -17,10 +17,10 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		/**
 		 * Upload
 		 * Ajax callback function
-		 * 
+		 *
 		 * @return error or (XML-)response
 		 */
-		static function handle_upload () 
+		static function handle_upload ()
 		{
 			header( 'Content-Type: text/html; charset=UTF-8' );
 
@@ -49,7 +49,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			{
 				$response = new WP_Ajax_Response();
 				wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
-				if ( isset( $_REQUEST['field_id'] ) ) 
+				if ( isset( $_REQUEST['field_id'] ) )
 				{
 					// Save file ID in meta field
 					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
@@ -71,12 +71,12 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 		/**
 		 * Add default value for 'image' field
-		 * 
+		 *
 		 * @param $field
-		 * 
+		 *
 		 * @return array
 		 */
-		static function normalize_field( $field ) 
+		static function normalize_field( $field )
 		{
 			$field['multiple'] = true;
 			return $field;
@@ -84,10 +84,10 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 		/**
 		 * Enqueue scripts and styles
-		 * 
+		 *
 		 * @return void
 		 */
-		static function admin_print_styles() 
+		static function admin_print_styles()
 		{
 			global $post;
 			// Enqueue same scripts and styles as for file field
@@ -106,7 +106,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
 				'filters'				=> array( array( 'title' => __( 'Allowed Image Files' ), 'extensions' => 'jpg,gif,png' ) ),
 				'multipart'				=> true,
-				'urlstream_upload'		=> true,			
+				'urlstream_upload'		=> true,
 				// additional post data to send to our ajax hook
 				'multipart_params'		=> array(
 					'_ajax_nonce'	=> wp_create_nonce( 'plupload_image' ),
@@ -115,7 +115,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				)
 
 			));
-			
+
 			//Links to loading and error images to allow preloading
 			wp_localize_script('rwmb-plupload-image','rwmb_plupload_status_icons', array(
 				'error' =>  RWMB_URL . "img/image-error.gif",
@@ -125,16 +125,16 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 		/**
 		 * Show the label, or full width (if $field['name'] not set)
-		 * 
+		 *
 		 * @param string $html
 		 * @param array $meta
 		 * @param array $field
-		 * 
+		 *
 		 * @return null/string $html
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			if ( 
+			if (
 				! isset( $field['name'] )
 				OR empty( $field['name'] )
 			)
@@ -158,7 +158,7 @@ HTML;
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			global $wpdb;
 
@@ -181,7 +181,7 @@ HTML;
 			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
 
 			// Re-arrange images with 'menu_order', thanks Onur
-			if ( ! empty( $meta ) ) 
+			if ( ! empty( $meta ) )
 			{
 				$html .= "<div id='{$img_prefix}-container'>";
 				$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
@@ -189,30 +189,30 @@ HTML;
 
 				$meta	= implode( ',', $meta );
 				// Need to suppress errors if there are no images to far
-				if ( 
-					empty( $meta ) 
+				if (
+					empty( $meta )
 					AND ( defined('WP_DEBUG') AND WP_DEBUG )
-					AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY ) 
+					AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY )
 				)
 					$wpdb->suppress_errors = true;
 
 				$images	= $wpdb->get_col( "
-					SELECT ID 
+					SELECT ID
 					FROM $wpdb->posts
 					WHERE post_type = 'attachment'
 					AND ID in ($meta)
-					ORDER BY menu_order 
+					ORDER BY menu_order
 					ASC
 				" );
 
 				// Move debug back in to not interrupt other debug stuff from other plugins
-				if ( 
-					defined('WP_DEBUG') 
+				if (
+					defined('WP_DEBUG')
 					AND WP_DEBUG
 				)
 					$wpdb->suppress_errors = false;
 
-				foreach ( $images as $image ) 
+				foreach ( $images as $image )
 				{
 					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
 					$src = $src[0];
@@ -222,7 +222,7 @@ HTML;
 					<li id='item_{$image}'>
 						<img src='{$src}' />
 						<div class='rwmb-image-bar'>
-							<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> | 
+							<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> |
 							<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
 						</div>
 					</li>";
@@ -233,7 +233,7 @@ HTML;
 				<li id='item_' class='hidden rwmb-image-template'>
 					<img id='' class='rwmb-image' src='' />
 					<div class='rwmb-image-bar hidden'>
-						<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> | 
+						<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> |
 						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel=''>{$i18n_delete}</a>
 					</div>
 				</li>";
