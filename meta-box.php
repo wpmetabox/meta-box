@@ -481,10 +481,10 @@ HTML;
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
 
 				$field = wp_parse_args( $field, array(
-					'multiple'=> $multiple,
-					'std'     => $std,
-					'desc'    => '',
-					'format'  => $format
+					'multiple' => $multiple,
+					'std'      => $std,
+					'desc'     => '',
+					'format'   => $format
 				) );
 
 				// Allow field class add/change default field values

@@ -1,14 +1,14 @@
 <?php
-if ( ! class_exists( 'RWMB_Image_Field' ) ) 
+if ( ! class_exists( 'RWMB_Image_Field' ) )
 {
-	class RWMB_Image_Field extends RWMB_File_Field 
+	class RWMB_Image_Field extends RWMB_File_Field
 	{
 		/**
 		 * Enqueue scripts and styles
-		 * 
+		 *
 		 * @return void
 		 */
-		static function admin_print_styles() 
+		static function admin_print_styles()
 		{
 			// Enqueue same scripts and styles as for file field
 			parent::admin_print_styles();
@@ -20,10 +20,10 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 		/**
 		 * Add actions
-		 * 
+		 *
 		 * @return void
 		 */
-		static function add_actions() 
+		static function add_actions()
 		{
 			// Do same actions as file field
 			parent::add_actions();
@@ -34,10 +34,10 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 		/**
 		 * Ajax callback for reordering images
-		 * 
+		 *
 		 * @return void
 		 */
-		static function wp_ajax_reorder_images() 
+		static function wp_ajax_reorder_images()
 		{
 			$post_id  = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
@@ -48,7 +48,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			parse_str( $order, $items );
 			$items = $items['item'];
 			$order = 1;
-			foreach ( $items as $item ) 
+			foreach ( $items as $item )
 			{
 				wp_update_post( array(
 					'ID'          => $item,
@@ -69,12 +69,9 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			global $wpdb;
-
-			if ( ! is_array( $meta ) )
-				$meta = (array) $meta;
 
 			$i18n_msg      = _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_del_file = _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
@@ -87,7 +84,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
 			// Re-arrange images with 'menu_order', thanks Onur
-			if ( ! empty( $meta ) ) 
+			if ( ! empty( $meta ) )
 			{
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
@@ -100,7 +97,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					ORDER BY menu_order ASC
 				" );
 
-				foreach ( $images as $image ) 
+				foreach ( $images as $image )
 				{
 					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
 					$src = $src[0];

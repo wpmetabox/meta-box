@@ -1,25 +1,25 @@
 <?php
 
-if ( ! class_exists( 'RWMB_File_Field' ) ) 
+if ( ! class_exists( 'RWMB_File_Field' ) )
 {
-	class RWMB_File_Field 
+	class RWMB_File_Field
 	{
 		/**
 		 * Enqueue scripts and styles
-		 * 
+		 *
 		 * @return void
 		 */
-		static function admin_print_styles() 
+		static function admin_print_styles()
 		{
 			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL.'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
 		 * Add actions
-		 * 
+		 *
 		 * @return void
 		 */
-		static function add_actions() 
+		static function add_actions()
 		{
 			// Add data encoding type for file uploading
 			add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
@@ -33,7 +33,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function post_edit_form_tag() 
+		static function post_edit_form_tag()
 		{
 			echo ' enctype="multipart/form-data"';
 		}
@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 * @link http://goo.gl/LzYSq
 		 * @return void
 		 */
-		static function wp_ajax_delete_file() 
+		static function wp_ajax_delete_file()
 		{
 			$post_id       = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 			$field_id      = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
@@ -73,9 +73,6 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			if ( ! is_array( $meta ) )
-				$meta = (array) $meta;
-
 			$i18n_msg      = _x( 'Uploaded files', 'file upload', RWMB_TEXTDOMAIN );
 			$i18n_del_file = _x( 'Delete this file', 'file upload', RWMB_TEXTDOMAIN );
 			$i18n_delete   = _x( 'Delete', 'file upload', RWMB_TEXTDOMAIN );
@@ -85,12 +82,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
-			if ( !empty( $meta ) ) 
+			if ( !empty( $meta ) )
 			{
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';
 
-				foreach ( $meta as $attachment_id ) 
+				foreach ( $meta as $attachment_id )
 				{
 					$attachment = wp_get_attachment_link( $attachment_id );
 					$html .= "<li>{$attachment} (<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$attachment_id}'>{$i18n_delete}</a>)</li>";
@@ -118,7 +115,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 * @param int   $post_id
 		 * @param array $field
 		 */
-		static function save( $new, $old, $post_id, $field ) 
+		static function save( $new, $old, $post_id, $field )
 		{
 			$name = $field['id'];
 			if ( empty( $_FILES[ $name ] ) )
