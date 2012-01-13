@@ -179,7 +179,8 @@ $meta_boxes[] = array(
 		array(
 			'name' => 'Full name',          // Field name
 			'desc' => 'Format: First Last', // Field description, optional
-			'id' => $prefix . 'fname[]',    // Field id, i.e. the meta key
+			'id' => $prefix . 'fname',    // Field id, i.e. the meta key
+			'clone' => true,
 			                                // Note: Append[] to field id to make the field cloneable (i.e. have multiple value)
 			'type' => 'text',               // Field type: text box
 			'std' => 'Anh Tran'             // Default value, optional
@@ -188,7 +189,8 @@ $meta_boxes[] = array(
 			'name' => 'DOB',
 			'id' => $prefix . 'dob',
 			'type' => 'date',               // File type: date
-			'format' => 'd MM, yy'          // Date format, default yy-mm-dd. Optional. See: http://goo.gl/po8vf
+			'format' => 'd MM, yy',          // Date format, default yy-mm-dd. Optional. See: http://goo.gl/po8vf
+			'clone' => true
 		),
 		array(
 			'name' => 'Gender',

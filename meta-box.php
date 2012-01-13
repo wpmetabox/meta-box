@@ -175,7 +175,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $this->fields as $field )
 			{
 				$type = $field['type'];
-				$id = self::get_clean_id( $field );
+				$id = $field['id'];
 
 				$meta = get_post_meta( $post->ID, $id, ! $field['multiple'] );
 
@@ -322,7 +322,7 @@ HTML;
 		 */
 		static function end_html( $html, $meta, $field )
 		{
-			$id   = self::get_clean_id( $field );
+			$id   = $field['id'];
 			$desc = !empty( $field[ 'desc' ] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 
 			$buttons = '';
@@ -355,7 +355,7 @@ HTML;
 		 */
 		static function add_delete_clone_button( $html, $field, $meta_data )
 		{
-			$id = self::get_clean_id( $field );
+			$id = $field['id'];
 
 			$button = get_submit_button(
 				__( '&#8211;', RWMB_TEXTDOMAIN ),
@@ -404,7 +404,7 @@ HTML;
 
 			foreach ( $this->fields as $field )
 			{
-				$name = self::get_clean_id( $field );
+				$name = $field['id'];
 				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
 				$new  = isset( $_POST[ $name ] ) ? $_POST[ $name ] : ( $field['multiple'] ? array() : '' );
 
@@ -434,7 +434,7 @@ HTML;
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$name = self::get_clean_id( $field );
+			$name = $field['id'];
 
 			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
@@ -476,12 +476,15 @@ HTML;
 			// Set default values for fields
 			foreach ( $meta_box['fields'] as &$field )
 			{
-				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
+				$clone 	  = (isset($field['clone']) ? $field['clone'] : false);
+				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
 				$std      = $multiple ? array() : '';
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
+				
 
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
+					'clone' => $clone,
 					'std'      => $std,
 					'desc'     => '',
 					'format'   => $format
@@ -597,7 +600,7 @@ HTML;
 			$saved = false;
 			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, self::get_clean_id( $field['id'] ), ! $field['multiple'] ) )
+				if ( get_post_meta( $post_id, $field['id'], ! $field['multiple'] ) )
 				{
 					$saved = true;
 					break;
@@ -624,17 +627,6 @@ HTML;
 			return $class;
 		}
 
-		/**
-		 * Helper function for multi/clone field IDs
-		 *
-		 * @param  array $field
-		 *
-		 * @return string Clean field ID without the trailing "[]"
-		 */
-		static function get_clean_id( $field )
-		{
-			return str_replace( '[]', '', $field['id'] );
-		}
 
 		/**
 		 * Helper function to check for multi/clone field IDs
@@ -645,7 +637,7 @@ HTML;
 		 */
 		static function is_cloneable( $field )
 		{
-			return false !== strpos( $field['id'], '[]' );
+			return $field['clone'];
 		}
 	}
 }

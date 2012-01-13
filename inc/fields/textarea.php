@@ -15,7 +15,8 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 */
 		static function html( $html, $meta, $field ) 
 		{
-			$name  = " name='{$field['id']}'";
+			$name = "name='{$field['id']}";
+			$name .= ( $field['multiple'] || $field['clone'])? "[]'" : "'";
 			$id    = " id='{$field['id']}'";
 			$html .= "<textarea class='rwmb-textarea large-text'{$name}{$id} cols='60' rows='10'>{$meta}</textarea>";
 
