@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
 	// Add more clones
 	$('.add-clone').click(function () {
 		var $input_last = $(this).parents('.rwmb-input').find('.rwmb-clone:last'),
-			$clone      = $input_last.clone();
+			$clone      = $input_last.clone(true);
 
 		$clone.insertAfter($input_last);
 
