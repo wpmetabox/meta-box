@@ -30,7 +30,7 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$id	     = " id='{$field['id']}'";
-			$name	 = "name='{$field['name']}'";
+			$name	 = "name='{$field['field_name']}'";
 			$val     = " value='{$meta}'";
 			$for     = " for='{$field['id']}'";
 			$format	 = " rel='{$field['format']}'";

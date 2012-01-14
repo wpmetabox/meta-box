@@ -28,7 +28,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$name = "name='{$field['name']}'";
+			$name = "name='{$field['field_name']}'";
 			$id = "id='{$field['id']}'";
 			$name .= $field['multiple'] ? " multiple='multiple'" : "" ;
 			$html  = "<select class='rwmb-select'{$name} {$id} >";

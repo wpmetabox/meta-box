@@ -82,34 +82,23 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
+			//Uploaded images
+			$html .= "<h4>{$i18n_msg}</h4>";
+			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
-			// Re-arrange images with 'menu_order', thanks Onur
-			if ( ! empty( $meta ) )
+			foreach ( $meta as $image )
 			{
-				$html .= "<h4>{$i18n_msg}</h4>";
-				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
+				$src = wp_get_attachment_image_src( $image, 'thumbnail' );
+				$src = $src[0];
 
-				$meta = implode( ',', $meta );
-				$images = $wpdb->get_col( "
-					SELECT ID FROM $wpdb->posts
-					WHERE post_type = 'attachment'
-					AND ID in ($meta)
-					ORDER BY menu_order ASC
-				" );
-
-				foreach ( $images as $image )
-				{
-					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src = $src[0];
-
-					$html .= "<li id='item_{$image}'>
-						<img src='{$src}' />
-						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-					</li>";
-				}
-
-				$html .= '</ul>';
+				$html .= "<li id='item_{$image}'>
+					<img src='{$src}' />
+					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
+				</li>";
 			}
+
+			$html .= '</ul>';
+			
 
 			// Show form upload
 			$html .= "
@@ -120,6 +109,47 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			</div>";
 
 			return $html;
+		}
+		
+		/**
+		 * Standard meta retrieval
+		 *
+		 * @param mixed 	$meta
+		 * @param int		$post_id
+		 * @param array  	$field
+		 * @param bool  	$saved
+		 *
+		 * @return mixed
+		 */
+		static function meta( $meta, $post_id, $saved, $field )
+		{		
+			global $wpdb;
+			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
+			if(empty($meta))
+				return array();
+			$meta = implode( ',' , $meta );
+			// Need to suppress errors if there are no images to far
+			if (
+				empty( $meta )
+				AND ( defined('WP_DEBUG') AND WP_DEBUG )
+				AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY )
+			)
+			$wpdb->suppress_errors = true;
+			// Re-arrange images with 'menu_order', thanks Onur
+			$meta = $wpdb->get_col( "
+				SELECT ID FROM $wpdb->posts
+				WHERE post_type = 'attachment'
+				AND ID in ($meta)
+				ORDER BY menu_order ASC
+			" );
+			
+			// Move debug back in to not interrupt other debug stuff from other plugins
+			if (
+				defined('WP_DEBUG')
+				AND WP_DEBUG
+			)
+			$wpdb->suppress_errors = false;
+			return (array) $meta;
 		}
 	}
 }

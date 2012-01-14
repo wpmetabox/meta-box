@@ -181,6 +181,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 				$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+				
+				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
 
 				// Escape attributes for non-wysiwyg fields
 				if ( 'wysiwyg' !== $type )
@@ -307,6 +309,25 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 HTML;
 
 			return $html;
+		}
+		
+		/**
+		 * Standard meta retrieval
+		 *
+		 * @param mixed 	$meta
+		 * @param int		$post_id
+		 * @param array  	$field
+		 * @param bool  	$saved
+		 *
+		 * @return mixed
+		 */
+		static function meta( $meta, $post_id, $saved, $field )
+		{		
+			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
+			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			
+			return $meta;
 		}
 
 		/**
@@ -488,7 +509,7 @@ HTML;
 					'format'   => $format
 				) );
 				
-				$field['name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
+				$field['field_name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
