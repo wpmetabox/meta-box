@@ -171,6 +171,7 @@ HTML;
 			$i18n_edit		= _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_title		= _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_more		= _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
+
 			// Filter to change the drag & drop box background string
 			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', RWMB_TEXTDOMAIN ) );
 			$i18n_select	= _x( 'Select Files', RWMB_TEXTDOMAIN );
@@ -180,65 +181,37 @@ HTML;
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
 
-			// Re-arrange images with 'menu_order', thanks Onur
-			if ( ! empty( $meta ) )
+			//Uploaded images
+			$html .= "<div id='{$img_prefix}-container'>";
+			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
+			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
+			
+			foreach ( $meta as $image )
 			{
-				$html .= "<div id='{$img_prefix}-container'>";
-				$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
-				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-
-				$meta	= implode( ',', $meta );
-				// Need to suppress errors if there are no images to far
-				if (
-					empty( $meta )
-					AND ( defined('WP_DEBUG') AND WP_DEBUG )
-					AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY )
-				)
-					$wpdb->suppress_errors = true;
-
-				$images	= $wpdb->get_col( "
-					SELECT ID
-					FROM $wpdb->posts
-					WHERE post_type = 'attachment'
-					AND ID in ($meta)
-					ORDER BY menu_order
-					ASC
-				" );
-
-				// Move debug back in to not interrupt other debug stuff from other plugins
-				if (
-					defined('WP_DEBUG')
-					AND WP_DEBUG
-				)
-					$wpdb->suppress_errors = false;
-
-				foreach ( $images as $image )
-				{
-					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src = $src[0];
-					$link = get_edit_post_link( $image );
-
-					$html .= "
-					<li id='item_{$image}'>
-						<img src='{$src}' />
-						<div class='rwmb-image-bar'>
-							<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> |
-							<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-						</div>
-					</li>";
-				}
-
+				$src = wp_get_attachment_image_src( $image, 'thumbnail' );
+				$src = $src[0];
+				$link = get_edit_post_link( $image );
 
 				$html .= "
-				<li id='item_' class='hidden rwmb-image-template'>
-					<img id='' class='rwmb-image' src='' />
-					<div class='rwmb-image-bar hidden'>
-						<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> |
-						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel=''>{$i18n_delete}</a>
+				<li id='item_{$image}'>
+					<img src='{$src}' />
+					<div class='rwmb-image-bar'>
+						<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> |
+						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
 					</div>
 				</li>";
-				$html .= '</ul>';
 			}
+			//Template image node
+			$html .= "
+			<li id='item_' class='hidden rwmb-image-template'>
+				<img id='' class='rwmb-image' src='' />
+				<div class='rwmb-image-bar hidden'>
+					<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> |
+					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel=''>{$i18n_delete}</a>
+				</div>
+			</li>";
+			$html .= '</ul>';
+			
 
 			// Show form upload
 			$html .= "
