@@ -54,8 +54,10 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 				$field['options']['type'] = 'checkbox_list';
 
 			// If field is shown as checkbox list, add multiple value
-			if ( 'checkbox_list' == $field['options']['type'] ||  'checkbox_tree' == $field['options']['type'])
+			if ( 'checkbox_list' == $field['options']['type'] ||  'checkbox_tree' == $field['options']['type']){
 				$field['multiple'] = true;
+				$field['field_name'] = $field['field_name'] . '[]'; 
+			}
 
 			if('checkbox_tree' == $field['options']['type'] && !isset( $field['options']['args']['parent'] ) )
 				$field['options']['args']['parent'] = 0;
@@ -86,7 +88,7 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 			{
 				foreach ( $terms as $term )
 				{
-					$html .= "<input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . " /> {$term->name}<br/>";
+					$html .= "<input type='checkbox' name='{$field['field_name']}' value='{$term->slug}'" . checked( in_array( $term->slug, $meta ), true, false ) . " /> {$term->name}<br/>";
 				}
 			}
 			//Checkbox Tree
@@ -97,10 +99,11 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 			// Select
 			else
 			{
-				$html .= "<select name='{$field['id']}" . ( $field['multiple'] ? "[]' multiple='multiple' style='height: auto;'" : "'" ) . ">";
+				
+				$html .= "<select name='{$field['field_name']}'" . ( $field['multiple'] ? " multiple='multiple' style='height: auto;'" : "'" ) . ">";
 				foreach ( $terms as $term )
 				{
-					$html .= "<option value='{$term->term_id}'" . selected( in_array( $term->term_id, $meta ), true, false ) . ">{$term->name}</option>";
+					$html .= "<option value='{$term->slug}'" . selected( in_array( $term->slug, $meta ), true, false ) . ">{$term->name}</option>";
 				}
 				$html .= "</select>";
 			}
@@ -129,9 +132,9 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 				$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
 				foreach ( $terms as $term )
 				{
-					$html .= "<li> <input type='checkbox' name='{$field['id']}[]' value='{$term->term_id}'" . checked( in_array( $term->term_id, $meta ), true, false ) . disabled($active,false,false) . " /> {$term->name}";
+					$html .= "<li> <input type='checkbox' name='{$field['field_name']}' value='{$term->slug}'" . checked( in_array( $term->slug, $meta ), true, false ) . disabled($active,false,false) . " /> {$term->name}";
 					$field['options']['args']['parent'] = $term->term_id;
-					$html .= self::walk_checkbox_tree($meta, $field, (in_array( $term->term_id, $meta))) . "</li>";
+					$html .= self::walk_checkbox_tree($meta, $field, (in_array( $term->slug, $meta))) . "</li>";
 				}
 				$html .= "</ul>";
 			}
@@ -147,7 +150,7 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			wp_set_post_terms( $post_id, $new, $field['options']['taxonomy'] );
+			wp_set_object_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
 		
 		/**
@@ -162,9 +165,11 @@ if ( !class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
 		{
+			
 			$options = $field['options'];
-			$meta = wp_get_post_terms( $post_id, $options['taxonomy'], array( 'fields' => 'ids' ) );
+			$meta = wp_get_post_terms( $post_id, $options['taxonomy'] );
 			$meta = is_array( $meta ) ? $meta : ( array ) $meta;
+			$meta = wp_list_pluck($meta, 'slug');
 			return $meta;
 		}
 	}
