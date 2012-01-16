@@ -176,17 +176,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				$type = $field['type'];
 				$id = $field['id'];
-
-				$meta = get_post_meta( $post->ID, $id, ! $field['multiple'] );
-
-				// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-				$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-				
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
-
-				// Escape attributes for non-wysiwyg fields
-				if ( 'wysiwyg' !== $type )
-					$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
 				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
 
@@ -204,8 +194,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				if ( self::is_cloneable( $field ) )
 				{
 					$field_html = '';
+
 					$meta = (array) $meta;
-					
 					foreach ( $meta as $meta_data )
 					{
 						add_filter( "rwmb_{$id}_html", array( &$this, 'add_delete_clone_button' ), 10, 3 );
@@ -324,8 +314,13 @@ HTML;
 		static function meta( $meta, $post_id, $saved, $field )
 		{		
 			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+			
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+
+			// Escape attributes for non-wysiwyg fields
+			if ( 'wysiwyg' !==  $field['type'] )
+				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 			
 			return $meta;
 		}
@@ -702,4 +697,3 @@ function rwmb_debug_print()
 }
 
 add_action( 'shutdown', 'rwmb_debug_print', 999 );
-include_once "demo/demo.php";
