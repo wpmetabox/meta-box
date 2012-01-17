@@ -291,9 +291,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$class = 'rwmb-label';
 			if ( ! empty( $field['class'] ) )
 				$class = self::add_cssclass( $field['class'], $class );
+
+			if ( empty ( $field['name'] ) OR ! isset( $field['name'] ) )
+				return $html = '<div class="rwmb-input">';
+
 			$html = <<<HTML
 <div class="{$class}">
-	<label for="{$field[ 'id' ]}">{$field[ 'name' ]}</label>
+	<label for="{$field['id']}">{$field['name']}</label>
 </div>
 <div class="rwmb-input">
 HTML;
