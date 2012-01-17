@@ -337,7 +337,6 @@ HTML;
 		static function end_html( $html, $meta, $field )
 		{
 			$id   = $field['id'];
-			$desc = !empty( $field[ 'desc' ] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 
 			$buttons = '';
 			if ( self::is_cloneable( $field ) )
@@ -351,8 +350,10 @@ HTML;
 				);
 			}
 
+			$desc = ! empty( $field[ 'desc' ] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
+
 			// Closes the container
-			$html = "{$desc}{$buttons}</div>";
+			$html = "{$buttons}{$desc}</div>";
 
 			return $html;
 		}

@@ -6,11 +6,11 @@ jQuery( document ).ready( function ($)
 		event.preventDefault();
 
 		var 
-			$input_last = $(this).parents('.rwmb-input').find('.rwmb-clone:last'),
-			$clone      = $input_last.clone(true)
+			$input_last = $( this ).parents( '.rwmb-input' ).find( '.rwmb-clone:last' ),
+			$clone      = $input_last.clone( true )
 		;
 
-		$clone.insertAfter($input_last);
+		$clone.insertAfter( $input_last );
 	} );
 
 	// Remove clones
