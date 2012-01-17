@@ -686,7 +686,7 @@ function rwmb_debug_print()
 	if ( ! $rwmb_debug || ( is_user_logged_in() && is_user_admin() ) )
 		return;
 
-	$html  = '<h3>RW_Meta_Box Debug:</h3><pre>';
+	$html  = '<h3>' . __( 'RW_Meta_Box Debug:', RWMB_TEXTDOMAIN ) . '</h3><pre>';
 	foreach ( $rwmb_debug as $debug )
 	{
 		$html .= "{$debug}<hr />";
