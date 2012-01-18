@@ -21,6 +21,16 @@
 .rwmb-textarea {
 	resize: vertical;
 }
+.rwmb-clone {
+	min-height: 24px;
+}
+	.rwmb-clone:nth-child(2n+0) {
+		background: #ddd;
+	}
+	.rwmb-clone > input[type="radio"],
+	.rwmb-clone > input[type="checkbox"] {
+		margin: 4px 0 0 4px;
+	}
 .rwmb-button {
 	display: inline;
 	float: right;

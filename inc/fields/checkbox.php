@@ -4,21 +4,6 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 {
 	class RWMB_Checkbox_Field 
 	{
-
-		/**
-		 * Get field end HTML
-		 *
-		 * @param string $end_html
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
-		static function end_html( $end_html, $meta, $field )
-		{
-			return " <span class='description'>{$field['desc']}</span></div>";
-		}
-
 		/**
 		 * Get field HTML
 		 *
