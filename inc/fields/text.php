@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		static function html( $html, $meta, $field ) 
 		{
 			$std		 = isset( $field['disabled'] ) ? $field['disabled'] : false;
-			$disabled	 = disabled( $std, false, false );
+			$disabled	 = disabled( $std, true, false );
 
 			$name		 = "name='{$field['field_name']}'";
 			$id			 = " id='{$field['id']}'";
