@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		static function html( $html, $meta, $field ) 
 		{
 			$std		 = isset( $field['disabled'] ) ? $field['disabled'] : false;
-			$disabled	 = disabled( $std, false, false );
+			$disabled	 = disabled( $std, true, false );
 
 			$cols	 = isset( $field['cols'] ) ? $field['cols'] : "60";
 			$rows	 = isset( $field['rows'] ) ? $field['rows'] : "10";
