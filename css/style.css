@@ -24,12 +24,18 @@
 .rwmb-clone {
 	min-height: 24px;
 }
-	.rwmb-clone:nth-child(2n+0) {
-		background: #ddd;
-	}
 	.rwmb-clone > input[type="radio"],
 	.rwmb-clone > input[type="checkbox"] {
-		margin: 4px 0 0 4px;
+		margin: 6px 0 0 4px;
+	}
+	/* fix width to not overlap button for cloned sliders */
+	.rwmb-clone .rwmb-slider {
+		width: 80%;
+		margin: 6px 0 0;
+	}
+	/* fix buttons after sliders */
+	.clearfix + .rwmb-button {
+		margin-top: -16px;
 	}
 .rwmb-button {
 	display: inline;
