@@ -1,11 +1,19 @@
-jQuery(document).ready(function($) {
-	$('.rwmb-datetime').each(function(){
-		var $this = $(this),
-			format = $this.attr('rel');
+jQuery( document ).ready( function($) 
+{
+	$( '.rwmb-datetime' ).on( 
+		 'focusin'
+		,function( handler )
+		{
+			var 
+				$this = $( this ),
+				format = $this.attr( 'rel' )
+			;
 
-		$this.datetimepicker({
-			showSecond: true,
-			timeFormat: format
-		});
-	});
-});
+			$this.datetimepicker(
+			{
+				showSecond:	true,
+				timeFormat:	format
+			} );
+		}
+	);
+} );
