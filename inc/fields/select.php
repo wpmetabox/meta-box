@@ -28,16 +28,20 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$name = "name='{$field['field_name']}'";
-			$id = "id='{$field['id']}'";
-			$name .= $field['multiple'] ? " multiple='multiple'" : "" ;
-			$html  = "<select class='rwmb-select'{$name} {$id} >";
+			$std		 = isset( $field['disabled'] ) ? $field['disabled'] : false;
+			$disabled	 = disabled( $std, false, false );
+
+			$id		 = " id='{$field['id']}'";
+			$name	 = " name='{$field['field_name']}'";
+			$name	.= $field['multiple'] ? " multiple='multiple'" : "" ;
+
+			$html	 = "<select class='rwmb-select'{$name}{$id}{$disabled}>";
 			foreach ( $field['options'] as $key => $value ) 
 			{
-				$selected = selected( in_array( $key, $meta ), true, false );
-				$html    .= "<option value='{$key}'{$selected}>{$value}</option>";
+				$selected	 = selected( in_array( $key, $meta ), true, false );
+				$html		.= "<option value='{$key}'{$selected}>{$value}</option>";
 			}
-			$html .= "</select>";
+			$html	.= "</select>";
 
 			return $html;
 		}
