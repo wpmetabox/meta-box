@@ -22,10 +22,10 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 
 			foreach ( $field['options'] as $key => $value ) 
 			{
-				$checked = checked( in_array( $key, $meta ), true, false );
-				$name = "name='{$field['field_name']}'";
-				$val     = " value='{$key}'";
-				$html[]  = "<input type='checkbox' class='rwmb-checkbox-list'{$name}{$val}{$checked} /> {$value}";
+				$checked	= checked( in_array( $key, $meta ), true, false );
+				$name		= "name='{$field['field_name']}'";
+				$val		= " value='{$key}'";
+				$html[]		= "<input type='checkbox' class='rwmb-checkbox-list'{$name}{$val}{$checked} /> {$value}";
 			}
 			return implode( '<br />', $html );
 		}
