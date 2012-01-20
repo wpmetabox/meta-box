@@ -2,7 +2,7 @@
 /*
 Plugin Name: Meta Box
 Plugin URI: http://www.deluxeblogtips.com/meta-box-script-for-wordpress/
-Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WordPress 3.0. Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, file, image, date, time, color
+Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0
 Version: 4.1
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
@@ -35,6 +35,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		require_once $file;
 	}
 
+	/**
+	 * A class to rapid develop meta boxes for custom & built in content types
+	 * Piggybacks on WordPress
+	 * 
+	 * @author Rilwis a.k.a. 
+	 * @author Co-Authors @see https://github.com/rilwis/meta-box/blob/master/readme.md
+	 * @license GNU GPL2
+	 * @package RW Meta Box
+	 */
 	class RW_Meta_Box
 	{
 		/**
@@ -149,7 +158,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
-				add_meta_box( $this->meta_box['id'], $this->meta_box['title'], array( &$this, 'show' ), $page, $this->meta_box['context'], $this->meta_box['priority'] );
+				add_meta_box( 
+					$this->meta_box['id'],
+					$this->meta_box['title'],
+					array( &$this, 'show' ),
+					$page,
+					$this->meta_box['context'],
+					$this->meta_box['priority'] 
+				);
 			}
 		}
 
@@ -653,7 +669,7 @@ HTML;
 		 * Helper function to check for multi/clone field IDs
 		 *
 		 * @param  array $field
-		 *
+		 * 
 		 * @return bool False if no cloneable
 		 */
 		static function is_cloneable( $field )
