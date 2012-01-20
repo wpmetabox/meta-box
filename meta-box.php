@@ -7,6 +7,13 @@ Version: 4.1
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 */
+// Prevent loading this file directly - Busted!
+if( ! class_exists('WP') ) 
+{
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit;
+}
 
 // Meta Box Class
 if ( ! class_exists( 'RW_Meta_Box' ) )
