@@ -107,7 +107,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			}
 
 			// Add meta box
-			add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes' ) );
+			foreach ( $this->meta_box['pages'] as $page )
+				add_action( "add_meta_boxes_{$page}", array( &$this, 'add_meta_boxes' ) );
 
 			// Show hidden fields
 			add_action( 'dbx_post_sidebar', array( __CLASS__, 'dbx_post_sidebar' ) );
