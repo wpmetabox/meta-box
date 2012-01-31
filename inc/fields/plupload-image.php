@@ -112,7 +112,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'url'					=> admin_url('admin-ajax.php'),
 				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
 				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters'				=> array( array( 'title' => __( 'Allowed Image Files' ), 'extensions' => 'jpg,gif,png' ) ),
+				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', RWMB_TEXTDOMAIN ), 'extensions' => 'jpg,gif,png' ) ),
 				'multipart'				=> true,
 				'urlstream_upload'		=> true,
 				// additional post data to send to our ajax hook

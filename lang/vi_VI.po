@@ -9,12 +9,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2;_x:2c,1\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-Country: VIET NAM\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
@@ -32,83 +31,83 @@ msgstr ""
 
 #: ../inc/fields/color.php:45
 msgid "Select a color"
-msgstr "Seleziona un colore"
+msgstr "Chọn một màu"
 
 #: ../inc/fields/file.php:69
 msgid "Error: Cannot delete file"
-msgstr "Errore: impossibile cancellare il file"
+msgstr "Lỗi: Không xóa được file"
 
 #: ../inc/fields/file.php:83
 msgctxt "file upload"
 msgid "Uploaded files"
-msgstr "Carica i files"
+msgstr "Các file đã tải lên"
 
 #: ../inc/fields/file.php:84
 msgctxt "file upload"
 msgid "Delete this file"
-msgstr "Elimina file"
+msgstr "Xóa file"
 
 #: ../inc/fields/file.php:85
 msgctxt "file upload"
 msgid "Delete"
-msgstr "Elimina"
+msgstr "Xóa"
 
 #: ../inc/fields/file.php:86
 msgctxt "file upload"
 msgid "Upload files"
-msgstr "Carica files"
+msgstr "Tải file"
 
 #: ../inc/fields/file.php:87
 msgctxt "file upload"
 msgid "Add another file"
-msgstr "Aggiungi altro file"
+msgstr "Thêm file mới"
 
 #: ../inc/fields/image.php:68
 msgid "Order saved"
-msgstr "Ordine salvato"
+msgstr "Đã lưu thứ tự"
 
 #: ../inc/fields/image.php:84
 #: ../inc/fields/plupload-image.php:194
 msgctxt "image upload"
 msgid "Uploaded files"
-msgstr "Files caricati"
+msgstr "Các file đã tải lên"
 
 #: ../inc/fields/image.php:85
 #: ../inc/fields/plupload-image.php:195
 msgctxt "image upload"
 msgid "Delete this file"
-msgstr "Elimina file"
+msgstr "Xóa file"
 
 #: ../inc/fields/image.php:86
 #: ../inc/fields/plupload-image.php:196
 msgctxt "image upload"
 msgid "Delete"
-msgstr "Cancella"
+msgstr "Xóa"
 
 #: ../inc/fields/image.php:87
 #: ../inc/fields/plupload-image.php:198
 msgctxt "image upload"
 msgid "Upload files"
-msgstr "Carica files"
+msgstr "Tải file"
 
 #: ../inc/fields/image.php:88
 #: ../inc/fields/plupload-image.php:199
 msgctxt "image upload"
 msgid "Add another file"
-msgstr "Aggiungi altro file"
+msgstr "Thêm file mới"
 
 #: ../inc/fields/plupload-image.php:115
 msgctxt "image upload"
 msgid "Allowed Image Files"
-msgstr ""
+msgstr "Các file hình ảnh được cho phép"
 
 #: ../inc/fields/plupload-image.php:197
 msgctxt "image upload"
 msgid "Edit"
-msgstr ""
+msgstr "Sửa"
 
 #: ../inc/fields/plupload-image.php:202
 msgctxt "image upload"
 msgid "Drop images here"
-msgstr ""
+msgstr "Kéo thả hình ảnh vào đây"
 

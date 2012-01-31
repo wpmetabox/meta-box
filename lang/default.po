@@ -1,16 +1,15 @@
-<<<<<<< HEAD
 msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-07 12:52+0700\n"
-"PO-Revision-Date: 2011-10-07 12:52+0700\n"
-"Last-Translator: name <email@domain.com>\n"
+"POT-Creation-Date: 2012-01-31 23:34+0700\n"
+"PO-Revision-Date: 2012-01-31 23:34+0700\n"
+"Last-Translator: Rilwis <rilwis@gmail.com>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: VIET NAM\n"
@@ -18,125 +17,97 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../inc/fields/color.php:30
+#: ../meta-box.php:373
+msgid "+"
+msgstr ""
+
+#: ../meta-box.php:404
+msgid "&#8211;"
+msgstr ""
+
+#: ../meta-box.php:718
+msgid "RW_Meta_Box Debug:"
+msgstr ""
+
+#: ../inc/fields/color.php:45
 msgid "Select a color"
 msgstr ""
 
-#: ../inc/fields/file.php:49
-msgid "Cannot delete file. Something's wrong."
-msgstr ""
-
-#: ../inc/fields/file.php:67
-msgid "Uploaded files"
-msgstr ""
-
-#: ../inc/fields/file.php:71
-#: ../inc/fields/image.php:88
-msgid "Delete"
-msgstr ""
-
-#: ../inc/fields/file.php:78
-msgid "Upload new files"
-msgstr ""
-
-#: ../inc/fields/file.php:81
-#: ../inc/fields/image.php:99
-msgid "Add more file"
-msgstr ""
-
-#: ../inc/fields/image.php:72
-msgid "Uploaded images"
-msgstr ""
-
-#: ../inc/fields/image.php:88
-msgid "Delete this image"
-msgstr ""
-
-#: ../inc/fields/image.php:96
-msgid "Upload new images"
-msgstr ""
-
-=======
-msgid ""
-msgstr ""
-"Project-Id-Version: Meta Box Script For WordPress\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-09 01:59+0100\n"
-"PO-Revision-Date: 2011-12-09 01:59+0100\n"
-"Last-Translator: Franz Josef Kaiser <franzjosef@unserkaiser.at>\n"
-"Language-Team: Rilwis <rilwis@gmail.com>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2;_x:2c,1\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ../inc/fields\n"
-
-#: ../inc/fields/color.php:36
-msgid "Select a color"
-msgstr ""
-
-#: ../inc/fields/file.php:65
+#: ../inc/fields/file.php:69
 msgid "Error: Cannot delete file"
-msgstr ""
-
-#: ../inc/fields/file.php:82
-msgctxt "file upload"
-msgid "Uploaded files"
 msgstr ""
 
 #: ../inc/fields/file.php:83
 msgctxt "file upload"
-msgid "Delete this file"
+msgid "Uploaded files"
 msgstr ""
 
 #: ../inc/fields/file.php:84
 msgctxt "file upload"
-msgid "Delete"
+msgid "Delete this file"
 msgstr ""
 
 #: ../inc/fields/file.php:85
 msgctxt "file upload"
-msgid "Upload files"
+msgid "Delete"
 msgstr ""
 
 #: ../inc/fields/file.php:86
 msgctxt "file upload"
+msgid "Upload files"
+msgstr ""
+
+#: ../inc/fields/file.php:87
+msgctxt "file upload"
 msgid "Add another file"
 msgstr ""
 
-#: ../inc/fields/image.php:60
+#: ../inc/fields/image.php:68
 msgid "Order saved"
 msgstr ""
 
-#: ../inc/fields/image.php:78
+#: ../inc/fields/image.php:84
+#: ../inc/fields/plupload-image.php:194
 msgctxt "image upload"
 msgid "Uploaded files"
 msgstr ""
 
-#: ../inc/fields/image.php:79
+#: ../inc/fields/image.php:85
+#: ../inc/fields/plupload-image.php:195
 msgctxt "image upload"
 msgid "Delete this file"
 msgstr ""
 
-#: ../inc/fields/image.php:80
+#: ../inc/fields/image.php:86
+#: ../inc/fields/plupload-image.php:196
 msgctxt "image upload"
 msgid "Delete"
 msgstr ""
 
-#: ../inc/fields/image.php:81
+#: ../inc/fields/image.php:87
+#: ../inc/fields/plupload-image.php:198
 msgctxt "image upload"
 msgid "Upload files"
 msgstr ""
 
-#: ../inc/fields/image.php:82
+#: ../inc/fields/image.php:88
+#: ../inc/fields/plupload-image.php:199
 msgctxt "image upload"
 msgid "Add another file"
 msgstr ""
 
->>>>>>> 9de8831a845c63c7c11e0980b93f0e78a68175e2
+#: ../inc/fields/plupload-image.php:115
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:197
+msgctxt "image upload"
+msgid "Edit"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:202
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr ""
+

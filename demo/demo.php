@@ -155,7 +155,7 @@ $meta_boxes[] = array(
 			'name'	=> 'Your thoughts about Deluxe Blog Tips',
 			'id'	=> "{$prefix}thoughts",
 			'type'	=> 'wysiwyg',
-			'std'	=> sprintf( "%1$sIt's great!", '<b>', '</b>' ),
+			'std'	=> sprintf( "%1\$sIt's great!", '<b>', '</b>' ),
 			'desc'	=> 'Do you think so?'
 		),
 		// FILE UPLOAD
