@@ -8,7 +8,7 @@ Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 */
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -19,7 +19,7 @@ if( ! class_exists('WP') )
 if ( ! class_exists( 'RW_Meta_Box' ) )
 {
 	// Script version, used to add version for scripts and styles
-	define( 'RWMB_VER', '4.0.2' );
+	define( 'RWMB_VER', '4.1' );
 
 	// Define plugin URLs, for fast enqueuing scripts and styles
 	if ( ! defined( 'RWMB_URL' ) )
@@ -45,8 +45,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 	/**
 	 * A class to rapid develop meta boxes for custom & built in content types
 	 * Piggybacks on WordPress
-	 * 
-	 * @author Rilwis a.k.a. 
+	 *
+	 * @author Rilwis a.k.a.
 	 * @author Co-Authors @see https://github.com/rilwis/meta-box/blob/master/readme.md
 	 * @license GNU GPL2
 	 * @package RW Meta Box
@@ -91,7 +91,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
-			add_action( 'admin_init', array( __CLASS__, 'load_textdomain' ) );
+			// Call directly because we define meta boxes in 'admin_init' hook (@see demo/demo.php)
+			// So the function won't run if we use 'add_action' to load textdomain here
+			self::load_textdomain();
 
 			// Enqueue common styles and scripts
 			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
@@ -133,13 +135,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		static function load_textdomain()
 		{
 			// l18n translation files
-			$dir       = basename( RWMB_DIR );
-			$dir       = "{$dir}/lang";
-			$domain    = RWMB_TEXTDOMAIN;
-			$l18n_file = "{$dir}/{$domain}-{$GLOBALS['locale']}.mo";
+			$locale = get_locale();
+			$dir    = trailingslashit( RWMB_DIR . 'lang' );
+			$mofile = "{$dir}{$locale}.mo";
 
 			// In themes/plugins/mu-plugins directory
-			load_textdomain( $domain, $l18n_file );
+			load_textdomain( RWMB_TEXTDOMAIN, $mofile );
 		}
 
 		/**
@@ -166,13 +167,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
-				add_meta_box( 
+				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
 					array( &$this, 'show' ),
 					$page,
 					$this->meta_box['context'],
-					$this->meta_box['priority'] 
+					$this->meta_box['priority']
 				);
 			}
 		}
@@ -328,7 +329,7 @@ HTML;
 
 			return $html;
 		}
-		
+
 		/**
 		 * Standard meta retrieval
 		 *
@@ -340,16 +341,16 @@ HTML;
 		 * @return mixed
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
-		{		
+		{
 			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
-			
+
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			// Escape attributes for non-wysiwyg fields
 			if ( 'wysiwyg' !==  $field['type'] )
 				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-			
+
 			return $meta;
 		}
 
@@ -523,7 +524,7 @@ HTML;
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
 				$std      = $multiple ? array() : '';
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
-				
+
 
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
@@ -532,7 +533,7 @@ HTML;
 					'desc'     => '',
 					'format'   => $format
 				) );
-				
+
 				$field['field_name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
 
 				// Allow field class add/change default field values
@@ -677,7 +678,7 @@ HTML;
 		 * Helper function to check for multi/clone field IDs
 		 *
 		 * @param  array $field
-		 * 
+		 *
 		 * @return bool False if no cloneable
 		 */
 		static function is_cloneable( $field )
