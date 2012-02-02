@@ -1,24 +1,17 @@
-/* CSS Document */
 div.rwmb-drag-drop {
-	border: 4px dashed #DDD;
-	height: 200px;
-	border-image: initial;	
+	border: 4px dashed #ddd;
 }
-
 div.rwmb-drag-drop-inside {
-	margin: 70px auto 0;
-	width: 200px;
+	margin: 50px auto;
 }
-
 div.rwmb-drag-drop-inside p {
 	text-align: center;
 	display: block;
 	font-size: 20px;
 	margin: 5px 0;
-	color: #AAA;	
+	color: #aaa;
 }
-
-.rwmb-images div{
+.rwmb-images div {
 	color: #fff;
 	font-weight: bold;
 	position: absolute;
@@ -27,9 +20,8 @@ div.rwmb-drag-drop-inside p {
 	right: 0;
 	padding: 5px;
 }
-
-.rwmb-images div a{
+.rwmb-images div a {
 	position: relative;
 	color: #fff;
-	font-weight: bold; 	
+	font-weight: bold;
 }

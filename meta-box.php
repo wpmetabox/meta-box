@@ -119,9 +119,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $this->meta_box['pages'] as $page )
 				add_action( "add_meta_boxes_{$page}", array( &$this, 'add_meta_boxes' ) );
 
-			// Show hidden fields
-			add_action( 'dbx_post_sidebar', array( __CLASS__, 'dbx_post_sidebar' ) );
-
 			// Save post meta
 			add_action( 'save_post', array( &$this, 'save_post' ) );
 		}
@@ -288,18 +285,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
-		}
-
-		/**
-		 * Show hidden fields like nonce, post ID, etc.
-		 *
-		 * @return void
-		 */
-		static function dbx_post_sidebar()
-		{
-			global $post;
-
-			echo "<input type='hidden' class='rwmb-post-id' value='{$post->ID}' />";
 		}
 
 		/**

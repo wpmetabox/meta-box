@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -151,7 +151,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$html = RW_Meta_Box::begin_html( $html, $meta, $field );
 			return $html;
 		}
-		
+
 		/**
 		 * Show the label, or full width (if $field['name'] not set)
 		 *
@@ -172,8 +172,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$html = RW_Meta_Box::end_html( $html, $meta, $field );
 			return $html;
 		}
-		
-		
+
+
 
 		/**
 		 * Get field HTML
@@ -200,8 +200,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			// Filter to change the drag & drop box background string
 			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', RWMB_TEXTDOMAIN ) );
-			$i18n_select	= _x( 'Select Files', RWMB_TEXTDOMAIN );
-			$img_prefix		= "{$field['id']}";
+			$i18n_or        = _x( 'or', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_select	= _x( 'Select Files', 'image upload', RWMB_TEXTDOMAIN );
+			$img_prefix		= $field['id'];
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
@@ -211,7 +212,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$html .= "<div id='{$img_prefix}-container'>";
 			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
 			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-			
+
 			foreach ( $meta as $image )
 			{
 				$src = wp_get_attachment_image_src( $image, 'thumbnail' );
@@ -227,6 +228,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					</div>
 				</li>";
 			}
+
 			//Template image node
 			$html .= "
 			<li id='item_' class='hidden rwmb-image-template'>
@@ -237,7 +239,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				</div>
 			</li>";
 			$html .= '</ul>';
-			
 
 			// Show form upload
 			$html .= "
@@ -245,7 +246,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js'>
 				<div class = 'rwmb-drag-drop-inside'>
 					<p>{$i18n_drop}</p>
-					<p>or</p>
+					<p>{$i18n_or}</p>
 					<p><input id='{$img_prefix}-browse-button' type='button' value='{$i18n_select}' class='button' /></p>
 				</div>
 			</div>";

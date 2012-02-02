@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-02 08:55+0700\n"
-"PO-Revision-Date: 2012-02-02 08:55+0700\n"
+"POT-Creation-Date: 2012-02-02 11:43+0700\n"
+"PO-Revision-Date: 2012-02-02 11:43+0700\n"
 "Last-Translator: name <email@domain.com>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../meta-box.php:374
+#: ../meta-box.php:359
 msgid "+"
 msgstr ""
 
-#: ../meta-box.php:405
+#: ../meta-box.php:390
 msgid "&#8211;"
 msgstr ""
 
-#: ../meta-box.php:719
+#: ../meta-box.php:704
 msgid "RW_Meta_Box Debug:"
 msgstr ""
 
@@ -110,4 +110,14 @@ msgstr "Sửa"
 msgctxt "image upload"
 msgid "Drop images here"
 msgstr "Kéo thả hình ảnh vào đây"
+
+#: ../inc/fields/plupload-image.php:203
+msgctxt "image upload"
+msgid "or"
+msgstr "hoặc"
+
+#: ../inc/fields/plupload-image.php:204
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "Chọn file"
 

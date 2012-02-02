@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-31 23:34+0700\n"
-"PO-Revision-Date: 2012-01-31 23:34+0700\n"
-"Last-Translator: Rilwis <rilwis@gmail.com>\n"
+"POT-Creation-Date: 2012-02-02 11:44+0700\n"
+"PO-Revision-Date: 2012-02-02 11:44+0700\n"
+"Last-Translator: name <email@domain.com>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../meta-box.php:373
+#: ../meta-box.php:359
 msgid "+"
 msgstr ""
 
-#: ../meta-box.php:404
+#: ../meta-box.php:390
 msgid "&#8211;"
 msgstr ""
 
-#: ../meta-box.php:718
+#: ../meta-box.php:704
 msgid "RW_Meta_Box Debug:"
 msgstr ""
 
@@ -109,5 +109,15 @@ msgstr ""
 #: ../inc/fields/plupload-image.php:202
 msgctxt "image upload"
 msgid "Drop images here"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:203
+msgctxt "image upload"
+msgid "or"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:204
+msgctxt "image upload"
+msgid "Select Files"
 msgstr ""
 
