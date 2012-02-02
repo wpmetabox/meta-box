@@ -20,9 +20,9 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 
 [Project on GitHub](https://github.com/rilwis/meta-box)
 
-[Documentation](https://github.com/rilwis/meta-box/wiki)
+[Documentation](https://meta-box.tenderapp.com/kb/)
 
-[SUPPORT](https://meta-box.tenderapp.com)
+[Support](https://meta-box.tenderapp.com)
 
 == Installation ==
 
@@ -39,8 +39,13 @@ To change meta box definition, please see comments in `demo.php`.
 == Frequently Asked Questions ==
 
 == Screenshots ==
+1. Basic fields
+2. Advanced fields
 
 == Changelog ==
+
+= 4.1.1 =
+- Fix translation
 
 = 4.1 =
 * Added jQuery UI slider field

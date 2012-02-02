@@ -316,30 +316,6 @@ HTML;
 		}
 
 		/**
-		 * Standard meta retrieval
-		 *
-		 * @param mixed 	$meta
-		 * @param int		$post_id
-		 * @param array  	$field
-		 * @param bool  	$saved
-		 *
-		 * @return mixed
-		 */
-		static function meta( $meta, $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
-
-			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-
-			// Escape attributes for non-wysiwyg fields
-			if ( 'wysiwyg' !==  $field['type'] )
-				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-
-			return $meta;
-		}
-
-		/**
 		 * Show end HTML markup for fields
 		 *
 		 * @param string $html
@@ -395,6 +371,30 @@ HTML;
 			);
 
 			return "{$html}{$button}";
+		}
+
+		/**
+		 * Standard meta retrieval
+		 *
+		 * @param mixed $meta
+		 * @param int	$post_id
+		 * @param array $field
+		 * @param bool  $saved
+		 *
+		 * @return mixed
+		 */
+		static function meta( $meta, $post_id, $saved, $field )
+		{
+			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+
+			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
+			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+
+			// Escape attributes for non-wysiwyg fields
+			if ( 'wysiwyg' !==  $field['type'] )
+				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
+
+			return $meta;
 		}
 
 		/**************************************************
