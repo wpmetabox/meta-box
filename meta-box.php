@@ -6,6 +6,7 @@ Description: Create meta box for editing pages in WordPress. Compatible with cus
 Version: 4.1
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
+License: GPL2+
 */
 // Prevent loading this file directly - Busted!
 if( ! class_exists('WP') )

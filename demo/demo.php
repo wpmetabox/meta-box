@@ -125,21 +125,6 @@ $meta_boxes[] = array(
 			'id'		=> "{$prefix}pass",
 			'type'		=> 'password'
 		),
-		// TAXONOMY
-		array(
-			'name'		=> 'Categories',
-			'id'		=> "{$prefix}cats",
-			'type'		=> 'taxonomy',
-			'options'	=> array(
-				// Taxonomy name
-				'taxonomy'	=> 'category',
-				// How to show taxonomy: 'checkbox_list' (default) or 'select'. Optional
-				'type'		=> 'checkbox_list',
-				// Additional arguments for get_terms() function
-				'args'		=> array()
-			),
-			'desc'		=> 'Choose One Category'
-		)
 	)
 );
 
