@@ -89,7 +89,8 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
-			if ( !empty( $meta ) )
+			// Uploaded files
+			if ( ! empty( $meta ) )
 			{
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';

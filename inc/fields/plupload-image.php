@@ -223,7 +223,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				<li id='item_{$image}'>
 					<img src='{$src}' />
 					<div class='rwmb-image-bar'>
-						<a title='{$i18n_edit}' class='rwmb-edit-file' href = '{$link}' >{$i18n_edit}</a> |
+						<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
 						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
 					</div>
 				</li>";

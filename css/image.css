@@ -16,17 +16,16 @@
 	width: 150px;
 	height: 150px;
 }
-.rwmb-images a {
+.rwmb-image-bar {
+	color: #fff;
+	font-weight: bold;
+	background: #000;
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	color: #fff;
-	background: #000;
-	font-weight: bold;
 	padding: 5px;
 }
-/*.rwmb-image-loading {
-	display: inline-block;
-	max-width: 32px;
-	max-height: 32px;
-}*/
+.rwmb-image-bar a {
+	color: #fff;
+	font-weight: bold;
+}

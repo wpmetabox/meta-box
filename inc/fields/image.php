@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -84,29 +84,37 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$i18n_msg      = _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_del_file = _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_delete   = _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_edit     = _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_title    = _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_more     = _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
-			//Uploaded images
-			$html .= "<h4>{$i18n_msg}</h4>";
-			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
-			foreach ( $meta as $image )
+			// Uploaded images
+			if ( ! empty( $meta ) )
 			{
-				$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-				$src = $src[0];
+				$html .= "<h4>{$i18n_msg}</h4>";
+				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
-				$html .= "<li id='item_{$image}'>
-					<img src='{$src}' />
-					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-				</li>";
+				foreach ( $meta as $image )
+				{
+					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
+					$src = $src[0];
+					$link = get_edit_post_link( $image );
+
+					$html .= "<li id='item_{$image}'>
+						<img src='{$src}' />
+						<div class='rwmb-image-bar'>
+							<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
+							<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
+						</div>
+					</li>";
+				}
+
+				$html .= '</ul>';
 			}
-
-			$html .= '</ul>';
-			
 
 			// Show form upload
 			$html .= "
@@ -118,7 +126,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			return $html;
 		}
-		
+
 		/**
 		 * Standard meta retrieval
 		 *
@@ -130,33 +138,24 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 * @return mixed
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
-		{		
+		{
 			global $wpdb;
+			
 			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
-			if(empty($meta))
+			
+			if ( empty( $meta ) )
 				return array();
+			
 			$meta = implode( ',' , $meta );
-			// Need to suppress errors if there are no images to far
-			if (
-				empty( $meta )
-				AND ( defined('WP_DEBUG') AND WP_DEBUG )
-				AND ( defined('WP_DEBUG_DISPLAY') AND WP_DEBUG_DISPLAY )
-			)
-			$wpdb->suppress_errors = true;
+			
 			// Re-arrange images with 'menu_order', thanks Onur
 			$meta = $wpdb->get_col( "
-				SELECT ID FROM $wpdb->posts
+				SELECT ID FROM {$wpdb->posts}
 				WHERE post_type = 'attachment'
-				AND ID in ($meta)
+				AND ID in ({$meta})
 				ORDER BY menu_order ASC
 			" );
-			
-			// Move debug back in to not interrupt other debug stuff from other plugins
-			if (
-				defined('WP_DEBUG')
-				AND WP_DEBUG
-			)
-			$wpdb->suppress_errors = false;
+
 			return (array) $meta;
 		}
 	}
