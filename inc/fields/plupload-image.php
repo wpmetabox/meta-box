@@ -132,50 +132,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		}
 
 		/**
-		 * Show the label, or full width (if $field['name'] not set)
-		 *
-		 * @param string $html
-		 * @param array $meta
-		 * @param array $field
-		 *
-		 * @return null/string $html
-		 */
-		static function begin_html( $html, $meta, $field )
-		{
-			if (
-				! isset( $field['name'] )
-				OR empty( $field['name'] )
-			)
-				return  ;
-
-			$html = RW_Meta_Box::begin_html( $html, $meta, $field );
-			return $html;
-		}
-
-		/**
-		 * Show the label, or full width (if $field['name'] not set)
-		 *
-		 * @param string $html
-		 * @param array $meta
-		 * @param array $field
-		 *
-		 * @return null/string $html
-		 */
-		static function end_html( $html, $meta, $field )
-		{
-			if (
-				! isset( $field['name'] )
-				OR empty( $field['name'] )
-			)
-				return;
-
-			$html = RW_Meta_Box::end_html( $html, $meta, $field );
-			return $html;
-		}
-
-
-
-		/**
 		 * Get field HTML
 		 *
 		 * @param string $html

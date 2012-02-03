@@ -303,8 +303,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( ! empty( $field['class'] ) )
 				$class = self::add_cssclass( $field['class'], $class );
 
-			if ( empty ( $field['name'] ) OR ! isset( $field['name'] ) )
-				return $html = '<div class="rwmb-input">';
+			if ( empty( $field['name'] ) )
+				return '<div class="rwmb-input">';
 
 			$html = <<<HTML
 <div class="{$class}">
