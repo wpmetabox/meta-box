@@ -30,7 +30,7 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 				$id		 = " id='{$id}'";
 				$name = "name='{$field['field_name']}'";
 				$val     = " value='{$key}'";
-				$html   .= "<input type='radio' class='rwmb-radio'{$name}{$id}{$val}{$checked} /> {$value}";
+				$html   .= "<label><input type='radio' class='rwmb-radio'{$name}{$id}{$val}{$checked} /> {$value}</label> ";
 			}
 
 			return $html;

@@ -11,13 +11,14 @@ jQuery( document ).ready( function ($)
 	{
 		if ( ! $el )
 			$el = $( '.rwmb-field' );
-
-		var $remove_buttons = $el.find( '.remove-clone' );
-		console.log( $remove_buttons.length );
-		if ( $remove_buttons.length < 2 )
-			$remove_buttons.hide();
-		else
-			$remove_buttons.show();
+		$el.each( function()
+		{
+			var $remove_buttons = $( this ).find( '.remove-clone' );
+			if ( $remove_buttons.length < 2 )
+				$remove_buttons.hide();
+			else
+				$remove_buttons.show();
+		} );
 	}
 
 	// Call it on first run
