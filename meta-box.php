@@ -3,7 +3,7 @@
 Plugin Name: Meta Box
 Plugin URI: http://www.deluxeblogtips.com/meta-box-script-for-wordpress/
 Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0
-Version: 4.1
+Version: 4.1.1
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 License: GPL2+
@@ -20,7 +20,7 @@ if( ! class_exists('WP') )
 if ( ! class_exists( 'RW_Meta_Box' ) )
 {
 	// Script version, used to add version for scripts and styles
-	define( 'RWMB_VER', '4.1' );
+	define( 'RWMB_VER', '4.1.1' );
 
 	// Define plugin URLs, for fast enqueuing scripts and styles
 	if ( ! defined( 'RWMB_URL' ) )
@@ -329,22 +329,14 @@ HTML;
 		{
 			$id   = $field['id'];
 
-			$buttons = '';
+			$button = '';
 			if ( self::is_cloneable( $field ) )
-			{
-				$buttons .= get_submit_button(
-					__( '+', RWMB_TEXTDOMAIN ),
-					 'rwmb-button button-primary add-clone',
-					"add_{$id}_clone",
-					false,
-					array( 'rel' => $id )
-				);
-			}
+				$button = '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', RWMB_TEXTDOMAIN ) . '</a>';
 
 			$desc = ! empty( $field[ 'desc' ] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
 
 			// Closes the container
-			$html = "{$buttons}{$desc}</div>";
+			$html = "{$button}{$desc}</div>";
 
 			return $html;
 		}
@@ -363,13 +355,7 @@ HTML;
 		{
 			$id = $field['id'];
 
-			$button = get_submit_button(
-				__( '&#8211;', RWMB_TEXTDOMAIN ),
-				'rwmb-button button-secondary delete remove-clone',
-				"remove_{$id}_clone",
-				false,
-				array( 'rel' => $id )
-			);
+			$button = '<a href="#" class="rwmb-button button-secondary remove-clone">' . __( '&#8211;', RWMB_TEXTDOMAIN ) . '</a>';
 
 			return "{$html}{$button}";
 		}

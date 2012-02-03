@@ -69,6 +69,11 @@ To change meta box definition, please see comments in `demo.php`.
 Changelog
 --------------------------------------
 
+### 4.1.1 ###
+* Fix translation
+* Change jQueryUI theme to 'smoothness'
+* Add more demos in the `demo` folder
+
 ### 4.1 ###
 * Added jQuery UI slider field
 * Added new Plupload file uploader

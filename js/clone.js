@@ -1,27 +1,61 @@
-jQuery( document ).ready( function ($) 
+jQuery( document ).ready( function ($)
 {
-	// Add more clones
-	$( '.add-clone' ).click( function ( event )
+	/**
+	 * Hide remove buttons when there's only 1 of them
+	 *
+	 * @param $el jQuery element. If not supplied, the function will applies for all fields
+	 *
+	 * @return void
+	 */
+	function toggle_remove_buttons( $el )
 	{
-		event.preventDefault();
+		if ( ! $el )
+			$el = $( '.rwmb-field' );
 
-		var 
-			$input_last = $( this ).parents( '.rwmb-input' ).find( '.rwmb-clone:last' ),
-			$clone      = $input_last.clone( true )
-		;
+		var $remove_buttons = $el.find( '.remove-clone' );
+		console.log( $remove_buttons.length );
+		if ( $remove_buttons.length < 2 )
+			$remove_buttons.hide();
+		else
+			$remove_buttons.show();
+	}
 
-		$clone.insertAfter( $input_last );
+	// Call it on first run
+	toggle_remove_buttons();
+
+	// Add more clones
+	$( '.add-clone' ).click( function ()
+	{
+		var	$input      = $( this ).parents( '.rwmb-input' );
+			$clone_last = $input.find( '.rwmb-clone:last' ),
+			$clone      = $clone_last.clone( true );
+
+		$clone.insertAfter( $clone_last );
+
+		// Reset value
+		$clone.find( 'input' ).val( '' );
+
+		// Toggle remove buttons
+		toggle_remove_buttons( $input );
+
+		return false;
 	} );
 
 	// Remove clones
-	$( '.rwmb-input' ).delegate( '.remove-clone', 'click', function( event )
+	$( '.rwmb-input' ).delegate( '.remove-clone', 'click', function()
 	{
-		event.preventDefault();
-
-		var $this = $( this );
+		var $this  = $( this ),
+			$input = $this.parents( '.rwmb-input' );
 
 		// Remove clone only if there're 2 or more of them
-		if ( $this.parents( '.rwmb-input' ).find( '.rwmb-clone' ).length > 1 )
-			$( this ).parent().remove();
+		if ( $input.find( '.rwmb-clone' ).length > 1 )
+		{
+			$this.parent().remove();
+
+			// Toggle remove buttons
+			toggle_remove_buttons( $input );
+		}
+
+		return false;
 	} );
 } );
