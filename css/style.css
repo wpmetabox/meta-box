@@ -52,6 +52,11 @@
 	display: none;
 }
 
+/* Fix empty block below admin footer (issue #24) */
+#ui-datepicker-div {
+	display: none;
+}
+
 /* =Styles for 'side' meta boxes
 -------------------------------------------------------------- */
 
