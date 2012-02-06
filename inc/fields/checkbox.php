@@ -24,7 +24,7 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		{
 			$checked = checked( ! empty( $meta ), true, false );
 			$name    = "name='{$field['field_name']}'";
-			$id      = "id='{$field['id']}'";
+			$id      = " id='{$field['id']}'";
 			$html    = "<input type='checkbox' class='rwmb-checkbox'{$name}{$id}{$checked} />";
 
 			return $html;
