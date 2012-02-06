@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if ( ! class_exists( 'WP' ) ) 
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -23,8 +23,8 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$checked = checked( ! empty( $meta ), true, false );
-			$name = "name='{$field['field_name']}'";
-			$id      = " id='{$field['id']}'";
+			$name    = "name='{$field['field_name']}'";
+			$id      = "id='{$field['id']}'";
 			$html    = "<input type='checkbox' class='rwmb-checkbox'{$name}{$id}{$checked} />";
 
 			return $html;
