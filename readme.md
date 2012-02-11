@@ -26,7 +26,7 @@ funkedgeek
 
 The guys (and girls) over at TenderApp have been so friendly to give us a free support account.
 
-[Drop your support Qs at TenderApp!](https://meta-box.tenderapp.com)
+[Drop your support Questions at TenderApp!](http://support.deluxeblogtips.com/)
 
 Meta Info
 --------------------------------------
@@ -53,7 +53,7 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 ### Links ###
 * [Project page](http://www.deluxeblogtips.com/meta-box-script-for-wordpress/)
 * [Project on GitHub](https://github.com/rilwis/meta-box)
-* [Documentation (Wiki)](https://github.com/rilwis/meta-box/wiki)
+* [Documentation](http://support.deluxeblogtips.com/kb)
 
 Installation
 --------------------------------------

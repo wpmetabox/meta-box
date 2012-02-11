@@ -20,9 +20,9 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 
 [Project on GitHub](https://github.com/rilwis/meta-box)
 
-[Documentation](https://meta-box.tenderapp.com/kb/)
+[Documentation](http://support.deluxeblogtips.com/kb/)
 
-[Support](https://meta-box.tenderapp.com)
+[Support](http://support.deluxeblogtips.com/)
 
 == Installation ==
 
