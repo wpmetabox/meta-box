@@ -8,11 +8,15 @@ jQuery( document ).ready( function($)
 				$this = $( this ),
 				format = $this.attr( 'rel' )
 			;
-
+			var showAmPm = format.match('t') || format.match('T') ? true : false;
+			var showSecond = format.match(':s') ? true : false;
+			var showMillisec = format.match(':l') ? true : false;
 			$this.datetimepicker(
 			{
-				showSecond:	true,
-				timeFormat:	format
+				showSecond: showSecond,
+				showMillisec: showMillisec,
+				timeFormat: format,
+				ampm: showAmPm,
 			} );
 		}
 	);
