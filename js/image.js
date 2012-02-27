@@ -14,6 +14,7 @@ jQuery( document ).ready( function($)
 		$this.sortable(
 		{
 			placeholder: 'ui-state-highlight',
+			items: 'li',
 			update: function () {
 				data.order = $this.sortable( 'serialize' );
 
