@@ -4,19 +4,13 @@
 
 ## Contributors
 
-[Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer
-
-[Franz Josef Kaiser](http://unserkaiser.com)
-
-Omnicia
-
-ruanmer
-
-PerWiklander
-
-erodesign
-
-funkedgeek
+- [Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer
+- [Franz Josef Kaiser](http://unserkaiser.com)
+- Omnicia
+- ruanmer
+- PerWiklander
+- erodesign
+- funkedgeek
 
 [See full list of angels!](https://github.com/rilwis/meta-box/contributors)
 

@@ -34,7 +34,7 @@ jQuery( document ).ready( function ($)
 		$clone.insertAfter( $clone_last );
 
 		// Reset value
-		$clone.find( 'input' ).val( '' );
+		$clone.find( ':input' ).val( '' );
 
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
