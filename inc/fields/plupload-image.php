@@ -62,14 +62,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					// Save file ID in meta field
 					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
 				}
-				$src = wp_get_attachment_image_src( $id, 'thumbnail' );
 				$response->add( array(
 					'what'			=>'rwmb_image_response',
-					'data'			=> $id,
-					'supplemental'	=> array(
-						'thumbnail'	=>  $src[0],
-						'edit_link'	=> get_edit_post_link($id)
-					)
+					'data'			=>  self::img_html($id)
 				) );
 				$response->send();
 			}
@@ -104,6 +99,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
+			//Heartcode Canvas Loader
+			wp_enqueue_script('heartcode-canvasloader', 'http://heartcode-canvasloader.googlecode.com/files/heartcode-canvasloader-min-0.9.1.js');
 			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
 				'runtimes'				=> 'html5,silverlight,flash,html4',
 				'file_data_name'		=> 'async-upload',
@@ -130,6 +127,37 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'loading' =>  RWMB_URL . "img/image-loading.gif"
 			));
 		}
+		
+		/**
+		 * Get image html
+		 *
+		 * @param int $img_id
+		 *
+		 * @return string
+		 */
+		static function img_html( $img_id )
+		{
+			$i18n_del_file	= _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_delete	= _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_edit		= _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
+			
+			$src = wp_get_attachment_image_src( $img_id, 'thumbnail' );
+			$src = $src[0];
+			$link = get_edit_post_link( $img_id );
+			
+			$html = <<<HTML
+<li id='item_{$img_id}'>
+	<img src='{$src}' />
+	<div class='rwmb-image-bar'>
+		<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
+		<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$img_id}'>{$i18n_delete}</a>
+	</div>
+</li>
+HTML;
+			return $html;
+			
+		}
+		
 
 		/**
 		 * Get field HTML
@@ -148,9 +176,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$meta = (array) $meta;
 
 			$i18n_msg		= _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_del_file	= _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_delete	= _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_edit		= _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_title		= _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
 			$i18n_more		= _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
 
@@ -171,29 +196,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			foreach ( $meta as $image )
 			{
-				$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-				$src = $src[0];
-				$link = get_edit_post_link( $image );
-
-				$html .= "
-				<li id='item_{$image}'>
-					<img src='{$src}' />
-					<div class='rwmb-image-bar'>
-						<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
-						<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-					</div>
-				</li>";
+				$html .= self::img_html($image);
 			}
-
-			//Template image node
-			$html .= "
-			<li id='item_' class='hidden rwmb-image-template'>
-				<img id='' class='rwmb-image' src='' />
-				<div class='rwmb-image-bar hidden'>
-					<a title='{$i18n_edit}' class='rwmb-edit-file' href = ''>{$i18n_edit}</a> |
-					<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel=''>{$i18n_delete}</a>
-				</div>
-			</li>";
 			$html .= '</ul>';
 
 			// Show form upload

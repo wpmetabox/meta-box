@@ -200,6 +200,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$type = $field['type'];
 				$id = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
+				$meta = apply_filters( "rwmb_{$type}_meta", $meta );
+				$meta = apply_filters( "rwmb_{$id}_meta", $meta );
 
 				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
 
