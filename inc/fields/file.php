@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -66,7 +66,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
 			else
-				RW_Meta_Box::ajax_response( __( "Error: Cannot delete file", RWMB_TEXTDOMAIN ), 'error' );
+				RW_Meta_Box::ajax_response( __( "Error: Cannot delete file", 'rwmb' ), 'error' );
 		}
 
 		/**
@@ -80,11 +80,11 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_msg      = _x( 'Uploaded files', 'file upload', RWMB_TEXTDOMAIN );
-			$i18n_del_file = _x( 'Delete this file', 'file upload', RWMB_TEXTDOMAIN );
-			$i18n_delete   = _x( 'Delete', 'file upload', RWMB_TEXTDOMAIN );
-			$i18n_title    = _x( 'Upload files', 'file upload', RWMB_TEXTDOMAIN );
-			$i18n_more     = _x( 'Add another file', 'file upload', RWMB_TEXTDOMAIN );
+			$i18n_msg      = _x( 'Uploaded files', 'file upload', 'rwmb' );
+			$i18n_del_file = _x( 'Delete this file', 'file upload', 'rwmb' );
+			$i18n_delete   = _x( 'Delete', 'file upload', 'rwmb' );
+			$i18n_title    = _x( 'Upload files', 'file upload', 'rwmb' );
+			$i18n_more     = _x( 'Add another file', 'file upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";

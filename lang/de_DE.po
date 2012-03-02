@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-31 23:33+0700\n"
-"PO-Revision-Date: 2012-01-31 23:34+0700\n"
-"Last-Translator: Rilwis <rilwis@gmail.com>\n"
+"POT-Creation-Date: 2012-03-02 14:08+0700\n"
+"PO-Revision-Date: 2012-03-02 14:08+0700\n"
+"Last-Translator: name <email@domain.com>\n"
 "Language-Team: Franz Josef Kaiser <24-7@gmx.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../meta-box.php:373
+#: ../meta-box.php:334
 msgid "+"
 msgstr ""
 
-#: ../meta-box.php:404
+#: ../meta-box.php:358
 msgid "&#8211;"
 msgstr ""
 
-#: ../meta-box.php:718
+#: ../meta-box.php:691
 msgid "RW_Meta_Box Debug:"
 msgstr ""
 
@@ -70,51 +70,63 @@ msgid "Order saved"
 msgstr "Reihenfolge gespeichert"
 
 #: ../inc/fields/image.php:84
-#: ../inc/fields/plupload-image.php:194
+#: ../inc/fields/plupload-image.php:178
 #, fuzzy
 msgctxt "image upload"
 msgid "Uploaded files"
 msgstr "Dateien fertig geladen"
 
 #: ../inc/fields/image.php:85
-#: ../inc/fields/plupload-image.php:195
+#: ../inc/fields/plupload-image.php:140
 msgctxt "image upload"
 msgid "Delete this file"
 msgstr "Datei löschen"
 
 #: ../inc/fields/image.php:86
-#: ../inc/fields/plupload-image.php:196
+#: ../inc/fields/plupload-image.php:141
 #, fuzzy
 msgctxt "image upload"
 msgid "Delete"
 msgstr "Löschen"
 
 #: ../inc/fields/image.php:87
-#: ../inc/fields/plupload-image.php:198
-msgctxt "image upload"
-msgid "Upload files"
-msgstr "Dateien hochladen"
-
-#: ../inc/fields/image.php:88
-#: ../inc/fields/plupload-image.php:199
-msgctxt "image upload"
-msgid "Add another file"
-msgstr "Weitere Datei"
-
-#: ../inc/fields/plupload-image.php:115
-msgctxt "image upload"
-msgid "Allowed Image Files"
-msgstr ""
-
-#: ../inc/fields/plupload-image.php:197
+#: ../inc/fields/plupload-image.php:142
 msgctxt "image upload"
 msgid "Edit"
 msgstr ""
 
-#: ../inc/fields/plupload-image.php:202
+#: ../inc/fields/image.php:88
+#: ../inc/fields/plupload-image.php:179
+msgctxt "image upload"
+msgid "Upload files"
+msgstr "Dateien hochladen"
+
+#: ../inc/fields/image.php:89
+#: ../inc/fields/plupload-image.php:180
+msgctxt "image upload"
+msgid "Add another file"
+msgstr "Weitere Datei"
+
+#: ../inc/fields/plupload-image.php:112
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:183
 msgctxt "image upload"
 msgid "Drop images here"
 msgstr ""
+
+#: ../inc/fields/plupload-image.php:184
+msgctxt "image upload"
+msgid "or"
+msgstr ""
+
+#: ../inc/fields/plupload-image.php:185
+#, fuzzy
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "Farbe wählen"
 
 #~ msgid "Cannot delete file. Something's wrong."
 #~ msgstr "Fehler: Datei kann nicht gelöscht werden."

@@ -65,7 +65,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				) );
 			}
 
-			RW_Meta_Box::ajax_response( __( 'Order saved', RWMB_TEXTDOMAIN ), 'success' );
+			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
 		}
 
 		/**
@@ -81,12 +81,12 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			global $wpdb;
 
-			$i18n_msg      = _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_del_file = _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_delete   = _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_edit     = _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_title    = _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_more     = _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_msg      = _x( 'Uploaded files', 'image upload', 'rwmb' );
+			$i18n_del_file = _x( 'Delete this file', 'image upload', 'rwmb' );
+			$i18n_delete   = _x( 'Delete', 'image upload', 'rwmb' );
+			$i18n_edit     = _x( 'Edit', 'image upload', 'rwmb' );
+			$i18n_title    = _x( 'Upload files', 'image upload', 'rwmb' );
+			$i18n_more     = _x( 'Add another file', 'image upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
@@ -140,14 +140,14 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		static function meta( $meta, $post_id, $saved, $field )
 		{
 			global $wpdb;
-			
+
 			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
-			
+
 			if ( empty( $meta ) )
 				return array();
-			
+
 			$meta = implode( ',' , $meta );
-			
+
 			// Re-arrange images with 'menu_order', thanks Onur
 			$meta = $wpdb->get_col( "
 				SELECT ID FROM {$wpdb->posts}

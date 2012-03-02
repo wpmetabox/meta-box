@@ -1,10 +1,12 @@
-Meta Box
-=======================
-### Contributors ###
+[Project Page](http://www.deluxeblogtips.com/meta-box) | [Documentation](http://www.deluxeblogtips.com/docs) | [Support](http://www.deluxeblogtips.com/support) | [Donate](http://www.deluxeblogtips.com/donate)
 
-[Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer,
+***
 
-[Franz Josef Kaiser](http://unserkaiser.com),
+## Contributors
+
+[Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer
+
+[Franz Josef Kaiser](http://unserkaiser.com)
 
 Omnicia
 
@@ -18,31 +20,17 @@ funkedgeek
 
 [See full list of angels!](https://github.com/rilwis/meta-box/contributors)
 
-### Donate link: ###
+***
 
-[click & spend us a coffee to make us code faster! :)](http://goo.gl/EWjsD)
+## Meta Box Information
 
-### SUPPORT: ###
+**Requires at least:** WordPress v3.0
 
-The guys (and girls) over at TenderApp have been so friendly to give us a free support account.
-
-[Drop your support Questions at TenderApp!](http://support.deluxeblogtips.com/)
-
-Meta Info
---------------------------------------
-
-**Tags:** meta-box, custom-fields, custom-field, meta, meta-boxes
-
-**Requires at least:** 3.0
-
-**Tested up to:** 3.3.1
-
-**Stable tag:** trunk
+**Tested up to:** WordPress v3.3.1
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
 
-Description
---------------------------------------
+### Description
 
 Meta Box Script for WordPress is a WordPress plugin that provides an API for you to easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
 
@@ -50,46 +38,41 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 * Compatible with custom post types since WordPress 3.0.
 * **Support input types:** text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, old & new file upload, date, time, color, slider.
 
-### Links ###
-* [Project page](http://www.deluxeblogtips.com/meta-box-script-for-wordpress/)
-* [Project on GitHub](https://github.com/rilwis/meta-box)
-* [Documentation](http://support.deluxeblogtips.com/kb)
-
-Installation
---------------------------------------
+### Installation
 
 1. Unzip the download package
-2. Upload `meta-box` to the `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Copy `demo/demo.php` file from plugin directory to your theme folder
-5. Open `functions.php` file of your theme and add the following code: `include 'demo.php';`
+1. Upload `meta-box` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Copy `demo/demo.php` file from plugin directory to your theme folder
+1. Open `functions.php` file of your theme and add the following code:
+
+    include 'demo.php';
 
 To change meta box definition, please see comments in `demo.php`.
 
-Changelog
---------------------------------------
+### Changelog
 
-### 4.1.1 ###
+#### 4.1.1
 * Fix translation
 * Change jQueryUI theme to 'smoothness'
 * Add more demos in the `demo` folder
 
-### 4.1 ###
+#### 4.1
 * Added jQuery UI slider field
 * Added new Plupload file uploader
 * Added new checkbox list
 * Fix empty jQuery UI div seen in FF in admin footer area
 * Fix style for 'side' meta box
 
-### 4.0.2 ###
+#### 4.0.2
 * Reformat code to make more readable
 * Fix bugs of checkbox field and date field
 
-### 4.0.1 ###
+#### 4.0.1
 * Change `format_response()` to `ajax_response()` and use WP_Ajax_Response class to control the ajax response
 * Use `wp_editor()` built-in with WP 3.3 (with fallback)
 
-### 4.0 ###
+#### 4.0
 * strongly refactor code
 * create/check better nonce for each meta box
 * use local JS/CSS libs instead of remote files for better control if conflict occurs
@@ -98,15 +81,15 @@ Changelog
 * use filters to validate/change field values instead of validation class
 * don't use Ajax on image upload as it's buggy and complicated. Revert to default upload
 
-### 3.2.2 ###
+#### 3.2.2
 * fix WYSIWYG field for custom post type without 'editor' support. Thanks Jamie, Eugene and Selin Online. [link](http://disq.us/2hzgsk)
 * change some helper function to static as they're shared between objects
 
-### 3.2.1 ###
+#### 3.2.1
 * fix code for getting script's url in Windows
 * make meta box id is optional
 
-### 3.2 ###
+#### 3.2
 * move js and css codes to separated files (rewrite js code for fields, too)
 * allow to add multiple images to image meta field with selection, modified from "Fast Insert Image" plugin
 * remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta=box.css' file. All fields now has the class 'rw=$type', and table cells have class 'rwmb=label' and 'rwmb=field'
@@ -121,7 +104,7 @@ Changelog
 * fix bug when save meta value = zero (0), regarding [link](http://disq.us/1tg008)
 * some minor changes such as = add 'id' attribute to fields, show uploaded images as thumbnail, add script to header of post.php and post=new.php only
 
-### 3.1 ###
+#### 3.1
 * use thickbox for image uploading, allow user edit title, caption or crop, rotate image (credit to Stewart Duffy, idea from Jaace http =//disq.us/1bu64d)
 * allow to reorder uploaded images (credit to Kai)
 * save attach ID instead of url (credit to Stewart Duffy)
@@ -131,13 +114,13 @@ Changelog
 * fix jquery UI conflict (for time picker, color picker, contextual help)
 * fix notice error for checking post type
 
-### 3.0.1 ###
+#### 3.0.1
 * save uploaded images and files' urls in meta fields
 * fix date picker bug to not show saved value [link](http://disq.us/1cg6mx)
 * fix check_admin_referer for non=supported post types [link](http://goo.gl/B6cah)
 * refactor code for showing fields
 
-### 3.0 ###
+#### 3.0
 * separate functions for checking, displaying and saving each type of field; allow developers easily extend the class
 * add 'checkbox_list' (credit to Jan Fabry [link](http://goo.gl/9sDAx)), 'color', 'date', 'time' types. The 'taxonomy' type is added as an example of extending class (credit to Manny Fresh [link](http://goo.gl/goGfm))
 * show uploaded files as well as allow to add/delete attached files
@@ -146,27 +129,27 @@ Changelog
 * change the way of definition 'radio', 'select' field type to make it more simpler, allow multiple selection of select box
 * improved some codes, fix code to not show warnings when in debugging mode
 
-### 2.4.1 ###
+#### 2.4.1
 * fix bug of not receiving value for select box
 
-### 2.4 ###
+#### 2.4
 * (image upload features are credit to Kai [link](http://twitter.com/ungestaltbar))
 * change image upload using meta fields to using default WP gallery
 * add delete button for images, using ajax
 * allow to upload multiple images
 * add validation for meta fields
 
-### 2.3 ###
+#### 2.3
 * add wysiwyg editor type, improve check for upload fields, change context and priority attributes to optional
 
-### 2.2 ###
+#### 2.2
 * add enctype to post form (fix upload bug), thanks to [link](http://goo.gl/PWWNf)
 
-### 2.1 ###
+#### 2.1
 * add file upload, image upload support
 
-### 2.0 ###
+#### 2.0
 * oop code, support multiple post types, multiple meta boxes
 
-### 1.0 ###
+#### 1.0
 * procedural code
