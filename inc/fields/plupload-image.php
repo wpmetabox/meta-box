@@ -109,7 +109,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'url'					=> admin_url('admin-ajax.php'),
 				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
 				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', RWMB_TEXTDOMAIN ), 'extensions' => 'jpg,gif,png' ) ),
+				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,gif,png' ) ),
 				'multipart'				=> true,
 				'urlstream_upload'		=> true,
 				// additional post data to send to our ajax hook
@@ -127,7 +127,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'loading' =>  RWMB_URL . "img/image-loading.gif"
 			));
 		}
-		
+
 		/**
 		 * Get image html
 		 *
@@ -137,14 +137,14 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function img_html( $img_id )
 		{
-			$i18n_del_file	= _x( 'Delete this file', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_delete	= _x( 'Delete', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_edit		= _x( 'Edit', 'image upload', RWMB_TEXTDOMAIN );
-			
+			$i18n_del_file	= _x( 'Delete this file', 'image upload', 'rwmb' );
+			$i18n_delete	= _x( 'Delete', 'image upload', 'rwmb' );
+			$i18n_edit		= _x( 'Edit', 'image upload', 'rwmb' );
+
 			$src = wp_get_attachment_image_src( $img_id, 'thumbnail' );
 			$src = $src[0];
 			$link = get_edit_post_link( $img_id );
-			
+
 			$html = <<<HTML
 <li id='item_{$img_id}'>
 	<img src='{$src}' />
@@ -155,9 +155,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 </li>
 HTML;
 			return $html;
-			
+
 		}
-		
+
 
 		/**
 		 * Get field HTML
@@ -175,14 +175,14 @@ HTML;
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$i18n_msg		= _x( 'Uploaded files', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_title		= _x( 'Upload files', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_more		= _x( 'Add another file', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_msg		= _x( 'Uploaded files', 'image upload', 'rwmb' );
+			$i18n_title		= _x( 'Upload files', 'image upload', 'rwmb' );
+			$i18n_more		= _x( 'Add another file', 'image upload', 'rwmb' );
 
 			// Filter to change the drag & drop box background string
-			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', RWMB_TEXTDOMAIN ) );
-			$i18n_or        = _x( 'or', 'image upload', RWMB_TEXTDOMAIN );
-			$i18n_select	= _x( 'Select Files', 'image upload', RWMB_TEXTDOMAIN );
+			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ) );
+			$i18n_or        = _x( 'or', 'image upload', 'rwmb' );
+			$i18n_select	= _x( 'Select Files', 'image upload', 'rwmb' );
 			$img_prefix		= $field['id'];
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );

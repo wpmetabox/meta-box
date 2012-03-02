@@ -1,12 +1,12 @@
 === Meta Box ===
 Contributors: rilwis, franz-josef-kaiser, Omnicia, erodesign, funkedgeek, PerWiklander, ruanmer
-Donate link: http://goo.gl/EWjsD
+Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: trunk
 
-Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
+Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
 == Description ==
 
@@ -16,13 +16,11 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 * Compatible with custom post types since WordPress 3.0.
 * Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, old & new file upload, date, time, color
 
-[Project page](http://www.deluxeblogtips.com/meta-box-script-for-wordpress/)
-
-[Project on GitHub](https://github.com/rilwis/meta-box)
-
-[Documentation](http://support.deluxeblogtips.com/kb/)
-
-[Support](http://support.deluxeblogtips.com/)
+**Link**
+* [Project Page](http://www.deluxeblogtips.com/meta-box)
+* [Project on GitHub](https://github.com/rilwis/meta-box)
+* [Documentation](http://www.deluxeblogtips.com/docs)
+* [Support](http://www.deluxeblogtips.com/support)
 
 == Installation ==
 
