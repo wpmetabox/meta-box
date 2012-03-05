@@ -73,10 +73,13 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 			} 
 			else 
 			{
-				// Use new wp_editor() since WP 3.3
+				// Apply filter to wp_editor() settings
+				$editor_settings = apply_filters( 'rwmb_wysiwyg_settings', array( 'editor_class' => 'rwmb-wysiwyg' ), 10, 1 );
 				// Using output buffering because wp_editor() echos directly
 				ob_start( );
-				wp_editor( $meta, $field['id'], array( 'editor_class' => 'rwmb-wysiwyg' ) );
+				// Use new wp_editor() since WP 3.3
+				wp_editor( $meta, $field['id'], $editor_settings );
+				
 				return ob_get_clean( );
 			}
 		}
