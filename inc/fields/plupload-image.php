@@ -35,7 +35,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			if ( ! defined('DOING_AJAX' ) )
 				define( 'DOING_AJAX', true );
 
-			check_ajax_referer('plupload_image');
+			check_ajax_referer('rwmb-upload-images_' . $_REQUEST['field_id']);
 
 			$post_id = 0;
 			if ( is_numeric( $_REQUEST['post_id'] ) )
@@ -112,19 +112,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,gif,png' ) ),
 				'multipart'				=> true,
 				'urlstream_upload'		=> true,
-				// additional post data to send to our ajax hook
-				'multipart_params'		=> array(
-					'_ajax_nonce'	=> wp_create_nonce( 'plupload_image' ),
-					'action'    	=> 'plupload_image_upload',  // the ajax action name
-					'post_id'		=> $post->ID
-				)
-
-			));
-
-			//Links to loading and error images to allow preloading
-			wp_localize_script('rwmb-plupload-image','rwmb_plupload_status_icons', array(
-				'error' =>  RWMB_URL . "img/image-error.gif",
-				'loading' =>  RWMB_URL . "img/image-loading.gif"
 			));
 		}
 
@@ -187,6 +174,7 @@ HTML;
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
+			$html .= wp_nonce_field( "rwmb-upload-images_{$field['id']}", "nonce-upload-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
 
 			//Uploaded images
