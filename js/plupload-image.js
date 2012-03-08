@@ -66,7 +66,9 @@ jQuery( document ).ready( function($)
 	// Using all the image prefixes
 	$( 'input:hidden.rwmb-image-prefix' ).each( function() 
 	{
-		prefix = $( this ).val();	
+		var 
+			prefix = $( this ).val(),
+			nonce = $('input#nonce-upload-images_' + prefix).val();
 		// Adding container, browser button and drag ang drop area
 		rwmb_plupload_init = $.extend( 
 			{
@@ -77,12 +79,13 @@ jQuery( document ).ready( function($)
 			rwmb_plupload_defaults 
 		);
 		// Add field_id to the ajax call
-		$.extend( 
-			rwmb_plupload_init.multipart_params, 
-			{
-				field_id:	prefix
-			}
-		);
+		rwmb_plupload_init['multipart_params'] = 
+		{	
+			action : 'plupload_image_upload',
+			field_id: prefix,
+			_ajax_nonce: nonce,
+			post_id: $('input#post_ID').val()
+		};
 		// Create new uploader
 		rwmb_image_uploaders[ prefix ] = new plupload.Uploader( rwmb_plupload_init );
 		rwmb_image_uploaders[ prefix ].init();
