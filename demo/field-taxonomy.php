@@ -179,7 +179,6 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function walk_select_tree( $meta, $field, $elements, $parent = 0, $parent_slug='', $active = false )
 		{
-			echo $parent;
 			if(!isset($elements[$parent]))
 				return;
 			$terms = $elements[$parent];
