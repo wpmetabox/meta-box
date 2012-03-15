@@ -38,6 +38,13 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.2 =
+* Improve taxonomy field
+* Add filter to wp_editor
+* Add more options for time field
+* Improve plupload_image field
+* Fix translation, use string for textdomain
+
 = 4.1.1 =
 * Fix translation
 * Change jQueryUI theme to 'smoothness'
