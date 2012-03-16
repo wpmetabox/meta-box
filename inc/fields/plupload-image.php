@@ -109,7 +109,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'url'					=> admin_url('admin-ajax.php'),
 				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
 				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,gif,png' ) ),
+				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,jpeg,gif,png' ) ),
 				'multipart'				=> true,
 				'urlstream_upload'		=> true,
 			));
