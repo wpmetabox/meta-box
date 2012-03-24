@@ -149,7 +149,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		static function admin_print_styles()
 		{
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
-			wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', RWMB_VER );
+			wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
 		}
 
 		/**************************************************
