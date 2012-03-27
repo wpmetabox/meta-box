@@ -1,19 +1,24 @@
-jQuery( document ).ready( function($) 
+/**
+ * Update date picker element
+ * Used for static & dynamic added elements (when clone)
+ */
+function rwmb_update_date_picker()
 {
-	$( '.rwmb-date' ).on( 
-		 'focusin'
-		,function( handler )
-		{
-			var 
-				$this = $( this ),
-				format = $this.attr( 'rel' )
-			;
+	var $ = jQuery;
 
-			$this.datepicker(
-			{
-				showButtonPanel:	true,
-				dateFormat:			format
-			} );
-		}
-	);
+	$( '.rwmb-date' ).each( function()
+	{
+		var $this = $( this ),
+			format = $this.attr( 'rel' );
+
+		$this.removeClass('hasDatepicker').attr('id', '').datepicker( {
+			showButtonPanel: true,
+			dateFormat:	     format
+		} );
+	} );
+}
+
+jQuery( document ).ready( function($)
+{
+	rwmb_update_date_picker();
 } );

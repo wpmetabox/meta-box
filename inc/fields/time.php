@@ -43,10 +43,10 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		 */
 		static function html( $html, $meta, $field ) 
 		{
-			$name = "name='{$field['field_name']}'";
-			$id    = " id='{$field['id']}'";
+			$name  = " name='{$field['field_name']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
-			$val   = " value='$meta'";
+			$val   = " value='{$meta}'";
 			$html .= "<input type='text' class='rwmb-time' size='30'{$name}{$id}{$rel}{$val} />";
 
 			return $html;

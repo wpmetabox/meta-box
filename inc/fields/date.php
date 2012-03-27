@@ -39,8 +39,8 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		 */
 		static function html( $html, $meta, $field ) 
 		{
-			$name = "name='{$field['field_name']}'";
-			$id     = " id='{$field['id']}'";
+			$name   = " name='{$field['field_name']}'";
+			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
 			$format = " rel='{$field['format']}'";
 			$val    = " value='{$meta}'";
 			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$format}{$val} size='30' />";

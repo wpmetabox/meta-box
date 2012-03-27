@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 			if ( empty( $meta ) )
 				$meta = '#';
 			$name  = " name='{$field['field_name']}'";
-			$id    = " id='{$field['id']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
 			$value = " value='{$meta}'";
 
 			$html = <<<HTML
