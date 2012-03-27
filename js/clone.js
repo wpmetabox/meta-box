@@ -39,6 +39,10 @@ jQuery( document ).ready( function ($)
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
 
+		// Fix color picker
+		if ( 'function' === typeof rwmb_update_color_picker )
+			rwmb_update_color_picker();
+
 		return false;
 	} );
 
