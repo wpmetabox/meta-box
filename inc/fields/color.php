@@ -35,14 +35,14 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		{
 			if ( empty( $meta ) )
 				$meta = '#';
-			$name = "name='{$field['field_name']}'";
+			$name  = " name='{$field['field_name']}'";
+			$id    = " id='{$field['id']}'";
+			$value = " value='{$meta}'";
 
 			$html = <<<HTML
-<input class="rwmb-color" type="text" {$name} id="{$field['id']}" value="{$meta}" size="8" />
-<a href="#" class="rwmb-color-select" rel="{$field['id']}">%s</a>
+<input class="rwmb-color" type="text"{$name}{$id}{$value} size="8" />
 <div class="rwmb-color-picker" rel="{$field['id']}"></div>
 HTML;
-			$html = sprintf( $html, __( 'Select a color', 'rwmb' ) );
 
 			return $html;
 		}
