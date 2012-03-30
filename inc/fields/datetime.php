@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if ( ! class_exists('WP') ) 
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -26,10 +26,10 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );
 
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
-			wp_register_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse' ), '1.8.17', true );
-			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
-			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery-ui-timepicker' ), RWMB_VER, true );
+			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery', 'jquery-ui-core' ), '1.8.17', true );
+			wp_register_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse' ), '1.8.17', true );
+			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
+			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery', 'jquery-ui-timepicker' ), RWMB_VER, true );
 		}
 
 		/**
@@ -44,7 +44,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$id    = " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
 			$val   = " value='{$meta}'";
 			$html .= "<input type='text' class='rwmb-datetime' size='30'{$name}{$id}{$rel}{$val} />";

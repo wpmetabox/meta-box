@@ -63,10 +63,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Assign meta box values to local variables and add it's missed values
 			$this->meta_box = self::normalize( $meta_box );
-			$this->fields   = &$this->meta_box['fields'];
+			$this->fields   = $this->meta_box['fields'];
 
 			// List of meta box field types
-			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
+			$this->types    = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
 			// Call directly because we define meta boxes in 'admin_init' hook (@see demo/demo.php)
@@ -95,10 +95,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Add meta box
 			foreach ( $this->meta_box['pages'] as $page )
-				add_action( "add_meta_boxes_{$page}", array( &$this, 'add_meta_boxes' ) );
+				add_action( "add_meta_boxes_{$page}", array( $this, 'add_meta_boxes' ) );
 
 			// Save post meta
-			add_action( 'save_post', array( &$this, 'save_post' ) );
+			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
 
 		/**
@@ -145,7 +145,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
-					array( &$this, 'show' ),
+					array( $this, 'show' ),
 					$page,
 					$this->meta_box['context'],
 					$this->meta_box['priority']
@@ -175,7 +175,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $this->fields as $field )
 			{
 				$type = $field['type'];
-				$id = $field['id'];
+				$id   = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
 				$meta = apply_filters( "rwmb_{$type}_meta", $meta );
 				$meta = apply_filters( "rwmb_{$id}_meta", $meta );
@@ -200,10 +200,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$meta = (array) $meta;
 					foreach ( $meta as $meta_data )
 					{
-						add_filter( "rwmb_{$id}_html", array( &$this, 'add_delete_clone_button' ), 10, 3 );
+						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
-						$input_html = '<div class="rwmb-clone">';
+						$input_html  = '<div class="rwmb-clone">';
 
 						// Call separated methods for displaying each type of field
 						$input_html .= self::apply_field_class_filters( $field, 'html', '', $meta_data );
@@ -211,8 +211,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						// Apply filter to field HTML
 						// 1st filter applies to all fields with the same type
 						// 2nd filter applies to current field only
-						$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
-						$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
+						$input_html  = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
+						$input_html  = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
 
 						$input_html .= '</div>';
 
@@ -255,8 +255,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$class = $this->add_cssclass( $field[ 'class' ], $class );
 
 				// If the 'hidden' argument is set and TRUE, the div will be hidden
-				if ( isset( $field['hidden'] ) && $field['hidden'] )
+				if ( isset( $field['type'] ) && 'hidden' === $field['type'] )
 					$class = $this->add_cssclass( 'hidden', $class );
+
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
@@ -389,10 +390,8 @@ HTML;
 				|| ( ! isset( $_POST['post_ID'] ) || $post_id != $_POST['post_ID'] )
 				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
 				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
-				)
-			{
+			)
 				return $post_id;
-			}
 
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
@@ -471,21 +470,22 @@ HTML;
 			// Set default values for fields
 			foreach ( $meta_box['fields'] as &$field )
 			{
-				$clone 	  = (isset($field['clone']) ? $field['clone'] : false);
+				$clone 	  = isset( $field['clone'] ) ? $field['clone'] : false;
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
 				$std      = $multiple ? array() : '';
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
 
-
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
-					'clone' => $clone,
+					'clone'    => $clone,
 					'std'      => $std,
 					'desc'     => '',
 					'format'   => $format
 				) );
 
-				$field['field_name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
+				$field['field_name']  = $field['id'];
+				// Append "[]" to the name attribute for multi & clone fields
+				$field['field_name'] .= $field['multiple'] || $field['clone'] ? "[]" : "";
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
@@ -496,6 +496,8 @@ HTML;
 
 		/**
 		 * Get field class name
+		 * Class naming convetion: Class names must start with uppercase letters 
+		 * and have lower case chars for the rest of the class name
 		 *
 		 * @param string $type Field type
 		 *
@@ -503,7 +505,7 @@ HTML;
 		 */
 		static function get_class_name( $type )
 		{
-			$type	= ucwords( $type );
+			$type	= ucwords( strtolower( $type ) );
 			$class	= "RWMB_{$type}_Field";
 
 			if ( class_exists( $class ) )
@@ -578,7 +580,10 @@ HTML;
 		static function ajax_response( $message, $status )
 		{
 			$response = array( 'what' => 'meta-box' );
-			$response['data'] = 'error' === $status ? new WP_Error( 'error', $message ) : $message;
+			$response['data'] = 'error' === $status 
+				? new WP_Error( 'error', $message, $status ) : 
+				$message
+			;
 			$x = new WP_Ajax_Response( $response );
 			$x->send();
 		}
@@ -603,6 +608,7 @@ HTML;
 					break;
 				}
 			}
+
 			return $saved;
 		}
 
@@ -634,7 +640,7 @@ HTML;
 		 */
 		static function is_cloneable( $field )
 		{
-			return $field['clone'];
+			return isset( $field['clone'] ) ? $field['clone'] : false;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
+if ( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -64,9 +64,13 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$ok = $ok && wp_delete_attachment( $attachment_id );
 
 			if ( $ok )
+			{
 				RW_Meta_Box::ajax_response( '', 'success' );
+			}
 			else
+			{
 				RW_Meta_Box::ajax_response( __( "Error: Cannot delete file", 'rwmb' ), 'error' );
+			}
 		}
 
 		/**
@@ -108,7 +112,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$html .= "
 			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
-				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
+				<div class='file-input'><input type='file' class='rwmb-file' name='{$field['id']}[]' /></div>
 				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
 			</div>";
 
@@ -176,7 +180,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			{
 				foreach ( $list as $index => $value )
 				{
-					$output[$index][$key] = $value;
+					$output[ $index ][ $key ] = $value;
 				}
 			}
 			return $output;
