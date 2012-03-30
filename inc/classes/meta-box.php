@@ -389,10 +389,8 @@ HTML;
 				|| ( ! isset( $_POST['post_ID'] ) || $post_id != $_POST['post_ID'] )
 				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
 				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
-				)
-			{
+			)
 				return $post_id;
-			}
 
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
@@ -496,6 +494,8 @@ HTML;
 
 		/**
 		 * Get field class name
+		 * Class naming convetion: Class names must start with uppercase letters 
+		 * and have lower case chars for the rest of the class name
 		 *
 		 * @param string $type Field type
 		 *
@@ -503,7 +503,7 @@ HTML;
 		 */
 		static function get_class_name( $type )
 		{
-			$type	= ucwords( $type );
+			$type	= ucwords( strtolower( $type ) );
 			$class	= "RWMB_{$type}_Field";
 
 			if ( class_exists( $class ) )
@@ -578,7 +578,10 @@ HTML;
 		static function ajax_response( $message, $status )
 		{
 			$response = array( 'what' => 'meta-box' );
-			$response['data'] = 'error' === $status ? new WP_Error( 'error', $message ) : $message;
+			$response['data'] = 'error' === $status 
+				? new WP_Error( 'error', $message, $status ) : 
+				$message
+			;
 			$x = new WP_Ajax_Response( $response );
 			$x->send();
 		}
@@ -603,6 +606,7 @@ HTML;
 					break;
 				}
 			}
+
 			return $saved;
 		}
 
@@ -634,7 +638,7 @@ HTML;
 		 */
 		static function is_cloneable( $field )
 		{
-			return $field['clone'];
+			return isset( $field['clone'] ) ? $field['clone'] : false;
 		}
 	}
 }
