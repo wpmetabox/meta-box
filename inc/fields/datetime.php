@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if ( ! class_exists('WP') ) 
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -44,10 +44,10 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$id    = " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
 			$val   = " value='{$meta}'";
-			$html .= "<input type='text' class='rwmb-datetime' size='30'{$name}{$id}{$rel}{$val} />";
+			$html .= "<input type='text' class='rwmb-datetime rwmb-input' size='30'{$name}{$id}{$rel}{$val} />";
 
 			return $html;
 		}

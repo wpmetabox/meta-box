@@ -32,9 +32,11 @@ jQuery( document ).ready( function ($)
 	// Add more clones
 	$( '.add-clone' ).click( function ()
 	{
-		var	$input      = $( this ).parents( '.rwmb-input' );
+		var	
+			$input      = $( this ).parents( '.rwmb-input' );
 			$clone_last = $input.find( '.rwmb-clone:last' ),
-			$clone      = $clone_last.clone( true );
+			$clone      = $clone_last.clone( true )
+		;
 
 		$clone.insertAfter( $clone_last );
 
@@ -66,8 +68,10 @@ jQuery( document ).ready( function ($)
 	// Remove clones
 	$( '.rwmb-input' ).delegate( '.remove-clone', 'click', function()
 	{
-		var $this  = $( this ),
-			$input = $this.parents( '.rwmb-input' );
+		var 
+			$this  = $( this ),
+			$input = $this.parents( '.rwmb-input' )
+		;
 
 		// Remove clone only if there're 2 or more of them
 		if ( $input.find( '.rwmb-clone' ).length > 1 )

@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if ( ! class_exists('WP') ) 
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -39,14 +39,14 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$id	     = " id='{$field['id']}'";
-			$name	 = "name='{$field['field_name']}'";
+			$name	 = " name='{$field['field_name']}'";
 			$val     = " value='{$meta}'";
 			$for     = " for='{$field['id']}'";
 			$format	 = " rel='{$field['format']}'";
 			$html   .= "
 				<div class='clearfix'>
 					<div class='rwmb-slider'{$format}{$id}></div>
-					<input type='hidden'{$name}{$val} />
+					<input type='hidden' class='rwmb-input'{$name}{$val} />
 				</div>";
 
 			return $html;
