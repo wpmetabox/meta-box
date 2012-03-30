@@ -20,12 +20,12 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		{
 			$url = RWMB_CSS_URL . 'jqueryui';
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
-			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
+			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array( 'jquery-ui-core' ), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
-			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker' ), RWMB_VER, true );
+			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery', 'jquery-ui-core' ), '1.8.17', true );
+			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery', 'jquery-ui-datepicker' ), RWMB_VER, true );
 		}
 
 		/**
