@@ -472,12 +472,15 @@ HTML;
 				$clone 	  = (isset($field['clone']) ? $field['clone'] : false);
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
 				$std      = $multiple ? array() : '';
-				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
+				$format   = 'date' === $field['type'] 
+					? get_option( 'date_format' ) 
+					: ( 'time' === $field['type'] ? get_option( 'time_format' ) : '' )
+				;
 
 
 				$field = wp_parse_args( $field, array(
 					'multiple' => $multiple,
-					'clone' => $clone,
+					'clone'    => $clone,
 					'std'      => $std,
 					'desc'     => '',
 					'format'   => $format
