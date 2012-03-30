@@ -1,3 +1,4 @@
+<?php
 // Prevent loading this file directly - Busted!
 if ( ! class_exists('WP') )
 {
