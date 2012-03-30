@@ -14,10 +14,15 @@ jQuery( document ).ready( function ($)
 		$el.each( function()
 		{
 			var $remove_buttons = $( this ).find( '.remove-clone' );
+
 			if ( $remove_buttons.length < 2 )
+			{
 				$remove_buttons.hide();
+			}
 			else
+			{
 				$remove_buttons.show();
+			}
 		} );
 	}
 
