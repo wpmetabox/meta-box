@@ -98,21 +98,23 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			wp_enqueue_script( 'plupload-all' );
 
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
-			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
-			//Heartcode Canvas Loader
-			wp_enqueue_script('heartcode-canvasloader', 'http://heartcode-canvasloader.googlecode.com/files/heartcode-canvasloader-min-0.9.1.js');
+
+			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery', 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
+			// Heartcode Canvas Loader
+			wp_enqueue_script( 'heartcode-canvasloader', RWMB_JS_URL.'external/heartcode_canvasloader_0.9.1.min.js', array( 'jquery', 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
+
 			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
-				'runtimes'				=> 'html5,silverlight,flash,html4',
-				'file_data_name'		=> 'async-upload',
-				'multiple_queues'		=> true,
-				'max_file_size'			=> wp_max_upload_size().'b',
-				'url'					=> admin_url('admin-ajax.php'),
-				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
-				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,jpeg,gif,png' ) ),
-				'multipart'				=> true,
-				'urlstream_upload'		=> true,
-			));
+				'runtimes'            => 'html5,silverlight,flash,html4',
+				'file_data_name'      => 'async-upload',
+				'multiple_queues'     => true,
+				'max_file_size'       => wp_max_upload_size().'b',
+				'url'                 => admin_url('admin-ajax.php'),
+				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+				'filters'             => array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,jpeg,gif,png' ) ),
+				'multipart'           => true,
+				'urlstream_upload'    => true
+			) );
 		}
 
 		/**

@@ -23,8 +23,8 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 			wp_enqueue_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_enqueue_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
-			wp_enqueue_script( 'rwmb-slider', RWMB_JS_URL . 'slider.js', array( 'jquery-ui-slider' ), RWMB_VER, true );
+			wp_enqueue_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery', 'jquery-ui-core' ), '1.8.17', true );
+			wp_enqueue_script( 'rwmb-slider', RWMB_JS_URL . 'slider.js', array( 'jquery', 'jquery-ui-slider' ), RWMB_VER, true );
 		}
 
 		/**

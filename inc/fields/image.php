@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
+if ( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -23,7 +23,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL.'image.css', array(), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL.'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL.'image.js', array( 'jquery', 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -149,12 +149,14 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$meta = implode( ',' , $meta );
 
 			// Re-arrange images with 'menu_order', thanks Onur
-			$meta = $wpdb->get_col( "
+			$meta = $wpdb->get_col( $wpdb->prepare( "
 				SELECT ID FROM {$wpdb->posts}
 				WHERE post_type = 'attachment'
-				AND ID in ({$meta})
+				AND ID in (%s)
 				ORDER BY menu_order ASC
-			" );
+			",
+			$meta
+			) );
 
 			return (array) $meta;
 		}
