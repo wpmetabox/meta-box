@@ -66,7 +66,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->fields   = $this->meta_box['fields'];
 
 			// List of meta box field types
-			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
+			$this->types    = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
 			// Load translation file
 			// Call directly because we define meta boxes in 'admin_init' hook (@see demo/demo.php)
@@ -175,7 +175,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $this->fields as $field )
 			{
 				$type = $field['type'];
-				$id = $field['id'];
+				$id   = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
 				$meta = apply_filters( "rwmb_{$type}_meta", $meta );
 				$meta = apply_filters( "rwmb_{$id}_meta", $meta );
@@ -257,6 +257,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// If the 'hidden' argument is set and TRUE, the div will be hidden
 				if ( isset( $field['hidden'] ) && $field['hidden'] )
 					$class = $this->add_cssclass( 'hidden', $class );
+
 				echo "<div class='{$class}'>{$html}</div>";
 			}
 
@@ -469,7 +470,7 @@ HTML;
 			// Set default values for fields
 			foreach ( $meta_box['fields'] as &$field )
 			{
-				$clone 	  = (isset($field['clone']) ? $field['clone'] : false);
+				$clone 	  = isset( $field['clone'] ) ? $field['clone'] : false;
 				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
 				$std      = $multiple ? array() : '';
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
@@ -482,7 +483,9 @@ HTML;
 					'format'   => $format
 				) );
 
-				$field['field_name'] = $field['id'] . (( $field['multiple'] || $field['clone'])? "[]" : "");
+				$field['field_name']  = $field['id'];
+				// Append "[]" to the name attribute for multi & clone fields
+				$field['field_name'] .= $field['multiple'] || $field['clone'] ? "[]" : "";
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
