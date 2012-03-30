@@ -40,7 +40,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 			$value = " value='{$meta}'";
 
 			$html = <<<HTML
-<input class="rwmb-color rwmb-input" type="text"{$name}{$id}{$value} size="8" />
+<input class="rwmb-color" type="text"{$name}{$id}{$value} size="8" />
 <div class="rwmb-color-picker"></div>
 HTML;
 

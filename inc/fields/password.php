@@ -25,7 +25,7 @@ if ( ! class_exists( 'RWMB_Password_Field' ) )
 			$val   = " value='{$meta}'";
 			$name  = " name='{$field['field_name']}'";
 			$id    = " id='{$field['id']}'";
-			$html .= "<input type='password' class='rwmb-password rwmb-input'{$name}{$id}{$val} size='30' />";
+			$html .= "<input type='password' class='rwmb-password'{$name}{$id}{$val} size='30' />";
 
 			return $html;
 		}

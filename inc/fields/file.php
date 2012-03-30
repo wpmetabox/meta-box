@@ -1,4 +1,3 @@
-<?php
 // Prevent loading this file directly - Busted!
 if ( ! class_exists('WP') )
 {
@@ -112,7 +111,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$html .= "
 			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
-				<div class='file-input'><input type='file' class='rwmb-file rwmb-input' name='{$field['id']}[]' /></div>
+				<div class='file-input'><input type='file' class='rwmb-file' name='{$field['id']}[]' /></div>
 				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
 			</div>";
 

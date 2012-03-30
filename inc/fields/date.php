@@ -43,7 +43,7 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			$id     = " id='{$field['id']}'";
 			$format = " rel='{$field['format']}'";
 			$val    = " value='{$meta}'";
-			$html   = "<input type='text' class='rwmb-date rwmb-input'{$name}{$id}{$format}{$val} size='30' />";
+			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$format}{$val} size='30' />";
 
 			return $html;
 		}

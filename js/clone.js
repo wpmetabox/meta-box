@@ -11,6 +11,7 @@ jQuery( document ).ready( function ($)
 	{
 		if ( ! $el )
 			$el = $( '.rwmb-field' );
+
 		$el.each( function()
 		{
 			var $remove_buttons = $( this ).find( '.remove-clone' );

@@ -46,7 +46,7 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 			$html   .= "
 				<div class='clearfix'>
 					<div class='rwmb-slider'{$format}{$id}></div>
-					<input type='hidden' class='rwmb-input'{$name}{$val} />
+					<input type='hidden' class='rwmb-slider-input'{$name}{$val} />
 				</div>";
 
 			return $html;

@@ -47,7 +47,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			$id    = " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
 			$val   = " value='{$meta}'";
-			$html .= "<input type='text' class='rwmb-time rwmb-input' size='30'{$name}{$id}{$rel}{$val} />";
+			$html .= "<input type='text' class='rwmb-time' size='30'{$name}{$id}{$rel}{$val} />";
 
 			return $html;
 		}
