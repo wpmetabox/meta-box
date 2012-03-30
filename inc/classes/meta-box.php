@@ -63,7 +63,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Assign meta box values to local variables and add it's missed values
 			$this->meta_box = self::normalize( $meta_box );
-			$this->fields   = &$this->meta_box['fields'];
+			$this->fields   = $this->meta_box['fields'];
 
 			// List of meta box field types
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
@@ -95,10 +95,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Add meta box
 			foreach ( $this->meta_box['pages'] as $page )
-				add_action( "add_meta_boxes_{$page}", array( &$this, 'add_meta_boxes' ) );
+				add_action( "add_meta_boxes_{$page}", array( $this, 'add_meta_boxes' ) );
 
 			// Save post meta
-			add_action( 'save_post', array( &$this, 'save_post' ) );
+			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
 
 		/**
@@ -145,7 +145,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
-					array( &$this, 'show' ),
+					array( $this, 'show' ),
 					$page,
 					$this->meta_box['context'],
 					$this->meta_box['priority']
@@ -200,7 +200,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$meta = (array) $meta;
 					foreach ( $meta as $meta_data )
 					{
-						add_filter( "rwmb_{$id}_html", array( &$this, 'add_delete_clone_button' ), 10, 3 );
+						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
 						$input_html = '<div class="rwmb-clone">';
