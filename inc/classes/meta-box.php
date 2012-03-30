@@ -203,7 +203,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
-						$input_html = '<div class="rwmb-clone">';
+						$input_html  = '<div class="rwmb-clone">';
 
 						// Call separated methods for displaying each type of field
 						$input_html .= self::apply_field_class_filters( $field, 'html', '', $meta_data );
@@ -211,8 +211,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						// Apply filter to field HTML
 						// 1st filter applies to all fields with the same type
 						// 2nd filter applies to current field only
-						$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
-						$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
+						$input_html  = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
+						$input_html  = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
 
 						$input_html .= '</div>';
 
@@ -255,7 +255,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$class = $this->add_cssclass( $field[ 'class' ], $class );
 
 				// If the 'hidden' argument is set and TRUE, the div will be hidden
-				if ( isset( $field['hidden'] ) && $field['hidden'] )
+				if ( isset( $field['type'] ) && 'hidden' === $field['type'] )
 					$class = $this->add_cssclass( 'hidden', $class );
 
 				echo "<div class='{$class}'>{$html}</div>";
