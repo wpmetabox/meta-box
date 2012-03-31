@@ -86,8 +86,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
-			//Heartcode Canvas Loader
-			wp_enqueue_script('heartcode-canvasloader', 'http://heartcode-canvasloader.googlecode.com/files/heartcode-canvasloader-min-0.9.1.js');
+			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array('url' => RWMB_URL) );
 			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
 				'runtimes'				=> 'html5,silverlight,flash,html4',
 				'file_data_name'		=> 'async-upload',

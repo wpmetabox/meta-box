@@ -58,17 +58,7 @@ jQuery( document ).ready( function($)
 	//Adds loading throbber while waiting for a response
 	function addThrobber(file)
 	{
-		throbbers[file.id] = new CanvasLoader(file.id + '-throbber');
-		throbbers[file.id].setDiameter(50);
-		throbbers[file.id].show();
-		$('#canvasLoader', '#' + file.id + '-throbber')
-			.css('position', 'absolute')
-			.css('top', function(){
-				return throbbers[file.id].getDiameter() * -0.5 + "px";
-			})
-			.css('left', function(){
-				return throbbers[file.id].getDiameter() * -0.5 + "px";
-			});
+		$('#' + file.id + '-throbber').html("<img class='rwmb-loader' height=64 width=64 src='" + RWMB.url + "img/loader.gif'/>");
 	}
 
 	// Using all the image prefixes
