@@ -27,8 +27,6 @@ jQuery( document ).ready( function($)
 			var container = $(this).parent().parent().parent().parent(),
 				max_file_count = container.find('.max_file_count').val(),
 				uploaded = container.find('ul li').length - 1; // -1 for the one we just deleted
-			console.log('uploaded: ' + uploaded);
-			console.log('max_file_count: ' + max_file_count);
 			if (uploaded < max_file_count) {
 				container.find('.rwmb-drag-drop').show();
 			}
