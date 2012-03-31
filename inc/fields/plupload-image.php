@@ -86,8 +86,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
-			//Heartcode Canvas Loader
-			wp_enqueue_script('heartcode-canvasloader', 'http://heartcode-canvasloader.googlecode.com/files/heartcode-canvasloader-min-0.9.1.js');
+			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array('url' => RWMB_URL) );
 			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
 				'runtimes'				=> 'html5,silverlight,flash,html4',
 				'file_data_name'		=> 'async-upload',
@@ -161,6 +160,16 @@ HTML;
 
 			// Uploaded images
 			$html .= "<div id='{$img_prefix}-container'>";
+
+			// check for max_file_count
+			if ( array_key_exists( 'max_file_count', $field) ) {
+				$max_file_count = $field['max_file_count'];
+				$html .= "<input class='max_file_count' type='hidden' value='$max_file_count' />";
+				if ( count($meta) >= $max_file_count ) {
+					$hidden = 'hidden';
+				}
+			}
+
 			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
 			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 			foreach ( $meta as $image )
@@ -172,7 +181,7 @@ HTML;
 			// Show form upload
 			$html .= "
 				<h4>{$i18n_title}</h4>
-				<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js'>
+				<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js {$hidden}'>
 					<div class = 'rwmb-drag-drop-inside'>
 						<p>{$i18n_drop}</p>
 						<p>{$i18n_or}</p>
