@@ -74,19 +74,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			self::load_textdomain();
 
 			// Enqueue common styles and scripts
-			add_action( 'admin_print_styles-post.php', array( __CLASS__, 'admin_print_styles' ) );
-			add_action( 'admin_print_styles-post-new.php', array( __CLASS__, 'admin_print_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
 
 			foreach ( $this->types as $type )
 			{
 				$class = self::get_class_name( $type );
-
-				// Enqueue scripts and styles for fields
-				if ( method_exists( $class, 'admin_print_styles' ) )
-				{
-					add_action( 'admin_print_styles-post.php', array( $class, 'admin_print_styles' ) );
-					add_action( 'admin_print_styles-post-new.php', array( $class, 'admin_print_styles' ) );
-				}
 
 				// Add additional actions for fields
 				if ( method_exists( $class, 'add_actions' ) )
@@ -123,10 +115,31 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		function admin_enqueue_scripts()
 		{
+			$screen = get_current_screen();
+
+			// Enqueue scripts and styles for registered pages (post types) only
+			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
+				return;
+
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
-			wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
+
+			// Load clone script conditionally
+			$has_clone = false;
+			foreach ( $this->fields as $field )
+			{
+				if ( self::is_cloneable( $field ) )
+					$has_clone = true;
+
+				// Enqueue scripts and styles for fields
+				$class = self::get_class_name( $field['type'] );
+				if ( method_exists( $class, 'admin_enqueue_scripts' ) )
+					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
+			}
+
+			if ( $has_clone )
+				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
 		}
 
 		/**************************************************

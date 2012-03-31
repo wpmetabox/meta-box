@@ -1,22 +1,22 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit;
 }
 
-if ( ! class_exists( 'RWMB_Select_Field' ) ) 
+if ( ! class_exists( 'RWMB_Select_Field' ) )
 {
-	class RWMB_Select_Field 
+	class RWMB_Select_Field
 	{
 		/**
 		 * Enqueue scripts and styles
-		 * 
+		 *
 		 * @return	void
 		 */
-		static function admin_print_styles( ) 
+		static function admin_enqueue_scripts( )
 		{
 			wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL.'select.css', RWMB_VER );
 		}
@@ -30,7 +30,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
@@ -43,7 +43,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			$name	.= $field['multiple'] ? " multiple='multiple'" : "" ;
 
 			$html	 = "<select class='rwmb-select'{$name}{$id}{$disabled}>";
-			foreach ( $field['options'] as $key => $value ) 
+			foreach ( $field['options'] as $key => $value )
 			{
 				$selected	 = selected( in_array( $key, $meta ), true, false );
 				$html		.= "<option value='{$key}'{$selected}>{$value}</option>";

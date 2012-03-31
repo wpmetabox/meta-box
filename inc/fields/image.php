@@ -16,10 +16,10 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			// Enqueue same scripts and styles as for file field
-			parent::admin_print_styles();
+			parent::admin_enqueue_scripts();
 
 			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array(), RWMB_VER );
 

@@ -19,7 +19,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style(
 				'rwmb-taxonomy',
@@ -68,7 +68,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$field['multiple'] = true;
 				$field['field_name'] = "{$field['field_name']}[]";
 			}
-			
+
 			if($field['options']['type'] == 'checkbox_tree' || $field['options']['type'] == 'select_tree'){
 				$field['field_name'] = $field['field_name'] . '[]';
 				if(isset($field['options']['args']['parent']))
@@ -78,7 +78,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				}
 				else
 				{
-					$field['options']['parent'] = 0;	
+					$field['options']['parent'] = 0;
 				}
 			}
 
@@ -96,7 +96,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			
+
 			$options = $field['options'];
 			$terms   = get_terms( $options['taxonomy'], $options['args'] );
 
@@ -155,7 +155,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				return;
 			$terms = $elements[$parent];
 			$hidden = ( !$active ? 'hidden' : '' );
-			
+
 			$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
 			foreach ( $terms as $term )
 			{
@@ -164,10 +164,10 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$html .= self::walk_checkbox_tree($meta, $field, $elements, $term->term_id, (in_array( $term->slug, $meta)) && $active) . "</li>";
 			}
 			$html .= "</ul>";
-			
+
 			return $html;
 		}
-		
+
 		/**
 		 * Walker for displaying select in treeformat
 		 *
@@ -204,16 +204,16 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$html .= self::walk_select_tree($meta, $field, $elements, $term->term_id, $term->slug, (in_array( $term->slug, $meta)) && $active) . "</li>";
 			}
 			$html .= "</div>";
-			
+
 			return $html;
 		}
-		
+
 		/**
 		 * Processes terms into indexed array for walker functions
 		 *
 		 * @param $field
 		 *
-		 * @return array 
+		 * @return array
 		 */
 		static function process_terms($terms)
 		{

@@ -77,11 +77,11 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			global $post;
 			// Enqueue same scripts and styles as for file field
-			parent::admin_print_styles();
+			parent::admin_enqueue_scripts();
 			wp_enqueue_script( 'plupload-all' );
 
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
