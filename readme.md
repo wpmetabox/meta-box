@@ -47,6 +47,7 @@ To change meta box definition, please see comments in `demo.php`.
 ### Changelog
 
 ### 4.1.3
+* Store images in correct order after re-order
 * Fix cloning color, date, time, datetime fields
 
 ### 4.1.2

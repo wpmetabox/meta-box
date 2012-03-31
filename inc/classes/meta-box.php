@@ -472,7 +472,7 @@ HTML;
 			foreach ( $meta_box['fields'] as &$field )
 			{
 				$clone 	  = (isset($field['clone']) ? $field['clone'] : false);
-				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) ) ;
+				$multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image', 'plupload_image' ) ) ;
 				$std      = $multiple ? array() : '';
 				$format   = 'date' === $field['type'] ? 'yy-mm-dd' : ( 'time' === $field['type'] ? 'hh:mm' : '' );
 

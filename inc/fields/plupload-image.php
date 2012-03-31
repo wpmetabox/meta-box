@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 *
 		 * @return	void
 		 */
-		static function add_actions( )
+		static function add_actions()
 		{
 			parent::add_actions();
 			add_action( 'wp_ajax_plupload_image_upload', array( __CLASS__ , 'handle_upload' ) );
@@ -70,19 +70,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			}
 			// faster than die();
 			exit;
-		}
-
-		/**
-		 * Add default value for 'image' field
-		 *
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field['multiple'] = true;
-			return $field;
 		}
 
 		/**
@@ -142,9 +129,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 </li>
 HTML;
 			return $html;
-
 		}
-
 
 		/**
 		 * Get field HTML
@@ -157,31 +142,27 @@ HTML;
 		 */
 		static function html( $html, $meta, $field )
 		{
-			global $wpdb;
-
 			if ( ! is_array( $meta ) )
-				$meta = (array) $meta;
+				$meta = ( array ) $meta;
 
-			$i18n_msg		= _x( 'Uploaded files', 'image upload', 'rwmb' );
-			$i18n_title		= _x( 'Upload files', 'image upload', 'rwmb' );
-			$i18n_more		= _x( 'Add another file', 'image upload', 'rwmb' );
+			$i18n_msg   = _x( 'Uploaded files', 'image upload', 'rwmb' );
+			$i18n_title = _x( 'Upload files', 'image upload', 'rwmb' );
 
 			// Filter to change the drag & drop box background string
-			$i18n_drop		= apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ) );
-			$i18n_or        = _x( 'or', 'image upload', 'rwmb' );
-			$i18n_select	= _x( 'Select Files', 'image upload', 'rwmb' );
-			$img_prefix		= $field['id'];
+			$i18n_drop   = apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ) );
+			$i18n_or     = _x( 'or', 'image upload', 'rwmb' );
+			$i18n_select = _x( 'Select Files', 'image upload', 'rwmb' );
+			$img_prefix  = $field['id'];
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-upload-images_{$field['id']}", "nonce-upload-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
 
-			//Uploaded images
+			// Uploaded images
 			$html .= "<div id='{$img_prefix}-container'>";
 			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
 			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-
 			foreach ( $meta as $image )
 			{
 				$html .= self::img_html($image);
@@ -190,21 +171,15 @@ HTML;
 
 			// Show form upload
 			$html .= "
-			<h4>{$i18n_title}</h4>
-			<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js'>
-				<div class = 'rwmb-drag-drop-inside'>
-					<p>{$i18n_drop}</p>
-					<p>{$i18n_or}</p>
-					<p><input id='{$img_prefix}-browse-button' type='button' value='{$i18n_select}' class='button' /></p>
+				<h4>{$i18n_title}</h4>
+				<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js'>
+					<div class = 'rwmb-drag-drop-inside'>
+						<p>{$i18n_drop}</p>
+						<p>{$i18n_or}</p>
+						<p><input id='{$img_prefix}-browse-button' type='button' value='{$i18n_select}' class='button' /></p>
+					</div>
 				</div>
-			</div>";
-
-			// old style if no js
-			$html .= "
-			<div class='new-files hide-if-js'>
-				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
-			</div>";
+			";
 
 			$html .= "</div>";
 
