@@ -7,10 +7,8 @@ function rwmb_update_color_picker()
 	var $ = jQuery;
 	$( '.rwmb-color-picker' ).each( function()
 	{
-		var 
-			$this  = $( this ),
-			$input = $this.siblings( 'input.rwmb-color' )
-		;
+		var $this  = $( this ),
+			$input = $this.siblings( 'input.rwmb-color' );
 
 		// Make sure the value is displayed
 		if ( ! $input.val() )

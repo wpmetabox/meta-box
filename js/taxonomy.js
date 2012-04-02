@@ -2,10 +2,9 @@ jQuery( document ).ready( function($)
 {
 	$( '.rw-taxonomy-tree input:checkbox' ).change( function()
 	{
-		var 
-			$this      = $( this ),
-			$childList = $this.parent().siblings( '.rw-taxonomy-tree' )
-		;
+		var $this      = $( this ),
+			$childList = $this.parent().siblings( '.rw-taxonomy-tree' );
+
 		if ( $this.is( ':checked' ) )
 		{
 			$childList.removeClass( 'hidden' );
@@ -19,11 +18,9 @@ jQuery( document ).ready( function($)
 	
 	$( '.rw-taxonomy-tree select' ).change( function()
 	{
-		var 
-			$this      = $( this ),
+		var $this      = $( this ),
 			$childList = $this.parent().find( 'div.rw-taxonomy-tree' ),
-			$value     = $this.val()
-		;
+			$value     = $this.val();
 
 		$childList.removeClass( 'active' ).addClass( 'disabled' ).find( 'select' ).each( function()
 		{

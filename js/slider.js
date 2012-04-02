@@ -1,14 +1,13 @@
 jQuery( document ).ready( function($) 
 {
-	var 
-		 id		= null
-		,el		= null
-		,input	= null
-		,label	= null
-		,format	= null
-		,value	= null
-		,update	= null
-	;
+	var id     =
+		el     =
+		input  =
+		label  =
+		format =
+		value  =
+		update = null;
+
 	$( '.rwmb-slider' ).each( function( i, val ) 
 	{
 		id     = $( val ).attr( 'id' );

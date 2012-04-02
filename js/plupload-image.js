@@ -1,12 +1,11 @@
 jQuery( document ).ready( function($)
 {
 	// Object containing all the plupload uploaders
-	var 
-		rwmb_image_uploaders = {},
+	var rwmb_image_uploaders = {},
 		hundredMB            = null,
 		max                  = null,
-		throbbers            = {}
-	;
+		throbbers            = {};
+
 	// Hide "Uploaded files" title as long as there are no files uploaded
 	if ( 1 == $( '.rwmb-uploaded' ).children().length )
 		$( '.rwmb-uploaded-title' ).addClass( 'hidden' );
@@ -47,7 +46,7 @@ jQuery( document ).ready( function($)
 	// Adds loading li element
 	function addLoading( up, file )
 	{
-		$list =  $( '#' + up.settings.container ).find( 'ul' );
+		$list = $( '#' + up.settings.container ).find( 'ul' );
 		$list.append( 
 			"<li id='" + file.id + "'>"
 				+ "<div class='rwmb-image-uploading-bar'></div>"
@@ -61,6 +60,7 @@ jQuery( document ).ready( function($)
 		throbbers[ file.id ] = new CanvasLoader( file.id + '-throbber' );
 		throbbers[ file.id ].setDiameter( 50 );
 		throbbers[ file.id ].show();
+
 		$( '#canvasLoader', '#' + file.id + '-throbber' )
 			.css( 'position', 'absolute' )
 			.css( 'top', function()
@@ -76,9 +76,9 @@ jQuery( document ).ready( function($)
 	// Using all the image prefixes
 	$( 'input:hidden.rwmb-image-prefix' ).each( function() 
 	{
-		var 
-			prefix = $( this ).val(),
+		var prefix = $( this ).val(),
 			nonce = $( 'input#nonce-upload-images_' + prefix ).val();
+
 		// Adding container, browser button and drag ang drop area
 		rwmb_plupload_init = $.extend( 
 			{

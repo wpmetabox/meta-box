@@ -13,7 +13,7 @@ jQuery( document ).ready( function($)
 	// Delete file via Ajax
 	$( '.rwmb-uploaded' ).delegate( '.rwmb-delete-file', 'click', function() 
 	{
-		var $this = $(this),
+		var $this = $( this ),
 			$parent = $this.closest( 'li' ),
 			field_id = $this.parents( '.rwmb-field' ).find( '.field-id' ).val(),
 			data = {
@@ -27,6 +27,7 @@ jQuery( document ).ready( function($)
 		$.post( ajaxurl, data, function( r ) 
 		{
 			var res = wpAjax.parseAjaxResponse( r, 'ajax-response' );
+
 			if ( res.errors )
 			{
 				alert( res.responses[0].errors[0].message );
