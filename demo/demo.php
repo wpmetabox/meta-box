@@ -165,7 +165,8 @@ $meta_boxes[] = array(
 			'name'	=> 'Screenshots (plupload)',
 			'desc'	=> 'Screenshots of problems, warnings, etc.',
 			'id'	=> "{$prefix}screenshot2",
-			'type'	=> 'plupload_image'
+			'type'	=> 'plupload_image',
+			'max_file_uploads' => 4,
 		)
 	)
 );

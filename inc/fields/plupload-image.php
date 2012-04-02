@@ -30,25 +30,23 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function handle_upload ()
 		{
-			header( 'Content-Type: text/html; charset=UTF-8' );
-
-			if ( ! defined('DOING_AJAX' ) )
-				define( 'DOING_AJAX', true );
-
-			check_ajax_referer('rwmb-upload-images_' . $_REQUEST['field_id']);
+			check_admin_referer( 'rwmb-upload-images_' . $_REQUEST['field_id'] );
 
 			$post_id = 0;
 			if ( is_numeric( $_REQUEST['post_id'] ) )
 				$post_id = (int) $_REQUEST['post_id'];
 
-			// you can use WP's wp_handle_upload() function:
-			$file = $_FILES['async-upload'];
-			$file_attr = wp_handle_upload( $file, array('test_form'=>true, 'action' => 'plupload_image_upload') );
+			// You can use WP's wp_handle_upload() function:
+			$file       = $_FILES['async-upload'];
+			$file_attr  = wp_handle_upload( $file, array(
+				'test_form'=> true,
+				'action'   => 'plupload_image_upload'
+			) );
 			$attachment = array(
-				'post_mime_type'	=> $file_attr['type'],
-				'post_title'		=> preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
-				'post_content'		=> '',
-				'post_status'		=> 'inherit'
+				'post_mime_type' => $file_attr['type'],
+				'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
+				'post_content'   => '',
+				'post_status'    => 'inherit'
 			);
 
 			// Adds file as attachment to WordPress
@@ -63,12 +61,12 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
 				}
 				$response->add( array(
-					'what'			=>'rwmb_image_response',
-					'data'			=>  self::img_html($id)
+					'what' => 'rwmb_image_response',
+					'data' => self::img_html( $id )
 				) );
 				$response->send();
 			}
-			// faster than die();
+			// Faster than die();
 			exit;
 		}
 
@@ -79,26 +77,26 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			global $post;
 			// Enqueue same scripts and styles as for file field
 			parent::admin_enqueue_scripts();
-			wp_enqueue_script( 'plupload-all' );
-
-			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL.'plupload-image.css', array(), RWMB_VER );
-			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL.'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
+			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL . 'plupload-image.css', array(), RWMB_VER );
+			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL . 'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array('url' => RWMB_URL) );
 			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
-				'runtimes'				=> 'html5,silverlight,flash,html4',
-				'file_data_name'		=> 'async-upload',
-				'multiple_queues'		=> true,
-				'max_file_size'			=> wp_max_upload_size().'b',
-				'url'					=> admin_url('admin-ajax.php'),
-				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
-				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters'				=> array( array( 'title' => _x( 'Allowed Image Files', 'image upload', 'rwmb' ), 'extensions' => 'jpg,jpeg,gif,png' ) ),
-				'multipart'				=> true,
-				'urlstream_upload'		=> true,
-			));
+				'runtimes'            => 'html5,silverlight,flash,html4',
+				'file_data_name'      => 'async-upload',
+				'multiple_queues'     => true,
+				'max_file_size'       => wp_max_upload_size() . 'b',
+				'url'                 => admin_url( 'admin-ajax.php' ),
+				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+				'filters'             => array( array(
+					'title'           => _x( 'Allowed Image Files', 'image upload', 'rwmb' ),
+					'extensions'      => 'jpg,jpeg,gif,png'
+				) ),
+				'multipart'           => true,
+				'urlstream_upload'    => true,
+			) );
 		}
 
 		/**
@@ -110,9 +108,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function img_html( $img_id )
 		{
-			$i18n_del_file	= _x( 'Delete this file', 'image upload', 'rwmb' );
-			$i18n_delete	= _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit		= _x( 'Edit', 'image upload', 'rwmb' );
+			$i18n_del_file = _x( 'Delete this file', 'image upload', 'rwmb' );
+			$i18n_delete   = _x( 'Delete', 'image upload', 'rwmb' );
+			$i18n_edit     = _x( 'Edit', 'image upload', 'rwmb' );
 
 			$src = wp_get_attachment_image_src( $img_id, 'thumbnail' );
 			$src = $src[0];
@@ -161,13 +159,14 @@ HTML;
 			// Uploaded images
 			$html .= "<div id='{$img_prefix}-container'>";
 
-			// check for max_file_count
-			if ( array_key_exists( 'max_file_count', $field) ) {
-				$max_file_count = $field['max_file_count'];
-				$html .= "<input class='max_file_count' type='hidden' value='$max_file_count' />";
-				if ( count($meta) >= $max_file_count ) {
-					$hidden = 'hidden';
-				}
+			// Check for max_file_uploads
+			$class = 'rwmb-drag-drop hide-if-no-js';
+			if ( array_key_exists( 'max_file_uploads', $field ) )
+			{
+				$max_file_uploads = $field['max_file_uploads'];
+				$html .= "<input class='max_file_uploads' type='hidden' value='{$max_file_uploads}' />";
+				if ( count( $meta ) >= $max_file_uploads )
+					$class = RW_Meta_Box::add_cssclass( 'hidden', $class );
 			}
 
 			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
@@ -181,7 +180,7 @@ HTML;
 			// Show form upload
 			$html .= "
 				<h4>{$i18n_title}</h4>
-				<div id='{$img_prefix}-dragdrop' class='rwmb-drag-drop hide-if-no-js {$hidden}'>
+				<div id='{$img_prefix}-dragdrop' class='{$class}'>
 					<div class = 'rwmb-drag-drop-inside'>
 						<p>{$i18n_drop}</p>
 						<p>{$i18n_or}</p>
