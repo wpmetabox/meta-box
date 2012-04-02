@@ -19,10 +19,18 @@ jQuery( document ).ready( function($)
 				$( '.rwmb-uploaded-title' ).removeClass( 'hidden' );
 		}
 	);
-	$( '.rwmb-delete-file' ).bind(
-		'click',
+	$( '.rwmb-images' ).on(
+		'click', '.rwmb-delete-file',
 		function()
 		{
+			// check if we need to show drop target
+			var container = $(this).parent().parent().parent().parent(),
+				max_file_count = container.find('.max_file_count').val(),
+				uploaded = container.find('ul li').length - 1; // -1 for the one we just deleted
+			if (uploaded < max_file_count) {
+				container.find('.rwmb-drag-drop').show();
+			}
+
 			if ( 1 >= $( '.rwmb-uploaded' ).children().length )
 				$( '.rwmb-uploaded-title' ).addClass( 'hidden' );
 		}
@@ -50,17 +58,7 @@ jQuery( document ).ready( function($)
 	//Adds loading throbber while waiting for a response
 	function addThrobber(file)
 	{
-		throbbers[file.id] = new CanvasLoader(file.id + '-throbber');
-		throbbers[file.id].setDiameter(50);
-		throbbers[file.id].show();
-		$('#canvasLoader', '#' + file.id + '-throbber')
-			.css('position', 'absolute')
-			.css('top', function(){
-				return throbbers[file.id].getDiameter() * -0.5 + "px";
-			})
-			.css('left', function(){
-				return throbbers[file.id].getDiameter() * -0.5 + "px";
-			});
+		$('#' + file.id + '-throbber').html("<img class='rwmb-loader' height=64 width=64 src='" + RWMB.url + "img/loader.gif'/>");
 	}
 
 	// Using all the image prefixes
@@ -94,6 +92,24 @@ jQuery( document ).ready( function($)
 			'FilesAdded',
 			function( up, files )
 			{
+				var max_file_count = $('#' + this.settings.container + ' .max_file_count').val(),
+					uploaded = $('#' + this.settings.container + ' .rwmb-uploaded').children().length,
+					msg = "You may only upload " + max_file_count + " file";
+				if (max_file_count > 1) {
+					msg += 's';
+				}
+				if ((uploaded + files.length) > max_file_count) {
+					// remove files from queue
+					for (var i = 0; i < files.length; i++) {
+						up.removeFile(files[i]);
+					}
+					alert(msg);
+					return false;
+				}
+				if ((uploaded + files.length) == max_file_count) {
+					$('#' + this.settings.container).find('.rwmb-drag-drop').hide();
+				}
+
 				hundredMB	= 100 * 1024 * 1024,
 				max			= parseInt( up.settings.max_file_size, 10 );
 				plupload.each(
