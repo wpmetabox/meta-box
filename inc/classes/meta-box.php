@@ -580,10 +580,7 @@ HTML;
 		static function ajax_response( $message, $status )
 		{
 			$response = array( 'what' => 'meta-box' );
-			$response['data'] = 'error' === $status 
-				? new WP_Error( 'error', $message, $status ) : 
-				$message
-			;
+			$response['data'] = 'error' === $status ? new WP_Error( 'error', $message, $status ) : $message ;
 			$x = new WP_Ajax_Response( $response );
 			$x->send();
 		}
