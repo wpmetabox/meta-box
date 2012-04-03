@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if ( ! class_exists('WP') )
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL.'color.css', array( 'farbtastic' ), RWMB_VER );
 			wp_enqueue_script( 'rwmb-color', RWMB_JS_URL.'color.js', array( 'jquery', 'farbtastic' ), RWMB_VER, true );
@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 			if ( empty( $meta ) )
 				$meta = '#';
 			$name  = " name='{$field['field_name']}'";
-			$id    = " id='{$field['id']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
 			$value = " value='{$meta}'";
 
 			$html = <<<HTML
