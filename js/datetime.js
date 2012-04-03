@@ -14,8 +14,7 @@ function rwmb_update_datetime_picker()
 			show_second   = /:s/.test( format ),
 			show_millisec = /:l/.test( format );
 
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datetimepicker( 
-		{
+		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datetimepicker( {
 			showSecond:   show_second,
 			showMillisec: show_millisec,
 			timeFormat:   format,

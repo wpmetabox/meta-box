@@ -14,8 +14,7 @@ function rwmb_update_time_picker()
 			show_second   = /:s/.test( format ),
 			show_millisec = /:l/.test( format );
 
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).timepicker( 
-		{
+		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).timepicker( {
 			showSecond:   show_second,
 			showMillisec: show_millisec,
 			timeFormat:   format,

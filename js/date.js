@@ -11,8 +11,7 @@ function rwmb_update_date_picker()
 		var $this = $( this ),
 			format = $this.attr( 'rel' );
 
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datepicker( 
-		{
+		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datepicker( {
 			showButtonPanel: true,
 			dateFormat:	     format
 		} );
