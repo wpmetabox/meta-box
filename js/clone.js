@@ -1,4 +1,4 @@
-jQuery( document ).ready( function ($)
+jQuery( document ).ready( function($)
 {
 	/**
 	 * Hide remove buttons when there's only 1 of them
@@ -33,7 +33,7 @@ jQuery( document ).ready( function ($)
 	// Add more clones
 	$( '.add-clone' ).click( function ()
 	{
-		var	$input      = $( this ).parents( '.rwmb-input' ),
+		var	$input      = $( this ).parents( '.rwmb-input' );
 			$clone_last = $input.find( '.rwmb-clone:last' ),
 			$clone      = $clone_last.clone( true );
 
@@ -48,18 +48,6 @@ jQuery( document ).ready( function ($)
 		// Fix color picker
 		if ( 'function' === typeof rwmb_update_color_picker )
 			rwmb_update_color_picker();
-		
-		// Fix date picker
-		if ( 'function' === typeof rwmb_update_date_picker )
-			rwmb_update_date_picker();
-			
-		// Fix time picker
-		if ( 'function' === typeof rwmb_update_time_picker )
-			rwmb_update_time_picker();
-		
-		// Fix datetime picker
-		if ( 'function' === typeof rwmb_update_datetime_picker )
-			rwmb_update_datetime_picker();
 
 		return false;
 	} );

@@ -41,7 +41,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 
 			$html = <<<HTML
 <input class="rwmb-color" type="text"{$name}{$id}{$value} size="8" />
-<div class="rwmb-color-picker" rel="{$field['id']}"></div>
+<div class="rwmb-color-picker"></div>
 HTML;
 
 			return $html;
