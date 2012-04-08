@@ -3,10 +3,9 @@ li ul.rw-taxonomy-tree {
 	margin-top: 5px;
 }
 
-div.rw-taxonomy-tree.active{
-	display:inline-block;	
+.rw-taxonomy-tree.active{
+	display:inline-block;
 }
-
-div.rw-taxonomy-tree.disabled{
-	display:none;	
+.rw-taxonomy-tree.disabled{
+	display:none;
 }
