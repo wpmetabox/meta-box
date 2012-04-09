@@ -38,6 +38,9 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.4 =
+* Fix taxonomy field
+
 = 4.1.3 =
 * Support max_file_uploads for plupload_image
 * Better enqueue styles & scripts
