@@ -270,7 +270,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// If the 'hidden' argument is set and TRUE, the div will be hidden
 				if ( isset( $field['hidden'] ) && $field['hidden'] )
 					$class = $this->add_cssclass( 'hidden', $class );
-				echo "<div class='{$class}'>{$html}</div>";
+				echo "<div class='{$class}' id='{$class}-{$id}'>{$html}</div>";
 			}
 
 			// Allow users to add custom code after meta box content
