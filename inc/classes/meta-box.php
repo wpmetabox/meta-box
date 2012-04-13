@@ -74,7 +74,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			self::load_textdomain();
 
 			// Enqueue common styles and scripts
-			add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 			foreach ( $this->types as $type )
 			{
@@ -87,10 +87,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Add meta box
 			foreach ( $this->meta_box['pages'] as $page )
-				add_action( "add_meta_boxes_{$page}", array( &$this, 'add_meta_boxes' ) );
+				add_action( "add_meta_boxes_{$page}", array( $this, 'add_meta_boxes' ) );
 
 			// Save post meta
-			add_action( 'save_post', array( &$this, 'save_post' ) );
+			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
 
 		/**
@@ -158,7 +158,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
-					array( &$this, 'show' ),
+					array( $this, 'show' ),
 					$page,
 					$this->meta_box['context'],
 					$this->meta_box['priority']
@@ -213,7 +213,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$meta = (array) $meta;
 					foreach ( $meta as $meta_data )
 					{
-						add_filter( "rwmb_{$id}_html", array( &$this, 'add_delete_clone_button' ), 10, 3 );
+						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
 						$input_html = '<div class="rwmb-clone">';
