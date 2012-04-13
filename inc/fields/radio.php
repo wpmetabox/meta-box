@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 			{
 				$checked = checked( $meta, $key, false );
 				$id		 = strstr( $field['id'], '[]' ) ? str_replace( '[]', "-{$key}[]", $field['id'] ) : $field['id'];
-				$id		 = " id='{$id}'";
+				$id		 = " id='{$id}-{$key}'";
 				$name = "name='{$field['field_name']}'";
 				$val     = " value='{$key}'";
 				$html   .= "<label><input type='radio' class='rwmb-radio'{$name}{$id}{$val}{$checked} /> {$value}</label> ";
