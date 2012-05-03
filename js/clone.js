@@ -39,6 +39,22 @@ jQuery( document ).ready( function ($)
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
 
+		// Fix color picker
+		if ( 'function' === typeof rwmb_update_color_picker )
+			rwmb_update_color_picker();
+		
+		// Fix date picker
+		if ( 'function' === typeof rwmb_update_date_picker )
+			rwmb_update_date_picker();
+			
+		// Fix time picker
+		if ( 'function' === typeof rwmb_update_time_picker )
+			rwmb_update_time_picker();
+		
+		// Fix datetime picker
+		if ( 'function' === typeof rwmb_update_datetime_picker )
+			rwmb_update_datetime_picker();
+
 		return false;
 	} );
 

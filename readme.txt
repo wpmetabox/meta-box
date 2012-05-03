@@ -38,6 +38,22 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.4 =
+* Fix taxonomy field
+
+= 4.1.3 =
+* Support max_file_uploads for plupload_image
+* Better enqueue styles & scripts
+* Store images in correct order after re-order
+* Fix cloning color, date, time, datetime fields
+
+= 4.1.2 =
+* Improve taxonomy field
+* Add filter to wp_editor
+* Add more options for time field
+* Improve plupload_image field
+* Fix translation, use string for textdomain
+
 = 4.1.1 =
 * Fix translation
 * Change jQueryUI theme to 'smoothness'

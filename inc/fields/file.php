@@ -16,9 +16,9 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL.'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -84,7 +84,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$i18n_del_file = _x( 'Delete this file', 'file upload', 'rwmb' );
 			$i18n_delete   = _x( 'Delete', 'file upload', 'rwmb' );
 			$i18n_title    = _x( 'Upload files', 'file upload', 'rwmb' );
-			$i18n_more     = _x( 'Add another file', 'file upload', 'rwmb' );
+			$i18n_more     = _x( '+ Add new file', 'file upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
@@ -106,11 +106,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			// Show form upload
 			$html .= "
-			<h4>{$i18n_title}</h4>
-			<div class='new-files'>
-				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
-			</div>";
+				<h4>{$i18n_title}</h4>
+				<div class='new-files'>
+					<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
+					<a class='rwmb-add-file' href='#'><strong>{$i18n_more}</strong></a>
+				</div>
+			";
 
 			return $html;
 		}

@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL.'color.css', array( 'farbtastic' ), RWMB_VER );
 			wp_enqueue_script( 'rwmb-color', RWMB_JS_URL.'color.js', array( 'farbtastic' ), RWMB_VER, true );
@@ -35,14 +35,14 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		{
 			if ( empty( $meta ) )
 				$meta = '#';
-			$name = "name='{$field['field_name']}'";
+			$name  = " name='{$field['field_name']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$value = " value='{$meta}'";
 
 			$html = <<<HTML
-<input class="rwmb-color" type="text" {$name} id="{$field['id']}" value="{$meta}" size="8" />
-<a href="#" class="rwmb-color-select" rel="{$field['id']}">%s</a>
-<div class="rwmb-color-picker" rel="{$field['id']}"></div>
+<input class="rwmb-color" type="text"{$name}{$id}{$value} size="8" />
+<div class="rwmb-color-picker"></div>
 HTML;
-			$html = sprintf( $html, __( 'Select a color', 'rwmb' ) );
 
 			return $html;
 		}

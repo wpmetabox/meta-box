@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
+if( ! class_exists('WP') )
 {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 *
 		 * @return	void
 		 */
-		static function admin_print_styles( )
+		static function admin_enqueue_scripts( )
 		{
 			$url = RWMB_CSS_URL . 'jqueryui';
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array( ), '1.8.17' );
@@ -43,10 +43,10 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name = "name='{$field['field_name']}'";
-			$id    = " id='{$field['id']}'";
+			$name  = " name='{$field['field_name']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
 			$rel   = " rel='{$field['format']}'";
-			$val   = " value='$meta'";
+			$val   = " value='{$meta}'";
 			$html .= "<input type='text' class='rwmb-datetime' size='30'{$name}{$id}{$rel}{$val} />";
 
 			return $html;

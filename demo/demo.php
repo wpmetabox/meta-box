@@ -7,8 +7,8 @@
  *
  * You also should read the changelog to know what has been changed before updating.
  *
- * For more information, please visit: 
- * @link http://www.deluxeblogtips.com/2010/04/how-to-create-meta-box-wordpress-post.html
+ * For more information, please visit:
+ * @link http://www.deluxeblogtips.com/meta-box/docs/define-meta-boxes
  */
 
 /********************* META BOX DEFINITIONS ***********************/
@@ -44,6 +44,7 @@ $meta_boxes[] = array(
 
 	// List of meta fields
 	'fields' => array(
+		// TEXT
 		array(
 			// Field name - Will be used as label
 			'name'		=> 'Full name',
@@ -57,6 +58,7 @@ $meta_boxes[] = array(
 			// Default value (optional)
 			'std'		=> 'Anh Tran'
 		),
+		// DATE
 		array(
 			'name'		=> 'Day of Birth',
 			'id'		=> "{$prefix}dob",
@@ -88,7 +90,7 @@ $meta_boxes[] = array(
 			'cols'		=> "40",
 			'rows'		=> "8"
 		),
-		// File type: select box
+		// SELECT BOX
 		array(
 			'name'		=> 'Where do you live?',
 			'id'		=> "{$prefix}place",
@@ -104,6 +106,7 @@ $meta_boxes[] = array(
 			'std'		=> array( 'vn' ),
 			'desc'		=> 'Select the current place, not in the past'
 		),
+		// CHECKBOX
 		array(
 			'name'		=> 'About WordPress',    // File type: checkbox
 			'id'		=> "{$prefix}love_wp",
@@ -140,7 +143,7 @@ $meta_boxes[] = array(
 			'name'	=> 'Your thoughts about Deluxe Blog Tips',
 			'id'	=> "{$prefix}thoughts",
 			'type'	=> 'wysiwyg',
-			'std'	=> sprintf( "%1\$sIt's great!", '<b>', '</b>' ),
+			'std'	=> "It's great!",
 			'desc'	=> 'Do you think so?'
 		),
 		// FILE UPLOAD
@@ -157,12 +160,13 @@ $meta_boxes[] = array(
 			'id'	=> "{$prefix}screenshot",
 			'type'	=> 'image'
 		),
-		// NEW(!) PLUPLOAD IMAGE UPLOAD (WP 3.3+)
+		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 		array(
 			'name'	=> 'Screenshots (plupload)',
 			'desc'	=> 'Screenshots of problems, warnings, etc.',
 			'id'	=> "{$prefix}screenshot2",
-			'type'	=> 'plupload_image'
+			'type'	=> 'plupload_image',
+			'max_file_uploads' => 4,
 		)
 	)
 );
@@ -232,7 +236,7 @@ function YOUR_PREFIX_register_meta_boxes()
 		}
 	}
 }
-// Hook to 'admin_init' to make sure the meta box class is loaded
-//  before (in case using the meta box class in another plugin)
+// Hook to 'admin_init' to make sure the meta box class is loaded before
+// (in case using the meta box class in another plugin)
 // This is also helpful for some conditionals like checking page template, categories, etc.
 add_action( 'admin_init', 'YOUR_PREFIX_register_meta_boxes' );

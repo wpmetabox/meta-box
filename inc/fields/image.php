@@ -16,14 +16,14 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 *
 		 * @return void
 		 */
-		static function admin_print_styles()
+		static function admin_enqueue_scripts()
 		{
 			// Enqueue same scripts and styles as for file field
-			parent::admin_print_styles();
+			parent::admin_enqueue_scripts();
 
-			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL.'image.css', array(), RWMB_VER );
+			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array(), RWMB_VER );
 
-			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL.'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -56,6 +56,9 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			parse_str( $order, $items );
 			$items = $items['item'];
 			$order = 1;
+
+			// Delete old meta values
+			delete_post_meta( $post_id, $field_id );
 			foreach ( $items as $item )
 			{
 				wp_update_post( array(
@@ -63,6 +66,10 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					'post_parent' => $post_id,
 					'menu_order'  => $order ++
 				) );
+
+				// Save images in that order to meta field
+				// That helps retrieving values easier
+				add_post_meta( $post_id, $field_id, $item, false );
 			}
 
 			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
@@ -86,7 +93,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$i18n_delete   = _x( 'Delete', 'image upload', 'rwmb' );
 			$i18n_edit     = _x( 'Edit', 'image upload', 'rwmb' );
 			$i18n_title    = _x( 'Upload files', 'image upload', 'rwmb' );
-			$i18n_more     = _x( 'Add another file', 'image upload', 'rwmb' );
+			$i18n_more     = _x( '+ Add new image', 'image upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
@@ -121,42 +128,10 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			<h4>{$i18n_title}</h4>
 			<div class='new-files'>
 				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'>{$i18n_more}</a>
+				<a class='rwmb-add-file' href='#'><strong>{$i18n_more}</strong></a>
 			</div>";
 
 			return $html;
-		}
-
-		/**
-		 * Standard meta retrieval
-		 *
-		 * @param mixed 	$meta
-		 * @param int		$post_id
-		 * @param array  	$field
-		 * @param bool  	$saved
-		 *
-		 * @return mixed
-		 */
-		static function meta( $meta, $post_id, $saved, $field )
-		{
-			global $wpdb;
-
-			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
-
-			if ( empty( $meta ) )
-				return array();
-
-			$meta = implode( ',' , $meta );
-
-			// Re-arrange images with 'menu_order', thanks Onur
-			$meta = $wpdb->get_col( "
-				SELECT ID FROM {$wpdb->posts}
-				WHERE post_type = 'attachment'
-				AND ID in ({$meta})
-				ORDER BY menu_order ASC
-			" );
-
-			return (array) $meta;
 		}
 	}
 }
