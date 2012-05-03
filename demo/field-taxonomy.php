@@ -192,7 +192,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			}
 			$html = "<div {$id} class = 'rw-taxonomy-tree {$hidden}'>";
 			$html .= "<select name='{$field['field_name']}'{$disabled} {$multiple}>";
-			$html .="<option value=''>None</option>";
+			$html .= "<option value=''>None</option>";
 			foreach ( $terms as $term )
 			{
 				$selected = selected( in_array( $term->slug, $meta ), true, false );
@@ -211,7 +211,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		/**
 		 * Processes terms into indexed array for walker functions
 		 *
-		 * @param $field
+		 * @param $terms
 		 *
 		 * @return array 
 		 */
