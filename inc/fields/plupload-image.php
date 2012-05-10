@@ -142,6 +142,15 @@ HTML;
 			if ( ! is_array( $meta ) )
 				$meta = ( array ) $meta;
 
+			// Change $meta order using the posts 'menu_order'
+			$meta_menu_order = array();
+			foreach ($meta as $post_id) {
+				$post_meta = get_post($post_id);
+				$meta_menu_order[$post_meta->menu_order] = $post_id;
+			}
+			ksort($meta_menu_order);
+			$meta = $meta_menu_order;
+
 			$i18n_msg   = _x( 'Uploaded files', 'image upload', 'rwmb' );
 			$i18n_title = _x( 'Upload files', 'image upload', 'rwmb' );
 

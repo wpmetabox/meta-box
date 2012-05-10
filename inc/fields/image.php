@@ -105,6 +105,15 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
+				// Change $meta order using the posts 'menu_order'
+				$meta_menu_order = array();
+				foreach ($meta as $post_id) {
+					$post_meta = get_post($post_id);
+					$meta_menu_order[$post_meta->menu_order] = $post_id;
+				}
+				ksort($meta_menu_order);
+				$meta = $meta_menu_order;
+
 				foreach ( $meta as $image )
 				{
 					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
