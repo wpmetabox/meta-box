@@ -43,6 +43,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'action'   => 'plupload_image_upload'
 			) );
 			$attachment = array(
+				'guid'           => $file_attr['url'],
 				'post_mime_type' => $file_attr['type'],
 				'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
 				'post_content'   => '',
