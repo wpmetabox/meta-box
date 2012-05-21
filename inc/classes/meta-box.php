@@ -1,14 +1,4 @@
 <?php
-/*
-Plugin Name: Meta Box
-Plugin URI: http://www.deluxeblogtips.com/meta-box
-Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0
-Version: 4.1.2
-Author: Rilwis
-Author URI: http://www.deluxeblogtips.com
-License: GPL2+
-*/
-
 // Prevent loading this file directly - Busted!
 if ( ! class_exists( 'WP' ) )
 {
