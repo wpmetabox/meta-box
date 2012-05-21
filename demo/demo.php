@@ -167,6 +167,13 @@ $meta_boxes[] = array(
 			'id'	=> "{$prefix}screenshot2",
 			'type'	=> 'plupload_image',
 			'max_file_uploads' => 4,
+		),
+		// THICKBOX IMAGE UPLOAD (WP 3.3+)
+		array(
+			'name'	=> 'Screenshots (thickbox upload)',
+			'desc'	=> 'Screenshots of problems, warnings, etc.',
+			'id'	=> "{$prefix}screenshot3",
+			'type'	=> 'thickbox_image',
 		)
 	)
 );

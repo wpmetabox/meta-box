@@ -51,5 +51,18 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 
 			return $html;
 		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['format'] = empty( $field['format'] ) ? 'hh:mm' : $field['format'];
+			return $field;
+		}
 	}
 }

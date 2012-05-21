@@ -182,5 +182,19 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			}
 			return $output;
 		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['multiple'] = true;
+			$field['std'] = empty( $field['std'] ) ? array() : $field['std'];
+			return $field;
+		}
 	}
 }

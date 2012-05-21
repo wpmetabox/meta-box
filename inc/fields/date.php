@@ -47,5 +47,18 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 
 			return $html;
 		}
+		
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['format'] = empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'];
+			return $field;
+		}
 	}
 }
