@@ -1,17 +1,14 @@
 <?php
-/**
- * In this example file, you can see how the meta box class library
- * can be extended with a custom field class.
- */
+// Prevent loading this file directly - Busted!
+if( ! class_exists('WP') )
+{
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit;
+}
 
 if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 {
-	/**
-	 * @author Tran Ngoc Tuan Anh
-	 * @package RW Meta Box Class Library
-	 * @subpackage Taxonomy Field
-	 * @license GNU GPL2
-	 */
 	class RWMB_Taxonomy_Field
 	{
 		/**
@@ -264,41 +261,3 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		}
 	} // END Class RWMB_Taxonomy_Field
 } // endif;
-
-/**
- * Register meta boxes
- *
- * @return void
- */
-function PREFIX_register_meta_boxes()
-{
-	if ( ! class_exists( 'RW_Meta_Box' ) )
-		return;
-
-	$prefix = 'YOUR_PREFIX_';
-	$tax_box = array(
-		'id' => 'taxonomy-test',
-		'title' => 'Taxonomy Test',
-		'fields' => array(
-			// Taxonomy
-			array(
-				'name'    => 'Categories',
-				'id'      => "{$prefix}cats",
-				'type'    => 'taxonomy',
-				'options' => array(
-					// Taxonomy name
-					'taxonomy'	=> 'category',
-					// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree' or 'select'. Optional
-					'type'		=> 'checkbox_tree',
-					// Additional arguments for get_terms() function
-					'args'		=> array()
-				),
-				'desc'		=> 'Choose One Category'
-			)
-		)
-	);
-
-	new RW_Meta_Box( $tax_box );
-}
-
-add_action( 'admin_init', 'PREFIX_register_meta_boxes' );

@@ -218,6 +218,21 @@ $meta_boxes[] = array(
 			'type'		=> 'datetime',
 			// Time format, default hh:mm. Optional. @link See: http://goo.gl/hXHWz
 			'format'	=> 'hh:mm:ss'
+		),
+		// TAXONOMY
+		array(
+			'name'    => 'Categories',
+			'id'      => "{$prefix}cats",
+			'type'    => 'taxonomy',
+			'options' => array(
+				// Taxonomy name
+				'taxonomy'	=> 'category',
+				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree' or 'select'. Optional
+				'type'		=> 'checkbox_tree',
+				// Additional arguments for get_terms() function. Optional
+				'args'		=> array()
+			),
+			'desc'		=> 'Choose One Category'
 		)
 	)
 );
