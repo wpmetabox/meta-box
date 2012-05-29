@@ -466,6 +466,7 @@ HTML;
 		{
 			// Set default values for meta box
 			$meta_box = wp_parse_args( $meta_box, array(
+				'id'       => sanitize_title( $meta_box['title'] ),
 				'context'  => 'normal',
 				'priority' => 'high',
 				'pages'    => array( 'post' )

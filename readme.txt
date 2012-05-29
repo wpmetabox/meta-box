@@ -38,6 +38,13 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.5 =
+* Taxonomy field is now in core
+* Add demo for including meta boxes for specific posts based on IDs or page templates
+* Meta box ID is now optional
+* Add `thickbox_image` field for uploading image with WP style
+* Fix `guid` for uploaded images
+
 = 4.1.4 =
 * Fix taxonomy field
 
