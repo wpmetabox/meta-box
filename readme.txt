@@ -38,6 +38,9 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.6 =
+* Quick fix for checkbox list and multiple/clonable fields
+
 = 4.1.5 =
 * Taxonomy field is now in core
 * Add demo for including meta boxes for specific posts based on IDs or page templates
