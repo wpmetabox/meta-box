@@ -38,6 +38,9 @@ To change meta box definition, please see comments in `demo.php`.
 
 == Changelog ==
 
+= 4.1.7 =
+* Quick fix for thickbox image
+
 = 4.1.6 =
 * Quick fix for checkbox list and multiple/clonable fields
 

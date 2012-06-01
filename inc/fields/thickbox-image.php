@@ -103,15 +103,15 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$name = $field['id'];
-
-			delete_post_meta( $post_id, $name );
 			if ( !is_array( $new ) || empty( $new ) )
 				return;
 
+			$name = $field['id'];
+			$images = (array) get_post_meta( $post_id, $name, false );
 			foreach ( $new as $add_new )
 			{
-				add_post_meta( $post_id, $name, $add_new, false );
+				if ( !in_array( $add_new, $images ) )
+					add_post_meta( $post_id, $name, $add_new, false );
 			}
 		}
 	}
