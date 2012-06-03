@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-02 14:08+0700\n"
-"PO-Revision-Date: 2012-03-02 14:08+0700\n"
-"Last-Translator: name <email@domain.com>\n"
+"POT-Creation-Date: 2012-06-03 15:09+0700\n"
+"PO-Revision-Date: 2012-06-03 15:09+0700\n"
+"Last-Translator: Rilwis <rilwis@gmail.com>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,20 +17,16 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../meta-box.php:334
-msgid "+"
-msgstr ""
-
-#: ../meta-box.php:358
-msgid "&#8211;"
-msgstr ""
-
-#: ../meta-box.php:691
+#: ../meta-box.php:79
 msgid "RW_Meta_Box Debug:"
 msgstr ""
 
-#: ../inc/fields/color.php:45
-msgid "Select a color"
+#: ../inc/classes/meta-box.php:316
+msgid "+"
+msgstr ""
+
+#: ../inc/classes/meta-box.php:340
+msgid "&#8211;"
 msgstr ""
 
 #: ../inc/fields/file.php:69
@@ -59,66 +55,70 @@ msgstr ""
 
 #: ../inc/fields/file.php:87
 msgctxt "file upload"
-msgid "Add another file"
+msgid "+ Add new file"
 msgstr ""
 
-#: ../inc/fields/image.php:68
+#: ../inc/fields/image.php:75
 msgid "Order saved"
 msgstr ""
 
-#: ../inc/fields/image.php:84
-#: ../inc/fields/plupload-image.php:178
+#: ../inc/fields/image.php:91
+#: ../inc/fields/plupload-image.php:156
 msgctxt "image upload"
 msgid "Uploaded files"
 msgstr ""
 
-#: ../inc/fields/image.php:85
-#: ../inc/fields/plupload-image.php:140
+#: ../inc/fields/image.php:92
+#: ../inc/fields/plupload-image.php:112
 msgctxt "image upload"
 msgid "Delete this file"
 msgstr ""
 
-#: ../inc/fields/image.php:86
-#: ../inc/fields/plupload-image.php:141
+#: ../inc/fields/image.php:93
+#: ../inc/fields/plupload-image.php:113
 msgctxt "image upload"
 msgid "Delete"
 msgstr ""
 
-#: ../inc/fields/image.php:87
-#: ../inc/fields/plupload-image.php:142
+#: ../inc/fields/image.php:94
+#: ../inc/fields/plupload-image.php:114
 msgctxt "image upload"
 msgid "Edit"
 msgstr ""
 
-#: ../inc/fields/image.php:88
-#: ../inc/fields/plupload-image.php:179
+#: ../inc/fields/image.php:95
+#: ../inc/fields/plupload-image.php:157
 msgctxt "image upload"
 msgid "Upload files"
 msgstr ""
 
-#: ../inc/fields/image.php:89
-#: ../inc/fields/plupload-image.php:180
+#: ../inc/fields/image.php:96
 msgctxt "image upload"
-msgid "Add another file"
+msgid "+ Add new image"
 msgstr ""
 
-#: ../inc/fields/plupload-image.php:112
+#: ../inc/fields/plupload-image.php:95
 msgctxt "image upload"
 msgid "Allowed Image Files"
 msgstr ""
 
-#: ../inc/fields/plupload-image.php:183
+#: ../inc/fields/plupload-image.php:160
 msgctxt "image upload"
 msgid "Drop images here"
 msgstr ""
 
-#: ../inc/fields/plupload-image.php:184
+#: ../inc/fields/plupload-image.php:161
 msgctxt "image upload"
 msgid "or"
 msgstr ""
 
-#: ../inc/fields/plupload-image.php:185
+#: ../inc/fields/plupload-image.php:162
 msgctxt "image upload"
 msgid "Select Files"
+msgstr ""
+
+#: ../inc/fields/thickbox-image.php:45
+msgctxt "image upload"
+msgid "Upload image"
 msgstr ""
 
