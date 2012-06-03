@@ -3,7 +3,7 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, erodesign, funkedgeek, PerWik
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 3.3.2
 Stable tag: trunk
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
@@ -37,6 +37,9 @@ To change meta box definition, please see comments in `demo.php`.
 2. Advanced fields
 
 == Changelog ==
+
+= 4.1.8 =
+* Add missed JS file for thickbox image
 
 = 4.1.7 =
 * Quick fix for thickbox image

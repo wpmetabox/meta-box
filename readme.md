@@ -20,7 +20,7 @@
 
 **Requires at least:** WordPress v3.0
 
-**Tested up to:** WordPress v3.3.1
+**Tested up to:** WordPress v3.3.2
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
 
@@ -45,6 +45,9 @@ Meta Box Script for WordPress is a WordPress plugin that provides an API for you
 To change meta box definition, please see comments in `demo.php`.
 
 ### Changelog
+
+### 4.1.8
+* Add missed JS file for thickbox image
 
 ### 4.1.7
 * Quick fix for thickbox image
