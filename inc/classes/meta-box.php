@@ -257,8 +257,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field[ 'class' ], $class );
 
-				// If the 'hidden' argument is set and TRUE, the div will be hidden
-				if ( isset( $field['hidden'] ) && $field['hidden'] )
+				// Hide the div if field has 'hidden' type
+				if ( 'hidden' === $field['type'] )
 					$class = $this->add_cssclass( 'hidden', $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
@@ -485,7 +485,7 @@ HTML;
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
-				
+
 				$field['field_name'] = $field['id'] . ( $field['multiple'] || $field['clone'] ? '[]' : '' );
 			}
 
