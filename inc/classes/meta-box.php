@@ -58,11 +58,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// List of meta box field types
 			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
 
-			// Load translation file
-			// Call directly because we define meta boxes in 'admin_init' hook (@see demo/demo.php)
-			// So the function won't run if we use 'add_action' to load textdomain here
-			self::load_textdomain();
-
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
@@ -81,23 +76,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Save post meta
 			add_action( 'save_post', array( $this, 'save_post' ) );
-		}
-
-		/**
-		 * Load plugin translation
-		 *
-		 * @link http://wordpress.stackexchange.com/a/33314 Translation Tutorial by the author
-		 * @return void
-		 */
-		static function load_textdomain()
-		{
-			// l18n translation files
-			$locale = get_locale();
-			$dir    = trailingslashit( RWMB_DIR . 'lang' );
-			$mofile = "{$dir}{$locale}.mo";
-
-			// In themes/plugins/mu-plugins directory
-			load_textdomain( 'rwmb', $mofile );
 		}
 
 		/**
