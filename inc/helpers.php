@@ -100,7 +100,10 @@ function rwmb_image_info( $id, $args = array() )
 		return false;
 
 	$attachment = &get_post( $id );
+	$path = get_attached_file( $id );
 	return array(
+		'name'        => basename( $path ),
+		'path'        => $path,
 		'url'         => $img_src[0],
 		'width'       => $img_src[1],
 		'height'      => $img_src[2],
