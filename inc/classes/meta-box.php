@@ -464,7 +464,10 @@ HTML;
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 
-				$field['field_name'] = $field['id'] . ( $field['multiple'] || $field['clone'] ? '[]' : '' );
+				// Allow field class to manually change field_name
+				// @see taxonomy.php for example
+				if ( !isset( $field['field_name'] ) )
+					$field['field_name'] = $field['id'] . ( $field['multiple'] || $field['clone'] ? '[]' : '' );
 			}
 
 			return $meta_box;

@@ -228,7 +228,7 @@ $meta_boxes[] = array(
 				// Taxonomy name
 				'taxonomy'	=> 'category',
 				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree' or 'select'. Optional
-				'type'		=> 'checkbox_tree',
+				'type'		=> 'select_tree',
 				// Additional arguments for get_terms() function. Optional
 				'args'		=> array()
 			),

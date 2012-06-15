@@ -56,11 +56,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$field['options']['type'] = 'checkbox_list';
 
 			// If field is shown as checkbox list, add multiple value
-			if ( in_array( $field['options']['type'], array( 'checkbox_list', 'checkbox_tree', 'select_tree' ) ) )
-			{
+			if ( in_array( $field['options']['type'], array( 'checkbox_list', 'checkbox_tree' ) ) )
 				$field['multiple'] = true;
+
+			// For select tree: display it as a normal select box (no multiple attribute), but allows to save multiple values
+			if ( 'select_tree' == $field['options']['type'] )
 				$field['field_name'] = "{$field['id']}[]";
-			}
 
 			if ( in_array( $field['options']['type'], array( 'checkbox_tree', 'select_tree' ) ) )
 			{
@@ -111,8 +112,8 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$elements = self::process_terms( $terms );
 				$html .= self::walk_checkbox_tree( $meta, $field, $elements, $field['options']['parent'], true );
 			}
-			// Select Tree
-			elseif ( 'select_tree' == $options['type'] )
+			// Select TREE
+			elseif ( 'select_tree' === $options['type'] )
 			{
 				$elements = self::process_terms( $terms );
 				$html .= self::walk_select_tree( $meta, $field, $elements, $field['options']['parent'], '', true );
@@ -120,7 +121,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			// Select
 			else
 			{
-				$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : "'";
+				$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : '';
 				$html .= "<select name='{$field['field_name']}'{$multiple}>";
 				foreach ( $terms as $term )
 				{
@@ -180,16 +181,13 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms    = $elements[$parent];
-			$hidden   = ( ! $active ? 'disabled' : 'active' );
+			$hidden   = $active ? 'active' : 'disabled';
 			$disabled = disabled( $active, false, false );
-			$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : "'";
-			$id       = '';
-			if ( ! empty( $parent_slug ) )
-			{
-				$id = "id='rwmb-taxonomy-{$parent_slug}'";
-			}
-			$html  = "<div {$id} class = 'rw-taxonomy-tree {$hidden}'>";
-			$html .= "<select name='{$field['field_name']}'{$disabled} {$multiple}>";
+			$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : '';
+			$id       = empty( $parent_slug ) ? '' : " id='rwmb-taxonomy-{$parent_slug}'";
+
+			$html  = "<div{$id} class='rw-taxonomy-tree {$hidden}'>";
+			$html .= "<select name='{$field['field_name']}'{$disabled}{$multiple}>";
 			$html .= "<option value=''>None</option>";
 			foreach ( $terms as $term )
 			{
@@ -199,7 +197,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$html .= "</select>";
 			foreach ( $terms as $term )
 			{
-				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $term->slug, ( in_array( $term->slug, $meta ) ) && $active ) . "</li>";
+				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $term->slug, in_array( $term->slug, $meta ) && $active ) . "</li>";
 			}
 			$html .= "</div>";
 
@@ -237,7 +235,6 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		{
 			wp_set_object_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
-
 
 		/**
 		 * Standard meta retrieval
