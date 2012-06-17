@@ -26,9 +26,11 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 
 	$args = wp_parse_args( $args, array(
-		'multiple' => false,
-		'type'     => '',
+		'type' => 'text',
 	) );
+
+	// Set 'multiple' for fields based on 'type'
+	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'image', 'plupload_image', 'thickbox_image' ) );
 
 	$meta = get_post_meta( $post_id, $key, !$args['multiple'] );
 
