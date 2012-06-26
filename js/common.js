@@ -5,6 +5,14 @@ var rwmb = {
 
 (function($){
 
+	/*
+	*  Exists
+	*  @description: returns true / false		
+	*/
+	$.fn.exists = function()
+	{
+		return $(this).length>0;
+	};
 
 	/*
 	*  Document Ready
@@ -64,9 +72,9 @@ var rwmb = {
 			}
 			
 			// select
-			if(isValid && $(this).find('select').exists())
+			if(isValid && ()$(this).find('select').exists())
 			{
-				if($(this).find('select').val() == "null" || !$(this).find('select').val())
+				if($(this).find('select').val() == "null" || !$(this).find('select').val() == "" || !$(this).find('select').val())
 				{
 					isValid = false;
 				}
@@ -100,11 +108,6 @@ var rwmb = {
 	
 	// checkbox
 	$('.rwmb-field.required input:checkbox').on('click', function(){
-		$(this).closest('.rwmb-field').removeClass('error');
-	});
-	
-	// wysiwyg
-	$('.rwmb-field.required .acf_wysiwyg').on('mousedown', function(){
 		$(this).closest('.rwmb-field').removeClass('error');
 	});
 	
