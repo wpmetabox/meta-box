@@ -4,6 +4,12 @@
 .rwmb-field {
 	margin: 10px 0;
 }
+	.rwmb-field.error {
+		margin: 10px 0px !important;
+		padding: 0px;
+		border: #CC0000 solid 1px !important;
+		background-color: #FFEBE8;
+	}
 .rwmb-label, 
 .rwmb-input {
 	display: inline-block;
@@ -12,6 +18,11 @@
 .rwmb-label {
 	width: 24%;
 }
+	.rwmb-label > .required
+	{
+		color: red;
+		font-weight:bold;
+	}
 /* 75% if field has label, 100% if no label */
 .rwmb-input {
 	width: 100%;

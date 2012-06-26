@@ -108,6 +108,9 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
 			}
 
+			// Load common form functions
+			wp_enqueue_script( 'rwmb-common', RWMB_JS_URL . 'common.js', array( 'jquery' ), RWMB_VER, true );
+
 			if ( $has_clone )
 				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
 		}
@@ -234,6 +237,9 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 
 				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
+				if ( $field['required'] ) {
+					$class .= ' required';
+				}
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
 
