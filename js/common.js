@@ -72,7 +72,7 @@ var rwmb = {
 			}
 			
 			// select
-			if(isValid && ()$(this).find('select').exists())
+			if(isValid && $(this).find('select').exists())
 			{
 				if($(this).find('select').val() == "null" || !$(this).find('select').val() == "" || !$(this).find('select').val())
 				{
