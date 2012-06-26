@@ -5,7 +5,7 @@
 	margin: 10px 0;
 }
 	.rwmb-field.error {
-		margin: 0px !important;
+		margin: 10px 0px !important;
 		padding: 0px;
 		border: #CC0000 solid 1px !important;
 		background-color: #FFEBE8;
