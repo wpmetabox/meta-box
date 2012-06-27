@@ -9,7 +9,7 @@ label.error {
 
 input.error, textarea.error, select.error {
 	border: #CC0000 solid 1px !important;
-	background-color: #FFEBE8;
+	background-color: #FFEBE8 !important;
 }
 /* END jquery.validate styles */
 

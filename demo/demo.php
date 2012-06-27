@@ -137,6 +137,10 @@ $meta_boxes[] = array(
 	),
 	'validation' => array(
 		'rules' => array(
+			// optionally make post/page title required
+			'post_title' => array(
+				'required' => true
+			),
 			$prefix . 'fname' => array(
 				'required' => true
 			),
