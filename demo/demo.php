@@ -128,6 +128,39 @@ $meta_boxes[] = array(
 			'id'		=> "{$prefix}pass",
 			'type'		=> 'password'
 		),
+		// CONFIRM PASSWORD
+		array(
+			'name'		=> 'Confirm your password',
+			'id'		=> "{$prefix}pass_confirm",
+			'type'		=> 'password'
+		),
+	),
+	'validation' => array(
+		'rules' => array(
+			$prefix . 'fname' => array(
+				'required' => true
+			),
+			"{$prefix}pass" => array(
+				'required' => true,
+				'minlength' => 7,
+			),
+			"{$prefix}pass_confirm" => array(
+				'equalTo' => "{$prefix}pass"
+			)
+		),
+		// optional override of default jquery.validate messages
+		'messages' => array(
+			$prefix . 'fname' => array(
+				'required' => 'Your name is required'
+			),
+			"{$prefix}pass" => array(
+				'required' => 'Password is required',
+				'minlength' => 'Password must be at least 7 characters'
+			),
+			"{$prefix}pass_confirm" => array(
+				'equalTo' => 'Please enter the same password'
+			)
+		)
 	)
 );
 
