@@ -58,10 +58,10 @@ jQuery( document ).ready( function($)
 		};
 
 		// Create new uploader
-		rwmb_image_uploaders[ prefix ] = new plupload.Uploader( rwmb_plupload_init );
-		rwmb_image_uploaders[ prefix ].init();
+		rwmb_image_uploaders[prefix] = new plupload.Uploader( rwmb_plupload_init );
+		rwmb_image_uploaders[prefix].init();
 
-		rwmb_image_uploaders[ prefix ].bind( 'FilesAdded', function( up, files )
+		rwmb_image_uploaders[prefix].bind( 'FilesAdded', function( up, files )
 		{
 			var max_file_uploads = $( '#' + this.settings.container + ' .max_file_uploads' ).val(),
 				uploaded = $( '#' + this.settings.container + ' .rwmb-uploaded' ).children().length,
@@ -99,20 +99,20 @@ jQuery( document ).ready( function($)
 			up.start();
 		} );
 
-		rwmb_image_uploaders[ prefix ].bind( 'Error', function( up, e )
+		rwmb_image_uploaders[prefix].bind( 'Error', function( up, e )
 		{
 			add_loading( up, e.file );
 			remove_error( e.file );
 			up.removeFile( e.file );
 		} );
 
-		rwmb_image_uploaders[ prefix ].bind( 'UploadProgress', function( up, file )
+		rwmb_image_uploaders[prefix].bind( 'UploadProgress', function( up, file )
 		{
 			// Update the loading div
 			$( 'div.rwmb-image-uploading-bar', 'li#' + file.id ).css( 'height', file.percent + '%' );
 		} );
 
-		rwmb_image_uploaders[ prefix ].bind( 'FileUploaded', function( up, file, response )
+		rwmb_image_uploaders[prefix].bind( 'FileUploaded', function( up, file, response )
 		{
 			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' ),
 				$uploaded = $( '#' + this.settings.container + ' .rwmb-uploaded' ),
