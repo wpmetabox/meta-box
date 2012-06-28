@@ -264,7 +264,7 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 				echo 'if ( typeof rwmb == \'undefined\' ) {
 						var rwmb = {
 							validationOptions : jQuery.parseJSON(\'' . json_encode( $this->validation ) . '\'),
-							summaryMessage : \'' . __('Please correct the errors highlighted below and try again.')  . '\'
+							summaryMessage : \'' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' )  . '\'
 						}
 					} else {
 						var tempOptions = jQuery.parseJSON(\'' . json_encode( $this->validation ) . '\');
