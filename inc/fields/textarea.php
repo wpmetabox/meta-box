@@ -1,15 +1,10 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Textarea_Field' ) ) 
+if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 {
-	class RWMB_Textarea_Field 
+	class RWMB_Textarea_Field
 	{
 		/**
 		 * Get field HTML
@@ -20,7 +15,7 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			$std		 = isset( $field['disabled'] ) ? $field['disabled'] : false;
 			$disabled	 = disabled( $std, true, false );

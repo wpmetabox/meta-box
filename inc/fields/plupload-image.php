@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 {
@@ -26,9 +21,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 * Upload
 		 * Ajax callback function
 		 *
-		 * @return error or (XML-)response
+		 * @return string Error or (XML-)response
 		 */
-		static function handle_upload ()
+		static function handle_upload()
 		{
 			check_admin_referer( 'rwmb-upload-images_' . $_REQUEST['field_id'] );
 
@@ -52,22 +47,22 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			// Adds file as attachment to WordPress
 			$id = wp_insert_attachment( $attachment, $file_attr['file'], $post_id );
-			if ( ! is_wp_error( $id ) )
+			if ( !is_wp_error( $id ) )
 			{
-				$response = new WP_Ajax_Response();
 				wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
+
+				// Save file ID in meta field
 				if ( isset( $_REQUEST['field_id'] ) )
-				{
-					// Save file ID in meta field
 					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
-				}
+
+				$response = new WP_Ajax_Response();
 				$response->add( array(
 					'what' => 'rwmb_image_response',
 					'data' => self::img_html( $id )
 				) );
 				$response->send();
 			}
-			// Faster than die();
+
 			exit;
 		}
 
@@ -142,16 +137,6 @@ HTML;
 		{
 			if ( ! is_array( $meta ) )
 				$meta = ( array ) $meta;
-
-			// Change $meta order using the posts 'menu_order'
-			// $meta_menu_order = array();
-			// foreach ( $meta as $post_id )
-			// {
-				// $post_meta = get_post( $post_id );
-				// $meta_menu_order[$post_meta->menu_order] = $post_id;
-			// }
-			// ksort( $meta_menu_order );
-			// $meta = $meta_menu_order;
 
 			$i18n_msg   = _x( 'Uploaded files', 'image upload', 'rwmb' );
 			$i18n_title = _x( 'Upload files', 'image upload', 'rwmb' );

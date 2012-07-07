@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if ( !class_exists( 'WP' ) )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 // Meta Box Class
 if ( !class_exists( 'RW_Meta_Box' ) )
@@ -35,7 +30,7 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 		 * Contains all field types of current meta box
 		 */
 		var $types;
-		
+
 		/**
 		 * Validation information
 		 */
@@ -117,7 +112,7 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 			if ( $has_clone ) {
 				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
 			}
-				
+
 			if ( $this->validation ) {
 				wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
@@ -246,9 +241,8 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 
 				// Display label and input in DIV and allow user-defined classes to be appended
 				$class = 'rwmb-field';
-				if ( $field['required'] ) {
+				if ( isset( $field['required'] ) && $field['required'] )
 					$class .= ' required';
-				}
 				if ( isset( $field['class'] ) )
 					$class = $this->add_cssclass( $field['class'], $class );
 
@@ -257,25 +251,33 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 					$class = $this->add_cssclass( 'hidden', $class );
 				echo "<div class='{$class}'>{$html}</div>";
 			}
-			
-			// include validation settings for this meta-box
-			if ( $this->validation ) {
-				echo '<script type="text/javascript">';
-				echo 'if ( typeof rwmb == \'undefined\' ) {
-						var rwmb = {
-							validationOptions : jQuery.parseJSON(\'' . json_encode( $this->validation ) . '\'),
-							summaryMessage : \'' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' )  . '\'
+
+			// Include validation settings for this meta-box
+			if ( isset( $this->validation ) && $this->validation )
+			{
+				echo '
+					<script type="text/javascript">
+						if ( typeof rwmb == "undefined" )
+						{
+							var rwmb = {
+								validationOptions : jQuery.parseJSON( "' . json_encode( $this->validation ) . '" ),
+								summaryMessage : "' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) . '"
+							};
 						}
-					} else {
-						var tempOptions = jQuery.parseJSON(\'' . json_encode( $this->validation ) . '\');
-						jQuery.each(tempOptions.rules, function(k, v) {
-							rwmb.validationOptions.rules[k] = v;
-						});
-						jQuery.each(tempOptions.messages, function(k, v) {
-							rwmb.validationOptions.messages[k] = v;
-						});
-					};';
-				echo '</script>';
+						else
+						{
+							var tempOptions = jQuery.parseJSON( "' . json_encode( $this->validation ) . '" );
+							jQuery.each( tempOptions.rules, function( k, v )
+							{
+								rwmb.validationOptions.rules[k] = v;
+							});
+							jQuery.each( tempOptions.messages, function( k, v )
+							{
+								rwmb.validationOptions.messages[k] = v;
+							});
+						};
+					</script>
+				';
 			}
 
 			// Allow users to add custom code after meta box content
@@ -297,7 +299,7 @@ if ( !class_exists( 'RW_Meta_Box' ) )
 		static function begin_html( $html, $meta, $field )
 		{
 			$class = 'rwmb-label';
-			
+
 			if ( !empty( $field['class'] ) )
 				$class = self::add_cssclass( $field['class'], $class );
 

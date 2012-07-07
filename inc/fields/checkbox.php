@@ -1,15 +1,10 @@
 <?php
-// Prevent loading this file directly - Busted!
-if ( ! class_exists( 'WP' ) ) 
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Checkbox_Field' ) ) 
+if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 {
-	class RWMB_Checkbox_Field 
+	class RWMB_Checkbox_Field
 	{
 		/**
 		 * Get field HTML
@@ -43,7 +38,7 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 *
 		 * @return int
 		 */
-		static function value( $new, $old, $post_id, $field ) 
+		static function value( $new, $old, $post_id, $field )
 		{
 			return empty( $new ) ? 0 : 1;
 		}

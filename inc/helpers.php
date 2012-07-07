@@ -4,13 +4,8 @@
  * that can be used both on the back-end or front-end
  */
 
-// Prevent loading this file directly - Busted!
-if ( ! class_exists( 'WP' ) )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Get post meta
@@ -53,10 +48,21 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	{
 		if ( is_array( $meta ) && !empty( $meta ) )
 		{
+			global $wpdb;
+			$meta = implode( ',' , $meta );
+
+			// Re-arrange images with 'menu_order'
+			$meta = $wpdb->get_col( "
+				SELECT ID FROM {$wpdb->posts}
+				WHERE post_type = 'attachment'
+				AND ID in ({$meta})
+				ORDER BY menu_order ASC
+			" );
+
 			$images = array();
 			foreach ( $meta as $id )
 			{
-				$images[$id] = rwmb_image_info( $id );
+				$images[$id] = rwmb_image_info( $id, $args );
 			}
 			$meta = $images;
 		}

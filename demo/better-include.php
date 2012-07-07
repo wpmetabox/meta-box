@@ -12,7 +12,6 @@ global $meta_boxes;
 $meta_boxes = array();
 $meta_boxes[] = array(
 	'title'		=> 'Meta Box Title',
-	'only_on' =>
 	'fields'	=> array(
 		array(
 			'name'	=> 'Your images',

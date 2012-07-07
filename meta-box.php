@@ -9,13 +9,8 @@ Author URI: http://www.deluxeblogtips.com
 License: GPL2+
 */
 
-// Prevent loading this file directly - Busted!
-if ( ! class_exists( 'WP' ) )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 // Script version, used to add version for scripts and styles
 define( 'RWMB_VER', '4.1.8' );
@@ -33,11 +28,9 @@ define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
 define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
 define( 'RWMB_CLASSES_DIR', trailingslashit( RWMB_INC_DIR . 'classes' ) );
 
-require_once RWMB_INC_DIR . 'helpers.php';
-
 // Optimize code for loading plugin files ONLY on admin side
 // @see http://www.deluxeblogtips.com/?p=345
-if ( defined( 'WP_ADMIN' ) && WP_ADMIN )
+if ( is_admin() )
 {
 	require_once RWMB_INC_DIR . 'common.php';
 
@@ -49,4 +42,9 @@ if ( defined( 'WP_ADMIN' ) && WP_ADMIN )
 
 	// Main file
 	require_once RWMB_CLASSES_DIR . 'meta-box.php';
+}
+else
+{
+	// Helper function to retrieve meta value
+	require_once RWMB_INC_DIR . 'helpers.php';
 }
