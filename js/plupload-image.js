@@ -121,12 +121,8 @@ jQuery( document ).ready( function($)
 
 		rwmb_image_uploaders[prefix].bind( 'FileUploaded', function( up, file, response )
 		{
-			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' ),
-				$uploaded = $( '#' + this.settings.container + ' .rwmb-uploaded' ),
-				$uploaded_title = $( '#' + this.settings.container + ' .rwmb-uploaded-title' );
+			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' );
 			false === res.errors ? $( 'li#' + file.id ).replaceWith( res.responses[0].data ) : remove_error( file );
-
-
 		} );
 	});
 
