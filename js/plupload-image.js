@@ -108,8 +108,15 @@ jQuery( document ).ready( function($)
 
 		rwmb_image_uploaders[prefix].bind( 'UploadProgress', function( up, file )
 		{
+			var $uploaded = $( '#' + this.settings.container + ' .rwmb-uploaded' ),
+				$uploaded_title = $( '#' + this.settings.container + ' .rwmb-uploaded-title' );
+
 			// Update the loading div
 			$( 'div.rwmb-image-uploading-bar', 'li#' + file.id ).css( 'height', file.percent + '%' );
+
+			// Show them all
+			$uploaded.removeClass( 'hidden' );
+			$uploaded_title.removeClass( 'hidden' );
 		} );
 
 		rwmb_image_uploaders[prefix].bind( 'FileUploaded', function( up, file, response )
@@ -119,9 +126,7 @@ jQuery( document ).ready( function($)
 				$uploaded_title = $( '#' + this.settings.container + ' .rwmb-uploaded-title' );
 			false === res.errors ? $( 'li#' + file.id ).replaceWith( res.responses[0].data ) : remove_error( file );
 
-			// Show them all
-			$uploaded.removeClass( 'hidden' );
-			$uploaded_title.removeClass( 'hidden' );
+
 		} );
 	});
 

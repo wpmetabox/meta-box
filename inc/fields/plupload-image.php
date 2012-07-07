@@ -157,9 +157,9 @@ HTML;
 
 			// Check for max_file_uploads
 			$class = 'rwmb-drag-drop hide-if-no-js';
-			if ( array_key_exists( 'max_file_uploads', $field ) )
+			if ( !empty( $field['max_file_uploads'] ) )
 			{
-				$max_file_uploads = $field['max_file_uploads'];
+				$max_file_uploads = (int) $field['max_file_uploads'];
 				$html .= "<input class='max_file_uploads' type='hidden' value='{$max_file_uploads}' />";
 				if ( count( $meta ) >= $max_file_uploads )
 					$class = RW_Meta_Box::add_cssclass( 'hidden', $class );
