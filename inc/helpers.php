@@ -20,9 +20,11 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 {
 	$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 
-	$args = wp_parse_args( $args, array(
-		'type' => 'text',
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'type' => 'text',
+		)
+	);
 
 	// Set 'multiple' for fields based on 'type'
 	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'image', 'plupload_image', 'thickbox_image' ) );
@@ -32,7 +34,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get uploaded files info
 	if ( 'file' == $args['type'] )
 	{
-		if ( is_array( $meta ) && !empty( $meta ) )
+		if ( is_array( $meta ) && ! empty( $meta ) )
 		{
 			$files = array();
 			foreach ( $meta as $id )
@@ -46,7 +48,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get uploaded images info
 	elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image' ) ) )
 	{
-		if ( is_array( $meta ) && !empty( $meta ) )
+		if ( is_array( $meta ) && ! empty( $meta ) )
 		{
 			global $wpdb;
 			$meta = implode( ',' , $meta );
@@ -99,9 +101,11 @@ function rwmb_file_info( $id )
  */
 function rwmb_image_info( $id, $args = array() )
 {
-	$args = wp_parse_args( $args, array(
-		'size' => 'thumbnail',
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'size' => 'thumbnail',
+		)
+	);
 
 	$img_src = wp_get_attachment_image_src( $id, $args['size'] );
 	if ( empty( $img_src ) )

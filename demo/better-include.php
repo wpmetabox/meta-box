@@ -18,10 +18,10 @@ $meta_boxes[] = array(
 		array(
 			'name' => 'Your images',
 			'id'   => "{$prefix}img",
-			'type' => 'plupload_image'
+			'type' => 'plupload_image',
 		),
 	),
-	'only_on' => array(
+	'only_on'    => array(
 		'id'       => array( 1, 2 ),
 		// 'slug'  => array( 'news', 'blog' ),
 		'template' => array( 'fullwidth.php', 'simple.php' ),
@@ -44,7 +44,7 @@ function rw_register_meta_boxes()
 			if ( isset( $meta_box['only_on'] ) && ! rw_maybe_include( $meta_box['only_on'] ) ) {
 				continue;
 			}
-			
+
 			new RW_Meta_Box( $meta_box );
 		}
 	}

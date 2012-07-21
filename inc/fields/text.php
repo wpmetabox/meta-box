@@ -24,7 +24,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 			$std      = isset( $field['disabled'] ) ? $field['disabled'] : false;
 			$disabled = disabled( $std, true, false );
 
-			$html    .= "<input type='text' class='rwmb-text'{$name}{$id}{$val}{$disabled} size='{$size}' />";
+			$html .= "<input type='text' class='rwmb-text'{$name}{$id}{$val}{$disabled} size='{$size}' />";
 
 			return $html;
 		}
