@@ -33,12 +33,12 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$id	     = " id='{$field['id']}'";
-			$name	 = "name='{$field['field_name']}'";
-			$val     = " value='{$meta}'";
-			$for     = " for='{$field['id']}'";
-			$format	 = " rel='{$field['format']}'";
-			$html   .= "
+			$id	    = " id='{$field['id']}'";
+			$name   = "name='{$field['field_name']}'";
+			$val    = " value='{$meta}'";
+			$for    = " for='{$field['id']}'";
+			$format = " rel='{$field['format']}'";
+			$html  .= "
 				<div class='clearfix'>
 					<div class='rwmb-slider'{$format}{$id}></div>
 					<input type='hidden'{$name}{$val} />

@@ -9,7 +9,6 @@
 - Omnicia
 - ruanmer
 - PerWiklander
-- erodesign
 - funkedgeek
 
 [See full list of angels!](https://github.com/rilwis/meta-box/contributors)

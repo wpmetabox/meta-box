@@ -2,18 +2,18 @@
 $prefix = 'rw_';
 
 global $meta_boxes;
-$meta_boxes = array();
+$meta_boxes   = array();
 $meta_boxes[] = array(
-	'id'		=> 'any_id',
-	'title'		=> 'Meta Box Title',
-	'pages'		=> array( 'post' ),
-	'fields'	=> array(
+	'id'     => 'any_id',
+	'title'  => 'Meta Box Title',
+	'pages'  => array( 'post' ),
+	'fields' => array(
 
 		// IMAGE UPLOAD
 		array(
-			'name'	=> 'Your images',
-			'id'	=> "{$prefix}img",
-			'type'	=> 'plupload_image'
+			'name' => 'Your images',
+			'id'   => "{$prefix}img",
+			'type' => 'plupload_image',
 		),
 	),
 );
@@ -28,11 +28,11 @@ function rw_register_meta_boxes()
 	global $meta_boxes;
 
 	// Make sure there's no errors when the plugin is deactivated or during upgrade
-	if ( !class_exists( 'RW_Meta_Box' ) )
+	if ( ! class_exists( 'RW_Meta_Box' ) )
 		return;
 
 	// Register meta boxes only for some posts/pages
-	if ( !rw_maybe_include() )
+	if ( ! rw_maybe_include() )
 		return;
 
 	foreach ( $meta_boxes as $meta_box )
@@ -51,7 +51,7 @@ add_action( 'admin_init', 'rw_register_meta_boxes' );
 function rw_maybe_include()
 {
 	// Include in back-end only
-	if ( !defined( 'WP_ADMIN' ) || !WP_ADMIN )
+	if ( ! defined( 'WP_ADMIN' ) || ! WP_ADMIN )
 		return false;
 
 	// Always include for ajax
