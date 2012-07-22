@@ -14,8 +14,8 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function admin_enqueue_scripts( )
 		{
 			$url = RWMB_CSS_URL . 'jqueryui';
-			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array( ), '1.8.17' );
-			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array( ), '1.8.17' );
+			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
+			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_register_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );

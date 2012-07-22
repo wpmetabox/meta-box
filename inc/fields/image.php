@@ -53,10 +53,12 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			foreach ( $items as $item )
 			{
-				wp_update_post( array(
-					'ID'         => $item,
-					'menu_order' => $order++,
-				) );
+				wp_update_post(
+					array(
+						'ID'         => $item,
+						'menu_order' => $order++,
+					)
+				);
 			}
 
 			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
@@ -94,8 +96,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 				foreach ( $meta as $image )
 				{
-					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src = $src[0];
+					$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
+					$src  = $src[0];
 					$link = get_edit_post_link( $image );
 
 					$html .= "<li id='item_{$image}'>

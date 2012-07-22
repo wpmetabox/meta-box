@@ -47,122 +47,122 @@ $meta_boxes[] = array(
 		// TEXT
 		array(
 			// Field name - Will be used as label
-			'name'		=> 'Full name',
+			'name' => 'Full name',
 			// Field ID, i.e. the meta key
-			'id'		=> $prefix . 'fname',
+			'id' => $prefix . 'fname',
 			// Field description (optional)
-			'desc'		=> 'Format: First Last',
+			'desc' => 'Format: First Last',
 			// CLONES: Add to make the field cloneable (i.e. have multiple value)
-			'clone'		=> true,
-			'type'		=> 'text',
+			'clone' => true,
+			'type'  => 'text',
 			// Default value (optional)
-			'std'		=> 'Anh Tran'
+			'std' => 'Anh Tran',
 		),
 		// DATE
 		array(
-			'name'		=> 'Day of Birth',
-			'id'		=> "{$prefix}dob",
-			'type'		=> 'date',
+			'name' => 'Day of Birth',
+			'id'   => "{$prefix}dob",
+			'type' => 'date',
 			// Date format, default yy-mm-dd. Optional. See: http://goo.gl/po8vf
-			'format'	=> 'd MM, yy'
+			'format' => 'd MM, yy',
 		),
 		// RADIO BUTTONS
 		array(
-			'name'		=> 'Gender',
-			'id'		=> "{$prefix}gender",
-			'type'		=> 'radio',
+			'name' => 'Gender',
+			'id'   => "{$prefix}gender",
+			'type' => 'radio',
 			// Array of 'key' => 'value' pairs for radio options.
 			// Note: the 'key' is stored in meta field, not the 'value'
 			'options'	=> array(
 				'm'			=> 'Male',
-				'f'			=> 'Female'
+				'f'			=> 'Female',
 			),
-			'std'		=> 'm',
-			'desc'		=> 'Need an explaination?'
+			'std'  => 'm',
+			'desc' => 'Need an explaination?',
 		),
 		// TEXTAREA
 		array(
-			'name'		=> 'Bio',
-			'desc'		=> "What's your professions? What have you done so far?",
-			'id'		=> "{$prefix}bio",
-			'type'		=> 'textarea',
-			'std'		=> "I'm a special agent from Vietnam.",
-			'cols'		=> "40",
-			'rows'		=> "8"
+			'name' => 'Bio',
+			'desc' => "What's your professions? What have you done so far?",
+			'id'   => "{$prefix}bio",
+			'type' => 'textarea',
+			'std'  => "I'm a special agent from Vietnam.",
+			'cols' => '40',
+			'rows' => '8',
 		),
 		// SELECT BOX
 		array(
-			'name'		=> 'Where do you live?',
-			'id'		=> "{$prefix}place",
-			'type'		=> 'select',
+			'name' => 'Where do you live?',
+			'id'   => "{$prefix}place",
+			'type' => 'select',
 			// Array of 'key' => 'value' pairs for select box
-			'options'	=> array(
+			'options' => array(
 				'usa'		=> 'USA',
-				'vn'		=> 'Vietnam'
+				'vn'		=> 'Vietnam',
 			),
 			// Select multiple values, optional. Default is false.
-			'multiple'	=> true,
+			'multiple' => true,
 			// Default value, can be string (single value) or array (for both single and multiple values)
-			'std'		=> array( 'vn' ),
-			'desc'		=> 'Select the current place, not in the past'
+			'std'  => array( 'vn' ),
+			'desc' => 'Select the current place, not in the past',
 		),
 		// CHECKBOX
 		array(
-			'name'		=> 'About WordPress',    // File type: checkbox
-			'id'		=> "{$prefix}love_wp",
-			'type'		=> 'checkbox',
-			'desc'		=> 'I love WordPress',
+			'name' => 'About WordPress',    // File type: checkbox
+			'id'   => "{$prefix}love_wp",
+			'type' => 'checkbox',
+			'desc' => 'I love WordPress',
 			// Value can be 0 or 1
-			'std'		=> 1
+			'std' => 1,
 		),
 		// HIDDEN
 		array(
-			'id'		=> "{$prefix}invisible",
-			'type'		=> 'hidden',
+			'id'   => "{$prefix}invisible",
+			'type' => 'hidden',
 			// Hidden field must have predefined value
-			'std'		=> "no, i'm visible"
+			'std' => "No, I'm visible",
 		),
 		// PASSWORD
 		array(
-			'name'		=> 'Your favorite password',
-			'id'		=> "{$prefix}pass",
-			'type'		=> 'password'
+			'name' => 'Your favorite password',
+			'id'   => "{$prefix}pass",
+			'type' => 'password',
 		),
 		// CONFIRM PASSWORD
 		array(
-			'name'		=> 'Confirm your password',
-			'id'		=> "{$prefix}pass_confirm",
-			'type'		=> 'password'
+			'name' => 'Confirm your password',
+			'id'   => "{$prefix}pass_confirm",
+			'type' => 'password',
 		),
 	),
 	'validation' => array(
 		'rules' => array(
 			// optionally make post/page title required
 			'post_title' => array(
-				'required' => true
+				'required' => true,
 			),
 			$prefix . 'fname' => array(
-				'required' => true
+				'required' => true,
 			),
 			"{$prefix}pass" => array(
-				'required' => true,
+				'required'  => true,
 				'minlength' => 7,
 			),
 			"{$prefix}pass_confirm" => array(
-				'equalTo' => "{$prefix}pass"
+				'equalTo' => "{$prefix}pass",
 			)
 		),
 		// optional override of default jquery.validate messages
 		'messages' => array(
 			$prefix . 'fname' => array(
-				'required' => 'Your name is required'
+				'required' => 'Your name is required',
 			),
 			"{$prefix}pass" => array(
-				'required' => 'Password is required',
-				'minlength' => 'Password must be at least 7 characters'
+				'required'  => 'Password is required',
+				'minlength' => 'Password must be at least 7 characters',
 			),
 			"{$prefix}pass_confirm" => array(
-				'equalTo' => 'Please enter the same password'
+				'equalTo' => 'Please enter the same password',
 			)
 		)
 	)
@@ -170,91 +170,91 @@ $meta_boxes[] = array(
 
 // 2nd meta box
 $meta_boxes[] = array(
-	'id'		=> 'additional',
-	'title'		=> 'Additional Information',
-	'pages'		=> array( 'post', 'film', 'slider' ),
+	'id'    => 'additional',
+	'title' => 'Additional Information',
+	'pages' => array( 'post', 'film', 'slider' ),
 
-	'fields'	=> array(
+	'fields' => array(
 		// WYSIWYG/RICH TEXT EDITOR
 		array(
-			'name'	=> 'Your thoughts about Deluxe Blog Tips',
-			'id'	=> "{$prefix}thoughts",
-			'type'	=> 'wysiwyg',
-			'std'	=> "It's great!",
-			'desc'	=> 'Do you think so?'
+			'name' => 'Your thoughts about Deluxe Blog Tips',
+			'id'   => "{$prefix}thoughts",
+			'type' => 'wysiwyg',
+			'std'  => "It's great!",
+			'desc' => 'Do you think so?',
 		),
 		// FILE UPLOAD
 		array(
-			'name'	=> 'Upload your source code',
-			'desc'	=> 'Any modified code, or extending code',
-			'id'	=> "{$prefix}code",
-			'type'	=> 'file'
+			'name' => 'Upload your source code',
+			'desc' => 'Any modified code, or extending code',
+			'id'   => "{$prefix}code",
+			'type' => 'file',
 		),
 		// IMAGE UPLOAD
 		array(
-			'name'	=> 'Screenshots',
-			'desc'	=> 'Screenshots of problems, warnings, etc.',
-			'id'	=> "{$prefix}screenshot",
-			'type'	=> 'image'
+			'name' => 'Screenshots',
+			'desc' => 'Screenshots of problems, warnings, etc.',
+			'id'   => "{$prefix}screenshot",
+			'type' => 'image',
 		),
 		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name'	=> 'Screenshots (plupload)',
-			'desc'	=> 'Screenshots of problems, warnings, etc.',
-			'id'	=> "{$prefix}screenshot2",
-			'type'	=> 'plupload_image',
+			'name'             => 'Screenshots (plupload)',
+			'desc'             => 'Screenshots of problems, warnings, etc.',
+			'id'               => "{$prefix}screenshot2",
+			'type'             => 'plupload_image',
 			'max_file_uploads' => 4,
 		),
 		// THICKBOX IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name'	=> 'Screenshots (thickbox upload)',
-			'desc'	=> 'Screenshots of problems, warnings, etc.',
-			'id'	=> "{$prefix}screenshot3",
-			'type'	=> 'thickbox_image',
+			'name' => 'Screenshots (thickbox upload)',
+			'desc' => 'Screenshots of problems, warnings, etc.',
+			'id'   => "{$prefix}screenshot3",
+			'type' => 'thickbox_image',
 		)
 	)
 );
 
 // 3rd meta box
 $meta_boxes[] = array(
-	'id'		=> 'survey',
-	'title'		=> 'Survey',
-	'pages'		=> array( 'post', 'slider', 'page' ),
+	'id'    => 'survey',
+	'title' => 'Survey',
+	'pages' => array( 'post', 'slider', 'page' ),
 
-	'fields'	=> array(
+	'fields' => array(
 		// COLOR
 		array(
-			'name'		=> 'Your favorite color',
-			'id'		=> "{$prefix}color",
-			'type'		=> 'color'
+			'name' => 'Your favorite color',
+			'id'   => "{$prefix}color",
+			'type' => 'color',
 		),
 		// CHECKBOX LIST
 		array(
-			'name'		=> 'Your hobby',
-			'id'		=> "{$prefix}hobby",
-			'type'		=> 'checkbox_list',
+			'name' => 'Your hobby',
+			'id'   => "{$prefix}hobby",
+			'type' => 'checkbox_list',
 			// Options of checkboxes, in format 'key' => 'value'
-			'options'	=> array(
-				'reading'	=> 'Books',
-				'sport'		=> 'Gym, Boxing'
+			'options' => array(
+				'reading' => 'Books',
+				'sport'   => 'Gym, Boxing',
 			),
-			'desc'		=> 'What do you do in free time?'
+			'desc' => 'What do you do in free time?',
 		),
 		// TIME
 		array(
-			'name'		=> 'When do you get up?',
-			'id'		=> "{$prefix}getdown",
-			'type'		=> 'time',
+			'name' => 'When do you get up?',
+			'id'   => "{$prefix}getdown",
+			'type' => 'time',
 			// Time format, default hh:mm. Optional. @link See: http://goo.gl/hXHWz
-			'format'	=> 'hh:mm:ss'
+			'format' => 'hh:mm:ss',
 		),
 		// DATETIME
 		array(
-			'name'		=> 'When were you born?',
-			'id'		=> "{$prefix}born_time",
-			'type'		=> 'datetime',
+			'name' => 'When were you born?',
+			'id'   => "{$prefix}born_time",
+			'type' => 'datetime',
 			// Time format, default hh:mm. Optional. @link See: http://goo.gl/hXHWz
-			'format'	=> 'hh:mm:ss'
+			'format' => 'hh:mm:ss',
 		),
 		// TAXONOMY
 		array(
@@ -263,14 +263,14 @@ $meta_boxes[] = array(
 			'type'    => 'taxonomy',
 			'options' => array(
 				// Taxonomy name
-				'taxonomy'	=> 'category',
+				'taxonomy' => 'category',
 				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree' or 'select'. Optional
-				'type'		=> 'select_tree',
+				'type' => 'select_tree',
 				// Additional arguments for get_terms() function. Optional
-				'args'		=> array()
+				'args' => array()
 			),
-			'desc'		=> 'Choose One Category'
-		)
+			'desc' => 'Choose One Category',
+		),
 	)
 );
 

@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 			parent::admin_enqueue_scripts();
 
 			add_thickbox();
-			wp_enqueue_script('media-upload');
+			wp_enqueue_script( 'media-upload' );
 
 			wp_enqueue_script( 'rwmb-thickbox-image', RWMB_JS_URL . 'thickbox-image.js', array( 'jquery' ), RWMB_VER, true );
 		}
@@ -61,8 +61,8 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 
 				foreach ( $meta as $image )
 				{
-					$src = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src = $src[0];
+					$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
+					$src  = $src[0];
 					$link = get_edit_post_link( $image );
 
 					$html .= "<li id='item_{$image}'>
@@ -98,14 +98,14 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			if ( !is_array( $new ) || empty( $new ) )
+			if ( ! is_array( $new ) || empty( $new ) )
 				return;
 
-			$name = $field['id'];
+			$name   = $field['id'];
 			$images = (array) get_post_meta( $post_id, $name, false );
 			foreach ( $new as $add_new )
 			{
-				if ( !in_array( $add_new, $images ) )
+				if ( ! in_array( $add_new, $images ) )
 					add_post_meta( $post_id, $name, $add_new, false );
 			}
 		}
