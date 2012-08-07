@@ -36,6 +36,16 @@ jQuery( document ).ready( function ($)
 		// Reset value
 		$clone.find( ':input' ).val( '' );
 
+		// Get the field name, and increment
+		var $index = $clone.find( ':input' ).attr("name").replace(/\[([0-9]+)\]$/, 
+			function(str, p1, p2, p3) 
+			{
+				return mystr = '[' + (parseInt(p1) +1) + ']';
+			});
+
+		// Update the "name" attribute
+		$clone.find( ':input' ).attr("name", $index);
+
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
 
