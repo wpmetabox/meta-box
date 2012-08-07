@@ -30,6 +30,10 @@ define( 'RWMB_CLASSES_DIR', trailingslashit( RWMB_INC_DIR . 'classes' ) );
 
 // Optimize code for loading plugin files ONLY on admin side
 // @see http://www.deluxeblogtips.com/?p=345
+
+// Helper function to retrieve meta value
+require_once RWMB_INC_DIR . 'helpers.php';
+
 if ( is_admin() )
 {
 	require_once RWMB_INC_DIR . 'common.php';
@@ -42,9 +46,4 @@ if ( is_admin() )
 
 	// Main file
 	require_once RWMB_CLASSES_DIR . 'meta-box.php';
-}
-else
-{
-	// Helper function to retrieve meta value
-	require_once RWMB_INC_DIR . 'helpers.php';
 }
