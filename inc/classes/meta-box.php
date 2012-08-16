@@ -152,6 +152,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			global $post;
 
+			// Allow users to show/hide meta boxes
+			// 1st action applies to all meta boxes
+			// 2nd action applies to only current meta box
+			$show = apply_filters( 'rwmb_show', true );
+			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", true );
+			if ( !$show )
+				return;
+
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
@@ -187,17 +195,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				{
 					if ( ! is_array( $field['field_name'] ) )
 						$field['field_name'] = (array) $field['field_name'];
-					
-					foreach (array_keys($meta) as $i)
+
+					$meta = (array) $meta;
+
+					foreach ( array_keys( $meta ) as $i )
 						$field['field_name'][$i] = $field['id'] . "[{$i}]";
-					
+
 					$field_html = '';
 
 					$index = 0;
-					$meta = (array) $meta;
 					foreach ( $meta as $meta_data )
 					{
-						if (is_array($field['field_name']))
+						if ( is_array( $field['field_name'] ) )
 						{
 							$subfield = $field;
 							$subfield['field_name'] = $field['field_name'][$index];

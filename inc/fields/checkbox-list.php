@@ -43,6 +43,7 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		{
 			$field['multiple'] = true;
 			$field['std'] = empty( $field['std'] ) ? array() : $field['std'];
+			$field['field_name'] = "{$field['id']}[]";
 			return $field;
 		}
 	}

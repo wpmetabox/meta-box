@@ -148,9 +148,6 @@ $meta_boxes[] = array(
 				'required'  => true,
 				'minlength' => 7,
 			),
-			"{$prefix}pass_confirm" => array(
-				'equalTo' => "{$prefix}pass",
-			)
 		),
 		// optional override of default jquery.validate messages
 		'messages' => array(
