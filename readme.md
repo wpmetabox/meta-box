@@ -1,4 +1,4 @@
-[Project Page](http://www.deluxeblogtips.com/meta-box) | [Documentation](http://www.deluxeblogtips.com/docs) | [Support](http://www.deluxeblogtips.com/support) | [Donate](http://www.deluxeblogtips.com/donate)
+[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Documentation](http://www.deluxeblogtips.com/docs/) | [Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
 
 ***
 
