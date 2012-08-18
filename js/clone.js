@@ -111,13 +111,18 @@ jQuery( document ).ready( function ($)
 				$.each($clone_group_list.find( '.rwmb-input' ), 
 					function(key, value) {
 						$(value).children( '.rwmb-clone' ).eq($index).remove();
+						
+						// Toggle remove buttons
+						toggle_remove_buttons( $(value) );
 						});
 			}
 			else
+			{
 				$this.parent().remove();
 
-			// Toggle remove buttons
-			toggle_remove_buttons( $input );
+				// Toggle remove buttons
+				toggle_remove_buttons( $input );
+			}
 		}
 
 		return false;
