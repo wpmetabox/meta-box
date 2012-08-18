@@ -1,4 +1,4 @@
-[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Documentation](http://www.deluxeblogtips.com/docs/) | [Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
 
 ***
 
@@ -21,7 +21,7 @@
 
 **Tested up to:** WordPress v3.4.1
 
-Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
+Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
 
 ### Description
 

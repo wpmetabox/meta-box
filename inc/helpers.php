@@ -20,11 +20,9 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 {
 	$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 
-	$args = wp_parse_args(
-		$args, array(
-			'type' => 'text',
-		)
-	);
+	$args = wp_parse_args( $args, array(
+		'type' => 'text',
+	) );
 
 	// Set 'multiple' for fields based on 'type'
 	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'image', 'plupload_image', 'thickbox_image' ) );
@@ -101,11 +99,9 @@ function rwmb_file_info( $id )
  */
 function rwmb_image_info( $id, $args = array() )
 {
-	$args = wp_parse_args(
-		$args, array(
-			'size' => 'thumbnail',
-		)
-	);
+	$args = wp_parse_args( $args, array(
+		'size' => 'thumbnail',
+	) );
 
 	$img_src = wp_get_attachment_image_src( $id, $args['size'] );
 	if ( empty( $img_src ) )

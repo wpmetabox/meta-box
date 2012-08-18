@@ -8,7 +8,7 @@
  * You also should read the changelog to know what has been changed before updating.
  *
  * For more information, please visit:
- * @link http://www.deluxeblogtips.com/meta-box/docs/define-meta-boxes
+ * @link http://www.deluxeblogtips.com/meta-box/
  */
 
 /********************* META BOX DEFINITIONS ***********************/
@@ -71,7 +71,7 @@ $meta_boxes[] = array(
 			'name' => 'Gender',
 			'id'   => "{$prefix}gender",
 			'type' => 'radio',
-			// Array of 'key' => 'value' pairs for radio options.
+			// Array of 'value' => 'Label' pairs for radio options.
 			// Note: the 'key' is stored in meta field, not the 'value'
 			'options'	=> array(
 				'm'			=> 'Male',
@@ -95,7 +95,7 @@ $meta_boxes[] = array(
 			'name' => 'Where do you live?',
 			'id'   => "{$prefix}place",
 			'type' => 'select',
-			// Array of 'key' => 'value' pairs for select box
+			// Array of 'value' => 'Label' pairs for select box
 			'options' => array(
 				'usa'		=> 'USA',
 				'vn'		=> 'Vietnam',
@@ -108,7 +108,7 @@ $meta_boxes[] = array(
 		),
 		// CHECKBOX
 		array(
-			'name' => 'About WordPress',    // File type: checkbox
+			'name' => 'About WordPress',
 			'id'   => "{$prefix}love_wp",
 			'type' => 'checkbox',
 			'desc' => 'I love WordPress',
@@ -158,9 +158,6 @@ $meta_boxes[] = array(
 				'required'  => 'Password is required',
 				'minlength' => 'Password must be at least 7 characters',
 			),
-			"{$prefix}pass_confirm" => array(
-				'equalTo' => 'Please enter the same password',
-			)
 		)
 	)
 );
@@ -230,7 +227,7 @@ $meta_boxes[] = array(
 			'name' => 'Your hobby',
 			'id'   => "{$prefix}hobby",
 			'type' => 'checkbox_list',
-			// Options of checkboxes, in format 'key' => 'value'
+			// Options of checkboxes, in format 'value' => 'Label'
 			'options' => array(
 				'reading' => 'Books',
 				'sport'   => 'Gym, Boxing',
@@ -250,7 +247,7 @@ $meta_boxes[] = array(
 			'name' => 'When were you born?',
 			'id'   => "{$prefix}born_time",
 			'type' => 'datetime',
-			// Time format, default hh:mm. Optional. @link See: http://goo.gl/hXHWz
+			// Time format, default yy-mm-dd hh:mm. Optional. @link See: http://goo.gl/hXHWz
 			'format' => 'hh:mm:ss',
 		),
 		// TAXONOMY

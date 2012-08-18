@@ -38,11 +38,13 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$rel   = " rel='{$field['format']}'";
-			$val   = " value='{$meta}'";
-			$html .= "<input type='text' class='rwmb-time' size='30'{$name}{$id}{$rel}{$val} />";
+			$name   = " name='{$field['field_name']}'";
+			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$value  = " value='{$meta}'";
+			$size   = " size='{$field['size']}'";
+			$format = " rel='{$field['format']}'";
+
+			$html .= "<input type='text' class='rwmb-time'{$name}{$id}{$value}{$size}{$format} />";
 
 			return $html;
 		}
@@ -57,6 +59,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['format'] = empty( $field['format'] ) ? 'hh:mm' : $field['format'];
+			$field['size']   = empty( $field['size'] ) ? 10 : $field['size'];
 			return $field;
 		}
 	}

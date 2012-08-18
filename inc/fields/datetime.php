@@ -38,13 +38,28 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$rel   = " rel='{$field['format']}'";
-			$val   = " value='{$meta}'";
-			$html .= "<input type='text' class='rwmb-datetime' size='30'{$name}{$id}{$rel}{$val} />";
+			$name   = " name='{$field['field_name']}'";
+			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$value  = " value='{$meta}'";
+			$size   = " size='{$field['size']}'";
+			$format = " rel='{$field['format']}'";
+			$html .= "<input type='text' class='rwmb-datetime'{$name}{$id}{$value}{$size}{$format} />";
 
 			return $html;
+		}
+		
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['format'] = empty( $field['format'] ) ? 'yy-mm-dd hh:ss' : $field['format'];
+			$field['size']   = empty( $field['size'] ) ? 20 : $field['size'];
+			return $field;
 		}
 	}
 }

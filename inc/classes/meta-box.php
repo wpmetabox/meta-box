@@ -132,6 +132,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
+				// Allow users to show/hide meta boxes
+				// 1st action applies to all meta boxes
+				// 2nd action applies to only current meta box
+				$show = true;
+				$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
+				$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
+				if ( !$show )
+					continue;
+
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
@@ -151,14 +160,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		public function show()
 		{
 			global $post;
-
-			// Allow users to show/hide meta boxes
-			// 1st action applies to all meta boxes
-			// 2nd action applies to only current meta box
-			$show = apply_filters( 'rwmb_show', true );
-			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", true );
-			if ( !$show )
-				return;
 
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
