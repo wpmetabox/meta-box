@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['size'] = 30;
+			$field['size'] = empty( $field['size'] ) ? 30 : $field['size'];
 			return $field;
 		}
 	}
