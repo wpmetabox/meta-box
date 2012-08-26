@@ -173,6 +173,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
+				$group = "";	// Empty the clone-group field
 				$type = $field['type'];
 				$id   = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
@@ -194,6 +195,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Cloneable fields
 				if ( self::is_cloneable( $field ) )
 				{
+					if ( isset( $field['clone-group'] ) )
+						$group = " clone-group='{$field['clone-group']}'";
+
 					if ( ! is_array( $field['field_name'] ) )
 						$field['field_name'] = (array) $field['field_name'];
 
@@ -275,7 +279,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Hide the div if field has 'hidden' type
 				if ( 'hidden' === $field['type'] )
 					$class = $this->add_cssclass( 'hidden', $class );
-				echo "<div class='{$class}'>{$html}</div>";
+				echo "<div class='{$class}'{$group}>{$html}</div>";
 			}
 
 			// Include validation settings for this meta-box
