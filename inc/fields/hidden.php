@@ -31,7 +31,7 @@ if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$val   = " value='{$field['std']}'";
+			$val   = " value='{$meta}'";
 			$name  = " name='{$field['field_name']}'";
 			$id    = " id='{$field['id']}'";
 			$html .= "<input type='hidden' class='rwmb-hidden'{$name}{$id}{$val} />";
