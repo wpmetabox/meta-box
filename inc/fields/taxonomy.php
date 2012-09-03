@@ -52,7 +52,10 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			// If field is shown as checkbox list, add multiple value
 			if ( in_array( $field['options']['type'], array( 'checkbox_list', 'checkbox_tree' ) ) )
+			{
 				$field['multiple'] = true;
+				$field['field_name'] = "{$field['id']}[]";
+			}
 
 			// For select tree: display it as a normal select box (no multiple attribute), but allows to save multiple values
 			if ( 'select_tree' == $field['options']['type'] )
