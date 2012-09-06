@@ -4,31 +4,51 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: trunk
+Stable tag: 4.1.10
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
 == Description ==
 
-Meta Box Script for WordPress is a WordPress plugin that provides an API for you to easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
+Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
 
-* Create meta box for editing pages in WordPress.
-* Compatible with custom post types since WordPress 3.0.
-* Support input types: text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, old & new file upload, date, time, color
+**Features**
 
-[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Documentation](http://www.deluxeblogtips.com/docs/) | [Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+* Easily registers multiple custom meta boxes for posts, pages or custom post types
+* Has built-in hooks which allow you to change the appearance and behavior of meta boxes
+* Easily integrated with themes
+
+**Supported fields**
+
+- checkbox_list
+- checkbox
+- color
+- date
+- datetime
+- file
+- hidden
+- image
+- password
+- plupload_image
+- radio
+- select
+- slider
+- taxonomy
+- text
+- textarea
+- thickbox_image
+- time
+- wysiwyg
+
+[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
 
 == Installation ==
 
 1. Unzip the download package
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Copy `demo/demo.php` file from plugin directory to your theme folder
-1. Open `functions.php` file of your theme and add the following code:
 
-    include 'demo.php';
-
-To change meta box definition, please see comments in `demo.php`.
+To getting started with the plugin API, please read [this tutorial](http://www.deluxeblogtips.com/meta-box/getting-started/).
 
 == Frequently Asked Questions ==
 
@@ -37,6 +57,14 @@ To change meta box definition, please see comments in `demo.php`.
 2. Advanced fields
 
 == Changelog ==
+
+= 4.1.10 =
+* Allow helper functions can be used in admin area
+* Allow cloned fields to have a uniquely indexed `name` attribute 
+* Add Swedish translation
+* Allow hidden field has its own value
+* Taxonomy field now supported by `rwmb_meta` function
+* Improvement in code format and field normalizing
 
 = 4.1.9 =
 * Add helper function to retrieve meta values

@@ -1,4 +1,48 @@
-[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+
+***
+
+## Plugin Information
+
+Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
+
+### Features
+
+* Easily registers multiple custom meta boxes for posts, pages or custom post types
+* Has built-in hooks which allow you to change the appearance and behavior of meta boxes
+* Easily integrated with themes
+
+### Supported fields
+
+- checkbox_list
+- checkbox
+- color
+- date
+- datetime
+- file
+- hidden
+- image
+- password
+- plupload_image
+- radio
+- select
+- slider
+- taxonomy
+- text
+- textarea
+- thickbox_image
+- time
+- wysiwyg
+
+***
+
+## Installation
+
+1. Unzip the download package
+1. Upload `meta-box` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+
+To getting started with the plugin API, please read [this tutorial](http://www.deluxeblogtips.com/meta-box/getting-started/).
 
 ***
 
@@ -15,69 +59,49 @@
 
 ***
 
-## Meta Box Information
+## Changelog
 
-**Requires at least:** WordPress v3.0
+#### 4.1.10
+* Allow helper functions can be used in admin area
+* Allow cloned fields to have a uniquely indexed `name` attribute 
+* Add Swedish translation
+* Allow hidden field has its own value
+* Taxonomy field now supported by `rwmb_meta` function
+* Improvement in code format and field normalizing
 
-**Tested up to:** WordPress v3.4.1
-
-Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
-
-### Description
-
-Meta Box Script for WordPress is a WordPress plugin that provides an API for you to easily implement multiple meta boxes in editing pages in WordPress. It works with custom post types and supports various field types.
-
-* Create meta box for editing pages in WordPress.
-* Compatible with custom post types since WordPress 3.0.
-* **Support input types:** text, textarea, checkbox, checkbox list, radio box, select, wysiwyg, old & new file upload, date, time, color, slider.
-
-### Installation
-
-1. Unzip the download package
-1. Upload `meta-box` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Copy `demo/demo.php` file from plugin directory to your theme folder
-1. Open `functions.php` file of your theme and add the following code:
-
-    include 'demo.php';
-
-To change meta box definition, please see comments in `demo.php`.
-
-### Changelog
-
-### 4.1.9
+#### 4.1.9
 * Add helper function to retrieve meta values
 * Add basic validation (JS based)
 * Fix image reorder bug
 * Fix `select_tree` option for taxonomy field
 * Fix not showing loading image for 1st image using plupload
 
-### 4.1.8
+#### 4.1.8
 * Add missed JS file for thickbox image
 
-### 4.1.7
+#### 4.1.7
 * Quick fix for thickbox image
 
-### 4.1.6
+#### 4.1.6
 * Quick fix for checkbox list and multiple/clonable fields
 
-### 4.1.5
+#### 4.1.5
 * Taxonomy field is now in core
 * Add demo for including meta boxes for specific posts based on IDs or page templates
 * Meta box ID is now optional
 * Add `thickbox_image` field for uploading image with WP style
 * Fix `guid` for uploaded images
 
-### 4.1.4
+#### 4.1.4
 * Fix taxonomy field
 
-### 4.1.3
+#### 4.1.3
 * Support max_file_uploads for plupload_image
 * Better enqueue styles and scripts
 * Store images in correct order after re-order
 * Fix cloning color, date, time, datetime fields
 
-### 4.1.2
+#### 4.1.2
 * Improve taxonomy field
 * Add filter to wp_editor
 * Add more options for time field
