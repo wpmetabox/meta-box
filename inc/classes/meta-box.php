@@ -109,11 +109,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
 			}
 
-			if ( $has_clone ) {
+			if ( $has_clone )
 				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
-			}
 
-			if ( $this->validation ) {
+			if ( $this->validation )
+			{
 				wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 			}
