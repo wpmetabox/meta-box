@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Select_Field' ) )
 {
@@ -35,22 +30,32 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$std		 = isset( $field['disabled'] ) ? $field['disabled'] : false;
-			$disabled	 = disabled( $std, true, false );
+			$name     = " name='{$field['field_name']}'";
+			$id       = " id='{$field['id']}'";
+			$multiple = $field['multiple'] ? " multiple='multiple'" : '' ;
 
-			$id		 = " id='{$field['id']}'";
-			$name	 = " name='{$field['field_name']}'";
-			$name	.= $field['multiple'] ? " multiple='multiple'" : "" ;
-
-			$html	 = "<select class='rwmb-select'{$name}{$id}{$disabled}>";
+			$html = "<select class='rwmb-select'{$name}{$id}{$multiple}>";
 			foreach ( $field['options'] as $key => $value )
 			{
-				$selected	 = selected( in_array( $key, $meta ), true, false );
-				$html		.= "<option value='{$key}'{$selected}>{$value}</option>";
+				$selected = selected( in_array( $key, $meta ), true, false );
+				$html    .= "<option value='{$key}'{$selected}>{$value}</option>";
 			}
-			$html	.= "</select>";
+			$html .= '</select>';
 
 			return $html;
+		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['multiple'] = false;
+			return $field;
 		}
 	}
 }

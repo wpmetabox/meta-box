@@ -1,15 +1,10 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') ) 
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Radio_Field' ) ) 
+if ( ! class_exists( 'RWMB_Radio_Field' ) )
 {
-	class RWMB_Radio_Field 
+	class RWMB_Radio_Field
 	{
 		/**
 		 * Get field HTML
@@ -20,17 +15,19 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field ) 
+		static function html( $html, $meta, $field )
 		{
 			$html = '';
-			foreach ( $field['options'] as $key => $value ) 
+			$name = "name='{$field['field_name']}'";
+
+			foreach ( $field['options'] as $key => $label )
 			{
+				$id      = strstr( $field['id'], '[]' ) ? str_replace( '[]', "-{$key}[]", $field['id'] ) : $field['id'];
+				$id      = " id='{$id}'";
+				$value   = " value='{$key}'";
 				$checked = checked( $meta, $key, false );
-				$id		 = strstr( $field['id'], '[]' ) ? str_replace( '[]', "-{$key}[]", $field['id'] ) : $field['id'];
-				$id		 = " id='{$id}'";
-				$name = "name='{$field['field_name']}'";
-				$val     = " value='{$key}'";
-				$html   .= "<label><input type='radio' class='rwmb-radio'{$name}{$id}{$val}{$checked} /> {$value}</label> ";
+
+				$html .= "<label><input type='radio' class='rwmb-radio'{$name}{$id}{$value}{$checked} /> {$label}</label> ";
 			}
 
 			return $html;

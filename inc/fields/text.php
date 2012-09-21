@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Text_Field' ) )
 {
@@ -22,16 +17,27 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name     = " name='{$field['field_name']}'";
-			$id       = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$val      = " value='{$meta}'";
-			$size     = isset( $field['size'] ) ? $field['size'] : '30';
-			$std      = isset( $field['disabled'] ) ? $field['disabled'] : false;
-			$disabled = disabled( $std, true, false );
+			$name  = " name='{$field['field_name']}'";
+			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
+			$value = " value='{$meta}'";
+			$size  = " size='{$field['size']}'";
 
-			$html    .= "<input type='text' class='rwmb-text'{$name}{$id}{$val}{$disabled} size='{$size}' />";
+			$html .= "<input type='text' class='rwmb-text'{$name}{$id}{$value}{$size} />";
 
 			return $html;
+		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['size'] = empty( $field['size'] ) ? 30 : $field['size'];
+			return $field;
 		}
 	}
 }

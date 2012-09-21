@@ -1,6 +1,18 @@
 /* =Styles for 'normal' meta boxes
 -------------------------------------------------------------- */
 
+/* BEGIN jquery.validate styles */
+label.error {
+	padding-left: 3px;
+	color: red;
+}
+
+input.error, textarea.error, select.error {
+	border: #CC0000 solid 1px !important;
+	background-color: #FFEBE8 !important;
+}
+/* END jquery.validate styles */
+
 .rwmb-field {
 	margin: 10px 0;
 }
@@ -12,6 +24,11 @@
 .rwmb-label {
 	width: 24%;
 }
+	.rwmb-label > .required
+	{
+		color: red;
+		font-weight:bold;
+	}
 /* 75% if field has label, 100% if no label */
 .rwmb-input {
 	width: 100%;

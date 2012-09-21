@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_File_Field' ) )
 {
@@ -66,7 +61,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
 			else
-				RW_Meta_Box::ajax_response( __( "Error: Cannot delete file", 'rwmb' ), 'error' );
+				RW_Meta_Box::ajax_response( __( 'Error: Cannot delete file', 'rwmb' ), 'error' );
 		}
 
 		/**
@@ -146,7 +141,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 					'guid'           => $file['url'],
 					'post_parent'    => $post_id,
 					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
-					'post_content'   => ''
+					'post_content'   => '',
 				);
 				$id = wp_insert_attachment( $attachment, $file_name, $post_id );
 
@@ -181,6 +176,20 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 				}
 			}
 			return $output;
+		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field['multiple'] = true;
+			$field['std'] = empty( $field['std'] ) ? array() : $field['std'];
+			return $field;
 		}
 	}
 }

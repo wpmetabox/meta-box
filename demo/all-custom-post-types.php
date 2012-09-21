@@ -9,22 +9,22 @@ function YOUR_PREFIX_register_meta_boxes()
 	if ( ! class_exists( 'RW_Meta_Box' ) )
 		return;
 
-	$prefix = 'YOUR_PREFIX_';
+	$prefix     = 'YOUR_PREFIX_';
 	$meta_boxes = array();
 
 	$post_types = get_post_types();
 
 	// 1st meta box
 	$meta_boxes[] = array(
-		'id' => 'personal',
+		'id'    => 'personal',
 		'title' => 'Personal Information',
 		'pages' => $post_types,
 
 		'fields' => array(
 			array(
-				'name'		=> 'Full name',
-				'id'		=> $prefix . 'fname',
-				'type'		=> 'text',
+				'name' => 'Full name',
+				'id'   => $prefix . 'fname',
+				'type' => 'text',
 			),
 			// Other fields go here
 		)

@@ -1,11 +1,6 @@
 <?php
-// Prevent loading this file directly - Busted!
-if( ! class_exists('WP') )
-{
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit;
-}
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 {
@@ -16,7 +11,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 *
 		 * @return	void
 		 */
-		static function admin_enqueue_scripts( )
+		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS_URL.'wysiwyg.css', RWMB_VER );
 		}
@@ -26,7 +21,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 *
 		 * @return	void
 		 */
-		static function add_actions( )
+		static function add_actions()
 		{
 			// Add TinyMCE script for WP version < 3.3
 			global $wp_version;
@@ -76,11 +71,11 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 				// Apply filter to wp_editor() settings
 				$editor_settings = apply_filters( 'rwmb_wysiwyg_settings', array( 'editor_class' => 'rwmb-wysiwyg' ), 10, 1 );
 				// Using output buffering because wp_editor() echos directly
-				ob_start( );
+				ob_start();
 				// Use new wp_editor() since WP 3.3
 				wp_editor( $meta, $field['id'], $editor_settings );
 
-				return ob_get_clean( );
+				return ob_get_clean();
 			}
 		}
 	}
