@@ -54,7 +54,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['multiple'] = false;
+			$field['multiple'] = empty( $field['multiple'] ) ? false : $field['multiple'];
 			return $field;
 		}
 	}

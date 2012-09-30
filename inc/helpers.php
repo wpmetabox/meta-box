@@ -71,7 +71,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get post terms
 	elseif ( 'taxonomy' == $args['type'] )
 	{
-		$meta = emtpy( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
+		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
 	}
 
 	return $meta;
