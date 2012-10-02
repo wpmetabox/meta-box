@@ -58,6 +58,10 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 == Changelog ==
 
+= 4.1.11 =
+* Bug fix: helper function for getting `taxonomy` field type
+* Bug fix: `multiple` attribute for `select` field type
+
 = 4.1.10 =
 * Allow helper functions can be used in admin area
 * Allow cloned fields to have a uniquely indexed `name` attribute 
