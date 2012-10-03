@@ -39,8 +39,9 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			$value  = " value='{$meta}'";
 			$size   = " size='{$field['size']}'";
 			$format = " rel='{$field['format']}'";
+			$options = isset($field['js']) ? " data-options='" . json_encode($field['js']) . "'" : "";
 
-			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$value}{$size}{$format} />";
+			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$value}{$size}{$format}{$options} />";
 
 			return $html;
 		}
