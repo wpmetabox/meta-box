@@ -9,12 +9,22 @@ function rwmb_update_date_picker()
 	$( '.rwmb-date' ).each( function()
 	{
 		var $this = $( this ),
-			format = $this.attr( 'rel' );
+			picker,
+			format = $this.attr( 'rel' ),
+			custom = $this.attr( 'data-options' );
 
-		$this.removeClass('hasDatepicker').attr('id', '').datepicker( {
+		picker = $this.removeClass('hasDatepicker').attr('id', '').datepicker( {
 			showButtonPanel: true,
 			dateFormat:	     format
 		} );
+
+		if ( typeof(custom) != 'undefined' ) {
+			custom = JSON.parse(custom);  
+				for (var key in custom) {
+					picker.datepicker( "option" , key , custom[key] ); 
+			}
+		}
+
 	} );
 }
 
