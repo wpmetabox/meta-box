@@ -9,17 +9,9 @@ function rwmb_update_time_picker()
 	$( '.rwmb-time' ).each( function()
 	{
 		var $this = $( this ),
-			format = $this.attr( 'rel' ),
-			show_amppm = /t/i.test(format),
-			show_second = /:s/.test(format),
-			show_millisec = /:l/.test(format);
+			options = $this.data( 'options' );
 
-		$this.removeClass('hasDatepicker').attr('id', '').timepicker( {
-			showSecond  : show_second,
-			showMillisec: show_millisec,
-			timeFormat  : format,
-			ampm        : show_amppm,
-		} );
+		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datetimepicker( options );
 	} );
 }
 

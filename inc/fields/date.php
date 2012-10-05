@@ -34,14 +34,14 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name   = " name='{$field['field_name']}'";
-			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$value  = " value='{$meta}'";
-			$size   = " size='{$field['size']}'";
-			$format = " rel='{$field['format']}'";
-			$options = isset($field['js']) ? " data-options='" . json_encode($field['js']) . "'" : "";
-
-			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$value}{$size}{$format}{$options} />";
+			$html = sprintf(
+				'<input type="text" class="rwmb-date" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				$field['field_name'],
+				$meta,
+				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
+				$field['size'],
+				esc_attr( json_encode( $field['js_options'] ) )
+			);
 
 			return $html;
 		}
@@ -55,8 +55,18 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['format'] = empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'];
-			$field['size']   = empty( $field['size'] ) ? 10 : $field['size'];
+			$field = wp_parse_args( $field, array(
+				'size'       => 10,
+				'js_options' => array(),
+			) );
+
+			// Deprecate 'format', but keep it for backward compatible
+			// Use 'js_options' instead
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
+				'showButtonPanel' => true,
+			) );
+
 			return $field;
 		}
 	}
