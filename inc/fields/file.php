@@ -89,24 +89,34 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			{
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';
+				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>)</li>';
 
 				foreach ( $meta as $attachment_id )
 				{
 					$attachment = wp_get_attachment_link( $attachment_id );
-					$html .= "<li>{$attachment} (<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$attachment_id}'>{$i18n_delete}</a>)</li>";
+					$html .= sprintf(
+						$li,
+						$attachment,
+						$i18n_del_file,
+						$attachment_id,
+						$i18n_delete
+					);
 				}
 
 				$html .= '</ol>';
 			}
 
 			// Show form upload
-			$html .= "
-				<h4>{$i18n_title}</h4>
-				<div class='new-files'>
-					<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-					<a class='rwmb-add-file' href='#'><strong>{$i18n_more}</strong></a>
-				</div>
-			";
+			$html .= sprintf(
+				'<h4>%s</h4>
+				<div class="new-files">
+					<div class="file-input"><input type="file" name="%s[]" /></div>
+					<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
+				</div>',
+				$i18n_title,
+				$field['id'],
+				$i18n_more
+			);
 
 			return $html;
 		}

@@ -64,7 +64,12 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 			if ( version_compare( $wp_version, '3.2.1' ) < 1 )
 			{
-				return "<textarea class='rwmb-wysiwyg theEditor large-text' {$name} id='{$field['id']}' cols='60' rows='10'>$meta</textarea>";
+				return sprintf(
+					'<textarea class="rwmb-wysiwyg theEditor large-text" name="%s" id="%s" cols="60" rows="4">%s</textarea>',
+					$field['field_name'],
+					$field['id'],
+					$meta
+				);
 			}
 			else
 			{

@@ -17,16 +17,16 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name = " name='{$field['field_name']}'";
-			$id   = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$cols = " cols='{$field['cols']}'";
-			$rows = " rows='{$field['rows']}'";
-			
-			$html .= "<textarea class='rwmb-textarea large-text'{$name}{$id}{$cols}{$rows}>{$meta}</textarea>";
-
-			return $html;
+			return sprintf(
+				'<textarea class="rwmb-textarea large-text" name="%s" id="%s" cols="%s" rows="%s">%s</textarea>',
+				$field['field_name'],
+				$field['id'],
+				$field['cols'],
+				$field['rows'],
+				$meta
+			);
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -36,8 +36,10 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['cols'] = empty( $field['cols'] ) ? 60 : $field['cols'];
-			$field['rows'] = empty( $field['rows'] ) ? 4  : $field['rows'];
+			$field = wp_parse_args( $field, array(
+				'cols' => 60,
+				'rows' => 3,
+			) );
 			return $field;
 		}
 	}

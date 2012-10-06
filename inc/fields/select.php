@@ -30,32 +30,26 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = (array) $meta;
 
-			$name     = " name='{$field['field_name']}'";
-			$id       = " id='{$field['id']}'";
-			$multiple = $field['multiple'] ? " multiple='multiple'" : '' ;
+			$html = sprintf(
+				'<select class="rwmb-select" name="%s" id="%s" multiple="%s"',
+				$field['field_name'],
+				$field['id'],
+				$field['multiple'] ? 'multiple' : ''
+			);
+			$option = '<option value="%s" %s>%s</option>';
 
-			$html = "<select class='rwmb-select'{$name}{$id}{$multiple}>";
-			foreach ( $field['options'] as $key => $value )
+			foreach ( $field['options'] as $value => $label )
 			{
-				$selected = selected( in_array( $key, $meta ), true, false );
-				$html    .= "<option value='{$key}'{$selected}>{$value}</option>";
+				$html .= sprintf(
+					$option,
+					$value,
+					selected( in_array( $value, $meta ), true, false ),
+					$label
+				);
 			}
 			$html .= '</select>';
 
 			return $html;
-		}
-
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field['multiple'] = empty( $field['multiple'] ) ? false : $field['multiple'];
-			return $field;
 		}
 	}
 }

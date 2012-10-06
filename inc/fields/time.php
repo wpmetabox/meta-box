@@ -38,7 +38,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$html = sprintf(
+			return sprintf(
 				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
 				$field['field_name'],
 				$meta,
@@ -46,8 +46,6 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 				$field['size'],
 				esc_attr( json_encode( $field['js_options'] ) )
 			);
-
-			return $html;
 		}
 
 		/**

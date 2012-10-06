@@ -93,6 +93,15 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			{
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
+				$li = '
+					<li id="item_%s">
+						<img src="%s" />
+						<div class="rwmb-image-bar">
+							<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
+							<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
+						</div>
+					</li>
+				';
 
 				foreach ( $meta as $image )
 				{
@@ -100,13 +109,13 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					$src  = $src[0];
 					$link = get_edit_post_link( $image );
 
-					$html .= "<li id='item_{$image}'>
-						<img src='{$src}' />
-						<div class='rwmb-image-bar'>
-							<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
-							<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-						</div>
-					</li>";
+					$html .= sprintf(
+						$li,
+						$image,
+						$src,
+						$i18n_edit, $link, $i18n_edit,
+						$i18n_del_file, $image, $i18n_delete
+					);
 				}
 
 				$html .= '</ul>';
@@ -119,6 +128,17 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
 				<a class='rwmb-add-file' href='#'><strong>{$i18n_more}</strong></a>
 			</div>";
+
+			$html .= sprintf(
+				'<h4>%s</h4>
+				<div class="new-files">
+					<div class="file-input"><input type="file" name="%s[]" /></div>
+					<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
+				</div>',
+				$i18n_title,
+				$field['id'],
+				$i18n_more
+			);
 
 			return $html;
 		}

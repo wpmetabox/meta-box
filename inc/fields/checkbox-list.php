@@ -17,17 +17,19 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			if ( ! is_array( $meta ) )
-				$meta = (array) $meta;
-
+			$meta = (array) $meta;
 			$html = array();
-			$name    = "name='{$field['field_name']}'";
+			$tpl = '<label><input type="checkbox" class="rwmb-checkbox-list" name="%s" value="%s" %s /> %s</label>';
 
-			foreach ( $field['options'] as $key => $value )
+			foreach ( $field['options'] as $value => $label )
 			{
-				$val     = " value='{$key}'";
-				$checked = checked( in_array( $key, $meta ), true, false );
-				$html[]  = "<label><input type='checkbox' class='rwmb-checkbox-list'{$name}{$val}{$checked} /> {$value}</label>";
+				$html[] = sprintf(
+					$tpl,
+					$field['field_name'],
+					$value,
+					checked( in_array( $value, $meta ), 1, false ),
+					$label
+				);
 			}
 			return implode( '<br />', $html );
 		}
@@ -42,7 +44,6 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['multiple']   = true;
-			$field['std']        = empty( $field['std'] ) ? array() : $field['std'];
 			$field['field_name'] = "{$field['id']}[]";
 			return $field;
 		}

@@ -120,16 +120,20 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$src  = $src[0];
 			$link = get_edit_post_link( $img_id );
 
-			$html = <<<HTML
-<li id='item_{$img_id}'>
-	<img src='{$src}' />
-	<div class='rwmb-image-bar'>
-		<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
-		<a title='{$i18n_del_file}' class='rwmb-delete-file' href='#' rel='{$img_id}'>{$i18n_delete}</a>
-	</div>
-</li>
-HTML;
-			return $html;
+			return sprintf(
+				'<li id="item_%s">
+					<img src="%s" />
+					<div class="rwmb-image-bar">
+						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
+						<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
+					</div>
+				</li>',
+				$img_id,
+				$src,
+				$i18n_edit, $link, $i18n_edit,
+				$i18n_del_file, $img_id, $i18n_delete
+			);
+
 		}
 
 		/**

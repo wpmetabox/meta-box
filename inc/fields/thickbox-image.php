@@ -49,15 +49,15 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
 
-				// Change $meta order using the posts 'menu_order'
-				// $meta_menu_order = array();
-				// foreach ( $meta as $post_id )
-				// {
-					// $post_meta = get_post( $post_id );
-					// $meta_menu_order[$post_meta->menu_order] = $post_id;
-				// }
-				// ksort( $meta_menu_order );
-				// $meta = $meta_menu_order;
+				$li = '
+					<li id="item_%s">
+						<img src="%s" />
+						<div class="rwmb-image-bar">
+							<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
+							<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
+						</div>
+					</li>
+				';
 
 				foreach ( $meta as $image )
 				{
@@ -65,13 +65,13 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 					$src  = $src[0];
 					$link = get_edit_post_link( $image );
 
-					$html .= "<li id='item_{$image}'>
-						<img src='{$src}' />
-						<div class='rwmb-image-bar'>
-							<a title='{$i18n_edit}' class='rwmb-edit-file' href='{$link}' target='_blank'>{$i18n_edit}</a> |
-							<a title='{$i18n_delete}' class='rwmb-delete-file' href='#' rel='{$image}'>{$i18n_delete}</a>
-						</div>
-					</li>";
+					$html .= sprintf(
+						$li,
+						$image,
+						$src,
+						$i18n_edit, $link, $i18n_edit,
+						$i18n_delete, $image, $i18n_delete
+					);
 				}
 
 				$html .= '</ul>';
