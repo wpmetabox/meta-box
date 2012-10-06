@@ -54,7 +54,7 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size'       => 10,
+				'size'       => 30,
 				'js_options' => array(),
 			) );
 

@@ -122,13 +122,6 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			}
 
 			// Show form upload
-			$html .= "
-			<h4>{$i18n_title}</h4>
-			<div class='new-files'>
-				<div class='file-input'><input type='file' name='{$field['id']}[]' /></div>
-				<a class='rwmb-add-file' href='#'><strong>{$i18n_more}</strong></a>
-			</div>";
-
 			$html .= sprintf(
 				'<h4>%s</h4>
 				<div class="new-files">

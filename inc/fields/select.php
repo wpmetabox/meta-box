@@ -31,10 +31,10 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 				$meta = (array) $meta;
 
 			$html = sprintf(
-				'<select class="rwmb-select" name="%s" id="%s" multiple="%s"',
+				'<select class="rwmb-select" name="%s" id="%s"%s>',
 				$field['field_name'],
 				$field['id'],
-				$field['multiple'] ? 'multiple' : ''
+				$field['multiple'] ? ' multiple="multiple"' : ''
 			);
 			$option = '<option value="%s" %s>%s</option>';
 

@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Password_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size' => 10,
+				'size' => 30,
 			) );
 
 			return $field;

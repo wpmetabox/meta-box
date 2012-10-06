@@ -29,11 +29,12 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="8" />
+				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="%s" />
 				<div class="rwmb-color-picker"></div>',
 				$field['field_name'],
 				empty( $field['clone'] ) ? $field['id'] : '',
-				$meta
+				$meta,
+				$field['size']
 			);
 		}
 
@@ -50,6 +51,22 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		static function value( $new, $old, $post_id, $field )
 		{
 			return '#' === $new ? '' : $new;
+		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = wp_parse_args( $field, array(
+				'size' => 7,
+			) );
+
+			return $field;
 		}
 	}
 }
