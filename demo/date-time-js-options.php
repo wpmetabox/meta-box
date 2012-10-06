@@ -18,11 +18,11 @@ function YOUR_PREFIX_register_meta_boxes()
 
 				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
 				'js_options' => array(
-					'appendText'       => '(yyyy-mm-dd)',
-					'autoSize'         => true,
-					'buttonText'       => 'Select Date',
-					'dateFormat'       => 'yy-mm-dd',
-					'numberOfMonths'   => 2,
+					'appendText'      => '(yyyy-mm-dd)',
+					'autoSize'        => true,
+					'buttonText'      => 'Select Date',
+					'dateFormat'      => 'yy-mm-dd',
+					'numberOfMonths'  => 2,
 					'showButtonPanel' => true,
 				),
 			),
