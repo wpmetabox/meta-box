@@ -270,16 +270,20 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
 				// Display label and input in DIV and allow user-defined classes to be appended
-				$class = 'rwmb-field';
-				if ( isset( $field['required'] ) && $field['required'] )
-					$class .= ' required';
-				if ( isset( $field['class'] ) )
-					$class = $this->add_cssclass( $field['class'], $class );
-
-				// Hide the div if field has 'hidden' type
+				$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
 				if ( 'hidden' === $field['type'] )
-					$class = $this->add_cssclass( 'hidden', $class );
-				echo "<div class='{$class}'{$group}>{$html}</div>";
+					$classes[] = 'hidden';
+				if ( !empty( $field['required'] ) )
+					$classes[] = 'required';
+				if ( !empty( $field['class'] ) )
+					$classes[] = $field['class'];
+
+				printf(
+					'<div class="%s"%s>%s</div>',
+					implode( ' ', $classes ),
+					$group,
+					$html
+				);
 			}
 
 			// Include validation settings for this meta-box
@@ -328,22 +332,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			$class = 'rwmb-label';
-
-			if ( ! empty( $field['class'] ) )
-				$class = self::add_cssclass( $field['class'], $class );
-
 			if ( empty( $field['name'] ) )
 				return '<div class="rwmb-input">';
 
-			$html = <<<HTML
-<div class="{$class}">
-	<label for="{$field['id']}">{$field['name']}</label>
-</div>
-<div class="rwmb-input">
-HTML;
-
-			return $html;
+			return sprintf(
+				'<div class="rwmb-label">
+					<label for="%s">%s</label>
+				</div>
+				<div class="rwmb-input">',
+				$field['id'],
+				$field['name']
+			);
 		}
 
 		/**
@@ -383,8 +382,6 @@ HTML;
 		 */
 		static function add_delete_clone_button( $html, $field, $meta_data )
 		{
-			$id = $field['id'];
-
 			$button = '<a href="#" class="rwmb-button button-secondary remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
 
 			return "{$html}{$button}";
@@ -657,24 +654,6 @@ HTML;
 				}
 			}
 			return $saved;
-		}
-
-		/**
-		 * Adds a css class
-		 * Mainly a copy of the core admin menu function
-		 * As the core function is only meant to be used by core internally,
-		 * We copy it here - in case core changes functionality or drops the function.
-		 *
-		 * @param string $add
-		 * @param string $class | Class name - Default: empty
-		 *
-		 * @return string $class
-		 */
-		static function add_cssclass( $add, $class = '' )
-		{
-			$class .= empty( $class ) ? $add : " {$add}";
-
-			return $class;
 		}
 
 		/**

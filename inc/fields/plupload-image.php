@@ -79,7 +79,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		{
 			// Enqueue same scripts and styles as for file field
 			parent::admin_enqueue_scripts();
-			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL . 'plupload-image.css', array(), RWMB_VER );
+			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL . 'plupload-image.css', array( 'wp-admin' ), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL . 'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array( 'url' => RWMB_URL ) );
 			wp_localize_script(
@@ -164,13 +164,13 @@ HTML;
 			$html .= "<div id='{$img_prefix}-container'>";
 
 			// Check for max_file_uploads
-			$class = 'rwmb-drag-drop hide-if-no-js';
+			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js' );
 			if ( ! empty( $field['max_file_uploads'] ) )
 			{
 				$max_file_uploads = (int) $field['max_file_uploads'];
 				$html .= "<input class='max_file_uploads' type='hidden' value='{$max_file_uploads}' />";
 				if ( count( $meta ) >= $max_file_uploads )
-					$class = RW_Meta_Box::add_cssclass( 'hidden', $class );
+					$classes[] = 'hidden';
 			}
 
 			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
@@ -182,16 +182,23 @@ HTML;
 			$html .= '</ul>';
 
 			// Show form upload
-			$html .= "
-				<h4>{$i18n_title}</h4>
-				<div id='{$img_prefix}-dragdrop' class='{$class}'>
-					<div class = 'rwmb-drag-drop-inside'>
-						<p>{$i18n_drop}</p>
-						<p>{$i18n_or}</p>
-						<p><input id='{$img_prefix}-browse-button' type='button' value='{$i18n_select}' class='button' /></p>
+			$html .= sprintf(
+				'<h4>%s</h4>
+				<div id="%s-dragdrop" class="%s">
+					<div class = "drag-drop-inside">
+						<p class="drag-drop-info">%s</p>
+						<p>%s</p>
+						<p class="drag-drop-buttons"><input id="%s-browse-button" type="button" value="%s" class="button" /></p>
 					</div>
-				</div>
-			";
+				</div>',
+				$i18n_title,
+				$img_prefix,
+				implode( ' ', $classes ),
+				$i18n_drop,
+				$i18n_or,
+				$img_prefix,
+				$i18n_select
+			);
 
 			$html .= '</div>';
 
