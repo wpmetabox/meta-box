@@ -209,32 +209,32 @@ $meta_boxes[] = array(
 		),
 		// WYSIWYG/RICH TEXT EDITOR
 		array(
-			'name' => 'WYSIWYG',
+			'name' => 'WYSIWYG / Rich Text Editor',
 			'id'   => "{$prefix}wysiwyg",
 			'type' => 'wysiwyg',
 			'std'  => 'WYSIWYG default value',
 		),
 		// FILE UPLOAD
 		array(
-			'name' => 'File',
+			'name' => 'File Upload',
 			'id'   => "{$prefix}file",
 			'type' => 'file',
 		),
 		// IMAGE UPLOAD
 		array(
-			'name' => 'Image',
+			'name' => 'Image Upload',
 			'id'   => "{$prefix}image",
 			'type' => 'image',
 		),
 		// THICKBOX IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name' => 'Thichbox',
+			'name' => 'Thichbox Image Upload',
 			'id'   => "{$prefix}thickbox",
 			'type' => 'thickbox_image',
 		),
 		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name'             => 'Plupload',
+			'name'             => 'Plupload Image Upload',
 			'id'               => "{$prefix}plupload",
 			'type'             => 'plupload_image',
 			'max_file_uploads' => 4,
