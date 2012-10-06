@@ -32,58 +32,17 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			global $wpdb;
-
-			$i18n_msg    = _x( 'Uploaded files', 'image upload', 'rwmb' );
-			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
-			$i18n_upload = _x( 'Upload image', 'image upload', 'rwmb' );
+			$i18n_title = _x( 'Upload images', 'image upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
 			// Uploaded images
-			if ( ! empty( $meta ) )
-			{
-				$html .= "<h4>{$i18n_msg}</h4>";
-				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-
-				$li = '
-					<li id="item_%s">
-						<img src="%s" />
-						<div class="rwmb-image-bar">
-							<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-							<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
-						</div>
-					</li>
-				';
-
-				foreach ( $meta as $image )
-				{
-					$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src  = $src[0];
-					$link = get_edit_post_link( $image );
-
-					$html .= sprintf(
-						$li,
-						$image,
-						$src,
-						$i18n_edit, $link, $i18n_edit,
-						$i18n_delete, $image, $i18n_delete
-					);
-				}
-
-				$html .= '</ul>';
-			}
-			else
-			{
-				// Place holder for images
-				$html .= "<ul class='rwmb-images rwmb-uploaded'></ul>";
-			}
+			$html .= self::get_uploaded_images( $meta );
 
 			// Show form upload
-			$html .= "<a href='#' class='button-secondary rwmb-thickbox-upload' rel='{$field['id']}'>{$i18n_upload}</a>";
+			$html .= "<a href='#' class='button rwmb-thickbox-upload' rel='{$field['id']}'>{$i18n_title}</a>";
 
 			return $html;
 		}

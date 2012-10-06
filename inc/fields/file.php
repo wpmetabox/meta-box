@@ -75,8 +75,6 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_msg      = _x( 'Uploaded files', 'file upload', 'rwmb' );
-			$i18n_del_file = _x( 'Delete this file', 'file upload', 'rwmb' );
 			$i18n_delete   = _x( 'Delete', 'file upload', 'rwmb' );
 			$i18n_title    = _x( 'Upload files', 'file upload', 'rwmb' );
 			$i18n_more     = _x( '+ Add new file', 'file upload', 'rwmb' );
@@ -87,7 +85,6 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			// Uploaded files
 			if ( ! empty( $meta ) )
 			{
-				$html .= "<h4>{$i18n_msg}</h4>";
 				$html .= '<ol class="rwmb-uploaded">';
 				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>)</li>';
 
@@ -97,7 +94,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 					$html .= sprintf(
 						$li,
 						$attachment,
-						$i18n_del_file,
+						$i18n_delete,
 						$attachment_id,
 						$i18n_delete
 					);

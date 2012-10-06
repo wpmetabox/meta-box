@@ -104,39 +104,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		}
 
 		/**
-		 * Get image html
-		 *
-		 * @param int $img_id
-		 *
-		 * @return string
-		 */
-		static function img_html( $img_id )
-		{
-			$i18n_del_file = _x( 'Delete this file', 'image upload', 'rwmb' );
-			$i18n_delete   = _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit     = _x( 'Edit', 'image upload', 'rwmb' );
-
-			$src  = wp_get_attachment_image_src( $img_id, 'thumbnail' );
-			$src  = $src[0];
-			$link = get_edit_post_link( $img_id );
-
-			return sprintf(
-				'<li id="item_%s">
-					<img src="%s" />
-					<div class="rwmb-image-bar">
-						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-						<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
-					</div>
-				</li>',
-				$img_id,
-				$src,
-				$i18n_edit, $link, $i18n_edit,
-				$i18n_del_file, $img_id, $i18n_delete
-			);
-
-		}
-
-		/**
 		 * Get field HTML
 		 *
 		 * @param string $html
@@ -149,9 +116,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		{
 			if ( ! is_array( $meta ) )
 				$meta = ( array ) $meta;
-
-			$i18n_msg   = _x( 'Uploaded files', 'image upload', 'rwmb' );
-			$i18n_title = _x( 'Upload files', 'image upload', 'rwmb' );
 
 			// Filter to change the drag & drop box background string
 			$i18n_drop   = apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ) );
@@ -177,25 +141,17 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					$classes[] = 'hidden';
 			}
 
-			$html .= "<h4 class='rwmb-uploaded-title'>{$i18n_msg}</h4>";
-			$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-			foreach ( $meta as $image )
-			{
-				$html .= self::img_html( $image );
-			}
-			$html .= '</ul>';
+			$html .= self::get_uploaded_images( $meta );
 
 			// Show form upload
 			$html .= sprintf(
-				'<h4>%s</h4>
-				<div id="%s-dragdrop" class="%s">
+				'<div id="%s-dragdrop" class="%s">
 					<div class = "drag-drop-inside">
 						<p class="drag-drop-info">%s</p>
 						<p>%s</p>
 						<p class="drag-drop-buttons"><input id="%s-browse-button" type="button" value="%s" class="button" /></p>
 					</div>
 				</div>',
-				$i18n_title,
 				$img_prefix,
 				implode( ' ', $classes ),
 				$i18n_drop,

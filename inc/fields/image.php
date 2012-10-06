@@ -75,14 +75,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			global $wpdb;
-
-			$i18n_msg      = _x( 'Uploaded files', 'image upload', 'rwmb' );
-			$i18n_del_file = _x( 'Delete this file', 'image upload', 'rwmb' );
-			$i18n_delete   = _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit     = _x( 'Edit', 'image upload', 'rwmb' );
-			$i18n_title    = _x( 'Upload files', 'image upload', 'rwmb' );
-			$i18n_more     = _x( '+ Add new image', 'image upload', 'rwmb' );
+			$i18n_title = _x( 'Upload images', 'image upload', 'rwmb' );
+			$i18n_more  = _x( '+ Add new image', 'image upload', 'rwmb' );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
@@ -90,36 +84,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			// Uploaded images
 			if ( ! empty( $meta ) )
-			{
-				$html .= "<h4>{$i18n_msg}</h4>";
-				$html .= "<ul class='rwmb-images rwmb-uploaded'>";
-				$li = '
-					<li id="item_%s">
-						<img src="%s" />
-						<div class="rwmb-image-bar">
-							<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-							<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
-						</div>
-					</li>
-				';
-
-				foreach ( $meta as $image )
-				{
-					$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
-					$src  = $src[0];
-					$link = get_edit_post_link( $image );
-
-					$html .= sprintf(
-						$li,
-						$image,
-						$src,
-						$i18n_edit, $link, $i18n_edit,
-						$i18n_del_file, $image, $i18n_delete
-					);
-				}
-
-				$html .= '</ul>';
-			}
+				$html .= self::get_uploaded_images( $meta );
 
 			// Show form upload
 			$html .= sprintf(
@@ -132,6 +97,49 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				$field['id'],
 				$i18n_more
 			);
+
+			return $html;
+		}
+
+		/**
+		 * Get HTML markup for uploaded images
+		 *
+		 * @param array $images
+		 *
+		 * @return string
+		 */
+		static function get_uploaded_images( $images )
+		{
+			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
+			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
+
+			$html = '<ul class="rwmb-images rwmb-uploaded">';
+
+			$li = '
+				<li id="item_%s">
+					<img src="%s" />
+					<div class="rwmb-image-bar">
+						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
+						<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
+					</div>
+				</li>
+			';
+			foreach ( $images as $image )
+			{
+				$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
+				$src  = $src[0];
+				$link = get_edit_post_link( $image );
+
+				$html .= sprintf(
+					$li,
+					$image,
+					$src,
+					$i18n_edit, $link, $i18n_edit,
+					$i18n_delete, $image, $i18n_delete
+				);
+			}
+
+			$html .= '</ul>';
 
 			return $html;
 		}
