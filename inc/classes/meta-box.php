@@ -56,17 +56,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
 
-			// List of meta box field types
-			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
-
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-			foreach ( $this->types as $type )
+			// Add additional actions for fields
+			foreach ( $this->fields as $field )
 			{
-				$class = self::get_class_name( $type );
+				$class = self::get_class_name( $field );
 
-				// Add additional actions for fields
 				if ( method_exists( $class, 'add_actions' ) )
 					call_user_func( array( $class, 'add_actions' ) );
 			}
@@ -100,11 +97,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$has_clone = false;
 			foreach ( $this->fields as $field )
 			{
-				if ( self::is_cloneable( $field ) )
+				if ( $field['clone'] )
 					$has_clone = true;
 
 				// Enqueue scripts and styles for fields
-				$class = self::get_class_name( $field['type'] );
+				$class = self::get_class_name( $field );
 				if ( method_exists( $class, 'admin_enqueue_scripts' ) )
 					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
 			}
@@ -193,7 +190,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Separate code for clonable and non-cloneable fields to make easy to maintain
 
 				// Cloneable fields
-				if ( self::is_cloneable( $field ) )
+				if ( $field['clone'] )
 				{
 					if ( isset( $field['clone-group'] ) )
 						$group = " clone-group='{$field['clone-group']}'";
@@ -359,7 +356,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$id = $field['id'];
 
 			$button = '';
-			if ( self::is_cloneable( $field ) )
+			if ( $field['clone'] )
 				$button = '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
 
 			$desc = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
@@ -547,13 +544,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		/**
 		 * Get field class name
 		 *
-		 * @param string $type Field type
+		 * @param array $field Field array
 		 *
 		 * @return bool|string Field class name OR false on failure
 		 */
-		static function get_class_name( $type )
+		static function get_class_name( $field )
 		{
-			$type  = ucwords( $type );
+			$type  = ucwords( $field['type'] );
 			$class = "RWMB_{$type}_Field";
 
 			if ( class_exists( $class ) )
@@ -578,7 +575,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Call:     field class method
 			// Fallback: RW_Meta_Box method
-			$class = self::get_class_name( $field['type'] );
+			$class = self::get_class_name( $field );
 			if ( method_exists( $class, $method_name ) )
 			{
 				$value = call_user_func_array( array( $class, $method_name ), $args );
@@ -606,7 +603,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Call:     field class method
 			// Fallback: RW_Meta_Box method
-			$class = self::get_class_name( $field['type'] );
+			$class = self::get_class_name( $field );
 			if ( method_exists( $class, $method_name ) )
 			{
 				call_user_func_array( array( $class, $method_name ), $args );
@@ -654,18 +651,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				}
 			}
 			return $saved;
-		}
-
-		/**
-		 * Helper function to check for multi/clone field IDs
-		 *
-		 * @param  array $field
-		 *
-		 * @return bool False if no cloneable
-		 */
-		static function is_cloneable( $field )
-		{
-			return $field['clone'];
 		}
 	}
 }
