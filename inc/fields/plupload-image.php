@@ -141,7 +141,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					$classes[] = 'hidden';
 			}
 
-			$html .= self::get_uploaded_images( $meta );
+			$html .= self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= sprintf(

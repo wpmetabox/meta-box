@@ -75,18 +75,17 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_delete   = _x( 'Delete', 'file upload', 'rwmb' );
-			$i18n_title    = _x( 'Upload files', 'file upload', 'rwmb' );
-			$i18n_more     = _x( '+ Add new file', 'file upload', 'rwmb' );
+			$i18n_delete = _x( 'Delete', 'file upload', 'rwmb' );
+			$i18n_title  = _x( 'Upload files', 'file upload', 'rwmb' );
+			$i18n_more   = _x( '+ Add new file', 'file upload', 'rwmb' );
 
-			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
-			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
+			$html = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 
 			// Uploaded files
 			if ( ! empty( $meta ) )
 			{
 				$html .= '<ol class="rwmb-uploaded">';
-				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>)</li>';
+				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s">%s</a>)</li>';
 
 				foreach ( $meta as $attachment_id )
 				{
@@ -95,6 +94,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 						$li,
 						$attachment,
 						$i18n_delete,
+						$field['id'],
 						$attachment_id,
 						$i18n_delete
 					);
@@ -119,19 +119,22 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		}
 
 		/**
-		 * Save file field
+		 * Get meta values to save
 		 *
 		 * @param mixed $new
 		 * @param mixed $old
 		 * @param int   $post_id
 		 * @param array $field
+		 *
+		 * @return array|mixed
 		 */
-		static function save( $new, $old, $post_id, $field )
+		static function value( $new, $old, $post_id, $field )
 		{
 			$name = $field['id'];
 			if ( empty( $_FILES[ $name ] ) )
-				return;
+				return $new;
 
+			$new = array();
 			$files	= self::fix_file_array( $_FILES[ $name ] );
 
 			foreach ( $files as $file_item )
@@ -157,9 +160,11 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 					wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_name ) );
 
 					// Save file ID in meta field
-					add_post_meta( $post_id, $name, $id, false );
+					$new[] = $id;
 				}
 			}
+
+			return $new;
 		}
 
 		/**

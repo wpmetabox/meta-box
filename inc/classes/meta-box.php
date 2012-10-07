@@ -496,27 +496,23 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		static function normalize( $meta_box )
 		{
 			// Set default values for meta box
-			$meta_box = wp_parse_args(
-				$meta_box, array(
-					'id'       => sanitize_title( $meta_box['title'] ),
-					'context'  => 'normal',
-					'priority' => 'high',
-					'pages'    => array( 'post' )
-				)
-			);
+			$meta_box = wp_parse_args( $meta_box, array(
+				'id'       => sanitize_title( $meta_box['title'] ),
+				'context'  => 'normal',
+				'priority' => 'high',
+				'pages'    => array( 'post' )
+			) );
 
 			// Set default values for fields
 			foreach ( $meta_box['fields'] as &$field )
 			{
-				$field = wp_parse_args(
-					$field, array(
-						'multiple' => false,
-						'clone'    => false,
-						'std'      => '',
-						'desc'     => '',
-						'format'   => '',
-					)
-				);
+				$field = wp_parse_args( $field, array(
+					'multiple' => false,
+					'clone'    => false,
+					'std'      => '',
+					'desc'     => '',
+					'format'   => '',
+				) );
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );

@@ -39,7 +39,7 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
 
 			// Uploaded images
-			$html .= self::get_uploaded_images( $meta );
+			$html .= self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= "<a href='#' class='button rwmb-thickbox-upload' rel='{$field['id']}'>{$i18n_title}</a>";
@@ -60,11 +60,10 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 			if ( ! is_array( $new ) || empty( $new ) )
 				return;
 
-			$name   = $field['id'];
-			$images = (array) get_post_meta( $post_id, $name, false );
+			$name = $field['id'];
 			foreach ( $new as $add_new )
 			{
-				if ( ! in_array( $add_new, $images ) )
+				if ( ! in_array( $add_new, $old ) )
 					add_post_meta( $post_id, $name, $add_new, false );
 			}
 		}

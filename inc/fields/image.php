@@ -84,7 +84,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			// Uploaded images
 			if ( ! empty( $meta ) )
-				$html .= self::get_uploaded_images( $meta );
+				$html .= self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= sprintf(
@@ -105,10 +105,11 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 * Get HTML markup for uploaded images
 		 *
 		 * @param array $images
+		 * @param array $field
 		 *
 		 * @return string
 		 */
-		static function get_uploaded_images( $images )
+		static function get_uploaded_images( $images, $field )
 		{
 			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
 			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
@@ -120,7 +121,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					<img src="%s" />
 					<div class="rwmb-image-bar">
 						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-						<a title="%s" class="rwmb-delete-file" href="#" rel="%s">%s</a>
+						<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s">%s</a>
 					</div>
 				</li>
 			';
@@ -135,7 +136,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					$image,
 					$src,
 					$i18n_edit, $link, $i18n_edit,
-					$i18n_delete, $image, $i18n_delete
+					$i18n_delete, $field['id'], $image, $i18n_delete
 				);
 			}
 
