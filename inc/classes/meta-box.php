@@ -170,7 +170,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$group = "";	// Empty the clone-group field
+				$group = '';	// Empty the clone-group field
 				$type = $field['type'];
 				$id   = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
@@ -187,7 +187,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
 				$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
 
-				// Separate code for clonable and non-cloneable fields to make easy to maintain
+				// Separate code for cloneable and non-cloneable fields to make easy to maintain
 
 				// Cloneable fields
 				if ( $field['clone'] )
@@ -195,34 +195,24 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					if ( isset( $field['clone-group'] ) )
 						$group = " clone-group='{$field['clone-group']}'";
 
-					if ( ! is_array( $field['field_name'] ) )
-						$field['field_name'] = (array) $field['field_name'];
-
 					$meta = (array) $meta;
-
-					foreach ( array_keys( $meta ) as $i )
-						$field['field_name'][$i] = $field['id'] . "[{$i}]";
 
 					$field_html = '';
 
-					$index = 0;
-					foreach ( $meta as $meta_data )
+					foreach ( $meta as $index => $meta_data )
 					{
-						if ( is_array( $field['field_name'] ) )
-						{
-							$subfield = $field;
-							$subfield['field_name'] = $field['field_name'][$index];
-						}
-						else
-							$subfield = $field;
+						$sub_field = $field;
+						$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
+						if ( $field['multiple'] )
+							$sub_field['field_name'] .= '[]';
 
-						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
+						add_filter( "rwmb_{$id}_html", array( $this, 'add_clone_buttons' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
 						$input_html = '<div class="rwmb-clone">';
 
 						// Call separated methods for displaying each type of field
-						$input_html .= self::apply_field_class_filters( $subfield, 'html', '', $meta_data );
+						$input_html .= self::apply_field_class_filters( $sub_field, 'html', '', $meta_data );
 
 						// Apply filter to field HTML
 						// 1st filter applies to all fields with the same type
@@ -233,7 +223,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						$input_html .= '</div>';
 
 						$field_html .= $input_html;
-						$index++;
 					}
 				}
 				// Non-cloneable fields
@@ -377,9 +366,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return string $html
 		 */
-		static function add_delete_clone_button( $html, $field, $meta_data )
+		static function add_clone_buttons( $html, $field, $meta_data )
 		{
-			$button = '<a href="#" class="rwmb-button button-secondary remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
+			$button = '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
 
 			return "{$html}{$button}";
 		}
@@ -535,7 +524,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Allow field class to manually change field_name
 				// @see taxonomy.php for example
 				if ( ! isset( $field['field_name'] ) )
-					$field['field_name'] = $field['id'] . ( $field['multiple'] || $field['clone'] ? '[0]' : '' );
+					$field['field_name'] = $field['id'];
 			}
 
 			return $meta_box;

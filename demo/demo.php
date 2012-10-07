@@ -52,11 +52,11 @@ $meta_boxes[] = array(
 			'id'    => "{$prefix}text",
 			// Field description (optional)
 			'desc'  => 'Text description',
-			// CLONES: Add to make the field cloneable (i.e. have multiple value)
-			'clone' => true,
 			'type'  => 'text',
 			// Default value (optional)
 			'std'   => 'Default text value',
+			// CLONES: Add to make the field cloneable (i.e. have multiple value)
+			'clone' => true,
 		),
 		// CHECKBOX
 		array(
@@ -64,7 +64,7 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}checkbox",
 			'type' => 'checkbox',
 			// Value can be 0 or 1
-			'std' => 1,
+			'std'  => 1,
 		),
 		// RADIO BUTTONS
 		array(
