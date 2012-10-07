@@ -55,8 +55,8 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			check_admin_referer( "rwmb-delete-file_{$field_id}" );
 
-			$ok = delete_post_meta( $post_id, $field_id, $attachment_id );
-			$ok = $ok && wp_delete_attachment( $attachment_id );
+			delete_post_meta( $post_id, $field_id, $attachment_id );
+			$ok = wp_delete_attachment( $attachment_id );
 
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
