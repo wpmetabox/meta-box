@@ -465,15 +465,22 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			$name = $field['id'];
 
-			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
+			{
+				delete_post_meta( $post_id, $name );
 				return;
+			}
 
 			if ( $field['multiple'] )
 			{
-				foreach ( $new as $add_new )
+				foreach ( $new as $new_value )
 				{
-					add_post_meta( $post_id, $name, $add_new, false );
+					add_post_meta( $post_id, $name, $new_value, false );
+				}
+				foreach ( $old as $old_value )
+				{
+					if ( !in_array( $old_value, $new ) )
+						delete_post_meta( $post_id, $name, $old_value );
 				}
 			}
 			else
