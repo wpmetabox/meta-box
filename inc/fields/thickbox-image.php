@@ -48,24 +48,20 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		}
 
 		/**
-		 * Save file field
+		 * Get field value
+		 * It's the combination of new (uploaded) images and saved images
 		 *
-		 * @param mixed $new
-		 * @param mixed $old
+		 * @param array $new
+		 * @param array $old
 		 * @param int   $post_id
 		 * @param array $field
+		 *
+		 * @return array|mixed
 		 */
-		static function save( $new, $old, $post_id, $field )
+		static function value( $new, $old, $post_id, $field )
 		{
-			if ( ! is_array( $new ) || empty( $new ) )
-				return;
-
-			$name = $field['id'];
-			foreach ( $new as $add_new )
-			{
-				if ( ! in_array( $add_new, $old ) )
-					add_post_meta( $post_id, $name, $add_new, false );
-			}
+			$new = (array) $new;
+			return array_unique( array_merge( $old, $new ) );
 		}
 	}
 }
