@@ -60,7 +60,6 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			global $wp_version;
-			$name = "name='{$field['field_name']}'";
 
 			if ( version_compare( $wp_version, '3.2.1' ) < 1 )
 			{
@@ -73,15 +72,38 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 			}
 			else
 			{
-				// Apply filter to wp_editor() settings
-				$editor_settings = apply_filters( 'rwmb_wysiwyg_settings', array( 'editor_class' => 'rwmb-wysiwyg' ), 10, 1 );
 				// Using output buffering because wp_editor() echos directly
 				ob_start();
 				// Use new wp_editor() since WP 3.3
-				wp_editor( $meta, $field['id'], $editor_settings );
+				wp_editor( $meta, $field['id'], $field['options'] );
 
 				return ob_get_clean();
 			}
+		}
+
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = wp_parse_args( $field, array(
+				'options' => array(),
+			) );
+
+			$field['options'] = wp_parse_args( $field['options'], array(
+				'textarea_name' => $field['id'],
+				'editor_class'  => 'rwmb-wysiwyg',
+				'dfw'           => true,           // Use default WordPress full screen UI
+			) );
+
+			// Keeps the filter to compatible with previous version
+			$field['options'] = apply_filters( 'rwmb_wysiwyg_settings', $field['options'] );
+
+			return $field;
 		}
 	}
 }

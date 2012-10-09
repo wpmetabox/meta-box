@@ -213,6 +213,12 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}wysiwyg",
 			'type' => 'wysiwyg',
 			'std'  => 'WYSIWYG default value',
+
+			// Editor settings, see wp_editor() function: look4wp.com/wp_editor
+			'options' => array(
+				'textarea_rows' => 4,
+				'teeny'         => true,
+			),
 		),
 		// FILE UPLOAD
 		array(
