@@ -287,14 +287,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						else
 						{
 							var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
-							jQuery.each( tempOptions.rules, function( k, v )
-							{
-								rwmb.validationOptions.rules[k] = v;
-							});
-							jQuery.each( tempOptions.messages, function( k, v )
-							{
-								rwmb.validationOptions.messages[k] = v;
-							});
+							jQuery.extend( true, rwmb.validationOptions, tempOptions );
 						};
 					</script>
 				';
