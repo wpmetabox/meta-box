@@ -136,6 +136,15 @@ $meta_boxes[] = array(
 	'title' => 'Advanced Fields',
 
 	'fields' => array(
+		// NUMBER
+		array(
+			'name' => 'Number',
+			'id'   => "{$prefix}number",
+			'type' => 'number',
+
+			'min'  => 0,
+			'step' => 5,
+		),
 		// DATE
 		array(
 			'name' => 'Date picker',
@@ -218,6 +227,7 @@ $meta_boxes[] = array(
 			'options' => array(
 				'textarea_rows' => 4,
 				'teeny'         => true,
+				'media_buttons' => false,
 			),
 		),
 		// FILE UPLOAD

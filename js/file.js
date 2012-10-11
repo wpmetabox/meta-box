@@ -14,7 +14,7 @@ jQuery( document ).ready( function ( $ )
 	$( '.rwmb-uploaded' ).delegate( '.rwmb-delete-file', 'click', function ()
 	{
 		var $this = $( this ),
-			$parent = $this.parent(),
+			$parent = $this.parents( 'li' ),
 			field_id = $this.data( 'field_id' ),
 			data = {
 				action       : 'rwmb_delete_file',

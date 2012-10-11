@@ -468,7 +468,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				foreach ( $new as $new_value )
 				{
-					add_post_meta( $post_id, $name, $new_value, false );
+					if ( !in_array( $new_value, $old ) )
+						add_post_meta( $post_id, $name, $new_value, false );
 				}
 				foreach ( $old as $old_value )
 				{

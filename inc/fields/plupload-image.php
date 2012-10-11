@@ -14,7 +14,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		static function add_actions()
 		{
 			parent::add_actions();
-			add_action( 'wp_ajax_plupload_image_upload', array( __CLASS__, 'handle_upload' ) );
+			add_action( 'wp_ajax_rwmb_plupload_image_upload', array( __CLASS__, 'handle_upload' ) );
 		}
 
 		/**
@@ -33,12 +33,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 			// You can use WP's wp_handle_upload() function:
 			$file       = $_FILES['async-upload'];
-			$file_attr  = wp_handle_upload(
-				$file, array(
-					'test_form' => true,
-					'action'    => 'plupload_image_upload',
-				)
-			);
+			$file_attr  = wp_handle_upload( $file, array( 'test_form' => false ) );
 			$attachment = array(
 				'guid'           => $file_attr['url'],
 				'post_mime_type' => $file_attr['type'],
@@ -57,14 +52,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				if ( isset( $_REQUEST['field_id'] ) )
 					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
 
-				$response = new WP_Ajax_Response();
-				$response->add(
-					array(
-						'what' => 'rwmb_image_response',
-						'data' => self::img_html( $id ),
-					)
-				);
-				$response->send();
+				RW_Meta_Box::ajax_response( self::img_html( $id, $_REQUEST['field_id'] ), 'success' );
 			}
 
 			exit;
@@ -163,6 +151,23 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$html .= '</div>';
 
 			return $html;
+		}
+
+		/**
+		 * Get field value
+		 * It's the combination of new (uploaded) images and saved images
+		 *
+		 * @param array $new
+		 * @param array $old
+		 * @param int   $post_id
+		 * @param array $field
+		 *
+		 * @return array|mixed
+		 */
+		static function value( $new, $old, $post_id, $field )
+		{
+			$new = (array) $new;
+			return array_unique( array_merge( $old, $new ) );
 		}
 	}
 }

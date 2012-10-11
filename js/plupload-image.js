@@ -51,7 +51,7 @@ jQuery( document ).ready( function($)
 
 		// Add field_id to the ajax call
 		rwmb_plupload_init['multipart_params'] = {
-			action  : 'plupload_image_upload',
+			action  : 'rwmb_plupload_image_upload',
 			field_id: prefix,
 			_wpnonce: nonce,
 			post_id : $( '#post_ID' ).val()

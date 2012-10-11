@@ -21,8 +21,6 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );
 
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
-			wp_register_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse' ), '1.8.17', true );
 			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
 			wp_enqueue_script( 'rwmb-time', RWMB_JS_URL.'time.js', array( 'jquery-ui-timepicker' ), RWMB_VER, true );
 		}

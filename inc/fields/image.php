@@ -111,11 +111,30 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 */
 		static function get_uploaded_images( $images, $field )
 		{
-			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
-
 			$html = '<ul class="rwmb-images rwmb-uploaded">';
 
+			foreach ( $images as $image )
+			{
+				$html .= self::img_html( $image, $field['id'] );
+			}
+
+			$html .= '</ul>';
+
+			return $html;
+		}
+
+		/**
+		 * Get HTML markup for ONE uploaded image
+		 *
+		 * @param int $image Image ID
+		 * @param int $field_id Field ID, used to delete action
+		 *
+		 * @return string
+		 */
+		static function img_html( $image, $field_id )
+		{
+			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
+			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
 			$li = '
 				<li id="item_%s">
 					<img src="%s" />
@@ -125,24 +144,18 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					</div>
 				</li>
 			';
-			foreach ( $images as $image )
-			{
-				$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
-				$src  = $src[0];
-				$link = get_edit_post_link( $image );
 
-				$html .= sprintf(
-					$li,
-					$image,
-					$src,
-					$i18n_edit, $link, $i18n_edit,
-					$i18n_delete, $field['id'], $image, $i18n_delete
-				);
-			}
+			$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
+			$src  = $src[0];
+			$link = get_edit_post_link( $image );
 
-			$html .= '</ul>';
-
-			return $html;
+			return sprintf(
+				$li,
+				$image,
+				$src,
+				$i18n_edit, $link, $i18n_edit,
+				$i18n_delete, $field_id, $image, $i18n_delete
+			);
 		}
 
 		/**

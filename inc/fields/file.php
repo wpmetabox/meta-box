@@ -164,7 +164,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 				}
 			}
 
-			return $new;
+			return array_unique( array_merge( $old, $new ) );
 		}
 
 		/**
