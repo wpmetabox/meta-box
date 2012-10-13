@@ -35,6 +35,53 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		}
 
 		/**
+		 * Get meta value
+		 * If field is cloneable, value is saved as a single entry in DB
+		 * Otherwise value is saved as multiple entries (for backward compatibility)
+		 *
+		 * @see "save" method for better understanding
+		 *
+		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
+		 *
+		 * @param $meta
+		 * @param $post_id
+		 * @param $saved
+		 * @param $field
+		 *
+		 * @return array
+		 */
+		static function meta( $meta, $post_id, $saved, $field )
+		{
+			return (array) get_post_meta( $post_id, $field['id'], $field['clone'] );
+		}
+
+		/**
+		 * Save meta value
+		 * If field is cloneable, value is saved as a single entry in DB
+		 * Otherwise value is saved as multiple entries (for backward compatibility)
+		 *
+		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
+		 *
+		 * @param $new
+		 * @param $old
+		 * @param $post_id
+		 * @param $field
+		 */
+		static function save( $new, $old, $post_id, $field )
+		{
+			if ( !$field['clone'] )
+			{
+				RW_Meta_Box::save( $new, $old, $post_id, $field );
+				return;
+			}
+
+			if ( empty( $new ) )
+				delete_post_meta( $post_id, $field['id'] );
+			else
+				update_post_meta( $post_id, $field['id'], $new );
+		}
+
+		/**
 		 * Normalize parameters for field
 		 *
 		 * @param array $field
@@ -44,7 +91,9 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['multiple']   = true;
-			$field['field_name'] = "{$field['id']}[]";
+			$field['field_name'] = $field['id'];
+			if ( !$field['clone'] )
+				$field['field_name'] .= '[]';
 			return $field;
 		}
 	}
