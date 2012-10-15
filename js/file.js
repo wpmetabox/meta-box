@@ -1,7 +1,7 @@
-jQuery( document ).ready( function ( $ )
+jQuery( document ).ready( function( $ )
 {
 	// Add more file
-	$( '.rwmb-add-file' ).click( function ()
+	$( '.rwmb-add-file' ).click( function()
 	{
 		var $this = $( this ), $first = $this.parent().find( '.file-input:first' );
 
@@ -11,7 +11,7 @@ jQuery( document ).ready( function ( $ )
 	} );
 
 	// Delete file via Ajax
-	$( '.rwmb-uploaded' ).delegate( '.rwmb-delete-file', 'click', function ()
+	$( '.rwmb-uploaded' ).delegate( '.rwmb-delete-file', 'click', function()
 	{
 		var $this = $( this ),
 			$parent = $this.parents( 'li' ),
@@ -24,7 +24,7 @@ jQuery( document ).ready( function ( $ )
 				attachment_id: $this.data( 'attachment_id' )
 			};
 
-		$.post( ajaxurl, data, function ( r )
+		$.post( ajaxurl, data, function( r )
 		{
 			var res = wpAjax.parseAjaxResponse( r, 'ajax-response' );
 

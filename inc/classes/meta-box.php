@@ -403,7 +403,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function save_post( $post_id )
 		{
-			global $post_type;
+			// Get proper post type. @link http://www.deluxeblogtips.com/forums/viewtopic.php?id=161
+			$post_type = null;
+			$post = get_post( $post_id );
+
+			if ( $post )
+				$post_type = $post->post_type;
+			elseif ( isset( $_POST['post_type'] ) && post_type_exists( $_POST['post_type'] ) )
+				$post_type = $_POST['post_type'];
+
 			$post_type_object = get_post_type_object( $post_type );
 
 			// Check whether:

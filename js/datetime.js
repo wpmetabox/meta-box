@@ -15,7 +15,7 @@ function rwmb_update_datetime_picker()
 	} );
 }
 
-jQuery( document ).ready( function($)
+jQuery( document ).ready( function( $ )
 {
 	rwmb_update_datetime_picker();
 } );

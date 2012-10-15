@@ -11,14 +11,14 @@ function rwmb_update_color_picker()
 			$input = $this.siblings( 'input.rwmb-color' );
 
 		// Make sure the value is displayed
-		if ( ! $input.val() )
+		if ( !$input.val() )
 			$input.val( '#' );
 
 		$this.farbtastic( $input );
 	} );
 }
 
-jQuery( document ).ready( function($)
+jQuery( document ).ready( function( $ )
 {
 	$( '.rwmb-input' ).delegate( '.rwmb-color', 'focus', function()
 	{

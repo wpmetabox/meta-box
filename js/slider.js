@@ -1,4 +1,4 @@
-jQuery( document ).ready( function ( $ )
+jQuery( document ).ready( function( $ )
 {
 	var
 		id = null
@@ -9,7 +9,7 @@ jQuery( document ).ready( function ( $ )
 		, value = null
 		, update = null
 		;
-	$( '.rwmb-slider' ).each( function ( i, val )
+	$( '.rwmb-slider' ).each( function( i, val )
 	{
 		id = $( val ).attr( 'id' );
 		el = $( '#' + id );
@@ -40,7 +40,7 @@ jQuery( document ).ready( function ( $ )
 		el.slider(
 			{
 				value: value,
-				slide: function ( event, ui )
+				slide: function( event, ui )
 				{
 					$( input ).val( ui.value );
 					$( update ).text( ui.value + ' ' + format );

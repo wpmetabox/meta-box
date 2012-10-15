@@ -8,7 +8,8 @@ jQuery( document ).ready( function( $ )
 			field_id = $this.attr( 'rel' ),
 			backup = window.send_to_editor;
 
-		window.send_to_editor = function( html ) {
+		window.send_to_editor = function( html )
+		{
 			var $img = $( '<div />' ).append( html ).find( 'img' ),
 				url = $img.attr( 'src' ),
 				img_class = $img.attr( 'class' ),
