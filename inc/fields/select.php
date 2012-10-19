@@ -27,9 +27,6 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			if ( ! is_array( $meta ) )
-				$meta = (array) $meta;
-
 			$html = sprintf(
 				'<select class="rwmb-select" name="%s" id="%s"%s>',
 				$field['field_name'],
@@ -71,7 +68,12 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		static function meta( $meta, $post_id, $saved, $field )
 		{
 			$single = $field['clone'] || !$field['multiple'];
-			return (array) get_post_meta( $post_id, $field['id'], $single );
+			$meta = get_post_meta( $post_id, $field['id'], $single );
+			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+
+			$meta = array_map( 'esc_attr', (array) $meta );
+
+			return $meta;
 		}
 
 		/**
