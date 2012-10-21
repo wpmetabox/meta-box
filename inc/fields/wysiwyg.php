@@ -2,24 +2,24 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
+if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 {
 	class RWMB_Wysiwyg_Field
 	{
 		/**
 		 * Enqueue scripts and styles
 		 *
-		 * @return	void
+		 * @return void
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS_URL.'wysiwyg.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', array(), RWMB_VER );
 		}
 
 		/**
 		 * Add field actions
 		 *
-		 * @return	void
+		 * @return void
 		 */
 		static function add_actions()
 		{
@@ -99,7 +99,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 			$field['options'] = wp_parse_args( $field['options'], array(
 				'editor_class' => 'rwmb-wysiwyg',
-				'dfw'          => true,           // Use default WordPress full screen UI
+				'dfw'          => true, // Use default WordPress full screen UI
 			) );
 
 			// Keep the filter to be compatible with previous versions

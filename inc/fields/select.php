@@ -2,18 +2,18 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Select_Field' ) )
+if ( !class_exists( 'RWMB_Select_Field' ) )
 {
 	class RWMB_Select_Field
 	{
 		/**
 		 * Enqueue scripts and styles
 		 *
-		 * @return	void
+		 * @return void
 		 */
-		static function admin_enqueue_scripts( )
+		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL.'select.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
 		}
 
 		/**

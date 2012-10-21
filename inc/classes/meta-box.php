@@ -91,7 +91,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
 				return;
 
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
 
 			// Load clone script conditionally
 			$has_clone = false;
