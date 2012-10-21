@@ -11,11 +11,12 @@ function rwmb_update_date_picker()
 		var $this = $( this ),
 			options = $this.data( 'options' );
 
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datepicker( options );
+		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
+		$this.removeClass( 'hasDatepicker' ).datepicker( options );
 	} );
 }
 
-jQuery( document ).ready( function( $ )
+jQuery( document ).ready( function()
 {
 	rwmb_update_date_picker();
 } );
