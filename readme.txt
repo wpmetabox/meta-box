@@ -59,6 +59,13 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 == Changelog ==
 
+= 4.2.1 =
+* Bug fix: not save wysiwyg field in full screen mode. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=161)
+* Bug fix: default value for select/checkbox_list. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=174)
+* Bug fix: duplicated append test to `date` picker
+* Bug fix: incorrect enqueue styles, issue #166
+* Improvement: initial new field type `map`
+
 = 4.2 =
 * Bug fix: save only last element of `select` field with `multiple` values. [Link](http://wordpress.org/support/topic/plugin-meta-box-multiple-declaration-for-select-fields-no-longer-working?replies=5#post-3254534)
 * Improvement: add `js_options` attribute for `date`, `datetime`, `time` fields to adjust jQuery date/datetime picker options. See `demo/demo.php` for usage
