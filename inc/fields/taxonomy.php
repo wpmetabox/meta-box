@@ -13,8 +13,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
+			wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2-css/select2.css', array(), '3.2' );
+			wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
+			wp_register_script( 'select2',  RWMB_JS_URL . 'select2-js/select2.js', array(), '3.2', true );
+			wp_register_script( 'select_advanced',  RWMB_JS_URL . 'select-advanced.js', array('select2'), RWMB_VER, true );
 			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
-			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'select_advanced', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
 		/**
@@ -26,6 +30,15 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
+			$field = wp_parse_args( $field, array(
+				'js_options' => array(),
+			) );
+
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'allowClear' => true,
+				'width' => 'resolve',
+				'placeholder' => "Select a Value"
+			) );
 			// Default query arguments for get_terms() function
 			$default_args = array(
 				'hide_empty' => false,
@@ -48,7 +61,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			}
 
 			// For select tree: display it as a normal select box (no multiple attribute), but allows to save multiple values
-			if ( 'select_tree' == $field['options']['type'] )
+			if ( 'select_tree' == $field['options']['type'] || ('select_advanced' == $field['options']['type'] && $field['multiple'] == true) )
 				$field['field_name'] = "{$field['id']}[]";
 
 			if ( in_array( $field['options']['type'], array( 'checkbox_tree', 'select_tree' ) ) )
@@ -113,6 +126,27 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$html    .= self::walk_select_tree( $meta, $field, $elements, $field['options']['parent'], '', true );
 			}
 			// Select
+			elseif ( 'select_advanced' === $options['type'] ) {
+				$html = sprintf(
+					'<select class="rwmb-select-advanced" name="%s" id="%s"%s data-options ="%s">',
+					$field['field_name'],
+					$field['id'],
+					$field['multiple'] ? ' multiple="multiple"' : '',
+					esc_attr( json_encode( $field['js_options'] ))
+				);
+				$option = '<option value="%s" %s>%s</option>';
+	
+				foreach ( $terms as $term )
+				{
+					$html .= sprintf(
+						$option,
+						$term->slug,
+						selected( in_array( $term->slug, $meta ), true, false ),
+						$term->name
+					);
+				}
+				$html .= '</select>';
+			}
 			else
 			{
 				$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : '';
