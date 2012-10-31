@@ -21,7 +21,8 @@ jQuery( document ).ready( function( $ )
 				_wpnonce     : $( '#nonce-delete-file_' + field_id ).val(),
 				post_id      : $( '#post_ID' ).val(),
 				field_id     : field_id,
-				attachment_id: $this.data( 'attachment_id' )
+				attachment_id: $this.data( 'attachment_id' ),
+				force_delete : $this.data( 'force_delete' )
 			};
 
 		$.post( ajaxurl, data, function( r )

@@ -25,11 +25,10 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function handle_upload()
 		{
-			check_admin_referer( 'rwmb-upload-images_' . $_REQUEST['field_id'] );
+			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
+			$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
 
-			$post_id = 0;
-			if ( is_numeric( $_REQUEST['post_id'] ) )
-				$post_id = (int) $_REQUEST['post_id'];
+			check_admin_referer( "rwmb-upload-images_{$field_id}" );
 
 			// You can use WP's wp_handle_upload() function:
 			$file       = $_FILES['async-upload'];
@@ -49,10 +48,15 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
 
 				// Save file ID in meta field
-				if ( isset( $_REQUEST['field_id'] ) )
-					add_post_meta( $post_id, $_REQUEST['field_id'], $id, false );
+				add_post_meta( $post_id, $field_id, $id, false );
 
-				RW_Meta_Box::ajax_response( self::img_html( $id, $_REQUEST['field_id'] ), 'success' );
+				// Fake field array. We need ID and force_delete only
+				$field = array(
+					'id'           => $field_id,
+					'force_delete' => isset( $_REQUEST['force_delete'] ) ? intval( $_REQUEST['force_delete'] ) : 0,
+				);
+
+				RW_Meta_Box::ajax_response( self::img_html( $id, $field ), 'success' );
 			}
 
 			exit;
@@ -70,25 +74,23 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL . 'plupload-image.css', array( 'wp-admin' ), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL . 'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array( 'url' => RWMB_URL ) );
-			wp_localize_script(
-				'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
-					'runtimes'            => 'html5,silverlight,flash,html4',
-					'file_data_name'      => 'async-upload',
-					'multiple_queues'     => true,
-					'max_file_size'       => wp_max_upload_size() . 'b',
-					'url'                 => admin_url( 'admin-ajax.php' ),
-					'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
-					'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
-					'filters'             => array(
-						array(
-							'title'      => _x( 'Allowed Image Files', 'image upload', 'rwmb' ),
-							'extensions' => 'jpg,jpeg,gif,png',
-						),
+			wp_localize_script( 'rwmb-plupload-image', 'rwmb_plupload_defaults', array(
+				'runtimes'            => 'html5,silverlight,flash,html4',
+				'file_data_name'      => 'async-upload',
+				'multiple_queues'     => true,
+				'max_file_size'       => wp_max_upload_size() . 'b',
+				'url'                 => admin_url( 'admin-ajax.php' ),
+				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+				'filters'             => array(
+					array(
+						'title'      => _x( 'Allowed Image Files', 'image upload', 'rwmb' ),
+						'extensions' => 'jpg,jpeg,gif,png',
 					),
-					'multipart'        => true,
-					'urlstream_upload' => true,
-				)
-			);
+				),
+				'multipart'        => true,
+				'urlstream_upload' => true,
+			) );
 		}
 
 		/**
@@ -114,7 +116,11 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-upload-images_{$field['id']}", "nonce-upload-images_{$field['id']}", false, false );
-			$html .= "<input type='hidden' class='field-id rwmb-image-prefix' value='{$field['id']}' />";
+			$html .= sprintf(
+				'<input type="hidden" class="field-id rwmb-image-prefix" value="%s" data-force_delete="%s" />',
+				$field['id'],
+				$field['force_delete'] ? 1 : 0
+			);
 
 			// Uploaded images
 			$html .= "<div id='{$img_prefix}-container'>";

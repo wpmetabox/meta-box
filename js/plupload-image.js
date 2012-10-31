@@ -54,7 +54,8 @@ jQuery( document ).ready( function( $ )
 			action  : 'rwmb_plupload_image_upload',
 			field_id: prefix,
 			_wpnonce: nonce,
-			post_id : $( '#post_ID' ).val()
+			post_id : $( '#post_ID' ).val(),
+			force_delete: $( this ).data( 'force_delete' )
 		};
 
 		// Create new uploader

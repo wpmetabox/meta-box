@@ -115,7 +115,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			foreach ( $images as $image )
 			{
-				$html .= self::img_html( $image, $field['id'] );
+				$html .= self::img_html( $image, $field );
 			}
 
 			$html .= '</ul>';
@@ -127,11 +127,11 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 * Get HTML markup for ONE uploaded image
 		 *
 		 * @param int $image Image ID
-		 * @param int $field_id Field ID, used to delete action
+		 * @param int $field
 		 *
 		 * @return string
 		 */
-		static function img_html( $image, $field_id )
+		static function img_html( $image, $field )
 		{
 			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
 			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
@@ -140,7 +140,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					<img src="%s" />
 					<div class="rwmb-image-bar">
 						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-						<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s">%s</a>
+						<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s" data-force_delete="%s">%s</a>
 					</div>
 				</li>
 			';
@@ -154,7 +154,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				$image,
 				$src,
 				$i18n_edit, $link, $i18n_edit,
-				$i18n_delete, $field_id, $image, $i18n_delete
+				$i18n_delete, $field['id'], $image, $field['force_delete'] ? 1 : 0, $i18n_delete
 			);
 		}
 

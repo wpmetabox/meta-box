@@ -52,11 +52,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$post_id       = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 			$field_id      = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
+			$force_delete  = isset( $_POST['force_delete'] ) ? intval( $_POST['force_delete'] ) : 0;
 
 			check_admin_referer( "rwmb-delete-file_{$field_id}" );
 
 			delete_post_meta( $post_id, $field_id, $attachment_id );
-			$ok = wp_delete_attachment( $attachment_id );
+			$ok = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
@@ -85,7 +86,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			if ( ! empty( $meta ) )
 			{
 				$html .= '<ol class="rwmb-uploaded">';
-				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s">%s</a>)</li>';
+				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s" data-force_delete="%s">%s</a>)</li>';
 
 				foreach ( $meta as $attachment_id )
 				{
@@ -96,6 +97,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 						$i18n_delete,
 						$field['id'],
 						$attachment_id,
+						$field['force_delete'] ? 1 : 0,
 						$i18n_delete
 					);
 				}
@@ -199,8 +201,11 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
+			$field = wp_parse_args( $field, array(
+				'std'          => array(),
+				'force_delete' => false,
+			) );
 			$field['multiple'] = true;
-			$field['std'] = empty( $field['std'] ) ? array() : $field['std'];
 			return $field;
 		}
 	}
