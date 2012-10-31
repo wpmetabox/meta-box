@@ -9,16 +9,14 @@ function rwmb_update_date_picker()
 	$( '.rwmb-date' ).each( function()
 	{
 		var $this = $( this ),
-			format = $this.attr( 'rel' );
+			options = $this.data( 'options' );
 
-		$this.removeClass('hasDatepicker').attr('id', '').datepicker( {
-			showButtonPanel: true,
-			dateFormat:	     format
-		} );
+		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
+		$this.removeClass( 'hasDatepicker' ).datepicker( options );
 	} );
 }
 
-jQuery( document ).ready( function($)
+jQuery( document ).ready( function()
 {
 	rwmb_update_date_picker();
 } );

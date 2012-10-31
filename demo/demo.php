@@ -28,13 +28,13 @@ $meta_boxes = array();
 // 1st meta box
 $meta_boxes[] = array(
 	// Meta box id, UNIQUE per meta box. Optional since 4.1.5
-	'id' => 'personal',
+	'id' => 'standard',
 
 	// Meta box title - Will appear at the drag and drop handle bar. Required.
-	'title' => 'Personal Information',
+	'title' => 'Standard Fields',
 
 	// Post types, accept custom post types as well - DEFAULT is array('post'). Optional.
-	'pages' => array( 'post', 'slider' ),
+	'pages' => array( 'post', 'page' ),
 
 	// Where the meta box appear: normal (default), advanced, side. Optional.
 	'context' => 'normal',
@@ -47,114 +47,83 @@ $meta_boxes[] = array(
 		// TEXT
 		array(
 			// Field name - Will be used as label
-			'name' => 'Full name',
+			'name'  => 'Text',
 			// Field ID, i.e. the meta key
-			'id' => $prefix . 'fname',
+			'id'    => "{$prefix}text",
 			// Field description (optional)
-			'desc' => 'Format: First Last',
-			// CLONES: Add to make the field cloneable (i.e. have multiple value)
-			'clone' => true,
+			'desc'  => 'Text description',
 			'type'  => 'text',
 			// Default value (optional)
-			'std' => 'Anh Tran',
-		),
-		// DATE
-		array(
-			'name' => 'Day of Birth',
-			'id'   => "{$prefix}dob",
-			'type' => 'date',
-			// Date format, default yy-mm-dd. Optional. See: http://goo.gl/po8vf
-			'format' => 'd MM, yy',
-		),
-		// RADIO BUTTONS
-		array(
-			'name' => 'Gender',
-			'id'   => "{$prefix}gender",
-			'type' => 'radio',
-			// Array of 'value' => 'Label' pairs for radio options.
-			// Note: the 'key' is stored in meta field, not the 'value'
-			'options'	=> array(
-				'm'			=> 'Male',
-				'f'			=> 'Female',
-			),
-			'std'  => 'm',
-			'desc' => 'Need an explaination?',
-		),
-		// TEXTAREA
-		array(
-			'name' => 'Bio',
-			'desc' => "What's your professions? What have you done so far?",
-			'id'   => "{$prefix}bio",
-			'type' => 'textarea',
-			'std'  => "I'm a special agent from Vietnam.",
-			'cols' => '40',
-			'rows' => '8',
-		),
-		// SELECT BOX
-		array(
-			'name' => 'Where do you live?',
-			'id'   => "{$prefix}place",
-			'type' => 'select',
-			// Array of 'value' => 'Label' pairs for select box
-			'options' => array(
-				'usa'		=> 'USA',
-				'vn'		=> 'Vietnam',
-			),
-			// Select multiple values, optional. Default is false.
-			'multiple' => true,
-			// Default value, can be string (single value) or array (for both single and multiple values)
-			'std'  => array( 'vn' ),
-			'desc' => 'Select the current place, not in the past',
+			'std'   => 'Default text value',
+			// CLONES: Add to make the field cloneable (i.e. have multiple value)
+			'clone' => true,
 		),
 		// CHECKBOX
 		array(
-			'name' => 'About WordPress',
-			'id'   => "{$prefix}love_wp",
+			'name' => 'Checkbox',
+			'id'   => "{$prefix}checkbox",
 			'type' => 'checkbox',
-			'desc' => 'I love WordPress',
 			// Value can be 0 or 1
-			'std' => 1,
+			'std'  => 1,
+		),
+		// RADIO BUTTONS
+		array(
+			'name'    => 'Radio',
+			'id'      => "{$prefix}radio",
+			'type'    => 'radio',
+			// Array of 'value' => 'Label' pairs for radio options.
+			// Note: the 'value' is stored in meta field, not the 'Label'
+			'options' => array(
+				'value1' => 'Label1',
+				'value2' => 'Label2',
+			),
+		),
+		// SELECT BOX
+		array(
+			'name'     => 'Select',
+			'id'       => "{$prefix}select",
+			'type'     => 'select',
+			// Array of 'value' => 'Label' pairs for select box
+			'options'  => array(
+				'value1' => 'Label1',
+				'value2' => 'Label2',
+			),
+			// Select multiple values, optional. Default is false.
+			'multiple' => false,
 		),
 		// HIDDEN
 		array(
-			'id'   => "{$prefix}invisible",
+			'id'   => "{$prefix}hidden",
 			'type' => 'hidden',
 			// Hidden field must have predefined value
-			'std' => "No, I'm visible",
+			'std'  => 'Hidden value',
 		),
 		// PASSWORD
 		array(
-			'name' => 'Your favorite password',
-			'id'   => "{$prefix}pass",
+			'name' => 'Password',
+			'id'   => "{$prefix}password",
 			'type' => 'password',
 		),
-		// CONFIRM PASSWORD
+		// TEXTAREA
 		array(
-			'name' => 'Confirm your password',
-			'id'   => "{$prefix}pass_confirm",
-			'type' => 'password',
+			'name' => 'Textarea',
+			'desc' => 'Textarea description',
+			'id'   => "{$prefix}textarea",
+			'type' => 'textarea',
+			'cols' => '20',
+			'rows' => '3',
 		),
 	),
 	'validation' => array(
 		'rules' => array(
-			// optionally make post/page title required
-			'post_title' => array(
-				'required' => true,
-			),
-			$prefix . 'fname' => array(
-				'required' => true,
-			),
-			"{$prefix}pass" => array(
+			"{$prefix}password" => array(
 				'required'  => true,
 				'minlength' => 7,
 			),
 		),
 		// optional override of default jquery.validate messages
 		'messages' => array(
-			$prefix . 'fname' => array(
-				'required' => 'Your name is required',
-			),
-			"{$prefix}pass" => array(
+			"{$prefix}password" => array(
 				'required'  => 'Password is required',
 				'minlength' => 'Password must be at least 7 characters',
 			),
@@ -164,96 +133,79 @@ $meta_boxes[] = array(
 
 // 2nd meta box
 $meta_boxes[] = array(
-	'id'    => 'additional',
-	'title' => 'Additional Information',
-	'pages' => array( 'post', 'film', 'slider' ),
+	'title' => 'Advanced Fields',
 
 	'fields' => array(
-		// WYSIWYG/RICH TEXT EDITOR
+		// NUMBER
 		array(
-			'name' => 'Your thoughts about Deluxe Blog Tips',
-			'id'   => "{$prefix}thoughts",
-			'type' => 'wysiwyg',
-			'std'  => "It's great!",
-			'desc' => 'Do you think so?',
-		),
-		// FILE UPLOAD
-		array(
-			'name' => 'Upload your source code',
-			'desc' => 'Any modified code, or extending code',
-			'id'   => "{$prefix}code",
-			'type' => 'file',
-		),
-		// IMAGE UPLOAD
-		array(
-			'name' => 'Screenshots',
-			'desc' => 'Screenshots of problems, warnings, etc.',
-			'id'   => "{$prefix}screenshot",
-			'type' => 'image',
-		),
-		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
-		array(
-			'name'             => 'Screenshots (plupload)',
-			'desc'             => 'Screenshots of problems, warnings, etc.',
-			'id'               => "{$prefix}screenshot2",
-			'type'             => 'plupload_image',
-			'max_file_uploads' => 4,
-		),
-		// THICKBOX IMAGE UPLOAD (WP 3.3+)
-		array(
-			'name' => 'Screenshots (thickbox upload)',
-			'desc' => 'Screenshots of problems, warnings, etc.',
-			'id'   => "{$prefix}screenshot3",
-			'type' => 'thickbox_image',
-		)
-	)
-);
+			'name' => 'Number',
+			'id'   => "{$prefix}number",
+			'type' => 'number',
 
-// 3rd meta box
-$meta_boxes[] = array(
-	'id'    => 'survey',
-	'title' => 'Survey',
-	'pages' => array( 'post', 'slider', 'page' ),
+			'min'  => 0,
+			'step' => 5,
+		),
+		// DATE
+		array(
+			'name' => 'Date picker',
+			'id'   => "{$prefix}date",
+			'type' => 'date',
 
-	'fields' => array(
+			// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
+			'js_options' => array(
+				'appendText'      => '(yyyy-mm-dd)',
+				'dateFormat'      => 'yy-mm-dd',
+				'changeMonth'     => true,
+				'changeYear'      => true,
+				'showButtonPanel' => true,
+			),
+		),
+		// DATETIME
+		array(
+			'name' => 'Datetime picker',
+			'id'   => $prefix . 'datetime',
+			'type' => 'datetime',
+
+			// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
+			'js_options' => array(
+				'stepMinute'     => 15,
+				'showTimepicker' => true,
+			),
+		),
+		// TIME
+		array(
+			'name' => 'Time picker',
+			'id'   => $prefix . 'time',
+			'type' => 'time',
+
+			// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
+			'js_options' => array(
+				'stepMinute' => 5,
+				'showSecond' => true,
+				'stepSecond' => 10,
+			),
+		),
 		// COLOR
 		array(
-			'name' => 'Your favorite color',
+			'name' => 'Color picker',
 			'id'   => "{$prefix}color",
 			'type' => 'color',
 		),
 		// CHECKBOX LIST
 		array(
-			'name' => 'Your hobby',
-			'id'   => "{$prefix}hobby",
+			'name' => 'Checkbox list',
+			'id'   => "{$prefix}checkbox_list",
 			'type' => 'checkbox_list',
 			// Options of checkboxes, in format 'value' => 'Label'
 			'options' => array(
-				'reading' => 'Books',
-				'sport'   => 'Gym, Boxing',
+				'value1' => 'Label1',
+				'value2' => 'Label2',
 			),
-			'desc' => 'What do you do in free time?',
-		),
-		// TIME
-		array(
-			'name' => 'When do you get up?',
-			'id'   => "{$prefix}getdown",
-			'type' => 'time',
-			// Time format, default hh:mm. Optional. @link See: http://goo.gl/hXHWz
-			'format' => 'hh:mm:ss',
-		),
-		// DATETIME
-		array(
-			'name' => 'When were you born?',
-			'id'   => "{$prefix}born_time",
-			'type' => 'datetime',
-			// Time format, default yy-mm-dd hh:mm. Optional. @link See: http://goo.gl/hXHWz
-			'format' => 'hh:mm:ss',
 		),
 		// TAXONOMY
 		array(
-			'name'    => 'Categories',
-			'id'      => "{$prefix}cats",
+			'name'    => 'Taxonomy',
+			'id'      => "{$prefix}taxonomy",
 			'type'    => 'taxonomy',
 			'options' => array(
 				// Taxonomy name
@@ -263,11 +215,48 @@ $meta_boxes[] = array(
 				// Additional arguments for get_terms() function. Optional
 				'args' => array()
 			),
-			'desc' => 'Choose One Category',
+		),
+		// WYSIWYG/RICH TEXT EDITOR
+		array(
+			'name' => 'WYSIWYG / Rich Text Editor',
+			'id'   => "{$prefix}wysiwyg",
+			'type' => 'wysiwyg',
+			'std'  => 'WYSIWYG default value',
+
+			// Editor settings, see wp_editor() function: look4wp.com/wp_editor
+			'options' => array(
+				'textarea_rows' => 4,
+				'teeny'         => true,
+				'media_buttons' => false,
+			),
+		),
+		// FILE UPLOAD
+		array(
+			'name' => 'File Upload',
+			'id'   => "{$prefix}file",
+			'type' => 'file',
+		),
+		// IMAGE UPLOAD
+		array(
+			'name' => 'Image Upload',
+			'id'   => "{$prefix}image",
+			'type' => 'image',
+		),
+		// THICKBOX IMAGE UPLOAD (WP 3.3+)
+		array(
+			'name' => 'Thichbox Image Upload',
+			'id'   => "{$prefix}thickbox",
+			'type' => 'thickbox_image',
+		),
+		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
+		array(
+			'name'             => 'Plupload Image Upload',
+			'id'               => "{$prefix}plupload",
+			'type'             => 'plupload_image',
+			'max_file_uploads' => 4,
 		),
 	)
 );
-
 
 /********************* META BOX REGISTERING ***********************/
 
@@ -278,15 +267,14 @@ $meta_boxes[] = array(
  */
 function YOUR_PREFIX_register_meta_boxes()
 {
-	global $meta_boxes;
-
 	// Make sure there's no errors when the plugin is deactivated or during upgrade
-	if ( class_exists( 'RW_Meta_Box' ) )
+	if ( !class_exists( 'RW_Meta_Box' ) )
+		return;
+
+	global $meta_boxes;
+	foreach ( $meta_boxes as $meta_box )
 	{
-		foreach ( $meta_boxes as $meta_box )
-		{
-			new RW_Meta_Box( $meta_box );
-		}
+		new RW_Meta_Box( $meta_box );
 	}
 }
 // Hook to 'admin_init' to make sure the meta box class is loaded before

@@ -1,22 +1,10 @@
 /* =Styles for 'normal' meta boxes
 -------------------------------------------------------------- */
 
-/* BEGIN jquery.validate styles */
-label.error {
-	padding-left: 3px;
-	color: red;
-}
-
-input.error, textarea.error, select.error {
-	border: #CC0000 solid 1px !important;
-	background-color: #FFEBE8 !important;
-}
-/* END jquery.validate styles */
-
 .rwmb-field {
 	margin: 10px 0;
 }
-.rwmb-label, 
+.rwmb-label,
 .rwmb-input {
 	display: inline-block;
 	vertical-align: top;
@@ -24,11 +12,14 @@ input.error, textarea.error, select.error {
 .rwmb-label {
 	width: 24%;
 }
-	.rwmb-label > .required
-	{
-		color: red;
-		font-weight:bold;
-	}
+.rwmb-label.required {
+	font-weight: bold;
+}
+.rwmb-label.required > span
+{
+	color: #c00;
+}
+
 /* 75% if field has label, 100% if no label */
 .rwmb-input {
 	width: 100%;
@@ -37,36 +28,34 @@ input.error, textarea.error, select.error {
 	width: 75%;
 }
 .rwmb-input h4 {
-	margin-top: 0;
+	margin: 0;
 }
 .rwmb-textarea {
 	resize: vertical;
 }
+
+/* Clone */
 .rwmb-clone {
 	min-height: 24px;
 }
-	.rwmb-clone > input[type="radio"],
-	.rwmb-clone > input[type="checkbox"] {
-		margin: 6px 0 0 4px;
-	}
-	/* fix width to not overlap button for cloned sliders */
-	.rwmb-clone .rwmb-slider {
-		width: 80%;
-		margin: 6px 0 0;
-	}
-	/* fix buttons after sliders */
-	.clearfix + .rwmb-button {
-		margin-top: -16px;
-	}
+.rwmb-clone > input[type="radio"],
+.rwmb-clone > input[type="checkbox"] {
+	margin: 6px 0 0 4px;
+}
 .rwmb-button {
 	display: inline;
 	float: right;
 }
-/* Hidden labels, :input fields, buttons */
-.rwmb-label.hidden,
-.rwmb-input.hidden,
-.hidden .rwmb-button {
-	display: none;
+
+/* Fix width to not overlap button for cloned sliders */
+.rwmb-clone .rwmb-slider {
+	width: 80%;
+	margin: 6px 0 0;
+}
+
+/* Fix buttons after sliders */
+.clearfix + .rwmb-button {
+	margin-top: -16px;
 }
 
 /* Fix empty block below admin footer (issue #24) */
@@ -74,10 +63,22 @@ input.error, textarea.error, select.error {
 	display: none;
 }
 
+/* jQuery validation */
+label.error {
+	padding-left: 3px;
+	color: red;
+}
+input.error,
+textarea.error,
+select.error {
+	border: #c00 solid 1px !important;
+	background: #ffebe8 !important;
+}
+
 /* =Styles for 'side' meta boxes
 -------------------------------------------------------------- */
 
-#side-sortables .rwmb-label, 
+#side-sortables .rwmb-label,
 #side-sortables .rwmb-input {
 	width: 100%;
 }

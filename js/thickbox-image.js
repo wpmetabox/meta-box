@@ -8,7 +8,8 @@ jQuery( document ).ready( function( $ )
 			field_id = $this.attr( 'rel' ),
 			backup = window.send_to_editor;
 
-		window.send_to_editor = function( html ) {
+		window.send_to_editor = function( html )
+		{
 			var $img = $( '<div />' ).append( html ).find( 'img' ),
 				url = $img.attr( 'src' ),
 				img_class = $img.attr( 'class' ),
@@ -17,7 +18,7 @@ jQuery( document ).ready( function( $ )
 			html = '<li id="item_' + id + '">';
 			html += '<img src="' + url + '" />';
 			html += '<div class="rwmb-image-bar">';
-			html += '<a class="rwmb-delete-file" href="#" rel="' + id + '">Delete</a>';
+			html += '<a class="rwmb-delete-file" href="#" data-field_id="' + field_id + '" data-attachment_id="' + id + '">Delete</a>';
 			html += '</div>';
 			html += '<input type="hidden" name="' + field_id + '[]" value="' + id + '" />';
 			html += '</li>';

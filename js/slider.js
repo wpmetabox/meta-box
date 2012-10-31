@@ -1,29 +1,29 @@
-jQuery( document ).ready( function($) 
+jQuery( document ).ready( function( $ )
 {
-	var 
-		 id		= null
-		,el		= null
-		,input	= null
-		,label	= null
-		,format	= null
-		,value	= null
-		,update	= null
-	;
-	$( '.rwmb-slider' ).each( function( i, val ) 
+	var
+		id = null
+		, el = null
+		, input = null
+		, label = null
+		, format = null
+		, value = null
+		, update = null
+		;
+	$( '.rwmb-slider' ).each( function( i, val )
 	{
-		id		= $( val ).attr( 'id' );
-		el		= $( '#' + id );
-		input	= $( '[name=' + id + ']' );
-		label	= $( '[for=' + id + ']' );
-		format	= $( el ).attr( 'rel' );
+		id = $( val ).attr( 'id' );
+		el = $( '#' + id );
+		input = $( '[name=' + id + ']' );
+		label = $( '[for=' + id + ']' );
+		format = $( el ).attr( 'rel' );
 
 		$( label ).append( ': <span id="' + id + '-label"></span>' );
-		update	= $( '#' + id + '-label' );
+		update = $( '#' + id + '-label' );
 
-		if ( 
-			! $( input ).val() 
-			|| 'undefined' === $( input ).val() 
-			|| null === typeof $( input ).val() 
+		if (
+			!$( input ).val()
+				|| 'undefined' === $( input ).val()
+				|| null === typeof $( input ).val()
 			)
 		{
 			$( input ).val( $( el ).slider( "values", 0 ) );
@@ -38,13 +38,13 @@ jQuery( document ).ready( function($)
 			$( update ).append( ' ' + format );
 
 		el.slider(
-		{
-			value:	value,
-			slide:	function( event, ui )
 			{
-				$( input ).val( ui.value );
-				$( update ).text( ui.value + ' ' + format );
-			}
-		} );
-	});
+				value: value,
+				slide: function( event, ui )
+				{
+					$( input ).val( ui.value );
+					$( update ).text( ui.value + ' ' + format );
+				}
+			} );
+	} );
 } );

@@ -18,8 +18,6 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 
-			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
 			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker' ), RWMB_VER, true );
 		}
 
@@ -34,15 +32,14 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name   = " name='{$field['field_name']}'";
-			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$value  = " value='{$meta}'";
-			$size   = " size='{$field['size']}'";
-			$format = " rel='{$field['format']}'";
-
-			$html   = "<input type='text' class='rwmb-date'{$name}{$id}{$value}{$size}{$format} />";
-
-			return $html;
+			return sprintf(
+				'<input type="text" class="rwmb-date" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				$field['field_name'],
+				$meta,
+				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
+				$field['size'],
+				esc_attr( json_encode( $field['js_options'] ) )
+			);
 		}
 
 		/**
@@ -54,8 +51,18 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['format'] = empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'];
-			$field['size']   = empty( $field['size'] ) ? 10 : $field['size'];
+			$field = wp_parse_args( $field, array(
+				'size'       => 30,
+				'js_options' => array(),
+			) );
+
+			// Deprecate 'format', but keep it for backward compatible
+			// Use 'js_options' instead
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
+				'showButtonPanel' => true,
+			) );
+
 			return $field;
 		}
 	}

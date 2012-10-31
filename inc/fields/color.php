@@ -13,8 +13,8 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL.'color.css', array( 'farbtastic' ), RWMB_VER );
-			wp_enqueue_script( 'rwmb-color', RWMB_JS_URL.'color.js', array( 'farbtastic' ), RWMB_VER, true );
+			wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'farbtastic' ), RWMB_VER );
+			wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'farbtastic' ), RWMB_VER, true );
 		}
 
 		/**
@@ -28,18 +28,45 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			if ( empty( $meta ) )
-				$meta = '#';
-			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$value = " value='{$meta}'";
+			return sprintf(
+				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="%s" />
+				<div class="rwmb-color-picker"></div>',
+				$field['field_name'],
+				empty( $field['clone'] ) ? $field['id'] : '',
+				$meta,
+				$field['size']
+			);
+		}
 
-			$html = <<<HTML
-<input class="rwmb-color" type="text"{$name}{$id}{$value} size="8" />
-<div class="rwmb-color-picker"></div>
-HTML;
+		/**
+		 * Don't save '#' when no color is chosen
+		 *
+		 * @param mixed $new
+		 * @param mixed $old
+		 * @param int   $post_id
+		 * @param array $field
+		 *
+		 * @return int
+		 */
+		static function value( $new, $old, $post_id, $field )
+		{
+			return '#' === $new ? '' : $new;
+		}
 
-			return $html;
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = wp_parse_args( $field, array(
+				'size' => 7,
+			) );
+
+			return $field;
 		}
 	}
 }

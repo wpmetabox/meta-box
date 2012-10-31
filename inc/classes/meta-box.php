@@ -56,17 +56,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
 
-			// List of meta box field types
-			$this->types = array_unique( wp_list_pluck( $this->fields, 'type' ) );
-
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-			foreach ( $this->types as $type )
+			// Add additional actions for fields
+			foreach ( $this->fields as $field )
 			{
-				$class = self::get_class_name( $type );
+				$class = self::get_class_name( $field );
 
-				// Add additional actions for fields
 				if ( method_exists( $class, 'add_actions' ) )
 					call_user_func( array( $class, 'add_actions' ) );
 			}
@@ -94,26 +91,26 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
 				return;
 
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
 
 			// Load clone script conditionally
 			$has_clone = false;
 			foreach ( $this->fields as $field )
 			{
-				if ( self::is_cloneable( $field ) )
+				if ( $field['clone'] )
 					$has_clone = true;
 
 				// Enqueue scripts and styles for fields
-				$class = self::get_class_name( $field['type'] );
+				$class = self::get_class_name( $field );
 				if ( method_exists( $class, 'admin_enqueue_scripts' ) )
 					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
 			}
 
-			if ( $has_clone ) {
+			if ( $has_clone )
 				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
-			}
 
-			if ( $this->validation ) {
+			if ( $this->validation )
+			{
 				wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 			}
@@ -173,7 +170,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$group = "";	// Empty the clone-group field
+				$group = '';	// Empty the clone-group field
 				$type = $field['type'];
 				$id   = $field['id'];
 				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
@@ -190,42 +187,32 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
 				$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
 
-				// Separate code for clonable and non-cloneable fields to make easy to maintain
+				// Separate code for cloneable and non-cloneable fields to make easy to maintain
 
 				// Cloneable fields
-				if ( self::is_cloneable( $field ) )
+				if ( $field['clone'] )
 				{
 					if ( isset( $field['clone-group'] ) )
 						$group = " clone-group='{$field['clone-group']}'";
 
-					if ( ! is_array( $field['field_name'] ) )
-						$field['field_name'] = (array) $field['field_name'];
-
 					$meta = (array) $meta;
-
-					foreach ( array_keys( $meta ) as $i )
-						$field['field_name'][$i] = $field['id'] . "[{$i}]";
 
 					$field_html = '';
 
-					$index = 0;
-					foreach ( $meta as $meta_data )
+					foreach ( $meta as $index => $meta_data )
 					{
-						if ( is_array( $field['field_name'] ) )
-						{
-							$subfield = $field;
-							$subfield['field_name'] = $field['field_name'][$index];
-						}
-						else
-							$subfield = $field;
+						$sub_field = $field;
+						$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
+						if ( $field['multiple'] )
+							$sub_field['field_name'] .= '[]';
 
-						add_filter( "rwmb_{$id}_html", array( $this, 'add_delete_clone_button' ), 10, 3 );
+						add_filter( "rwmb_{$id}_html", array( $this, 'add_clone_buttons' ), 10, 3 );
 
 						// Wrap field HTML in a div with class="rwmb-clone" if needed
 						$input_html = '<div class="rwmb-clone">';
 
 						// Call separated methods for displaying each type of field
-						$input_html .= self::apply_field_class_filters( $subfield, 'html', '', $meta_data );
+						$input_html .= self::apply_field_class_filters( $sub_field, 'html', '', $meta_data );
 
 						// Apply filter to field HTML
 						// 1st filter applies to all fields with the same type
@@ -236,7 +223,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						$input_html .= '</div>';
 
 						$field_html .= $input_html;
-						$index++;
 					}
 				}
 				// Non-cloneable fields
@@ -270,16 +256,20 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
 				// Display label and input in DIV and allow user-defined classes to be appended
-				$class = 'rwmb-field';
-				if ( isset( $field['required'] ) && $field['required'] )
-					$class .= ' required';
-				if ( isset( $field['class'] ) )
-					$class = $this->add_cssclass( $field['class'], $class );
-
-				// Hide the div if field has 'hidden' type
+				$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
 				if ( 'hidden' === $field['type'] )
-					$class = $this->add_cssclass( 'hidden', $class );
-				echo "<div class='{$class}'{$group}>{$html}</div>";
+					$classes[] = 'hidden';
+				if ( !empty( $field['required'] ) )
+					$classes[] = 'required';
+				if ( !empty( $field['class'] ) )
+					$classes[] = $field['class'];
+
+				printf(
+					'<div class="%s"%s>%s</div>',
+					implode( ' ', $classes ),
+					$group,
+					$html
+				);
 			}
 
 			// Include validation settings for this meta-box
@@ -297,14 +287,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 						else
 						{
 							var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
-							jQuery.each( tempOptions.rules, function( k, v )
-							{
-								rwmb.validationOptions.rules[k] = v;
-							});
-							jQuery.each( tempOptions.messages, function( k, v )
-							{
-								rwmb.validationOptions.messages[k] = v;
-							});
+							jQuery.extend( true, rwmb.validationOptions, tempOptions );
 						};
 					</script>
 				';
@@ -328,22 +311,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function begin_html( $html, $meta, $field )
 		{
-			$class = 'rwmb-label';
-
-			if ( ! empty( $field['class'] ) )
-				$class = self::add_cssclass( $field['class'], $class );
-
 			if ( empty( $field['name'] ) )
 				return '<div class="rwmb-input">';
 
-			$html = <<<HTML
-<div class="{$class}">
-	<label for="{$field['id']}">{$field['name']}</label>
-</div>
-<div class="rwmb-input">
-HTML;
-
-			return $html;
+			return sprintf(
+				'<div class="rwmb-label">
+					<label for="%s">%s</label>
+				</div>
+				<div class="rwmb-input">',
+				$field['id'],
+				$field['name']
+			);
 		}
 
 		/**
@@ -360,7 +338,7 @@ HTML;
 			$id = $field['id'];
 
 			$button = '';
-			if ( self::is_cloneable( $field ) )
+			if ( $field['clone'] )
 				$button = '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
 
 			$desc = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
@@ -381,11 +359,9 @@ HTML;
 		 *
 		 * @return string $html
 		 */
-		static function add_delete_clone_button( $html, $field, $meta_data )
+		static function add_clone_buttons( $html, $field, $meta_data )
 		{
-			$id = $field['id'];
-
-			$button = '<a href="#" class="rwmb-button button-secondary remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
+			$button = '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
 
 			return "{$html}{$button}";
 		}
@@ -427,7 +403,15 @@ HTML;
 		 */
 		function save_post( $post_id )
 		{
-			global $post_type;
+			// Get proper post type. @link http://www.deluxeblogtips.com/forums/viewtopic.php?id=161
+			$post_type = null;
+			$post = get_post( $post_id );
+
+			if ( $post )
+				$post_type = $post->post_type;
+			elseif ( isset( $_POST['post_type'] ) && post_type_exists( $_POST['post_type'] ) )
+				$post_type = $_POST['post_type'];
+
 			$post_type_object = get_post_type_object( $post_type );
 
 			// Check whether:
@@ -482,15 +466,23 @@ HTML;
 		{
 			$name = $field['id'];
 
-			delete_post_meta( $post_id, $name );
 			if ( '' === $new || array() === $new )
+			{
+				delete_post_meta( $post_id, $name );
 				return;
+			}
 
 			if ( $field['multiple'] )
 			{
-				foreach ( $new as $add_new )
+				foreach ( $new as $new_value )
 				{
-					add_post_meta( $post_id, $name, $add_new, false );
+					if ( !in_array( $new_value, $old ) )
+						add_post_meta( $post_id, $name, $new_value, false );
+				}
+				foreach ( $old as $old_value )
+				{
+					if ( !in_array( $old_value, $new ) )
+						delete_post_meta( $post_id, $name, $old_value );
 				}
 			}
 			else
@@ -513,27 +505,23 @@ HTML;
 		static function normalize( $meta_box )
 		{
 			// Set default values for meta box
-			$meta_box = wp_parse_args(
-				$meta_box, array(
-					'id'       => sanitize_title( $meta_box['title'] ),
-					'context'  => 'normal',
-					'priority' => 'high',
-					'pages'    => array( 'post' )
-				)
-			);
+			$meta_box = wp_parse_args( $meta_box, array(
+				'id'       => sanitize_title( $meta_box['title'] ),
+				'context'  => 'normal',
+				'priority' => 'high',
+				'pages'    => array( 'post' )
+			) );
 
 			// Set default values for fields
 			foreach ( $meta_box['fields'] as &$field )
 			{
-				$field = wp_parse_args(
-					$field, array(
-						'multiple' => false,
-						'clone'    => false,
-						'std'      => '',
-						'desc'     => '',
-						'format'   => '',
-					)
-				);
+				$field = wp_parse_args( $field, array(
+					'multiple' => false,
+					'clone'    => false,
+					'std'      => '',
+					'desc'     => '',
+					'format'   => '',
+				) );
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
@@ -541,7 +529,7 @@ HTML;
 				// Allow field class to manually change field_name
 				// @see taxonomy.php for example
 				if ( ! isset( $field['field_name'] ) )
-					$field['field_name'] = $field['id'] . ( $field['multiple'] || $field['clone'] ? '[0]' : '' );
+					$field['field_name'] = $field['id'];
 			}
 
 			return $meta_box;
@@ -550,13 +538,13 @@ HTML;
 		/**
 		 * Get field class name
 		 *
-		 * @param string $type Field type
+		 * @param array $field Field array
 		 *
 		 * @return bool|string Field class name OR false on failure
 		 */
-		static function get_class_name( $type )
+		static function get_class_name( $field )
 		{
-			$type  = ucwords( $type );
+			$type  = ucwords( $field['type'] );
 			$class = "RWMB_{$type}_Field";
 
 			if ( class_exists( $class ) )
@@ -581,7 +569,7 @@ HTML;
 
 			// Call:     field class method
 			// Fallback: RW_Meta_Box method
-			$class = self::get_class_name( $field['type'] );
+			$class = self::get_class_name( $field );
 			if ( method_exists( $class, $method_name ) )
 			{
 				$value = call_user_func_array( array( $class, $method_name ), $args );
@@ -609,7 +597,7 @@ HTML;
 
 			// Call:     field class method
 			// Fallback: RW_Meta_Box method
-			$class = self::get_class_name( $field['type'] );
+			$class = self::get_class_name( $field );
 			if ( method_exists( $class, $method_name ) )
 			{
 				call_user_func_array( array( $class, $method_name ), $args );
@@ -657,36 +645,6 @@ HTML;
 				}
 			}
 			return $saved;
-		}
-
-		/**
-		 * Adds a css class
-		 * Mainly a copy of the core admin menu function
-		 * As the core function is only meant to be used by core internally,
-		 * We copy it here - in case core changes functionality or drops the function.
-		 *
-		 * @param string $add
-		 * @param string $class | Class name - Default: empty
-		 *
-		 * @return string $class
-		 */
-		static function add_cssclass( $add, $class = '' )
-		{
-			$class .= empty( $class ) ? $add : " {$add}";
-
-			return $class;
-		}
-
-		/**
-		 * Helper function to check for multi/clone field IDs
-		 *
-		 * @param  array $field
-		 *
-		 * @return bool False if no cloneable
-		 */
-		static function is_cloneable( $field )
-		{
-			return $field['clone'];
 		}
 	}
 }

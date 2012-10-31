@@ -21,8 +21,6 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );
 
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.min.js", array( 'jquery-ui-core' ), '1.8.17', true );
-			wp_register_script( 'jquery-ui-slider', "{$url}/jquery.ui.slider.min.js", array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse' ), '1.8.17', true );
 			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
 			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery-ui-timepicker' ), RWMB_VER, true );
 		}
@@ -38,16 +36,16 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name   = " name='{$field['field_name']}'";
-			$id     = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$value  = " value='{$meta}'";
-			$size   = " size='{$field['size']}'";
-			$format = " rel='{$field['format']}'";
-			$html .= "<input type='text' class='rwmb-datetime'{$name}{$id}{$value}{$size}{$format} />";
-
-			return $html;
+			return sprintf(
+				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				$field['field_name'],
+				$meta,
+				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
+				$field['size'],
+				esc_attr( json_encode( $field['js_options'] ) )
+			);
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -57,8 +55,19 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['format'] = empty( $field['format'] ) ? 'yy-mm-dd hh:ss' : $field['format'];
-			$field['size']   = empty( $field['size'] ) ? 20 : $field['size'];
+			$field = wp_parse_args( $field, array(
+				'size'       => 30,
+				'js_options' => array(),
+			) );
+
+			// Deprecate 'format', but keep it for backward compatible
+			// Use 'js_options' instead
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
+				'timeFormat'      => 'hh:mm',
+				'showButtonPanel' => true,
+			) );
+
 			return $field;
 		}
 	}

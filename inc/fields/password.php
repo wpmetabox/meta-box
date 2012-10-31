@@ -17,12 +17,29 @@ if ( ! class_exists( 'RWMB_Password_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$val   = " value='{$meta}'";
-			$name  = "name='{$field['field_name']}'";
-			$id    = " id='{$field['id']}'";
-			$html .= "<input type='password' class='rwmb-password'{$name}{$id}{$val} size='30' />";
+			return sprintf(
+				'<input type="password" class="rwmb-password" name="%s" id="%s" value="%s" size="%s" />',
+				$field['field_name'],
+				$field['id'],
+				$meta,
+				$field['size']
+			);
+		}
 
-			return $html;
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = wp_parse_args( $field, array(
+				'size' => 30,
+			) );
+
+			return $field;
 		}
 	}
 }

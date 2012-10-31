@@ -17,14 +17,13 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$name  = " name='{$field['field_name']}'";
-			$id    = isset( $field['clone'] ) && $field['clone'] ? '' : " id='{$field['id']}'";
-			$value = " value='{$meta}'";
-			$size  = " size='{$field['size']}'";
-
-			$html .= "<input type='text' class='rwmb-text'{$name}{$id}{$value}{$size} />";
-
-			return $html;
+			return sprintf(
+				'<input type="text" class="rwmb-text" name="%s" id="%s" value="%s" size="%s" />',
+				$field['field_name'],
+				$field['id'],
+				$meta,
+				$field['size']
+			);
 		}
 
 		/**
@@ -36,7 +35,9 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['size'] = empty( $field['size'] ) ? 30 : $field['size'];
+			$field = wp_parse_args( $field, array(
+				'size' => 30,
+			) );
 			return $field;
 		}
 	}

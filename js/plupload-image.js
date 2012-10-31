@@ -1,4 +1,4 @@
-jQuery( document ).ready( function($)
+jQuery( document ).ready( function( $ )
 {
 	// Object containing all the plupload uploaders
 	var rwmb_image_uploaders = {},
@@ -8,7 +8,7 @@ jQuery( document ).ready( function($)
 	// Note that we can have multiple upload forms in the page, so relative path to current element is important
 	$( '.rwmb-uploaded' ).each( function()
 	{
-		var $this = $(this),
+		var $this = $( this ),
 			$lis = $this.children(),
 			$title = $this.siblings( '.rwmb-uploaded-title' );
 		if ( 0 == $lis.length )
@@ -22,7 +22,7 @@ jQuery( document ).ready( function($)
 	$( '.rwmb-images' ).on( 'click', '.rwmb-delete-file', function()
 	{
 		// Check if we need to show drop target
-		var $images = $(this).parents( '.rwmb-images' ),
+		var $images = $( this ).parents( '.rwmb-images' ),
 			uploaded = $images.children().length - 1, // -1 for the one we just deleted
 			$dragndrop = $images.siblings( '.rwmb-drag-drop' );
 
@@ -51,10 +51,11 @@ jQuery( document ).ready( function($)
 
 		// Add field_id to the ajax call
 		rwmb_plupload_init['multipart_params'] = {
-			action  : 'plupload_image_upload',
+			action  : 'rwmb_plupload_image_upload',
 			field_id: prefix,
 			_wpnonce: nonce,
-			post_id : $( '#post_ID' ).val()
+			post_id : $( '#post_ID' ).val(),
+			force_delete: $( this ).data( 'force_delete' )
 		};
 
 		// Create new uploader
@@ -124,7 +125,7 @@ jQuery( document ).ready( function($)
 			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' );
 			false === res.errors ? $( 'li#' + file.id ).replaceWith( res.responses[0].data ) : remove_error( file );
 		} );
-	});
+	} );
 
 	/**
 	 * Helper functions
@@ -141,10 +142,10 @@ jQuery( document ).ready( function($)
 			.addClass( 'rwmb-image-error' )
 			.delay( 1600 )
 			.fadeOut( 'slow', function()
-				{
-					$(this).remove();
-				}
-			);
+			{
+				$( this ).remove();
+			}
+		);
 	}
 
 	/**
@@ -167,4 +168,4 @@ jQuery( document ).ready( function($)
 	{
 		$( '#' + file.id + '-throbber' ).html( "<img class='rwmb-loader' height='64' width='64' src='" + RWMB.url + "img/loader.gif'/>" );
 	}
-});
+} );

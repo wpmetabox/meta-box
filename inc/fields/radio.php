@@ -18,16 +18,17 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$html = '';
-			$name = "name='{$field['field_name']}'";
+			$tpl = '<label><input type="radio" class="rwmb-radio" name="%s" value="%s" %s /> %s</label>';
 
-			foreach ( $field['options'] as $key => $label )
+			foreach ( $field['options'] as $value => $label )
 			{
-				$id      = strstr( $field['id'], '[]' ) ? str_replace( '[]', "-{$key}[]", $field['id'] ) : $field['id'];
-				$id      = " id='{$id}'";
-				$value   = " value='{$key}'";
-				$checked = checked( $meta, $key, false );
-
-				$html .= "<label><input type='radio' class='rwmb-radio'{$name}{$id}{$value}{$checked} /> {$label}</label> ";
+				$html .= sprintf(
+					$tpl,
+					$field['field_name'],
+					$value,
+					checked( $value, $meta, false ),
+					$label
+				);
 			}
 
 			return $html;

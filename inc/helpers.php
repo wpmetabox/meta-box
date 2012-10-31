@@ -7,6 +7,105 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
+
+/**
+ * Shortcode to display meta value
+ *
+ * @param $atts Array of shortcode attributes, same as rwmb_meta function, but has more "meta_key" parameter
+ * @see rwmb_meta function below
+ *
+ * @return string
+ */
+function rwmb_meta_shortcode( $atts )
+{
+	$atts = wp_parse_args( $atts, array(
+		'type'    => 'text',
+		'post_id' => get_the_ID(),
+	) );
+	if ( empty( $atts['meta_key'] ) )
+		return '';
+
+	$meta = rwmb_meta( $atts['meta_key'], $atts, $atts['post_id'] );
+
+	// Get uploaded files info
+	if ( 'file' == $atts['type'] )
+	{
+		$content = '<ul>';
+		foreach ( $meta as $file )
+		{
+			$content .= sprintf(
+				'<li><a href="%s" title="%s">%s</a></li>',
+				$file['url'],
+				$file['title'],
+				$file['name']
+			);
+		}
+		$content .= '</ul>';
+	}
+
+	// Get uploaded images info
+	elseif ( in_array( $atts['type'], array( 'image', 'plupload_image', 'thickbox_image' ) ) )
+	{
+		$content = '<ul>';
+		foreach ( $meta as $image )
+		{
+			// Link thumbnail to full size image?
+			if ( isset( $atts['link'] ) && $atts['link'] )
+			{
+				$content .= sprintf(
+					'<li><a href="%s" title="%s"><img src="%s" alt="%s" title="%s" /></a></li>',
+					$image['full_url'],
+					$image['title'],
+					$image['url'],
+					$image['alt'],
+					$image['title']
+				);
+			}
+			else
+			{
+				$content .= sprintf(
+					'<li><img src="%s" alt="%s" title="%s" /></li>',
+					$image['url'],
+					$image['alt'],
+					$image['title']
+				);
+			}
+		}
+		$content .= '</ul>';
+	}
+
+	// Get post terms
+	elseif ( 'taxonomy' == $atts['type'] )
+	{
+
+		$content = '<ul>';
+		foreach ( $meta as $term )
+		{
+			$content .= sprintf(
+				'<li><a href="%s" title="%s">%s</a></li>',
+				get_term_link( $term, $atts['taxonomy'] ),
+				$term->name,
+				$term->name
+			);
+		}
+		$content .= '</ul>';
+	}
+
+	// Normal multiple fields: checkbox_list, select with multiple values
+	elseif ( is_array( $meta ) )
+	{
+		$content = '<ul><li>' . implode( '</li><li>', $meta ) . '</li></ul>';
+	}
+
+	else
+	{
+		$content = $meta;
+	}
+
+	return apply_filters( __FUNCTION__, $content );
+}
+
 /**
  * Get post meta
  *
@@ -32,7 +131,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get uploaded files info
 	if ( 'file' == $args['type'] )
 	{
-		if ( is_array( $meta ) && ! empty( $meta ) )
+		if ( is_array( $meta ) && !empty( $meta ) )
 		{
 			$files = array();
 			foreach ( $meta as $id )
@@ -46,10 +145,10 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get uploaded images info
 	elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image' ) ) )
 	{
-		if ( is_array( $meta ) && ! empty( $meta ) )
+		if ( is_array( $meta ) && !empty( $meta ) )
 		{
 			global $wpdb;
-			$meta = implode( ',' , $meta );
+			$meta = implode( ',', $meta );
 
 			// Re-arrange images with 'menu_order'
 			$meta = $wpdb->get_col( "
@@ -71,10 +170,10 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get post terms
 	elseif ( 'taxonomy' == $args['type'] )
 	{
-		$meta = emtpy( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
+		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
 	}
 
-	return $meta;
+	return apply_filters( __FUNCTION__, $meta );
 }
 
 /**

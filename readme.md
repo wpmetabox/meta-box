@@ -22,6 +22,7 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - file
 - hidden
 - image
+- number
 - password
 - plupload_image
 - radio
@@ -61,9 +62,29 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.2.1
+* Bug fix: not save wysiwyg field in full screen mode. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=161)
+* Bug fix: default value for select/checkbox_list. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=174)
+* Bug fix: duplicated append test to `date` picker
+* Bug fix: incorrect enqueue styles, issue #166
+* Improvement: initial new field type `map`
+
+#### 4.2
+* Bug fix: save only last element of `select` field with `multiple` values. [Link](http://wordpress.org/support/topic/plugin-meta-box-multiple-declaration-for-select-fields-no-longer-working?replies=5#post-3254534)
+* Improvement: add `js_options` attribute for `date`, `datetime`, `time` fields to adjust jQuery date/datetime picker options. See `demo/demo.php` for usage
+* Improvement: add `options` attribute for `wysiwyg`. You now can pass arguments same as for `wp_editor` function
+* Improvement: clone feature now works with `checkbox_list` and `select` with `multiple` values
+* Improvement: add `rwmb-{$field_type}-wrapper` class to field markup
+* Improvement: Add [rwmb_meta meta_key="..."] shortcode. Attributes are the same as `rwmb_meta` function.
+* Code refactored
+
+#### 4.1.11
+* Bug fix: helper function for getting `taxonomy` field type
+* Bug fix: `multiple` attribute for `select` field type
+
 #### 4.1.10
 * Allow helper functions can be used in admin area
-* Allow cloned fields to have a uniquely indexed `name` attribute 
+* Allow cloned fields to have a uniquely indexed `name` attribute
 * Add Swedish translation
 * Allow hidden field has its own value
 * Taxonomy field now supported by `rwmb_meta` function
