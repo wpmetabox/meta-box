@@ -12,7 +12,7 @@ function rwmb_update_time_picker()
 			options = $this.data( 'options' );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
-		$this.removeClass( 'hasDatepicker' ).datepicker( options );
+		$this.removeClass( 'hasDatepicker' ).timepicker( options );
 	} );
 }
 

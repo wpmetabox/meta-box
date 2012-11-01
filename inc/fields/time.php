@@ -37,7 +37,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				'<input type="text" class="rwmb-time" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
 				$field['field_name'],
 				$meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
@@ -63,7 +63,6 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			// Deprecate 'format', but keep it for backward compatible
 			// Use 'js_options' instead
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
-				'timeOnly'        => true,
 				'showButtonPanel' => true,
 				'timeFormat'      => empty( $field['format'] ) ? 'hh:mm:ss' : $field['format'],
 			) );
