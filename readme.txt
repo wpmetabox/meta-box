@@ -64,6 +64,7 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 = 4.2.2 =
 * Bug fix: `time` field doesn't work. [Link](http://wordpress.org/support/topic/time-field-js-wont-run-without-datetime)
 * Bug fix: wrong JS call for `datetime`. [Link](http://wordpress.org/support/topic/421-datetime)
+* Improvement: file and images now not deleted from library, *unless* use `force_delete` option
 * Improvement: add `select_advanced` field, which uses [select2](http://ivaynberg.github.com/select2/) for better UX. Thanks @funkedgeek
 
 = 4.2.1 =
