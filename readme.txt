@@ -4,7 +4,7 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -28,11 +28,13 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - file
 - hidden
 - image
+- map
 - number
 - password
 - plupload_image
 - radio
 - select
+- select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
 - slider
 - taxonomy
 - text
@@ -58,6 +60,11 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.2.2 =
+* Bug fix: `time` field doesn't work. [Link](http://wordpress.org/support/topic/time-field-js-wont-run-without-datetime)
+* Bug fix: wrong JS call for `datetime`. [Link](http://wordpress.org/support/topic/421-datetime)
+* Improvement: add `select_advanced` field, which uses [select2](http://ivaynberg.github.com/select2/) for better UX. Thanks @funkedgeek
 
 = 4.2.1 =
 * Bug fix: not save wysiwyg field in full screen mode. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=161)
