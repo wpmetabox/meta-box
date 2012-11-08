@@ -97,11 +97,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					break;
 				case 'checkbox_tree':
 					$elements = self::process_terms( $terms );
-					$html    .= self::walk_checkbox_tree( $meta, $field, $elements, $field['options']['parent'], true );
+					$html    .= self::walk_checkbox_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_tree':
 					$elements = self::process_terms( $terms );
-					$html    .= self::walk_select_tree( $meta, $field, $elements, $field['options']['parent'], '', true );
+					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], '', true );
 					break;
 				case 'select_advanced':
 					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
