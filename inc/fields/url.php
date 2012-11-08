@@ -7,7 +7,7 @@ require_once RWMB_FIELDS_DIR . 'text.php';
 
 if ( ! class_exists( 'RWMB_URL_Field' ) )
 {
-	class RWMB_URL_Field
+	class RWMB_URL_Field extends RWMB_Text_Field
 	{
 		/**
 		 * Get field HTML
