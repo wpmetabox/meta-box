@@ -27,6 +27,12 @@ $meta_boxes[] = array(
 		'template' => array( 'fullwidth.php', 'simple.php' ),
 		'parent'   => array( 10 )
 	),
+	'not_on' => array(
+		// 'id'       => array( 10 ),
+		// 'slug'  => array( 'news', 'blog' ),
+		// 'template' => array( 'fullwidth.php', 'simple.php' ),
+		'parent'   => array( 0 )
+	)
 );
 
 /**
@@ -41,7 +47,10 @@ function rw_register_meta_boxes()
 	// Make sure there's no errors when the plugin is deactivated or during upgrade
 	if ( class_exists( 'RW_Meta_Box' ) ) {
 		foreach ( $meta_boxes as $meta_box ) {
-			if ( isset( $meta_box['only_on'] ) && ! rw_maybe_include( $meta_box['only_on'] ) ) {
+			if( isset( $meta_box[ 'not_on' ] ) && !rw_maybe_include( $meta_box[ 'not_on' ], 0 ) ) {
+				continue;
+			}
+			if( isset( $meta_box['only_on'] ) && !rw_maybe_include( $meta_box['only_on'], 1 ) ) {
 				continue;
 			}
 
@@ -57,7 +66,7 @@ add_action( 'admin_init', 'rw_register_meta_boxes' );
  *
  * @return bool
  */
-function rw_maybe_include( $conditions ) {
+function rw_maybe_include( $conditions, $bool = -1 ) {
 	// Include in back-end only
 	if ( ! defined( 'WP_ADMIN' ) || ! WP_ADMIN ) {
 		return false;
@@ -80,39 +89,81 @@ function rw_maybe_include( $conditions ) {
 
 	$post_id = (int) $post_id;
 	$post    = get_post( $post_id );
+	switch( $bool ) {
+		// if we're including (only_on)
+		case 1:
+			foreach ( $conditions as $cond => $v ) {
+				// Catch non-arrays too
+				if ( ! is_array( $v ) ) {
+					$v = array( $v );
+				}
 
-	foreach ( $conditions as $cond => $v ) {
-		// Catch non-arrays too
-		if ( ! is_array( $v ) ) {
-			$v = array( $v );
-		}
+				switch ( $cond ) {
+					case 'id':
+						if ( in_array( $post_id, $v ) ) {
+							return true;
+						}
+					break;
+					case 'parent':
+						$post_parent = $post->post_parent;
+						if ( in_array( $post_parent, $v ) ) {
+							return true;
+						}
+					break;
+					case 'slug':
+						$post_slug = $post->post_name;
+						if ( in_array( $post_slug, $v ) ) {
+							return true;
+						}
+					break;
+					case 'template':
+						$template = get_post_meta( $post_id, '_wp_page_template', true );
+						if ( in_array( $template, $v ) ) {
+							return true;
+						}
+					break;
+				}
+			}
+			break;
+		// when we're excluding (not_on)
+		case 0:
+			foreach ( $conditions as $cond => $v ) {
+				// Catch non-arrays too
+				if ( ! is_array( $v ) ) {
+					$v = array( $v );
+				}
 
-		switch ( $cond ) {
-			case 'id':
-				if ( in_array( $post_id, $v ) ) {
-					return true;
+				switch ( $cond ) {
+					case 'id':
+						if ( !in_array( $post_id, $v ) ) {
+							return true;
+						}
+					break;
+					case 'parent':
+						$post_parent = $post->post_parent;
+						if ( !in_array( $post_parent, $v ) ) {
+							return true;
+						}
+					break;
+					case 'slug':
+						$post_slug = $post->post_name;
+						if ( !in_array( $post_slug, $v ) ) {
+							return true;
+						}
+					break;
+					case 'template':
+						$template = get_post_meta( $post_id, '_wp_page_template', true );
+						if ( !in_array( $template, $v ) ) {
+							return true;
+						}
+					break;
 				}
+			}
 			break;
-			case 'parent':
-				$post_parent = $post->post_parent;
-				if ( in_array( $post_parent, $v ) ) {
-					return true;
-				}
-			break;
-			case 'slug':
-				$post_slug = $post->post_name;
-				if ( in_array( $post_slug, $v ) ) {
-					return true;
-				}
-			break;
-			case 'template':
-				$template = get_post_meta( $post_id, '_wp_page_template', true );
-				if ( in_array( $template, $v ) ) {
-					return true;
-				}
-			break;
-		}
+		default:
+			return true;
 	}
+
 
 	// If no condition matched
 	return false;
