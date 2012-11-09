@@ -1,6 +1,8 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
+require_once RWMB_FIELDS_DIR . 'select-advanced.php';
+require_once RWMB_FIELDS_DIR . 'checkbox-list.php';
 
 if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 {
@@ -13,10 +15,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2-css/select2.css', array(), '3.2' );
-			wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
-			wp_register_script( 'select2',  RWMB_JS_URL . 'select2-js/select2.js', array(), '3.2', true );
-			wp_register_script( 'select_advanced',  RWMB_JS_URL . 'select-advanced.js', array('select2'), RWMB_VER, true );
+			RWMB_Select_Advanced_Field::admin_enqueue_scripts();
 			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'select_advanced', 'wp-ajax-response' ), RWMB_VER, true );
 		}
@@ -30,39 +29,32 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field = wp_parse_args( $field, array(
-				'js_options' => array(),
-			) );
-
-			$field['js_options'] = wp_parse_args( $field['js_options'], array(
-				'allowClear' => true,
-				'width' => 'resolve',
-				'placeholder' => "Select a Value"
-			) );
-			// Default query arguments for get_terms() function
 			$default_args = array(
 				'hide_empty' => false,
 			);
-
-			if ( ! isset( $field['options']['args'] ) )
-				$field['options']['args'] = $default_args;
-			else
-				$field['options']['args'] = wp_parse_args( $field['options']['args'], $default_args );
-
-			// Show field as checkbox list by default
-			if ( ! isset( $field['options']['type'] ) )
-				$field['options']['type'] = 'checkbox_list';
-
-			// If field is shown as checkbox list, add multiple value
-			if ( in_array( $field['options']['type'], array( 'checkbox_list', 'checkbox_tree' ) ) )
+			
+			//Set default args
+			$field['options']['args'] = ( ! isset( $field['options']['args'] ) ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
+			
+			//Field name be an array by default
+			$field['field_name'] = "{$field['id']}[]";
+			
+			switch( $field['options']['type'] )
 			{
-				$field['multiple'] = true;
-				$field['field_name'] = "{$field['id']}[]";
+				case 'select_advanced':
+					$field = RWMB_Select_Advanced_Field::normalize_field( $field );		
+					break;
+				case 'checkbox_list':
+				case 'checkbox_tree':
+					$field = RWMB_Checkbox_List_Field::normalize_field( $field );	
+					break;
+				case 'select':	
+				case 'select_tree':
+					$field = RWMB_Select_Field::normalize_field( $field );
+					break;				
+				default:
+					$field['options']['type'] = 'select';
 			}
-
-			// For select tree: display it as a normal select box (no multiple attribute), but allows to save multiple values
-			if ( 'select_tree' == $field['options']['type'] || ('select_advanced' == $field['options']['type'] && $field['multiple'] == true) )
-				$field['field_name'] = "{$field['id']}[]";
 
 			if ( in_array( $field['options']['type'], array( 'checkbox_tree', 'select_tree' ) ) )
 			{
@@ -94,74 +86,29 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			$options = $field['options'];
 			$terms   = get_terms( $options['taxonomy'], $options['args'] );
+			$field['options'] = self::get_options( $terms );			
 
 			$html = '';
-			// Checkbox LIST
-			if ( 'checkbox_list' === $options['type'] )
+			
+			switch( $options['type'] )
 			{
-				$html = array();
-				$tpl = '<label><input type="checkbox" name="%s" value="%s" %s /> %s</label>';
-				foreach ( $terms as $term )
-				{
-					$html[] = sprintf(
-						$tpl,
-						$field['field_name'],
-						$term->slug,
-						checked( in_array( $term->slug, $meta ), true, false ),
-						$term->name
-					);
-				}
-				$html = implode( '<br />', $html );
-			}
-			// Checkbox TREE
-			elseif ( 'checkbox_tree' === $options['type'] )
-			{
-				$elements = self::process_terms( $terms );
-				$html    .= self::walk_checkbox_tree( $meta, $field, $elements, $field['options']['parent'], true );
-			}
-			// Select TREE
-			elseif ( 'select_tree' === $options['type'] )
-			{
-				$elements = self::process_terms( $terms );
-				$html    .= self::walk_select_tree( $meta, $field, $elements, $field['options']['parent'], '', true );
-			}
-			// Select
-			elseif ( 'select_advanced' === $options['type'] ) {
-				$html = sprintf(
-					'<select class="rwmb-select-advanced" name="%s" id="%s"%s data-options ="%s">',
-					$field['field_name'],
-					$field['id'],
-					$field['multiple'] ? ' multiple="multiple"' : '',
-					esc_attr( json_encode( $field['js_options'] ))
-				);
-				$option = '<option value="%s" %s>%s</option>';
-	
-				foreach ( $terms as $term )
-				{
-					$html .= sprintf(
-						$option,
-						$term->slug,
-						selected( in_array( $term->slug, $meta ), true, false ),
-						$term->name
-					);
-				}
-				$html .= '</select>';
-			}
-			else
-			{
-				$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : '';
-				$html    .= "<select name='{$field['field_name']}'{$multiple}>";
-				$option = '<option value="%s" %s>%s</option>';
-				foreach ( $terms as $term )
-				{
-					$html .= sprintf(
-						$option,
-						$term->slug,
-						selected( in_array( $term->slug, $meta ), true, false ),
-						$term->name
-					);
-				}
-				$html .= '</select>';
+				case 'checkbox_list':
+					$html = RWMB_Checkbox_List_Field::html( $html, $meta, $field );
+					break;
+				case 'checkbox_tree':
+					$elements = self::process_terms( $terms );
+					$html    .= self::walk_checkbox_tree( $meta, $field, $elements, $options['parent'], true );
+					break;
+				case 'select_tree':
+					$elements = self::process_terms( $terms );
+					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], '', true );
+					break;
+				case 'select_advanced':
+					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
+					break;
+				case 'select':
+				default:	
+					$html = RWMB_Select_Field::html( $html, $meta, $field );
 			}
 
 			return $html;
@@ -183,6 +130,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms  = $elements[$parent];
+			$field['options'] = self::get_options( $terms );	
 			$hidden = ( !$active ? 'hidden' : '' );
 
 			$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
@@ -220,26 +168,13 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms    = $elements[$parent];
+			$field['options'] = self::get_options( $terms );	
 			$hidden   = $active ? 'active' : 'disabled';
 			$disabled = disabled( $active, false, false );
-			$multiple = $field['multiple'] ? " multiple='multiple' style='height: auto;'" : '';
 			$id       = empty( $parent_slug ) ? '' : " id='rwmb-taxonomy-{$parent_slug}'";
 
 			$html  = "<div{$id} class='rw-taxonomy-tree {$hidden}'>";
-			$html .= "<select name='{$field['field_name']}'{$disabled}{$multiple}>";
-			$html .= "<option value=''>None</option>";
-
-			$option = '<option value="%s" %s>%s</option>';
-			foreach ( $terms as $term )
-			{
-				$html .= sprintf(
-					$option,
-					$term->slug,
-					selected( in_array( $term->slug, $meta ), true, false ),
-					$term->name
-				);
-			}
-			$html .= '</select>';
+			$html .= RWMB_Select_Field::html( $html, $meta, $field );
 			foreach ( $terms as $term )
 			{
 				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $term->slug, in_array( $term->slug, $meta ) && $active ) . '</li>';
@@ -265,6 +200,23 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$elements[$term->parent][] = $term;
 			}
 			return $elements;
+		}
+		
+		/**
+		 * Get options for selects, checkbox list, etc via the terms
+		 *
+		 * @param $terms array of term objects
+		 *
+		 * @param $options array
+		 */
+		static function get_options( $terms = array() )
+		{
+			$options = array();
+			foreach( $terms as $term )
+			{
+				$options[$term->slug] = $term->name;
+			}
+			return $options;
 		}
 
 		/**
