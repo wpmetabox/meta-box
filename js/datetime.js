@@ -12,7 +12,7 @@ function rwmb_update_datetime_picker()
 			options = $this.data( 'options' );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
-		$this.removeClass( 'hasDatepicker' ).datetimepicker( options );
+		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datetimepicker( options );
 	} );
 }
 

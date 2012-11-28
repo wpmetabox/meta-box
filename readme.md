@@ -64,6 +64,9 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.2.3
+* Bug fix: clone date field. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=299)
+
 ### 4.2.2
 * Bug fix: `time` field doesn't work. [Link](http://wordpress.org/support/topic/time-field-js-wont-run-without-datetime)
 * Bug fix: wrong JS call for `datetime`. [Link](http://wordpress.org/support/topic/421-datetime)
