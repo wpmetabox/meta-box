@@ -157,7 +157,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					$html .= sprintf(
 						$option,
 						$term->slug,
-						selected( in_array( $term->slug, $meta ), true, false ),
+						selected( in_array( $term->slug, (array)$meta ), true, false ),
 						$term->name
 					);
 				}
