@@ -40,7 +40,8 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$html .= sprintf(
 					$option,
 					$value,
-					selected( in_array( $value, $meta ), true, false ),
+					/*  selected( in_array( $value, $meta ), true, false ),*/
+					selected( in_array( $value, (array)$meta ), true, false ),
 					$label
 				);
 			}
