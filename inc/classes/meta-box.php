@@ -265,7 +265,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$classes[] = $field['class'];
 
 				printf(
-					'<div class="%s"%s>%s</div>',
+          $field['before'] .
+					'<div class="%s"%s>%s</div>' .
+          $field['after'],
 					implode( ' ', $classes ),
 					$group,
 					$html
@@ -521,6 +523,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'std'      => '',
 					'desc'     => '',
 					'format'   => '',
+          'before'   => '',
+          'after'    => '',
 				) );
 
 				// Allow field class add/change default field values
