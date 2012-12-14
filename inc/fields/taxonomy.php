@@ -13,9 +13,9 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2-css/select2.css', array(), '3.2' );
+			wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2/select2.css', array(), '3.2' );
 			wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
-			wp_register_script( 'select2',  RWMB_JS_URL . 'select2-js/select2.js', array(), '3.2', true );
+			wp_register_script( 'select2',  RWMB_JS_URL . 'select2/select2.min.js', array(), '3.2', true );
 			wp_register_script( 'select_advanced',  RWMB_JS_URL . 'select-advanced.js', array('select2'), RWMB_VER, true );
 			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'select_advanced', 'wp-ajax-response' ), RWMB_VER, true );
