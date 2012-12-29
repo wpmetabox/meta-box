@@ -33,7 +33,7 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		 * @return string
 		 */
 		static function html( $html, $meta, $field )
-		{
+		{			
 			$html = sprintf(
 				'<select class="rwmb-select-advanced" name="%s" id="%s"%s data-options="%s">',
 				$field['field_name'],
@@ -70,15 +70,19 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = parent::normalize_field( $field );
-
+	
+			
 			$field = wp_parse_args( $field, array(
-				'js_options' => array(),
-			) );
-
-			$field['js_options'] = wp_parse_args( $field['js_options'], array(
-				'allowClear'  => true,
-				'width'       => 'resolve',
-				'placeholder' => __( 'Select a value', 'rwmb' )
+				'js_options'      => array(
+					'allowClear'  => true,
+					'width'       => 'resolve',
+					'placeholder' => __( 'Select a value', 'rwmb' )
+				),
+				'options'         => array(
+					'args'        => array(
+						'hide_empty' => false,
+					)
+				),
 			) );
 
 			return $field;
