@@ -1,0 +1,122 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box Script For WordPress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-03 15:09+0700\n"
+"PO-Revision-Date: 2012-12-29 23:40-0500\n"
+"Last-Translator: Adel Qalieh <aqalieh95@gmail.com>\n"
+"Language-Team: Adel Qalieh <aqalieh95@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;"
+"_nx_noop:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=6; plural= n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Language: ar\n"
+"X-Source-Language: en\n"
+"Language: ar\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: ../inc/fields\n"
+
+#: ../meta-box.php:79
+msgid "RW_Meta_Box Debug:"
+msgstr "RW_Meta_Box Debug:"
+
+#: ../inc/classes/meta-box.php:316
+msgid "+"
+msgstr "+"
+
+#: ../inc/classes/meta-box.php:340
+msgid "&#8211;"
+msgstr "&#8211;"
+
+#: ../inc/fields/file.php:69
+msgid "Error: Cannot delete file"
+msgstr "خطأ: لا يمكن حذف الملف"
+
+#: ../inc/fields/file.php:83
+msgctxt "file upload"
+msgid "Uploaded files"
+msgstr "ملفات محملة"
+
+#: ../inc/fields/file.php:84
+msgctxt "file upload"
+msgid "Delete this file"
+msgstr "حذف هذا الملف"
+
+#: ../inc/fields/file.php:85
+msgctxt "file upload"
+msgid "Delete"
+msgstr "حذف"
+
+#: ../inc/fields/file.php:86
+msgctxt "file upload"
+msgid "Upload files"
+msgstr "تحميل الملفات"
+
+#: ../inc/fields/file.php:87
+msgctxt "file upload"
+msgid "+ Add new file"
+msgstr "+ إضافة ملف جديد"
+
+#: ../inc/fields/image.php:75
+msgid "Order saved"
+msgstr "حفظ الترتيب"
+
+#: ../inc/fields/image.php:91 ../inc/fields/plupload-image.php:156
+msgctxt "image upload"
+msgid "Uploaded files"
+msgstr "ملفات محملة"
+
+#: ../inc/fields/image.php:92 ../inc/fields/plupload-image.php:112
+msgctxt "image upload"
+msgid "Delete this file"
+msgstr "حذف هذا الملف"
+
+#: ../inc/fields/image.php:93 ../inc/fields/plupload-image.php:113
+msgctxt "image upload"
+msgid "Delete"
+msgstr "حذف"
+
+#: ../inc/fields/image.php:94 ../inc/fields/plupload-image.php:114
+msgctxt "image upload"
+msgid "Edit"
+msgstr "حرر"
+
+#: ../inc/fields/image.php:95 ../inc/fields/plupload-image.php:157
+msgctxt "image upload"
+msgid "Upload files"
+msgstr "تحميل الملفات"
+
+#: ../inc/fields/image.php:96
+msgctxt "image upload"
+msgid "+ Add new image"
+msgstr "إضافة صورة جديدة"
+
+#: ../inc/fields/plupload-image.php:95
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr "أنواع الصور المسموحة"
+
+#: ../inc/fields/plupload-image.php:160
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr "إفلت الصور هنا"
+
+#: ../inc/fields/plupload-image.php:161
+msgctxt "image upload"
+msgid "or"
+msgstr "أو"
+
+#: ../inc/fields/plupload-image.php:162
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "إختر الملفات"
+
+#: ../inc/fields/thickbox-image.php:45
+msgctxt "image upload"
+msgid "Upload image"
+msgstr "حمل الصورة"
