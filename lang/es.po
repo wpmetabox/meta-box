@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box Script For WordPress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-03 15:09+0700\n"
+"PO-Revision-Date: 2012-12-29 23:42-0500\n"
+"Last-Translator: Adel Qalieh <aqalieh95@gmail.com>\n"
+"Language-Team: Adel Qalieh <aqalieh95@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;"
+"_nx_noop:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Language: es\n"
+"X-Source-Language: en\n"
+"Language: es\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: ../inc/fields\n"
+
+#: ../meta-box.php:79
+msgid "RW_Meta_Box Debug:"
+msgstr "RW_Meta_Box Debug:"
+
+#: ../inc/classes/meta-box.php:316
+msgid "+"
+msgstr "+"
+
+#: ../inc/classes/meta-box.php:340
+msgid "&#8211;"
+msgstr "&#8211;"
+
+#: ../inc/fields/file.php:69
+msgid "Error: Cannot delete file"
+msgstr "Error: No se puede eliminar el archivo"
+
+#: ../inc/fields/file.php:83
+msgctxt "file upload"
+msgid "Uploaded files"
+msgstr "Archivos subidos"
+
+#: ../inc/fields/file.php:84
+msgctxt "file upload"
+msgid "Delete this file"
+msgstr "Eliminar este archivo"
+
+#: ../inc/fields/file.php:85
+msgctxt "file upload"
+msgid "Delete"
+msgstr "Eliminar"
+
+#: ../inc/fields/file.php:86
+msgctxt "file upload"
+msgid "Upload files"
+msgstr "Subir archivos"
+
+#: ../inc/fields/file.php:87
+msgctxt "file upload"
+msgid "+ Add new file"
+msgstr "+ Añadir un archivo nuevo"
+
+#: ../inc/fields/image.php:75
+msgid "Order saved"
+msgstr "El orden guardado"
+
+#: ../inc/fields/image.php:91 ../inc/fields/plupload-image.php:156
+msgctxt "image upload"
+msgid "Uploaded files"
+msgstr "Archivos subidos"
+
+#: ../inc/fields/image.php:92 ../inc/fields/plupload-image.php:112
+msgctxt "image upload"
+msgid "Delete this file"
+msgstr "Eliminar este archivo"
+
+#: ../inc/fields/image.php:93 ../inc/fields/plupload-image.php:113
+msgctxt "image upload"
+msgid "Delete"
+msgstr "Eliminar"
+
+#: ../inc/fields/image.php:94 ../inc/fields/plupload-image.php:114
+msgctxt "image upload"
+msgid "Edit"
+msgstr "Edit"
+
+#: ../inc/fields/image.php:95 ../inc/fields/plupload-image.php:157
+msgctxt "image upload"
+msgid "Upload files"
+msgstr "Subir archivos"
+
+#: ../inc/fields/image.php:96
+msgctxt "image upload"
+msgid "+ Add new image"
+msgstr "+ Añadir un archivo nuevo"
+
+#: ../inc/fields/plupload-image.php:95
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr "Archivos de imágenes permitidos"
+
+#: ../inc/fields/plupload-image.php:160
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr "Soltar imágenes aquí"
+
+#: ../inc/fields/plupload-image.php:161
+msgctxt "image upload"
+msgid "or"
+msgstr "o"
+
+#: ../inc/fields/plupload-image.php:162
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "Seleccionar Archivos"
+
+#: ../inc/fields/thickbox-image.php:45
+msgctxt "image upload"
+msgid "Upload image"
+msgstr "Subir imágenes"
