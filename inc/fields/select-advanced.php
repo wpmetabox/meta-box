@@ -73,16 +73,13 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 	
 			
 			$field = wp_parse_args( $field, array(
-				'js_options'      => array(
-					'allowClear'  => true,
-					'width'       => 'resolve',
-					'placeholder' => __( 'Select a value', 'rwmb' )
-				),
-				'options'         => array(
-					'args'        => array(
-						'hide_empty' => false,
-					)
-				),
+				'js_options' => array(),
+			) );
+
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'allowClear'  => true,
+				'width'       => 'resolve',
+				'placeholder' => __( 'Select a value', 'rwmb' )
 			) );
 
 			return $field;
