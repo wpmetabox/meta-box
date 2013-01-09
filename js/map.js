@@ -3,9 +3,15 @@ var marker, map, geocoder;
 jQuery( document ).ready( function ()
 {
 	var latlng = new google.maps.LatLng( 53.346881, -6.258860 );
-	map = new google.maps.Map( jQuery( '.rwmb-map-canvas' )[0], {zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP} );
-	marker = new google.maps.Marker( {position: latlng, map: map, draggable: true} );
-	geocoder = new google.maps.Geocoder();
+	map        = new google.maps.Map( jQuery( '.rwmb-map-canvas' )[0], {
+		zoom              : 8, 
+		center            : latlng, 
+		streetViewControl : 0,
+		mapTypeId         : google.maps.MapTypeId.ROADMAP
+		});
+	marker     = new google.maps.Marker( {position: latlng, map: map, draggable: true} );
+	geocoder   = new google.maps.Geocoder();
+
 	google.maps.event.addListener( map, 'click', function ( event )
 	{
 		marker.setPosition( event.latLng );
@@ -16,6 +22,8 @@ jQuery( document ).ready( function ()
 		updatePositionInput( event.latLng );
 	} );
 	updatePositionMarker();
+
+	autoCompleteAddress();
 } );
 
 function updatePositionInput( latLng )
@@ -39,12 +47,15 @@ function updatePositionMarker()
 		map.setZoom( zoom );
 	}
 	else
-		if ( addressField )
+		if ( addressField ){
 			geocodeAddress( addressField );
+			console.log(ad);
+		}
 }
 
 function geocodeAddress( addressField )
 {
+	console.log(addressField);
 	var address = '',
 		fieldList = addressField.split( ',' ),
 		loop;
@@ -66,4 +77,34 @@ function geocodeAddress( addressField )
 			map.setZoom( 15 );
 		}
 	} );
+}
+
+
+function autoCompleteAddress(){
+	var addressField = jQuery( '#rwmb-map-goto-address-button' ).val();
+	if (!addressField) return null;
+
+	jQuery( '#' + addressField).autocomplete({
+		source: function(request, response) {
+			// TODO: add 'region' option, to help bias geocoder.
+		  geocoder.geocode( {'address': request.term }, function(results, status) {
+		    response(jQuery.map(results, function(item) {
+		      return {
+		        label     :  item.formatted_address,
+		        value     : item.formatted_address,
+		        latitude  : item.geometry.location.lat(),
+		        longitude : item.geometry.location.lng()
+		      }
+		    }));
+		  })
+		},
+      select: function(event, ui) {
+		        
+			jQuery("#rwmb-map-coordinate").val(ui.item.latitude + ',' + ui.item.longitude );			
+		
+        var location = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
+        marker.setPosition(location);
+        map.setCenter(location);
+	   }
+	});
 }
