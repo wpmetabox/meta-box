@@ -433,6 +433,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
+			
+			//Save post action removed to prevent infinite loops
+			remove_action( 'save_post', array( $this, 'save_post' ) );
+			
+			//Before save actions
+			do_action("rwmb_before_save_post", $post_id);
+			do_action("rwmb_{$this->meta_box['id']}_before_save_post", $post_id);
+			
+			//Reinstate save_post action
+			add_action( 'save_post', array( $this, 'save_post' ) );
 
 			foreach ( $this->fields as $field )
 			{
@@ -452,6 +462,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
 			}
+			
+			//Save post action removed to prevent infinite loops
+			remove_action( 'save_post', array( $this, 'save_post' ) );
+			
+			//After save sctions
+			do_action("rwmb_after_save_post", $post_id);
+			do_action("rwmb_{$this->meta_box['id']}_after_save_post", $post_id);
+			
+			//Reinstate save_post action
+			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
 
 		/**
