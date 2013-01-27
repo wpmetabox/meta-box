@@ -265,9 +265,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$classes[] = $field['class'];
 
 				printf(
-          $field['before'] .
-					'<div class="%s"%s>%s</div>' .
-          $field['after'],
+					$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
 					implode( ' ', $classes ),
 					$group,
 					$html
@@ -401,7 +399,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @param int $post_id Post ID
 		 *
-		 * @return int|void
+		 * @return void
 		 */
 		function save_post( $post_id )
 		{
@@ -421,22 +419,24 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// - the post is a revision
 			// - current post type is supported
 			// - user has proper capability
+			// - in Quick edit mode, @link http://wordpress.org/support/topic/quick-edit-not-working-and-problem-located
 			if (
 				( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 				|| ( ! isset( $_POST['post_ID'] ) || $post_id != $_POST['post_ID'] )
 				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
 				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+				|| ( 'inline-save' == $_POST['action'] )
 			)
 			{
-				return $post_id;
+				return;
 			}
 
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
-			
+
 			//Save post action removed to prevent infinite loops
 			remove_action( 'save_post', array( $this, 'save_post' ) );
-			
+
 			//Before save actions
 			do_action("rwmb_before_save_post", $post_id);
 			do_action("rwmb_{$this->meta_box['id']}_before_save_post", $post_id);
@@ -460,11 +460,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
 			}
-			
+
 			//After save sctions
 			do_action("rwmb_after_save_post", $post_id);
 			do_action("rwmb_{$this->meta_box['id']}_after_save_post", $post_id);
-			
+
 			//Reinstate save_post action
 			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
