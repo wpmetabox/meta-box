@@ -3,8 +3,8 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 4.2.3
+Tested up to: 3.5.1
+Stable tag: 4.2.4
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -41,6 +41,7 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - textarea
 - thickbox_image
 - time
+- url
 - wysiwyg
 
 [Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
@@ -60,6 +61,17 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.2.4 =
+* Bug fix: path to Select2 JS and CSS. [Link](http://wordpress.org/support/topic/missing-files-5)
+* Bug fix: `taxonomy.js` loading
+* Bug fix: saving in quick mode edit
+* Improvement: add `before` and `after` attributes to fields that can be used to display custom text
+* Improvement: add Arabic and Spanish languages
+* Improvement: add `rwmb*_before_save_post` and `rwmb*_before_save_post` actions before and after save post
+* Improvement: add autocomplete for geo location in `map` field, add fancy animation to drop marker
+* Improvemnet: add `url` field
+
 
 = 4.2.3 =
 * Bug fix: clone date field. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=299)
