@@ -80,13 +80,19 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$i18n_title  = _x( 'Upload files', 'file upload', 'rwmb' );
 			$i18n_more   = _x( '+ Add new file', 'file upload', 'rwmb' );
 
-			$html = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
+			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
 			// Uploaded files
 			if ( ! empty( $meta ) )
 			{
-				$html .= '<ol class="rwmb-uploaded">';
-				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-field_id="%s" data-attachment_id="%s" data-force_delete="%s">%s</a>)</li>';
+				$ol = '<ol class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s">';
+				$html .= sprintf(
+					$ol,
+					$field['id'],
+					$delete_nonce,
+					$field['force_delete'] ? 1 : 0
+				);
+				$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>)</li>';
 
 				foreach ( $meta as $attachment_id )
 				{
@@ -95,9 +101,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 						$li,
 						$attachment,
 						$i18n_delete,
-						$field['id'],
 						$attachment_id,
-						$field['force_delete'] ? 1 : 0,
 						$i18n_delete
 					);
 				}
