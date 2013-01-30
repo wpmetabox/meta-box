@@ -60,7 +60,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title = _x( 'Upload images', 'image upload', 'rwmb' );
+			$i18n_title = _x( 'Select or Upload Images', 'image upload', 'rwmb' );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-media_{$field['id']}" );
 
 			// Uploaded images

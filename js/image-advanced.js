@@ -21,7 +21,7 @@ jQuery( document ).ready( function( $ )
             className	: 'media-frame rwmb-media-frame',
             frame		: 'select',
             multiple	: true,
-            title		: 'Upload Images',
+            title		: 'Select or Upload Images',
             library		: {
             	type		:	'image'
             },
