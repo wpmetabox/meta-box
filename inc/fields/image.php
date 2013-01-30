@@ -110,13 +110,14 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-images_{$field['id']}" );
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 			
-			$ul = '<ul class="rwmb-images rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s">';
+			$ul = '<ul class="rwmb-images rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
 			$html .= sprintf(
 				$ul,
 				$field['id'],
 				$delete_nonce,
 				$reorder_nonce,
-				$field['force_delete'] ? 1 : 0
+				$field['force_delete'] ? 1 : 0,
+				$field['max_file_uploads']
 			);
 
 			foreach ( $images as $image )
