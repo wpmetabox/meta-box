@@ -255,6 +255,13 @@ $meta_boxes[] = array(
 			'type'             => 'plupload_image',
 			'max_file_uploads' => 4,
 		),
+		// IMAGE ADVANCED (WP 3.5+)
+		array(
+			'name'             => 'Image Advanced Upload',
+			'id'               => "{$prefix}imgadv",
+			'type'             => 'image_advanced',
+			'max_file_uploads' => 4,
+		),
 	)
 );
 
