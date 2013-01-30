@@ -4,12 +4,12 @@ jQuery( document ).ready( function( $ )
 	$( '.rwmb-images' ).each( function()
 	{
 		var $this    = $( this ),
-			field_id = $this.parents( '.rwmb-field' ).find( '.field-id' ).val(),
+			$container = $this.closest('.rwmb-uploaded'),
 			data     = {
 				action  : 'rwmb_reorder_images',
-				_wpnonce: $( '#nonce-reorder-images_' + field_id ).val(),
+				_wpnonce: $container.data('reorder_nonce'),
 				post_id : $( '#post_ID' ).val(),
-				field_id: field_id
+				field_id: $container.data('field_id')
 			};
 		$this.sortable( {
 			placeholder: 'ui-state-highlight',

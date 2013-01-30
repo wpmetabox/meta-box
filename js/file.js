@@ -11,18 +11,18 @@ jQuery( document ).ready( function( $ )
 	} );
 
 	// Delete file via Ajax
-	$( '.rwmb-uploaded' ).delegate( '.rwmb-delete-file', 'click', function()
+	$( '.rwmb-uploaded' ).on( 'click', '.rwmb-delete-file', function()
 	{
 		var $this = $( this ),
 			$parent = $this.parents( 'li' ),
-			field_id = $this.data( 'field_id' ),
+			$container = $this.closest('.rwmb-uploaded')
 			data = {
 				action       : 'rwmb_delete_file',
-				_wpnonce     : $( '#nonce-delete-file_' + field_id ).val(),
+				_wpnonce     : $container.data('delete_nonce'),
 				post_id      : $( '#post_ID' ).val(),
-				field_id     : field_id,
+				field_id     : $container.data( 'field_id' ),
 				attachment_id: $this.data( 'attachment_id' ),
-				force_delete : $this.data( 'force_delete' )
+				force_delete : $container.data( 'force_delete' )
 			};
 
 		$.post( ajaxurl, data, function( r )
