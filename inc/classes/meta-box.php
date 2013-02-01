@@ -659,16 +659,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function has_been_saved( $post_id, $fields )
 		{
-			$saved = false;
 			foreach ( $fields as $field )
 			{
-				if ( get_post_meta( $post_id, $field['id'], !$field['multiple'] ) )
+				$value = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
+				if (
+					( !$field['multiple'] && '' !== $value )
+					|| ( $field['multiple'] && array() !== $value )
+				)
 				{
-					$saved = true;
-					break;
+					return true;
 				}
 			}
-			return $saved;
+			return false;
 		}
 	}
 }
