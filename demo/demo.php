@@ -236,6 +236,14 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}file",
 			'type' => 'file',
 		),
+		// FILE UPLOAD Advanced
+		array(
+			'name' => 'File Upload',
+			'id'   => "{$prefix}file_advanced",
+			'type' => 'file_advanced',
+			'max_file_uploads' => 4,
+			'mime_type' => 'application'		//Leave blank for all file types
+		),
 		// IMAGE UPLOAD
 		array(
 			'name' => 'Image Upload',
