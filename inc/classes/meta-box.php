@@ -76,6 +76,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Save post meta
 			add_action( 'save_post', array( $this, 'save_post' ) );
+
+			// Attachment uses other hooks
+			// @see wp_update_post(), wp_insert_attachment()
+			add_action( 'edit_attachment', array( $this, 'save_post' ) );
+			add_action( 'add_attachment', array( $this, 'save_post' ) );
 		}
 
 		/**
