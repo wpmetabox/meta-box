@@ -28,9 +28,10 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$html = sprintf(
-				'<select class="rwmb-select" name="%s" id="%s"%s>',
+				'<select class="rwmb-select" name="%s" id="%s" size="%s"%s>',
 				$field['field_name'],
 				$field['id'],
+				$field['size'],
 				$field['multiple'] ? ' multiple="multiple"' : ''
 			);
 			$option = '<option value="%s" %s>%s</option>';
@@ -112,6 +113,9 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
+			$field = wp_parse_args( $field, array(
+				'size' => 5
+			) );
 			$field['field_name'] = $field['id'];
 			if ( !$field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
