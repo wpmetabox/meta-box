@@ -36,8 +36,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			//Set default args
 			$field['options']['args'] = ( ! isset( $field['options']['args'] ) ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
 			
-			//Field name be an array by default
-			$field['field_name'] = "{$field['id']}[]";
+			$tax = get_taxonomy( $field['options']['taxonomy'] );
+			$field = wp_parse_args( $field, array(
+				'field_name' => "{$field['id']}[]",
+				'default' =>  __( 'Select a ' . $tax->labels->singular_name, 'rwmb' )
+			) );
 			
 			switch( $field['options']['type'] )
 			{
