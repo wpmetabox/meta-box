@@ -16,7 +16,7 @@ jQuery( document ).ready( function( $ )
             return;
         }
 		//Create media frame
-		rwmb_media_frame = wp.media.frames.rwmb_media_frame = wp.media({
+		frame_options = {
             className	: 'media-frame rwmb-media-frame',
             frame		: 'select',
             multiple	: true,
@@ -27,7 +27,9 @@ jQuery( document ).ready( function( $ )
             button		: {
                 text		:	'Select'
             }
-        } );
+        } ;
+		
+		rwmb_media_frame = wp.media.frames.rwmb_media_frame = wp.media( frame_options );
 		
 		//Handle selection
 		rwmb_media_frame.on( 'select', function() {
@@ -47,7 +49,7 @@ jQuery( document ).ready( function( $ )
 					upload_button.addClass( 'hidden' );
 				}
 			}
-				
+
 			selection.map( function( attachment, index ) {
 				
 				//Convert attachment to JSON			 
@@ -76,8 +78,7 @@ jQuery( document ).ready( function( $ )
 						image_list.removeClass( 'hidden' ).prepend( res.responses[0].data );
 				}, 'xml' );
 			});
-		});
-		
+		});		
 		
 		//Open
 		rwmb_media_frame.open();

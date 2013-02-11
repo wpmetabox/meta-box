@@ -10,13 +10,13 @@ jQuery( document ).ready( function( $ )
 			field_id = file_list.data('field_id'),
 			max_file_uploads = file_list.data( 'max_file_uploads' ),
 			mime_type = file_list.data( 'mime_type' );
-		console.log(mime_type);
-		console.log(rwmb_file_frames);
+
 		// If the frame already exists, re-open it.
         if ( rwmb_file_frames[field_id] ) {
             rwmb_file_frames[field_id].open();
             return;
         }
+		//Setup media frame
 		frame_options = {
             className	: 'media-frame rwmb-file-frame',
             frame		: 'select',
@@ -32,9 +32,8 @@ jQuery( document ).ready( function( $ )
 				type : mime_type
 			};	
 		}
-		rwmb_file_frames[field_id] = wp.media( frame_options );
 		
-		
+		rwmb_file_frames[field_id] = wp.media( frame_options );		
 		
 		//Handle selection
 		rwmb_file_frames[field_id].on( 'select', function() {

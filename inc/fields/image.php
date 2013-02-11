@@ -183,8 +183,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			if ( empty( $meta ) )
 				return array();
-
-			$meta = implode( ',' , $meta );
+			
+			$meta = implode( ',' , (array) $meta );
 
 			// Re-arrange images with 'menu_order'
 			$meta = $wpdb->get_col( "
