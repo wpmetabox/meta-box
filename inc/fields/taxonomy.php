@@ -38,6 +38,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			
 			$tax = get_taxonomy( $field['options']['taxonomy'] );
 			$field = wp_parse_args( $field, array(
+				'required' => false,
 				'field_name' => "{$field['id']}[]",
 				'default' =>  __( 'Select a ' . $tax->labels->singular_name, 'rwmb' )
 			) );
