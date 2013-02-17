@@ -161,7 +161,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				$image,
 				$src,
 				$i18n_edit, $link, $i18n_edit,
-				$i18n_delete
+				$i18n_delete, $image,  $i18n_delete
 			);
 		}
 
