@@ -56,8 +56,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title  = _x( 'Upload files', 'file upload', 'rwmb' );
-			$i18n_more   = _x( '+ Add new file', 'file upload', 'rwmb' );	
+			$i18n_title  = _x( 'Select files', 'file upload', 'rwmb' );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );		
 
 			// Uploaded files
@@ -75,20 +74,6 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$html .= "<a href='#' class='{$classes}' data-attach_file_nonce={$attach_nonce}>{$i18n_title}</a>";
 
 			return $html;
-		}
-		
-
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field = parent::normalize_field( $field );
-			return $field;
 		}
 	}
 }

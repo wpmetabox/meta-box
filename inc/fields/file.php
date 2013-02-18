@@ -127,6 +127,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>)</li>';
 			
 			$attachment = wp_get_attachment_link( $attachment_id );
+			$mime_type = get_post_mime_type( $attachment_id );
 			return sprintf(
 				$li,
 				$attachment,

@@ -42,20 +42,9 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 				$field['multiple'] ? ' multiple="multiple"' : '',
 				esc_attr( json_encode( $field['js_options'] ) )
 			);
-			if ( !empty( $field['js_options']['placeholder'] ) )
-				$html .= '<option></option>';
 
-			$option = '<option value="%s" %s>%s</option>';
-
-			foreach ( $field['options'] as $value => $label )
-			{
-				$html .= sprintf(
-					$option,
-					$value,
-					selected( in_array( $value, $meta ), true, false ),
-					$label
-				);
-			}
+			$html .= self::options_html( $field );
+			
 			$html .= '</select>';
 
 			return $html;
@@ -70,9 +59,6 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field = parent::normalize_field( $field );
-
-
 			$field = wp_parse_args( $field, array(
 				'size' => $field['multiple'] ? 5 : 0,
 				'js_options' => array(),
@@ -83,6 +69,9 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 				'width'       => 'resolve',
 				'placeholder' => __( 'Select a value', 'rwmb' )
 			) );
+			$field['default'] = isset( $field['default']) ? $field['default'] : $field['placeholder'];
+			
+			$field = parent::normalize_field( $field );
 
 			return $field;
 		}
