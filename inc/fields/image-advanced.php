@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			// Do same actions as file field
 			parent::add_actions();
 
-			// Reorder images via Ajax
+			// Attach images via Ajax
 			add_action( 'wp_ajax_rwmb_attach_media', array( __CLASS__, 'wp_ajax_attach_media' ) );
 		}
 		
