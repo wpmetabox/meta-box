@@ -35,7 +35,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$field['multiple'] ? ' multiple="multiple"' : ''
 			);
 			
-			$html .= self::options_html( $field );
+			$html .= self::options_html( $field, $meta );
 			
 			$html .= '</select>';
 
@@ -121,7 +121,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function options_html( $field )
+		static function options_html( $field, $meta )
 		{
 			$html = !empty($field['default'])? "<option value=''>{$field['default']}</option>" : '';
 			$option = '<option value="%s" %s>%s</option>';
