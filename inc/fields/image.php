@@ -111,7 +111,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 			
 			$ul = '<ul class="rwmb-images rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
-			$html .= sprintf(
+			$html = sprintf(
 				$ul,
 				$field['id'],
 				$delete_nonce,
@@ -155,6 +155,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$src  = wp_get_attachment_image_src( $image, 'thumbnail' );
 			$src  = $src[0];
 			$link = get_edit_post_link( $image );
+
+			$force_delete = false; // Previously undeclared, is it needed?
 
 			return sprintf(
 				$li,
