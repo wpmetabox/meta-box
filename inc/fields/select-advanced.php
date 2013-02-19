@@ -43,8 +43,8 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 				esc_attr( json_encode( $field['js_options'] ) )
 			);
 
-			$html .= self::options_html( $field );
-			
+			$html .= self::options_html( $field, $meta );
+						
 			$html .= '</select>';
 
 			return $html;
@@ -60,7 +60,6 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size' => $field['multiple'] ? 5 : 0,
 				'js_options' => array(),
 			) );
 

@@ -35,7 +35,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$field['multiple'] ? ' multiple="multiple"' : ''
 			);
 			
-			$html .= self::options_html( $field );
+			$html .= self::options_html( $field, $meta );
 			
 			$html .= '</select>';
 
@@ -107,7 +107,8 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'desc'=> '',
 				'name' => $field['id'],
-				'default' => $field['desc']
+				'default' => $field['desc'],
+				'size' => $field['multiple'] ? 5 : 0,
 			) );
 			if ( !$field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
@@ -121,7 +122,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function options_html( $field )
+		static function options_html( $field, $meta )
 		{
 			$html = !empty($field['default'])? "<option value=''>{$field['default']}</option>" : '';
 			$option = '<option value="%s" %s>%s</option>';
@@ -131,7 +132,6 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$html .= sprintf(
 					$option,
 					$value,
-					/*  selected( in_array( $value, $meta ), true, false ),*/
 					selected( in_array( $value, (array)$meta ), true, false ),
 					$label
 				);
