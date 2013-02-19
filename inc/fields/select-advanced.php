@@ -43,8 +43,8 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 				esc_attr( json_encode( $field['js_options'] ) )
 			);
 
-			$html .= self::options_html( $field );
-			
+			$html .= self::options_html( $field, $meta );
+						
 			$html .= '</select>';
 
 			return $html;

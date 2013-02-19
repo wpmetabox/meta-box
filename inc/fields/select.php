@@ -107,7 +107,8 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'desc'=> '',
 				'name' => $field['id'],
-				'default' => $field['desc']
+				'default' => $field['desc'],
+				'size' => $field['multiple'] ? 5 : 0,
 			) );
 			if ( !$field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
@@ -131,7 +132,6 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$html .= sprintf(
 					$option,
 					$value,
-					/*  selected( in_array( $value, $meta ), true, false ),*/
 					selected( in_array( $value, (array)$meta ), true, false ),
 					$label
 				);
