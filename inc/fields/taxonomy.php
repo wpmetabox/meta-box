@@ -40,7 +40,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'required'   => false,
 				'field_name' => "{$field['id']}[]",
-				'default'    =>  sprintf( __( 'Select a %s' . , 'rwmb' ), $tax->labels->singular_name ),
+				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $tax->labels->singular_name ),
 			) );
 
 			switch( $field['options']['type'] )
