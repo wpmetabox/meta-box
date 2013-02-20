@@ -32,30 +32,30 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$default_args = array(
 				'hide_empty' => false,
 			);
-			
+
 			//Set default args
 			$field['options']['args'] = ( ! isset( $field['options']['args'] ) ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
-			
+
 			$tax = get_taxonomy( $field['options']['taxonomy'] );
 			$field = wp_parse_args( $field, array(
-				'required' => false,
+				'required'   => false,
 				'field_name' => "{$field['id']}[]",
-				'default' =>  __( 'Select a ' . $tax->labels->singular_name, 'rwmb' )
+				'default'    =>  sprintf( __( 'Select a %s' . , 'rwmb' ), $tax->labels->singular_name ),
 			) );
-			
+
 			switch( $field['options']['type'] )
 			{
 				case 'select_advanced':
-					$field = RWMB_Select_Advanced_Field::normalize_field( $field );		
+					$field = RWMB_Select_Advanced_Field::normalize_field( $field );
 					break;
 				case 'checkbox_list':
 				case 'checkbox_tree':
-					$field = RWMB_Checkbox_List_Field::normalize_field( $field );	
+					$field = RWMB_Checkbox_List_Field::normalize_field( $field );
 					break;
-				case 'select':	
+				case 'select':
 				case 'select_tree':
 					$field = RWMB_Select_Field::normalize_field( $field );
-					break;				
+					break;
 				default:
 					$field['options']['type'] = 'select';
 					$field = RWMB_Select_Field::normalize_field( $field );
@@ -91,11 +91,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			$options = $field['options'];
 			$terms   = get_terms( $options['taxonomy'], $options['args'] );
-			
+
 			$field['options'] = self::get_options( $terms );
 
 			$html = '';
-			
+
 			switch( $options['type'] )
 			{
 				case 'checkbox_list':
@@ -113,7 +113,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
 					break;
 				case 'select':
-				default:	
+				default:
 					$html = RWMB_Select_Field::html( $html, $meta, $field );
 			}
 
@@ -136,7 +136,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms  = $elements[$parent];
-			$field['options'] = self::get_options( $terms );	
+			$field['options'] = self::get_options( $terms );
 			$hidden = ( !$active ? 'hidden' : '' );
 
 			$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
@@ -174,7 +174,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms    = $elements[$parent];
-			$field['options'] = self::get_options( $terms );	
+			$field['options'] = self::get_options( $terms );
 			$hidden   = $active ? 'active' : 'disabled';
 			$disabled = disabled( $active, false, false );
 			$id       = empty( $parent_slug ) ? '' : " id='rwmb-taxonomy-{$parent_slug}'";
@@ -207,7 +207,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			}
 			return $elements;
 		}
-		
+
 		/**
 		 * Get options for selects, checkbox list, etc via the terms
 		 *
