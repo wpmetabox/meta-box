@@ -77,7 +77,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			$i18n_title  = _x( 'Upload files', 'file upload', 'rwmb' );
-			$i18n_more   = _x( '+ Add new file', 'file upload', 'rwmb' );			
+			$i18n_more   = _x( '+ Add new file', 'file upload', 'rwmb' );
 
 			// Uploaded files
 			$html = self::get_uploaded_files( $meta, $field );
@@ -96,12 +96,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			return $html;
 		}
-		
-		static function get_uploaded_files( $files, $field ) 
-		{			
+
+		static function get_uploaded_files( $files, $field )
+		{
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 			$ol = '<ol class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
-			$html .= sprintf(
+			$html = sprintf(
 				$ol,
 				$field['id'],
 				$delete_nonce,
@@ -109,23 +109,22 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 				$field['max_file_uploads'],
 				$field['mime_type']
 			);
-			
 
 			foreach ( $files as $attachment_id )
 			{
-				$html .= self::file_html( $attachment_id ); 
+				$html .= self::file_html( $attachment_id );
 			}
 
 			$html .= '</ol>';
-			
+
 			return $html;
 		}
-		
-		static function file_html( $attachment_id ) 
+
+		static function file_html( $attachment_id )
 		{
 			$i18n_delete = _x( 'Delete', 'file upload', 'rwmb' );
 			$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>)</li>';
-			
+
 			$attachment = wp_get_attachment_link( $attachment_id );
 			$mime_type = get_post_mime_type( $attachment_id );
 			return sprintf(
@@ -219,14 +218,15 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'std'          => array(),
-				'force_delete' => false,
-				'max_file_uploads' => 0
+				'std'              => array(),
+				'force_delete'     => false,
+				'max_file_uploads' => 0,
+				'mime_type'        => '',
 			) );
 			$field['multiple'] = true;
 			return $field;
 		}
-		
+
 		/**
 		 * Standard meta retrieval
 		 *

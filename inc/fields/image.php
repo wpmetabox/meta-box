@@ -109,9 +109,9 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-images_{$field['id']}" );
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-			
+
 			$ul = '<ul class="rwmb-images rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
-			$html .= sprintf(
+			$html = sprintf(
 				$ul,
 				$field['id'],
 				$delete_nonce,
@@ -183,7 +183,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			if ( empty( $meta ) )
 				return array();
-			
+
 			$meta = implode( ',' , (array) $meta );
 
 			// Re-arrange images with 'menu_order'
