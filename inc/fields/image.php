@@ -156,6 +156,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$src  = $src[0];
 			$link = get_edit_post_link( $image );
 
+			$force_delete = false; // Previously undeclared, is it needed?
+
 			return sprintf(
 				$li,
 				$image,
