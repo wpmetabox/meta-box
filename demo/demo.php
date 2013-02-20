@@ -90,6 +90,7 @@ $meta_boxes[] = array(
 			),
 			// Select multiple values, optional. Default is false.
 			'multiple' => false,
+			'default'	=>'Select an Item'
 		),
 		// HIDDEN
 		array(
@@ -215,6 +216,21 @@ $meta_boxes[] = array(
 				// Additional arguments for get_terms() function. Optional
 				'args' => array()
 			),
+		),
+		// POSTS
+		array(
+			'name'    => 'Posts (Pages)',
+			'id'      => "{$prefix}pages",
+			'type'    => 'posts',
+			//Post type
+			'post_type' => 'page',
+			//Field type, either select or select_advanced.  Default is select_advanced
+			'field_type'=> 'select_advanced',
+			//Query arguments.  Not setting will default to all published posts
+			'query_vars' => array(
+				'post_status' => 'publish',
+				'posts_per_page'=>'-1'
+			)
 		),
 		// WYSIWYG/RICH TEXT EDITOR
 		array(
