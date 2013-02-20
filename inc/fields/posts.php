@@ -51,20 +51,20 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 * @return array
 		 */
 		static function normalize_field( $field )
-		{
-			$field = RWMB_Select_Advanced_Field::normalize_field( $field );	
-			
+		{		
+			$pt_obj = get_post_type_object( $field['post_type'] );	
 			$field = wp_parse_args( $field, array(
 				'post_type' => 'post',
-				'field_type' => 'select_advanced'
+				'field_type' => 'select_advanced',
+				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $pt_obj->labels->singular_name )
 			) );
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
 				'post_type' => $field['post_type'],
 				'post_status' => 'publish',
 				'posts_per_page'=>'-1'
 			) );
-			
-			
+			$field = RWMB_Select_Advanced_Field::normalize_field( $field );	
+				
 			return $field;
 		}
 		
