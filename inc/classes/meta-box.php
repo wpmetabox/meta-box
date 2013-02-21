@@ -445,14 +445,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			//Before save actions
 			do_action("rwmb_before_save_post", $post_id);
 			do_action("rwmb_{$this->meta_box['id']}_before_save_post", $post_id);
-
-
+			$skip_type_arr = array('image_advanced', 'file_advanced');
+			
 			foreach ( $this->fields as $field )
 			{
+				if( in_array( $field['type'], $skip_type_arr ) ){
+					break;
+				}
 				$name = $field['id'];
 				$old  = get_post_meta( $post_id, $name, !$field['multiple'] );
 				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
-
+				
 				// Allow field class change the value
 				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
 
@@ -461,11 +464,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// 2nd filter applies to current field only
 				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
 				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
-
+				
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
 			}
-
+			
 			//After save sctions
 			do_action("rwmb_after_save_post", $post_id);
 			do_action("rwmb_{$this->meta_box['id']}_after_save_post", $post_id);
@@ -616,6 +619,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function do_field_class_actions( $field, $method_name )
 		{
+			//array(14) { ["std"]=> string(0) "" ["force_delete"]=> bool(false) ["max_file_uploads"]=> int(1) ["mime_type"]=> string(9) "video/mp4" ["multiple"]=> bool(true) ["clone"]=> bool(false) ["desc"]=> string(0) "" ["format"]=> string(0) "" ["before"]=> string(0) "" ["after"]=> string(0) "" ["name"]=> string(8) "MP4 File" ["id"]=> string(10) "whomcq_mp4" ["type"]=> string(13) "file_advanced" ["field_name"]=> string(10) "whomcq_mp4" } string(4) "save"
 			$args   = array_slice( func_get_args(), 2 );
 			$args[] = $field;
 
