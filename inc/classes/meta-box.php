@@ -538,22 +538,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $meta_box['fields'] as &$field )
 			{
 				$field = wp_parse_args( $field, array(
-					'multiple' => false,
-					'clone'    => false,
-					'std'      => '',
-					'desc'     => '',
-					'format'   => '',
-          'before'   => '',
-          'after'    => '',
+					'multiple' 		=> false,
+					'clone'    		=> false,
+					'std'      		=> '',
+					'desc'     		=> '',
+					'format'   		=> '',
+					'before'   		=> '',
+					'after'    		=> '',
+					'field_name' 	=> $field['id']
 				) );
 
 				// Allow field class add/change default field values
-				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
-
-				// Allow field class to manually change field_name
-				// @see taxonomy.php for example
-				if ( ! isset( $field['field_name'] ) )
-					$field['field_name'] = $field['id'];
+				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );				
 			}
 
 			return $meta_box;
