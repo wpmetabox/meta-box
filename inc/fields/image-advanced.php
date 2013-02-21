@@ -79,6 +79,23 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 
 			return $html;
 		}
+		
+		/**
+		 * Get field value
+		 * It's the combination of new (uploaded) images and saved images
+		 *
+		 * @param array $new
+		 * @param array $old
+		 * @param int   $post_id
+		 * @param array $field
+		 *
+		 * @return array|mixed
+		 */
+		static function value( $new, $old, $post_id, $field )
+		{
+			$new = (array) $new;
+			return array_unique( array_merge( $old, $new ) );
+		}
 
 	}
 }
