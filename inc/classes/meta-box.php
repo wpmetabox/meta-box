@@ -51,6 +51,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( ! is_admin() )
 				return;
 
+			// Allow users to show/hide (e.g. include/exclude) meta boxes
+			// 1st action applies to all meta boxes
+			// 2nd action applies to only current meta box
+			$show = true;
+			$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
+			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
+			if ( !$show )
+				return;
+
 			// Assign meta box values to local variables and add it's missed values
 			$this->meta_box   = self::normalize( $meta_box );
 			$this->fields     = &$this->meta_box['fields'];
@@ -134,15 +143,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
-				// Allow users to show/hide meta boxes
-				// 1st action applies to all meta boxes
-				// 2nd action applies to only current meta box
-				$show = true;
-				$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
-				$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
-				if ( !$show )
-					continue;
-
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
@@ -549,7 +549,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				) );
 
 				// Allow field class add/change default field values
-				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );				
+				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 			}
 
 			return $meta_box;
