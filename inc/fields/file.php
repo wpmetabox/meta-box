@@ -116,7 +116,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 				$html .= self::file_html( $attachment_id );
 			}
 
-			$html .= '</ol>';
+			$html .= '</ul>';
 
 			return $html;
 		}

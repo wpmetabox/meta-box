@@ -1,19 +1,20 @@
 jQuery( document ).ready( function( $ )
 {
-	var rwmb_file_frames = {};
+	var rwmbFileFrames = {};
 	
 	$( '.rwmb-file-advanced-upload' ).on( 'click', function(e) {
 		e.preventDefault();
 		
-		var upload_button = $(this),
-			file_list = upload_button.siblings( '.rwmb-uploaded' ),
-			field_id = file_list.data('field_id'),
-			max_file_uploads = file_list.data( 'max_file_uploads' ),
-			mime_type = file_list.data( 'mime_type' );
+		var uploadButton = $(this),
+			$fileList = uploadButton.siblings( '.rwmb-uploaded' ),
+			fieldID = $fileList.data('field_id'),
+			maxFileUploads = $fileList.data( 'max_file_uploads' ),
+			mimeType = $fileList.data( 'mime_type' );
+		console.log($fileList);
 
 		// If the frame already exists, re-open it.
-        if ( rwmb_file_frames[field_id] ) {
-            rwmb_file_frames[field_id].open();
+        if ( rwmbFileFrames[fieldID] ) {
+            rwmbFileFrames[fieldID].open();
             return;
         }
 		//Setup media frame
@@ -27,30 +28,30 @@ jQuery( document ).ready( function( $ )
             }
         };
 		
-		if( mime_type ) {
+		if( mimeType ) {
 			frame_options.library = {
-				type : mime_type
+				type : mimeType
 			};	
 		}
 		
-		rwmb_file_frames[field_id] = wp.media( frame_options );		
+		rwmbFileFrames[fieldID] = wp.media( frame_options );		
 		
 		//Handle selection
-		rwmb_file_frames[field_id].on( 'select', function() {
+		rwmbFileFrames[fieldID].on( 'select', function() {
 			//Get selections
-			var selection = rwmb_file_frames[field_id].state().get( 'selection' ),
-				msg = 'You may only upload ' + max_file_uploads + ' file',
-				uploaded = file_list.children().length,
+			var selection = rwmbFileFrames[fieldID].state().get( 'selection' ),
+				msg = 'You may only upload ' + maxFileUploads + ' file',
+				uploaded = $fileList.children().length,
 				total = uploaded + selection.length;
-			if ( max_file_uploads > 1 )
+			if ( maxFileUploads > 1 )
 				msg += 's';
 			
-			if( max_file_uploads > 0 ) {
-				if( total > max_file_uploads ) {
+			if( maxFileUploads > 0 ) {
+				if( total > maxFileUploads ) {
 					alert( msg );
 				}
-				if( total >= max_file_uploads ) {
-					upload_button.addClass( 'hidden' );
+				if( total >= maxFileUploads ) {
+					uploadButton.addClass( 'hidden' );
 				}
 			}
 				
@@ -60,7 +61,7 @@ jQuery( document ).ready( function( $ )
 				attachment = attachment.toJSON();
 
 				//Check if image already attached
-				if( file_list.children('li#item_' + attachment.id ).length > 0 || max_file_uploads > 0 && uploaded + 1 + index > max_file_uploads){					
+				if( $fileList.children('li#item_' + attachment.id ).length > 0 || maxFileUploads > 0 && uploaded + 1 + index > maxFileUploads){					
 					return;
 				}				
 				
@@ -68,9 +69,9 @@ jQuery( document ).ready( function( $ )
 				var data = {
 					action			: 'rwmb_attach_file',
 					post_id			: $( '#post_ID' ).val(),
-					field_id		: file_list.data('field_id'),
+					field_id		: $fileList.data('field_id'),
 					attachment_id	: attachment.id,
-					_ajax_nonce		: upload_button.data('attach_file_nonce')
+					_ajax_nonce		: uploadButton.data('attach_file_nonce')
 				};
 				$.post( ajaxurl, data, function( r )
 				{
@@ -79,14 +80,14 @@ jQuery( document ).ready( function( $ )
 					if ( res.errors )
 						alert( res.responses[0].errors[0].message );
 					else
-						file_list.removeClass( 'hidden' ).append( res.responses[0].data );
+						$fileList.append( res.responses[0].data );
 				}, 'xml' );
 			});
 		});
 		
 		
 		//Open
-		rwmb_file_frames[field_id].open();
+		rwmbFileFrames[fieldID].open();
 			
 	} );
 	
@@ -94,5 +95,4 @@ jQuery( document ).ready( function( $ )
 	{
 		$( this ).parents( '.rwmb-uploaded' ).siblings( '.rwmb-file-advanced-upload' ).removeClass( 'hidden' );		
 	} );
-		
 } );
