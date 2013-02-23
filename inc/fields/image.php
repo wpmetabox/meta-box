@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$order    = isset( $_POST['order'] ) ? $_POST['order'] : 0;
 
-			check_admin_referer( "rwmb-reorder-images_{$field_id}" );
+			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
 			$items = $items['item'];

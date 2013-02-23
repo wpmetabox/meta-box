@@ -54,7 +54,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
 			$force_delete  = isset( $_POST['force_delete'] ) ? intval( $_POST['force_delete'] ) : 0;
 
-			check_admin_referer( "rwmb-delete-file_{$field_id}" );
+			check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 			delete_post_meta( $post_id, $field_id, $attachment_id );
 			$ok = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
