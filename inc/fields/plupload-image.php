@@ -67,6 +67,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			parent::admin_enqueue_scripts();
 			wp_enqueue_style( 'rwmb-plupload-image', RWMB_CSS_URL . 'plupload-image.css', array( 'wp-admin' ), RWMB_VER );
 			wp_enqueue_script( 'rwmb-plupload-image', RWMB_JS_URL . 'plupload-image.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array( 'url' => RWMB_URL ) );
 		}
 
 		/**
