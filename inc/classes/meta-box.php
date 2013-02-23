@@ -51,19 +51,19 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( ! is_admin() )
 				return;
 
-			// Allow users to show/hide (e.g. include/exclude) meta boxes
-			// 1st action applies to all meta boxes
-			// 2nd action applies to only current meta box
-			$show = true;
-			$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
-			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
-			if ( !$show )
-				return;
-
 			// Assign meta box values to local variables and add it's missed values
 			$this->meta_box   = self::normalize( $meta_box );
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
+
+			// Allow users to show/hide (e.g. include/exclude) meta boxes
+			// 1st action applies to all meta boxes
+			// 2nd action applies to only current meta box
+			$show = true;
+			$show = apply_filters( 'rwmb_show', $show, $meta_box );
+			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
+			if ( !$show )
+				return;
 
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
