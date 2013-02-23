@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+
+.rwmb-file li{
+	width: 250px;	
+	margin:0 10px 10px 0;;	
+}
+.rwmb-file .rwmb-icon {
+	width: 60px;
+	text-align:center;
+	vertical-align:middle;
+}
+.rwmb-file .rwmb-info {
+	width: 180px;	
+	vertical-align:top;
+	overflow:hidden;
+}
+.rwmb-file .rwmb-info p {
+	margin:.1em 0;	
+}
+.rwmb-file .rwmb-info a {
+	font-weight:bold;
+	text-decoration:none;
+}
+.rwmb-file li, .rwmb-file .rwmb-icon, .rwmb-file .rwmb-info {
+	display:inline-block;
+}
+.rwmb-file .rwmb-icon, .rwmb-file .rwmb-info {
+	margin:0 0 2px 2px;
+}
