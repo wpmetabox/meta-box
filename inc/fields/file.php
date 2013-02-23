@@ -14,6 +14,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array( ), RWMB_VER );
 		}
 
 		/**
@@ -100,7 +101,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function get_uploaded_files( $files, $field )
 		{
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-			$ol = '<ol class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
+			$ol = '<ul class="rwmb-uploaded rwmb-file" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
 			$html = sprintf(
 				$ol,
 				$field['id'],
@@ -123,13 +124,28 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function file_html( $attachment_id )
 		{
 			$i18n_delete = _x( 'Delete', 'file upload', 'rwmb' );
-			$li = '<li>%s (<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>)</li>';
+			$i18n_edit = _x( 'Edit', 'file upload', 'rwmb' );
+			$li = '
+			<li>
+				<div class="rwmb-icon">%s</div>
+				<div class="rwmb-info">
+					<a href="%s" target="_blank">%s</a>
+					<p>%s</p>
+					<a title="%s" href="%s" target="_blank">%s</a> |
+					<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>
+				</div>
+			</li>';
 
-			$attachment = wp_get_attachment_link( $attachment_id );
 			$mime_type = get_post_mime_type( $attachment_id );
 			return sprintf(
 				$li,
-				$attachment,
+				wp_get_attachment_image( $attachment_id, array(60,60), true ),
+				wp_get_attachment_url($attachment_id),
+				get_the_title( $attachment_id ),
+				$mime_type,
+				$i18n_edit,
+				get_edit_post_link( $attachment_id ),
+				$i18n_edit,
 				$i18n_delete,
 				$attachment_id,
 				$i18n_delete
