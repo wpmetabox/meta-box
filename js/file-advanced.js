@@ -70,7 +70,7 @@ jQuery( document ).ready( function( $ )
 					post_id			: $( '#post_ID' ).val(),
 					field_id		: file_list.data('field_id'),
 					attachment_id	: attachment.id,
-					_wpnonce		: upload_button.data('attach_file_nonce')
+					_ajax_nonce		: upload_button.data('attach_file_nonce')
 				};
 				$.post( ajaxurl, data, function( r )
 				{

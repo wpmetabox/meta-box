@@ -18,7 +18,7 @@ jQuery( document ).ready( function( $ )
 			$container = $this.closest('.rwmb-uploaded')
 			data = {
 				action       : 'rwmb_delete_file',
-				_wpnonce     : $container.data('delete_nonce'),
+				_ajax_nonce  : $container.data('delete_nonce'),
 				post_id      : $( '#post_ID' ).val(),
 				field_id     : $container.data( 'field_id' ),
 				attachment_id: $this.data( 'attachment_id' ),

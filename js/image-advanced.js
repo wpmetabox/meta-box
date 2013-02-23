@@ -66,7 +66,7 @@ jQuery( document ).ready( function( $ )
 					post_id			: $( '#post_ID' ).val(),
 					field_id		: image_list.data('field_id'),
 					attachment_id	: attachment.id,
-					_wpnonce		: upload_button.data('attach_media_nonce')
+					_ajax_nonce		: upload_button.data('attach_media_nonce')
 				};
 				$.post( ajaxurl, data, function( r )
 				{
@@ -75,7 +75,7 @@ jQuery( document ).ready( function( $ )
 					if ( res.errors )
 						alert( res.responses[0].errors[0].message );
 					else
-						image_list.removeClass( 'hidden' ).prepend( res.responses[0].data );
+						image_list.prepend( res.responses[0].data );
 				}, 'xml' );
 			});
 		});		
