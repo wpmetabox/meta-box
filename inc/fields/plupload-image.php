@@ -93,7 +93,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			
 
 			// Check for max_file_uploads
-			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js' );
+			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js', 'new-files');
 			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads']  )
 				$classes[] = 'hidden';
 
