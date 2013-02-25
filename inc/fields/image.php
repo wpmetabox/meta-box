@@ -79,8 +79,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$i18n_more  = _x( '+ Add new image', 'image upload', 'rwmb' );
 
 			// Uploaded images
-			if ( ! empty( $meta ) )
-				$html .= self::get_uploaded_images( $meta, $field );
+			$html .= self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= sprintf(
@@ -109,10 +108,13 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-images_{$field['id']}" );
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-
-			$ul = '<ul class="rwmb-images rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
+			$classes = array('rwmb-images', 'rwmb-uploaded');
+			if ( count( $images ) <= 0  )
+				$classes[] = 'hidden';
+			$ul = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
 			$html = sprintf(
 				$ul,
+				implode( ' ', $classes ),
 				$field['id'],
 				$delete_nonce,
 				$reorder_nonce,

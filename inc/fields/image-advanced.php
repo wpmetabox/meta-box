@@ -67,13 +67,10 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			$html .= self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
-			$classes = array( 'button', 'rwmb-image-advanced-upload', 'hide-if-no-js' );
-			if ( ! empty( $field['max_file_uploads'] ) )
-			{
-				$max_file_uploads = (int) $field['max_file_uploads'];
-				if ( count( $meta ) >= $max_file_uploads )
-					$classes[] = 'hidden';
-			}
+			$classes = array( 'button', 'rwmb-image-advanced-upload', 'hide-if-no-js', 'new-files' );
+			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
+				$classes[] = 'hidden';
+					
 			$classes = implode( ' ', $classes );
 			$html .= "<a href='#' class='{$classes}' data-attach_media_nonce={$attach_nonce}>{$i18n_title}</a>";
 

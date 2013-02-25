@@ -82,14 +82,17 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			// Uploaded files
 			$html = self::get_uploaded_files( $meta, $field );
-
+			$new_file_classes = array('new-files');
+			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads']  )
+				$new_file_classes[] = 'hidden';
 			// Show form upload
 			$html .= sprintf(
-				'<h4>%s</h4>
-				<div class="new-files">
+				'<div class="%s">
+					<h4>%s</h4>
 					<div class="file-input"><input type="file" name="%s[]" /></div>
 					<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 				</div>',
+				implode( ' ', $new_file_classes ),
 				$i18n_title,
 				$field['id'],
 				$i18n_more
@@ -101,9 +104,13 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function get_uploaded_files( $files, $field )
 		{
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-			$ol = '<ul class="rwmb-uploaded rwmb-file" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
+			$classes = array('rwmb-file', 'rwmb-uploaded');
+			if ( count( $files ) <= 0  )
+				$classes[] = 'hidden';
+			$ol = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
 			$html = sprintf(
 				$ol,
+				implode( ' ', $classes ),
 				$field['id'],
 				$delete_nonce,
 				$field['force_delete'] ? 1 : 0,
