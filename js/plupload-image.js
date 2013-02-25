@@ -34,18 +34,18 @@ jQuery( document ).ready( function( $ )
 		//Add files
 		rwmbUploader.bind( 'FilesAdded', function( up, files ) 
 		{
-			var max_file_uploads = $imageList.data('max_file_uploads'),
+			var maxFileUploads = $imageList.data('max_file_uploads'),
 				uploaded = $imageList.children().length,
-				msg = 'You may only upload ' + max_file_uploads + ' file';
+				msg = 'You may only upload ' + maxFileUploads + ' file';
 
-			if ( max_file_uploads > 1 )
+			if ( maxFileUploads > 1 )
 				msg += 's';
 				
 			// Remove files from queue if exceed max file uploads
-			if ( max_file_uploads > 0  && ( uploaded + files.length ) > max_file_uploads )
+			if ( maxFileUploads > 0  && ( uploaded + files.length ) > maxFileUploads )
 			{
-				if( uploaded < max_file_uploads ){
-					var diff = max_file_uploads - uploaded;
+				if( uploaded < maxFileUploads ){
+					var diff = maxFileUploads - uploaded;
 					up.splice( diff - 1, files.length - diff );
 					files = up.files;
 				}
@@ -53,17 +53,17 @@ jQuery( document ).ready( function( $ )
 			}
 			
 			// Hide drag & drop section if reach max file uploads
-			if ( ( uploaded + files.length ) >= max_file_uploads ) $dropArea.addClass( 'hidden' );
+			if ( ( uploaded + files.length ) >= maxFileUploads ) $dropArea.addClass( 'hidden' );
 
 			max = parseInt( up.settings.max_file_size, 10 );
 
 			// Upload files
 			plupload.each( files, function( file )
 			{
-				add_loading( up, file, $imageList );
-				add_throbber( file );
+				addLoading( up, file, $imageList );
+				addThrobber( file );
 				if ( file.size >= max )
-					remove_error( file );
+					removeError( file );
 			} );
 			up.refresh();
 			up.start();
@@ -72,15 +72,15 @@ jQuery( document ).ready( function( $ )
 		
 		rwmbUploader.bind( 'Error', function( up, e )
 		{
-			add_loading( up, e.file, $imageList );
-			remove_error( e.file );
+			addLoading( up, e.file, $imageList );
+			removeError( e.file );
 			up.removeFile( e.file );
 		} );
 		
 		rwmbUploader.bind( 'FileUploaded', function( up, file, response )
 		{
 			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' );
-			false === res.errors ? $( 'li#' + file.id ).replaceWith( res.responses[0].data ) : remove_error( file );
+			false === res.errors ? $( 'li#' + file.id ).replaceWith( res.responses[0].data ) : removeError( file );
 		} );
 	});
 
@@ -93,7 +93,7 @@ jQuery( document ).ready( function( $ )
 	 *
 	 * @return void
 	 */
-	function remove_error( file )
+	function removeError( file )
 	{
 		$( 'li#' + file.id )
 			.addClass( 'rwmb-image-error' )
@@ -110,9 +110,9 @@ jQuery( document ).ready( function( $ )
 	 *
 	 * @return void
 	 */
-	function add_loading( up, file, $ul )
+	function addLoading( up, file, $ul )
 	{
-		$ul.append( "<li id='" + file.id + "'><div class='rwmb-image-uploading-bar'></div><div id='" + file.id + "-throbber' class='rwmb-image-uploading-status'></div></li>" );
+		$ul.removeClass('hidden').append( "<li id='" + file.id + "'><div class='rwmb-image-uploading-bar'></div><div id='" + file.id + "-throbber' class='rwmb-image-uploading-status'></div></li>" );
 	}
 
 	/**
@@ -120,7 +120,7 @@ jQuery( document ).ready( function( $ )
 	 *
 	 * @return void
 	 */
-	function add_throbber( file )
+	function addThrobber( file )
 	{
 		$( '#' + file.id + '-throbber' ).html( "<img class='rwmb-loader' height='64' width='64' src='" + RWMB.url + "img/loader.gif'/>" );
 	}

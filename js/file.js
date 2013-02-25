@@ -3,9 +3,17 @@ jQuery( document ).ready( function( $ )
 	// Add more file
 	$( '.rwmb-add-file' ).click( function()
 	{
-		var $this = $( this ), $first = $this.parent().find( '.file-input:first' );
-
-		$first.clone().insertBefore( $this );
+		var $this = $( this ), 
+			$fields = $this.siblings( '.file-input' ),
+			$first = $fields.first(),
+			$fileList = $this.closest('.rwmb-input').find( '.rwmb-uploaded' ),
+			fileCount = $fileList.children('li').length,
+			maxFileUploads = $fileList.data( 'max_file_uploads' );
+			
+			console.log( $fileList )
+		if( ($fields.length + fileCount) < maxFileUploads || maxFileUploads <= 0) {
+			$first.clone().insertBefore( $this );
+		} 
 
 		return false;
 	} );
@@ -31,8 +39,15 @@ jQuery( document ).ready( function( $ )
 
 			if ( res.errors )
 				alert( res.responses[0].errors[0].message );
-			else
+			else 
+			{
 				$parent.remove();
+				$container.siblings('.new-files').removeClass('hidden');
+				if( $container.children('li').length <=0 )
+				{
+					$container.addClass( 'hidden' );	
+				}
+			}
 		}, 'xml' );
 
 		return false;
