@@ -195,7 +195,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				SELECT ID FROM {$wpdb->posts}
 				WHERE post_type = 'attachment'
 				AND ID in ({$meta})
-				ORDER BY menu_order ASC
+				ORDER BY menu_order+0 ASC
 			" );
 
 			return (array) $meta;
