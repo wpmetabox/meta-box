@@ -25,6 +25,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 */
 		static function handle_upload()
 		{
+			global $wpdb;
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
 			$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
 
@@ -33,12 +34,27 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			// You can use WP's wp_handle_upload() function:
 			$file       = $_FILES['async-upload'];
 			$file_attr  = wp_handle_upload( $file, array( 'test_form' => false ) );
+			//Get next menu_order
+			$meta = get_post_meta( $post_id, $field_id, false );
+			if( empty( $meta ) ){
+				$next = 0;	
+			} else {
+				$meta = implode( ',' , (array) $meta );
+				$max = $wpdb->get_var( "
+					SELECT MAX(menu_order) FROM {$wpdb->posts}
+					WHERE post_type = 'attachment'
+					AND ID in ({$meta})
+				" );
+				$next = is_numeric($max) ? (int) $max + 1: 0;
+			}
+			
 			$attachment = array(
-				'guid'           => $file_attr['url'],
-				'post_mime_type' => $file_attr['type'],
-				'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
-				'post_content'   => '',
-				'post_status'    => 'inherit',
+				'guid'           	=> $file_attr['url'],
+				'post_mime_type' 	=> $file_attr['type'],
+				'post_title'     	=> preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
+				'post_content'   	=> '',
+				'post_status'    	=> 'inherit',
+				'menu_order'		=> $next
 			);
 
 			// Adds file as attachment to WordPress
