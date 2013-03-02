@@ -57,7 +57,8 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 				'post_type' => 'post',
 				'field_type' => 'select_advanced',
 				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $pt_obj->labels->singular_name ), 
-				'parent' => false
+				'parent' => false,
+				'query_args' => array()
 			) );
 			
 			if( $field['parent'] ) {
