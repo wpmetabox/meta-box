@@ -33,14 +33,12 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 			$field['options'] = self::get_options( $field );
 			switch( $field['field_type'] ) {
 				case 'select':
-					$html = RWMB_Select_Field::html( $html, $meta, $field );
+					return RWMB_Select_Field::html( $html, $meta, $field );
 					break;
 				case 'select_advanced':
 				default:
-					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
+					return RWMB_Select_Advanced_Field::html( $html, $meta, $field );
 			}
-
-			return $html;
 		}
 
 		/**
@@ -57,21 +55,22 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 				'post_type' => 'post',
 				'field_type' => 'select_advanced',
 				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $pt_obj->labels->singular_name ), 
-				'parent' => false
+				'parent' => false,
+				'query_args' => array()
 			) );
 			
 			if( $field['parent'] ) {
 				 $field['multiple'] = false;
 				 $field['field_name'] = 'parent_id';
 			}
+			
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
 				'post_type' => $field['post_type'],
 				'post_status' => 'publish',
 				'posts_per_page'=>'-1'
 			) );
-			$field = RWMB_Select_Advanced_Field::normalize_field( $field );	
 				
-			return $field;
+			return  RWMB_Select_Advanced_Field::normalize_field( $field );
 		}
 		
 		/**
@@ -114,7 +113,6 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		static function save( $new, $old, $post_id, $field )
 		{
 			return  RWMB_Select_Field::save( $new, $old, $post_id, $field );
-
 		}
 		
 		/**

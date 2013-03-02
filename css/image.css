@@ -8,7 +8,7 @@
 	width: 150px;
 	height: 150px;
 	text-align: center;
-	border: 3px solid #ccc;
+	border: 2px solid #ccc;
 	cursor: move;
 	position: relative;
 }
@@ -20,12 +20,29 @@
 	color: #fff;
 	font-weight: bold;
 	background: #000;
+	background: rgba(0, 0, 0, .5);
 	position: absolute;
-	bottom: 0;
+	top: 0;
 	right: 0;
 	padding: 5px;
+	display:none;
+	text-align: center;
+	vertical-align:middle;
 }
+li:hover .rwmb-image-bar{
+	display:block;	
+}
+
 .rwmb-image-bar a {
 	color: #fff;
 	font-weight: bold;
+	text-decoration:none;
+	text-align: center;
+	vertical-align:inherit;
+}
+
+.rwmb-image-bar a.rwmb-delete-file {
+	font-weight:lighter;
+	font-size:23px;
+	width:18px;
 }
