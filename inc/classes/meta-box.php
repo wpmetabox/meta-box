@@ -148,8 +148,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			if(isset( $_POST['post_ID'] ) )
 				$this->save_post( $_POST['post_ID'] );
-			else
-				
 			exit;
 		}
 
