@@ -55,7 +55,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->meta_box   = self::normalize( $meta_box );
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
-
+			
 			// Allow users to show/hide (e.g. include/exclude) meta boxes
 			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
@@ -90,6 +90,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// @see wp_update_post(), wp_insert_attachment()
 			add_action( 'edit_attachment', array( $this, 'save_post' ) );
 			add_action( 'add_attachment', array( $this, 'save_post' ) );
+			
+			//Auto save ajax call.  One unique ajax call for each metabox
+			add_action( 'wp_ajax_rwmb_save_meta_' . $this->meta_box['id'] , array( $this, 'autosave' ) );
 		}
 
 		/**
@@ -128,6 +131,24 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 			}
+			
+			//Add auto save
+			if( is_int($this->meta_box['autosave']) )
+			{
+				wp_enqueue_script( 'rwmb-save', RWMB_JS_URL . 'save.js', array( 'jquery' ), RWMB_VER, true );	
+			}
+		}
+		
+		/**
+		 * Auto save ajax callback
+		 *
+		 * @return void
+		 */
+		function autosave()
+		{
+			if(isset( $_POST['post_ID'] ) )
+				$this->save_post( $_POST['post_ID'] );
+			exit;
 		}
 
 		/**************************************************
@@ -164,7 +185,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			global $post;
 
 			$saved = self::has_been_saved( $post->ID, $this->fields );
-
+			//Container
+			echo sprintf(
+				'<div class="rwmb-meta-box" data-meta_box_id="%s" data-autosave="%s">',
+				$this->meta_box['id'],
+				$this->meta_box['autosave']
+			);
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			// Allow users to add custom code before meta box content
@@ -303,6 +329,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
+			
+			//End container
+			echo '</div>';
 		}
 
 		/**
@@ -531,7 +560,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				'id'       => sanitize_title( $meta_box['title'] ),
 				'context'  => 'normal',
 				'priority' => 'high',
-				'pages'    => array( 'post' )
+				'pages'    => array( 'post' ),
+				'autosave'		=> false
 			) );
 
 			// Set default values for fields
@@ -549,7 +579,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				) );
 
 				// Allow field class add/change default field values
-				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
+				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );				
 			}
 
 			return $meta_box;
