@@ -41,7 +41,10 @@ $meta_boxes[] = array(
 
 	// Order of meta box: high (default), low. Optional.
 	'priority' => 'high',
-
+	
+	//Auto save interval, in seconds.  Optional (default is false)
+	'autosave'=> 60,
+	
 	// List of meta fields
 	'fields' => array(
 		// TEXT
