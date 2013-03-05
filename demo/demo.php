@@ -44,6 +44,7 @@ $meta_boxes[] = array(
 	
 	//Auto save interval, in seconds.  Optional (default is false)
 	'autosave'=> 60,
+	
 	// List of meta fields
 	'fields' => array(
 		// TEXT
