@@ -46,9 +46,9 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			);
 		}
 
-        /**
-         * Calculates the timestamp from the datetime string and returns it
-         * if $field['timestamp'] is set or the datetime string if not
+		/**
+		 * Calculates the timestamp from the datetime string and returns it
+		 * if $field['timestamp'] is set or the datetime string if not
 		 *
 		 * @param mixed $new
 		 * @param mixed $old
@@ -57,19 +57,19 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 *
 		 * @return string|int
 		 */
-        static function value($new, $old, $post_id, $field)
-        {
-          if ($field['timestamp']) {
-            $d = DateTime::createFromFormat(RWMB_Datetime_Field::translateFormat($field), $new);
-            if ($d) {
-              return $d->getTimestamp();
-            }
-            return 0;
-          }
-          else {
-            return $new;
-          }
-        }
+		static function value($new, $old, $post_id, $field)
+		{
+		  if ($field['timestamp']) {
+			$d = DateTime::createFromFormat(RWMB_Datetime_Field::translateFormat($field), $new);
+			if ($d) {
+			  return $d->getTimestamp();
+			}
+			return 0;
+		  }
+		  else {
+			return $new;
+		  }
+		}
 
 		/**
 		 * Normalize parameters for field
@@ -100,27 +100,26 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 
 
 
-    // missing: 't' => '', T' => '', 'm' => '', 's' => ''
-    static $timeFormatTranslation = array('H' => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
-      'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A');
+		// missing: 't' => '', T' => '', 'm' => '', 's' => ''
+		static $timeFormatTranslation = array('H' => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
+		  'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A');
 
-    // missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
-    static $dateFormatTranslation = array('d' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l', 
-      'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y');
+		// missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
+		static $dateFormatTranslation = array('d' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l', 
+		  'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y');
 
-    /**
-     * Returns a date() compatible format string from the JavaScript format
-     * @see http://www.php.net/manual/en/function.date.php
-     * 
-     * @param array $field
-     *
-     * @return string
-     */
-    static function translateFormat($field) {
-      return strtr( $field['js_options']['dateFormat'], RWMB_Datetime_Field::$dateFormatTranslation)
-           . $field['js_options']['separator']
-           . strtr( $field['js_options']['timeFormat'], RWMB_Datetime_Field::$timeFormatTranslation);
-    }
-
+		/**
+		 * Returns a date() compatible format string from the JavaScript format
+		 * @see http://www.php.net/manual/en/function.date.php
+		 * 
+		 * @param array $field
+		 *
+		 * @return string
+		 */
+		static function translateFormat($field) {
+		  return strtr( $field['js_options']['dateFormat'], RWMB_Datetime_Field::$dateFormatTranslation)
+			   . $field['js_options']['separator']
+			   . strtr( $field['js_options']['timeFormat'], RWMB_Datetime_Field::$timeFormatTranslation);
+		}
 	}
 }
