@@ -1,38 +1,32 @@
 jQuery( document ).ready( function( $ )
 {
-	var rwmbMediaFrame;
-
-	$( '.rwmb-image-advanced-upload' ).on( 'click', function(e) {
-		e.preventDefault();
-		
+	$( '.rwmb-image-advanced-upload' ).each(function(){
 		var $uploadButton = $(this),
 			$imageList = $(this).siblings( '.rwmb-images' ),
-			maxFileUploads = $imageList.data( 'max_file_uploads' );
-		
-		
-		// If the frame already exists, re-open it.
-        if ( rwmbMediaFrame ) {
-            rwmbMediaFrame.open();
-            return;
-        }
-		//Create media frame
-		frameOptions = {
-            className	: 'media-frame rwmb-media-frame',
-            frame		: 'select',
-            multiple	: true,
-            title		: 'Select or Upload Images',
-            library		: {
-            	type		:	'image'
-            },
-            button		: {
-                text		:	'Select'
-            }
-        } ;
-		
-		rwmbMediaFrame = wp.media.frames.rwmbMediaFrame = wp.media( frameOptions );
-		
+			maxFileUploads = $imageList.data( 'max_file_uploads' ),
+			frameOptions = {
+				className	: 'media-frame rwmb-media-frame',
+				frame		: 'select',
+				multiple	: true,
+				title		: 'Select or Upload Media',
+				library		: {
+					type		:	'image'
+				},
+				button		: {
+					text		:	'Select'
+				}
+			},
+			rwmbMediaFrame = wp.media( frameOptions ) ;
+			
+		//Button click handler
+		$uploadButton.on( 'click', function(e) {
+			e.preventDefault();
+			rwmbMediaFrame.open();
+		} );
+			
 		//Handle selection
 		rwmbMediaFrame.on( 'select', function() {
+			console.log($imageList);
 			//Get selections
 			var selection = rwmbMediaFrame.state().get( 'selection' ).toJSON(),
 				msg = 'You may only upload ' + maxFileUploads + ' file',
@@ -76,12 +70,8 @@ jQuery( document ).ready( function( $ )
 					// Hide files button if reach max file uploads
 					if ( $imageList.children().length >= maxFileUploads ) $uploadButton.addClass( 'hidden' );
 				}, 'xml' );	
-			}
+			}			
+		});	
 			
-			
-		});		
-		
-		//Open
-		rwmbMediaFrame.open();
-	} );
+	});
 } );
