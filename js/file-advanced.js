@@ -1,44 +1,40 @@
 jQuery( document ).ready( function( $ )
 {
-	var rwmbFileFrames = {};
-	
-	$( '.rwmb-file-advanced-upload' ).on( 'click', function(e) {
-		e.preventDefault();
-		
+	$( '.rwmb-file-advanced-upload' ).each(function(){
 		var $uploadButton = $(this),
 			$fileList = $uploadButton.siblings( '.rwmb-uploaded' ),
 			fieldID = $fileList.data('field_id'),
 			maxFileUploads = $fileList.data( 'max_file_uploads' ),
-			mimeType = $fileList.data( 'mime_type' );
-
-		// If the frame already exists, re-open it.
-        if ( rwmbFileFrames[fieldID] ) {
-            rwmbFileFrames[fieldID].open();
-            return;
-        }
-		//Setup media frame
-		frameOptions = {
-            className	: 'media-frame rwmb-file-frame',
-            frame		: 'select',
-            multiple	: true,
-            title		: 'Select files',
-            button		: {
-                text		:	'Select'
-            }
-        };
-		
+			mimeType = $fileList.data( 'mime_type' ),
+			frameOptions = {
+				className	: 'media-frame rwmb-file-frame',
+				frame		: 'select',
+				multiple	: true,
+				title		: 'Select files',
+				button		: {
+					text		:	'Select'
+				}
+			},
+			rwmbFileFrame;
+			
 		if( mimeType ) {
 			frameOptions.library = {
 				type : mimeType
 			};	
 		}
+		//Setup media frame
+		rwmbFileFrame = wp.media( frameOptions );	
 		
-		rwmbFileFrames[fieldID] = wp.media( frameOptions );		
+		//Button click handler
+		$uploadButton.on( 'click', function(e) {
+			e.preventDefault();
+			rwmbFileFrame.open();
+		} );
 		
-		//Handle selection
-		rwmbFileFrames[fieldID].on( 'select', function() {
+		//File select handler
+		rwmbFileFrame.on( 'select', function() {
 			//Get selections
-			var selection = rwmbFileFrames[fieldID].state().get( 'selection' ).toJSON(),
+			var selection = rwmbFileFrame.state().get( 'selection' ).toJSON(),
 				msg = 'You may only upload ' + maxFileUploads + ' file',
 				uploaded = $fileList.children().length;
 			if ( maxFileUploads > 1 )
@@ -79,11 +75,6 @@ jQuery( document ).ready( function( $ )
 					if ( $fileList.children().length >= maxFileUploads ) $uploadButton.addClass( 'hidden' );
 				}, 'xml' );	
 			}
-		});
-		
-		
-		//Open
-		rwmbFileFrames[fieldID].open();
-			
-	} );
+		});	
+	});
 } );
