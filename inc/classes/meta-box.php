@@ -55,7 +55,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->meta_box   = self::normalize( $meta_box );
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
-			
+
 			// Allow users to show/hide (e.g. include/exclude) meta boxes
 			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
@@ -90,7 +90,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// @see wp_update_post(), wp_insert_attachment()
 			add_action( 'edit_attachment', array( $this, 'save_post' ) );
 			add_action( 'add_attachment', array( $this, 'save_post' ) );
-			
+
 			//Auto save ajax call.  One unique ajax call for each metabox
 			add_action( 'wp_ajax_rwmb_save_meta_' . $this->meta_box['id'] , array( $this, 'autosave' ) );
 		}
@@ -131,14 +131,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 			}
-			
+
 			//Add auto save
 			if( is_int($this->meta_box['autosave']) )
 			{
-				wp_enqueue_script( 'rwmb-save', RWMB_JS_URL . 'save.js', array( 'jquery' ), RWMB_VER, true );	
+				wp_enqueue_script( 'rwmb-save', RWMB_JS_URL . 'save.js', array( 'jquery' ), RWMB_VER, true );
 			}
 		}
-		
+
 		/**
 		 * Auto save ajax callback
 		 *
@@ -329,7 +329,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// 2nd action applies to only current meta box
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
-			
+
 			//End container
 			echo '</div>';
 		}
@@ -432,15 +432,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * Save data from meta box
 		 *
 		 * @param int $post_id Post ID
+		 * @param object $post Post object
 		 *
 		 * @return void
 		 */
-		function save_post( $post_id )
+		function save_post( $post_id, $post )
 		{
-			// Get proper post type. @link http://www.deluxeblogtips.com/forums/viewtopic.php?id=161
+			// Get proper post type
 			$post_type = null;
-			$post = get_post( $post_id );
-
 			if ( $post )
 				$post_type = $post->post_type;
 			elseif ( isset( $_POST['post_type'] ) && post_type_exists( $_POST['post_type'] ) )
@@ -449,14 +448,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$post_type_object = get_post_type_object( $post_type );
 
 			// Check whether:
-			// - the post is autosaved
-			// - the post is a revision
+			// - the post is autosaved (including revision)
 			// - current post type is supported
 			// - user has proper capability
-			// - in Quick edit mode, @link http://wordpress.org/support/topic/quick-edit-not-working-and-problem-located
+			// - in Quick edit mode, @see http://wordpress.org/support/topic/quick-edit-not-working-and-problem-located
 			if (
-				( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-				|| ( ! isset( $_POST['post_ID'] ) || $post_id != $_POST['post_ID'] )
+				wp_is_post_autosave( $post )
 				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
 				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 				|| ( 'inline-save' == $_POST['action'] )
@@ -468,13 +465,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Verify nonce
 			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
-			//Save post action removed to prevent infinite loops
+			// Save post action removed to prevent infinite loops
 			remove_action( 'save_post', array( $this, 'save_post' ) );
 
-			//Before save actions
-			do_action("rwmb_before_save_post", $post_id);
-			do_action("rwmb_{$this->meta_box['id']}_before_save_post", $post_id);
-
+			// Before save action
+			do_action( 'rwmb_before_save_post', $post_id );
+			do_action( "rwmb_{$this->meta_box['id']}_before_save_post", $post_id );
 
 			foreach ( $this->fields as $field )
 			{
@@ -495,11 +491,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
 			}
 
-			//After save sctions
-			do_action("rwmb_after_save_post", $post_id);
-			do_action("rwmb_{$this->meta_box['id']}_after_save_post", $post_id);
+			// After save action
+			do_action( 'rwmb_after_save_post', $post_id );
+			do_action( "rwmb_{$this->meta_box['id']}_after_save_post", $post_id );
 
-			//Reinstate save_post action
+			// Reinstate save_post action
 			add_action( 'save_post', array( $this, 'save_post' ) );
 		}
 
@@ -579,7 +575,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				) );
 
 				// Allow field class add/change default field values
-				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );				
+				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 			}
 
 			return $meta_box;
