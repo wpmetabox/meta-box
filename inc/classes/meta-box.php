@@ -90,9 +90,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// @see wp_update_post(), wp_insert_attachment()
 			add_action( 'edit_attachment', array( $this, 'save_post' ) );
 			add_action( 'add_attachment', array( $this, 'save_post' ) );
-
-			//Auto save ajax call.  One unique ajax call for each metabox
-			add_action( 'wp_ajax_rwmb_save_meta_' . $this->meta_box['id'] , array( $this, 'autosave' ) );
 		}
 
 		/**
@@ -132,23 +129,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 			}
 
-			//Add auto save
-			if( is_int($this->meta_box['autosave']) )
-			{
-				wp_enqueue_script( 'rwmb-save', RWMB_JS_URL . 'save.js', array( 'jquery' ), RWMB_VER, true );
-			}
-		}
-
-		/**
-		 * Auto save ajax callback
-		 *
-		 * @return void
-		 */
-		function autosave()
-		{
-			if(isset( $_POST['post_ID'] ) )
-				$this->save_post( $_POST['post_ID'] );
-			exit;
+			// Auto save
+			if ( $this->meta_box['autosave'] )
+				wp_enqueue_script( 'rwmb-autosave', RWMB_JS_URL . 'autosave.js', array( 'jquery' ), RWMB_VER, true );
 		}
 
 		/**************************************************
@@ -185,12 +168,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			global $post;
 
 			$saved = self::has_been_saved( $post->ID, $this->fields );
-			//Container
-			echo sprintf(
-				'<div class="rwmb-meta-box" data-meta_box_id="%s" data-autosave="%s">',
-				$this->meta_box['id'],
-				$this->meta_box['autosave']
-			);
+
+			// Container
+			echo '<div class="rwmb-meta-box">';
+
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			// Allow users to add custom code before meta box content
@@ -330,7 +311,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			do_action( 'rwmb_after' );
 			do_action( "rwmb_after_{$this->meta_box['id']}" );
 
-			//End container
+			// End container
 			echo '</div>';
 		}
 
@@ -432,12 +413,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * Save data from meta box
 		 *
 		 * @param int $post_id Post ID
-		 * @param object $post Post object
 		 *
 		 * @return void
 		 */
-		function save_post( $post_id, $post )
+		function save_post( $post_id )
 		{
+			$post = get_post( $post_id );
+
 			// Get proper post type
 			$post_type = null;
 			if ( $post )
@@ -448,14 +430,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$post_type_object = get_post_type_object( $post_type );
 
 			// Check whether:
-			// - the post is autosaved (including revision)
+			// - the post is autosaved (including revision), @see wp_is_post_autosave()
 			// - current post type is supported
 			// - user has proper capability
 			// - in Quick edit mode, @see http://wordpress.org/support/topic/quick-edit-not-working-and-problem-located
 			if (
-				wp_is_post_autosave( $post )
-				|| ( ! in_array( $post_type, $this->meta_box['pages'] ) )
-				|| ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+				( $this->meta_box['autosave'] != (bool) wp_is_post_autosave( $post ) )
+				|| current_user_can( $post_type_object->cap->edit_post )
 				|| ( 'inline-save' == $_POST['action'] )
 			)
 			{
@@ -557,7 +538,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				'context'  => 'normal',
 				'priority' => 'high',
 				'pages'    => array( 'post' ),
-				'autosave'		=> false
+				'autosave' => false,
 			) );
 
 			// Set default values for fields
