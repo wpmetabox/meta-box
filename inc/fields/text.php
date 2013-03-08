@@ -18,11 +18,13 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input type="text" class="rwmb-text" name="%s" id="%s" value="%s" size="%s" />',
+				'<input type="text" class="rwmb-text" name="%s" id="%s" value="%s" size="%s" %s/>%s',
 				$field['field_name'],
 				$field['id'],
 				$meta,
-				$field['size']
+				$field['size'],
+				!$field['datalist'] ?  '' : "list='{$field['datalist']['id']}'",
+				self::datalist_html($field)
 			);
 		}
 
@@ -37,8 +39,35 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		{
 			$field = wp_parse_args( $field, array(
 				'size' => 30,
+				'datalist' => false
 			) );
 			return $field;
+		}
+		
+		/**
+		 * Create datalist, if any
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function datalist_html( $field )
+		{
+			if( !$field['datalist'] )
+				return '';
+			$datalist = $field['datalist'];
+			$html = sprintf(
+				'<datalist id="%s">',
+				$datalist['id']
+			);
+			
+			foreach( $datalist['options'] as $option ) {
+				$html.= sprintf('<option value="%s"></option>', $option);	
+			}
+			
+			$html .= '</datalist>';
+			
+			return $html;
 		}
 	}
 }
