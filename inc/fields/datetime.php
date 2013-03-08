@@ -2,16 +2,16 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Datetime_Field' ) )
+if ( !class_exists( 'RWMB_Datetime_Field' ) )
 {
 	class RWMB_Datetime_Field
 	{
 		/**
 		 * Enqueue scripts and styles
 		 *
-		 * @return	void
+		 * @return void
 		 */
-		static function admin_enqueue_scripts( )
+		static function admin_enqueue_scripts()
 		{
 			$url = RWMB_CSS_URL . 'jqueryui';
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
@@ -37,9 +37,9 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s">',
 				$field['field_name'],
-				isset( $field['timestamp'] ) &&  $field['timestamp'] ? date(RWMB_Datetime_Field::translateFormat($field), $meta) : $meta,
+				isset( $field['timestamp'] ) && $field['timestamp'] ? date( self::translate_format( $field ), $meta ) : $meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
 				esc_attr( json_encode( $field['js_options'] ) )
@@ -57,18 +57,13 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 *
 		 * @return string|int
 		 */
-		static function value($new, $old, $post_id, $field)
+		static function value( $new, $old, $post_id, $field )
 		{
-		  if ($field['timestamp']) {
-			$d = DateTime::createFromFormat(RWMB_Datetime_Field::translateFormat($field), $new);
-			if ($d) {
-			  return $d->getTimestamp();
-			}
-			return 0;
-		  }
-		  else {
-			return $new;
-		  }
+			if ( !$field['timestamp'] )
+				return $new;
+
+			$d = DateTime::createFromFormat( self::translate_format( $field ), $new );
+			return $d ? $d->getTimestamp() : 0;
 		}
 
 		/**
@@ -98,28 +93,32 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			return $field;
 		}
 
+		// Missing: 't' => '', T' => '', 'm' => '', 's' => ''
+		static $time_format_translation = array(
+			'H'  => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
+			'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A'
+		);
 
-
-		// missing: 't' => '', T' => '', 'm' => '', 's' => ''
-		static $timeFormatTranslation = array('H' => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
-		  'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A');
-
-		// missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
-		static $dateFormatTranslation = array('d' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l', 
-		  'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y');
+		// Missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
+		static $date_format_translation = array(
+			'd' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l',
+			'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y'
+		);
 
 		/**
 		 * Returns a date() compatible format string from the JavaScript format
+		 *
 		 * @see http://www.php.net/manual/en/function.date.php
-		 * 
+		 *
 		 * @param array $field
 		 *
 		 * @return string
 		 */
-		static function translateFormat($field) {
-		  return strtr( $field['js_options']['dateFormat'], RWMB_Datetime_Field::$dateFormatTranslation)
-			   . $field['js_options']['separator']
-			   . strtr( $field['js_options']['timeFormat'], RWMB_Datetime_Field::$timeFormatTranslation);
+		static function translate_format( $field )
+		{
+			return strtr( $field['js_options']['dateFormat'], self::$date_format_translation )
+				. $field['js_options']['separator']
+				. strtr( $field['js_options']['timeFormat'], self::$time_format_translation );
 		}
 	}
 }
