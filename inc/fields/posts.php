@@ -49,12 +49,17 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 * @return array
 		 */
 		static function normalize_field( $field )
-		{		
-			$pt_obj = get_post_type_object( $field['post_type'] );	
+		{
+			$default_post_type = "Post";
+			if(is_string($field['post_type'])) {
+			  $pt_obj = get_post_type_object( $field['post_type'] );	
+                          $default_post_type = $pt_obj->labels->singular_name;
+                        }
+
 			$field = wp_parse_args( $field, array(
 				'post_type' => 'post',
 				'field_type' => 'select_advanced',
-				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $pt_obj->labels->singular_name ), 
+				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $default_post_type ), 
 				'parent' => false,
 				'query_args' => array()
 			) );
