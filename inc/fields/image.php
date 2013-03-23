@@ -75,8 +75,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title = _x( 'Upload images', 'image upload', 'rwmb' );
-			$i18n_more  = _x( '+ Add new image', 'image upload', 'rwmb' );
+			$i18n_title = apply_filters( 'rwmb_image_upload_string', _x( 'Upload Images', 'image upload', 'rwmb' ), $field );
+			$i18n_more  = apply_filters( 'rwmb_image_add_string', _x( '+ Add new image', 'image upload', 'rwmb' ), $field );
 
 			// Uploaded images
 			$html .= self::get_uploaded_images( $meta, $field );
@@ -136,14 +136,13 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 * Get HTML markup for ONE uploaded image
 		 *
 		 * @param int $image Image ID
-		 * @param int $field
 		 *
 		 * @return string
 		 */
 		static function img_html( $image )
 		{
-			$i18n_delete = _x( 'Delete', 'image upload', 'rwmb' );
-			$i18n_edit   = _x( 'Edit', 'image upload', 'rwmb' );
+			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
+			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
 			$li = '
 				<li id="item_%s">
 					<img src="%s" />

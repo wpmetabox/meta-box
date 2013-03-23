@@ -26,11 +26,11 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		static function add_actions()
 		{
 			parent::add_actions();
-			
+
 			// Attach images via Ajax
 			add_action( 'wp_ajax_rwmb_attach_file', array( __CLASS__, 'wp_ajax_attach_file' ) );
 		}
-		
+
 		static function wp_ajax_attach_file()
 		{
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
@@ -38,13 +38,13 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$attachment_id    = isset( $_POST['attachment_id'] ) ? $_POST['attachment_id'] : 0;
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
-			
+
 			add_post_meta( $post_id, $field_id, $attachment_id, false );
-			
+
 			RW_Meta_Box::ajax_response( self::file_html( $attachment_id ), 'success' );
 		}
 
-		
+
 		/**
 		 * Get field HTML
 		 *
@@ -56,8 +56,8 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title  = _x( 'Select files', 'file upload', 'rwmb' );
-			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );		
+			$i18n_title  = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select Files', 'file upload', 'rwmb' ), $field );
+			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );
 
 			// Uploaded files
 			$html = self::get_uploaded_files( $meta, $field );
@@ -72,7 +72,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 
 			return $html;
 		}
-		
+
 		/**
 		 * Get field value
 		 * It's the combination of new (uploaded) images and saved images

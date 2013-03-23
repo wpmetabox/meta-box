@@ -32,7 +32,7 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title = _x( 'Upload images', 'image upload', 'rwmb' );
+			$i18n_title = apply_filters( 'rwmb_thickbox_image_upload_string', _x( 'Upload Images', 'image upload', 'rwmb' ), $field );
 
 			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
 			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );

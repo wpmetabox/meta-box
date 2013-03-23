@@ -37,7 +37,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			//Get next menu_order
 			$meta = get_post_meta( $post_id, $field_id, false );
 			if( empty( $meta ) ){
-				$next = 0;	
+				$next = 0;
 			} else {
 				$meta = implode( ',' , (array) $meta );
 				$max = $wpdb->get_var( "
@@ -47,7 +47,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				" );
 				$next = is_numeric($max) ? (int) $max + 1: 0;
 			}
-			
+
 			$attachment = array(
 				'guid'           	=> $file_attr['url'],
 				'post_mime_type' 	=> $file_attr['type'],
@@ -65,7 +65,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 
 				// Save file ID in meta field
 				add_post_meta( $post_id, $field_id, $id, false );
-				
+
 				RW_Meta_Box::ajax_response( self::img_html( $id ), 'success' );
 			}
 
@@ -101,12 +101,11 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$meta = ( array ) $meta;
 
 			// Filter to change the drag & drop box background string
-			$i18n_drop   = apply_filters( 'rwmb_upload_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ) );
-			$i18n_or     = _x( 'or', 'image upload', 'rwmb' );
-			$i18n_select = _x( 'Select Files', 'image upload', 'rwmb' );
+			$i18n_drop   = apply_filters( 'rwmb_plupload_image_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ), $field );
+			$i18n_or     = apply_filters( 'rwmb_plupload_image_or_string', _x( 'or', 'image upload', 'rwmb' ), $field );
+			$i18n_select = apply_filters( 'rwmb_plupload_image_select_string', _x( 'Select Files', 'image upload', 'rwmb' ), $field );
 
 			// Uploaded images
-			
 
 			// Check for max_file_uploads
 			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js', 'new-files');
@@ -154,7 +153,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
