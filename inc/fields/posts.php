@@ -29,9 +29,10 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 * @return string
 		 */
 		static function html( $html, $meta, $field )
-		{	
+		{
 			$field['options'] = self::get_options( $field );
-			switch( $field['field_type'] ) {
+			switch ( $field['field_type'] )
+			{
 				case 'select':
 					return RWMB_Select_Field::html( $html, $meta, $field );
 					break;
@@ -50,42 +51,42 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$default_post_type = "Post";
-			if(is_string($field['post_type'])) {
-			  $pt_obj = get_post_type_object( $field['post_type'] );	
-                          $default_post_type = $pt_obj->labels->singular_name;
-                        }
+			$default_post_type = __( 'Post', 'rwmb' );
+			if ( is_string( $field['post_type'] ) )
+			{
+				$post_type_object = get_post_type_object( $field['post_type'] );
+				$default_post_type = $post_type_object->labels->singular_name;
+			}
 
 			$field = wp_parse_args( $field, array(
-				'post_type' => 'post',
+				'post_type'  => 'post',
 				'field_type' => 'select_advanced',
-				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $default_post_type ), 
-				'parent' => false,
+				'default'    => sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ),
+				'parent'     => false,
 				'query_args' => array()
 			) );
-			
-			if( $field['parent'] ) {
-				 $field['multiple'] = false;
-				 $field['field_name'] = 'parent_id';
+
+			if ( $field['parent'] )
+			{
+				$field['multiple'] = false;
+				$field['field_name'] = 'parent_id';
 			}
-			
+
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
-				'post_type' => $field['post_type'],
-				'post_status' => 'publish',
-				'posts_per_page'=>'-1'
+				'post_type'      => $field['post_type'],
+				'post_status'    => 'publish',
+				'posts_per_page' => '-1'
 			) );
-				
-			return  RWMB_Select_Advanced_Field::normalize_field( $field );
+
+			return RWMB_Select_Advanced_Field::normalize_field( $field );
 		}
-		
+
 		/**
 		 * Get meta value
 		 * If field is cloneable, value is saved as a single entry in DB
 		 * Otherwise value is saved as multiple entries (for backward compatibility)
 		 *
 		 * @see "save" method for better understanding
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
 		 *
 		 * @param $meta
 		 * @param $post_id
@@ -96,11 +97,12 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
 		{
-			if( isset( $field['parent'] ) && $field['parent']  ) {
-				$post = get_post( $post_id );	
+			if ( isset( $field['parent'] ) && $field['parent'] )
+			{
+				$post = get_post( $post_id );
 				return $post->post_parent;
 			}
-			return  RWMB_Select_Field::meta( $meta, $post_id, $saved, $field );
+			return RWMB_Select_Field::meta( $meta, $post_id, $saved, $field );
 		}
 
 		/**
@@ -117,9 +119,9 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			return  RWMB_Select_Field::save( $new, $old, $post_id, $field );
+			return RWMB_Select_Field::save( $new, $old, $post_id, $field );
 		}
-		
+
 		/**
 		 * Get posts
 		 *
@@ -129,10 +131,11 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 		 */
 		static function get_options( $field )
 		{
-			$results = get_posts( $field['query_args']);
+			$results = get_posts( $field['query_args'] );
 			$options = array();
-			foreach( $results as $result ) {
-				$options[$result->ID] = $result->post_title;	
+			foreach ( $results as $result )
+			{
+				$options[$result->ID] = $result->post_title;
 			}
 			return $options;
 		}
