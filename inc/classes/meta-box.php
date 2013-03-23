@@ -418,33 +418,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function save_post( $post_id )
 		{
-			$post = get_post( $post_id );
-
-			// Get proper post type
-			$post_type = null;
-			if ( $post )
-				$post_type = $post->post_type;
-			elseif ( isset( $_POST['post_type'] ) && post_type_exists( $_POST['post_type'] ) )
-				$post_type = $_POST['post_type'];
-
-			$post_type_object = get_post_type_object( $post_type );
-
 			// Check whether:
-			// - the post is autosaved (including revision), @see wp_is_post_autosave()
-			// - current post type is supported
-			// - user has proper capability
-			// - in Quick edit mode, @see http://wordpress.org/support/topic/quick-edit-not-working-and-problem-located
+			// - form is submitted properly
+			// - the post is autosaved
+			$autosave = defined('DOING_AUTOSAVE') && DOING_AUTOSAVE;
 			if (
-				( $this->meta_box['autosave'] != (bool) wp_is_post_autosave( $post ) )
-				|| current_user_can( $post_type_object->cap->edit_post )
-				|| ( 'inline-save' == $_POST['action'] )
+				empty( $_POST["nonce_{$this->meta_box['id']}"] )
+				|| !wp_verify_nonce( $_POST["nonce_{$this->meta_box['id']}"], "rwmb-save-{$this->meta_box['id']}" )
+				|| $this->meta_box['autosave'] != $autosave
 			)
 			{
 				return;
 			}
-
-			// Verify nonce
-			check_admin_referer( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
 			// Save post action removed to prevent infinite loops
 			remove_action( 'save_post', array( $this, 'save_post' ) );
