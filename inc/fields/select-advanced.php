@@ -44,7 +44,7 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 			);
 
 			$html .= self::options_html( $field, $meta );
-						
+
 			$html .= '</select>';
 
 			return $html;
@@ -68,8 +68,8 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 				'width'       => 'resolve',
 				'placeholder' => __( 'Select a value', 'rwmb' )
 			) );
-			$field['default'] = isset( $field['default']) ? $field['default'] : $field['placeholder'];
-			
+			$field['default'] = isset( $field['default']) ? $field['default'] : $field['js_options']['placeholder'];
+
 			$field = parent::normalize_field( $field );
 
 			return $field;
