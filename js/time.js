@@ -16,7 +16,8 @@ function rwmb_update_time_picker()
 	} );
 }
 
-jQuery( document ).ready( function()
+jQuery( function( $ )
 {
+	$.timepicker.setDefaults( $.timepicker.regional[RWMB_Timepicker.lang] );
 	rwmb_update_time_picker();
 } );

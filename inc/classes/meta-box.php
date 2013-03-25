@@ -17,24 +17,24 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 	class RW_Meta_Box
 	{
 		/**
-		 * Meta box information
+		 * @var array Meta box information
 		 */
-		var $meta_box;
+		public $meta_box;
 
 		/**
-		 * Fields information
+		 * @var array Fields information
 		 */
-		var $fields;
+		public $fields;
 
 		/**
-		 * Contains all field types of current meta box
+		 * @var array Contains all field types of current meta box
 		 */
-		var $types;
+		public $types;
 
 		/**
-		 * Validation information
+		 * @var array Validation information
 		 */
-		var $validation;
+		public $validation;
 
 		/**
 		 * Create meta box based on given data
@@ -43,7 +43,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @param array $meta_box Meta box definition
 		 *
-		 * @return \RW_Meta_Box
+		 * @return RW_Meta_Box
 		 */
 		function __construct( $meta_box )
 		{

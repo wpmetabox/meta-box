@@ -18,7 +18,10 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 
-			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker' ), RWMB_VER, true );
+			$locale = str_replace( '_', '-', get_locale() );
+			wp_register_script( 'jquery-ui-datepicker-i18n', RWMB_JS_URL . 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js', array( 'jquery-ui-datepicker' ), '1.8.17', true );
+			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker-i18n' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-date', 'RWMB_Datepicker', array( 'lang' => $locale ) );
 		}
 
 		/**

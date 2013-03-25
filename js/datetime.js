@@ -16,7 +16,9 @@ function rwmb_update_datetime_picker()
 	} );
 }
 
-jQuery( document ).ready( function()
+jQuery( function( $ )
 {
+	$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetimepicker.lang] );
+	$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.lang] );
 	rwmb_update_datetime_picker();
 } );
