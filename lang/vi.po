@@ -2,130 +2,149 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-03 15:10+0700\n"
-"PO-Revision-Date: 2012-06-03 15:10+0700\n"
+"POT-Creation-Date: 2013-03-25 23:50+0700\n"
+"PO-Revision-Date: 2013-03-25 23:52+0700\n"
 "Last-Translator: Rilwis <rilwis@gmail.com>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
+"Language: en_VN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;"
+"_nx_noop:1,2\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: VIET NAM\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
-#: ../meta-box.php:79
-msgid "RW_Meta_Box Debug:"
-msgstr ""
+#: ../inc/classes/meta-box.php:296
+msgid "Please correct the errors highlighted below and try again."
+msgstr "Vui lòng sửa các lỗi dưới đây và thử lại"
 
-#: ../inc/classes/meta-box.php:316
+#: ../inc/classes/meta-box.php:357
 msgid "+"
 msgstr ""
 
-#: ../inc/classes/meta-box.php:340
+#: ../inc/classes/meta-box.php:379
 msgid "&#8211;"
 msgstr ""
 
-#: ../inc/fields/file.php:69
+#: ../inc/fields/file-advanced.php:59
+msgctxt "file upload"
+msgid "Select Files"
+msgstr "Chọn file"
+
+#: ../inc/fields/file.php:66
 msgid "Error: Cannot delete file"
 msgstr "Lỗi: Không xóa được file"
 
-#: ../inc/fields/file.php:83
+#: ../inc/fields/file.php:80
 msgctxt "file upload"
-msgid "Uploaded files"
-msgstr "Các file đã tải lên"
-
-#: ../inc/fields/file.php:84
-msgctxt "file upload"
-msgid "Delete this file"
-msgstr "Xóa file"
-
-#: ../inc/fields/file.php:85
-msgctxt "file upload"
-msgid "Delete"
-msgstr "Xóa"
-
-#: ../inc/fields/file.php:86
-msgctxt "file upload"
-msgid "Upload files"
+msgid "Upload Files"
 msgstr "Tải file"
 
-#: ../inc/fields/file.php:87
+#: ../inc/fields/file.php:81
 msgctxt "file upload"
 msgid "+ Add new file"
 msgstr "+ Thêm file mới"
 
-#: ../inc/fields/image.php:75
-msgid "Order saved"
-msgstr "Đã lưu thứ tự"
-
-#: ../inc/fields/image.php:91
-#: ../inc/fields/plupload-image.php:156
-msgctxt "image upload"
-msgid "Uploaded files"
-msgstr "Các file đã tải lên"
-
-#: ../inc/fields/image.php:92
-#: ../inc/fields/plupload-image.php:112
-msgctxt "image upload"
-msgid "Delete this file"
-msgstr "Xóa file"
-
-#: ../inc/fields/image.php:93
-#: ../inc/fields/plupload-image.php:113
-msgctxt "image upload"
+#: ../inc/fields/file.php:133
+msgctxt "file upload"
 msgid "Delete"
 msgstr "Xóa"
 
-#: ../inc/fields/image.php:94
-#: ../inc/fields/plupload-image.php:114
-msgctxt "image upload"
+#: ../inc/fields/file.php:134
+msgctxt "file upload"
 msgid "Edit"
 msgstr "Sửa"
 
-#: ../inc/fields/image.php:95
-#: ../inc/fields/plupload-image.php:157
+#: ../inc/fields/image-advanced.php:63
 msgctxt "image upload"
-msgid "Upload files"
+msgid "Select or Upload Images"
+msgstr "Chọn hoặc tải file"
+
+#: ../inc/fields/image.php:64
+msgid "Order saved"
+msgstr "Đã lưu thứ tự"
+
+#: ../inc/fields/image.php:78 ../inc/fields/thickbox-image.php:35
+msgctxt "image upload"
+msgid "Upload Images"
 msgstr "Tải file"
 
-#: ../inc/fields/image.php:96
+#: ../inc/fields/image.php:79
 msgctxt "image upload"
 msgid "+ Add new image"
 msgstr "+ Thêm hình mới"
 
-#: ../inc/fields/plupload-image.php:95
+#: ../inc/fields/image.php:144
 msgctxt "image upload"
-msgid "Allowed Image Files"
-msgstr "Các file hình ảnh được cho phép"
+msgid "Delete"
+msgstr "Xóa"
 
-#: ../inc/fields/plupload-image.php:160
+#: ../inc/fields/image.php:145
+msgctxt "image upload"
+msgid "Edit"
+msgstr "Sửa"
+
+#: ../inc/fields/map.php:46
+msgid "Find Address"
+msgstr "Tìm địa chỉ"
+
+#: ../inc/fields/plupload-image.php:104
 msgctxt "image upload"
 msgid "Drop images here"
 msgstr "Kéo thả hình ảnh vào đây"
 
-#: ../inc/fields/plupload-image.php:161
+#: ../inc/fields/plupload-image.php:105
 msgctxt "image upload"
 msgid "or"
 msgstr "hoặc"
 
-#: ../inc/fields/plupload-image.php:162
+#: ../inc/fields/plupload-image.php:106
 msgctxt "image upload"
 msgid "Select Files"
 msgstr "Chọn file"
 
-#: ../inc/fields/thickbox-image.php:45
-#, fuzzy
+#: ../inc/fields/plupload-image.php:181
 msgctxt "image upload"
-msgid "Upload image"
-msgstr "Tải file"
+msgid "Allowed Image Files"
+msgstr "Các file hình ảnh được cho phép"
 
-#~ msgid "Select a color"
-#~ msgstr "Chọn một màu"
+#: ../inc/fields/posts.php:54
+msgid "Post"
+msgstr "Bài viết"
+
+#: ../inc/fields/posts.php:64 ../inc/fields/taxonomy.php:42
+#, php-format
+msgid "Select a %s"
+msgstr "Chọn %s"
+
+#: ../inc/fields/select-advanced.php:69
+msgid "Select a value"
+msgstr "Chọn một màu"
+
+#~ msgctxt "file upload"
+#~ msgid "Uploaded files"
+#~ msgstr "Các file đã tải lên"
+
+#~ msgctxt "file upload"
+#~ msgid "Delete this file"
+#~ msgstr "Xóa file"
+
 #~ msgctxt "image upload"
+#~ msgid "Uploaded files"
+#~ msgstr "Các file đã tải lên"
 
+#~ msgctxt "image upload"
+#~ msgid "Delete this file"
+#~ msgstr "Xóa file"
+
+#~ msgctxt "image upload"
+#~ msgid "Upload files"
+#~ msgstr "Tải file"
+
+#~ msgctxt "image upload"
 #~ msgid "Add another file"
 #~ msgstr "Thêm file mới"
