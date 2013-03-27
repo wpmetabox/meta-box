@@ -187,6 +187,7 @@ function rwmb_file_info( $id )
 {
 	$path = get_attached_file( $id );
 	return array(
+		'ID'    => $id,
 		'name'  => basename( $path ),
 		'path'  => $path,
 		'url'   => wp_get_attachment_url( $id ),
@@ -215,6 +216,7 @@ function rwmb_image_info( $id, $args = array() )
 	$attachment = &get_post( $id );
 	$path = get_attached_file( $id );
 	return array(
+		'ID'          => $id,
 		'name'        => basename( $path ),
 		'path'        => $path,
 		'url'         => $img_src[0],
