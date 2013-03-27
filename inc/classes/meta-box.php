@@ -423,8 +423,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			// Check whether:
 			// - form is submitted properly
-			// - the post is autosaved
-			$autosave = defined('DOING_AUTOSAVE') && DOING_AUTOSAVE;
 			if (
 				empty( $_POST["nonce_{$this->meta_box['id']}"] )
 				|| !wp_verify_nonce( $_POST["nonce_{$this->meta_box['id']}"], "rwmb-save-{$this->meta_box['id']}" )
