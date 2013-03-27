@@ -13,7 +13,7 @@ License: GPL2+
 defined( 'ABSPATH' ) || exit;
 
 // Script version, used to add version for scripts and styles
-define( 'RWMB_VER', '4.2.2' );
+define( 'RWMB_VER', '4.2.4' );
 
 // Define plugin URLs, for fast enqueuing scripts and styles
 if ( ! defined( 'RWMB_URL' ) )
