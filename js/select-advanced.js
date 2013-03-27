@@ -6,10 +6,11 @@ function rwmb_update_select_advanced()
 {
 	var $ = jQuery;
 
-	$( '.rwmb-select-advanced' ).each( function ()
+	$( ':input.rwmb-select-advanced' ).each( function ()
 	{
 		var $this = $( this ),
 			options = $this.data( 'options' );
+		$this.siblings('.select2-container').remove();
 		$this.select2( options );
 	} );
 }

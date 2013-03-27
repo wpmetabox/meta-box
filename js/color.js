@@ -20,15 +20,16 @@ function rwmb_update_color_picker()
 
 jQuery( document ).ready( function( $ )
 {
-	$( '.rwmb-input' ).delegate( '.rwmb-color', 'focus', function()
+	$( '.rwmb-input' ).on( 'focus', '.rwmb-color', function()
 	{
 		$( this ).siblings( '.rwmb-color-picker' ).show();
 		return false;
-	} ).delegate( '.rwmb-color', 'blur', function()
+	} ).on( 'blur',  '.rwmb-color', function()
 	{
 		$( this ).siblings( '.rwmb-color-picker' ).hide();
 		return false;
 	} );
+
 
 	rwmb_update_color_picker();
 } );
