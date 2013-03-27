@@ -9,8 +9,6 @@ jQuery( document ).ready( function( $ )
 	
 	function rwmb_update_datetime_picker()
 	{
-		var $ = jQuery;
-	
 		var $this = $( this ),
 			options = $this.data( 'options' );
 	

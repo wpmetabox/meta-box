@@ -19,8 +19,7 @@ jQuery( document ).ready( function( $ )
 	
 	function rwmb_update_color_picker()
 	{
-		var $ = jQuery, 
-			$this = $( this ),
+		var $this = $( this ),
 			$color_picker = $this.siblings( '.rwmb-color-picker' );
 	
 		// Make sure the value is displayed
