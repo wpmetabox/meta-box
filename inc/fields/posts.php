@@ -61,10 +61,12 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'post_type'  => 'post',
 				'field_type' => 'select_advanced',
-				'default'    => sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ),
 				'parent'     => false,
 				'query_args' => array()
 			) );
+			
+			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ) : $field['std'];
+
 
 			if ( $field['parent'] )
 			{
@@ -78,7 +80,15 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 				'posts_per_page' => '-1'
 			) );
 
-			return RWMB_Select_Advanced_Field::normalize_field( $field );
+			switch ( $field['field_type'] )
+			{
+				case 'select':
+					return RWMB_Select_Field::normalize_field( $field );
+					break;
+				case 'select_advanced':
+				default:
+					return RWMB_Select_Advanced_Field::normalize_field( $field );
+			}
 		}
 
 		/**
