@@ -20,14 +20,25 @@ if ( !class_exists( 'RWMB_Datetime_Field' ) )
 			wp_register_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );
 
-			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
+			wp_register_script( 'jquery-ui-timepicker', RWMB_JS_URL . 'jqueryui/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
 
+			// Load localized scripts
 			$locale = str_replace( '_', '-', get_locale() );
-			wp_register_script( 'jquery-ui-datepicker-i18n', "{$url}/datepicker-i18n/jquery.ui.datepicker-{$locale}.js", array( 'jquery-ui-datepicker' ), '1.8.17', true );
-			wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/timepicker-i18n/jquery-ui-timepicker-{$locale}.js", array( 'jquery-ui-timepicker' ), '0.9.7', true );
+			$date_path = 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js';
+			$time_path = 'jqueryui/timepicker-i18n/jquery-ui-timepicker-' . $locale . '.js';
+			$deps = array( 'jquery-ui-datepicker', 'jquery-ui-timepicker' );
+			if ( file_exists( RWMB_DIR . 'js/' . $date_path ) )
+			{
+				wp_register_script( 'jquery-ui-datepicker-i18n', RWMB_JS_URL . $date_path, array( 'jquery-ui-datepicker' ), '1.8.17', true );
+				$deps[] = 'jquery-ui-datepicker-i18n';
+			}
+			if ( file_exists( RWMB_DIR . 'js/' . $time_path ) )
+			{
+				wp_register_script( 'jquery-ui-timepicker-i18n', RWMB_JS_URL . $time_path, array( 'jquery-ui-timepicker' ), '1.8.17', true );
+				$deps[] = 'jquery-ui-timepicker-i18n';
+			}
 
-			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery-ui-datepicker-i18n', 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', $deps, RWMB_VER, true );
 			wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', array( 'lang' => $locale ) );
 		}
 
