@@ -93,7 +93,7 @@ $meta_boxes[] = array(
 			),
 			// Select multiple values, optional. Default is false.
 			'multiple' => false,
-			'default'	=>'Select an Item'
+			'std'	=>'Select an Item'
 		),
 		// HIDDEN
 		array(

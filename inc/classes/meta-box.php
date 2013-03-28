@@ -170,7 +170,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
 			// Container
-			echo '<div class="rwmb-meta-box">';
+			echo sprintf( 
+				'<div class="rwmb-meta-box" data-autosave="%s">', 
+				$this->meta_box['autosave']  ? 'true' : 'false'  
+			);
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
 
@@ -420,12 +423,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			// Check whether:
 			// - form is submitted properly
-			// - the post is autosaved
-			$autosave = defined('DOING_AUTOSAVE') && DOING_AUTOSAVE;
 			if (
 				empty( $_POST["nonce_{$this->meta_box['id']}"] )
 				|| !wp_verify_nonce( $_POST["nonce_{$this->meta_box['id']}"], "rwmb-save-{$this->meta_box['id']}" )
-				|| $this->meta_box['autosave'] != $autosave
 			)
 			{
 				return;

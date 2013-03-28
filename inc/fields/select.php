@@ -107,7 +107,6 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'desc'=> '',
 				'name' => $field['id'],
-				'default' => $field['desc'],
 				'size' => $field['multiple'] ? 5 : 0,
 			) );
 			if ( !$field['clone'] && $field['multiple'] )
@@ -124,7 +123,8 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function options_html( $field, $meta )
 		{
-			$html = !empty($field['default'])? "<option value=''>{$field['default']}</option>" : '';
+			$html = "<option value=''>{$field['std']}</option>";
+			
 			$option = '<option value="%s" %s>%s</option>';
 			
 			foreach ( $field['options'] as $value => $label )

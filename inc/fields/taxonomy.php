@@ -37,10 +37,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$field['options']['args'] = ( ! isset( $field['options']['args'] ) ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
 
 			$tax = get_taxonomy( $field['options']['taxonomy'] );
-			$field = wp_parse_args( $field, array(
-				'required'   => false,
-				'default'    =>  sprintf( __( 'Select a %s' , 'rwmb' ), $tax->labels->singular_name ),
-			) );
+			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s' , 'rwmb' ), $tax->labels->singular_name ) : $field['std'];
 			
 			$field['field_name'] = "{$field['id']}[]";
 
