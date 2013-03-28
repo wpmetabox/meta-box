@@ -206,6 +206,29 @@ $meta_boxes[] = array(
 				'value2' => 'Label2',
 			),
 		),
+		// EMAIL
+		array(
+			'name'  => 'Email',
+			'id'    => "{$prefix}email",
+			'desc'  => 'email description',
+			'type'  => 'email',
+			'std'   => 'http://google.com',
+		),
+		// URL
+		array(
+			'name'  => 'URL',
+			'id'    => "{$prefix}url",
+			'desc'  => 'url description',
+			'type'  => 'url',
+			'std'   => 'http://google.com',
+		),
+		// OEMBED
+		array(
+			'name'  => 'oEmbed',
+			'id'    => "{$prefix}oembed",
+			'desc'  => 'oembed description',
+			'type'  => 'oembed',
+		),
 		// TAXONOMY
 		array(
 			'name'    => 'Taxonomy',
