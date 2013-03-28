@@ -537,7 +537,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'format'   		=> '',
 					'before'   		=> '',
 					'after'    		=> '',
-					'field_name' 	=> $field['id']
+					'field_name' 	=> $field['id'],
+					'required' 		=> false
 				) );
 
 				// Allow field class add/change default field values
