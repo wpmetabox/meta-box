@@ -47,6 +47,8 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			add_post_meta( $post_id, $field_id, $attachment_id, false );
 
 			RW_Meta_Box::ajax_response( self::img_html( $attachment_id ), 'success' );
+			
+			exit;
 		}
 
 		/**
