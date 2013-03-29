@@ -19,11 +19,15 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - color
 - date
 - datetime
+- email
 - file
+- file_advanced
 - hidden
 - image
+- image_advanced
 - map
 - number
+- oembed
 - password
 - plupload_image
 - radio
@@ -35,6 +39,7 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - textarea
 - thickbox_image
 - time
+- url
 - wysiwyg
 
 ***
