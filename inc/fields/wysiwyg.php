@@ -45,7 +45,7 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			return wpautop( $new );
+			return ( $field['raw'] ? $new : wpautop( $new ) );
 		}
 
 		/**
