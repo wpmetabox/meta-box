@@ -214,6 +214,17 @@ $meta_boxes[] = array(
 			'type'  => 'email',
 			'std'   => 'http://google.com',
 		),
+                // RANGE
+                array(
+			'name'  => 'Range',
+			'id'    => "{$prefix}range",
+			'desc'  => 'range description',
+			'type'  => 'range',
+			'min'   => 0,
+			'max'   => 100,
+			'step'  => 5,
+                        'std'   => 0
+		),
 		// URL
 		array(
 			'name'  => 'URL',
