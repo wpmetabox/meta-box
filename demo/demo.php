@@ -263,6 +263,8 @@ $meta_boxes[] = array(
 			'name' => 'WYSIWYG / Rich Text Editor',
 			'id'   => "{$prefix}wysiwyg",
 			'type' => 'wysiwyg',
+			// Set the 'raw' parameter to TRUE to prevent data being passed through wpautop() on save
+			'raw'  => false,
 			'std'  => 'WYSIWYG default value',
 
 			// Editor settings, see wp_editor() function: look4wp.com/wp_editor
