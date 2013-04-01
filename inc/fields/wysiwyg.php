@@ -94,6 +94,7 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
+				'raw'     => false,
 				'options' => array(),
 			) );
 
