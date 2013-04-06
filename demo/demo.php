@@ -140,6 +140,23 @@ $meta_boxes[] = array(
 	'title' => 'Advanced Fields',
 
 	'fields' => array(
+		// SLIDER
+		array(
+			'name' => 'Slider',
+			'id'   => "{$prefix}slider",
+			'type' => 'slider',
+
+			// Text labels displayed before and after value
+			'prefix' => '$',
+			'suffix' => ' USD',
+
+			// jQuery UI slider options. See here http://api.jqueryui.com/slider/
+			'js_options' => array(
+				'min'   => 10,
+				'max'   => 255,
+				'step'  => 5,
+			),
+		),
 		// NUMBER
 		array(
 			'name' => 'Number',
@@ -155,7 +172,7 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}date",
 			'type' => 'date',
 
-			// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
+			// jQuery date picker options. See here http://api.jqueryui.com/datepicker
 			'js_options' => array(
 				'appendText'      => '(yyyy-mm-dd)',
 				'dateFormat'      => 'yy-mm-dd',
@@ -170,7 +187,9 @@ $meta_boxes[] = array(
 			'id'   => $prefix . 'datetime',
 			'type' => 'datetime',
 
-			// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
+			// jQuery datetime picker options.
+			// For date options, see here http://api.jqueryui.com/datepicker
+			// For time options, see here http://trentrichardson.com/examples/timepicker/
 			'js_options' => array(
 				'stepMinute'     => 15,
 				'showTimepicker' => true,
@@ -182,7 +201,9 @@ $meta_boxes[] = array(
 			'id'   => $prefix . 'time',
 			'type' => 'time',
 
-			// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
+			// jQuery datetime picker options.
+			// For date options, see here http://api.jqueryui.com/datepicker
+			// For time options, see here http://trentrichardson.com/examples/timepicker/
 			'js_options' => array(
 				'stepMinute' => 5,
 				'showSecond' => true,

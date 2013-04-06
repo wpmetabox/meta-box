@@ -1,0 +1,8 @@
+.rwmb-slider {
+	width: 50%;
+	display: inline-block;
+}
+.rwmb-slider-value-label {
+	display: inline-block;
+	margin-left: 10px;
+}

@@ -1,50 +1,32 @@
-jQuery( document ).ready( function( $ )
+jQuery( function( $ )
 {
-	var
-		id = null
-		, el = null
-		, input = null
-		, label = null
-		, format = null
-		, value = null
-		, update = null
-		;
-	$( '.rwmb-slider' ).each( function( i, val )
+	$( '.rwmb-slider' ).each( function()
 	{
-		id = $( val ).attr( 'id' );
-		el = $( '#' + id );
-		input = $( '[name=' + id + ']' );
-		label = $( '[for=' + id + ']' );
-		format = $( el ).attr( 'rel' );
+		var $this = $( this ),
+			$input = $this.siblings( 'input' ),
+			$valueLabel = $this.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
+			value = $input.val(),
+			options = $this.data( 'options' );
 
-		$( label ).append( ': <span id="' + id + '-label"></span>' );
-		update = $( '#' + id + '-label' );
-
-		if (
-			!$( input ).val()
-				|| 'undefined' === $( input ).val()
-				|| null === typeof $( input ).val()
-			)
+		if ( !value )
 		{
-			$( input ).val( $( el ).slider( "values", 0 ) );
-			$( update ).text( "0" );
+			value = 0;
+			$input.val( 0 );
+			$valueLabel.text( '0' );
 		}
 		else
 		{
-			value = $( input ).val();
-			$( update ).text( value );
+			$valueLabel.text( value );
 		}
-		if ( 0 < format.length )
-			$( update ).append( ' ' + format );
 
-		el.slider(
-			{
-				value: value,
-				slide: function( event, ui )
-				{
-					$( input ).val( ui.value );
-					$( update ).text( ui.value + ' ' + format );
-				}
-			} );
+		// Assign field value and callback function when slide
+		options.value = value;
+		options.slide = function( event, ui )
+		{
+			$input.val( ui.value );
+			$valueLabel.text( ui.value );
+		};
+
+		$this.slider( options );
 	} );
 } );
