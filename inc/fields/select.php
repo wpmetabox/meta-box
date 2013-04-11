@@ -123,7 +123,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function options_html( $field, $meta )
 		{
-			$html = "<option value=''>{$field['std']}</option>";
+			$html = $field['required'] ? '' : "<option value=''>{$field['std']}</option>";
 			
 			$option = '<option value="%s" %s>%s</option>';
 			
