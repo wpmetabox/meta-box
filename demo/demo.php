@@ -318,7 +318,7 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}file_advanced",
 			'type' => 'file_advanced',
 			'max_file_uploads' => 4,
-			'mime_type' => 'application,audio,video'		//Leave blank for all file types
+			'mime_type' => 'application,audio,video' // Leave blank for all file types
 		),
 		// IMAGE UPLOAD
 		array(
