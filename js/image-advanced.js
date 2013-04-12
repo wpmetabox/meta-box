@@ -1,77 +1,83 @@
-jQuery( document ).ready( function( $ )
+jQuery( function( $ )
 {
-	$( '.rwmb-image-advanced-upload' ).each(function(){
-		var $uploadButton = $(this),
-			$imageList = $(this).siblings( '.rwmb-images' ),
-			maxFileUploads = $imageList.data( 'max_file_uploads' ),
-			frameOptions = {
-				className	: 'media-frame rwmb-media-frame',
-				frame		: 'select',
-				multiple	: true,
-				title		: 'Select or Upload Media',
-				library		: {
-					type		:	'image'
-				},
-				button		: {
-					text		:	'Select'
-				}
-			},
-			rwmbMediaFrame = wp.media( frameOptions ) ;
-			
-		//Button click handler
-		$uploadButton.on( 'click', function(e) {
-			e.preventDefault();
-			rwmbMediaFrame.open();
-		} );
-			
-		//Handle selection
-		rwmbMediaFrame.on( 'select', function() {
-			console.log($imageList);
-			//Get selections
-			var selection = rwmbMediaFrame.state().get( 'selection' ).toJSON(),
-				msg = 'You may only upload ' + maxFileUploads + ' file',
-				uploaded = $imageList.children().length;
-			if ( maxFileUploads > 1 )
-				msg += 's';
+	// Use only one frame for all upload fields
+	var frame;
 
-			if ( maxFileUploads > 0  && ( uploaded + selection.length ) > maxFileUploads )
-			{
-				if( uploaded < maxFileUploads ){
-					selection = selection.slice( 0, maxFileUploads - uploaded );
+	$( 'body' ).on( 'click', '.rwmb-image-advanced-upload', function( e )
+	{
+		e.preventDefault();
+
+		var $uploadButton = $( this ),
+			$imageList = $uploadButton.siblings( '.rwmb-images' ),
+			maxFileUploads = $imageList.data( 'max_file_uploads' ),
+			msg = 'You may only upload ' + maxFileUploads + ' file';
+
+		if ( maxFileUploads > 1 )
+			msg += 's';
+
+		// Create a frame only if needed
+		if ( !frame )
+		{
+			frame = wp.media( {
+				className: 'media-frame rwmb-media-frame',
+				multiple : true,
+				title    : 'Select or Upload Media',
+				library  : {
+					type: 'image'
 				}
-				alert( msg );				
+			} );
+		}
+
+		// Open media uploader
+		frame.open();
+
+		// Remove all attached 'select' event
+		frame.off( 'select' );
+
+		// Handle selection
+		frame.on( 'select', function()
+		{
+			// Get selections
+			var selection = frame.state().get( 'selection' ).toJSON(),
+				uploaded = $imageList.children().length;
+
+			if ( maxFileUploads > 0 && ( uploaded + selection.length ) > maxFileUploads )
+			{
+				if ( uploaded < maxFileUploads )
+					selection = selection.slice( 0, maxFileUploads - uploaded );
+				alert( msg );
 			}
-	
-			for( i in  selection) {
+
+			for ( var i in  selection )
+			{
 				var attachment = selection[i];
-				
-				//Check if image already attached
-				if( $imageList.children('li#item_' + attachment.id ).length > 0  ){					
+
+				// Check if image already attached
+				if ( $imageList.children( 'li#item_' + attachment.id ).length > 0 )
 					continue;
-				}								
-				
-				//Attach attachment to field and get HTML
+
+				// Attach attachment to field and get HTML
 				var data = {
-					action			: 'rwmb_attach_media',
-					post_id			: $( '#post_ID' ).val(),
-					field_id		: $imageList.data('field_id'),
-					attachment_id	: attachment.id,
-					_ajax_nonce		: $uploadButton.data('attach_media_nonce')
+					action       : 'rwmb_attach_media',
+					post_id      : $( '#post_ID' ).val(),
+					field_id     : $imageList.data( 'field_id' ),
+					attachment_id: attachment.id,
+					_ajax_nonce  : $uploadButton.data( 'attach_media_nonce' )
 				};
 				$.post( ajaxurl, data, function( r )
 				{
-					var res = wpAjax.parseAjaxResponse( r, 'ajax-response' );
-		
-					if ( res.errors )
-						alert( res.responses[0].errors[0].message );
+					var r = wpAjax.parseAjaxResponse( r, 'ajax-response' );
+
+					if ( r.errors )
+						alert( r.responses[0].errors[0].message );
 					else
-						$imageList.removeClass('hidden').prepend( res.responses[0].data );
-					
+						$imageList.removeClass( 'hidden' ).prepend( r.responses[0].data );
+
 					// Hide files button if reach max file uploads
-					if ( $imageList.children().length >= maxFileUploads ) $uploadButton.addClass( 'hidden' );
-				}, 'xml' );	
-			}			
-		});	
-			
-	});
+					if ( $imageList.children().length >= maxFileUploads )
+						$uploadButton.addClass( 'hidden' );
+				}, 'xml' );
+			}
+		} );
+	} );
 } );
