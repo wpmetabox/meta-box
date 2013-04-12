@@ -285,7 +285,7 @@ $meta_boxes[] = array(
 			//Field type, either select or select_advanced.  Default is select_advanced
 			'field_type'=> 'select_advanced',
 			//Query arguments.  Not setting will default to all published posts
-			'query_vars' => array(
+			'query_args' => array(
 				'post_status' => 'publish',
 				'posts_per_page'=>'-1'
 			)
