@@ -15,6 +15,9 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		static function admin_enqueue_scripts()
 		{
 			parent::admin_enqueue_scripts();
+
+			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
+			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
 		}
 
