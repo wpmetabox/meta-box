@@ -5,9 +5,9 @@ defined( 'ABSPATH' ) || exit;
 // Make sure "select" field is loaded
 require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
-if ( !class_exists( 'RWMB_Posts_Field' ) )
+if ( !class_exists( 'RWMB_Post_Field' ) )
 {
-	class RWMB_Posts_Field
+	class RWMB_Post_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -64,9 +64,8 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 				'parent'     => false,
 				'query_args' => array()
 			) );
-			
-			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ) : $field['std'];
 
+			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ) : $field['std'];
 
 			if ( $field['parent'] )
 			{
@@ -145,7 +144,7 @@ if ( !class_exists( 'RWMB_Posts_Field' ) )
 			$options = array();
 			foreach ( $results as $result )
 			{
-				$options[$result->ID] = $result->post_title;
+				$options[$result->ID] = get_the_title( $result->ID );
 			}
 			return $options;
 		}

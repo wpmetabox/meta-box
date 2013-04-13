@@ -275,16 +275,17 @@ $meta_boxes[] = array(
 				'args' => array()
 			),
 		),
-		// POSTS
+		// POST
 		array(
 			'name'    => 'Posts (Pages)',
 			'id'      => "{$prefix}pages",
-			'type'    => 'posts',
-			//Post type
+			'type'    => 'post',
+
+			// Post type
 			'post_type' => 'page',
-			//Field type, either select or select_advanced.  Default is select_advanced
+			// Field type, either 'select' or 'select_advanced' (default)
 			'field_type'=> 'select_advanced',
-			//Query arguments.  Not setting will default to all published posts
+			// Query arguments (optional). No settings means get all published posts
 			'query_args' => array(
 				'post_status' => 'publish',
 				'posts_per_page'=>'-1'
