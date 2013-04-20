@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-13 16:36+0100\n"
-"PO-Revision-Date: 2013-04-13 16:36+0100\n"
+"POT-Creation-Date: 2013-04-21 01:56+0100\n"
+"PO-Revision-Date: 2013-04-21 01:56+0100\n"
 "Last-Translator: Cor van Noorloos <info@webvorm.nl>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "Language: nl_NL\n"
@@ -32,8 +32,8 @@ msgstr "&#8211;"
 
 #: ../inc/fields/file-advanced.php:62
 msgctxt "file upload"
-msgid "Select Files"
-msgstr "Bestanden selecteren"
+msgid "Select or Upload Files"
+msgstr "Bestanden selecteren of uploaden"
 
 #: ../inc/fields/file.php:66
 msgid "Error: Cannot delete file"
@@ -112,11 +112,11 @@ msgctxt "image upload"
 msgid "Allowed Image Files"
 msgstr "Toegestane afbeeldingsbestanden"
 
-#: ../inc/fields/posts.php:54
+#: ../inc/fields/post.php:54
 msgid "Post"
 msgstr "Bericht"
 
-#: ../inc/fields/posts.php:68 ../inc/fields/taxonomy.php:40
+#: ../inc/fields/post.php:68 ../inc/fields/taxonomy.php:40
 #, php-format
 msgid "Select a %s"
 msgstr "Een %s selecteren"
@@ -124,3 +124,7 @@ msgstr "Een %s selecteren"
 #: ../inc/fields/select-advanced.php:71
 msgid "Select a value"
 msgstr "Een waarde selecteren"
+
+#~ msgctxt "file upload"
+#~ msgid "Select Files"
+#~ msgstr "Bestanden selecteren"
