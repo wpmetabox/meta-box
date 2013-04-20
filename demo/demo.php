@@ -329,7 +329,7 @@ $meta_boxes[] = array(
 		),
 		// THICKBOX IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name' => 'Thichbox Image Upload',
+			'name' => 'Thickbox Image Upload',
 			'id'   => "{$prefix}thickbox",
 			'type' => 'thickbox_image',
 		),
