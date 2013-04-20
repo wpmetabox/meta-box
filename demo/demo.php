@@ -313,9 +313,9 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}file",
 			'type' => 'file',
 		),
-		// FILE UPLOAD Advanced
+		// FILE ADVANCED (WP 3.5+)
 		array(
-			'name' => 'File Upload',
+			'name' => 'File Advanced Upload',
 			'id'   => "{$prefix}file_advanced",
 			'type' => 'file_advanced',
 			'max_file_uploads' => 4,
