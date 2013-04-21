@@ -3,12 +3,11 @@
 	vertical-align: middle;
 	width: 50%;
 }
-
 .rwmb-slider-value-label {
 	margin-left: 10px;
 	vertical-align: middle;
 }
-
+/* Fix slider handle being visible through jQuery panel */
 .ui-slider .ui-slider-handle {
 	z-index: 1;
 }
