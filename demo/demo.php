@@ -93,7 +93,7 @@ $meta_boxes[] = array(
 			),
 			// Select multiple values, optional. Default is false.
 			'multiple' => false,
-			'std'	=>'Select an Item'
+			'std'	=> 'Select an Item',
 		),
 		// HIDDEN
 		array(
@@ -114,8 +114,8 @@ $meta_boxes[] = array(
 			'desc' => 'Textarea description',
 			'id'   => "{$prefix}textarea",
 			'type' => 'textarea',
-			'cols' => '20',
-			'rows' => '3',
+			'cols' => 20,
+			'rows' => 3,
 		),
 	),
 	'validation' => array(
@@ -231,26 +231,26 @@ $meta_boxes[] = array(
 		array(
 			'name'  => 'Email',
 			'id'    => "{$prefix}email",
-			'desc'  => 'email description',
+			'desc'  => 'Email description',
 			'type'  => 'email',
 			'std'   => 'http://google.com',
 		),
-                // RANGE
-                array(
+		// RANGE
+		array(
 			'name'  => 'Range',
 			'id'    => "{$prefix}range",
-			'desc'  => 'range description',
+			'desc'  => 'Range description',
 			'type'  => 'range',
 			'min'   => 0,
 			'max'   => 100,
 			'step'  => 5,
-                        'std'   => 0
+			'std'   => 0,
 		),
 		// URL
 		array(
 			'name'  => 'URL',
 			'id'    => "{$prefix}url",
-			'desc'  => 'url description',
+			'desc'  => 'URL description',
 			'type'  => 'url',
 			'std'   => 'http://google.com',
 		),
@@ -258,7 +258,7 @@ $meta_boxes[] = array(
 		array(
 			'name'  => 'oEmbed',
 			'id'    => "{$prefix}oembed",
-			'desc'  => 'oembed description',
+			'desc'  => 'oEmbed description',
 			'type'  => 'oembed',
 		),
 		// TAXONOMY
@@ -284,11 +284,11 @@ $meta_boxes[] = array(
 			// Post type
 			'post_type' => 'page',
 			// Field type, either 'select' or 'select_advanced' (default)
-			'field_type'=> 'select_advanced',
+			'field_type' => 'select_advanced',
 			// Query arguments (optional). No settings means get all published posts
 			'query_args' => array(
 				'post_status' => 'publish',
-				'posts_per_page'=>'-1'
+				'posts_per_page' => '-1',
 			)
 		),
 		// WYSIWYG/RICH TEXT EDITOR
@@ -319,7 +319,7 @@ $meta_boxes[] = array(
 			'id'   => "{$prefix}file_advanced",
 			'type' => 'file_advanced',
 			'max_file_uploads' => 4,
-			'mime_type' => 'application,audio,video' // Leave blank for all file types
+			'mime_type' => 'application,audio,video', // Leave blank for all file types
 		),
 		// IMAGE UPLOAD
 		array(
