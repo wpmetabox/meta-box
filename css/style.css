@@ -12,12 +12,9 @@
 .rwmb-label {
 	width: 24%;
 }
-.rwmb-label.required {
-	font-weight: bold;
-}
-.rwmb-label.required > span
-{
+.rwmb-label.required > span {
 	color: #c00;
+	font-weight: bold;
 }
 
 /* 75% if field has label, 100% if no label */
