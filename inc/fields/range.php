@@ -2,11 +2,20 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-
 if ( !class_exists( 'RWMB_Range_Field' ) )
 {
-	class RWMB_Range_Field 
+	class RWMB_Range_Field
 	{
+		/**
+		 * Enqueue styles
+		 *
+		 * @return void
+		 */
+		static function admin_enqueue_scripts()
+		{
+			wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', array(), RWMB_VER );
+		}
+
 		/**
 		 * Get field HTML
 		 *
@@ -19,7 +28,7 @@ if ( !class_exists( 'RWMB_Range_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input type="range" class="rwmb-range" name="%s" id="%s" value="%s" min="%s" max="%s" step="%s"/>',
+				'<input type="range" class="rwmb-range" name="%s" id="%s" value="%s" min="%s" max="%s" step="%s" />',
 				$field['field_name'],
 				$field['id'],
 				$meta,
@@ -28,8 +37,8 @@ if ( !class_exists( 'RWMB_Range_Field' ) )
 				$field['step']
 			);
 		}
-                
-                /**
+
+		/**
 		 * Normalize parameters for field.
 		 *
 		 * @param array $field
@@ -45,9 +54,8 @@ if ( !class_exists( 'RWMB_Range_Field' ) )
 			) );
 			return $field;
 		}
-                
-                
-                /**
+
+		/**
 		 * Ensure number in range.
 		 *
 		 * @param mixed $new
@@ -59,19 +67,18 @@ if ( !class_exists( 'RWMB_Range_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-                        $new = intval($new);
-                        $min = intval($field['min']);
-                        $max = intval($field['max']);
-                        
-                        if ($new < $min) {
-                            return $min;
-                        }
-                        else if ($new > $max) {
-                            return $max;
-                        }
-                        
-                        return $new;
-		}
+			$new = intval($new);
+			$min = intval($field['min']);
+			$max = intval($field['max']);
 
+			if ($new < $min) {
+				return $min;
+			}
+			else if ($new > $max) {
+				return $max;
+			}
+
+			return $new;
+		}
 	}
 }

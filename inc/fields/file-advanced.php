@@ -59,7 +59,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title  = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select Files', 'file upload', 'rwmb' ), $field );
+			$i18n_title  = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select or Upload Files', 'file upload', 'rwmb' ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );
 
 			// Uploaded files

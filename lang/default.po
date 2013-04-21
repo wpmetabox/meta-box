@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-13 16:09+0100\n"
-"PO-Revision-Date: 2013-04-13 16:09+0100\n"
+"POT-Creation-Date: 2013-04-21 01:54+0100\n"
+"PO-Revision-Date: 2013-04-21 01:55+0100\n"
 "Last-Translator: Cor van Noorloos <info@webvorm.nl>\n"
 "Language-Team: Rilwis <rilwis@gmail.com>\n"
 "Language: en_EN\n"
@@ -32,7 +32,7 @@ msgstr ""
 
 #: ../inc/fields/file-advanced.php:62
 msgctxt "file upload"
-msgid "Select Files"
+msgid "Select or Upload Files"
 msgstr ""
 
 #: ../inc/fields/file.php:66
@@ -112,11 +112,11 @@ msgctxt "image upload"
 msgid "Allowed Image Files"
 msgstr ""
 
-#: ../inc/fields/posts.php:54
+#: ../inc/fields/post.php:54
 msgid "Post"
 msgstr ""
 
-#: ../inc/fields/posts.php:68 ../inc/fields/taxonomy.php:40
+#: ../inc/fields/post.php:68 ../inc/fields/taxonomy.php:40
 #, php-format
 msgid "Select a %s"
 msgstr ""
