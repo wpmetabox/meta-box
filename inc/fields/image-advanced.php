@@ -17,7 +17,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
-			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 		}
 
 		/**
@@ -32,6 +32,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 
 			// Attach images via Ajax
 			add_action( 'wp_ajax_rwmb_attach_media', array( __CLASS__, 'wp_ajax_attach_media' ) );
+			add_action( 'print_media_templates', array( __CLASS__, 'print_templates' ) );
 		}
 
 		/**
@@ -49,9 +50,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 
 			add_post_meta( $post_id, $field_id, $attachment_id, false );
 
-			RW_Meta_Box::ajax_response( self::img_html( $attachment_id ), 'success' );
-
-			exit;
+			wp_send_json_success();
 		}
 
 		/**
@@ -97,6 +96,23 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		{
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
+		}
+		
+		static function print_templates()
+		{
+			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
+			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
+			?>
+            <script id="tmpl-rwmb-image-advanced" type="text/html">
+				<li id="item_<%= id %>">
+					<img src="<%= sizes.thumbnail.url %>" />
+					<div class="rwmb-image-bar">
+						<a title="<?php echo $i18n_edit; ?>" class="rwmb-edit-file" href="<%= editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
+						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= id %>">×</a>
+					</div>
+				</li>
+			</script>
+            <?php
 		}
 	}
 }

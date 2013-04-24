@@ -18,7 +18,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
-			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 		}
 
 		/**
@@ -32,6 +32,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 
 			// Attach images via Ajax
 			add_action( 'wp_ajax_rwmb_attach_file', array( __CLASS__, 'wp_ajax_attach_file' ) );
+			add_action( 'print_media_templates', array( __CLASS__, 'print_templates' ) );
 		}
 
 		static function wp_ajax_attach_file()
@@ -44,7 +45,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 
 			add_post_meta( $post_id, $field_id, $attachment_id, false );
 
-			RW_Meta_Box::ajax_response( self::file_html( $attachment_id ), 'success' );
+			wp_send_json_success();
 		}
 
 
@@ -91,6 +92,25 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		{
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
+		}
+		
+		static function print_templates()
+		{
+			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
+			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
+			?>
+            <script id="tmpl-rwmb-file-advanced" type="text/html">
+				<li>
+					<div class="rwmb-icon"><img src="<% if(type === 'image'){ %><%= sizes.thumbnail.url %><% } else { %><%= icon %><% } %>"></div>
+					<div class="rwmb-info">
+						<a href="<%= url %>" target="_blank"><%= title %></a>
+						<p><%= mime %></p>
+						<a title="<?php echo $i18n_edit; ?>" href="<%= editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
+						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= id %>"><?php echo $i18n_delete; ?></a>
+					</div>
+				</li>
+			</script>
+            <?php
 		}
 	}
 }
