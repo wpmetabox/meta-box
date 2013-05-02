@@ -55,7 +55,11 @@ jQuery( function( $ )
 				// Check if image already attached
 				if ( $imageList.children( 'li#item_' + attachment.id ).length > 0 )
 					continue;
+<<<<<<< HEAD
+				
+=======
 
+>>>>>>> upstream/master
 				// Attach attachment to field and get HTML
 				var data = {
 					action       : 'rwmb_attach_media',
@@ -64,19 +68,33 @@ jQuery( function( $ )
 					attachment_id: attachment.id,
 					_ajax_nonce  : $uploadButton.data( 'attach_media_nonce' )
 				};
+				
 				$.post( ajaxurl, data, function( r )
 				{
+<<<<<<< HEAD
+					if( r.success )
+					{
+						$imageList.removeClass( 'hidden' ).prepend( _.template( $( '#tmpl-rwmb-image-advanced' ).html(), attachment ) );
+						
+					}
+						
+=======
 					var r = wpAjax.parseAjaxResponse( r, 'ajax-response' );
 
 					if ( r.errors )
 						alert( r.responses[0].errors[0].message );
 					else
 						$imageList.removeClass( 'hidden' ).prepend( r.responses[0].data );
+>>>>>>> upstream/master
 
 					// Hide files button if reach max file uploads
 					if ( $imageList.children().length >= maxFileUploads )
 						$uploadButton.addClass( 'hidden' );
+<<<<<<< HEAD
+				}, 'json' );
+=======
 				}, 'xml' );
+>>>>>>> upstream/master
 			}
 		} );
 	} );
