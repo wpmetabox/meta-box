@@ -38,8 +38,6 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			$tax = get_taxonomy( $field['options']['taxonomy'] );
 			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s' , 'rwmb' ), $tax->labels->singular_name ) : $field['std'];
-			
-			$field['field_name'] = "{$field['id']}[]";
 
 			switch( $field['options']['type'] )
 			{
@@ -71,7 +69,9 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					$field['options']['parent'] = 0;
 				}
 			}
-
+			
+			$field['field_name'] = "{$field['id']}[]";
+			
 			return $field;
 		}
 
