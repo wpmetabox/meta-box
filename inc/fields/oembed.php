@@ -17,7 +17,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array(  ), RWMB_VER, true );
-			wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', array(  ), RWMB_VER );
+			//wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', array(  ), RWMB_VER );
 			wp_localize_script( 'rwmb-oembed', 'RWMB_OEmbed', array( 'url' => RWMB_URL ) );
 		}
 
@@ -57,9 +57,8 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 
 		static function get_embed( $url )
 		{
-			global $wp_embed;
-
-			$embed = $wp_embed->run_shortcode( '[embed]' . esc_url( $url ) . '[/embed]' );
+				
+			$embed = wp_oembed_get( esc_url( $url ) );
 
 			if( $embed )
 			{

@@ -74,17 +74,19 @@ jQuery( function( $ )
 				};
 				$.post( ajaxurl, data, function( r )
 				{
-					var r = wpAjax.parseAjaxResponse( r, 'ajax-response' );
 
-					if ( r.errors )
-						alert( r.responses[0].errors[0].message );
-					else
-						$fileList.removeClass( 'hidden' ).prepend( r.responses[0].data );
+					if( r.success )
+					{
+						$fileList.removeClass( 'hidden' ).prepend( _.template( $( '#tmpl-rwmb-file-advanced' ).html(), attachment ) );
+						
+					}
+
 
 					// Hide files button if reach max file uploads
 					if ( $fileList.children().length >= maxFileUploads )
 						$uploadButton.addClass( 'hidden' );
-				}, 'xml' );
+			}, 'json' );
+
 			}
 		} );
 	} );

@@ -64,19 +64,21 @@ jQuery( function( $ )
 					attachment_id: attachment.id,
 					_ajax_nonce  : $uploadButton.data( 'attach_media_nonce' )
 				};
+				
 				$.post( ajaxurl, data, function( r )
 				{
-					var r = wpAjax.parseAjaxResponse( r, 'ajax-response' );
 
-					if ( r.errors )
-						alert( r.responses[0].errors[0].message );
-					else
-						$imageList.removeClass( 'hidden' ).prepend( r.responses[0].data );
+					if( r.success )
+					{
+						$imageList.removeClass( 'hidden' ).prepend( _.template( $( '#tmpl-rwmb-image-advanced' ).html(), attachment ) );
+						
+					}
 
 					// Hide files button if reach max file uploads
 					if ( $imageList.children().length >= maxFileUploads )
 						$uploadButton.addClass( 'hidden' );
-				}, 'xml' );
+				}, 'json' );
+
 			}
 		} );
 	} );
