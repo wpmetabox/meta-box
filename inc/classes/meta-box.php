@@ -185,7 +185,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$this->show_field( $field, $saved );
+				$this->show_field( $field, $post->ID, $saved );
 			}
 
 			// Include validation settings for this meta-box
@@ -224,12 +224,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		public function show_field( $field, $saved = false )
+		public function show_field( $field, $post_id, $saved = false )
 		{
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
-			$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
+			$meta = self::apply_field_class_filters( $field, 'meta', '', $post_id, $saved );
 			$meta = apply_filters( "rwmb_{$type}_meta", $meta );
 			$meta = apply_filters( "rwmb_{$id}_meta", $meta );
 
