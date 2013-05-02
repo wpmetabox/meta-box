@@ -185,106 +185,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$group = '';	// Empty the clone-group field
-				$type = $field['type'];
-				$id   = $field['id'];
-				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
-				$meta = apply_filters( "rwmb_{$type}_meta", $meta );
-				$meta = apply_filters( "rwmb_{$id}_meta", $meta );
-
-				$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
-
-				// Apply filter to field begin HTML
-				// 1st filter applies to all fields
-				// 2nd filter applies to all fields with the same type
-				// 3rd filter applies to current field only
-				$begin = apply_filters( 'rwmb_begin_html', $begin, $field, $meta );
-				$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
-				$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
-
-				// Separate code for cloneable and non-cloneable fields to make easy to maintain
-
-				// Cloneable fields
-				if ( $field['clone'] )
-				{
-					if ( isset( $field['clone-group'] ) )
-						$group = " clone-group='{$field['clone-group']}'";
-
-					$meta = (array) $meta;
-
-					$field_html = '';
-
-					foreach ( $meta as $index => $meta_data )
-					{
-						$sub_field = $field;
-						$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
-						if ( $field['multiple'] )
-							$sub_field['field_name'] .= '[]';
-
-						add_filter( "rwmb_{$id}_html", array( $this, 'add_clone_buttons' ), 10, 3 );
-
-						// Wrap field HTML in a div with class="rwmb-clone" if needed
-						$input_html = '<div class="rwmb-clone">';
-
-						// Call separated methods for displaying each type of field
-						$input_html .= self::apply_field_class_filters( $sub_field, 'html', '', $meta_data );
-
-						// Apply filter to field HTML
-						// 1st filter applies to all fields with the same type
-						// 2nd filter applies to current field only
-						$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
-						$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
-
-						$input_html .= '</div>';
-
-						$field_html .= $input_html;
-					}
-				}
-				// Non-cloneable fields
-				else
-				{
-					// Call separated methods for displaying each type of field
-					$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
-
-					// Apply filter to field HTML
-					// 1st filter applies to all fields with the same type
-					// 2nd filter applies to current field only
-					$field_html = apply_filters( "rwmb_{$type}_html", $field_html, $field, $meta );
-					$field_html = apply_filters( "rwmb_{$id}_html", $field_html, $field, $meta );
-				}
-
-				$end = self::apply_field_class_filters( $field, 'end_html', '', $meta );
-
-				// Apply filter to field end HTML
-				// 1st filter applies to all fields
-				// 2nd filter applies to all fields with the same type
-				// 3rd filter applies to current field only
-				$end = apply_filters( 'rwmb_end_html', $end, $field, $meta );
-				$end = apply_filters( "rwmb_{$type}_end_html", $end, $field, $meta );
-				$end = apply_filters( "rwmb_{$id}_end_html", $end, $field, $meta );
-
-				// Apply filter to field wrapper
-				// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
-				// 1st filter applies to all fields with the same type
-				// 2nd filter applies to current field only
-				$html = apply_filters( "rwmb_{$type}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
-				$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
-
-				// Display label and input in DIV and allow user-defined classes to be appended
-				$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
-				if ( 'hidden' === $field['type'] )
-					$classes[] = 'hidden';
-				if ( !empty( $field['required'] ) )
-					$classes[] = 'required';
-				if ( !empty( $field['class'] ) )
-					$classes[] = $field['class'];
-
-				printf(
-					$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
-					implode( ' ', $classes ),
-					$group,
-					$html
-				);
+				$this->show_field( $field, $saved );
 			}
 
 			// Include validation settings for this meta-box
@@ -316,6 +217,115 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// End container
 			echo '</div>';
+		}
+		
+		/**
+		 * Callback function to show a field in meta box
+		 *
+		 * @return void
+		 */
+		public function show_field( $field, $saved = false )
+		{
+			$group = '';	// Empty the clone-group field
+			$type = $field['type'];
+			$id   = $field['id'];
+			$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
+			$meta = apply_filters( "rwmb_{$type}_meta", $meta );
+			$meta = apply_filters( "rwmb_{$id}_meta", $meta );
+
+			$begin = self::apply_field_class_filters( $field, 'begin_html', '', $meta );
+
+			// Apply filter to field begin HTML
+			// 1st filter applies to all fields
+			// 2nd filter applies to all fields with the same type
+			// 3rd filter applies to current field only
+			$begin = apply_filters( 'rwmb_begin_html', $begin, $field, $meta );
+			$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
+			$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
+
+			// Separate code for cloneable and non-cloneable fields to make easy to maintain
+
+			// Cloneable fields
+			if ( $field['clone'] )
+			{
+				if ( isset( $field['clone-group'] ) )
+					$group = " clone-group='{$field['clone-group']}'";
+
+				$meta = (array) $meta;
+
+				$field_html = '';
+
+				foreach ( $meta as $index => $meta_data )
+				{
+					$sub_field = $field;
+					$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
+					if ( $field['multiple'] )
+						$sub_field['field_name'] .= '[]';
+
+					add_filter( "rwmb_{$id}_html", array( $this, 'add_clone_buttons' ), 10, 3 );
+
+					// Wrap field HTML in a div with class="rwmb-clone" if needed
+					$input_html = '<div class="rwmb-clone">';
+
+					// Call separated methods for displaying each type of field
+					$input_html .= self::apply_field_class_filters( $sub_field, 'html', '', $meta_data );
+
+					// Apply filter to field HTML
+					// 1st filter applies to all fields with the same type
+					// 2nd filter applies to current field only
+					$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
+					$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
+
+					$input_html .= '</div>';
+
+					$field_html .= $input_html;
+				}
+			}
+			// Non-cloneable fields
+			else
+			{
+				// Call separated methods for displaying each type of field
+				$field_html = self::apply_field_class_filters( $field, 'html', '', $meta );
+
+				// Apply filter to field HTML
+				// 1st filter applies to all fields with the same type
+				// 2nd filter applies to current field only
+				$field_html = apply_filters( "rwmb_{$type}_html", $field_html, $field, $meta );
+				$field_html = apply_filters( "rwmb_{$id}_html", $field_html, $field, $meta );
+			}
+
+			$end = self::apply_field_class_filters( $field, 'end_html', '', $meta );
+
+			// Apply filter to field end HTML
+			// 1st filter applies to all fields
+			// 2nd filter applies to all fields with the same type
+			// 3rd filter applies to current field only
+			$end = apply_filters( 'rwmb_end_html', $end, $field, $meta );
+			$end = apply_filters( "rwmb_{$type}_end_html", $end, $field, $meta );
+			$end = apply_filters( "rwmb_{$id}_end_html", $end, $field, $meta );
+
+			// Apply filter to field wrapper
+			// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
+			// 1st filter applies to all fields with the same type
+			// 2nd filter applies to current field only
+			$html = apply_filters( "rwmb_{$type}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+			$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
+
+			// Display label and input in DIV and allow user-defined classes to be appended
+			$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
+			if ( 'hidden' === $field['type'] )
+				$classes[] = 'hidden';
+			if ( !empty( $field['required'] ) )
+				$classes[] = 'required';
+			if ( !empty( $field['class'] ) )
+				$classes[] = $field['class'];
+
+			printf(
+				$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
+				implode( ' ', $classes ),
+				$group,
+				$html
+			);			
 		}
 
 		/**
