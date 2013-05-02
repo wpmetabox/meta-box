@@ -445,7 +445,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
 
 				// Stops images from being removed as per issue #287
-				if((!isset($old) || empty($old)) && (!isset($new) || empty($new))) {
+				if(empty($old) && empty($new)) {
 					continue;
 				}
 
