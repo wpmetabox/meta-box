@@ -18,7 +18,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		{
 			wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array(  ), RWMB_VER, true );
 			wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', array(  ), RWMB_VER );
-			wp_localize_script( 'rwmb-plupload-image', 'RWMB', array( 'url' => RWMB_URL ) );
+			wp_localize_script( 'rwmb-oembed', 'RWMB_OEmbed', array( 'url' => RWMB_URL ) );
 		}
 
 		/**
@@ -44,23 +44,23 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : 0;
 			if ( isset( $_REQUEST['post_id'] ) )
 				$post = get_post( $_REQUEST['post_id'] );
-			$embed = self::get_embed( $url );	
+			$embed = self::get_embed( $url );
 			RW_Meta_Box::ajax_response( $embed, 'success' );
 			exit;
 		}
-		
+
 		/***
 		* Get embed html from url
 		* @param 	string $url
 		* $return 	string
 		*/
-		
+
 		static function get_embed( $url )
 		{
-			global $wp_embed;			
-					
+			global $wp_embed;
+
 			$embed = $wp_embed->run_shortcode( '[embed]' . esc_url( $url ) . '[/embed]' );
-			
+
 			if( $embed )
 			{
 				return $embed;
@@ -69,9 +69,9 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 			{
 				return  'Embed not available.';
 			}
-			
+
 		}
-		
+
 		/**
 		 * Get field HTML
 		 *
@@ -82,10 +82,10 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		 * @return string
 		 */
 		static function html( $html, $meta, $field )
-		{			
+		{
 			return sprintf(
-				'<input type="url" class="rwmb-oembed" name="%s" id="%s" value="%s" size="%s" /> 
-				<span class="spinner" style="display: none;"></span> 
+				'<input type="url" class="rwmb-oembed" name="%s" id="%s" value="%s" size="%s" />
+				<span class="spinner" style="display: none;"></span>
 				<a href="#" class="show-embed button-secondary">Show embed</a>
 				<div class="embed-code"> %s </div>',
 				$field['field_name'],

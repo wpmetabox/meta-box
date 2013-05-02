@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ )
 				oembed_url: $input.val(),
 				post_id : $( '#post_ID' ).val()
 			};
-		$embed_container.html( "<img class='rwmb-loader' height='64' width='64' src='" + RWMB.url + "img/loader.gif'/>" );	
+		$embed_container.html( "<img class='rwmb-loader' height='64' width='64' src='" + RWMB_OEmbed.url + "img/loader.gif'>" );
 		$.post( ajaxurl, data, function( r )
 		{
 			var res = wpAjax.parseAjaxResponse( r, 'ajax-response' );
@@ -19,10 +19,10 @@ jQuery( document ).ready( function( $ )
 			else
 				$embed_container.html( res.responses[0].data );
 
-		}, 'xml' );	
-	
-			
+		}, 'xml' );
+
+
 		return false;
-		
+
 	});
 } );
