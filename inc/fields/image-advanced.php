@@ -17,11 +17,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
-<<<<<<< HEAD
 			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
-=======
-			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery' ), RWMB_VER, true );
->>>>>>> upstream/master
 		}
 
 		/**
@@ -53,14 +49,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			check_ajax_referer( "rwmb-attach-media_{$field_id}" );
 
 			add_post_meta( $post_id, $field_id, $attachment_id, false );
-
-<<<<<<< HEAD
 			wp_send_json_success();
-=======
-			RW_Meta_Box::ajax_response( self::img_html( $attachment_id ), 'success' );
-
-			exit;
->>>>>>> upstream/master
 		}
 
 		/**
@@ -107,8 +96,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
 		}
-<<<<<<< HEAD
-		
+	
 		static function print_templates()
 		{
 			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
@@ -125,7 +113,6 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			</script>
             <?php
 		}
-=======
->>>>>>> upstream/master
+
 	}
 }
