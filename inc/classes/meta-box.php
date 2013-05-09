@@ -543,7 +543,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			) );
 
 			// Set default values for fields
-			foreach ( $meta_box['fields'] as &$field )
+			$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
+
+			return $meta_box;
+		}
+		
+		/**
+		 * Normalize an array of fields
+		 *
+		 * @param array $fields Array of fields
+		 *
+		 * @return array $fields Normalized fields
+		 */
+		static function normalize_fields( $fields )
+		{
+			foreach ( $fields as &$field )
 			{
 				$field = wp_parse_args( $field, array(
 					'multiple' 		=> false,
@@ -560,8 +574,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 			}
-
-			return $meta_box;
+			
+			return $fields;
 		}
 
 		/**
