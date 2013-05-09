@@ -42,14 +42,29 @@ jQuery( document ).ready( function( $ )
 			else 
 			{
 				$parent.remove();
-				$container.siblings('.new-files').removeClass('hidden');
-				if( $container.children('li').length <=0 )
-				{
-					$container.addClass( 'hidden' );	
-				}
+				$container.trigger( 'update.rwmbFile' );
 			}
 		}, 'xml' );
 
 		return false;
 	} );
+	
+	$( 'body' ).on( 'update.rwmbFile', '.rwmb-uploaded', function( e ) 
+	{
+		var $fileList = $( this ), 
+			maxFileUploads = $fileList.data( 'max_file_uploads' ),
+			$uploader = $fileList.siblings( '.new-files' ),
+			numFiles = $fileList.children().length;
+		
+		//return false if maxFileUpload equal to 0
+		if( maxFileUploads === 0 )
+			return false; 
+			
+		// Hide files button if reach max file uploads
+		numFiles >= maxFileUploads ? $uploader.addClass( 'hidden' ) : $uploader.removeClass( 'hidden' );
+		numFiles <=0 ? $fileList.addClass( 'hidden' ) : $fileList.removeClass( 'hidden' );
+		
+		return false;
+		
+	});
 } );

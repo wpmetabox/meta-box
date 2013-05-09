@@ -39,11 +39,11 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		{
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-			$attachment_id    = isset( $_POST['attachment_id'] ) ? $_POST['attachment_id'] : 0;
+			$attachment_ids    = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : 0;
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
-
-			add_post_meta( $post_id, $field_id, $attachment_id, false );
+			foreach( $attachment_ids as $attachment_id )
+				add_post_meta( $post_id, $field_id, $attachment_id, false );
 
 			wp_send_json_success();
 		}
@@ -100,15 +100,17 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
 			?>
             <script id="tmpl-rwmb-file-advanced" type="text/html">
+				<% _.each( attachments, function( attachment ) {%>
 				<li>
-					<div class="rwmb-icon"><img src="<% if(type === 'image'){ %><%= sizes.thumbnail.url %><% } else { %><%= icon %><% } %>"></div>
+					<div class="rwmb-icon"><img src="<% if(attachment.type === 'image'){ %><%= attachment.sizes.thumbnail.url %><% } else { %><%= attachment.icon %><% } %>"></div>
 					<div class="rwmb-info">
-						<a href="<%= url %>" target="_blank"><%= title %></a>
-						<p><%= mime %></p>
-						<a title="<?php echo $i18n_edit; ?>" href="<%= editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
-						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= id %>"><?php echo $i18n_delete; ?></a>
+						<a href="<%= attachment.url %>" target="_blank"><%= attachment.title %></a>
+						<p><%= attachment.mime %></p>
+						<a title="<?php echo $i18n_edit; ?>" href="<%= attachment.editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
+						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= attachment.id %>"><?php echo $i18n_delete; ?></a>
 					</div>
 				</li>
+				<% } );%>
 			</script>
             <?php
 		}
