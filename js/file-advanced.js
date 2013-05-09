@@ -47,7 +47,8 @@ jQuery( function( $ )
 		{
 			// Get selections
 			var selection = frame.state().get( 'selection' ).toJSON(),
-				uploaded = $fileList.children().length;
+				uploaded = $fileList.children().length,
+				ids;
 
 			if ( maxFileUploads > 0 && ( uploaded + selection.length ) > maxFileUploads )
 			{
@@ -55,38 +56,33 @@ jQuery( function( $ )
 					selection = selection.slice( 0, maxFileUploads - uploaded );
 				alert( msg );
 			}
-
-			for ( var i in  selection )
+			
+			ids = $.map( selection, function( attachment )
 			{
-				var attachment = selection[i];
-
-				// Check if image already attached
 				if ( $fileList.children( 'li#item_' + attachment.id ).length > 0 )
-					continue;
-
+					return;
+				return attachment.id;
+			} )
+			
+			if( ids.length > 0 )
+			{
 				// Attach attachment to field and get HTML
 				var data = {
 					action       : 'rwmb_attach_file',
 					post_id      : $( '#post_ID' ).val(),
 					field_id     : $fileList.data( 'field_id' ),
-					attachment_id: attachment.id,
+					attachment_ids: ids,
 					_ajax_nonce  : $uploadButton.data( 'attach_file_nonce' )
 				};
 				$.post( ajaxurl, data, function( r )
 				{
-
 					if( r.success )
 					{
-						$fileList.removeClass( 'hidden' ).prepend( _.template( $( '#tmpl-rwmb-file-advanced' ).html(), attachment ) );
-						
+						$fileList
+							.append( _.template( $( '#tmpl-rwmb-file-advanced' ).html(),  { attachments: selection } ) )
+							.trigger('update.rwmbFile');;
 					}
-
-
-					// Hide files button if reach max file uploads
-					if ( $fileList.children().length >= maxFileUploads )
-						$uploadButton.addClass( 'hidden' );
-			}, 'json' );
-
+				}, 'json' );
 			}
 		} );
 	} );
