@@ -57,7 +57,7 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 ## Contributors
 
 - [Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer
-- [Franz Josef Kaiser](http://unserkaiser.com)
+- [Franz Josef Kaiser](http://profiles.wordpress.org/f-j-kaiser)
 - Omnicia
 - ruanmer
 - PerWiklander
