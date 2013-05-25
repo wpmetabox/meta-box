@@ -64,12 +64,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
 			if ( !$show )
 				return;
-
+			//All fields
+			$fields = self::get_fields( $this->fields );
+\
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
+			
 			// Add additional actions for fields
-			foreach ( $this->fields as $field )
+			foreach ( $fields as $field )
 			{
 				$class = self::get_class_name( $field );
 
@@ -109,7 +111,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Load clone script conditionally
 			$has_clone = false;
-			foreach ( $this->fields as $field )
+			$fields = self::get_fields( $this->fields );
+
+			foreach ( $fields as $field )
 			{
 				if ( $field['clone'] )
 					$has_clone = true;
@@ -132,6 +136,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Auto save
 			if ( $this->meta_box['autosave'] )
 				wp_enqueue_script( 'rwmb-autosave', RWMB_JS_URL . 'autosave.js', array( 'jquery' ), RWMB_VER, true );
+		}
+		
+		static function get_fields( $fields )
+		{
+			$all_fields = array();
+			foreach( $fields as $field ) 
+			{
+				$all_fields[] = $field;
+				if( isset( $field['fields'] ) )
+				{
+					$all_fields = array_merge( $all_fields, self::get_fields( $field['fields'] ) );
+				}
+			}
+			
+			return $all_fields;
 		}
 
 		/**************************************************
@@ -185,7 +204,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$this->show_field( $field, $post->ID, $saved );
+				$meta = self::apply_field_class_filters( $field, 'meta', '', $post->ID, $saved );
+				echo self::show_field( $field, $meta );
 			}
 
 			// Include validation settings for this meta-box
@@ -219,17 +239,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			echo '</div>';
 		}
 		
+		
 		/**
-		 * Callback function to show a field in meta box
+		 * Callback function to show fields in meta box
 		 *
 		 * @return void
 		 */
-		public function show_field( $field, $post_id, $saved = false )
+		static function show_field( $field, $meta = '' )
 		{
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
-			$meta = self::apply_field_class_filters( $field, 'meta', '', $post_id, $saved );
+			
 			$meta = apply_filters( "rwmb_{$type}_meta", $meta );
 			$meta = apply_filters( "rwmb_{$id}_meta", $meta );
 
@@ -262,7 +283,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					if ( $field['multiple'] )
 						$sub_field['field_name'] .= '[]';
 
-					add_filter( "rwmb_{$id}_html", array( $this, 'add_clone_buttons' ), 10, 3 );
+					add_filter( "rwmb_{$id}_html", array( __CLASS__, 'add_clone_buttons' ), 10, 3 );
 
 					// Wrap field HTML in a div with class="rwmb-clone" if needed
 					$input_html = '<div class="rwmb-clone">';
@@ -320,7 +341,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( !empty( $field['class'] ) )
 				$classes[] = $field['class'];
 
-			printf(
+			return sprintf(
 				$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
 				implode( ' ', $classes ),
 				$group,
@@ -573,6 +594,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
+				
+				if( isset( $field['fields'] ) )
+				{
+					$field['fields'] = self::normalize_fields( $field['fields'] );
+				}
 			}
 			
 			return $fields;
