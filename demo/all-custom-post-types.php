@@ -17,12 +17,12 @@ function YOUR_PREFIX_register_meta_boxes()
 	// 1st meta box
 	$meta_boxes[] = array(
 		'id'    => 'personal',
-		'title' => 'Personal Information',
+		'title' => __( 'Personal Information', 'rwmb' ),
 		'pages' => $post_types,
 
 		'fields' => array(
 			array(
-				'name' => 'Full name',
+				'name' => __( 'Full name', 'rwmb' ),
 				'id'   => $prefix . 'fname',
 				'type' => 'text',
 			),
