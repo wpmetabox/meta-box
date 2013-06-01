@@ -8,31 +8,31 @@ function force_delete_register_meta_boxes()
 	$prefix = '';
 
 	$meta_box = array(
-		'title'  => 'Test Meta Box',
+		'title'  => __( 'Test Meta Box', 'rwmb' ),
 		'fields' => array(
 			// FILE UPLOAD
 			array(
-				'name' => 'File Upload',
+				'name' => __( 'File Upload', 'rwmb' ),
 				'id'   => "{$prefix}file",
 				'type' => 'file',
 				'force_delete' => true,
 			),
 			// IMAGE UPLOAD
 			array(
-				'name' => 'Image Upload',
+				'name' => __( 'Image Upload', 'rwmb' ),
 				'id'   => "{$prefix}image",
 				'type' => 'image',
 			),
 			// THICKBOX IMAGE UPLOAD (WP 3.3+)
 			array(
-				'name' => 'Thichbox Image Upload',
+				'name' => __( 'Thickbox Image Upload', 'rwmb' ),
 				'id'   => "{$prefix}thickbox",
 				'type' => 'thickbox_image',
 				'force_delete' => true,
 			),
 			// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 			array(
-				'name'             => 'Plupload Image Upload',
+				'name'             => __( 'Plupload Image Upload', 'rwmb' ),
 				'id'               => "{$prefix}plupload",
 				'type'             => 'plupload_image',
 				'max_file_uploads' => 4,
