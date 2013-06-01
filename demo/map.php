@@ -6,17 +6,17 @@ function test_register_meta_boxes()
 		return;
 
 	$meta_box = array(
-		'title'  => 'Google Map',
+		'title'  => __( 'Google Map', 'rwmb' ),
 		'fields' => array(
 			array(
 				'id'            => 'address',
-				'name'          => 'Address',
+				'name'          => __( 'Address', 'rwmb' ),
 				'type'          => 'text',
-				'std'           => 'Hanoi, Vietnam',
+				'std'           => __( 'Hanoi, Vietnam', 'rwmb' ),
 			),
 			array(
 				'id'            => 'loc',
-				'name'          => 'Location',
+				'name'          => __( 'Location', 'rwmb' ),
 				'type'          => 'map',
 				'std'           => '-6.233406,-35.049906,15',     // 'latitude,longitude[,zoom]' (zoom is optional)
 				'style'         => 'width: 500px; height: 500px',
