@@ -5,13 +5,13 @@ global $meta_boxes;
 $meta_boxes   = array();
 $meta_boxes[] = array(
 	'id'     => 'any_id',
-	'title'  => 'Meta Box Title',
+	'title'  => __( 'Meta Box Title', 'rwmb' ),
 	'pages'  => array( 'post' ),
 	'fields' => array(
 
 		// IMAGE UPLOAD
 		array(
-			'name' => 'Your images',
+			'name' => __( 'Your images', 'rwmb' ),
 			'id'   => "{$prefix}img",
 			'type' => 'plupload_image',
 		),
