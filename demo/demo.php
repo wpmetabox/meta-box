@@ -31,7 +31,7 @@ $meta_boxes[] = array(
 	'id' => 'standard',
 
 	// Meta box title - Will appear at the drag and drop handle bar. Required.
-	'title' => 'Standard Fields',
+	'title' => __( 'Standard Fields', 'rwmb' ),
 
 	// Post types, accept custom post types as well - DEFAULT is array('post'). Optional.
 	'pages' => array( 'post', 'page' ),
@@ -50,20 +50,20 @@ $meta_boxes[] = array(
 		// TEXT
 		array(
 			// Field name - Will be used as label
-			'name'  => 'Text',
+			'name'  => __( 'Text', 'rwmb' ),
 			// Field ID, i.e. the meta key
 			'id'    => "{$prefix}text",
 			// Field description (optional)
-			'desc'  => 'Text description',
+			'desc'  => __( 'Text description', 'rwmb' ),
 			'type'  => 'text',
 			// Default value (optional)
-			'std'   => 'Default text value',
+			'std'   => __( 'Default text value', 'rwmb' ),
 			// CLONES: Add to make the field cloneable (i.e. have multiple value)
 			'clone' => true,
 		),
 		// CHECKBOX
 		array(
-			'name' => 'Checkbox',
+			'name' => __( 'Checkbox', 'rwmb' ),
 			'id'   => "{$prefix}checkbox",
 			'type' => 'checkbox',
 			// Value can be 0 or 1
@@ -71,47 +71,47 @@ $meta_boxes[] = array(
 		),
 		// RADIO BUTTONS
 		array(
-			'name'    => 'Radio',
+			'name'    => __( 'Radio', 'rwmb' ),
 			'id'      => "{$prefix}radio",
 			'type'    => 'radio',
 			// Array of 'value' => 'Label' pairs for radio options.
 			// Note: the 'value' is stored in meta field, not the 'Label'
 			'options' => array(
-				'value1' => 'Label1',
-				'value2' => 'Label2',
+				'value1' => __( 'Label1', 'rwmb' ),
+				'value2' => __( 'Label2', 'rwmb' ),
 			),
 		),
 		// SELECT BOX
 		array(
-			'name'     => 'Select',
+			'name'     => __( 'Select', 'rwmb' ),
 			'id'       => "{$prefix}select",
 			'type'     => 'select',
 			// Array of 'value' => 'Label' pairs for select box
 			'options'  => array(
-				'value1' => 'Label1',
-				'value2' => 'Label2',
+				'value1' => __( 'Label1', 'rwmb' ),
+				'value2' => __( 'Label2', 'rwmb' ),
 			),
 			// Select multiple values, optional. Default is false.
 			'multiple' => false,
-			'std'	=> 'Select an Item',
+			'std'	=> __( 'Select an Item', 'rwmb' ),
 		),
 		// HIDDEN
 		array(
 			'id'   => "{$prefix}hidden",
 			'type' => 'hidden',
 			// Hidden field must have predefined value
-			'std'  => 'Hidden value',
+			'std'  => __( 'Hidden value', 'rwmb' ),
 		),
 		// PASSWORD
 		array(
-			'name' => 'Password',
+			'name' => __( 'Password', 'rwmb' ),
 			'id'   => "{$prefix}password",
 			'type' => 'password',
 		),
 		// TEXTAREA
 		array(
-			'name' => 'Textarea',
-			'desc' => 'Textarea description',
+			'name' => __( 'Textarea', 'rwmb' ),
+			'desc' => __( 'Textarea description', 'rwmb' ),
 			'id'   => "{$prefix}textarea",
 			'type' => 'textarea',
 			'cols' => 20,
@@ -128,8 +128,8 @@ $meta_boxes[] = array(
 		// optional override of default jquery.validate messages
 		'messages' => array(
 			"{$prefix}password" => array(
-				'required'  => 'Password is required',
-				'minlength' => 'Password must be at least 7 characters',
+				'required'  => __( 'Password is required', 'rwmb' ),
+				'minlength' => __( 'Password must be at least 7 characters', 'rwmb' ),
 			),
 		)
 	)
@@ -137,18 +137,18 @@ $meta_boxes[] = array(
 
 // 2nd meta box
 $meta_boxes[] = array(
-	'title' => 'Advanced Fields',
+	'title' => __( 'Advanced Fields', 'rwmb' ),
 
 	'fields' => array(
 		// SLIDER
 		array(
-			'name' => 'Slider',
+			'name' => __( 'Slider', 'rwmb' ),
 			'id'   => "{$prefix}slider",
 			'type' => 'slider',
 
 			// Text labels displayed before and after value
-			'prefix' => '$',
-			'suffix' => ' USD',
+			'prefix' => __( '$', 'rwmb' ),
+			'suffix' => __( ' USD', 'rwmb' ),
 
 			// jQuery UI slider options. See here http://api.jqueryui.com/slider/
 			'js_options' => array(
@@ -159,7 +159,7 @@ $meta_boxes[] = array(
 		),
 		// NUMBER
 		array(
-			'name' => 'Number',
+			'name' => __( 'Number', 'rwmb' ),
 			'id'   => "{$prefix}number",
 			'type' => 'number',
 
@@ -168,14 +168,14 @@ $meta_boxes[] = array(
 		),
 		// DATE
 		array(
-			'name' => 'Date picker',
+			'name' => __( 'Date picker', 'rwmb' ),
 			'id'   => "{$prefix}date",
 			'type' => 'date',
 
 			// jQuery date picker options. See here http://api.jqueryui.com/datepicker
 			'js_options' => array(
-				'appendText'      => '(yyyy-mm-dd)',
-				'dateFormat'      => 'yy-mm-dd',
+				'appendText'      => __( '(yyyy-mm-dd)', 'rwmb' ),
+				'dateFormat'      => __( 'yy-mm-dd', 'rwmb' ),
 				'changeMonth'     => true,
 				'changeYear'      => true,
 				'showButtonPanel' => true,
@@ -183,7 +183,7 @@ $meta_boxes[] = array(
 		),
 		// DATETIME
 		array(
-			'name' => 'Datetime picker',
+			'name' => __( 'Datetime picker', 'rwmb' ),
 			'id'   => $prefix . 'datetime',
 			'type' => 'datetime',
 
@@ -197,7 +197,7 @@ $meta_boxes[] = array(
 		),
 		// TIME
 		array(
-			'name' => 'Time picker',
+			'name' => __( 'Time picker', 'rwmb' ),
 			'id'   => $prefix . 'time',
 			'type' => 'time',
 
@@ -212,34 +212,34 @@ $meta_boxes[] = array(
 		),
 		// COLOR
 		array(
-			'name' => 'Color picker',
+			'name' => __( 'Color picker', 'rwmb' ),
 			'id'   => "{$prefix}color",
 			'type' => 'color',
 		),
 		// CHECKBOX LIST
 		array(
-			'name' => 'Checkbox list',
+			'name' => __( 'Checkbox list', 'rwmb' ),
 			'id'   => "{$prefix}checkbox_list",
 			'type' => 'checkbox_list',
 			// Options of checkboxes, in format 'value' => 'Label'
 			'options' => array(
-				'value1' => 'Label1',
-				'value2' => 'Label2',
+				'value1' => __( 'Label1', 'rwmb' ),
+				'value2' => __( 'Label2', 'rwmb' ),
 			),
 		),
 		// EMAIL
 		array(
-			'name'  => 'Email',
+			'name'  => __( 'Email', 'rwmb' ),
 			'id'    => "{$prefix}email",
-			'desc'  => 'Email description',
+			'desc'  => __( 'Email description', 'rwmb' ),
 			'type'  => 'email',
-			'std'   => 'http://google.com',
+			'std'   => 'name@email.com',
 		),
 		// RANGE
 		array(
-			'name'  => 'Range',
+			'name'  => __( 'Range', 'rwmb' ),
 			'id'    => "{$prefix}range",
-			'desc'  => 'Range description',
+			'desc'  => __( 'Range description', 'rwmb' ),
 			'type'  => 'range',
 			'min'   => 0,
 			'max'   => 100,
@@ -248,22 +248,22 @@ $meta_boxes[] = array(
 		),
 		// URL
 		array(
-			'name'  => 'URL',
+			'name'  => __( 'URL', 'rwmb' ),
 			'id'    => "{$prefix}url",
-			'desc'  => 'URL description',
+			'desc'  => __( 'URL description', 'rwmb' ),
 			'type'  => 'url',
 			'std'   => 'http://google.com',
 		),
 		// OEMBED
 		array(
-			'name'  => 'oEmbed',
+			'name'  => __( 'oEmbed', 'rwmb' ),
 			'id'    => "{$prefix}oembed",
-			'desc'  => 'oEmbed description',
+			'desc'  => __( 'oEmbed description', 'rwmb' ),
 			'type'  => 'oembed',
 		),
 		// TAXONOMY
 		array(
-			'name'    => 'Taxonomy',
+			'name'    => __( 'Taxonomy', 'rwmb' ),
 			'id'      => "{$prefix}taxonomy",
 			'type'    => 'taxonomy',
 			'options' => array(
@@ -277,7 +277,7 @@ $meta_boxes[] = array(
 		),
 		// POST
 		array(
-			'name'    => 'Posts (Pages)',
+			'name'    => __( 'Posts (Pages)', 'rwmb' ),
 			'id'      => "{$prefix}pages",
 			'type'    => 'post',
 
@@ -293,12 +293,12 @@ $meta_boxes[] = array(
 		),
 		// WYSIWYG/RICH TEXT EDITOR
 		array(
-			'name' => 'WYSIWYG / Rich Text Editor',
+			'name' => __( 'WYSIWYG / Rich Text Editor', 'rwmb' ),
 			'id'   => "{$prefix}wysiwyg",
 			'type' => 'wysiwyg',
 			// Set the 'raw' parameter to TRUE to prevent data being passed through wpautop() on save
 			'raw'  => false,
-			'std'  => 'WYSIWYG default value',
+			'std'  => __( 'WYSIWYG default value', 'rwmb' ),
 
 			// Editor settings, see wp_editor() function: look4wp.com/wp_editor
 			'options' => array(
@@ -309,13 +309,13 @@ $meta_boxes[] = array(
 		),
 		// FILE UPLOAD
 		array(
-			'name' => 'File Upload',
+			'name' => __( 'File Upload', 'rwmb' ),
 			'id'   => "{$prefix}file",
 			'type' => 'file',
 		),
 		// FILE ADVANCED (WP 3.5+)
 		array(
-			'name' => 'File Advanced Upload',
+			'name' => __( 'File Advanced Upload', 'rwmb' ),
 			'id'   => "{$prefix}file_advanced",
 			'type' => 'file_advanced',
 			'max_file_uploads' => 4,
@@ -323,26 +323,26 @@ $meta_boxes[] = array(
 		),
 		// IMAGE UPLOAD
 		array(
-			'name' => 'Image Upload',
+			'name' => __( 'Image Upload', 'rwmb' ),
 			'id'   => "{$prefix}image",
 			'type' => 'image',
 		),
 		// THICKBOX IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name' => 'Thickbox Image Upload',
+			'name' => __( 'Thickbox Image Upload', 'rwmb' ),
 			'id'   => "{$prefix}thickbox",
 			'type' => 'thickbox_image',
 		),
 		// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 		array(
-			'name'             => 'Plupload Image Upload',
+			'name'             => __( 'Plupload Image Upload', 'rwmb' ),
 			'id'               => "{$prefix}plupload",
 			'type'             => 'plupload_image',
 			'max_file_uploads' => 4,
 		),
 		// IMAGE ADVANCED (WP 3.5+)
 		array(
-			'name'             => 'Image Advanced Upload',
+			'name'             => __( 'Image Advanced Upload', 'rwmb' ),
 			'id'               => "{$prefix}imgadv",
 			'type'             => 'image_advanced',
 			'max_file_uploads' => 4,
