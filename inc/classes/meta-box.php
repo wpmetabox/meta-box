@@ -69,7 +69,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 \
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-			
+
 			// Add additional actions for fields
 			foreach ( $fields as $field )
 			{
@@ -137,11 +137,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( $this->meta_box['autosave'] )
 				wp_enqueue_script( 'rwmb-autosave', RWMB_JS_URL . 'autosave.js', array( 'jquery' ), RWMB_VER, true );
 		}
-		
+
 		static function get_fields( $fields )
 		{
 			$all_fields = array();
-			foreach( $fields as $field ) 
+			foreach( $fields as $field )
 			{
 				$all_fields[] = $field;
 				if( isset( $field['fields'] ) )
@@ -149,7 +149,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					$all_fields = array_merge( $all_fields, self::get_fields( $field['fields'] ) );
 				}
 			}
-			
+
 			return $all_fields;
 		}
 
@@ -189,9 +189,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
 			// Container
-			echo sprintf( 
-				'<div class="rwmb-meta-box" data-autosave="%s">', 
-				$this->meta_box['autosave']  ? 'true' : 'false'  
+			echo sprintf(
+				'<div class="rwmb-meta-box" data-autosave="%s">',
+				$this->meta_box['autosave']  ? 'true' : 'false'
 			);
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
@@ -238,19 +238,22 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// End container
 			echo '</div>';
 		}
-		
-		
+
+
 		/**
 		 * Callback function to show fields in meta box
 		 *
-		 * @return void
+		 * @param array  $field
+		 * @param string $meta
+		 *
+		 * @return string
 		 */
 		static function show_field( $field, $meta = '' )
 		{
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
-			
+
 			$meta = apply_filters( "rwmb_{$type}_meta", $meta );
 			$meta = apply_filters( "rwmb_{$id}_meta", $meta );
 
@@ -346,7 +349,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				implode( ' ', $classes ),
 				$group,
 				$html
-			);			
+			);
 		}
 
 		/**
@@ -568,7 +571,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			return $meta_box;
 		}
-		
+
 		/**
 		 * Normalize an array of fields
 		 *
@@ -594,13 +597,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
-				
+
 				if( isset( $field['fields'] ) )
 				{
 					$field['fields'] = self::normalize_fields( $field['fields'] );
 				}
 			}
-			
+
 			return $fields;
 		}
 

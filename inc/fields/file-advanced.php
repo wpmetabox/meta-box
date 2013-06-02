@@ -39,7 +39,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		{
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-			$attachment_ids    = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : 0;
+			$attachment_ids = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : 0;
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
 			foreach( $attachment_ids as $attachment_id )
@@ -93,16 +93,16 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
 		}
-		
+
 		static function print_templates()
 		{
-			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
-			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
+			$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'rwmb' ) );
+			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'rwmb' ) );
 			?>
             <script id="tmpl-rwmb-file-advanced" type="text/html">
-				<% _.each( attachments, function( attachment ) {%>
+				<% _.each( attachments, function( attachment ) { %>
 				<li>
-					<div class="rwmb-icon"><img src="<% if(attachment.type === 'image'){ %><%= attachment.sizes.thumbnail.url %><% } else { %><%= attachment.icon %><% } %>"></div>
+					<div class="rwmb-icon"><img src="<% if ( attachment.type == 'image' ){ %><%= attachment.sizes.thumbnail.url %><% } else { %><%= attachment.icon %><% } %>"></div>
 					<div class="rwmb-info">
 						<a href="<%= attachment.url %>" target="_blank"><%= attachment.title %></a>
 						<p><%= attachment.mime %></p>

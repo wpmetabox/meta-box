@@ -48,13 +48,15 @@ jQuery( function( $ )
 					selection = selection.slice( 0, maxFileUploads - uploaded );
 				alert( msg );
 			}
-			
-			ids = $.map( selection, function( attachment )
+
+			// Get only files that haven't been added to the list
+			// Also prevent duplication when send ajax request
+			selection = _.filter( selection, function( attachment )
 			{
-				if ( $imageList.children( 'li#item_' + attachment.id ).length > 0 )
-					return;
-				return attachment.id;
-			} )
+				return $imageList.children( 'li#item_' + attachment.id ).length == 0;
+			} );
+			ids = _.pluck( selection, 'id' );
+			console.log( selection );
 
 			if( ids.length > 0 )
 			{
@@ -72,8 +74,8 @@ jQuery( function( $ )
 					{
 						$imageList
 							.append( _.template( $( '#tmpl-rwmb-image-advanced' ).html(), { attachments: selection } ) )
-							.trigger('update.rwmbFile');						
-					}					
+							.trigger('update.rwmbFile');
+					}
 				}, 'json' );
 			}
 		} );
