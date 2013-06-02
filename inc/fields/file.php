@@ -262,8 +262,6 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
 		{
-			global $wpdb;
-
 			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
 
 			if ( empty( $meta ) )

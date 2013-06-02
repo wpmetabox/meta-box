@@ -44,11 +44,13 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		{
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-			$attachment_ids    = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : 0;
+			$attachment_ids = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : array();
 
 			check_ajax_referer( "rwmb-attach-media_{$field_id}" );
-			foreach( $attachment_ids as $attachment_id )
+			foreach ( $attachment_ids as $attachment_id )
+			{
 				add_post_meta( $post_id, $field_id, $attachment_id, false );
+			}
 			wp_send_json_success();
 		}
 
@@ -96,16 +98,20 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
 		}
-	
+
 		static function print_templates()
 		{
 			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
 			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
 			?>
             <script id="tmpl-rwmb-image-advanced" type="text/html">
-				<% _.each( attachments, function( attachment ) {%>
+				<% _.each( attachments, function( attachment ) { %>
 				<li id="item_<%= attachment.id %>">
-					<img src="<%= attachment.sizes.thumbnail.url %>" />
+					<% if ( attachment.sizes.hasOwnProperty( 'thumbnail' ) ) { %>
+						<img src="<%= attachment.sizes.thumbnail.url %>">
+					<% } else { %>
+						<img src="<%= attachment.sizes.full.url %>">
+					<% } %>
 					<div class="rwmb-image-bar">
 						<a title="<?php echo $i18n_edit; ?>" class="rwmb-edit-file" href="<%= attachment.editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
 						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= attachment.id %>">×</a>
