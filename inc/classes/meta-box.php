@@ -64,11 +64,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
 			if ( !$show )
 				return;
-			//All fields
-			$fields = self::get_fields( $this->fields );
-\
+
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+			// All fields
+			$fields = self::get_fields( $this->fields );
 
 			// Add additional actions for fields
 			foreach ( $fields as $field )
@@ -84,6 +85,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				add_action( "add_meta_boxes_{$page}", array( $this, 'add_meta_boxes' ) );
 			}
+
+			// Hide meta box if it's set 'default_hidden'
+			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
 
 			// Save post meta
 			add_action( 'save_post', array( $this, 'save_post' ) );
@@ -138,13 +142,20 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				wp_enqueue_script( 'rwmb-autosave', RWMB_JS_URL . 'autosave.js', array( 'jquery' ), RWMB_VER, true );
 		}
 
+		/**
+		 * Get all fields of a meta box, recursively
+		 *
+		 * @param array $fields
+		 *
+		 * @return array
+		 */
 		static function get_fields( $fields )
 		{
 			$all_fields = array();
-			foreach( $fields as $field )
+			foreach ( $fields as $field )
 			{
 				$all_fields[] = $field;
-				if( isset( $field['fields'] ) )
+				if ( isset( $field['fields'] ) )
 				{
 					$all_fields = array_merge( $all_fields, self::get_fields( $field['fields'] ) );
 				}
@@ -178,18 +189,39 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
+		 * Hide meta box if it's set 'default_hidden'
+		 *
+		 * @param array  $hidden Array of default hidden meta boxes
+		 * @param object $screen Current screen information
+		 *
+		 * @return array
+		 */
+		function hide( $hidden, $screen )
+		{
+			if (
+				'post' === $screen->base
+				&& in_array( $screen->post_type, $this->meta_box['pages'] )
+				&& $this->meta_box['default_hidden']
+			)
+			{
+				$hidden[] = $this->meta_box['id'];
+			}
+			return $hidden;
+		}
+
+		/**
 		 * Callback function to show fields in meta box
 		 *
 		 * @return void
 		 */
-		public function show()
+		function show()
 		{
 			global $post;
 
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
 			// Container
-			echo sprintf(
+			printf(
 				'<div class="rwmb-meta-box" data-autosave="%s">',
 				$this->meta_box['autosave']  ? 'true' : 'false'
 			);
@@ -212,19 +244,19 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( isset( $this->validation ) && $this->validation )
 			{
 				echo '
-					<script type="text/javascript">
-						if ( typeof rwmb == "undefined" )
-						{
-							var rwmb = {
-								validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
-								summaryMessage : "' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) . '"
-							};
-						}
-						else
-						{
-							var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
-							jQuery.extend( true, rwmb.validationOptions, tempOptions );
+					<script>
+					if ( typeof rwmb == "undefined" )
+					{
+						var rwmb = {
+							validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
+							summaryMessage : "' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) . '"
 						};
+					}
+					else
+					{
+						var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
+						jQuery.extend( true, rwmb.validationOptions, tempOptions );
+					};
 					</script>
 				';
 			}
@@ -479,10 +511,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
 
 				// Stops images from being removed as per issue #287
-				if(empty($old) && empty($new)) {
+				if ( empty( $old ) && empty( $new ) )
 					continue;
-				}
-
 
 				// Allow field class change the value
 				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
@@ -559,11 +589,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			// Set default values for meta box
 			$meta_box = wp_parse_args( $meta_box, array(
-				'id'       => sanitize_title( $meta_box['title'] ),
-				'context'  => 'normal',
-				'priority' => 'high',
-				'pages'    => array( 'post' ),
-				'autosave' => false,
+				'id'             => sanitize_title( $meta_box['title'] ),
+				'context'        => 'normal',
+				'priority'       => 'high',
+				'pages'          => array( 'post' ),
+				'autosave'       => false,
+				'default_hidden' => false,
 			) );
 
 			// Set default values for fields
@@ -584,15 +615,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $fields as &$field )
 			{
 				$field = wp_parse_args( $field, array(
-					'multiple' 		=> false,
-					'clone'    		=> false,
-					'std'      		=> '',
-					'desc'     		=> '',
-					'format'   		=> '',
-					'before'   		=> '',
-					'after'    		=> '',
-					'field_name' 	=> $field['id'],
-					'required' 		=> false
+					'multiple'   => false,
+					'clone'      => false,
+					'std'        => '',
+					'desc'       => '',
+					'format'     => '',
+					'before'     => '',
+					'after'      => '',
+					'field_name' => $field['id'],
+					'required'   => false
 				) );
 
 				// Allow field class add/change default field values
