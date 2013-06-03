@@ -19,6 +19,11 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-file-advanced', 'rwmbFileAdvanced', array(
+				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'rwmb' ),
+				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'rwmb' ),
+				'frameTitle'           => __( 'Select Files', 'rwmb' ),
+			) );
 		}
 
 		/**
@@ -39,7 +44,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		{
 			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-			$attachment_ids = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : 0;
+			$attachment_ids = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : array();
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
 			foreach( $attachment_ids as $attachment_id )

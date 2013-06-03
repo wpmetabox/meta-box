@@ -8,16 +8,15 @@ jQuery( function( $ )
 			$fileList = $uploadButton.siblings( '.rwmb-uploaded' ),
 			maxFileUploads = $fileList.data( 'max_file_uploads' ),
 			mimeType = $fileList.data( 'mime_type' ),
-			msg = 'You may only upload ' + maxFileUploads + ' file',
+			msg = maxFileUploads > 1 ? rwmbFileAdvanced.maxFileUploadsPlural : rwmbFileAdvanced.maxFileUploadsSingle,
 			frame,
 			frameOptions = {
 				className: 'media-frame rwmb-file-frame',
 				multiple: true,
-				title: 'Select files'
+				title: rwmbFileAdvanced.frameTitle
 			};
 
-		if ( maxFileUploads > 1 )
-			msg += 's';
+		msg = msg.replace( '%d', maxFileUploads );
 
 		// Create a media frame
 		if ( mimeType )
