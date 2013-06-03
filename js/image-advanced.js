@@ -10,10 +10,9 @@ jQuery( function( $ )
 		var $uploadButton = $( this ),
 			$imageList = $uploadButton.siblings( '.rwmb-images' ),
 			maxFileUploads = $imageList.data( 'max_file_uploads' ),
-			msg = 'You may only upload ' + maxFileUploads + ' file';
+			msg = maxFileUploads > 1 ? rwmbFileAdvanced.maxFileUploadsPlural : rwmbFileAdvanced.maxFileUploadsSingle;
 
-		if ( maxFileUploads > 1 )
-			msg += 's';
+		msg = msg.replace( '%d', maxFileUploads );
 
 		// Create a frame only if needed
 		if ( !frame )
@@ -21,7 +20,7 @@ jQuery( function( $ )
 			frame = wp.media( {
 				className: 'media-frame rwmb-media-frame',
 				multiple : true,
-				title    : 'Select or Upload Media',
+				title    : rwmbImageAdvanced.frameTitle,
 				library  : {
 					type: 'image'
 				}

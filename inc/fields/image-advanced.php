@@ -18,6 +18,9 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-image-advanced', 'rwmbImageAdvanced', array(
+				'frameTitle' => __( 'Select Images', 'rwmb' ),
+			) );
 		}
 
 		/**
