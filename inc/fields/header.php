@@ -2,9 +2,9 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Divider_Field' ) )
+if ( ! class_exists( 'RWMB_Header_Field' ) )
 {
-	class RWMB_Divider_Field
+	class RWMB_Header_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -13,7 +13,7 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'rwmb-divider', RWMB_CSS_URL . 'divider.css', array(), RWMB_VER );
+			wp_enqueue_style( 'rwmb-header', RWMB_CSS_URL . 'header.css', array(), RWMB_VER );
 		}
 		
 		/**
@@ -27,7 +27,10 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			return '<hr />';
+			return sprintf(
+				'<h4>%s</h4>'
+				,!$field['std'] ? 'Header' : $field['std']
+			);
 		}
 
 	}
