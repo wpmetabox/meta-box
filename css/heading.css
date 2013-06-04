@@ -1,7 +1,7 @@
-/* =Styles for 'header' field
+/* =Styles for 'heading' field
 -------------------------------------------------------------- */
 
-.rwmb-meta-box h4 {
+.rwmb-heading-wrapper h4 {
 	display: block;
 	font-size: .75rem;
 	line-height: 1.4;

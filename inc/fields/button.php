@@ -18,12 +18,12 @@ if ( ! class_exists( 'RWMB_Button_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<a href="#" id="%s" class="button hide-if-no-js">%s</a>'
-				,$field['id']
-				,!$field['std'] ? 'Click me' : $field['std']
+				'<a href="#" id="%s" class="button hide-if-no-js">%s</a>',
+				$field['id'],
+				$field['std']
 			);
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -33,12 +33,8 @@ if ( ! class_exists( 'RWMB_Button_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field = wp_parse_args( $field, array(
-				'name' => ' ',
-			) );
-		
+			$field['std'] = $field['std'] ? $field['std'] : __( 'Click me', 'rwmb' );
 			return $field;
 		}
-
 	}
 }
