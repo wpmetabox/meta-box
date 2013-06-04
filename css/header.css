@@ -1,0 +1,12 @@
+/* =Styles for 'header' field
+-------------------------------------------------------------- */
+
+.rwmb-meta-box h4 {
+	display: block;
+	font-size: .75rem;
+	line-height: 1.4;
+	border-bottom: 1px solid rgb(230, 230, 230);
+	text-transform: uppercase;
+	padding: .75rem 0 .375rem;
+	margin: 0 0 6px;
+}
