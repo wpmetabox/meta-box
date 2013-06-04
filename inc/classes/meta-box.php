@@ -510,10 +510,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$old  = get_post_meta( $post_id, $name, !$field['multiple'] );
 				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
 
-				// Stops images from being removed as per issue #287
-				if ( empty( $old ) && empty( $new ) )
-					continue;
-
 				// Allow field class change the value
 				$new = self::apply_field_class_filters( $field, 'value', $new, $old, $post_id );
 
@@ -522,6 +518,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// 2nd filter applies to current field only
 				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
 				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
+
+				// Stops images from being removed as per issue #287
+				if ( empty( $old ) && empty( $new ) )
+					continue;
 
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );

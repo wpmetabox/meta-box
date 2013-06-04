@@ -13,8 +13,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
+			wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
-			wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array( ), RWMB_VER );
+			wp_localize_script( 'rwmb-file', 'rwmbFile', array(
+				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'rwmb' ),
+				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'rwmb' ),
+			) );
 		}
 
 		/**

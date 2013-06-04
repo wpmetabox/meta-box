@@ -1,21 +1,40 @@
 jQuery( document ).ready( function( $ )
 {
 	// Add more file
-	$( '.rwmb-add-file' ).click( function()
+	$( '.rwmb-add-file' ).each( function()
 	{
 		var $this = $( this ),
-			$fields = $this.siblings( '.file-input' ),
-			$first = $fields.first(),
+			$uploads = $this.siblings( '.file-input' ),
+			$first = $uploads.first(),
+			uploadCount = $uploads.length,
 			$fileList = $this.closest( '.rwmb-input' ).find( '.rwmb-uploaded' ),
 			fileCount = $fileList.children( 'li' ).length,
 			maxFileUploads = $fileList.data( 'max_file_uploads' );
 
-		if ( ($fields.length + fileCount) < maxFileUploads || maxFileUploads <= 0 )
+		// Hide "Add New File" and input fields when loaded
+		if ( maxFileUploads > 0 )
 		{
-			$first.clone().insertBefore( $this );
+			if ( uploadCount + fileCount >= maxFileUploads  )
+				$this.hide();
+			if ( fileCount >= maxFileUploads )
+				$uploads.hide();
 		}
 
-		return false;
+		$this.click( function()
+		{
+			// Clone upload input only when needed
+			if ( maxFileUploads <= 0 || uploadCount + fileCount < maxFileUploads )
+			{
+				$first.clone().insertBefore( $this );
+				uploadCount++;
+
+				// If there're too many upload inputs, hide "Add New File"
+				if ( maxFileUploads > 0 && uploadCount + fileCount >= maxFileUploads  )
+					$this.hide();
+			}
+
+			return false;
+		} );
 	} );
 
 	// Delete file via Ajax

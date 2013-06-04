@@ -11,7 +11,7 @@ jQuery( function( $ )
 		var $uploadButton = $( this ),
 			$imageList = $uploadButton.siblings( '.rwmb-images' ),
 			maxFileUploads = $imageList.data( 'max_file_uploads' ),
-			msg = maxFileUploads > 1 ? rwmbFileAdvanced.maxFileUploadsPlural : rwmbFileAdvanced.maxFileUploadsSingle;
+			msg = maxFileUploads > 1 ? rwmbFile.maxFileUploadsPlural : rwmbFile.maxFileUploadsSingle;
 
 		msg = msg.replace( '%d', maxFileUploads );
 

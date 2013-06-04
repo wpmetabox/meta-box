@@ -1,4 +1,4 @@
-jQuery( document ).ready( function( $ )
+jQuery( function( $ )
 {
 	// Hide "Uploaded files" title if there are no files uploaded after deleting files
 	$( '.rwmb-images' ).on( 'click', '.rwmb-delete-file', function()
@@ -9,51 +9,52 @@ jQuery( document ).ready( function( $ )
 		// After delete files, show the Drag & Drop section
 		$dragndrop.removeClass('hidden');
 	} );
-	
-	$('.rwmb-drag-drop').each(function() 
+
+	$('.rwmb-drag-drop').each(function()
 	{
-		//Declare vars
+		// Declare vars
 		var $dropArea = $( this ),
 			$imageList = $dropArea.siblings( '.rwmb-uploaded' ),
 			uploaderData = $dropArea.data( 'js_options' ),
 			rwmbUploader = {};
-			
-		//Extend uploaderData
+
+		// Extend uploaderData
 		uploaderData.multipart_params = $.extend(
 			{
 				_ajax_nonce	:  $dropArea.data( 'upload_nonce' ),
 				post_id 	: $( '#post_ID' ).val()
-			},	
+			},
 			uploaderData.multipart_params
 		);
-		
-		//Create uploader
+
+		// Create uploader
 		rwmbUploader = new plupload.Uploader( uploaderData );
 		rwmbUploader.init();
-		
-		//Add files
-		rwmbUploader.bind( 'FilesAdded', function( up, files ) 
+
+		// Add files
+		rwmbUploader.bind( 'FilesAdded', function( up, files )
 		{
 			var maxFileUploads = $imageList.data('max_file_uploads'),
 				uploaded = $imageList.children().length,
-				msg = 'You may only upload ' + maxFileUploads + ' file';
+				msg = maxFileUploads > 1 ? rwmbFile.maxFileUploadsPlural : rwmbFile.maxFileUploadsSingle;
 
-			if ( maxFileUploads > 1 )
-				msg += 's';
-				
+			msg = msg.replace( '%d', maxFileUploads );
+
 			// Remove files from queue if exceed max file uploads
 			if ( maxFileUploads > 0  && ( uploaded + files.length ) > maxFileUploads )
 			{
-				if( uploaded < maxFileUploads ){
+				if ( uploaded < maxFileUploads )
+				{
 					var diff = maxFileUploads - uploaded;
 					up.splice( diff - 1, files.length - diff );
 					files = up.files;
 				}
-				alert( msg );				
+				alert( msg );
 			}
-			
+
 			// Hide drag & drop section if reach max file uploads
-			if ( ( uploaded + files.length ) >= maxFileUploads ) $dropArea.addClass( 'hidden' );
+			if ( uploaded + files.length >= maxFileUploads )
+				$dropArea.addClass( 'hidden' );
 
 			max = parseInt( up.settings.max_file_size, 10 );
 
@@ -67,16 +68,16 @@ jQuery( document ).ready( function( $ )
 			} );
 			up.refresh();
 			up.start();
-			
+
 		} );
-		
+
 		rwmbUploader.bind( 'Error', function( up, e )
 		{
 			addLoading( up, e.file, $imageList );
 			removeError( e.file );
 			up.removeFile( e.file );
 		} );
-		
+
 		rwmbUploader.bind( 'FileUploaded', function( up, file, response )
 		{
 			var res = wpAjax.parseAjaxResponse( $.parseXML( response.response ), 'ajax-response' );
