@@ -82,9 +82,10 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			// Uploaded files
 			$html = self::get_uploaded_files( $meta, $field );
-			$new_file_classes = array('new-files');
-			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads']  )
+			$new_file_classes = array( 'new-files' );
+			if ( !empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
 				$new_file_classes[] = 'hidden';
+
 			// Show form upload
 			$html .= sprintf(
 				'<div class="%s">
