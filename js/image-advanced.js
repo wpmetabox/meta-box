@@ -1,7 +1,8 @@
 jQuery( function( $ )
 {
 	// Use only one frame for all upload fields
-	var frame;
+	var frame,
+		template = $( '#tmpl-rwmb-image-advanced' ).html();
 
 	$( 'body' ).on( 'click', '.rwmb-image-advanced-upload', function( e )
 	{
@@ -72,7 +73,7 @@ jQuery( function( $ )
 					if( r.success )
 					{
 						$imageList
-							.append( _.template( $( '#tmpl-rwmb-image-advanced' ).html(), { attachments: selection } ) )
+							.append( _.template( template, { attachments: selection } ) )
 							.trigger('update.rwmbFile');
 					}
 				}, 'json' );

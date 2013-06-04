@@ -1,5 +1,7 @@
 jQuery( function( $ )
 {
+	var template = $( '#tmpl-rwmb-file-advanced' ).html();
+
 	$( 'body' ).on( 'click', '.rwmb-file-advanced-upload', function( e )
 	{
 		e.preventDefault();
@@ -71,7 +73,7 @@ jQuery( function( $ )
 					if ( r.success )
 					{
 						$fileList
-							.append( _.template( $( '#tmpl-rwmb-file-advanced' ).html(), { attachments: selection } ) )
+							.append( _.template( template, { attachments: selection } ) )
 							.trigger( 'update.rwmbFile' );
 					}
 				}, 'json' );
