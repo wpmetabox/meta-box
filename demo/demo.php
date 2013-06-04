@@ -140,6 +140,11 @@ $meta_boxes[] = array(
 	'title' => __( 'Advanced Fields', 'rwmb' ),
 
 	'fields' => array(
+		// HEADING
+		array(
+			'type' => 'heading',
+			'name' => __( 'Heading', 'rwmb' ),
+		),
 		// SLIDER
 		array(
 			'name' => __( 'Slider', 'rwmb' ),
@@ -307,6 +312,10 @@ $meta_boxes[] = array(
 				'media_buttons' => false,
 			),
 		),
+		// DIVIDER
+		array(
+			'type' => 'divider',
+		),
 		// FILE UPLOAD
 		array(
 			'name' => __( 'File Upload', 'rwmb' ),
@@ -347,6 +356,13 @@ $meta_boxes[] = array(
 			'type'             => 'image_advanced',
 			'max_file_uploads' => 4,
 		),
+		// BUTTON
+		array(
+			'id'   => "{$prefix}button",
+			'type' => 'button',
+			'name' => ' ', // Empty name will "align" the button to all field inputs
+		),
+
 	)
 );
 

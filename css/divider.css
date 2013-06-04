@@ -1,11 +1,7 @@
 /* =Styles for 'divider' field
 -------------------------------------------------------------- */
 
-.rwmb-divider-wrapper {
-	line-height: 1;
-}
-
-.rwmb-meta-box hr {
+.rwmb-divider-wrapper hr {
 	border: none;
-	border-top: 1px solid rgb(230, 230, 230);
+	border-top: 1px solid #E6E6E6;
 }
