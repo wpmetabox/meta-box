@@ -10,7 +10,7 @@ jQuery( function( $ )
 			$fileList = $uploadButton.siblings( '.rwmb-uploaded' ),
 			maxFileUploads = $fileList.data( 'max_file_uploads' ),
 			mimeType = $fileList.data( 'mime_type' ),
-			msg = maxFileUploads > 1 ? rwmbFileAdvanced.maxFileUploadsPlural : rwmbFileAdvanced.maxFileUploadsSingle,
+			msg = maxFileUploads > 1 ? rwmbFile.maxFileUploadsPlural : rwmbFile.maxFileUploadsSingle,
 			frame,
 			frameOptions = {
 				className: 'media-frame rwmb-file-frame',

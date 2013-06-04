@@ -20,9 +20,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-file-advanced', 'rwmbFileAdvanced', array(
-				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'rwmb' ),
-				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'rwmb' ),
-				'frameTitle'           => __( 'Select Files', 'rwmb' ),
+				'frameTitle' => __( 'Select Files', 'rwmb' ),
 			) );
 		}
 
