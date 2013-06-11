@@ -622,7 +622,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'format'     => '',
 					'before'     => '',
 					'after'      => '',
-					'field_name' => $field['id'],
+					'field_name' => isset( $field['id'] ) ? $field['id'] : '',
 					'required'   => false
 				) );
 
