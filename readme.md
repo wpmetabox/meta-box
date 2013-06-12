@@ -14,14 +14,17 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 
 ### Supported fields
 
+- button
 - checkbox_list
 - checkbox
 - color
 - date
 - datetime
+- divider
 - email
 - file
 - file_advanced
+- heading
 - hidden
 - image
 - image_advanced
@@ -30,7 +33,9 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - oembed
 - password
 - plupload_image
+- post
 - radio
+- range
 - select
 - select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
 - slider
@@ -68,6 +73,30 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 ***
 
 ## Changelog
+
+### 4.3
+* Bug fix: show full size image after upload if thumbnail is not available
+* Bug fix: new added file not shown
+* Bug fix: issue with color field disappearing
+* Bug fix: `max_file_upload` now works for normal `file` & `image` as well
+* Bug fix: problem with uploading with the advanced fields
+* Bug fix: file & image advanced not saving
+* Bug fix: `select_advanced` cloning issue
+* Bug fix: `plupload_image` ordering
+* Improvement: add `divider`, `heading`, `button`, `range`, `oembed`, `email`, `post` fields
+* Improvement: translation for file & image fields
+* Improvement: add option `default_hidden` to hide meta box by default
+* Improvement: allow to have multiple maps on the same page
+* Improvement: file and image advanced now use Underscore.js
+* Improvement: `slider` filed now has `prefix` and `suffix` for text labels and `js_options` for more JS options
+* Improvement: WYSIWYS can bypass the `wpautop` using `raw` parameter
+* Improvement: `color` field now supports new color picker in WP 3.5
+* Improvement: add `ID` to results returned by `rwmb_meta` when getting meta value of file & image
+* Improvement: auto use localized version for date & time fields
+* Improvement: add `timestamp` option to save the datetime as unix timestamp internally
+* Improvement: add `autosave` option for meta box
+* Improvement: add `force_delete` option for file and image field
+* And lots of changes and improvements
 
 ### 4.2.4
 * Bug fix: path to Select2 JS and CSS. [Link](http://wordpress.org/support/topic/missing-files-5)
