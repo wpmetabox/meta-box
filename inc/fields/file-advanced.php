@@ -103,17 +103,17 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'rwmb' ) );
 			?>
             <script id="tmpl-rwmb-file-advanced" type="text/html">
-				<% _.each( attachments, function( attachment ) { %>
+				<# _.each( attachments, function( attachment ) { #>
 				<li>
-					<div class="rwmb-icon"><img src="<% if ( attachment.type == 'image' ){ %><%= attachment.sizes.thumbnail.url %><% } else { %><%= attachment.icon %><% } %>"></div>
+					<div class="rwmb-icon"><img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>"></div>
 					<div class="rwmb-info">
-						<a href="<%= attachment.url %>" target="_blank"><%= attachment.title %></a>
-						<p><%= attachment.mime %></p>
-						<a title="<?php echo $i18n_edit; ?>" href="<%= attachment.editLink %>" target="_blank"><?php echo $i18n_edit; ?></a> |
-						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="<%= attachment.id %>"><?php echo $i18n_delete; ?></a>
+						<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
+						<p>{{{ attachment.mime }}}</p>
+						<a title="<?php echo $i18n_edit; ?>" href="{{{ attachment.editLink }}}" target="_blank"><?php echo $i18n_edit; ?></a> |
+						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}"><?php echo $i18n_delete; ?></a>
 					</div>
 				</li>
-				<% } );%>
+				<# } ); #>
 			</script>
             <?php
 		}

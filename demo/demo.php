@@ -144,6 +144,7 @@ $meta_boxes[] = array(
 		array(
 			'type' => 'heading',
 			'name' => __( 'Heading', 'rwmb' ),
+			'id'   => 'fake_id', // Not used but needed for plugin
 		),
 		// SLIDER
 		array(
@@ -315,6 +316,7 @@ $meta_boxes[] = array(
 		// DIVIDER
 		array(
 			'type' => 'divider',
+			'id'   => 'fake_divider_id', // Not used, but needed
 		),
 		// FILE UPLOAD
 		array(
