@@ -4,7 +4,7 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3
+Stable tag: 4.3.1
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -70,6 +70,9 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.1 =
+* Bug fix: fatal error if ASP open tag is allowed in php.ini
 
 = 4.3 =
 * Bug fix: show full size image after upload if thumbnail is not available
