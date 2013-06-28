@@ -520,7 +520,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
 
 				// Stops images from being removed as per issue #287
-				if ( empty( $old ) && empty( $new ) )
+				if ( empty( $old ) && empty( $new ) && $field['type'] != 'taxonomy' )
 					continue;
 
 				// Call defined method to save meta value, if there's no methods, call common one
