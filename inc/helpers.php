@@ -173,7 +173,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
 	}
 
-	return apply_filters( __FUNCTION__, $meta );
+	return apply_filters( __FUNCTION__, $meta, $key, $args, $post_id );
 }
 
 /**
