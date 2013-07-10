@@ -126,7 +126,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		{
 			$html = '';
 			if ( $field['placeholder'] )
-				$html = 'select_advanced' == $field['type'] ? '<option></option>' : "<option value=''>{$field['placeholder']}</option>";
+				$html = 'select' == $field['type'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 
 			$option = '<option value="%s"%s>%s</option>';
 
