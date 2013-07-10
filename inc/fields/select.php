@@ -34,9 +34,9 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				$field['size'],
 				$field['multiple'] ? ' multiple="multiple"' : ''
 			);
-			
+
 			$html .= self::options_html( $field, $meta );
-			
+
 			$html .= '</select>';
 
 			return $html;
@@ -105,15 +105,16 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'desc'=> '',
-				'name' => $field['id'],
-				'size' => $field['multiple'] ? 5 : 0,
+				'desc'        => '',
+				'name'        => $field['id'],
+				'size'        => $field['multiple'] ? 5 : 0,
+				'placeholder' => '',
 			) );
 			if ( !$field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
 			return $field;
 		}
-		
+
 		/**
 		 * Creates html for options
 		 *
@@ -123,10 +124,12 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function options_html( $field, $meta )
 		{
-			$html = "<option value=''>{$field['std']}</option>";
-			
-			$option = '<option value="%s" %s>%s</option>';
-			
+			$html = '';
+			if ( $field['placeholder'] )
+				$html = 'select_advanced' == $field['type'] ? '<option></option>' : "<option value=''>{$field['placeholder']}</option>";
+
+			$option = '<option value="%s"%s>%s</option>';
+
 			foreach ( $field['options'] as $value => $label )
 			{
 				$html .= sprintf(
@@ -136,7 +139,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 					$label
 				);
 			}
-			
+
 			return $html;
 		}
 	}

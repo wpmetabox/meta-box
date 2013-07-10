@@ -60,7 +60,7 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = parent::normalize_field( $field );
-			
+
 			$field = wp_parse_args( $field, array(
 				'js_options' => array(),
 			) );
@@ -68,10 +68,8 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
 				'allowClear'  => true,
 				'width'       => 'resolve',
-				'placeholder' => empty( $field['std'] ) ? __( 'Select a value', 'rwmb' ) : $field['std']
+				'placeholder' => $field['placeholder'],
 			) );
-			
-			$field['std'] = '';
 
 			return $field;
 		}
