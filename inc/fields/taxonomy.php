@@ -86,7 +86,6 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-
 			$options = $field['options'];
 			$terms   = get_terms( $options['taxonomy'], $options['args'] );
 
@@ -221,6 +220,21 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$options[$term->slug] = $term->name;
 			}
 			return $options;
+		}
+
+		/**
+		 * Get meta values to save
+		 *
+		 * @param mixed $new
+		 * @param mixed $old
+		 * @param int   $post_id
+		 * @param array $field
+		 *
+		 * @return mixed Faked value to make sure the "save" method is run when all terms are unchecked/unselected
+		 */
+		static function value( $new, $old, $post_id, $field )
+		{
+			return 1;
 		}
 
 		/**
