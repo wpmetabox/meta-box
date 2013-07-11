@@ -1,11 +1,10 @@
 (function($)
 {
+	"use strict";
 	var mapField = {};
 
 	(function()
 	{
-		"use strict";
-
 		var thisMapField = this;
 
 		this.container = null;
@@ -27,12 +26,12 @@
 			this.initListeners();
 			this.initAutoComplete();
 			this.bindHandlers();
-		}
+		};
 
 		this.initLatLng = function($lat, $lng)
 		{
 			this.latlng = new window.google.maps.LatLng($lat, $lng);
-		}
+		};
 
 		this.initMap = function()
 		{
@@ -42,12 +41,12 @@
 				streetViewControl: 0,
 				mapTypeId: window.google.maps.MapTypeId.ROADMAP
 			});
-		}
+		};
 
-		this.initMarker = function() 
+		this.initMarker = function()
 		{
 			this.marker = new window.google.maps.Marker({position: this.latlng, map: this.map, draggable: true});
-		}
+		};
 
 		this.initMarkerPosition = function()
 		{
@@ -70,13 +69,12 @@
 			{
 				this.geocodeAddress(addressField);
 			}
-
-		}
+		};
 
 		this.initGeocoder = function()
 		{
 			this.geocoder = new window.google.maps.Geocoder();
-		}
+		};
 
 		this.initListeners = function()
 		{
@@ -90,12 +88,12 @@
 			{
 				that.updatePositionInput(event.latLng);
 			});
-		}
+		};
 
 		this.updatePositionInput = function(latLng)
 		{
 			this.container.find('.rwmb-map-coordinate').val(latLng.lat() + ',' + latLng.lng());
-		}
+		};
 
 		this.geocodeAddress = function(addressField)
 		{
@@ -113,7 +111,7 @@
 			address = address.replace( /,,/g, ',' );
 
 			var that = thisMapField;
-			this.geocoder.geocode({'address': address}, function (results, status)
+			this.geocoder.geocode({'address': address}, function(results)
 			{
 				if ( status == window.google.maps.GeocoderStatus.OK )
 				{
@@ -123,19 +121,26 @@
 					that.map.setZoom(15);
 				}
 			});
-		}
+		};
 
 		this.initAutoComplete = function()
 		{
 			var addressField = this.container.find('.rwmb-map-goto-address-button').val();
-			if (!addressField) return null;
+			if (!addressField) {
+				return;
+			}
 
 			var that = thisMapField;
 			$('#' + addressField).autocomplete({
-				source: function(request, response) {
+				source: function(request, response)
+				{
 					// TODO: add 'region' option, to help bias geocoder.
-					that.geocoder.geocode( {'address': request.term }, function(results, status) {
-						response($.map(results, function(item) {
+					that.geocoder.geocode( {
+						'address': request.term
+					}, function(results)
+					{
+						response($.map(results, function(item)
+						{
 							return {
 								label: item.formatted_address,
 								value: item.formatted_address,
@@ -145,37 +150,41 @@
 				 		}));
 					});
 				},
-				 select: function(event, ui) {
-				 	that.container.find(".rwmb-map-coordinate").val(ui.item.latitude + ',' + ui.item.longitude );
+				select: function(event, ui)
+				{
+					that.container.find(".rwmb-map-coordinate").val(ui.item.latitude + ',' + ui.item.longitude );
 					var location = new window.google.maps.LatLng(ui.item.latitude, ui.item.longitude);
 					that.map.setCenter(location);
 						// Drop the Marker
-					setTimeout(function(){
+					setTimeout(function()
+					{
 						that.marker.setValues({
 							position: location,
 							animation: window.google.maps.Animation.DROP
 						});
 					}, 1500);
-				 }
+				}
 			});
-		}
+		};
 
 		this.bindHandlers = function()
 		{
 			var that = thisMapField;
 			this.container.find('.rwmb-map-goto-address-button').bind('click', function() { that.onFindAddressClick($(this)); });
-		}
+		};
 
 		this.onFindAddressClick = function($that)
 		{
 			var $this = $that;
 			this.geocodeAddress($this.val());
-		}
+		};
 
 	}).apply(mapField);
 
-	$(document).ready(function() {
-		$('.rwmb-map-field').each(function(){
+	$(function()
+	{
+		$('.rwmb-map-field').each(function()
+		{
 			mapField.init($(this));
 		});
 	});

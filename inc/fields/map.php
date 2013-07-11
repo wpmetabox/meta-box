@@ -13,7 +13,7 @@ if ( !class_exists( 'RWMB_Map_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_script( 'googlemap', 'http://maps.google.com/maps/api/js?sensor=false', array(), '', true );
+			wp_enqueue_script( 'googlemap', 'https://maps.google.com/maps/api/js?sensor=false', array(), '', true );
 			wp_enqueue_script( 'rwmb-map', RWMB_JS_URL . 'map.js', array( 'jquery', 'jquery-ui-autocomplete', 'googlemap' ), RWMB_VER, true );
 		}
 
