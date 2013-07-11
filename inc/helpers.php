@@ -124,7 +124,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	) );
 
 	// Set 'multiple' for fields based on 'type'
-	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'image', 'plupload_image', 'thickbox_image' ) );
+	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) );
 
 	$meta = get_post_meta( $post_id, $key, !$args['multiple'] );
 
@@ -171,6 +171,12 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	elseif ( 'taxonomy' == $args['type'] )
 	{
 		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
+	}
+
+	// Get map
+	elseif ( 'map' == $args['type'] )
+	{
+		$meta = rwmb_meta_map( $key, $args, $post_id );
 	}
 
 	return apply_filters( __FUNCTION__, $meta, $key, $args, $post_id );
@@ -228,4 +234,102 @@ function rwmb_image_info( $id, $args = array() )
 		'description' => $attachment->post_content,
 		'alt'         => get_post_meta( $id, '_wp_attachment_image_alt', true ),
 	);
+}
+
+/**
+ * Display map using Google API
+ *
+ * @param  string   $key     Meta key
+ * @param  array    $args    Map parameter
+ * @param  int|null $post_id Post ID
+ *
+ * @return string
+ */
+function rwmb_meta_map( $key, $args = array(), $post_id = null )
+{
+	$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
+	$loc = get_post_meta( $post_id, $key, true );
+	if ( !$loc )
+		return '';
+
+	$parts = array_map( 'trim', explode( ',', $loc ) );
+
+	// No zoom entered, set it to 14 by default
+	if ( count( $parts ) < 3 )
+		$parts[2] = 14;
+
+	// Map parameters
+	$args = wp_parse_args( $args, array(
+		'width'        => 640,
+		'height'       => 480,
+		'zoom'         => $parts[2], // Default to 'zoom' level set in admin, but can be overwritten
+		'marker'       => true,      // Display marker?
+		'marker_title' => '',        // Marker title, when hover
+		'info_window'  => '',        // Content of info window (when click on marker). HTML allowed
+	) );
+
+	// Counter to display multiple maps on same page
+	static $counter = 0;
+
+	$html = sprintf(
+		'<div id="rwmb-map-canvas-%d" style="width:%s;height:%s"></div>',
+		$counter,
+		$args['width'] . 'px',
+		$args['height'] . 'px'
+	);
+	$html .= '<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>';
+	$html .= '<script>
+		(function()
+		{
+			function initialize()
+			{
+	';
+
+	$html .= sprintf( '
+		var center = new google.maps.LatLng( %s, %s ),
+			mapOptions = {
+				center: center,
+				zoom: %d,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			},
+			map = new google.maps.Map( document.getElementById( "rwmb-map-canvas-%d" ), mapOptions );',
+		$parts[0], $parts[1],
+		$args['zoom'],
+		$counter
+	);
+
+	if ( $args['marker'] )
+	{
+		$html .= sprintf( '
+			var marker = new google.maps.Marker( {
+				position: center,
+				map: map%s
+			} );',
+			$args['marker_title'] ? ', title: "' . $args['marker_title'] . '"' : ''
+		);
+
+		if ( $args['info_window'] )
+		{
+			$html .= sprintf( '
+				var infoWindow = new google.maps.InfoWindow( {
+					content: "%s"
+				} );
+
+				google.maps.event.addListener( marker, "click", function()
+				{
+					infoWindow.open( map, marker );
+				} );',
+				$args['info_window']
+			);
+		}
+	}
+
+	$html .= '
+			}
+			google.maps.event.addDomListener(window, "load", initialize);
+		}());
+		</script>';
+
+	$counter++;
+	return $html;
 }
