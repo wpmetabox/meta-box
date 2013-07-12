@@ -74,6 +74,17 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.3.2
+* Bug fix: allow to have more than 1 map on a page
+* Bug fix: use HTTPS for Google Maps to work both in HTTP & HTTPS
+* Bug fix: allow to clear all terms in taxonomy field
+* Bug fix: "std" value for select fields is no longer "placeholder"
+* Improvement: add "placeholder" param for select fields
+* Improvement: add to helper function ability to show Google Maps in the front end. Check documentation for usage.
+* Improvement: add spaces between radio inputs
+* Improvement: add more params to "rwmb_meta" filter
+* Improvement: using CSS animation for delete image
+
 ### 4.3.1
 * Bug fix: fatal error if ASP open tag is allowed in php.ini
 
