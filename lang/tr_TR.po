@@ -1,0 +1,384 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box Script For WordPress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-03 22:19+0700\n"
+"PO-Revision-Date: 2013-07-13 01:40+0200\n"
+"Last-Translator: Rilwis <rilwis@gmail.com>\n"
+"Language-Team: Rilwis <rilwis@gmail.com>\n"
+"Language: en_EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2;_n_noop:1,2;_nx:1,2;"
+"_nx_noop:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: ../inc/fields\n"
+
+#: ../demo/all-custom-post-types.php:20
+msgid "Personal Information"
+msgstr "Kişisel Bilgiler"
+
+#: ../demo/all-custom-post-types.php:25
+msgid "Full name"
+msgstr "Tam İsminiz"
+
+#: ../demo/better-include.php:16 ../demo/include-by-ID-or-page-template.php:8
+msgid "Meta Box Title"
+msgstr "Meta Box Başlığı"
+
+#: ../demo/better-include.php:19 ../demo/include-by-ID-or-page-template.php:14
+msgid "Your images"
+msgstr "Resiminiz"
+
+#: ../demo/date-time-js-options.php:11
+msgid "Date Time Picker With JS Options"
+msgstr "JS Seçenekleriyle Tarih Saat Seçici"
+
+#: ../demo/date-time-js-options.php:15
+msgid "Date"
+msgstr "Tarih"
+
+#: ../demo/date-time-js-options.php:21 ../demo/demo.php:177
+msgid "(yyyy-mm-dd)"
+msgstr "(yyyy-aa-gg)"
+
+#: ../demo/date-time-js-options.php:23
+msgid "Select Date"
+msgstr "Tarih Seç"
+
+#: ../demo/date-time-js-options.php:24 ../demo/demo.php:178
+msgid "yy-mm-dd"
+msgstr "yy-aa-gg"
+
+#: ../demo/date-time-js-options.php:30
+msgid "Datetime"
+msgstr "Tarihsaat"
+
+#: ../demo/date-time-js-options.php:41
+msgid "Time"
+msgstr "Saat"
+
+#: ../demo/demo.php:34
+msgid "Standard Fields"
+msgstr "Standart Alanlar"
+
+#: ../demo/demo.php:53
+msgid "Text"
+msgstr "Yazı"
+
+#: ../demo/demo.php:57
+msgid "Text description"
+msgstr "Yazı Açıklaması"
+
+#: ../demo/demo.php:60
+msgid "Default text value"
+msgstr "Varsayılan yazı değeri"
+
+#: ../demo/demo.php:66
+msgid "Checkbox"
+msgstr "Onay Kutusu"
+
+#: ../demo/demo.php:74
+msgid "Radio"
+msgstr "Seçim Kutusu"
+
+#: ../demo/demo.php:80 ../demo/demo.php:91 ../demo/demo.php:226
+msgid "Label1"
+msgstr "Etiket1"
+
+#: ../demo/demo.php:81 ../demo/demo.php:92 ../demo/demo.php:227
+msgid "Label2"
+msgstr "Etiket2"
+
+#: ../demo/demo.php:86
+msgid "Select"
+msgstr "Seç"
+
+#: ../demo/demo.php:96
+msgid "Select an Item"
+msgstr "Bir Nesne Seçin"
+
+#: ../demo/demo.php:103
+msgid "Hidden value"
+msgstr "Gizli Alan"
+
+#: ../demo/demo.php:107
+msgid "Password"
+msgstr "Parola"
+
+#: ../demo/demo.php:113
+msgid "Textarea"
+msgstr "Yazı Alanı"
+
+#: ../demo/demo.php:114
+msgid "Textarea description"
+msgstr "Yazı Alanı Açıklaması"
+
+#: ../demo/demo.php:131
+msgid "Password is required"
+msgstr "Parola Gerekli"
+
+#: ../demo/demo.php:132
+msgid "Password must be at least 7 characters"
+msgstr "Parolanız 7 karakterden fazla olmalıdır"
+
+#: ../demo/demo.php:140
+msgid "Advanced Fields"
+msgstr "Gelişmiş Alanlar"
+
+#: ../demo/demo.php:145
+msgid "Slider"
+msgstr "Slider"
+
+#: ../demo/demo.php:150
+msgid "$"
+msgstr "$"
+
+#: ../demo/demo.php:151
+msgid " USD"
+msgstr "USD"
+
+#: ../demo/demo.php:162
+msgid "Number"
+msgstr "Numara"
+
+#: ../demo/demo.php:171
+msgid "Date picker"
+msgstr "Tarih Seçici"
+
+#: ../demo/demo.php:186
+msgid "Datetime picker"
+msgstr "Tarih Saat Seçici"
+
+#: ../demo/demo.php:200
+msgid "Time picker"
+msgstr "Saat Seçici"
+
+#: ../demo/demo.php:215
+msgid "Color picker"
+msgstr "Renk Seçici"
+
+#: ../demo/demo.php:221
+msgid "Checkbox list"
+msgstr "Onay Kutusu Litesi"
+
+#: ../demo/demo.php:232
+msgid "Email"
+msgstr "E-Posta"
+
+#: ../demo/demo.php:234
+msgid "Email description"
+msgstr "E-Posta Açıklaması"
+
+#: ../demo/demo.php:240
+msgid "Range"
+msgstr "Aralık"
+
+#: ../demo/demo.php:242
+msgid "Range description"
+msgstr "Aralık Açıklması"
+
+#: ../demo/demo.php:251
+msgid "URL"
+msgstr "URL"
+
+#: ../demo/demo.php:253
+msgid "URL description"
+msgstr "URL Açıklaması"
+
+#: ../demo/demo.php:259
+msgid "oEmbed"
+msgstr "oEmbed"
+
+#: ../demo/demo.php:261
+msgid "oEmbed description"
+msgstr "oEmbed Açıklaması"
+
+#: ../demo/demo.php:266
+msgid "Taxonomy"
+msgstr "Taxonomy"
+
+#: ../demo/demo.php:280
+msgid "Posts (Pages)"
+msgstr "Yazılar (Sayfalar)"
+
+#: ../demo/demo.php:296
+msgid "WYSIWYG / Rich Text Editor"
+msgstr "WYSIWYG / Gelişmiş Yazı Editörü"
+
+#: ../demo/demo.php:301
+msgid "WYSIWYG default value"
+msgstr "WYSIWYG varsayılan değer"
+
+#: ../demo/demo.php:312 ../demo/force-delete.php:15
+msgid "File Upload"
+msgstr "Dosya Yükleme"
+
+#: ../demo/demo.php:318
+msgid "File Advanced Upload"
+msgstr "Gelişmiş Dosya Yükleme"
+
+#: ../demo/demo.php:326 ../demo/force-delete.php:22
+msgid "Image Upload"
+msgstr "Resim Yükleme"
+
+#: ../demo/demo.php:332 ../demo/force-delete.php:28
+msgid "Thickbox Image Upload"
+msgstr "Thickbox Resim Yükleme"
+
+#: ../demo/demo.php:338 ../demo/force-delete.php:35
+msgid "Plupload Image Upload"
+msgstr "Plupload Resim Yükleme"
+
+#: ../demo/demo.php:345
+msgid "Image Advanced Upload"
+msgstr "Gelişmiş Resim Yükleme"
+
+#: ../demo/force-delete.php:11
+msgid "Test Meta Box"
+msgstr "Test Meta Box"
+
+#: ../demo/map.php:9
+msgid "Google Map"
+msgstr "Google Haritalar"
+
+#: ../demo/map.php:13
+msgid "Address"
+msgstr "Adres"
+
+#: ../demo/map.php:15
+msgid "Hanoi, Vietnam"
+msgstr "Hanoi, Vietnam"
+
+#: ../demo/map.php:19
+msgid "Location"
+msgstr "Yer Bilgisi"
+
+#: ../inc/classes/meta-box.php:220
+msgid "Please correct the errors highlighted below and try again."
+msgstr "Lütfen işaretlenmiş alanları düzeltin ve tekrar deneyin."
+
+#: ../inc/classes/meta-box.php:394
+msgid "+"
+msgstr "+"
+
+#: ../inc/classes/meta-box.php:416
+msgid "&#8211;"
+msgstr "&#8211;"
+
+#: ../inc/fields/file-advanced.php:23
+#, php-format
+msgid "You may only upload maximum %d file"
+msgstr "Yükleme yapabileceğiniz maksimum dosya sayısı %d dır"
+
+#: ../inc/fields/file-advanced.php:24
+#, php-format
+msgid "You may only upload maximum %d files"
+msgstr "Yükleme yapabileceğiniz maksimum dosya sayısı %d dır"
+
+#: ../inc/fields/file-advanced.php:25
+msgid "Select Files"
+msgstr "Dosya Seç"
+
+#: ../inc/fields/file-advanced.php:68
+msgctxt "file upload"
+msgid "Select or Upload Files"
+msgstr "Seç veya Dosya Yükle"
+
+#: ../inc/fields/file-advanced.php:104 ../inc/fields/file.php:133
+msgctxt "file upload"
+msgid "Delete"
+msgstr "Sil"
+
+#: ../inc/fields/file-advanced.php:105 ../inc/fields/file.php:134
+msgctxt "file upload"
+msgid "Edit"
+msgstr "Düzenle"
+
+#: ../inc/fields/file.php:66
+msgid "Error: Cannot delete file"
+msgstr "Hata: Dosya Silinemedi"
+
+#: ../inc/fields/file.php:80
+msgctxt "file upload"
+msgid "Upload Files"
+msgstr "Dosya Yükleme"
+
+#: ../inc/fields/file.php:81
+msgctxt "file upload"
+msgid "+ Add new file"
+msgstr "+ Yeni Dosya Ekle"
+
+#: ../inc/fields/image-advanced.php:22
+msgid "Select Images"
+msgstr "Resim Seç"
+
+#: ../inc/fields/image-advanced.php:71
+msgctxt "image upload"
+msgid "Select or Upload Images"
+msgstr "Seç veya Resim Yükle"
+
+#: ../inc/fields/image-advanced.php:107 ../inc/fields/image.php:144
+msgctxt "image upload"
+msgid "Delete"
+msgstr "Sil"
+
+#: ../inc/fields/image-advanced.php:108 ../inc/fields/image.php:145
+msgctxt "image upload"
+msgid "Edit"
+msgstr "Düzenle"
+
+#: ../inc/fields/image.php:64
+msgid "Order saved"
+msgstr "Görev Kaydedildi"
+
+#: ../inc/fields/image.php:78 ../inc/fields/thickbox-image.php:35
+msgctxt "image upload"
+msgid "Upload Images"
+msgstr "Resim Yükle"
+
+#: ../inc/fields/image.php:79
+msgctxt "image upload"
+msgid "+ Add new image"
+msgstr "+ Yeni Resim Ekle"
+
+#: ../inc/fields/map.php:48
+msgid "Find Address"
+msgstr "Adres Bul"
+
+#: ../inc/fields/plupload-image.php:104
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr "Resimi Buraya Sürükleyin"
+
+#: ../inc/fields/plupload-image.php:105
+msgctxt "image upload"
+msgid "or"
+msgstr "veya"
+
+#: ../inc/fields/plupload-image.php:106
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "Dosya Seçin"
+
+#: ../inc/fields/plupload-image.php:181
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr "İzin Verilen Resim Tipleri"
+
+#: ../inc/fields/post.php:54
+msgid "Post"
+msgstr "Yazı"
+
+#: ../inc/fields/post.php:68 ../inc/fields/taxonomy.php:40
+#, php-format
+msgid "Select a %s"
+msgstr "Seç bir  %s"
+
+#: ../inc/fields/select-advanced.php:71
+msgid "Select a value"
+msgstr "Bir değer seçin"
