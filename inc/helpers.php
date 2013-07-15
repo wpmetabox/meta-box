@@ -169,7 +169,6 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get post terms
 	elseif ( 'taxonomy' == $args['type'] )
 	{
-		$meta = array();
 		if ( !empty( $args['taxonomy'] ) )
 		{
 			$term_ids = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
@@ -179,6 +178,10 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 			{
 				$meta[] = get_term( $term_id, $args['taxonomy'] );
 			}
+		}
+		else
+		{
+			$meta = array();
 		}
 	}
 
