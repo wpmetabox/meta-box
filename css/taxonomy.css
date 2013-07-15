@@ -1,11 +1,10 @@
-li ul.rw-taxonomy-tree {
+.rw-taxonomy-tree {
 	margin-left: 15px;
 	margin-top: 5px;
 }
-
 .rw-taxonomy-tree.active{
-	display:inline-block;
+	display: inline-block;
 }
 .rw-taxonomy-tree.disabled{
-	display:none;
+	display: none;
 }

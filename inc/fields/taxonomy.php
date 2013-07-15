@@ -104,7 +104,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					break;
 				case 'select_tree':
 					$elements = self::process_terms( $terms );
-					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], '', true );
+					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_advanced':
 					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
@@ -143,11 +143,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				$html .= sprintf(
 					$li,
 					$field['field_name'],
-					$term->slug,
-					checked( in_array( $term->slug, $meta ), true, false ),
+					$term->term_id,
+					checked( in_array( $term->term_id, $meta ), true, false ),
 					$term->name
 				);
-				$html .= self::walk_checkbox_tree( $meta, $field, $elements, $term->term_id, in_array( $term->slug, $meta ) && $active ) . '</li>';
+				$html .= self::walk_checkbox_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta ) ) . '</li>';
 			}
 			$html .= '</ul>';
 
@@ -161,26 +161,26 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 * @param        $field
 		 * @param        $elements
 		 * @param int    $parent
-		 * @param string $parent_slug
 		 * @param bool   $active
 		 *
 		 * @return string
 		 */
-		static function walk_select_tree( $meta, $field, $elements, $parent = 0, $parent_slug = '', $active = false )
+		static function walk_select_tree( $meta, $field, $elements, $parent = 0, $active = false )
 		{
 			if ( ! isset( $elements[$parent] ) )
 				return;
 			$terms    = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
-			$hidden   = $active ? 'active' : 'disabled';
-			$disabled = disabled( $active, false, false );
-			$id       = empty( $parent_slug ) ? '' : " id='rwmb-taxonomy-{$parent_slug}'";
 
-			$html  = "<div{$id} class='rw-taxonomy-tree {$hidden}'>";
+			$classes = array( 'rw-taxonomy-tree' );
+			$classes[] = $active ? 'active' : 'disabled';
+			$classes[] = "rwmb-taxonomy-{$parent}";
+
+			$html  = '<div class="' . implode( ' ', $classes ) . '">';
 			$html .= RWMB_Select_Field::html( $html, $meta, $field );
 			foreach ( $terms as $term )
 			{
-				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $term->slug, in_array( $term->slug, $meta ) && $active ) . '</li>';
+				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta )  );
 			}
 			$html .= '</div>';
 
@@ -217,59 +217,60 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$options = array();
 			foreach( $terms as $term )
 			{
-				$options[$term->slug] = $term->name;
+				$options[$term->term_id] = $term->name;
 			}
 			return $options;
 		}
 
 		/**
 		 * Get meta values to save
+		 * Save terms in custom field, no more by setting post terms
+		 * Save in form of comma-separated IDs
 		 *
 		 * @param mixed $new
 		 * @param mixed $old
 		 * @param int   $post_id
 		 * @param array $field
 		 *
-		 * @return mixed Faked value to make sure the "save" method is run when all terms are unchecked/unselected
+		 * @return string
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			return empty( $new ) ? 'RWMB_TAXONOMY_NONE' : $new; // Unique string to determine if no terms are unchecked/unselected
+			return implode( ',', array_unique( $new ) );
 		}
 
 		/**
-		 * Save post taxonomy
+		 * Save meta value
 		 *
-		 * @param $post_id
-		 * @param $field
-		 * @param $old
+		 * @param mixed $new
+		 * @param mixed $old
+		 * @param int   $post_id
+		 * @param array $field
 		 *
-		 * @param $new
+		 * @return string
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			$new = 'RWMB_TAXONOMY_NONE' === $new ? null : $new;
-			wp_set_object_terms( $post_id, $new, $field['options']['taxonomy'] );
+			if ( $new )
+				update_post_meta( $post_id, $field['id'], $new );
+			else
+				delete_post_meta( $post_id, $field['id'] );
 		}
 
 		/**
 		 * Standard meta retrieval
 		 *
-		 * @param mixed 	$meta
-		 * @param int		$post_id
-		 * @param array  	$field
-		 * @param bool  	$saved
+		 * @param mixed $meta
+		 * @param int   $post_id
+		 * @param bool  $saved
+		 * @param array $field
 		 *
-		 * @return mixed
+		 * @return array
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
 		{
-			$options = $field['options'];
-
-			$meta = wp_get_post_terms( $post_id, $options['taxonomy'] );
-			$meta = is_array( $meta ) ? $meta : (array) $meta;
-			$meta = wp_list_pluck( $meta, 'slug' );
-
+			$meta = get_post_meta( $post_id, $field['id'], true );
+			$meta = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
 			return $meta;
 		}
 	}

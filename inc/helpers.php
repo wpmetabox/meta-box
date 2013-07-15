@@ -29,7 +29,7 @@ function rwmb_meta_shortcode( $atts )
 	$meta = rwmb_meta( $atts['meta_key'], $atts, $atts['post_id'] );
 
 	// Get uploaded files info
-	if ( 'file' == $atts['type'] )
+	if ( in_array( $atts['type'], array( 'file', 'file_advanced' ) ) )
 	{
 		$content = '<ul>';
 		foreach ( $meta as $file )
@@ -45,7 +45,7 @@ function rwmb_meta_shortcode( $atts )
 	}
 
 	// Get uploaded images info
-	elseif ( in_array( $atts['type'], array( 'image', 'plupload_image', 'thickbox_image' ) ) )
+	elseif ( in_array( $atts['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
 	{
 		$content = '<ul>';
 		foreach ( $meta as $image )
@@ -78,7 +78,6 @@ function rwmb_meta_shortcode( $atts )
 	// Get post terms
 	elseif ( 'taxonomy' == $atts['type'] )
 	{
-
 		$content = '<ul>';
 		foreach ( $meta as $term )
 		{
@@ -129,7 +128,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	$meta = get_post_meta( $post_id, $key, !$args['multiple'] );
 
 	// Get uploaded files info
-	if ( 'file' == $args['type'] )
+	if ( in_array( $args['type'], array( 'file', 'file_advanced' ) ) )
 	{
 		if ( is_array( $meta ) && !empty( $meta ) )
 		{
@@ -143,7 +142,7 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	}
 
 	// Get uploaded images info
-	elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image' ) ) )
+	elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
 	{
 		if ( is_array( $meta ) && !empty( $meta ) )
 		{
@@ -170,7 +169,17 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get post terms
 	elseif ( 'taxonomy' == $args['type'] )
 	{
-		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
+		$meta = array();
+		if ( !empty( $args['taxonomy'] ) )
+		{
+			$term_ids = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
+
+			$meta = array();
+			foreach ( $term_ids as $term_id )
+			{
+				$meta[] = get_term( $term_id, $args['taxonomy'] );
+			}
+		}
 	}
 
 	// Get map
