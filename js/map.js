@@ -135,35 +135,32 @@
 		},
 
 		// Find coordinates by address
+		// Find coordinates by address
 		geocodeAddress: function()
 		{
 			var address = '',
+				addressList = new Array(),
 				fieldList = this.addressField.split( ',' ),
 				loop,
 				that = this;
 
 			for ( loop = 0; loop < fieldList.length; loop++ )
+			 addressList[loop]=jQuery( '#' + fieldList[loop] ).val();
+			 
+			address = addressList.join(",").replace( /\n/g, ',' ).replace( /,,/g, ',' );
+
+			if (address)
 			{
-				address += jQuery( '#' + fieldList[loop] ).val();
-				if ( loop+1 < fieldList.length )
+				this.geocoder.geocode( {'address': address}, function( results, status )
 				{
-					address += ', ';
-				}
+					if ( status === google.maps.GeocoderStatus.OK )
+					{
+						that.map.setCenter( results[0].geometry.location );
+						that.marker.setPosition( results[0].geometry.location );
+						that.updateCoordinate( results[0].geometry.location );
+					}
+				} );
 			}
-			address = address.replace( /\n/g, ',' ).replace( /,,/g, ',' );
-
-			if ( !address )
-				return;
-
-			this.geocoder.geocode( {'address': address}, function( results, status )
-			{
-				if ( status !== google.maps.GeocoderStatus.OK )
-					return;
-
-				that.map.setCenter( results[0].geometry.location );
-				that.marker.setPosition( results[0].geometry.location );
-				that.updateCoordinate( results[0].geometry.location );
-			} );
 		},
 	};
 
