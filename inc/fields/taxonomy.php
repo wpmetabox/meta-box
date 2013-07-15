@@ -118,7 +118,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		}
 
 		/**
-		 * Walker for displaying checkboxes in treeformat
+		 * Walker for displaying checkboxes in tree format
 		 *
 		 * @param      $meta
 		 * @param      $field
@@ -134,10 +134,10 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 				return;
 			$terms  = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
-			$hidden = ( !$active ? 'hidden' : '' );
+			$hidden = $active ? '' : 'hidden';
 
 			$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
-			$li = '<li><label><input type="checkbox" name="%s" value="%s" %s /> %s</label>';
+			$li = '<li><label><input type="checkbox" name="%s" value="%s"%s> %s</label>';
 			foreach ( $terms as $term )
 			{
 				$html .= sprintf(
@@ -147,7 +147,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					checked( in_array( $term->slug, $meta ), true, false ),
 					$term->name
 				);
-				$html .= self::walk_checkbox_tree( $meta, $field, $elements, $term->term_id, ( in_array( $term->slug, $meta ) ) && $active ) . '</li>';
+				$html .= self::walk_checkbox_tree( $meta, $field, $elements, $term->term_id, in_array( $term->slug, $meta ) && $active ) . '</li>';
 			}
 			$html .= '</ul>';
 
@@ -155,7 +155,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		}
 
 		/**
-		 * Walker for displaying select in treeformat
+		 * Walker for displaying select in tree format
 		 *
 		 * @param        $meta
 		 * @param        $field
@@ -234,7 +234,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			return 1;
+			return empty( $new ) ? 'RWMB_TAXONOMY_NONE' : $new; // Unique string to determine if no terms are unchecked/unselected
 		}
 
 		/**
@@ -248,6 +248,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
+			$new = 'RWMB_TAXONOMY_NONE' === $new ? null : $new;
 			wp_set_object_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
 
