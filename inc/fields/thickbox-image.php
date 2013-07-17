@@ -34,15 +34,11 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		{
 			$i18n_title = apply_filters( 'rwmb_thickbox_image_upload_string', _x( 'Upload Images', 'image upload', 'rwmb' ), $field );
 
-			$html  = wp_nonce_field( "rwmb-delete-file_{$field['id']}", "nonce-delete-file_{$field['id']}", false, false );
-			$html .= wp_nonce_field( "rwmb-reorder-images_{$field['id']}", "nonce-reorder-images_{$field['id']}", false, false );
-			$html .= "<input type='hidden' class='field-id' value='{$field['id']}' />";
-
 			// Uploaded images
-			$html .= self::get_uploaded_images( $meta, $field );
+			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
-			$html .= "<a href='#' class='button rwmb-thickbox-upload' rel='{$field['id']}'>{$i18n_title}</a>";
+			$html .= "<a href='#' class='button rwmb-thickbox-upload' data-field_id='{$field['id']}'>{$i18n_title}</a>";
 
 			return $html;
 		}
@@ -60,7 +56,6 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			$new = (array) $new;
 			return array_unique( array_merge( $old, $new ) );
 		}
 	}

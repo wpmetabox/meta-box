@@ -497,6 +497,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				return;
 			}
 
+			// Autosave
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			{
+				if ( !$this->meta_box['autosave'] )
+					return;
+
+				// Get parent post ID, e.g. the ID of current edited post instead of revision
+				$post_id = wp_is_post_revision( $post_id );
+			}
+
 			// Save post action removed to prevent infinite loops
 			remove_action( 'save_post', array( $this, 'save_post' ) );
 
@@ -518,10 +528,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// 2nd filter applies to current field only
 				$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
 				$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
-
-				// Stops images from being removed as per issue #287
-				if ( empty( $old ) && empty( $new ) )
-					continue;
 
 				// Call defined method to save meta value, if there's no methods, call common one
 				self::do_field_class_actions( $field, 'save', $new, $old, $post_id );
