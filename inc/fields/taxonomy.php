@@ -223,23 +223,6 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		}
 
 		/**
-		 * Get meta values to save
-		 * Save terms in custom field, no more by setting post terms
-		 * Save in form of comma-separated IDs
-		 *
-		 * @param mixed $new
-		 * @param mixed $old
-		 * @param int   $post_id
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function value( $new, $old, $post_id, $field )
-		{
-			return implode( ',', array_unique( $new ) );
-		}
-
-		/**
 		 * Save meta value
 		 *
 		 * @param mixed $new
@@ -251,10 +234,9 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			if ( $new )
-				update_post_meta( $post_id, $field['id'], $new );
-			else
-				delete_post_meta( $post_id, $field['id'] );
+			$new = array_unique( array_map( 'intval', (array) $new ) );
+			$new = empty( $new ) ? null : $new;
+			wp_set_object_terms( $post_id, $new, $field['options']['taxonomy'] );
 		}
 
 		/**
@@ -269,8 +251,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function meta( $meta, $post_id, $saved, $field )
 		{
-			$meta = get_post_meta( $post_id, $field['id'], true );
-			$meta = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
+			$options = $field['options'];
+
+			$meta = wp_get_post_terms( $post_id, $options['taxonomy'] );
+			$meta = is_array( $meta ) ? $meta : (array) $meta;
+			$meta = wp_list_pluck( $meta, 'term_id' );
+
 			return $meta;
 		}
 	}
