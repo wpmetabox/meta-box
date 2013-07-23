@@ -487,25 +487,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function save_post( $post_id )
 		{
-			// Check whether:
-			// - form is submitted properly
-			if (
-				empty( $_POST["nonce_{$this->meta_box['id']}"] )
-				|| !wp_verify_nonce( $_POST["nonce_{$this->meta_box['id']}"], "rwmb-save-{$this->meta_box['id']}" )
-			)
-			{
+			// Check whether form is submitted properly
+			$id = $this->meta_box['id'];
+			if ( empty( $_POST["nonce_{$id}"] ) || !wp_verify_nonce( $_POST["nonce_{$id}"], "rwmb-save-{$id}" ) )
 				return;
-			}
 
 			// Autosave
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			{
-				if ( !$this->meta_box['autosave'] )
-					return;
+			if ( defined( 'DOING_AUTOSAVE' ) && !$this->meta_box['autosave'] )
+				return;
 
-				// Get parent post ID, e.g. the ID of current edited post instead of revision
-				$post_id = wp_is_post_revision( $post_id );
-			}
+			// Make sure meta is added to the post, not a revision
+			if ( $the_post = wp_is_post_revision( $post_id ) )
+				$post_id = $the_post;
 
 			// Save post action removed to prevent infinite loops
 			remove_action( 'save_post', array( $this, 'save_post' ) );
