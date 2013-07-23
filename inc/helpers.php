@@ -166,8 +166,8 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 		}
 	}
 
-	// Get post terms
-	elseif ( 'taxonomy' == $args['type'] )
+	// Get terms
+	elseif ( 'taxonomy_advanced' == $args['type'] )
 	{
 		if ( !empty( $args['taxonomy'] ) )
 		{
@@ -183,6 +183,12 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 		{
 			$meta = array();
 		}
+	}
+
+	// Get post terms
+	elseif ( 'taxonomy' == $args['type'] )
+	{
+		$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
 	}
 
 	// Get map

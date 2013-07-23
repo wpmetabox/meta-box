@@ -74,6 +74,13 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.3.3
+* Bug fix: cannot clear all terms in taxonomy field
+* Bug fix: potential problem with autosave
+* Bug fix: cannot save zero string value "0"
+* Improvement: add Turkish language
+* Improvement: add taxonomy_advanced field, which saves term IDs as comma separated value in custom field
+
 ### 4.3.2
 * Bug fix: allow to have more than 1 map on a page
 * Bug fix: use HTTPS for Google Maps to work both in HTTP & HTTPS
