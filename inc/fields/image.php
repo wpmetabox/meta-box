@@ -44,21 +44,19 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$order    = isset( $_POST['order'] ) ? $_POST['order'] : 0;
+			$post_id    = isset( $_POST['post_id'] ) ? $_POST['post_id'] : 0;
+
 
 			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
 			$items = $items['item'];
-			$order = 1;
+			
+			delete_post_meta( $post_id, $field_id );
 
 			foreach ( $items as $item )
 			{
-				wp_update_post(
-					array(
-						'ID'         => $item,
-						'menu_order' => $order++,
-					)
-				);
+				add_post_meta( $post_id, $field_id, $item );
 			}
 
 			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
@@ -184,16 +182,6 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 			if ( empty( $meta ) )
 				return array();
-
-			$meta = implode( ',' , (array) $meta );
-
-			// Re-arrange images with 'menu_order'
-			$meta = $wpdb->get_col( "
-				SELECT ID FROM {$wpdb->posts}
-				WHERE post_type = 'attachment'
-				AND ID in ({$meta})
-				ORDER BY menu_order ASC
-			" );
 
 			return (array) $meta;
 		}

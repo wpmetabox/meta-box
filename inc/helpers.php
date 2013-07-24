@@ -146,17 +146,6 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	{
 		if ( is_array( $meta ) && !empty( $meta ) )
 		{
-			global $wpdb;
-			$meta = implode( ',', $meta );
-
-			// Re-arrange images with 'menu_order'
-			$meta = $wpdb->get_col( "
-				SELECT ID FROM {$wpdb->posts}
-				WHERE post_type = 'attachment'
-				AND ID in ({$meta})
-				ORDER BY menu_order ASC
-			" );
-
 			$images = array();
 			foreach ( $meta as $id )
 			{
