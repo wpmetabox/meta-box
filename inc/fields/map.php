@@ -33,9 +33,10 @@ if ( !class_exists( 'RWMB_Map_Field' ) )
 			$html = '<div class="rwmb-map-field">';
 
 			$html .= sprintf(
-				'<div class="rwmb-map-canvas" style="%s"></div>
+				'<div class="rwmb-map-canvas" style="%s"%s></div>
 				<input type="hidden" name="%s" class="rwmb-map-coordinate" value="%s">',
 				isset( $field['style'] ) ? $field['style'] : '',
+				isset( $field['default_loc'] ) ? " data-default-lat=\"{$field['default_loc'][0]}\" data-default-lng=\"{$field['default_loc'][1]}\"" : '',
 				$field['field_name'],
 				$meta
 			);
