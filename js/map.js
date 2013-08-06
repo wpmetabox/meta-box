@@ -33,7 +33,16 @@
 		// Initialize map elements
 		initMapElements: function()
 		{
-			var latLng = new google.maps.LatLng( 53.346881, -6.258860 ); // Initial position for map
+			var defaultLoc = $(this.canvas).data('default-loc'),
+				latLng;
+
+			if (defaultLoc) {
+				defaultLoc = defaultLoc.split(',');
+			} else {
+				defaultLoc = [53.346881, -6.258860];
+			}
+
+			latLng = new google.maps.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map
 
 	 		this.map = new google.maps.Map( this.canvas, {
 				center: latLng,
