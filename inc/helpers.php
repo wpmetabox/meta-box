@@ -226,7 +226,7 @@ function rwmb_image_info( $id, $args = array() )
 	if ( empty( $img_src ) )
 		return false;
 
-	$attachment = &get_post( $id );
+	$attachment = get_post( $id );
 	$path = get_attached_file( $id );
 	return array(
 		'ID'          => $id,
