@@ -63,21 +63,34 @@ jQuery( document ).ready( function( $ )
 			else
 			{
 				$parent.addClass( 'removed' );
-				//If transition events not supported
-				if( !('ontransitionend' in window) && ('onwebkittransitionend' in window) && !('onotransitionend' in myDiv || navigator.appName == 'Opera') ) 
+
+				// If transition events not supported
+				if (
+					!( 'ontransitionend' in window )
+					&& ( 'onwebkittransitionend' in window )
+					&& !( 'onotransitionend' in myDiv || navigator.appName == 'Opera' )
+				)
+				{
 					$parent.remove();
-				$container.trigger( 'update.rwmbFile' );
+					$container.trigger( 'update.rwmbFile' );
+				}
+
+				$( '.rwmb-uploaded' ).on( 'transitionend webkitTransitionEnd otransitionend', 'li.removed', function()
+				{
+					$( this ).remove();
+					$container.trigger( 'update.rwmbFile' );
+				} );
 			}
 		}, 'xml' );
 
 		return false;
 	} );
-	
+
 	//Remove deleted file
 	$( '.rwmb-uploaded' ).on( 'transitionend webkitTransitionEnd otransitionend', 'li.removed', function() {
 		$( this ).remove();
 	});
-	
+
 	$( 'body' ).on( 'update.rwmbFile', '.rwmb-uploaded', function()
 	{
 		var $fileList = $( this ),

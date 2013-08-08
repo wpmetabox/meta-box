@@ -56,7 +56,6 @@ jQuery( function( $ )
 				return $imageList.children( 'li#item_' + attachment.id ).length == 0;
 			} );
 			ids = _.pluck( selection, 'id' );
-			console.log( selection );
 
 			if( ids.length > 0 )
 			{
