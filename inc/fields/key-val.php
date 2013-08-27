@@ -36,10 +36,8 @@ if ( ! class_exists( 'RWMB_Key_Val_Field' ) )
 			}
 
 			$new = array_filter( $new );
-			
+
 			RW_Meta_Box::save( $new, $old, $post_id, $field );
-			
-			return;
 		}
 
 		static function normalize_field( $field )
