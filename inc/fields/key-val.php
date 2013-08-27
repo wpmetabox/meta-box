@@ -6,33 +6,14 @@ if ( ! class_exists( 'RWMB_Key_Val_Field' ) )
 {
 	class RWMB_Key_Val_Field
 	{
-		/**
-		 * Get field HTML
-		 *
-		 * @param string $html
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
 		static function html( $html, $meta, $field )
 		{
-			$tpl = '<input type="text" id="%s" class="rwmb-key-val" name="%s[key]" value="%s"> <input type="text" class="rwmb-key-val" name="%s[val]" value="%s">';
-			$html = '';
+			$tpl = '<input type="text" class="rwmb-key-val" name="%s[]" value="%s"> <input type="text" class="rwmb-key-val" name="%s[]" value="%s">';
 
-			foreach ( $meta as $i => $meta_field ) {
-				$html .= sprintf( $tpl,
-					$field['id'],
-					$field['id'] . '[' . $i . ']',
-					$meta_field['key'],
-					$field['id'] . '[' . $i . ']',
-					$meta_field['val']
-				);
-				$html .= '<br>';
-			}
+			$key = isset( $meta[0] ) ? $meta[0] : '';
+			$val = isset( $meta[1] ) ? $meta[1] : '';
 
-			if ( empty( $meta ) )
-				$html .= sprintf( $tpl, $field['id'], $field['id'] . '[0]', '', $field['id'] . '[0]', '' );
+			$html = sprintf( $tpl, $field['field_name'], $key, $field['field_name'], $val );
 
 			return $html;
 		}
@@ -41,19 +22,30 @@ if ( ! class_exists( 'RWMB_Key_Val_Field' ) )
 		{
 			$meta = get_post_meta( $post_id, $field['id'], true );
 
+			if ( empty( $meta ) )
+				$meta = '';
+
 			return $meta;
 		}
 
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
+		static function save( $new, $old, $post_id, $field )
+		{
+			foreach ( $new as &$arr ) {
+				if ( empty( $arr[0] ) && empty( $arr[1] ) )
+					$arr = false;
+			}
+
+			$new = array_filter( $new );
+			
+			RW_Meta_Box::save( $new, $old, $post_id, $field );
+			
+			return;
+		}
+
 		static function normalize_field( $field )
 		{
-			$field['clone']	= true;
+			$field['clone'] = true;
+			$field['multiple'] = false;
 
 			return $field;
 		}
