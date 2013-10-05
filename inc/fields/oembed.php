@@ -57,8 +57,10 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 
 		static function get_embed( $url )
 		{
-				
-			$embed = wp_oembed_get( esc_url( $url ) );
+			global $wp_embed;
+			
+			$embed = $wp_embed->run_shortcode('[embed]'.esc_url( $url ).'[/embed]');
+			// $embed = wp_oembed_get( esc_url( $url ) );
 
 			if( $embed )
 			{
