@@ -123,7 +123,8 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	) );
 
 	// Set 'multiple' for fields based on 'type'
-	$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) );
+	if ( !isset( $args['multiple'] ) )
+		$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) );
 
 	$meta = get_post_meta( $post_id, $key, !$args['multiple'] );
 
