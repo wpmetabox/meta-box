@@ -17,23 +17,6 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		}
 
 		/**
-		 * Add field actions
-		 *
-		 * @return void
-		 */
-		static function add_actions()
-		{
-			// Add TinyMCE script for WP version < 3.3
-			global $wp_version;
-
-			if ( version_compare( $wp_version, '3.2.1' ) < 1 )
-			{
-				add_action( 'admin_print_footer-post.php', 'wp_tiny_mce', 25 );
-				add_action( 'admin_print_footer-post-new.php', 'wp_tiny_mce', 25 );
-			}
-		}
-
-		/**
 		 * Change field value on save
 		 *
 		 * @param mixed $new
@@ -59,29 +42,15 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			global $wp_version;
+			// Using output buffering because wp_editor() echos directly
+			ob_start();
 
-			if ( version_compare( $wp_version, '3.2.1' ) < 1 )
-			{
-				return sprintf(
-					'<textarea class="rwmb-wysiwyg theEditor large-text" name="%s" id="%s" cols="60" rows="4">%s</textarea>',
-					$field['field_name'],
-					$field['id'],
-					$meta
-				);
-			}
-			else
-			{
-				// Using output buffering because wp_editor() echos directly
-				ob_start();
+			$field['options']['textarea_name'] = $field['field_name'];
 
-				$field['options']['textarea_name'] = $field['field_name'];
+			// Use new wp_editor() since WP 3.3
+			wp_editor( $meta, $field['id'], $field['options'] );
 
-				// Use new wp_editor() since WP 3.3
-				wp_editor( $meta, $field['id'], $field['options'] );
-
-				return ob_get_clean();
-			}
+			return ob_get_clean();
 		}
 
 		/**
