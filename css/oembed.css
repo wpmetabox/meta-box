@@ -1,0 +1,8 @@
+.rwmb-oembed-wrapper .spinner {
+	float: none;
+	vertical-align: top;
+	display: inline-block;
+}
+.rwmb-oembed-wrapper .embed-code {
+	margin-top: 1em;
+}
