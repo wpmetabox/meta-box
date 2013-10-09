@@ -268,8 +268,8 @@ function rwmb_meta_map( $key, $args = array(), $post_id = null )
 
 	// Map parameters
 	$args = wp_parse_args( $args, array(
-		'width'        => 640,
-		'height'       => 480,
+		'width'        => '640px',
+		'height'       => '480px',
 		'zoom'         => $parts[2], // Default to 'zoom' level set in admin, but can be overwritten
 		'marker'       => true,      // Display marker?
 		'marker_title' => '',        // Marker title, when hover
@@ -282,15 +282,16 @@ function rwmb_meta_map( $key, $args = array(), $post_id = null )
 	$html = sprintf(
 		'<div id="rwmb-map-canvas-%d" style="width:%s;height:%s"></div>',
 		$counter,
-		$args['width'] . 'px',
-		$args['height'] . 'px'
+		$args['width'],
+		$args['height']
 	);
-	$html .= '<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>';
+
+	// Load Google Maps script only when needed
+	$html .= '<script>if ( typeof google !== "object" || typeof google.maps !== "object" )
+				document.write(\'<script src="//maps.google.com/maps/api/js?sensor=false"><\/script>\')</script>';
 	$html .= '<script>
-		(function()
+		( function()
 		{
-			function initialize()
-			{
 	';
 
 	$html .= sprintf( '
@@ -332,10 +333,7 @@ function rwmb_meta_map( $key, $args = array(), $post_id = null )
 		}
 	}
 
-	$html .= '
-			}
-			google.maps.event.addDomListener(window, "load", initialize);
-		}());
+	$html .= '} )();
 		</script>';
 
 	$counter++;
