@@ -145,6 +145,14 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 	// Get uploaded images info
 	elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
 	{
+		global $wpdb;
+
+		$meta = $wpdb->get_col( $wpdb->prepare( "
+			SELECT meta_value FROM $wpdb->postmeta
+			WHERE post_id = %d AND meta_key = '%s'
+			ORDER BY meta_id ASC
+		", $post_id, $key ) );
+
 		if ( is_array( $meta ) && !empty( $meta ) )
 		{
 			$images = array();

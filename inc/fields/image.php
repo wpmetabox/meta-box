@@ -43,19 +43,17 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$order    = isset( $_POST['order'] ) ? $_POST['order'] : 0;
-			$post_id    = isset( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0;
+			$post_id  = isset( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0;
 
 			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
-			$items = $items['item'];
 
 			delete_post_meta( $post_id, $field_id );
-			foreach ( $items as $item )
+			foreach ( $items['item'] as $item )
 			{
 				add_post_meta( $post_id, $field_id, $item, false );
 			}
-
 			wp_send_json_success();
 		}
 
@@ -103,7 +101,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-images_{$field['id']}" );
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-			$classes = array('rwmb-images', 'rwmb-uploaded');
+			$classes = array( 'rwmb-images', 'rwmb-uploaded' );
 			if ( count( $images ) <= 0  )
 				$classes[] = 'hidden';
 			$ul = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
@@ -175,9 +173,13 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			global $wpdb;
 
-			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
+			$meta = $wpdb->get_col( $wpdb->prepare( "
+				SELECT meta_value FROM $wpdb->postmeta
+				WHERE post_id = %d AND meta_key = '%s'
+				ORDER BY meta_id ASC
+			", $post_id, $field['id'] ) );
 
-			return empty( $meta ) ? array() : (array) $meta;
+			return empty( $meta ) ? array() : $meta;
 		}
 	}
 }
