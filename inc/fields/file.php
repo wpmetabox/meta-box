@@ -14,7 +14,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
-			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-file', 'rwmbFile', array(
 				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'rwmb' ),
 				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'rwmb' ),
@@ -65,9 +65,9 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$ok = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
 			if ( $ok )
-				RW_Meta_Box::ajax_response( '', 'success' );
+				wp_send_json_success();
 			else
-				RW_Meta_Box::ajax_response( __( 'Error: Cannot delete file', 'rwmb' ), 'error' );
+				wp_send_json_error( __( 'Error: Cannot delete file', 'rwmb' ) );
 		}
 
 		/**

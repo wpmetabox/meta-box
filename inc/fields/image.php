@@ -17,8 +17,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			parent::admin_enqueue_scripts();
 
 			wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array(), RWMB_VER );
-
-			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable', 'wp-ajax-response' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-image', RWMB_JS_URL . 'image.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
 		}
 
 		/**
@@ -46,20 +45,18 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			$order    = isset( $_POST['order'] ) ? $_POST['order'] : 0;
 			$post_id    = isset( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0;
 
-
 			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
 			$items = $items['item'];
-			
-			delete_post_meta( $post_id, $field_id );
 
+			delete_post_meta( $post_id, $field_id );
 			foreach ( $items as $item )
 			{
 				add_post_meta( $post_id, $field_id, $item, false );
 			}
 
-			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
+			wp_send_json_success();
 		}
 
 		/**
@@ -179,7 +176,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			global $wpdb;
 
 			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
-			
+
 			return empty( $meta ) ? array() : (array) $meta;
 		}
 	}

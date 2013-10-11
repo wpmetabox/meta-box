@@ -1,15 +1,15 @@
-jQuery( document ).ready( function( $ )
+jQuery( function( $ )
 {
 	// Reorder images
 	$( '.rwmb-images' ).each( function()
 	{
-		var $this    = $( this ),
-			$container = $this.closest('.rwmb-uploaded'),
-			data     = {
+		var $this = $( this ),
+			$container = $this.closest( '.rwmb-uploaded' ),
+			data = {
 				action  	: 'rwmb_reorder_images',
-				_ajax_nonce	: $container.data('reorder_nonce'),
+				_ajax_nonce	: $container.data( 'reorder_nonce' ),
 				post_id 	: $( '#post_ID' ).val(),
-				field_id	: $container.data('field_id')
+				field_id	: $container.data( 'field_id' )
 			};
 		$this.sortable( {
 			placeholder: 'ui-state-highlight',
@@ -20,10 +20,9 @@ jQuery( document ).ready( function( $ )
 
 				$.post( ajaxurl, data, function( r )
 				{
-					var res = wpAjax.parseAjaxResponse( r, 'ajax-response' );
-					if ( res.errors )
-						alert( res.responses[0].errors[0].message );
-				}, 'xml' );
+					if ( !r.success )
+						alert( r.data );
+				}, 'json' );
 			}
 		} );
 	} );

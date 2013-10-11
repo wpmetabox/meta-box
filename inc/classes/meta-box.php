@@ -682,22 +682,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
-		 * Format Ajax response
-		 *
-		 * @param string $message
-		 * @param string $status
-		 *
-		 * @return void
-		 */
-		static function ajax_response( $message, $status )
-		{
-			$response = array( 'what' => 'meta-box' );
-			$response['data'] = 'error' === $status ? new WP_Error( 'error', $message ) : $message;
-			$x = new WP_Ajax_Response( $response );
-			$x->send();
-		}
-
-		/**
 		 * Check if meta box has been saved
 		 * This helps saving empty value in meta fields (for text box, check box, etc.)
 		 *

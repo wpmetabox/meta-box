@@ -8,13 +8,12 @@
 	width: 150px;
 	height: 150px;
 	text-align: center;
-	border: 2px solid #ccc;
 	cursor: move;
 	position: relative;
-	-moz-transition:width 0.25s, opacity 0.25s, -moz-opacity 0.25s;
-    -webkit-transition:width 0.25s, opacity 0.25s, -webkit-opacity 0.25s;
-    -o-transition:width 0.25s, opacity 0.25s, -o-opacity 0.25s;
-    transition:width 0.25s, opacity 0.25s;
+	-moz-transition: width 0.25s, opacity 0.25s, -moz-opacity 0.25s;
+    -webkit-transition: width 0.25s, opacity 0.25s, -webkit-opacity 0.25s;
+    -o-transition: width 0.25s, opacity 0.25s, -o-opacity 0.25s;
+    transition: width 0.25s, opacity 0.25s;
 }
 .rwmb-images img {
 	width: 150px;
@@ -29,45 +28,39 @@
 	top: 0;
 	right: 0;
 	padding: 5px;
-	display:none;
+	display: none;
 	text-align: center;
-	vertical-align:middle;
 }
 li:hover .rwmb-image-bar{
-	display:block;	
+	display: block;
 }
-
 .rwmb-image-bar a {
 	color: #fff;
 	font-weight: bold;
-	text-decoration:none;
-	text-align: center;
-	vertical-align:inherit;
+	text-decoration: none;
+	vertical-align: middle;
 }
-
 .rwmb-image-bar a.rwmb-delete-file {
-	font-weight:lighter;
-	font-size:23px;
-	width:18px;
+	font-size: 23px;
+	width: 18px;
+	font-weight: normal;
 }
-
 .rwmb-images li.removed {
 	width: 0;
 	margin: 0;
 	opacity: 0;
 	-webkit-opacity: 0;
 	-moz-opacity: 0;
-	-o-opacity: 0;	
+	-o-opacity: 0;
 }
-
 .rwmb-images li.removed:after {
 	content: ' ';
 	position: absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	z-index: 2;
 	opacity: .4;
-	background-color: #F00;
+	background-color: #f00;
 }
