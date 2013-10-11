@@ -56,11 +56,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];
 
-			// Allow users to show/hide (e.g. include/exclude) meta boxes
+			// Allow users to show/hide meta box
 			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
 			$show = true;
-			$show = apply_filters( 'rwmb_show', $show, $meta_box );
+			$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
 			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
 			if ( !$show )
 				return;
@@ -68,23 +68,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Enqueue common styles and scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-			// All fields
-			$fields = self::get_fields( $this->fields );
-
 			// Add additional actions for fields
+			$fields = self::get_fields( $this->fields );
 			foreach ( $fields as $field )
 			{
 				$class = self::get_class_name( $field );
-
 				if ( method_exists( $class, 'add_actions' ) )
-					call_user_func( array( $class, 'add_actions' ) );
+					$class::add_actions();
 			}
 
 			// Add meta box
-			foreach ( $this->meta_box['pages'] as $page )
-			{
-				add_action( "add_meta_boxes_{$page}", array( $this, 'add_meta_boxes' ) );
-			}
+			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 
 			// Hide meta box if it's set 'default_hidden'
 			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
@@ -125,7 +119,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Enqueue scripts and styles for fields
 				$class = self::get_class_name( $field );
 				if ( method_exists( $class, 'admin_enqueue_scripts' ) )
-					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
+					$class::admin_enqueue_scripts();
 			}
 
 			if ( $has_clone )
@@ -156,9 +150,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				$all_fields[] = $field;
 				if ( isset( $field['fields'] ) )
-				{
 					$all_fields = array_merge( $all_fields, self::get_fields( $field['fields'] ) );
-				}
 			}
 
 			return $all_fields;
@@ -628,10 +620,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Allow field class add/change default field values
 				$field = self::apply_field_class_filters( $field, 'normalize_field', $field );
 
-				if( isset( $field['fields'] ) )
-				{
+				if ( isset( $field['fields'] ) )
 					$field['fields'] = self::normalize_fields( $field['fields'] );
-				}
 			}
 
 			return $fields;
@@ -646,9 +636,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function get_class_name( $field )
 		{
-			$type  = ucwords( $field['type'] );
-			$class = "RWMB_{$type}_Field";
-
+			$class = 'RWMB_' . ucwords( $field['type'] ) . '_Field';
 			if ( class_exists( $class ) )
 				return $class;
 
@@ -659,12 +647,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * Apply filters by field class, fallback to RW_Meta_Box method
 		 *
 		 * @param array  $field
-		 * @param string $method_name
+		 * @param string $method
 		 * @param mixed  $value
 		 *
 		 * @return mixed $value
 		 */
-		static function apply_field_class_filters( $field, $method_name, $value )
+		static function apply_field_class_filters( $field, $method, $value )
 		{
 			$args   = array_slice( func_get_args(), 2 );
 			$args[] = $field;
@@ -672,14 +660,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Call:     field class method
 			// Fallback: RW_Meta_Box method
 			$class = self::get_class_name( $field );
-			if ( method_exists( $class, $method_name ) )
-			{
-				$value = call_user_func_array( array( $class, $method_name ), $args );
-			}
-			elseif ( method_exists( __CLASS__, $method_name ) )
-			{
-				$value = call_user_func_array( array( __CLASS__, $method_name ), $args );
-			}
+			if ( method_exists( $class, $method ) )
+				$value = call_user_func_array( array( $class, $method ), $args );
+			elseif ( method_exists( __CLASS__, $method ) )
+				$value = call_user_func_array( array( __CLASS__, $method ), $args );
 
 			return $value;
 		}
@@ -688,26 +672,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * Call field class method for actions, fallback to RW_Meta_Box method
 		 *
 		 * @param array  $field
-		 * @param string $method_name
+		 * @param string $method
 		 *
 		 * @return mixed
 		 */
-		static function do_field_class_actions( $field, $method_name )
+		static function do_field_class_actions( $field, $method )
 		{
-			$args   = array_slice( func_get_args(), 2 );
-			$args[] = $field;
-
-			// Call:     field class method
-			// Fallback: RW_Meta_Box method
-			$class = self::get_class_name( $field );
-			if ( method_exists( $class, $method_name ) )
-			{
-				call_user_func_array( array( $class, $method_name ), $args );
-			}
-			elseif ( method_exists( __CLASS__, $method_name ) )
-			{
-				call_user_func_array( array( __CLASS__, $method_name ), $args );
-			}
+			call_user_func_array( array( __CLASS__, 'apply_field_class_filters' ), func_get_args() );
 		}
 
 		/**
