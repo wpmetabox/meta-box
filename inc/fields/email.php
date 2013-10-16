@@ -21,11 +21,12 @@ if ( !class_exists( 'RWMB_Email_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<input type="email" class="rwmb-email" name="%s" id="%s" value="%s" size="%s" />',
+				'<input type="email" class="rwmb-email" name="%s" id="%s" value="%s" size="%s" placeholder="%s"/>',
 				$field['field_name'],
 				$field['id'],
 				$meta,
-				$field['size']
+				$field['size'],
+				$field['placeholder']
 			);
 		}
 
