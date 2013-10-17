@@ -21,35 +21,27 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 **Supported fields**
 
 - button
-- checkbox_list
-- checkbox
+- checkbox, checkbox_list
 - color
-- date
-- datetime
+- date, time, datetime
 - divider
 - email
-- file
-- file_advanced
+- file, file_advanced
 - heading
 - hidden
-- image
-- image_advanced
+- image, thickbox_image, plupload_image, image_advanced
 - map
 - number
 - oembed
 - password
-- plupload_image
 - post
 - radio
 - range
-- select
-- select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
+- select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
 - slider
 - taxonomy
 - text
 - textarea
-- thickbox_image
-- time
 - url
 - wysiwyg
 
@@ -70,6 +62,17 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.4 =
+* Bug fix: not show upload button after delete image when reach max_file_upload. #347
+* Bug fix: autocomplete for map which conflicts with tags (terms) autocomplete
+* Bug fix: random image order when reorder
+* Bug fix: undefined index, notices in WordPress 3.6, notice error for oembed field
+* Improvement: add default location for map field (via `std` param as usual)
+* Improvement: add `placeholder` for text fields (url, email, etc.)
+* Improvement: add `multiple` param for helper function to get value of multiple fields
+* Improvement: `width` & `height` for map in helper function now requires units (allow to set %)
+* Drop support for WordPress 3.3 (wysiwyg) and < 3.5 (for file & image field which uses new json functions)
 
 = 4.3.3 =
 * Bug fix: cannot clear all terms in taxonomy field

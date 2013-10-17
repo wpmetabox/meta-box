@@ -50,10 +50,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		 */
 		static function get_embed( $url )
 		{
-			// global $wp_embed;
-			// $embed = $wp_embed->run_shortcode( '[embed]'.esc_url( $url ).'[/embed]' );
-
-			$embed = wp_oembed_get( $url );
+			$embed = @wp_oembed_get( $url );
 			return $embed ? $embed : __( 'Embed HTML not available.', 'rwmb' );
 		}
 
