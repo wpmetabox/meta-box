@@ -4,25 +4,21 @@ jQuery( document ).ready( function( $ )
 
 	function add_cloned_fields( $input )
 	{
-		var $clone_last = $input.find( '.rwmb-clone:last' ),
-			$clone = $clone_last.clone(),
-			$input, name;
-	
-		$clone.insertAfter( $clone_last );
-		$input = $clone.find( ':input[class|="rwmb"]' );
-
-		// Reset value
-		$input.val( '' );
-
-		// Get the field name, and increment
-		name = $input.attr( 'name' ).replace( /\[(\d+)\]/, function( match, p1 )
-		{
-			return '[' + ( parseInt( p1 ) + 1 ) + ']';
-		} );
-
-		// Update the "name" attribute
-		$input.attr( 'name', name );
-
+		var field_name = $input.find( '.rwmb-field-name' ).val(),
+			template = $input.find( '#' + field_name + '_template' ).html(),
+			$clone_last = $input.find( '.rwmb-clone:last' ),
+			data={},
+			template_html;
+			
+		data[field_name + '_index'] = $clone_last.data('field-index') + 1;
+		template_html = _.template( template, data, {
+			evaluate:    /<#([\s\S]+?)#>/g,
+			interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+			escape:      /\{\{([^\}]+?)\}\}(?!\})/g
+		} );			
+		
+		$( template_html ).insertAfter( $clone_last );		
+		
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
 		
@@ -36,7 +32,7 @@ jQuery( document ).ready( function( $ )
 		e.stopPropagation();
 		var $input = $( this ).parents( '.rwmb-input' ),
 			$clone_group = $( this ).parents( '.rwmb-field' ).attr( "clone-group" );
-
+		
 		// If the field is part of a clone group, get all fields in that
 		// group and itterate over them
 		if ( $clone_group )
@@ -54,9 +50,7 @@ jQuery( document ).ready( function( $ )
 		}
 		else
 			add_cloned_fields( $input );
-
-		toggle_remove_buttons( $input );
-
+		
 		return false;
 	} );
 

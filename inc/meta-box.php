@@ -298,36 +298,25 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				if ( isset( $field['clone-group'] ) )
 					$group = " clone-group='{$field['clone-group']}'";
-
+	
 				$meta = (array) $meta;
+				
+				add_filter( "rwmb_{$id}_html", array( __CLASS__, 'add_clone_buttons' ), 10, 3 );
 
-				$field_html = '';
-
+	
+				$field_html = sprintf( '<input type="hidden" class="rwmb-field-name" name="rwmb-field-name" value="%s">', $id );
 				foreach ( $meta as $index => $meta_data )
 				{
-					$sub_field = $field;
-					$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
-					if ( $field['multiple'] )
-						$sub_field['field_name'] .= '[]';
-
-					add_filter( "rwmb_{$id}_html", array( __CLASS__, 'add_clone_buttons' ), 10, 3 );
-
-					// Wrap field HTML in a div with class="rwmb-clone" if needed
-					$input_html = '<div class="rwmb-clone">';
-
-					// Call separated methods for displaying each type of field
-					$input_html .= self::apply_field_filters( $sub_field, 'html', '', $meta_data );
-
-					// Apply filter to field HTML
-					// 1st filter applies to all fields with the same type
-					// 2nd filter applies to current field only
-					$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
-					$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
-
-					$input_html .= '</div>';
-
-					$field_html .= $input_html;
+					$field_html .= self::show_clone_field( $field, $meta_data, $index );
 				}
+				
+				//Clone template
+				$field_html .= sprintf( 
+					'<script id="%s_template" type="text/html">',
+					$field['id']
+				);
+				$field_html .= self::show_clone_field( $field, '', '{{{' . $id . '_index}}}' );
+				$field_html .= '</script>';
 			}
 			// Non-cloneable fields
 			else
@@ -374,6 +363,43 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$group,
 				$html
 			);
+		}
+		
+		/**
+		 * Callback function to show fields in meta box
+		 *
+		 * @param array  $field
+		 * @param string $meta
+		 *
+		 * @return string
+		 */
+		static function show_clone_field( $field, $meta = '', $index='' )
+		{
+			
+			$type = $field['type'];
+			$id   = $field['id'];
+			$field['field_name'] = $field['field_name'] . "[{$index}]";
+			if ( $field['multiple'] )
+				$field['field_name'] .= '[]';
+
+			// Wrap field HTML in a div with class="rwmb-clone" if needed
+			$input_html = sprintf( 
+				'<div class="rwmb-clone" data-field-index="%s">',
+				$index 
+			);
+
+			// Call separated methods for displaying each type of field
+			$input_html .= self::apply_field_filters( $field, 'html', '', $meta_data );
+
+			// Apply filter to field HTML
+			// 1st filter applies to all fields with the same type
+			// 2nd filter applies to current field only
+			$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
+			$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
+
+			$input_html .= '</div>';
+			
+			return $input_html;
 		}
 
 		/**
@@ -606,16 +632,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $fields as &$field )
 			{
 				$field = wp_parse_args( $field, array(
-					'multiple'      => false,
-					'clone'         => false,
-					'std'           => '',
-					'desc'          => '',
-					'format'        => '',
-					'before'        => '',
-					'after'         => '',
-					'field_name'    => isset( $field['id'] ) ? $field['id'] : '',
-					'required'      => false,
-					'placeholder'   => ''
+					'multiple'   => false,
+					'clone'      => false,
+					'std'        => '',
+					'desc'       => '',
+					'format'     => '',
+					'before'     => '',
+					'after'      => '',
+					'field_name' => isset( $field['id'] ) ? $field['id'] : '',
+					'required'   => false
 				) );
 
 				// Allow field class add/change default field values
