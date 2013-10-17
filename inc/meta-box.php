@@ -606,15 +606,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $fields as &$field )
 			{
 				$field = wp_parse_args( $field, array(
-					'multiple'   => false,
-					'clone'      => false,
-					'std'        => '',
-					'desc'       => '',
-					'format'     => '',
-					'before'     => '',
-					'after'      => '',
-					'field_name' => isset( $field['id'] ) ? $field['id'] : '',
-					'required'   => false
+					'multiple'      => false,
+					'clone'         => false,
+					'std'           => '',
+					'desc'          => '',
+					'format'        => '',
+					'before'        => '',
+					'after'         => '',
+					'field_name'    => isset( $field['id'] ) ? $field['id'] : '',
+					'required'      => false,
+					'placeholder'   => ''
 				) );
 
 				// Allow field class add/change default field values
