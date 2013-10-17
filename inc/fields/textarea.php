@@ -18,11 +18,12 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		static function html( $html, $meta, $field )
 		{
 			return sprintf(
-				'<textarea class="rwmb-textarea large-text" name="%s" id="%s" cols="%s" rows="%s">%s</textarea>',
+				'<textarea class="rwmb-textarea large-text" name="%s" id="%s" cols="%s" rows="%s" placeholder="%s">%s</textarea>',
 				$field['field_name'],
 				$field['id'],
 				$field['cols'],
 				$field['rows'],
+				$field['placeholder'],
 				$meta
 			);
 		}

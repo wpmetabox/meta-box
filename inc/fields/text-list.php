@@ -19,7 +19,7 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 		{
 			$meta = (array) $meta;
 			$html = array();
-			$tpl = '<label><input type="text" class="rwmb-text-list" name="%s" id="%s" value="%s" /> %s</label>';
+			$tpl = '<label><input type="text" class="rwmb-text-list" name="%s" id="%s" value="%s" placeholder="%s"/> %s</label>';
 
 			foreach ( $field['options'] as $value => $label )
 			{
@@ -28,6 +28,7 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 					$field['field_name'],
 					$field['id'],
 					$value,
+					$field['placeholder'],
 					$label
 				);
 			}
