@@ -19,24 +19,19 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - color
 - date, time, datetime
 - divider
-- email
 - file, file_advanced
 - heading
 - hidden
 - image, thickbox_image, plupload_image, image_advanced
 - map
-- number
-- oembed
 - password
 - post
 - radio
-- range
 - select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
-- slider
+- slider, range
 - taxonomy
-- text
+- text, url, email, number, oembed
 - textarea
-- url
 - wysiwyg
 
 ***
@@ -65,6 +60,10 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 ***
 
 ## Changelog
+
+### 4.3.5
+* Bug fix: fatal error in PHP 5.2
+* Bug fix: save empty values of clonable fields
 
 ### 4.3.4
 * Bug fix: not show upload button after delete image when reach max_file_upload. #347

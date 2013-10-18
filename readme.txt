@@ -4,7 +4,7 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 4.3.4
+Stable tag: 4.3.5
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -25,24 +25,19 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - color
 - date, time, datetime
 - divider
-- email
 - file, file_advanced
 - heading
 - hidden
 - image, thickbox_image, plupload_image, image_advanced
 - map
-- number
-- oembed
 - password
 - post
 - radio
-- range
 - select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
-- slider
+- slider, range
 - taxonomy
-- text
+- text, url, email, number, oembed
 - textarea
-- url
 - wysiwyg
 
 [Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
@@ -62,6 +57,10 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.5 =
+* Bug fix: fatal error in PHP 5.2
+* Bug fix: save empty values of clonable fields
 
 = 4.3.4 =
 * Bug fix: not show upload button after delete image when reach max_file_upload. #347
