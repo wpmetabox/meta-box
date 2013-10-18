@@ -74,7 +74,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				$class = self::get_class_name( $field );
 				if ( method_exists( $class, 'add_actions' ) )
-					$class::add_actions();
+					call_user_func( array( $class, 'add_actions' ) );
 			}
 
 			// Add meta box
@@ -119,7 +119,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				// Enqueue scripts and styles for fields
 				$class = self::get_class_name( $field );
 				if ( method_exists( $class, 'admin_enqueue_scripts' ) )
-					$class::admin_enqueue_scripts();
+					call_user_func( array( $class, 'admin_enqueue_scripts' ) );
 			}
 
 			if ( $has_clone )
