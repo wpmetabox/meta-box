@@ -561,6 +561,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			}
 			else
 			{
+				if ( $field['clone'] )
+				{
+					$new = (array) $new;
+					foreach ( $new as $k => $v )
+					{
+						if ( '' === $v )
+							unset( $new[$k] );
+					}
+				}
 				update_post_meta( $post_id, $name, $new );
 			}
 		}

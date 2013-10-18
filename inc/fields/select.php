@@ -119,6 +119,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 * Creates html for options
 		 *
 		 * @param array $field
+		 * @param mixed $meta
 		 *
 		 * @return array
 		 */
