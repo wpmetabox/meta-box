@@ -45,4 +45,5 @@ if ( is_admin() )
 
 	// Main file
 	require_once RWMB_INC_DIR . 'meta-box.php';
+	require_once RWMB_INC_DIR . 'init.php';
 }
