@@ -74,7 +74,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 				$field['id'],
 				$meta,
 				$field['size'],
-				__( 'Show embed', 'rwmb' ),
+				__( 'Preview', 'rwmb' ),
 				$meta ? self::get_embed( $meta ) : ''
 			);
 		}
