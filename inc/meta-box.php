@@ -688,7 +688,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function do_field_actions( $field, $method )
 		{
-			call_user_func_array( array( __CLASS__, 'apply_field_filters' ), func_get_args() );
+			$args = func_get_args();
+			call_user_func_array( array( __CLASS__, 'apply_field_filters' ), $args );
 		}
 
 		/**
