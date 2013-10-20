@@ -61,6 +61,10 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.3.6
+* Bug fix: fatal error in PHP 5.2 (continue)
+* Improvement: allow register meta boxes via filter
+
 ### 4.3.5
 * Bug fix: fatal error in PHP 5.2
 * Bug fix: save empty values of clonable fields
