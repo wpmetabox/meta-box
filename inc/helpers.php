@@ -295,10 +295,13 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			$args = wp_parse_args( $args, array(
 				'width'        => '640px',
 				'height'       => '480px',
-				'zoom'         => $parts[2], // Default to 'zoom' level set in admin, but can be overwritten
 				'marker'       => true,      // Display marker?
 				'marker_title' => '',        // Marker title, when hover
 				'info_window'  => '',        // Content of info window (when click on marker). HTML allowed
+				'js_options'   => array(),
+			) );
+			$args['js_options'] = wp_parse_args( $args['js_options'], array(
+				'zoom' => $parts[2], // Default to 'zoom' level set in admin, but can be overwritten
 			) );
 
 			// Counter to display multiple maps on same page
@@ -320,15 +323,26 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			';
 
 			$html .= sprintf( '
+
+				// Simple function to extend an object
+				function extend( obj1, obj2 )
+				{
+					for ( var prop in obj2 )
+					{
+						obj1[prop] = obj2[prop];
+					}
+					return obj1;
+				};
+
 				var center = new google.maps.LatLng( %s, %s ),
-					mapOptions = {
+					mapOptions = extend( {
 						center: center,
-						zoom: %d,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					},
-					map = new google.maps.Map( document.getElementById( "rwmb-map-canvas-%d" ), mapOptions );',
+						mapTypeId: google.maps.MapTypeId.ROADMAP,
+					}, %s ),
+					map = new google.maps.Map( document.getElementById( "rwmb-map-canvas-%d" ), mapOptions );
+				',
 				$parts[0], $parts[1],
-				$args['zoom'],
+				json_encode( $args['js_options'] ),
 				$counter
 			);
 
