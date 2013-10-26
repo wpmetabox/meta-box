@@ -186,11 +186,13 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				{
 					$term_ids = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
 
-					$meta = array();
-					foreach ( $term_ids as $term_id )
-					{
-						$meta[] = get_term( $term_id, $args['taxonomy'] );
-					}
+					// Allow to pass more arguments to "get_terms"
+					$func_args = wp_parse_args( array(
+						'include'    => $term_ids,
+						'hide_empty' => false,
+					), $args );
+					unset( $func_args['type'], $func_args['taxonomy'], $func_args['multiple'] );
+					$meta = get_terms( $args['taxonomy'], $func_args );
 				}
 				else
 				{
