@@ -53,7 +53,7 @@ jQuery( function( $ )
 			}
 
 			// Hide drag & drop section if reach max file uploads
-			if ( uploaded + files.length >= maxFileUploads )
+			if ( maxFileUploads > 0 && uploaded + files.length >= maxFileUploads )
 				$dropArea.addClass( 'hidden' );
 
 			max = parseInt( up.settings.max_file_size, 10 );
