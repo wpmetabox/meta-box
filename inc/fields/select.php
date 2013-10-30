@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( !class_exists( 'RWMB_Select_Field' ) )
 {
-	class RWMB_Select_Field
+	class RWMB_Select_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -19,13 +19,12 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$html = sprintf(
 				'<select class="rwmb-select" name="%s" id="%s" size="%s"%s>',
@@ -51,14 +50,13 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 *
 		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
 		 *
-		 * @param $meta
 		 * @param $post_id
 		 * @param $saved
 		 * @param $field
 		 *
 		 * @return array
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			$single = $field['clone'] || !$field['multiple'];
 			$meta = get_post_meta( $post_id, $field['id'], $single );
@@ -85,7 +83,7 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		{
 			if ( !$field['clone'] )
 			{
-				RW_Meta_Box::save( $new, $old, $post_id, $field );
+				parent::save( $new, $old, $post_id, $field );
 				return;
 			}
 

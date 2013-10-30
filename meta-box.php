@@ -36,6 +36,7 @@ require_once RWMB_INC_DIR . 'helpers.php';
 if ( is_admin() )
 {
 	require_once RWMB_INC_DIR . 'common.php';
+	require_once RWMB_INC_DIR . 'field.php';
 
 	// Field classes
 	foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )

@@ -4,18 +4,17 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Radio_Field' ) )
 {
-	class RWMB_Radio_Field
+	class RWMB_Radio_Field extends RWMB_Field
 	{
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$html = array();
 			$tpl = '<label><input type="radio" class="rwmb-radio" name="%s" value="%s"%s> %s</label>';

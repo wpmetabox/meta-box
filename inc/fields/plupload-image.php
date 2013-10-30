@@ -88,13 +88,12 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			if ( ! is_array( $meta ) )
 				$meta = ( array ) $meta;
@@ -112,7 +111,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$classes[] = 'hidden';
 
 
-			$html .= self::get_uploaded_images( $meta, $field );
+			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= sprintf(

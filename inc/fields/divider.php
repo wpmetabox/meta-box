@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Divider_Field' ) )
 {
-	class RWMB_Divider_Field
+	class RWMB_Divider_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -19,13 +19,12 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		/**
 		 * Show begin HTML markup for fields
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function begin_html( $html, $meta, $field )
+		static function begin_html( $meta, $field )
 		{
 			return '<hr>';
 		}
@@ -33,13 +32,12 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		/**
 		 * Show end HTML markup for fields
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function end_html( $html, $meta, $field )
+		static function end_html( $meta, $field )
 		{
 			return '';
 		}

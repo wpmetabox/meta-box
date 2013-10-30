@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Color_Field' ) )
 {
-	class RWMB_Color_Field
+	class RWMB_Color_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -20,13 +20,12 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="%s" />

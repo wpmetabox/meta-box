@@ -6,7 +6,7 @@ require_once RWMB_FIELDS_DIR . 'checkbox-list.php';
 
 if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 {
-	class RWMB_Taxonomy_Field
+	class RWMB_Taxonomy_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -78,13 +78,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param $html
 		 * @param $field
 		 * @param $meta
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$options = $field['options'];
 			$terms   = get_terms( $options['taxonomy'], $options['args'] );
@@ -96,7 +95,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			switch( $options['type'] )
 			{
 				case 'checkbox_list':
-					$html = RWMB_Checkbox_List_Field::html( $html, $meta, $field );
+					$html = RWMB_Checkbox_List_Field::html( $meta, $field );
 					break;
 				case 'checkbox_tree':
 					$elements = self::process_terms( $terms );
@@ -107,11 +106,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_advanced':
-					$html = RWMB_Select_Advanced_Field::html( $html, $meta, $field );
+					$html = RWMB_Select_Advanced_Field::html( $meta, $field );
 					break;
 				case 'select':
 				default:
-					$html = RWMB_Select_Field::html( $html, $meta, $field );
+					$html = RWMB_Select_Field::html( $meta, $field );
 			}
 
 			return $html;
@@ -177,7 +176,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			$classes[] = "rwmb-taxonomy-{$parent}";
 
 			$html  = '<div class="' . implode( ' ', $classes ) . '">';
-			$html .= RWMB_Select_Field::html( $html, $meta, $field );
+			$html .= RWMB_Select_Field::html( $meta, $field );
 			foreach ( $terms as $term )
 			{
 				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta )  );
@@ -208,9 +207,9 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		/**
 		 * Get options for selects, checkbox list, etc via the terms
 		 *
-		 * @param $terms array of term objects
+		 * @param array $terms Array of term objects
 		 *
-		 * @param $options array
+		 * @return array
 		 */
 		static function get_options( $terms = array() )
 		{
@@ -242,14 +241,13 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		/**
 		 * Standard meta retrieval
 		 *
-		 * @param mixed $meta
 		 * @param int   $post_id
 		 * @param bool  $saved
 		 * @param array $field
 		 *
 		 * @return array
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			$options = $field['options'];
 
