@@ -48,11 +48,18 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 
 			parse_str( $order, $items );
-
+			
 			delete_post_meta( $post_id, $field_id );
+			$order_tmp = 1;
 			foreach ( $items['item'] as $item )
 			{
 				add_post_meta( $post_id, $field_id, $item, false );
+				wp_update_post(
+					array(
+						'ID'         => $item,
+						'menu_order' => $order_tmp++,
+					)
+				);
 			}
 			wp_send_json_success();
 		}
