@@ -97,6 +97,9 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			if ( 'wysiwyg' !== $field['type'] )
 				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 
+			$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta );
+			$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta );
+
 			return $meta;
 		}
 

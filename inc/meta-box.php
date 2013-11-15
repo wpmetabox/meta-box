@@ -259,7 +259,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			echo '</div>';
 		}
 
-
 		/**
 		 * Callback function to show fields in meta box
 		 *
@@ -273,9 +272,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
-
-			$meta = apply_filters( "rwmb_{$type}_meta", $meta );
-			$meta = apply_filters( "rwmb_{$id}_meta", $meta );
 
 			$begin = call_user_func( array( self::get_class_name( $field ), 'begin_html' ), $meta, $field );
 
@@ -373,55 +369,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
-		 * Show begin HTML markup for fields
-		 *
-		 * @param string $html
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
-		static function begin_html( $html, $meta, $field )
-		{
-			if ( empty( $field['name'] ) )
-				return '<div class="rwmb-input">';
-
-			return sprintf(
-				'<div class="rwmb-label">
-					<label for="%s">%s</label>
-				</div>
-				<div class="rwmb-input">',
-				$field['id'],
-				$field['name']
-			);
-		}
-
-		/**
-		 * Show end HTML markup for fields
-		 *
-		 * @param string $html
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
-		static function end_html( $html, $meta, $field )
-		{
-			$id = $field['id'];
-
-			$button = '';
-			if ( $field['clone'] )
-				$button = '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
-
-			$desc = ! empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
-
-			// Closes the container
-			$html = "{$button}{$desc}</div>";
-
-			return $html;
-		}
-
-		/**
 		 * Callback function to add clone buttons on demand
 		 * Hooks on the flight into the "rwmb_{$field_id}_html" filter before the closing div
 		 *
@@ -436,30 +383,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$button = '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
 
 			return "{$html}{$button}";
-		}
-
-		/**
-		 * Standard meta retrieval
-		 *
-		 * @param mixed $meta
-		 * @param int   $post_id
-		 * @param array $field
-		 * @param bool  $saved
-		 *
-		 * @return mixed
-		 */
-		static function meta( $meta, $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
-
-			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-
-			// Escape attributes for non-wysiwyg fields
-			if ( 'wysiwyg' !== $field['type'] )
-				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-
-			return $meta;
 		}
 
 		/**************************************************
