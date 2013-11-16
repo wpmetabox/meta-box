@@ -41,7 +41,7 @@ if ( ! class_exists( 'RWMB_URL_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field)
 		{
-			return esc_url( $new );
+			return is_array( $new ) ? array_map( 'esc_url', $new ) : esc_url( $new );
 		}
 	}
 }

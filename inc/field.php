@@ -57,7 +57,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 
 				$field_html = '';
 
-				foreach ( $meta as $index => $meta_data )
+				foreach ( $meta as $index => $sub_meta )
 				{
 					$sub_field = $field;
 					$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
@@ -68,13 +68,13 @@ if ( !class_exists( 'RWMB_Field ' ) )
 					$input_html = '<div class="rwmb-clone">';
 
 					// Call separated methods for displaying each type of field
-					$input_html .= call_user_func( array( get_called_class(), 'html' ), $meta_data, $sub_field );
+					$input_html .= call_user_func( array( get_called_class(), 'html' ), $sub_meta, $sub_field );
 
 					// Apply filter to field HTML
 					// 1st filter applies to all fields with the same type
 					// 2nd filter applies to current field only
-					$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $meta_data );
-					$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $meta_data );
+					$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $sub_meta );
+					$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $sub_meta );
 
 					// Add clone button
 					$input_html .= self::clone_button();
@@ -115,7 +115,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
 			// Display label and input in DIV and allow user-defined classes to be appended
-			$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
+			$classes = array( 'rwmb-field', "rwmb-{$type}-wrapper" );
 			if ( 'hidden' === $field['type'] )
 				$classes[] = 'hidden';
 			if ( !empty( $field['required'] ) )
