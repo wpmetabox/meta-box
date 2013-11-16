@@ -6,3 +6,6 @@
 .rwmb-oembed-wrapper .embed-code {
 	margin-top: 1em;
 }
+.rwmb-oembed-wrapper .embed-code iframe {
+	max-width: 100%;
+}
