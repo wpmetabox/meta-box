@@ -271,6 +271,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function save_post( $post_id )
 		{
+			// Check if this function is called to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
+			static $called = false;
+			if ( $called === true )
+				return;
+			$called = true;
+
 			// Check whether form is submitted properly
 			$id = $this->meta_box['id'];
 			if ( empty( $_POST["nonce_{$id}"] ) || !wp_verify_nonce( $_POST["nonce_{$id}"], "rwmb-save-{$id}" ) )
@@ -283,9 +289,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Make sure meta is added to the post, not a revision
 			if ( $the_post = wp_is_post_revision( $post_id ) )
 				$post_id = $the_post;
-
-			// Save post action removed to prevent infinite loops
-			remove_action( 'save_post', array( $this, 'save_post' ) );
 
 			// Before save action
 			do_action( 'rwmb_before_save_post', $post_id );
@@ -314,8 +317,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			do_action( 'rwmb_after_save_post', $post_id );
 			do_action( "rwmb_{$this->meta_box['id']}_after_save_post", $post_id );
 
-			// Reinstate save_post action
-			add_action( 'save_post', array( $this, 'save_post' ) );
+			// Done saving post meta
+			$called = false;
 		}
 
 		/**************************************************
