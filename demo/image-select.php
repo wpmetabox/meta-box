@@ -1,9 +1,9 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'PREFIX_register_meta_box_image_field' );
-function PREFIX_register_meta_box_image_field( $meta_boxes )
+add_filter( 'rwmb_meta_boxes', 'PREFIX_register_meta_box_image_select' );
+function PREFIX_register_meta_box_image_select( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Image Field Demo', 'textdomain' ),
+		'title' => __( 'Image Select Demo', 'textdomain' ),
 		'fields' => array(
 			array(
 				'id'       => 'layout',
