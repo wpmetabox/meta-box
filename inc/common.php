@@ -40,7 +40,7 @@ if ( !class_exists( 'RWMB_Common' ) )
 	RWMB_Common::on_load();
 }
 
-if ( function_exists( 'get_called_class' ) )
+if ( !function_exists( 'get_called_class' ) )
 {
 	/**
 	 * Get called class, used for PHP version < 5.3 only
