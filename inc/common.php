@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Common' ) )
+if ( !class_exists( 'RWMB_Common' ) )
 {
 	/**
 	 * Common functions for the plugin
@@ -29,7 +29,7 @@ if ( ! class_exists( 'RWMB_Common' ) )
 		{
 			// l18n translation files
 			$locale = get_locale();
-			$dir    = trailingslashit( RWMB_DIR . 'lang' );
+			$dir = trailingslashit( RWMB_DIR . 'lang' );
 			$mofile = "{$dir}{$locale}.mo";
 
 			// In themes/plugins/mu-plugins directory
@@ -38,4 +38,20 @@ if ( ! class_exists( 'RWMB_Common' ) )
 	}
 
 	RWMB_Common::on_load();
+}
+
+if ( function_exists( 'get_called_class' ) )
+{
+	/**
+	 * Get called class, used for PHP version < 5.3 only
+	 * @return bool|string
+	 */
+	function get_called_class()
+	{
+		$t = debug_backtrace();
+		$t = $t[0];
+		if ( isset( $t['object'] ) && $t['object'] instanceof $t['class'] )
+			return get_class( $t['object'] );
+		return false;
+	}
 }
