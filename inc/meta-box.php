@@ -36,6 +36,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		public $validation;
 
+		public $saved = false;
+
 		/**
 		 * Create meta box based on given data
 		 *
@@ -272,10 +274,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		function save_post( $post_id )
 		{
 			// Check if this function is called to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
-			static $called = false;
-			if ( $called === true )
+			if ( $this->saved === true )
 				return;
-			$called = true;
+			$this->saved = true;
 
 			// Check whether form is submitted properly
 			$id = $this->meta_box['id'];
