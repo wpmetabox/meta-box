@@ -1,0 +1,18 @@
+#post-body .rwmb-radio-wrapper .rwmb-input label {
+	display: inline-block;
+	margin-right: 10px;
+	max-width: 120px;
+	margin-top: 10px;
+	vertical-align: top;
+	text-align: center;
+}
+#post-body .rwmb-radio-wrapper .rwmb-input label span,
+#post-body .rwmb-radio-wrapper .rwmb-input label img {
+	display: inline-block;
+	margin-bottom: 5px;
+	clear: both;
+	max-width: 120px;
+}
+#post-body .rwmb-radio-wrapper .rwmb-input label.rwmb-radio-checked span {
+	background-position: left bottom;
+}
