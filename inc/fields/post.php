@@ -138,10 +138,14 @@ if ( !class_exists( 'RWMB_Post_Field' ) )
 		static function get_options( $field )
 		{
 			$query = new WP_Query( $field['query_args'] );
-			while( $query->have_posts() )
-			{
-				$post = $query->next_post();
-				$options[$post->ID] = $post->post_title;
+			if ( $query->have_posts() ) {
+				while( $query->have_posts() )
+				{
+					$post = $query->next_post();
+					$options[$post->ID] = $post->post_title;
+				}
+			} else {
+				$options = array();
 			}
 			return $options;
 		}
