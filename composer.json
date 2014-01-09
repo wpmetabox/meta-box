@@ -1,0 +1,33 @@
+{
+  "name": "rilwis/meta-box",
+  "type": "library",
+  "keywords": [
+    "wordpress",
+    "ui",
+    "select2",
+    "wp-admin",
+    "meta-bos"
+  ],
+  "version": "4.3.6",
+  "description": "Easily create custom meta boxes in WordPress.",
+  "homepage": "http://www.deluxeblogtips.com/meta-box/",
+  "license": "GPLv2",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Tran Ngoc Tuan Anh",
+      "email": "rilwis@gmail.com",
+      "homepage": "http://www.deluxeblogtips.com/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "inc/fields",
+      "inc/common.php",
+      "inc/field.php",
+      "inc/helpers.php",
+      "inc/meta-box.php"
+    ]
+  }
+}
