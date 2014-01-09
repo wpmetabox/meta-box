@@ -394,8 +394,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function get_class_name( $field )
 		{
-			$class = 'RWMB_' . ucwords( $field['type'] ) . '_Field';
-			if ( class_exists( $class ) )
+
+      // Convert underscores to whitespace so ucwords works as expected. Otherwise: plupload_image -> Plupload_image instead of Plupload_Image
+      $_type = str_replace( '_', ' ', $field['type'] );
+
+      // Uppercase first words
+			$class = 'RWMB_' . ucwords( $_type ) . '_Field';
+
+      // Relace whitespace with underscores
+      $class = str_replace( ' ', '_', $class );
+
+      if ( class_exists( $class ) )
 				return $class;
 
 			return false;
