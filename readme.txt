@@ -3,8 +3,8 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 3.6.1
-Stable tag: 4.3.6
+Tested up to: 3.8
+Stable tag: 4.3.7
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -25,10 +25,10 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - color
 - date, time, datetime
 - divider
-- file, file_advanced
+- file, file_advanced, file_input (allow to upload or paste file URL)
 - heading
 - hidden
-- image, thickbox_image, plupload_image, image_advanced
+- image, thickbox_image, plupload_image, image_advanced, image_select (or radio image)
 - map
 - password
 - post
@@ -57,6 +57,21 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.7 =
+* Bug fix: use WP_Query instead of `query_posts` to be compatible with WPML
+* Bug fix: `get_called_class` function in PHP < 5.3
+* Bug fix: clone now works for `slider` field
+* Bug fix: fix cloning URL field
+* Bug fix: hidden drop area if no max_file_uploads defined
+* Improvement: added composer.json
+* Improvement: add Chinese language
+* Improvement: better check for duplication when save post
+* Improvement: new `image_select` file, which is "radio image", e.g. select a radio value by selecting image
+* Improvement: new `file_input` field, which allows to upload files or enter file URL
+* Improvement: separate core code for meta box and fields
+* Improvement: allow to add more map options in helper function
+* Improvement: allow to pass more arguments to "get_terms" function when getting meta value with "rwmb_meta"
 
 = 4.3.6 =
 * Bug fix: fatal error in PHP 5.2 (continue)
