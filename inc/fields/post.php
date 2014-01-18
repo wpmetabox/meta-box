@@ -138,6 +138,7 @@ if ( !class_exists( 'RWMB_Post_Field' ) )
 		static function get_options( $field )
 		{
 			$query = new WP_Query( $field['query_args'] );
+			$options = array(''=>'Please Choose');
 			if ( $query->have_posts() ) {
 				while( $query->have_posts() )
 				{
