@@ -61,6 +61,9 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+### 4.3.8
+* Bug fix: compatibility with PHP 5.2
+
 ### 4.3.7
 * Bug fix: use WP_Query instead of `query_posts` to be compatible with WPML
 * Bug fix: `get_called_class` function in PHP < 5.3

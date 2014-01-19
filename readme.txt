@@ -4,7 +4,7 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 4.3.7
+Stable tag: 4.3.8
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -57,6 +57,9 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.8 =
+* Bug fix: compatibility with PHP 5.2
 
 = 4.3.7 =
 * Bug fix: use WP_Query instead of `query_posts` to be compatible with WPML
