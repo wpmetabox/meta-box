@@ -29,13 +29,14 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		{
 			global $post;
 
-			$meta = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'meta' ), $post->ID, $saved, $field );
+			$field_class = RW_Meta_Box::get_class_name( $field );
+			$meta = call_user_func( array( $field_class, 'meta' ), $post->ID, $saved, $field );
 
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
 
-			$begin = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'begin_html' ), $meta, $field );
+			$begin = call_user_func( array( $field_class, 'begin_html' ), $meta, $field );
 
 			// Apply filter to field begin HTML
 			// 1st filter applies to all fields
@@ -68,7 +69,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 					$input_html = '<div class="rwmb-clone">';
 
 					// Call separated methods for displaying each type of field
-					$input_html .= call_user_func( array( RW_Meta_Box::get_class_name( $sub_field ), 'html' ), $sub_meta, $sub_field );
+					$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
 
 					// Apply filter to field HTML
 					// 1st filter applies to all fields with the same type
@@ -88,7 +89,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			else
 			{
 				// Call separated methods for displaying each type of field
-				$field_html = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'html' ), $meta, $field );
+				$field_html = call_user_func( array( $field_class, 'html' ), $meta, $field );
 
 				// Apply filter to field HTML
 				// 1st filter applies to all fields with the same type
@@ -97,7 +98,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 				$field_html = apply_filters( "rwmb_{$id}_html", $field_html, $field, $meta );
 			}
 
-			$end = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'end_html' ), $meta, $field );
+			$end = call_user_func( array( $field_class, 'end_html' ), $meta, $field );
 
 			// Apply filter to field end HTML
 			// 1st filter applies to all fields
