@@ -4,18 +4,17 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 {
-	class RWMB_Textarea_Field
+	class RWMB_Textarea_Field extends RWMB_Field
 	{
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<textarea class="rwmb-textarea large-text" name="%s" id="%s" cols="%s" rows="%s" placeholder="%s">%s</textarea>',

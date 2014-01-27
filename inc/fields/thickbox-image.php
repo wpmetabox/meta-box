@@ -24,13 +24,12 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$i18n_title = apply_filters( 'rwmb_thickbox_image_upload_string', _x( 'Upload Images', 'image upload', 'rwmb' ), $field );
 

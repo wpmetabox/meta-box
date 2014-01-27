@@ -50,23 +50,19 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		 */
 		static function get_embed( $url )
 		{
-			// global $wp_embed;
-			// $embed = $wp_embed->run_shortcode( '[embed]'.esc_url( $url ).'[/embed]' );
-
-			$embed = wp_oembed_get( $url );
+			$embed = @wp_oembed_get( $url );
 			return $embed ? $embed : __( 'Embed HTML not available.', 'rwmb' );
 		}
 
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<input type="url" class="rwmb-oembed" name="%s" id="%s" value="%s" size="%s">
@@ -77,7 +73,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 				$field['id'],
 				$meta,
 				$field['size'],
-				__( 'Show embed', 'rwmb' ),
+				__( 'Preview', 'rwmb' ),
 				$meta ? self::get_embed( $meta ) : ''
 			);
 		}

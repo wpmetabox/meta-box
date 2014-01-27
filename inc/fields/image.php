@@ -60,19 +60,18 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$i18n_title = apply_filters( 'rwmb_image_upload_string', _x( 'Upload Images', 'image upload', 'rwmb' ), $field );
 			$i18n_more  = apply_filters( 'rwmb_image_add_string', _x( '+ Add new image', 'image upload', 'rwmb' ), $field );
 
 			// Uploaded images
-			$html .= self::get_uploaded_images( $meta, $field );
+			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$html .= sprintf(
@@ -162,14 +161,13 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		/**
 		 * Standard meta retrieval
 		 *
-		 * @param mixed $meta
 		 * @param int   $post_id
 		 * @param array $field
 		 * @param bool  $saved
 		 *
 		 * @return mixed
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			global $wpdb;
 

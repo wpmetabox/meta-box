@@ -12,13 +12,12 @@ if ( ! class_exists( 'RWMB_Password_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<input type="password" class="rwmb-password" name="%s" id="%s" value="%s" size="%s" />',

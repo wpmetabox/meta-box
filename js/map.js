@@ -179,6 +179,8 @@
 		{
 			var field = new mapField( $( this ) );
 			field.init();
+
+			$( this ).data('mapController', field);
 		} );
 	} );
 

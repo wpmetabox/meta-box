@@ -12,13 +12,12 @@ if ( !class_exists( 'RWMB_Email_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<input type="email" class="rwmb-email" name="%s" id="%s" value="%s" size="%s" placeholder="%s"/>',
@@ -29,7 +28,6 @@ if ( !class_exists( 'RWMB_Email_Field' ) )
 				$field['placeholder']
 			);
 		}
-
 
 		/**
 		 * Sanitize email

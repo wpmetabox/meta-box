@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( !class_exists( 'RWMB_Date_Field' ) )
 {
-	class RWMB_Date_Field
+	class RWMB_Date_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -35,13 +35,12 @@ if ( !class_exists( 'RWMB_Date_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<input type="text" class="rwmb-date" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',

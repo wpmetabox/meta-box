@@ -7,7 +7,7 @@ require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
 if ( !class_exists( 'RWMB_Post_Field' ) )
 {
-	class RWMB_Post_Field
+	class RWMB_Post_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -22,23 +22,21 @@ if ( !class_exists( 'RWMB_Post_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$field['options'] = self::get_options( $field );
 			switch ( $field['field_type'] )
 			{
 				case 'select':
-					return RWMB_Select_Field::html( $html, $meta, $field );
-					break;
+					return RWMB_Select_Field::html( $meta, $field );
 				case 'select_advanced':
 				default:
-					return RWMB_Select_Advanced_Field::html( $html, $meta, $field );
+					return RWMB_Select_Advanced_Field::html( $meta, $field );
 			}
 		}
 
@@ -97,21 +95,20 @@ if ( !class_exists( 'RWMB_Post_Field' ) )
 		 *
 		 * @see "save" method for better understanding
 		 *
-		 * @param $meta
 		 * @param $post_id
 		 * @param $saved
 		 * @param $field
 		 *
 		 * @return array
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			if ( isset( $field['parent'] ) && $field['parent'] )
 			{
 				$post = get_post( $post_id );
 				return $post->post_parent;
 			}
-			return RWMB_Select_Field::meta( $meta, $post_id, $saved, $field );
+			return RWMB_Select_Field::meta( $post_id, $saved, $field );
 		}
 
 		/**
@@ -140,11 +137,15 @@ if ( !class_exists( 'RWMB_Post_Field' ) )
 		 */
 		static function get_options( $field )
 		{
-			$results = get_posts( $field['query_args'] );
-			$options = array();
-			foreach ( $results as $result )
-			{
-				$options[$result->ID] = get_the_title( $result->ID );
+			$query = new WP_Query( $field['query_args'] );
+			if ( $query->have_posts() ) {
+				while( $query->have_posts() )
+				{
+					$post = $query->next_post();
+					$options[$post->ID] = $post->post_title;
+				}
+			} else {
+				$options = array();
 			}
 			return $options;
 		}

@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( !class_exists( 'RWMB_Map_Field' ) )
 {
-	class RWMB_Map_Field
+	class RWMB_Map_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -20,13 +20,12 @@ if ( !class_exists( 'RWMB_Map_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$address = isset( $field['address_field'] ) ? $field['address_field'] : false;
 

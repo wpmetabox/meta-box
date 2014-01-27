@@ -1,0 +1,21 @@
+.rwmb-image-select {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	float: left;
+	margin: 0 10px 10px 0;
+	border: 3px solid #d8d8d8;
+	border-radius: 3px;
+	padding: 1px;
+}
+.rwmb-image-select img {
+	width: 100%;
+	height: 100%;
+}
+.rwmb-image-select:hover,
+.rwmb-image-select.rwmb-active {
+	border-color: #0074a2;
+}
+.rwmb-image-select input {
+	display: none;
+}

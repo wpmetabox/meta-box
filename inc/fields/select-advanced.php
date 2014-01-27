@@ -26,13 +26,12 @@ if ( !class_exists( 'RWMB_Select_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$html = sprintf(
 				'<select class="rwmb-select-advanced" name="%s" id="%s" size="%s"%s data-options="%s">',

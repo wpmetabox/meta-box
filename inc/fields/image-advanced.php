@@ -60,19 +60,18 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$i18n_title = apply_filters( 'rwmb_image_advanced_select_string', _x( 'Select or Upload Images', 'image upload', 'rwmb' ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-media_{$field['id']}" );
 
 			// Uploaded images
-			$html .= self::get_uploaded_images( $meta, $field );
+			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
 			$classes = array( 'button', 'rwmb-image-advanced-upload', 'hide-if-no-js', 'new-files' );

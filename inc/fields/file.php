@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_File_Field' ) )
 {
-	class RWMB_File_Field
+	class RWMB_File_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -73,13 +73,12 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$i18n_title = apply_filters( 'rwmb_file_upload_string', _x( 'Upload Files', 'file upload', 'rwmb' ), $field );
 			$i18n_more  = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'rwmb' ), $field );
@@ -258,21 +257,16 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		/**
 		 * Standard meta retrieval
 		 *
-		 * @param mixed $meta
 		 * @param int   $post_id
 		 * @param array $field
 		 * @param bool  $saved
 		 *
 		 * @return mixed
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
-			$meta = RW_Meta_Box::meta( $meta, $post_id, $saved, $field );
-
-			if ( empty( $meta ) )
-				return array();
-
-			return (array) $meta;
+			$meta = parent::meta( $post_id, $saved, $field );
+			return empty( $meta ) ? array() : (array) $meta;
 		}
 	}
 }

@@ -45,14 +45,13 @@ if ( ! class_exists( 'RWMB_Taxonomy_Advanced_Field' ) )
 		/**
 		 * Standard meta retrieval
 		 *
-		 * @param mixed $meta
 		 * @param int   $post_id
 		 * @param bool  $saved
 		 * @param array $field
 		 *
 		 * @return array
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			$meta = get_post_meta( $post_id, $field['id'], true );
 			$meta = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );

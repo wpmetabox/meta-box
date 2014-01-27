@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( !class_exists( 'RWMB_Slider_Field' ) )
 {
-	class RWMB_Slider_Field
+	class RWMB_Slider_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -25,19 +25,18 @@ if ( !class_exists( 'RWMB_Slider_Field' ) )
 		/**
 		 * Get div HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			return sprintf(
 				'<div class="clearfix">
 					<div class="rwmb-slider" id="%s" data-options="%s"></div>
 					<span class="rwmb-slider-value-label">%s<span>%s</span>%s</span>
-					<input type="hidden" name="%s" value="%s" />
+					<input type="hidden" name="%s" value="%s" class="rwmb-slider-value">
 				</div>',
 				$field['id'], esc_attr( json_encode( $field['js_options'] ) ),
 				$field['prefix'], $meta, $field['suffix'],
