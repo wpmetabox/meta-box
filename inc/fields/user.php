@@ -7,7 +7,7 @@ require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
 if ( !class_exists( 'RWMB_User_Field' ) )
 {
-	class RWMB_User_Field
+	class RWMB_User_Field extends RWMB_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -22,23 +22,22 @@ if ( !class_exists( 'RWMB_User_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param string $html
 		 * @param mixed  $meta
 		 * @param array  $field
 		 *
 		 * @return string
 		 */
-		static function html( $html, $meta, $field )
+		static function html( $meta, $field )
 		{
 			$field['options'] = self::get_options( $field );
 			switch ( $field['field_type'] )
 			{
 				case 'select':
-					return RWMB_Select_Field::html( $html, $meta, $field );
+					return RWMB_Select_Field::html( $meta, $field );
 					break;
 				case 'select_advanced':
 				default:
-					return RWMB_Select_Advanced_Field::html( $html, $meta, $field );
+					return RWMB_Select_Advanced_Field::html( $meta, $field );
 			}
 		}
 
@@ -87,21 +86,20 @@ if ( !class_exists( 'RWMB_User_Field' ) )
 		 *
 		 * @see "save" method for better understanding
 		 *
-		 * @param $meta
 		 * @param $post_id
 		 * @param $saved
 		 * @param $field
 		 *
 		 * @return array
 		 */
-		static function meta( $meta, $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field )
 		{
 			if ( isset( $field['parent'] ) && $field['parent'] )
 			{
 				$post = get_post( $post_id );
 				return $post->post_parent;
 			}
-			return RWMB_Select_Field::meta( $meta, $post_id, $saved, $field );
+			return RWMB_Select_Field::meta( $post_id, $saved, $field );
 		}
 
 		/**
