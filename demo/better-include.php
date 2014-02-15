@@ -105,6 +105,16 @@ function rw_maybe_include( $conditions ) {
 					return true;
 				}
 			break;
+			case 'category': //post must be saved or published first
+				$categories = get_the_category( $post->ID );
+				$catslugs = array();
+				foreach ($categories as $category) {
+					array_push($catslugs, $category->slug);
+				}
+				if ( array_intersect( $catslugs, $v ) ) {
+					return true;
+				}
+			break;
 			case 'template':
 				$template = get_post_meta( $post_id, '_wp_page_template', true );
 				if ( in_array( $template, $v ) ) {
