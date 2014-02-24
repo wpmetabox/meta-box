@@ -6,9 +6,9 @@
     "ui",
     "select2",
     "wp-admin",
-    "meta-bos"
+    "meta-box"
   ],
-  "version": "4.3.6",
+  "version": "4.3.8",
   "description": "Easily create custom meta boxes in WordPress.",
   "homepage": "http://www.deluxeblogtips.com/meta-box/",
   "license": "GPLv2",
