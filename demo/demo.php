@@ -383,7 +383,7 @@ function YOUR_PREFIX_register_meta_boxes( $meta_boxes )
 				'id'   => "{$prefix}button",
 				'type' => 'button',
 				'name' => ' ', // Empty name will "align" the button to all field inputs
-			)
+			),
 			// TEXT-LIST
 			array(
 				'name' => __( 'Text List', 'rwmb' ),
