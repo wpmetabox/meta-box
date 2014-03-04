@@ -383,7 +383,19 @@ function YOUR_PREFIX_register_meta_boxes( $meta_boxes )
 				'id'   => "{$prefix}button",
 				'type' => 'button',
 				'name' => ' ', // Empty name will "align" the button to all field inputs
-			),
+			)
+			// TEXT-LIST
+			array(
+				'name' => __( 'Text List', 'rwmb' ),
+				'id'   => "{$prefix}text_list",
+				'type' => 'text_list',
+				// Options of inputs, in format 'Placeholder' => 'Label'
+				'options' => array(
+					 __( 'Placehold1', 'rwmb' ) => __( 'Label1', 'rwmb' ),
+					 __( 'Placehold2', 'rwmb' ) => __( 'Label2', 'rwmb' ),
+					 __( 'Placehold3', 'rwmb' ) => __( 'Label3', 'rwmb' )
+				)
+			)
 
 		)
 	);
