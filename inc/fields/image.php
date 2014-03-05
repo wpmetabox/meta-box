@@ -140,7 +140,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 					<img src="%s" />
 					<div class="rwmb-image-bar">
 						<a title="%s" class="rwmb-edit-file" href="%s" target="_blank">%s</a> |
-						<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">×</a>
+						<a title="%s" class="rwmb-delete-file" href="#" data-attachment_id="%s">&times;</a>
 					</div>
 				</li>
 			';
