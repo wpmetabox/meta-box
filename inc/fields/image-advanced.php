@@ -116,7 +116,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 					<# } #>
 					<div class="rwmb-image-bar">
 						<a title="<?php echo $i18n_edit; ?>" class="rwmb-edit-file" href="{{{ attachment.editLink }}}" target="_blank"><?php echo $i18n_edit; ?></a> |
-						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}">×</a>
+						<a title="<?php echo $i18n_delete; ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}">&times;</a>
 					</div>
 				</li>
 				<# } ); #>
