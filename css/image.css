@@ -64,3 +64,6 @@ li:hover .rwmb-image-bar{
 	opacity: .4;
 	background-color: #f00;
 }
+.rwmb-images li.ui-state-highlight{
+    background: #DDDDDD;
+}
