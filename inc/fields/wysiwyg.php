@@ -6,6 +6,8 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 {
 	class RWMB_Wysiwyg_Field extends RWMB_Field
 	{
+
+		static $cloneable_editors = array();
 		/**
 		 * Enqueue scripts and styles
 		 *
@@ -28,7 +30,14 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			return ( $field['raw'] ? $new : wpautop( $new ) );
+			if($field['raw']) {
+				$meta = $new;
+			} else if( $field['clone'] ) {
+				$meta = array_map( 'wpautop', $new );
+			} else {
+				$meta = wpautop( $new );
+			}
+			return $meta;
 		}
 
 		/**
@@ -47,9 +56,15 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 			$field['options']['textarea_name'] = $field['field_name'];
 
 			// Use new wp_editor() since WP 3.3
-			wp_editor( $meta, $field['id'], $field['options'] );
+			wp_editor( $meta, $field['field_name'], $field['options'] );
 
-			return ob_get_clean();
+			$editor = ob_get_clean();
+			if($field['clone']){
+				self::$cloneable_editors[ $field['id'] ] = $editor;
+				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'footer_scripts' ), 51 );
+			}
+
+			return $editor;
 		}
 
 		/**
@@ -75,6 +90,10 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 			$field['options'] = apply_filters( 'rwmb_wysiwyg_settings', $field['options'] );
 
 			return $field;
+		}
+
+		static function footer_scripts() {
+			echo '<script> var rwmb_cloneable_editors = '.json_encode(self::$cloneable_editors).';</script>';
 		}
 	}
 }

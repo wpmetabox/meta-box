@@ -30,6 +30,83 @@ jQuery( document ).ready( function( $ )
 		$input.trigger( 'clone' );
 	}
 
+	function add_wysiwyg_clone( $input )
+	{
+		var	$clone_first = $input.find( '.rwmb-clone:first'),
+				$clone_last = $input.find( '.rwmb-clone:last'),
+				$clone = $( '<div />' ).addClass('rwmb-clone'),
+				field_name = $clone_last.find('textarea.wp-editor-area').attr( 'name' ),
+				field_id = field_name.replace( /\[(\d+)\]/, '');
+
+
+		//Create some global vars
+		var new_index = 0;
+		var new_name =  field_name.replace( /\[(\d+)\]/, function( match, p1 )
+		{
+			new_index = ( parseInt( p1 ) + 1 );
+			return '[' + new_index + ']';
+		} );
+
+		if( typeof rwmb_cloneable_editors !== 'undefined' && typeof rwmb_cloneable_editors[field_id] !== 'undefined') {
+
+			//Get HTML of editor from global object
+			var cloned_editor = $(rwmb_cloneable_editors[field_id]);
+
+			//Fill new clone with html form global object
+			$clone.append( cloned_editor );
+
+			//Add remove button to clone
+			$clone.append($clone_last.find('.remove-clone').clone() );
+
+			//Add new clone after the last clone
+			$clone.insertAfter( $clone_last );
+
+			//Replace ID of field with new ID
+			var new_id = cloned_editor.attr( 'id' ).replace( /\[(\d+)\]/, '['+new_index+']' );
+			cloned_editor.attr( 'id', new_id );
+
+			//Replace all IDs within cloned field
+			cloned_editor.find( '[id*="'+field_id+'"]' ).each( function(){
+				var id = $(this).attr('id').replace( /\[(\d+)\]/, '['+new_index+']' );
+				$(this).attr( 'id', id );
+			} );
+
+			//Get the new textarea element
+			var textarea = $(cloned_editor).find( 'textarea.wp-editor-area' );
+
+			// Update the "name" attribute
+			textarea.attr( 'name', new_name );
+
+			//Empty the textarea
+			textarea.html( '' );
+
+			//Update editor link, so we can add media to the new editor
+			cloned_editor.find( '#insert-media-button').data( 'editor', new_name );
+
+
+			//Get TinyMCE setting for our fields
+			var tmceinit = tinyMCEPreInit.mceInit[  $clone_first.find('textarea.wp-editor-area').attr( 'name' ) ];
+			var tmceqtinit = tinyMCEPreInit.qtInit[ $clone_first.find('textarea.wp-editor-area').attr( 'name' ) ];
+
+			//Replace id & elements with new created field names
+			tmceinit.elements = new_name;
+			tmceqtinit.id = new_name;
+
+			//Initialize TinyMCE
+			try { tinymce.init( tmceinit ); } catch(e){}
+			if ( typeof(QTags) == 'function' ) {
+				try { quicktags( tmceqtinit ); } catch(e){}
+			}
+
+			// Toggle remove buttons
+			toggle_remove_buttons( $clone );
+
+			//Trigger custom clone event
+			textarea.trigger( 'clone' );
+		}
+
+	}
+
 	// Add more clones
 	$( '.add-clone' ).on( 'click', function( e )
 	{
@@ -51,6 +128,9 @@ jQuery( document ).ready( function( $ )
 				{
 					add_cloned_fields( $( value ) );
 				} );
+		}
+		else if ( $( this).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) ){
+			add_wysiwyg_clone( $input );
 		}
 		else
 			add_cloned_fields( $input );
