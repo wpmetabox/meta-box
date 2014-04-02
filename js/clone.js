@@ -6,10 +6,11 @@ jQuery( document ).ready( function( $ )
 	{
 		var $clone_last = $input.find( '.rwmb-clone:last' ),
 			$clone = $clone_last.clone(),
-			$input, name;
+			$input, $address_button, name, id;
 	
 		$clone.insertAfter( $clone_last );
 		$input = $clone.find( ':input[class|="rwmb"]' );
+		$address_button = $clone.find( '.rwmb-map-goto-address-button' );
 
 		// Reset value
 		$input.val( '' );
@@ -22,6 +23,33 @@ jQuery( document ).ready( function( $ )
 
 		// Update the "name" attribute
 		$input.attr( 'name', name );
+
+		// Get the field id, and increment
+		var pattern = new RegExp(/_(\d+)/);
+		if (pattern.test($input.attr( 'id' ))) {
+			id = $input.attr( 'id' ).replace( /_(\d+)/, function( match, p1 )
+			{
+				return '_' + ( parseInt( p1 ) + 1 ) ;
+			} );
+		} else {
+			id = $input.attr( 'id' ) + '_1';
+		}
+
+		// Update the "id" attribute
+		$input.attr( 'id', id );
+
+		// Update the address_button "value" attribute
+		if($address_button) {
+			if (pattern.test($address_button.attr( 'value' ))) {
+				id = $address_button.attr( 'value' ).replace( /_(\d+)/, function( match, p1 )
+				{
+					return '_' + ( parseInt( p1 ) + 1 ) ;
+				} );
+			} else {
+				id = $address_button.attr( 'value' ) + '_1';
+			}
+			$address_button.attr( 'value', id );
+		}
 
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
