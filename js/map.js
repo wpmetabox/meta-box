@@ -182,6 +182,16 @@
 
 			$( this ).data('mapController', field);
 		} );
+
+		$( '.rwmb-input' ).on( 'clone', function(params){
+			$( '.rwmb-map-field' ).each( function()
+			{
+				var field = new mapField( $( this ) );
+				field.init();
+
+				$( this ).data('mapController', field);
+			});
+		});
 	} );
 
 } )( jQuery );
