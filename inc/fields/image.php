@@ -158,26 +158,5 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			);
 		}
 
-		/**
-		 * Standard meta retrieval
-		 *
-		 * @param int   $post_id
-		 * @param array $field
-		 * @param bool  $saved
-		 *
-		 * @return mixed
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			global $wpdb;
-
-			$meta = $wpdb->get_col( $wpdb->prepare( "
-				SELECT meta_value FROM $wpdb->postmeta
-				WHERE post_id = %d AND meta_key = '%s'
-				ORDER BY meta_id ASC
-			", $post_id, $field['id'] ) );
-
-			return empty( $meta ) ? array() : $meta;
-		}
 	}
 }
