@@ -353,13 +353,47 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 
 			if ( $args['marker'] )
 			{
-				$html .= sprintf( '
-					var marker = new google.maps.Marker( {
-						position: center,
-						map: map%s
-					} );',
-					$args['marker_title'] ? ', title: "' . $args['marker_title'] . '"' : ''
-				);
+				if ( $args['marker_settings'] ){
+					$settings = $args['marker_settings'];
+
+					// checking if url and size is not empty
+					if (empty($settings['url']) || empty($settings['size']))
+						return '<p>Please give an image and a size</p>';
+
+					// checking if url is an image
+					if (!getimagesize($settings['url']))
+						return '<p>This is not an image</p>';
+
+					// check if size has a comma
+					if (strpos(',', $settings['size']) !== false)
+						return '<p>The given size is not correct. Example: 50,50</p>';
+
+					// defining the marker for the map
+					$html .= sprintf('
+						var image = new google.maps.MarkerImage(
+							"' . $settings['url'] . '",
+							null, /* size is determined at runtime */
+    						null, /* origin is 0,0 */
+   							null, /* anchor is bottom center of the scaled image */
+    						new google.maps.Size(' . $settings['size'] . ')
+						);
+						var marker = new google.maps.Marker( {
+							position: center,
+							map: map%s,
+							icon: image
+						} );',
+						$args['marker_title'] ? ', title: "' . $args['marker_title'] . '"' : ''
+					);
+				} else {
+					// if no marker is specified
+					$html .= sprintf( '
+						var marker = new google.maps.Marker( {
+							position: center,
+							map: map%s,
+						} );',
+						$args['marker_title'] ? ', title: "' . $args['marker_title'] . '"' : ''
+					);
+				}
 
 				if ( $args['info_window'] )
 				{
