@@ -218,7 +218,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
-			$meta = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
+			$meta = get_post_meta( $post_id, $field['id'], !( $field['multiple'] || $clone ) );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
@@ -259,38 +259,32 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		static function save( $new, $old, $post_id, $field )
 		{
 			$name = $field['id'];
+			//Delete old meta
+			delete_post_meta( $post_id, $name );
 
+			//iF empty, return
 			if ( '' === $new || array() === $new )
 			{
-				delete_post_meta( $post_id, $name );
 				return;
 			}
-
-			if ( $field['multiple'] )
+			
+			//If multiple or clone
+			if ( $field['multiple'] || $field['clone'] )
 			{
+				//Make sure its an array
+				$new = (array) $new;
 				foreach ( $new as $new_value )
 				{
-					if ( !in_array( $new_value, $old ) )
-						add_post_meta( $post_id, $name, $new_value, false );
-				}
-				foreach ( $old as $old_value )
-				{
-					if ( !in_array( $old_value, $new ) )
-						delete_post_meta( $post_id, $name, $old_value );
-				}
-			}
-			else
-			{
-				if ( $field['clone'] )
-				{
-					$new = (array) $new;
-					foreach ( $new as $k => $v )
+					if( ! empty( $new_value ) ) 
 					{
-						if ( '' === $v )
-							unset( $new[$k] );
+						add_post_meta( $post_id, $name, $new_value, false );
 					}
 				}
-				update_post_meta( $post_id, $name, $new );
+			}
+			//Else single
+			else
+			{
+				add_post_meta( $post_id, $name, $new, true );
 			}
 		}
 
