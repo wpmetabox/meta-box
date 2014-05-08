@@ -218,7 +218,8 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
-			$meta = get_post_meta( $post_id, $field['id'], !( $field['multiple'] || $clone ) );
+			//Might break previously saved clone meta that used the old way
+			$meta = get_post_meta( $post_id, $field['id'], !( $field['multiple'] || $field['clone'] ) );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
