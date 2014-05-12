@@ -356,9 +356,15 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				if ( $args['marker_settings'] ){
 					$settings = $args['marker_settings'];
 
-					// checking if url and size is not empty
-					if (empty($settings['url']) || empty($settings['size']))
-						return '<p>Please give an image and a size</p>';
+					// checking if url is not empty
+					if (empty($settings['url']))
+						return '<p>Please give an image</p>';
+
+					// checking if size is not empty
+					if (empty($settings['size'])) {
+						list($width, $height) = getimagesize($settings['url']);
+						$settings['size'] = $width . ',' . $height;
+					}
 
 					// checking if url is an image
 					if (!getimagesize($settings['url']))
