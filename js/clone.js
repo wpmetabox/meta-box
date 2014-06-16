@@ -14,14 +14,6 @@ jQuery( document ).ready( function( $ )
 		
 		// Increment each field type
 		$input.each(function() {
-			if ( $(this).attr('type') == 'radio' || $(this).attr('type') == 'checkbox' ) {
-				// Reset 'checked' attribute
-				$(this).removeAttr('checked');
-			} else {
-				// Reset value
-				$(this).val( '' );
-			}
-			
 			// Preserve previous checked value
 			if ( $(this).attr('type') == 'radio' ) {
 				var $radio_name = $(this).attr('name'), 
@@ -29,6 +21,14 @@ jQuery( document ).ready( function( $ )
 			
 				if ( $(this).is(':checked') )
 					$radio_value = $(this).val();
+			}
+			
+			if ( $(this).attr('type') == 'radio' || $(this).attr('type') == 'checkbox' ) {
+				// Reset 'checked' attribute
+				$(this).removeAttr('checked');
+			} else {
+				// Reset value
+				$(this).val( '' );
 			}
 			
 			// Get the field name, and increment
