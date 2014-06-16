@@ -14,8 +14,20 @@ jQuery( document ).ready( function( $ )
 		
 		// Increment each field type
 		$input.each(function() {
-			// Reset value
-			$(this).val( '' );
+			if ( $(this).attr( 'type' ) == 'radio' ) {
+				var $radio_name = $(this).attr('name'), 
+					$radio_value;
+			
+				if ( $(this).is(':checked') )
+					$radio_value = $(this).val();
+				
+				// Reset 'checked' attribute
+				$(this).removeAttr('checked');
+				
+			} else {
+				// Reset value
+				$(this).val( '' );
+			}
 			
 			// Get the field name, and increment
 			name = $(this).attr( 'name' ).replace( /\[(\d+)\]/, function( match, p1 )
@@ -25,6 +37,11 @@ jQuery( document ).ready( function( $ )
 
 			// Update the "name" attribute
 			$(this).attr( 'name', name );
+			
+			// Recheck the previous radio
+			if ( $(this).attr( 'type' ) == 'radio' && $radio_value ) {
+				$('input[name="' + $radio_name + '"]').filter('[value="' + $radio_value + '"]').attr('checked', 'checked');
+			}
 
 			// Get the field id, and increment
 			var pattern = new RegExp(/_(\d+)/);
