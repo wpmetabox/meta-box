@@ -11,45 +11,68 @@ jQuery( document ).ready( function( $ )
 		$clone.insertAfter( $clone_last );
 		$input = $clone.find( ':input[class|="rwmb"]' );
 		$address_button = $clone.find( '.rwmb-map-goto-address-button' );
-
-		// Reset value
-		$input.val( '' );
-
-		// Get the field name, and increment
-		name = $input.attr( 'name' ).replace( /\[(\d+)\]/, function( match, p1 )
-		{
-			return '[' + ( parseInt( p1 ) + 1 ) + ']';
-		} );
-
-		// Update the "name" attribute
-		$input.attr( 'name', name );
-
-		// Get the field id, and increment
-		var pattern = new RegExp(/_(\d+)/);
-		if (pattern.test($input.attr( 'id' ))) {
-			id = $input.attr( 'id' ).replace( /_(\d+)/, function( match, p1 )
+		
+		// Increment each field type
+		$input.each(function() {
+			// Preserve previous checked value
+			if ( $(this).attr('type') == 'radio' ) {
+				var $radio_name = $(this).attr('name'), 
+					$radio_value;
+			
+				if ( $(this).is(':checked') )
+					$radio_value = $(this).val();
+			}
+			
+			if ( $(this).attr('type') == 'radio' || $(this).attr('type') == 'checkbox' ) {
+				// Reset 'checked' attribute
+				$(this).removeAttr('checked');
+			} else {
+				// Reset value
+				$(this).val( '' );
+			}
+			
+			// Get the field name, and increment
+			name = $(this).attr( 'name' ).replace( /\[(\d+)\]/, function( match, p1 )
 			{
-				return '_' + ( parseInt( p1 ) + 1 ) ;
-			} );
-		} else {
-			id = $input.attr( 'id' ) + '_1';
-		}
+				return '[' + ( parseInt( p1 ) + 1 ) + ']';
+			});
 
-		// Update the "id" attribute
-		$input.attr( 'id', id );
+			// Update the "name" attribute
+			$(this).attr( 'name', name );
+			
+			// Recheck the previous radio
+			if ( $(this).attr( 'type' ) == 'radio' && $radio_value ) {
+				$('input[name="' + $radio_name + '"]').filter('[value="' + $radio_value + '"]').attr('checked', 'checked');
+			}
 
-		// Update the address_button "value" attribute
-		if($address_button) {
-			if (pattern.test($address_button.attr( 'value' ))) {
-				id = $address_button.attr( 'value' ).replace( /_(\d+)/, function( match, p1 )
+			// Get the field id, and increment
+			var pattern = new RegExp(/_(\d+)/);
+			if (pattern.test($(this).attr( 'id' ))) {
+				id = $(this).attr( 'id' ).replace( /_(\d+)/, function( match, p1 )
 				{
 					return '_' + ( parseInt( p1 ) + 1 ) ;
-				} );
+				});
 			} else {
-				id = $address_button.attr( 'value' ) + '_1';
+				id = $(this).attr( 'id' ) + '_1';
 			}
-			$address_button.attr( 'value', id );
-		}
+
+			// Update the "id" attribute
+			$(this).attr( 'id', id );
+
+			// Update the address_button "value" attribute
+			if($address_button) {
+				if (pattern.test($address_button.attr( 'value' ))) {
+					id = $address_button.attr( 'value' ).replace( /_(\d+)/, function( match, p1 )
+					{
+						return '_' + ( parseInt( p1 ) + 1 ) ;
+					} );
+				} else {
+					id = $address_button.attr( 'value' ) + '_1';
+				}
+				$address_button.attr( 'value', id );
+			}
+		});
+	
 
 		// Toggle remove buttons
 		toggle_remove_buttons( $input );
