@@ -36,6 +36,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		public $validation;
 
+		/**
+		 * @var bool Used to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
+		 */
 		public $saved = false;
 
 		/**
@@ -221,8 +224,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Allow users to add custom code before meta box content
 			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
-			do_action( 'rwmb_before' );
-			do_action( "rwmb_before_{$this->meta_box['id']}" );
+			do_action( 'rwmb_before', $this );
+			do_action( "rwmb_before_{$this->meta_box['id']}", $this );
 
 			foreach ( $this->fields as $field )
 			{
@@ -253,8 +256,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Allow users to add custom code after meta box content
 			// 1st action applies to all meta boxes
 			// 2nd action applies to only current meta box
-			do_action( 'rwmb_after' );
-			do_action( "rwmb_after_{$this->meta_box['id']}" );
+			do_action( 'rwmb_after', $this );
+			do_action( "rwmb_after_{$this->meta_box['id']}", $this );
 
 			// End container
 			echo '</div>';
@@ -317,9 +320,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// After save action
 			do_action( 'rwmb_after_save_post', $post_id );
 			do_action( "rwmb_{$this->meta_box['id']}_after_save_post", $post_id );
-
-			// Done saving post meta
-			$called = false;
 		}
 
 		/**************************************************

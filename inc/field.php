@@ -63,7 +63,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 					$sub_field = $field;
 					$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 					if ($index>0) {
-						if (isset( $sub_field['address_field'] )) 
+						if (isset( $sub_field['address_field'] ))
 							$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 						$sub_field['id'] = $field['id'] . "_{$index}";
 					}
@@ -115,9 +115,11 @@ if ( !class_exists( 'RWMB_Field ' ) )
 
 			// Apply filter to field wrapper
 			// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
+			// 1st filter applies to all fields
 			// 1st filter applies to all fields with the same type
 			// 2nd filter applies to current field only
-			$html = apply_filters( "rwmb_{$type}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+			$html = apply_filters( "rwmb_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+			$html = apply_filters( "rwmb_{$type}_wrapper_html", $html, $field, $meta );
 			$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
 			// Display label and input in DIV and allow user-defined classes to be appended
@@ -129,12 +131,22 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			if ( !empty( $field['class'] ) )
 				$classes[] = $field['class'];
 
-			printf(
+			$outer_html = sprintf(
 				$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
 				implode( ' ', $classes ),
 				$group,
 				$html
 			);
+
+			// Allow to change output of outer div
+			// 1st filter applies to all fields
+			// 1st filter applies to all fields with the same type
+			// 2nd filter applies to current field only
+			$outer_html = apply_filters( "rwmb_outer_html", $outer_html, $field, $meta );
+			$outer_html = apply_filters( "rwmb_{$type}_outer_html", $outer_html, $field, $meta );
+			$outer_html = apply_filters( "rwmb_{$id}_outer_html", $outer_html, $field, $meta );
+
+			echo $outer_html;
 		}
 
 		/**
