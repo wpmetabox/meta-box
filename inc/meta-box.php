@@ -348,6 +348,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Set default values for fields
 			$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
 
+			// Allow to add default values for meta box
+			$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );
+
 			return $meta_box;
 		}
 
@@ -380,6 +383,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				if ( isset( $field['fields'] ) )
 					$field['fields'] = self::normalize_fields( $field['fields'] );
+
+				// Allow to add default values for fields
+				$field = apply_filters( 'rwmb_normalize_field', $field );
 			}
 
 			return $fields;
