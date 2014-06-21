@@ -19,6 +19,9 @@ if ( !class_exists( 'RWMB_Field ' ) )
 
 		/**
 		 * Show field HTML
+		 * Filters are put inside this method, not inside methods such as "meta", "html", "begin_html", etc.
+		 * That ensures the returned value are always been applied filters
+		 * This method is not meant to be overwritten in specific fields
 		 *
 		 * @param array $field
 		 * @param bool  $saved
@@ -31,6 +34,14 @@ if ( !class_exists( 'RWMB_Field ' ) )
 
 			$field_class = RW_Meta_Box::get_class_name( $field );
 			$meta = call_user_func( array( $field_class, 'meta' ), $post->ID, $saved, $field );
+
+			// Apply filter to field meta value
+			// 1st filter applies to all fields
+			// 2nd filter applies to all fields with the same type
+			// 3rd filter applies to current field only
+			$meta = apply_filters( 'rwmb_field_meta', $meta, $field, $saved );
+			$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta, $field, $saved );
+			$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta, $field, $saved );
 
 			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
@@ -239,9 +250,6 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			// Escape attributes for non-wysiwyg fields
 			if ( 'wysiwyg' !== $field['type'] )
 				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-
-			$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta );
-			$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta );
 
 			return $meta;
 		}

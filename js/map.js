@@ -1,9 +1,9 @@
-( function( $ )
+(function ( $ )
 {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
-	var mapField = function( $container )
+	var mapField = function ( $container )
 	{
 		this.$container = $container;
 	};
@@ -11,7 +11,7 @@
 	// Use prototype for better performance
 	mapField.prototype = {
 		// Initialize everything
-		init: function()
+		init              : function ()
 		{
 			this.initDomElements();
 			this.initMapElements();
@@ -22,7 +22,7 @@
 		},
 
 		// Initialize DOM elements
-		initDomElements: function()
+		initDomElements   : function ()
 		{
 			this.canvas = this.$container.find( '.rwmb-map-canvas' )[0];
 			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
@@ -31,31 +31,26 @@
 		},
 
 		// Initialize map elements
-		initMapElements: function()
+		initMapElements   : function ()
 		{
-			var defaultLoc = $(this.canvas).data('default-loc'),
+			var defaultLoc = $( this.canvas ).data( 'default-loc' ),
 				latLng;
 
-			if (defaultLoc) {
-				defaultLoc = defaultLoc.split(',');
-			} else {
-				defaultLoc = [53.346881, -6.258860];
-			}
-
+			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, -6.258860];
 			latLng = new google.maps.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map
 
-	 		this.map = new google.maps.Map( this.canvas, {
-				center: latLng,
-				zoom: 14,
+			this.map = new google.maps.Map( this.canvas, {
+				center           : latLng,
+				zoom             : 14,
 				streetViewControl: 0,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId        : google.maps.MapTypeId.ROADMAP
 			} );
 			this.marker = new google.maps.Marker( {position: latLng, map: this.map, draggable: true} );
 			this.geocoder = new google.maps.Geocoder();
 		},
 
 		// Initialize marker position
-		initMarkerPosition: function()
+		initMarkerPosition: function ()
 		{
 			var coord = this.$coordinate.val(),
 				l,
@@ -78,7 +73,7 @@
 		},
 
 		// Add event listeners for 'click' & 'drag'
-		addListeners: function()
+		addListeners      : function ()
 		{
 			var that = this;
 			google.maps.event.addListener( this.map, 'click', function ( event )
@@ -91,7 +86,7 @@
 				that.updateCoordinate( event.latLng );
 			} );
 
-			this.$findButton.on( 'click', function()
+			this.$findButton.on( 'click', function ()
 			{
 				that.geocodeAddress();
 				return false;
@@ -99,7 +94,7 @@
 		},
 
 		// Autocomplete address
-		autocomplete: function()
+		autocomplete      : function ()
 		{
 			var that = this;
 
@@ -108,25 +103,25 @@
 				return;
 
 			$( '#' + this.addressField ).autocomplete( {
-				source: function( request, response )
+				source: function ( request, response )
 				{
 					// TODO: add 'region' option, to help bias geocoder.
 					that.geocoder.geocode( {
 						'address': request.term
-					}, function( results )
+					}, function ( results )
 					{
-						response( $.map( results, function( item )
+						response( $.map( results, function ( item )
 						{
 							return {
-								label: item.formatted_address,
-								value: item.formatted_address,
-								latitude: item.geometry.location.lat(),
+								label    : item.formatted_address,
+								value    : item.formatted_address,
+								latitude : item.geometry.location.lat(),
 								longitude: item.geometry.location.lng()
 							};
-				 		} ) );
+						} ) );
 					} );
 				},
-				select: function( event, ui )
+				select: function ( event, ui )
 				{
 					var latLng = new google.maps.LatLng( ui.item.latitude, ui.item.longitude );
 
@@ -138,29 +133,31 @@
 		},
 
 		// Update coordinate to input field
-		updateCoordinate: function( latLng )
+		updateCoordinate  : function ( latLng )
 		{
 			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() );
 		},
 
 		// Find coordinates by address
 		// Find coordinates by address
-		geocodeAddress: function()
+		geocodeAddress    : function ()
 		{
-			var address = '',
-				addressList = new Array(),
+			var address,
+				addressList = [],
 				fieldList = this.addressField.split( ',' ),
 				loop,
 				that = this;
 
 			for ( loop = 0; loop < fieldList.length; loop++ )
-			 addressList[loop]=jQuery( '#' + fieldList[loop] ).val();
-			 
-			address = addressList.join(",").replace( /\n/g, ',' ).replace( /,,/g, ',' );
-
-			if (address)
 			{
-				this.geocoder.geocode( {'address': address}, function( results, status )
+				addressList[loop] = jQuery( '#' + fieldList[loop] ).val();
+			}
+
+			address = addressList.join( "," ).replace( /\n/g, ',' ).replace( /,,/g, ',' );
+
+			if ( address )
+			{
+				this.geocoder.geocode( {'address': address}, function ( results, status )
 				{
 					if ( status === google.maps.GeocoderStatus.OK )
 					{
@@ -170,28 +167,29 @@
 					}
 				} );
 			}
-		},
+		}
 	};
 
-	$( function()
+	$( function ()
 	{
-		$( '.rwmb-map-field' ).each( function()
+		$( '.rwmb-map-field' ).each( function ()
 		{
 			var field = new mapField( $( this ) );
 			field.init();
 
-			$( this ).data('mapController', field);
+			$( this ).data( 'mapController', field );
 		} );
 
-		$( '.rwmb-input' ).on( 'clone', function(params){
-			$( '.rwmb-map-field' ).each( function()
+		$( '.rwmb-input' ).on( 'clone', function ( params )
+		{
+			$( '.rwmb-map-field' ).each( function ()
 			{
 				var field = new mapField( $( this ) );
 				field.init();
 
-				$( this ).data('mapController', field);
-			});
-		});
+				$( this ).data( 'mapController', field );
+			} );
+		} );
 	} );
 
-} )( jQuery );
+})( jQuery );

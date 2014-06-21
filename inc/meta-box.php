@@ -350,6 +350,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Allow to add default values for meta box
 			$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );
+			$meta_box = apply_filters( "rwmb_normalize_{$meta_box['id']}_meta_box", $meta_box );
 
 			return $meta_box;
 		}
@@ -378,6 +379,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'placeholder'   => ''
 				) );
 
+				do_action( 'rwmb_before_normalize_field', $field );
+				do_action( "rwmb_before_normalize_{$field['type']}_field", $field );
+				do_action( "rwmb_before_normalize_{$field['id']}_field", $field );
+
 				// Allow field class add/change default field values
 				$field = call_user_func( array( self::get_class_name( $field ), 'normalize_field' ), $field );
 
@@ -386,6 +391,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 				// Allow to add default values for fields
 				$field = apply_filters( 'rwmb_normalize_field', $field );
+				$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
+				$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
+
+				do_action( 'rwmb_after_normalize_field', $field );
+				do_action( "rwmb_after_normalize_{$field['type']}_field", $field );
+				do_action( "rwmb_after_normalize_{$field['id']}_field", $field );
 			}
 
 			return $fields;
