@@ -94,8 +94,8 @@ if ( !class_exists( 'RWMB_Field ' ) )
 					$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $sub_meta );
 					$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $sub_meta );
 
-					// Add clone button
-					$input_html .= self::clone_button();
+					// Remove clone button
+					$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_meta, $sub_field );
 
 					$input_html .= '</div>';
 
@@ -207,13 +207,8 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		 */
 		static function end_html( $meta, $field )
 		{
-			$id = $field['id'];
-
-			$button = '';
-			if ( $field['clone'] )
-				$button = '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
-
-			$desc = !empty( $field['desc'] ) ? "<p id='{$id}_description' class='description'>{$field['desc']}</p>" : '';
+			$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ) ) : '';
+			$desc = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 			// Closes the container
 			$html = "{$button}{$desc}</div>";
@@ -226,7 +221,17 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return string $html
 		 */
-		static function clone_button()
+		static function add_clone_button()
+		{
+			return '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
+		}
+
+		/**
+		 * Remove clone button
+		 *
+		 * @return string $html
+		 */
+		static function remove_clone_button()
 		{
 			return '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
 		}
