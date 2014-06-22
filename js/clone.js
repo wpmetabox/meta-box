@@ -5,24 +5,9 @@ jQuery( function ( $ )
 	{
 		e.preventDefault();
 
-		var $input = $( this ).parents( '.rwmb-input' ),
-			$clone_group = $( this ).parents( '.rwmb-field' ).attr( "clone-group" );
+		var $input = $( this ).parents( '.rwmb-input' );
 
-		// If the field is part of a clone group, get all fields in that
-		// group and iterate over them
-		if ( $clone_group )
-		{
-			// Get the parent metabox and then find the matching
-			// clone-group elements inside
-			var $metabox = $( this ).parents( '.inside' );
-			var $clone_group_list = $metabox.find( 'div[clone-group="' + $clone_group + '"]' );
-
-			$.each( $clone_group_list.find( '.rwmb-input' ), function ( key, value )
-			{
-				clone( $( value ) );
-			} );
-		}
-		else if ( $( this ).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
+		if ( $( this ).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 		{
 			cloneWYSIWYG( $input );
 		}
@@ -40,37 +25,16 @@ jQuery( function ( $ )
 		e.preventDefault();
 
 		var $this = $( this ),
-			$input = $this.parents( '.rwmb-input' ),
-			$clone_group = $( this ).parents( '.rwmb-field' ).attr( 'clone-group' );
+			$input = $this.parents( '.rwmb-input' );
 
 		// Remove clone only if there're 2 or more of them
 		if ( $input.find( '.rwmb-clone' ).length <= 1 )
 			return;
 
-		if ( $clone_group )
-		{
-			// Get the parent metabox and then find the matching
-			// clone-group elements inside
-			var $metabox = $( this ).parents( '.inside' );
-			var $clone_group_list = $metabox.find( 'div[clone-group="' + $clone_group + '"]' );
-			var $index = $this.parent().index();
+		$this.parent().remove();
 
-			$.each( $clone_group_list.find( '.rwmb-input' ),
-				function ( key, value )
-				{
-					$( value ).children( '.rwmb-clone' ).eq( $index ).remove();
-
-					// Toggle remove buttons
-					toggleRemoveButtons( $( value ) );
-				} );
-		}
-		else
-		{
-			$this.parent().remove();
-
-			// Toggle remove buttons
-			toggleRemoveButtons( $input );
-		}
+		// Toggle remove buttons
+		toggleRemoveButtons( $input );
 	} );
 
 	toggleRemoveButtons();

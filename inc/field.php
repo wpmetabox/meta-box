@@ -43,7 +43,6 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta, $field, $saved );
 			$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta, $field, $saved );
 
-			$group = '';	// Empty the clone-group field
 			$type = $field['type'];
 			$id   = $field['id'];
 
@@ -62,9 +61,6 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			// Cloneable fields
 			if ( $field['clone'] )
 			{
-				if ( isset( $field['clone-group'] ) )
-					$group = " clone-group='{$field['clone-group']}'";
-
 				$meta = (array) $meta;
 
 				$field_html = '';
@@ -144,9 +140,8 @@ if ( !class_exists( 'RWMB_Field ' ) )
 				$classes[] = $field['class'];
 
 			$outer_html = sprintf(
-				$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
+				$field['before'] . '<div class="%s">%s</div>' . $field['after'],
 				implode( ' ', $classes ),
-				$group,
 				$html
 			);
 
