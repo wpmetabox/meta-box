@@ -80,15 +80,19 @@ jQuery( function ( $ )
 
 			// Get the field id, and increment
 			// Not all fields require id, such as 'radio', 'checkbox_list'
-			if ( $this.attr( 'id' ) )
+			var id = $this.attr( 'id' );
+			if ( id )
 			{
-				var id = $this.attr( 'id' ) + '_1';
-				if ( /_(\d+)/.test( $this.attr( 'id' ) ) )
+				if ( /_(\d+)/.test( id ) )
 				{
-					id = $this.attr( 'id' ).replace( /_(\d+)/, function ( match, p1 )
+					id = id.replace( /_(\d+)/, function ( match, p1 )
 					{
 						return '_' + ( parseInt( p1 ) + 1 );
 					} );
+				}
+				else
+				{
+					id += '_1';
 				}
 
 				// Update the "id" attribute
@@ -99,18 +103,19 @@ jQuery( function ( $ )
 			var $address_button = $clone.find( '.rwmb-map-goto-address-button' );
 			if ( $address_button )
 			{
-				if ( /_(\d+)/.test( $address_button.attr( 'value' ) ) )
+				var value = $address_button.attr( 'value' );
+				if ( /_(\d+)/.test( value ) )
 				{
-					id = $address_button.attr( 'value' ).replace( /_(\d+)/, function ( match, p1 )
+					value = value.replace( /_(\d+)/, function ( match, p1 )
 					{
 						return '_' + ( parseInt( p1 ) + 1 );
 					} );
 				}
 				else
 				{
-					id = $address_button.attr( 'value' ) + '_1';
+					value += '_1';
 				}
-				$address_button.attr( 'value', id );
+				$address_button.attr( 'value', value );
 			}
 		} );
 
