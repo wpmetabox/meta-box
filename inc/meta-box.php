@@ -87,12 +87,17 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
 
 			// Save post meta
-			add_action( 'save_post', array( $this, 'save_post' ) );
-
-			// Attachment uses other hooks
-			// @see wp_update_post(), wp_insert_attachment()
-			add_action( 'edit_attachment', array( $this, 'save_post' ) );
-			add_action( 'add_attachment', array( $this, 'save_post' ) );
+			foreach( $this->meta_box['pages'] as $page ) { 
+				if( $page == 'attachment' ) {
+					// Attachment uses other hooks
+					// @see wp_update_post(), wp_insert_attachment()
+					add_action( 'edit_attachment', array( $this, 'save_post' ) );
+					add_action( 'add_attachment', array( $this, 'save_post' ) );
+				} else {
+					//Since WP 3.7
+					add_action( 'save_post_' . $page, array( $this, 'save_post' ) );
+				}				
+			}
 		}
 
 		/**
@@ -166,19 +171,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 *
 		 * @return void
 		 */
-		function add_meta_boxes()
+		function add_meta_boxes( $post )
 		{
-			foreach ( $this->meta_box['pages'] as $page )
-			{
-				add_meta_box(
-					$this->meta_box['id'],
-					$this->meta_box['title'],
-					array( $this, 'show' ),
-					$page,
-					$this->meta_box['context'],
-					$this->meta_box['priority']
-				);
-			}
+			add_meta_box(
+				$this->meta_box['id'],
+				$this->meta_box['title'],
+				array( $this, 'show' ),
+				$post->post_type,
+				$this->meta_box['context'],
+				$this->meta_box['priority']
+			);			
 		}
 
 		/**
