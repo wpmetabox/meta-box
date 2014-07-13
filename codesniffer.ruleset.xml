@@ -5,6 +5,6 @@
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">
-		<exclude name="WordPress.XSS.EscapeOutput" />
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
 	</rule>
 </ruleset>
