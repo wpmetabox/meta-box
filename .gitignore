@@ -1,3 +1,6 @@
+# Files for WordPress.org only
+readme.txt
+
 # Numerous always-ignore extensions
 *.diff
 *.err
