@@ -9,8 +9,8 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -23,7 +23,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				$meta,
 				$field['placeholder'],
 				$field['size'],
-				! $field['datalist'] ? '' : "list='{$field['datalist']['id']}'",
+				$field['datalist'] ? "list='{$field['datalist']['id']}'" : '',
 				self::datalist_html( $field )
 			);
 		}
@@ -42,6 +42,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				'datalist'    => false,
 				'placeholder' => '',
 			) );
+
 			return $field;
 		}
 

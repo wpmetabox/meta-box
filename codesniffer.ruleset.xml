@@ -9,5 +9,6 @@
 		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page" />
+		<exclude name="WordPress.WordPress.XSS.EscapeOutput" />
 	</rule>
 </ruleset>
