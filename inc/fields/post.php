@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 // Make sure "select" field is loaded
 require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
-if ( ! class_exists ( 'RWMB_Post_Field' ) )
+if ( ! class_exists( 'RWMB_Post_Field' ) )
 {
 	class RWMB_Post_Field extends RWMB_Field
 	{

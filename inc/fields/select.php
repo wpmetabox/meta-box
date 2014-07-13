@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Select_Field' ) )
+if ( ! class_exists( 'RWMB_Select_Field' ) )
 {
 	class RWMB_Select_Field extends RWMB_Field
 	{

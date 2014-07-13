@@ -41,9 +41,9 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		 */
 		static function wp_ajax_reorder_images()
 		{
-			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
+			$field_id = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
 			$order    = isset( $_POST['order'] ) ? $_POST['order'] : 0;
-			$post_id  = isset( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0;
+			$post_id  = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 
 			check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
 

@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Map_Field' ) )
+if ( ! class_exists( 'RWMB_Map_Field' ) )
 {
 	class RWMB_Map_Field extends RWMB_Field
 	{

@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Wysiwyg_Field' ) )
+if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 {
 	class RWMB_Wysiwyg_Field extends RWMB_Field
 	{
@@ -100,7 +100,7 @@ if ( ! class_exists ( 'RWMB_Wysiwyg_Field' ) )
 		}
 
 		static function footer_scripts() {
-			echo '<script> var rwmb_cloneable_editors = '.json_encode(self::$cloneable_editors).';</script>';
+			echo '<script> var rwmb_cloneable_editors = ' . json_encode( self::$cloneable_editors ) . ';</script>';
 		}
 	}
 }

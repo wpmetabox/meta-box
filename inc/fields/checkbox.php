@@ -17,10 +17,10 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		static function html( $meta, $field )
 		{
 			return sprintf(
-				'<input type="checkbox" class="rwmb-checkbox" name="%s" id="%s" value="1" %s />',
+				'<input type="checkbox" class="rwmb-checkbox" name="%s" id="%s" value="1" %s>',
 				$field['field_name'],
 				$field['id'],
-				checked( !empty( $meta ), 1, false )
+				checked( ! empty( $meta ), 1, false )
 			);
 		}
 

@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Text_List_Field' ) )
+if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 {
 	class RWMB_Text_List_Field extends RWMB_Field
 	{

@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Range_Field' ) )
+if ( ! class_exists( 'RWMB_Range_Field' ) )
 {
 	class RWMB_Range_Field extends RWMB_Field
 	{

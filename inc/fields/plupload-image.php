@@ -26,8 +26,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		static function handle_upload()
 		{
 			global $wpdb;
-			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
-			$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
+			$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+			$field_id = isset( $_REQUEST['field_id'] ) ? sanitize_key( $_REQUEST['field_id'] ) : '';
 
 			check_ajax_referer( "rwmb-upload-images_{$field_id}" );
 
@@ -43,13 +43,11 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			else
 			{
 				$meta = implode( ',', (array) $meta );
-				$max  = $wpdb->get_var(
-					"
+				$max  = $wpdb->get_var( "
 					SELECT MAX(menu_order) FROM {$wpdb->posts}
 					WHERE post_type = 'attachment'
 					AND ID in ({$meta})
-				"
-				);
+				" );
 				$next = is_numeric( $max ) ? (int) $max + 1 : 0;
 			}
 

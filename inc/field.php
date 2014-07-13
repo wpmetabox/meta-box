@@ -1,5 +1,5 @@
 <?php
-if ( !class_exists( 'RWMB_Field ' ) )
+if ( ! class_exists( 'RWMB_Field ' ) )
 {
 	class RWMB_Field
 	{
@@ -126,7 +126,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			// 1st filter applies to all fields
 			// 1st filter applies to all fields with the same type
 			// 2nd filter applies to current field only
-			$html = apply_filters( "rwmb_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
+			$html = apply_filters( 'rwmb_wrapper_html', "{$begin}{$field_html}{$end}", $field, $meta );
 			$html = apply_filters( "rwmb_{$type}_wrapper_html", $html, $field, $meta );
 			$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
@@ -149,7 +149,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			// 1st filter applies to all fields
 			// 1st filter applies to all fields with the same type
 			// 2nd filter applies to current field only
-			$outer_html = apply_filters( "rwmb_outer_html", $outer_html, $field, $meta );
+			$outer_html = apply_filters( 'rwmb_outer_html', $outer_html, $field, $meta );
 			$outer_html = apply_filters( "rwmb_{$type}_outer_html", $outer_html, $field, $meta );
 			$outer_html = apply_filters( "rwmb_{$id}_outer_html", $outer_html, $field, $meta );
 
@@ -242,7 +242,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
-			$meta = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
+			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;

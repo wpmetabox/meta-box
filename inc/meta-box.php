@@ -241,14 +241,14 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					{
 						var rwmb = {
 							validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
-							summaryMessage : "' . __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) . '"
+							summaryMessage : "' . esc_js( __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) ) . '"
 						};
 					}
 					else
 					{
 						var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
 						jQuery.extend( true, rwmb.validationOptions, tempOptions );
-					};
+					}
 					</script>
 				';
 			}
@@ -283,7 +283,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Check whether form is submitted properly
 			$id = $this->meta_box['id'];
-			if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $_POST["nonce_{$id}"], "rwmb-save-{$id}" ) )
+			$nonce = isset( $_POST["nonce_{$id}"] ) ? sanitize_key( $_POST["nonce_{$id}"] ) : '';
+			if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $nonce, "rwmb-save-{$id}" ) )
 				return;
 
 			// Autosave
@@ -301,7 +302,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $this->fields as $field )
 			{
 				$name = $field['id'];
-				$old  = get_post_meta( $post_id, $name, !$field['multiple'] );
+				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
 				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
 
 				// Allow field class change the value
@@ -376,7 +377,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'after'         => '',
 					'field_name'    => isset( $field['id'] ) ? $field['id'] : '',
 					'required'      => false,
-					'placeholder'   => ''
+					'placeholder'   => '',
 				) );
 
 				do_action( 'rwmb_before_normalize_field', $field );

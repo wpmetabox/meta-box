@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists ( 'RWMB_Datetime_Field' ) )
+if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 {
 	class RWMB_Datetime_Field extends RWMB_Field
 	{

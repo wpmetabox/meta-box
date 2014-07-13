@@ -1,5 +1,5 @@
 <?php
-if ( ! class_exists ( 'RWMB_File_Input_Field' ) )
+if ( ! class_exists( 'RWMB_File_Input_Field' ) )
 {
 	class RWMB_File_Input_Field extends RWMB_Field
 	{
