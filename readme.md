@@ -1,3 +1,7 @@
+# Meta Box WordPress Plugin
+
+![Travis-CI Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)
+
 [Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
 
 ***
