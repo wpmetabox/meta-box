@@ -2,11 +2,16 @@
 
 ![Travis-CI Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)
 
-[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+**Plugin Links**
+
+- [Project Page](http://www.deluxeblogtips.com/meta-box/)
+- [Documentation](http://www.deluxeblogtips.com/meta-box/getting-started/)
+- [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
+- [Premium Extensions](http://premium.deluxeblogtips.com)
 
 ***
 
-## Plugin Information
+## Description
 
 Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
 
@@ -15,6 +20,8 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 * Easily registers multiple custom meta boxes for posts, pages or custom post types
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrated with themes
+
+**You can also add more features to meta box via [premium extensions](http://premium.deluxeblogtips.com)**.
 
 ### Supported fields
 
@@ -65,10 +72,20 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
-### 4.3.8
+#### 4.3.9
+* Bug fix: `text-list` field type
+* Improvement: better coding styles
+* Improvement: wysiwyg field is now clonable
+* Improvement: launch geolocation autocomplete when address field is cloned
+* Improvement: better cloning for radio, checkbox
+* Improvement: add more hooks
+* Improvement: allow child fields to add their own add/remove clone buttons.
+* Improvement: remove 'clone-group'. Too complicated and not user-friendly.
+
+#### 4.3.8
 * Bug fix: compatibility with PHP 5.2
 
-### 4.3.7
+#### 4.3.7
 * Bug fix: use WP_Query instead of `query_posts` to be compatible with WPML
 * Bug fix: `get_called_class` function in PHP < 5.3
 * Bug fix: clone now works for `slider` field
@@ -83,15 +100,15 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 * Improvement: allow to add more map options in helper function
 * Improvement: allow to pass more arguments to "get_terms" function when getting meta value with "rwmb_meta"
 
-### 4.3.6
+#### 4.3.6
 * Bug fix: fatal error in PHP 5.2 (continue)
 * Improvement: allow register meta boxes via filter
 
-### 4.3.5
+#### 4.3.5
 * Bug fix: fatal error in PHP 5.2
 * Bug fix: save empty values of clonable fields
 
-### 4.3.4
+#### 4.3.4
 * Bug fix: not show upload button after delete image when reach max_file_upload. #347
 * Bug fix: autocomplete for map which conflicts with tags (terms) autocomplete
 * Bug fix: random image order when reorder
@@ -102,14 +119,14 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 * Improvement: `width` & `height` for map in helper function now requires units (allow to set %)
 * Drop support for WordPress 3.3 (wysiwyg) and < 3.5 (for file & image field which uses new json functions)
 
-### 4.3.3
+#### 4.3.3
 * Bug fix: cannot clear all terms in taxonomy field
 * Bug fix: potential problem with autosave
 * Bug fix: cannot save zero string value "0"
 * Improvement: add Turkish language
 * Improvement: add taxonomy_advanced field, which saves term IDs as comma separated value in custom field
 
-### 4.3.2
+#### 4.3.2
 * Bug fix: allow to have more than 1 map on a page
 * Bug fix: use HTTPS for Google Maps to work both in HTTP & HTTPS
 * Bug fix: allow to clear all terms in taxonomy field
@@ -120,10 +137,10 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 * Improvement: add more params to "rwmb_meta" filter
 * Improvement: using CSS animation for delete image
 
-### 4.3.1
+#### 4.3.1
 * Bug fix: fatal error if ASP open tag is allowed in php.ini
 
-### 4.3
+#### 4.3
 * Bug fix: show full size image after upload if thumbnail is not available
 * Bug fix: new added file not shown
 * Bug fix: issue with color field disappearing
@@ -147,7 +164,7 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 * Improvement: add `force_delete` option for file and image field
 * And lots of changes and improvements
 
-### 4.2.4
+#### 4.2.4
 * Bug fix: path to Select2 JS and CSS. [Link](http://wordpress.org/support/topic/missing-files-5)
 * Bug fix: `taxonomy.js` loading
 * Bug fix: saving in quick mode edit
@@ -157,16 +174,16 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 * Improvement: add autocomplete for geo location in `map` field, add fancy animation to drop marker
 * Improvemnet: add `url` field
 
-### 4.2.3
+#### 4.2.3
 * Bug fix: clone date field. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=299)
 
-### 4.2.2
+#### 4.2.2
 * Bug fix: `time` field doesn't work. [Link](http://wordpress.org/support/topic/time-field-js-wont-run-without-datetime)
 * Bug fix: wrong JS call for `datetime`. [Link](http://wordpress.org/support/topic/421-datetime)
 * Improvement: file and images now not deleted from library, *unless* use `force_delete` option
 * Improvement: add `select_advanced` field, which uses [select2](http://ivaynberg.github.com/select2/) for better UX. Thanks @funkedgeek
 
-### 4.2.1
+#### 4.2.1
 * Bug fix: not save wysiwyg field in full screen mode. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=161)
 * Bug fix: default value for select/checkbox_list. [Link](http://www.deluxeblogtips.com/forums/viewtopic.php?id=174)
 * Bug fix: duplicated append test to `date` picker

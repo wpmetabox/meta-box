@@ -3,8 +3,8 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 3.8
-Stable tag: 4.3.8
+Tested up to: 3.9.1
+Stable tag: 4.3.9
 
 Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and various field types.
 
@@ -17,6 +17,8 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 * Easily registers multiple custom meta boxes for posts, pages or custom post types
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrated with themes
+
+**You can also add more features to meta box via [premium extensions](http://premium.deluxeblogtips.com)**.
 
 **Supported fields**
 
@@ -40,7 +42,12 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - textarea
 - wysiwyg
 
-[Project Page](http://www.deluxeblogtips.com/meta-box/) | [Getting Started](http://www.deluxeblogtips.com/meta-box/getting-started/) | [Support Forums](http://www.deluxeblogtips.com/forums/) | [Donate](http://www.deluxeblogtips.com/donate/)
+**Plugin Links**
+
+- [Project Page](http://www.deluxeblogtips.com/meta-box/)
+- [Documentation](http://www.deluxeblogtips.com/meta-box/getting-started/)
+- [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
+- [Premium Extensions](http://premium.deluxeblogtips.com)
 
 == Installation ==
 
@@ -57,6 +64,16 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 2. Advanced fields
 
 == Changelog ==
+
+= 4.3.9 =
+* Bug fix: `text-list` field type
+* Improvement: better coding styles
+* Improvement: wysiwyg field is now clonable
+* Improvement: launch geolocation autocomplete when address field is cloned
+* Improvement: better cloning for radio, checkbox
+* Improvement: add more hooks
+* Improvement: allow child fields to add their own add/remove clone buttons.
+* Improvement: remove 'clone-group'. Too complicated and not user-friendly.
 
 = 4.3.8 =
 * Bug fix: compatibility with PHP 5.2
