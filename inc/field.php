@@ -134,9 +134,9 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			$classes = array( 'rwmb-field', "rwmb-{$type}-wrapper" );
 			if ( 'hidden' === $field['type'] )
 				$classes[] = 'hidden';
-			if ( !empty( $field['required'] ) )
+			if ( ! empty( $field['required'] ) )
 				$classes[] = 'required';
-			if ( !empty( $field['class'] ) )
+			if ( ! empty( $field['class'] ) )
 				$classes[] = $field['class'];
 
 			$outer_html = sprintf(
@@ -245,7 +245,7 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			$meta = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			// Escape attributes for non-wysiwyg fields
 			if ( 'wysiwyg' !== $field['type'] )
@@ -291,12 +291,12 @@ if ( !class_exists( 'RWMB_Field ' ) )
 			{
 				foreach ( $new as $new_value )
 				{
-					if ( !in_array( $new_value, $old ) )
+					if ( ! in_array( $new_value, $old ) )
 						add_post_meta( $post_id, $name, $new_value, false );
 				}
 				foreach ( $old as $old_value )
 				{
-					if ( !in_array( $old_value, $new ) )
+					if ( ! in_array( $old_value, $new ) )
 						delete_post_meta( $post_id, $name, $old_value );
 				}
 			}

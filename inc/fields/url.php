@@ -39,7 +39,7 @@ if ( ! class_exists( 'RWMB_URL_Field' ) )
 		 *
 		 * @return string
 		 */
-		static function value( $new, $old, $post_id, $field)
+		static function value( $new, $old, $post_id, $field )
 		{
 			return is_array( $new ) ? array_map( 'esc_url', $new ) : esc_url( $new );
 		}

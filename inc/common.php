@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Common' ) )
+if ( ! class_exists( 'RWMB_Common' ) )
 {
 	/**
 	 * Common functions for the plugin

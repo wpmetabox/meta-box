@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Datetime_Field' ) )
+if ( ! class_exists ( 'RWMB_Datetime_Field' ) )
 {
 	class RWMB_Datetime_Field extends RWMB_Field
 	{
@@ -75,10 +75,11 @@ if ( !class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			if ( !$field['timestamp'] )
+			if ( ! $field['timestamp'] )
 				return $new;
 
 			$d = DateTime::createFromFormat( self::translate_format( $field ), $new );
+
 			return $d ? $d->getTimestamp() : 0;
 		}
 
@@ -112,13 +113,13 @@ if ( !class_exists( 'RWMB_Datetime_Field' ) )
 		// Missing: 't' => '', T' => '', 'm' => '', 's' => ''
 		static $time_format_translation = array(
 			'H'  => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
-			'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A'
+			'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A',
 		);
 
 		// Missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
 		static $date_format_translation = array(
 			'd' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l',
-			'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y'
+			'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y',
 		);
 
 		/**

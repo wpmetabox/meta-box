@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 // Make sure "select" field is loaded
 require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
-if ( !class_exists( 'RWMB_User_Field' ) )
+if ( ! class_exists ( 'RWMB_User_Field' ) )
 {
 	class RWMB_User_Field extends RWMB_Field
 	{
@@ -56,16 +56,16 @@ if ( !class_exists( 'RWMB_User_Field' ) )
 			$field = wp_parse_args( $field, array(
 				'field_type' => 'select_advanced',
 				'parent'     => false,
-				'query_args' => array()
+				'query_args' => array(),
 			) );
 
 			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'rwmb' ), $default_post_type ) : $field['std'];
 
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
-				'orderby'       => 'display_name',
-				'order'         => 'asc',
-				'role'          => '',
-				'fields'        => 'all'
+				'orderby' => 'display_name',
+				'order'   => 'asc',
+				'role'    => '',
+				'fields'  => 'all',
 			) );
 
 			switch ( $field['field_type'] )

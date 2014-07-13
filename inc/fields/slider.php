@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Slider_Field' ) )
+if ( ! class_exists ( 'RWMB_Slider_Field' ) )
 {
 	class RWMB_Slider_Field extends RWMB_Field
 	{

@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		 */
 		static function wp_ajax_attach_media()
 		{
-			$post_id = is_numeric( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : 0;
+			$post_id = is_numeric( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
 			$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$attachment_ids = isset( $_POST['attachment_ids'] ) ? $_POST['attachment_ids'] : array();
 

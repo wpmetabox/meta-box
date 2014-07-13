@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Text_List_Field' ) )
+if ( ! class_exists ( 'RWMB_Text_List_Field' ) )
 {
 	class RWMB_Text_List_Field extends RWMB_Field
 	{
@@ -52,9 +52,9 @@ if ( !class_exists( 'RWMB_Text_List_Field' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
-			$single = $field['clone'] || !$field['multiple'];
-			$meta = get_post_meta( $post_id, $field['id'], $single );
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			$single = $field['clone'] || ! $field['multiple'];
+			$meta   = get_post_meta( $post_id, $field['id'], $single );
+			$meta   = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			$meta = array_map( 'esc_attr', (array) $meta );
 
@@ -75,9 +75,10 @@ if ( !class_exists( 'RWMB_Text_List_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			if ( !$field['clone'] )
+			if ( ! $field['clone'] )
 			{
 				parent::save( $new, $old, $post_id, $field );
+
 				return;
 			}
 
@@ -96,10 +97,11 @@ if ( !class_exists( 'RWMB_Text_List_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field['multiple'] = true;
+			$field['multiple']   = true;
 			$field['field_name'] = $field['id'];
-			if ( !$field['clone'] )
+			if ( ! $field['clone'] )
 				$field['field_name'] .= '[]';
+
 			return $field;
 		}
 	}

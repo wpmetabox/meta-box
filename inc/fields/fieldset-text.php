@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Fieldset_Text_Field' ) )
+if ( ! class_exists ( 'RWMB_Fieldset_Text_Field' ) )
 {
 	class RWMB_Fieldset_Text_Field extends RWMB_Field
 	{
@@ -30,7 +30,7 @@ if ( !class_exists( 'RWMB_Fieldset_Text_Field' ) )
 				foreach ( $field['options'] as $k => $v )
 				{
 					$fid = $field['id'];
-					if ( is_array( $meta ) && !empty( $meta ) )
+					if ( is_array( $meta ) && ! empty( $meta ) )
 						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, $meta[$v][$n] );
 					else
 						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, '' );
@@ -55,7 +55,7 @@ if ( !class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		{
 			$meta = get_post_meta( $post_id, $field['id'] );
 
-			if ( is_array( $meta ) && !empty( $meta ) )
+			if ( is_array( $meta ) && ! empty( $meta ) )
 				$meta = $meta[0];
 
 			return $meta;

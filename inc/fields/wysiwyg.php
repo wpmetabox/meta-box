@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
+if ( ! class_exists ( 'RWMB_Wysiwyg_Field' ) )
 {
 	class RWMB_Wysiwyg_Field extends RWMB_Field
 	{
@@ -30,13 +30,19 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			if($field['raw']) {
+			if ( $field['raw'] )
+			{
 				$meta = $new;
-			} else if( $field['clone'] ) {
+			}
+			else if ( $field['clone'] )
+			{
 				$meta = array_map( 'wpautop', $new );
-			} else {
+			}
+			else
+			{
 				$meta = wpautop( $new );
 			}
+
 			return $meta;
 		}
 
@@ -59,8 +65,9 @@ if ( !class_exists( 'RWMB_Wysiwyg_Field' ) )
 			wp_editor( $meta, $field['field_name'], $field['options'] );
 
 			$editor = ob_get_clean();
-			if($field['clone']){
-				self::$cloneable_editors[ $field['id'] ] = $editor;
+			if ( $field['clone'] )
+			{
+				self::$cloneable_editors[$field['id']] = $editor;
 				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'footer_scripts' ), 51 );
 			}
 

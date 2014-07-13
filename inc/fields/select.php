@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( !class_exists( 'RWMB_Select_Field' ) )
+if ( ! class_exists ( 'RWMB_Select_Field' ) )
 {
 	class RWMB_Select_Field extends RWMB_Field
 	{
@@ -58,9 +58,9 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
-			$single = $field['clone'] || !$field['multiple'];
-			$meta = get_post_meta( $post_id, $field['id'], $single );
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			$single = $field['clone'] || ! $field['multiple'];
+			$meta   = get_post_meta( $post_id, $field['id'], $single );
+			$meta   = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			$meta = array_map( 'esc_attr', (array) $meta );
 
@@ -81,9 +81,10 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			if ( !$field['clone'] )
+			if ( ! $field['clone'] )
 			{
 				parent::save( $new, $old, $post_id, $field );
+
 				return;
 			}
 
@@ -108,8 +109,9 @@ if ( !class_exists( 'RWMB_Select_Field' ) )
 				'size'        => $field['multiple'] ? 5 : 0,
 				'placeholder' => '',
 			) );
-			if ( !$field['clone'] && $field['multiple'] )
+			if ( ! $field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
+
 			return $field;
 		}
 

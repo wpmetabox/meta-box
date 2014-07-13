@@ -2,14 +2,14 @@
 
 // This file shows a demo for register meta boxes for ALL custom post types
 
-add_action( 'admin_init', 'YOUR_PREFIX_register_meta_boxes' );
+add_action( 'admin_init', 'your_prefix_register_meta_boxes' );
 
-function YOUR_PREFIX_register_meta_boxes()
+function your_prefix_register_meta_boxes()
 {
 	if ( ! class_exists( 'RW_Meta_Box' ) )
 		return;
 
-	$prefix     = 'YOUR_PREFIX_';
+	$prefix     = 'your_prefix_';
 	$meta_boxes = array();
 
 	$post_types = get_post_types();

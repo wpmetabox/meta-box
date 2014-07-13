@@ -69,10 +69,10 @@ function rw_maybe_include( $conditions ) {
 	}
 
 	if ( isset( $_GET['post'] ) ) {
-		$post_id = $_GET['post'];
+		$post_id = intval( $_GET['post'] );
 	}
 	elseif ( isset( $_POST['post_ID'] ) ) {
-		$post_id = $_POST['post_ID'];
+		$post_id = intval( $_POST['post_ID'] );
 	}
 	else {
 		$post_id = false;
@@ -108,16 +108,19 @@ function rw_maybe_include( $conditions ) {
 			case 'category': //post must be saved or published first
 				$categories = get_the_category( $post->ID );
 				$catslugs = array();
-				foreach ($categories as $category) {
-					array_push($catslugs, $category->slug);
+				foreach ( $categories as $category )
+				{
+					array_push( $catslugs, $category->slug );
 				}
-				if ( array_intersect( $catslugs, $v ) ) {
+				if ( array_intersect( $catslugs, $v ) )
+				{
 					return true;
 				}
 			break;
 			case 'template':
 				$template = get_post_meta( $post_id, '_wp_page_template', true );
-				if ( in_array( $template, $v ) ) {
+				if ( in_array( $template, $v ) )
+				{
 					return true;
 				}
 			break;

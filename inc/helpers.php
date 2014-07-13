@@ -134,19 +134,20 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 
 			$args = wp_parse_args( $args, array(
-				'type' => 'text',
-			) );
+					'type' => 'text',
+				)
+			);
 
 			// Set 'multiple' for fields based on 'type'
-			if ( !isset( $args['multiple'] ) )
+			if ( ! isset( $args['multiple'] ) )
 				$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) );
 
-			$meta = get_post_meta( $post_id, $key, !$args['multiple'] );
+			$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
 
 			// Get uploaded files info
 			if ( in_array( $args['type'], array( 'file', 'file_advanced' ) ) )
 			{
-				if ( is_array( $meta ) && !empty( $meta ) )
+				if ( is_array( $meta ) && ! empty( $meta ) )
 				{
 					$files = array();
 					foreach ( $meta as $id )
@@ -168,7 +169,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 					ORDER BY meta_id ASC
 				", $post_id, $key ) );
 
-				if ( is_array( $meta ) && !empty( $meta ) )
+				if ( is_array( $meta ) && ! empty( $meta ) )
 				{
 					$images = array();
 					foreach ( $meta as $id )
@@ -182,7 +183,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			// Get terms
 			elseif ( 'taxonomy_advanced' == $args['type'] )
 			{
-				if ( !empty( $args['taxonomy'] ) )
+				if ( ! empty( $args['taxonomy'] ) )
 				{
 					$term_ids = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
 
@@ -281,8 +282,8 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 		static function map( $key, $args = array(), $post_id = null )
 		{
 			$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
-			$loc = get_post_meta( $post_id, $key, true );
-			if ( !$loc )
+			$loc     = get_post_meta( $post_id, $key, true );
+			if ( ! $loc )
 				return '';
 
 			$parts = array_map( 'trim', explode( ',', $loc ) );
@@ -295,9 +296,9 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			$args = wp_parse_args( $args, array(
 				'width'        => '640px',
 				'height'       => '480px',
-				'marker'       => true,      // Display marker?
-				'marker_title' => '',        // Marker title, when hover
-				'info_window'  => '',        // Content of info window (when click on marker). HTML allowed
+				'marker'       => true, // Display marker?
+				'marker_title' => '', // Marker title, when hover
+				'info_window'  => '', // Content of info window (when click on marker). HTML allowed
 				'js_options'   => array(),
 			) );
 			$args['js_options'] = wp_parse_args( $args['js_options'], array(

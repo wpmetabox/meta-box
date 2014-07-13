@@ -1,13 +1,10 @@
 <?php
-add_action( 'admin_init', 'YOUR_PREFIX_register_meta_boxes' );
+add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
 
-function YOUR_PREFIX_register_meta_boxes()
+function your_prefix_register_meta_boxes( $meta_boxes )
 {
-	if ( !class_exists( 'RW_Meta_Box' ) )
-		return;
-
-	$prefix = 'YOUR_PREFIX_';
-	$meta_box = array(
+	$prefix = 'your_prefix_';
+	$meta_boxes[] = array(
 		'title' => __( 'Date Time Picker With JS Options', 'rwmb' ),
 
 		'fields' => array(
@@ -52,5 +49,5 @@ function YOUR_PREFIX_register_meta_boxes()
 		),
 	);
 
-	new RW_Meta_Box( $meta_box );
+	return $meta_boxes;
 }

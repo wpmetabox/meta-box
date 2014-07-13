@@ -67,7 +67,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$show = true;
 			$show = apply_filters( 'rwmb_show', $show, $this->meta_box );
 			$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
-			if ( !$show )
+			if ( ! $show )
 				return;
 
 			// Enqueue common styles and scripts
@@ -283,11 +283,11 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Check whether form is submitted properly
 			$id = $this->meta_box['id'];
-			if ( empty( $_POST["nonce_{$id}"] ) || !wp_verify_nonce( $_POST["nonce_{$id}"], "rwmb-save-{$id}" ) )
+			if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $_POST["nonce_{$id}"], "rwmb-save-{$id}" ) )
 				return;
 
 			// Autosave
-			if ( defined( 'DOING_AUTOSAVE' ) && !$this->meta_box['autosave'] )
+			if ( defined( 'DOING_AUTOSAVE' ) && ! $this->meta_box['autosave'] )
 				return;
 
 			// Make sure meta is added to the post, not a revision
@@ -435,9 +435,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $fields as $field )
 			{
-				$value = get_post_meta( $post_id, $field['id'], !$field['multiple'] );
+				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 				if (
-					( !$field['multiple'] && '' !== $value )
+					( ! $field['multiple'] && '' !== $value )
 					|| ( $field['multiple'] && array() !== $value )
 				)
 				{

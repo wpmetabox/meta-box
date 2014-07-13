@@ -1,13 +1,13 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'PREFIX_register_meta_box_slider' );
-function PREFIX_register_meta_box_slider( $meta_boxes )
+add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_slider' );
+function prefix_register_meta_box_slider( $meta_boxes )
 {
 	$meta_boxes[] = array(
 		'title' => __( 'Slider Demo', 'textdomain' ),
 		'fields' => array(
 			array(
 				'name' => __( 'Slider', 'rwmb' ),
-				'id'   => "slider",
+				'id'   => 'slider',
 				'type' => 'slider',
 
 				// Text labels displayed before and after value

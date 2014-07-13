@@ -1,6 +1,6 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'PREFIX_register_meta_box_image_select' );
-function PREFIX_register_meta_box_image_select( $meta_boxes )
+add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_image_select' );
+function prefix_register_meta_box_image_select( $meta_boxes )
 {
 	$meta_boxes[] = array(
 		'title' => __( 'Image Select Demo', 'textdomain' ),

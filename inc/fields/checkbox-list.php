@@ -51,7 +51,7 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		static function meta( $post_id, $saved, $field )
 		{
 			$meta = get_post_meta( $post_id, $field['id'], $field['clone'] );
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 			$meta = array_map( 'esc_attr', (array) $meta );
 
 			return $meta;
@@ -71,9 +71,10 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
-			if ( !$field['clone'] )
+			if ( ! $field['clone'] )
 			{
 				parent::save( $new, $old, $post_id, $field );
+
 				return;
 			}
 
@@ -94,8 +95,9 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		{
 			$field['multiple']   = true;
 			$field['field_name'] = $field['id'];
-			if ( !$field['clone'] )
+			if ( ! $field['clone'] )
 				$field['field_name'] .= '[]';
+
 			return $field;
 		}
 	}
