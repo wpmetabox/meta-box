@@ -1,7 +1,7 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
-
+require_once RWMB_FIELDS_DIR . 'image.php';
 if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 {
 	class RWMB_Plupload_Image_Field extends RWMB_Image_Field
