@@ -117,7 +117,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				$content = $meta;
 			}
 
-			return apply_filters( __FUNCTION__, $content );
+			return apply_filters( 'rwmb_shortcode', $content );
 		}
 
 		/**
@@ -213,7 +213,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				$meta = self::map( $key, $args, $post_id );
 			}
 
-			return apply_filters( __FUNCTION__, $meta, $key, $args, $post_id );
+			return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 		}
 
 		/**
