@@ -25,6 +25,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			$deps = array( 'jquery-ui-timepicker' );
 
 			$locale = str_replace( '_', '-', get_locale() );
+			$timepicker_locale_js_url = '';
 			if ( file_exists( RWMB_DIR . "js/jqueryui/timepicker-i18n/jquery-ui-timepicker-{$locale}.js" ) )
 			{
 				$timepicker_locale_js_url = "{$url}/timepicker-i18n/jquery-ui-timepicker-{$locale}.js";
