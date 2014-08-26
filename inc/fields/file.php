@@ -55,7 +55,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		static function wp_ajax_delete_file()
 		{
 			$post_id       = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
-			$field_id      = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : 0;
+			$field_id      = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
 			$force_delete  = isset( $_POST['force_delete'] ) ? intval( $_POST['force_delete'] ) : 0;
 

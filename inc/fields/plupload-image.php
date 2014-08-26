@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		{
 			global $wpdb;
 			$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-			$field_id = isset( $_REQUEST['field_id'] ) ? sanitize_key( $_REQUEST['field_id'] ) : '';
+			$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
 
 			check_ajax_referer( "rwmb-upload-images_{$field_id}" );
 

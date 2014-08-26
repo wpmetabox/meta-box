@@ -41,7 +41,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		static function wp_ajax_attach_file()
 		{
 			$post_id        = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-			$field_id       = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : 0;
+			$field_id       = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
 			$attachment_ids = isset( $_POST['attachment_ids'] ) ? (array) $_POST['attachment_ids'] : array();
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
