@@ -72,6 +72,12 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 
 ## Changelog
 
+#### 4.3.10
+* Bug fix: upload & reorder for image fields
+* Bug fix: not saving meta caused by page template issue
+* Bug fix: filter names for helper and shortcode callback functions
+* Bug fix: loads correct locale JS files for jQueryUI date/time picker
+
 #### 4.3.9
 * Bug fix: `text-list` field type
 * Improvement: better coding styles
