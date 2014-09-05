@@ -1,6 +1,7 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
+
 require_once RWMB_FIELDS_DIR . 'image.php';
 if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 {
