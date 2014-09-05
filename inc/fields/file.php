@@ -43,7 +43,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
          *
          * @return void
          */
-        static function wp_ajax_reorder_files()
+		static function wp_ajax_reorder_files()
         {
             $field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
             $order    = isset( $_POST['order'] ) ? $_POST['order'] : '';
@@ -55,7 +55,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
             delete_post_meta( $post_id, $field_id );
 
-            foreach ( $items['item'] as $item )
+			foreach ( $items['item'] as $item )
             {
                 add_post_meta( $post_id, $field_id, $item, false );
             }
@@ -147,7 +147,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 				implode( ' ', $classes ),
 				$field['id'],
 				$delete_nonce,
-                $reorder_nonce,
+				$reorder_nonce,
 				$field['force_delete'] ? 1 : 0,
 				$field['max_file_uploads'],
 				$field['mime_type']
@@ -181,7 +181,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$mime_type = get_post_mime_type( $attachment_id );
 			return sprintf(
 				$li,
-                $attachment_id,
+				$attachment_id,
 				wp_get_attachment_image( $attachment_id, array( 60, 60 ), true ),
 				wp_get_attachment_url( $attachment_id ),
 				get_the_title( $attachment_id ),
