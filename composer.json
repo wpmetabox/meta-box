@@ -6,7 +6,8 @@
     "ui",
     "select2",
     "wp-admin",
-    "meta-box"
+    "meta-box",
+    "wordpress-plugin"
   ],
   "version": "4.3.8",
   "description": "Easily create custom meta boxes in WordPress.",

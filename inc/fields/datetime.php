@@ -24,18 +24,32 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 
 			// Load localized scripts
 			$locale = str_replace( '_', '-', get_locale() );
-			$date_path = 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js';
-			$time_path = 'jqueryui/timepicker-i18n/jquery-ui-timepicker-' . $locale . '.js';
-			$deps = array( 'jquery-ui-datepicker', 'jquery-ui-timepicker' );
-			if ( file_exists( RWMB_DIR . 'js/' . $date_path ) )
-			{
-				wp_register_script( 'jquery-ui-datepicker-i18n', RWMB_JS_URL . $date_path, array( 'jquery-ui-datepicker' ), '1.8.17', true );
-				$deps[] = 'jquery-ui-datepicker-i18n';
+			$date_paths = array( 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js' );
+			$time_paths = array( 'jqueryui/timepicker-i18n/jquery-ui-timepicker-' . $locale . '.js' );
+			if ( strlen( $locale ) > 2 ) {
+				// Also check alternate i18n filenames
+				// (e.g. jquery.ui.datepicker-de.js instead of jquery.ui.datepicker-de-DE.js)
+				$date_paths[] = 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . substr( $locale, 0, 2 ) . '.js';
+				$time_paths[] = 'jqueryui/timepicker-i18n/jquery-ui-timepicker-' . substr( $locale, 0, 2 ) . '.js';
 			}
-			if ( file_exists( RWMB_DIR . 'js/' . $time_path ) )
+			$deps = array( 'jquery-ui-datepicker', 'jquery-ui-timepicker' );
+			foreach ( $date_paths as $date_path )
 			{
-				wp_register_script( 'jquery-ui-timepicker-i18n', RWMB_JS_URL . $time_path, array( 'jquery-ui-timepicker' ), '1.8.17', true );
-				$deps[] = 'jquery-ui-timepicker-i18n';
+				if ( file_exists( RWMB_DIR . 'js/' . $date_path ) )
+				{
+					wp_register_script( 'jquery-ui-datepicker-i18n', RWMB_JS_URL . $date_path, array( 'jquery-ui-datepicker' ), '1.8.17', true );
+					$deps[] = 'jquery-ui-datepicker-i18n';
+					break;
+				}
+			}
+			foreach ( $time_paths as $time_path )
+			{
+				if ( file_exists( RWMB_DIR . 'js/' . $time_path ) )
+				{
+					wp_register_script( 'jquery-ui-timepicker-i18n', RWMB_JS_URL . $time_path, array( 'jquery-ui-timepicker' ), '1.8.17', true );
+					$deps[] = 'jquery-ui-timepicker-i18n';
+					break;
+				}
 			}
 
 			wp_enqueue_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', $deps, RWMB_VER, true );
