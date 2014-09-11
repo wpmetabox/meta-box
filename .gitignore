@@ -1,6 +1,3 @@
-# Files for WordPress.org only
-readme.txt
-
 # Numerous always-ignore extensions
 *.diff
 *.err
@@ -24,6 +21,7 @@ Thumbs.db
 nbproject
 *.sublime-project
 *.sublime-workspace
+node_modules/*
 
 # Dreamweaver added files
 _notes
