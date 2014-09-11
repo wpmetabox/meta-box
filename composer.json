@@ -23,6 +23,7 @@
     }
   ],
   "autoload": {
+    "files": ["meta-box-loader.php"],
     "classmap": [
       "inc/fields",
       "inc/common.php",
