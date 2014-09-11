@@ -33,7 +33,35 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			// Delete file via Ajax
 			add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'wp_ajax_delete_file' ) );
+
+            // allow reordering
+            add_action( 'wp_ajax_rwmb_reorder_files', array( __CLASS__, 'wp_ajax_reorder_files' ) );
 		}
+
+        /**
+         * Ajax callback for reordering images
+         *
+         * @return void
+         */
+		static function wp_ajax_reorder_files()
+        {
+            $field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
+            $order    = isset( $_POST['order'] ) ? $_POST['order'] : '';
+            $post_id  = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+
+            check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
+
+            parse_str( $order, $items );
+
+            delete_post_meta( $post_id, $field_id );
+
+			foreach ( $items['item'] as $item )
+            {
+                add_post_meta( $post_id, $field_id, $item, false );
+            }
+
+            wp_send_json_success();
+        }
 
 		/**
 		 * Add data encoding type for file uploading
@@ -107,16 +135,19 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 		static function get_uploaded_files( $files, $field )
 		{
+            $reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
+
 			$classes = array('rwmb-file', 'rwmb-uploaded');
 			if ( count( $files ) <= 0  )
 				$classes[] = 'hidden';
-			$ol = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
+			$ol = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
 			$html = sprintf(
 				$ol,
 				implode( ' ', $classes ),
 				$field['id'],
 				$delete_nonce,
+				$reorder_nonce,
 				$field['force_delete'] ? 1 : 0,
 				$field['max_file_uploads'],
 				$field['mime_type']
@@ -137,7 +168,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'rwmb' ) );
 			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'rwmb' ) );
 			$li = '
-			<li>
+			<li id="item_%s">
 				<div class="rwmb-icon">%s</div>
 				<div class="rwmb-info">
 					<a href="%s" target="_blank">%s</a>
@@ -150,6 +181,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$mime_type = get_post_mime_type( $attachment_id );
 			return sprintf(
 				$li,
+				$attachment_id,
 				wp_get_attachment_image( $attachment_id, array( 60, 60 ), true ),
 				wp_get_attachment_url( $attachment_id ),
 				get_the_title( $attachment_id ),

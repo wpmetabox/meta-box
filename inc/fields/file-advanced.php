@@ -104,7 +104,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			?>
 			<script id="tmpl-rwmb-file-advanced" type="text/html">
 				<# _.each( attachments, function( attachment ) { #>
-				<li>
+				<li id="item_{{{ attachment.id }}}">
 					<div class="rwmb-icon"><img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>"></div>
 					<div class="rwmb-info">
 						<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
