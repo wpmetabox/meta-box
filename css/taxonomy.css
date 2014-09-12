@@ -2,9 +2,9 @@
 	margin-left: 15px;
 	margin-top: 5px;
 }
-.rw-taxonomy-tree.active{
+.rw-taxonomy-tree.active {
 	display: inline-block;
 }
-.rw-taxonomy-tree.disabled{
+.rw-taxonomy-tree.disabled {
 	display: none;
 }

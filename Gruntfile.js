@@ -1,20 +1,45 @@
-module.exports = function(grunt) {
+'use strict';
 
-	// Load all Grunt tasks via load-grunt-tasks plugin
-	require('load-grunt-tasks')(grunt);
+module.exports = function ( grunt )
+{
+	// Load all Grunt tasks
+	require( 'load-grunt-tasks' )( grunt );
 
 	// Grunt configuration
-	grunt.initConfig({
+	grunt.initConfig( {
 		// Read config file
-		pkg: grunt.file.readJSON('package.json'),
+		pkg         : grunt.file.readJSON( 'package.json' ),
 
 		// JSHint
-		jshint: {
+		jshint      : {
 			options: {
 				jshintrc: true // Auto search for .jshintrc files relative to the files being linted
 			},
-			all: ['js/*.js', '!js/*.min.js'] // Lint all JS files, except *.min.js (libraries)
-		}
+			all    : ['js/*.js', '!js/*.min.js'] // Lint all JS files, except *.min.js (libraries)
+		},
+
+		// CSS tasks
+
+		// Autoprefix
+		autoprefixer: {
+			options: {
+				browsers: [
+					'last 2 versions',
+					'ie >= 9'
+				]
+			},
+			all    : {
+				src: 'css/*.css'
+			}
+		},
+
+		// CSSComb: beautify CSS code
+		csscomb: {
+			all: {
+				expand: true,
+				src   : 'css/*.css'
+			}
+		},
 
 		// Update translation files
 		// makepot: {
@@ -37,10 +62,24 @@ module.exports = function(grunt) {
 		// 		}
 		// 	}
 		// },
-	});
+	} );
+
+
+	// Build task
+	grunt.registerTask( 'build', [
+		'build:css'
+		//'build:js',
+		//'build:i18n',
+		//'imagemin'
+	] );
+
+	grunt.registerTask( 'build:css', [
+		'autoprefixer',
+		'csscomb'
+	] );
 
 	// Default task
-	grunt.registerTask('default', [
-		'jshint'
-	]);
+	grunt.registerTask( 'default', [
+		'build'
+	] );
 };
