@@ -1,5 +1,7 @@
 jQuery( function( $ )
 {
+	'use strict';
+
 	$( '.rwmb-oembed-wrapper .spinner' ).hide();
 
 	$( 'body' ).on( 'click', '.rwmb-oembed-wrapper .show-embed', function() {

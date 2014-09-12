@@ -1,26 +1,20 @@
-'use strict';
-
 module.exports = function ( grunt )
 {
+	'use strict';
+
 	// Load all Grunt tasks
 	require( 'load-grunt-tasks' )( grunt );
 
+	var allJsFiles = ['Gruntfile.js', 'js/*.js', '!js/*.min.js'],
+		allCssFiles = 'css/*.css';
+
 	// Grunt configuration
 	grunt.initConfig( {
+
 		// Read config file
 		pkg         : grunt.file.readJSON( 'package.json' ),
 
-		// JSHint
-		jshint      : {
-			options: {
-				jshintrc: true // Auto search for .jshintrc files relative to the files being linted
-			},
-			all    : ['js/*.js', '!js/*.min.js'] // Lint all JS files, except *.min.js (libraries)
-		},
-
-		// CSS tasks
-
-		// Autoprefix
+		// Autoprefix CSS
 		autoprefixer: {
 			options: {
 				browsers: [
@@ -29,17 +23,26 @@ module.exports = function ( grunt )
 				]
 			},
 			all    : {
-				src: 'css/*.css'
+				src: allCssFiles
 			}
 		},
 
-		// CSSComb: beautify CSS code
-		csscomb: {
+		// Beautify CSS code
+		csscomb     : {
 			all: {
 				expand: true,
-				src   : 'css/*.css'
+				src   : allCssFiles
 			}
 		},
+
+		// JSHint
+		jshint      : {
+			options: {
+				reporter: require( 'jshint-stylish' ),
+				jshintrc: true // Auto search for .jshintrc files relative to the files being linted
+			},
+			all    : allJsFiles // Lint all JS files, except *.min.js (libraries)
+		}
 
 		// Update translation files
 		// makepot: {
@@ -65,21 +68,13 @@ module.exports = function ( grunt )
 	} );
 
 
-	// Build task
-	grunt.registerTask( 'build', [
-		'build:css'
-		//'build:js',
-		//'build:i18n',
-		//'imagemin'
-	] );
-
-	grunt.registerTask( 'build:css', [
-		'autoprefixer',
-		'csscomb'
-	] );
-
-	// Default task
+	// Register tasks
 	grunt.registerTask( 'default', [
-		'build'
+		// CSS tasks
+		'autoprefixer',
+		'csscomb',
+
+		// JS tasks
+		'jshint'
 	] );
 };

@@ -1,10 +1,12 @@
-jQuery( function( $ )
+jQuery( function ( $ )
 {
+	'use strict';
+
 	// Use only one frame for all upload fields
 	var frame,
 		template = $( '#tmpl-rwmb-image-advanced' ).html();
 
-	$( 'body' ).on( 'click', '.rwmb-image-advanced-upload', function( e )
+	$( 'body' ).on( 'click', '.rwmb-image-advanced-upload', function ( e )
 	{
 		e.preventDefault();
 
@@ -35,7 +37,7 @@ jQuery( function( $ )
 		frame.off( 'select' );
 
 		// Handle selection
-		frame.on( 'select', function()
+		frame.on( 'select', function ()
 		{
 			// Get selections
 			var selection = frame.state().get( 'selection' ).toJSON(),
@@ -45,42 +47,44 @@ jQuery( function( $ )
 			if ( maxFileUploads > 0 && ( uploaded + selection.length ) > maxFileUploads )
 			{
 				if ( uploaded < maxFileUploads )
+				{
 					selection = selection.slice( 0, maxFileUploads - uploaded );
+				}
 				alert( msg );
 			}
 
 			// Get only files that haven't been added to the list
 			// Also prevent duplication when send ajax request
-			selection = _.filter( selection, function( attachment )
+			selection = _.filter( selection, function ( attachment )
 			{
-				return $imageList.children( 'li#item_' + attachment.id ).length == 0;
+				return $imageList.children( 'li#item_' + attachment.id ).length === 0;
 			} );
 			ids = _.pluck( selection, 'id' );
 
-			if( ids.length > 0 )
+			if ( ids.length > 0 )
 			{
 				var data = {
-					action			: 'rwmb_attach_media',
-					post_id			: $( '#post_ID' ).val(),
-					field_id		: $imageList.data( 'field_id' ),
-					attachment_ids	: ids,
-					_ajax_nonce  	: $uploadButton.data( 'attach_media_nonce' )
+					action        : 'rwmb_attach_media',
+					post_id       : $( '#post_ID' ).val(),
+					field_id      : $imageList.data( 'field_id' ),
+					attachment_ids: ids,
+					_ajax_nonce   : $uploadButton.data( 'attach_media_nonce' )
 				};
 
-				$.post( ajaxurl, data, function( r )
+				$.post( ajaxurl, data, function ( r )
 				{
-					if( r.success )
+					if ( r.success )
 					{
 						$imageList
 							.append( _.template( template, { attachments: selection }, {
-								evaluate:    /<#([\s\S]+?)#>/g,
+								evaluate   : /<#([\s\S]+?)#>/g,
 								interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
-								escape:      /\{\{([^\}]+?)\}\}(?!\})/g
+								escape     : /\{\{([^\}]+?)\}\}(?!\})/g
 							} ) )
-							.trigger('update.rwmbFile');
+							.trigger( 'update.rwmbFile' );
 					}
 				}, 'json' );
 			}
 		} );
-	} )
+	} );
 } );

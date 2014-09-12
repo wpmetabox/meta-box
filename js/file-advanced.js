@@ -1,8 +1,10 @@
-jQuery( function( $ )
+jQuery( function ( $ )
 {
+	'use strict';
+
 	var template = $( '#tmpl-rwmb-file-advanced' ).html();
 
-	$( 'body' ).on( 'click', '.rwmb-file-advanced-upload', function( e )
+	$( 'body' ).on( 'click', '.rwmb-file-advanced-upload', function ( e )
 	{
 		e.preventDefault();
 
@@ -14,8 +16,8 @@ jQuery( function( $ )
 			frame,
 			frameOptions = {
 				className: 'media-frame rwmb-file-frame',
-				multiple: true,
-				title: rwmbFileAdvanced.frameTitle
+				multiple : true,
+				title    : rwmbFileAdvanced.frameTitle
 			};
 
 		msg = msg.replace( '%d', maxFileUploads );
@@ -36,7 +38,7 @@ jQuery( function( $ )
 		frame.off( 'select' );
 
 		// Handle selection
-		frame.on( 'select', function()
+		frame.on( 'select', function ()
 		{
 			// Get selections
 			var selection = frame.state().get( 'selection' ).toJSON(),
@@ -46,15 +48,17 @@ jQuery( function( $ )
 			if ( maxFileUploads > 0 && ( uploaded + selection.length ) > maxFileUploads )
 			{
 				if ( uploaded < maxFileUploads )
+				{
 					selection = selection.slice( 0, maxFileUploads - uploaded );
+				}
 				alert( msg );
 			}
 
 			// Get only files that haven't been added to the list
 			// Also prevent duplication when send ajax request
-			selection = _.filter( selection, function( attachment )
+			selection = _.filter( selection, function ( attachment )
 			{
-				return $fileList.children( 'li#item_' + attachment.id ).length == 0;
+				return $fileList.children( 'li#item_' + attachment.id ).length === 0;
 			} );
 			ids = _.pluck( selection, 'id' );
 
@@ -62,21 +66,21 @@ jQuery( function( $ )
 			{
 				// Attach attachment to field and get HTML
 				var data = {
-					action: 'rwmb_attach_file',
-					post_id: $( '#post_ID' ).val(),
-					field_id: $fileList.data( 'field_id' ),
+					action        : 'rwmb_attach_file',
+					post_id       : $( '#post_ID' ).val(),
+					field_id      : $fileList.data( 'field_id' ),
 					attachment_ids: ids,
-					_ajax_nonce: $uploadButton.data( 'attach_file_nonce' )
+					_ajax_nonce   : $uploadButton.data( 'attach_file_nonce' )
 				};
-				$.post( ajaxurl, data, function( r )
+				$.post( ajaxurl, data, function ( r )
 				{
 					if ( r.success )
 					{
 						$fileList
 							.append( _.template( template, { attachments: selection }, {
-								evaluate:    /<#([\s\S]+?)#>/g,
+								evaluate   : /<#([\s\S]+?)#>/g,
 								interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
-								escape:      /\{\{([^\}]+?)\}\}(?!\})/g
+								escape     : /\{\{([^\}]+?)\}\}(?!\})/g
 							} ) )
 							.trigger( 'update.rwmbFile' );
 					}
