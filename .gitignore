@@ -22,6 +22,7 @@ nbproject
 *.sublime-project
 *.sublime-workspace
 node_modules/*
+phpcs.txt
 
 # Dreamweaver added files
 _notes

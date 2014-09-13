@@ -6,7 +6,8 @@ module.exports = function ( grunt )
 	require( 'load-grunt-tasks' )( grunt );
 
 	var allJsFiles = ['Gruntfile.js', 'js/*.js', '!js/*.min.js'],
-		allCssFiles = 'css/*.css';
+		allCssFiles = 'css/*.css',
+		allPhpFiles = ['**/*.php', '!node_modules/**'];
 
 	// Grunt configuration
 	grunt.initConfig( {
@@ -42,6 +43,35 @@ module.exports = function ( grunt )
 				jshintrc: true // Auto search for .jshintrc files relative to the files being linted
 			},
 			all    : allJsFiles // Lint all JS files, except *.min.js (libraries)
+		},
+
+		// Check PHP syntax error
+		phplint        : {
+			all: allPhpFiles
+		},
+
+		// Check PHP coding standards
+		phpcs        : {
+			all    : {
+				dir: allPhpFiles
+			},
+			options: {
+				bin           : '/Applications/MAMP/bin/php/php5.4.19/bin/phpcs',
+				standard      : 'codesniffer.ruleset.xml',
+				reportFile    : 'phpcs.txt',
+				ignoreExitCode: true
+			}
+		},
+
+		// Optimize images
+		imagemin     : {
+			all: {
+				files: [{
+					expand: true,
+					cwd   : 'img/',
+					src   : ['*.{png,jpg,gif}'] // Only plugin files
+				}]
+			}
 		},
 
 		// Add text domain
@@ -119,6 +149,22 @@ module.exports = function ( grunt )
 					}
 				}
 			}
+		},
+
+		// Watch source files
+		watch     : {
+			css      : {
+				files: allCssFiles,
+				tasks: ['autoprefixer', 'csscomb']
+			},
+			js       : {
+				files: allJsFiles,
+				tasks: ['jshint']
+			},
+			php      : {
+				files: allPhpFiles,
+				tasks: ['phplint', 'phpcs']
+			}
 		}
 
 		// Deploy to wp.org
@@ -144,9 +190,16 @@ module.exports = function ( grunt )
 		// JS tasks
 		'jshint',
 
+		// PHP tasks
+		'phplint',
+		'phpcs',
+
+		// Image tasks
+		'imagemin',
+
 		// Translation
-		'checktextdomain',
 		'addtextdomain',
+		'checktextdomain',
 		'makepot'
 	] );
 };
