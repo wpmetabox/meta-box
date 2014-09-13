@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$attachment_ids = isset( $_POST['attachment_ids'] ) ? (array) $_POST['attachment_ids'] : array();
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
-			foreach( $attachment_ids as $attachment_id )
+			foreach ( $attachment_ids as $attachment_id )
 			{
 				add_post_meta( $post_id, $field_id, $attachment_id, false );
 			}
@@ -56,14 +56,14 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
 		static function html( $meta, $field )
 		{
-			$i18n_title  = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select or Upload Files', 'file upload', 'meta-box' ), $field );
+			$i18n_title   = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select or Upload Files', 'file upload', 'meta-box' ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );
 
 			// Uploaded files
@@ -94,6 +94,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		static function value( $new, $old, $post_id, $field )
 		{
 			$new = (array) $new;
+
 			return array_unique( array_merge( $old, $new ) );
 		}
 
@@ -104,18 +105,20 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			?>
 			<script id="tmpl-rwmb-file-advanced" type="text/html">
 				<# _.each( attachments, function( attachment ) { #>
-				<li id="item_{{{ attachment.id }}}">
-					<div class="rwmb-icon"><img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>"></div>
-					<div class="rwmb-info">
-						<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
-						<p>{{{ attachment.mime }}}</p>
-						<a title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
-						<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}"><?php echo esc_html( $i18n_delete ); ?></a>
-					</div>
-				</li>
-				<# } ); #>
+					<li id="item_{{{ attachment.id }}}">
+						<div class="rwmb-icon">
+							<img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>">
+						</div>
+						<div class="rwmb-info">
+							<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
+							<p>{{{ attachment.mime }}}</p>
+							<a title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
+							<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}"><?php echo esc_html( $i18n_delete ); ?></a>
+						</div>
+					</li>
+					<# } ); #>
 			</script>
-			<?php
+		<?php
 		}
 	}
 }

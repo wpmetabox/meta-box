@@ -25,8 +25,8 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		/**
 		 * Get div HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -53,7 +53,7 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field = wp_parse_args( $field, array(
+			$field               = wp_parse_args( $field, array(
 				'prefix'     => '',
 				'suffix'     => '',
 				'js_options' => array(),

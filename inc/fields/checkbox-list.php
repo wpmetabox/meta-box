@@ -9,8 +9,8 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -18,7 +18,7 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		{
 			$meta = (array) $meta;
 			$html = array();
-			$tpl = '<label><input type="checkbox" class="rwmb-checkbox-list" name="%s" value="%s"%s> %s</label>';
+			$tpl  = '<label><input type="checkbox" class="rwmb-checkbox-list" name="%s" value="%s"%s> %s</label>';
 
 			foreach ( $field['options'] as $value => $label )
 			{
@@ -30,6 +30,7 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 					$label
 				);
 			}
+
 			return implode( '<br>', $html );
 		}
 

@@ -19,13 +19,13 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 			if ( count( $meta ) == 1 && trim( $meta[0] ) == '' )
 				$meta = '';
 
-			$html = array();
+			$html   = array();
 			$before = '<fieldset><legend>' . $field['desc'] . '</legend>';
-			$after = '</fieldset>';
+			$after  = '</fieldset>';
 
 			$tpl = '<label>%s <input type="text" class="rwmb-fieldset-text" name="%s[%s][%d]" placeholder="%s" value="%s" /></label>';
 
-			for ( $n = 0; $n < $field['rows']; $n++ )
+			for ( $n = 0; $n < $field['rows']; $n ++ )
 			{
 				foreach ( $field['options'] as $k => $v )
 				{
@@ -39,6 +39,7 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 			}
 
 			$out = $before . implode( ' ', $html ) . $after;
+
 			return $out;
 		}
 

@@ -9,8 +9,8 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -40,6 +40,7 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 				'cols' => 60,
 				'rows' => 3,
 			) );
+
 			return $field;
 		}
 	}

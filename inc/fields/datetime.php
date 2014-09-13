@@ -23,10 +23,11 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			wp_register_script( 'jquery-ui-timepicker', RWMB_JS_URL . 'jqueryui/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
 
 			// Load localized scripts
-			$locale = str_replace( '_', '-', get_locale() );
+			$locale     = str_replace( '_', '-', get_locale() );
 			$date_paths = array( 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js' );
 			$time_paths = array( 'jqueryui/timepicker-i18n/jquery-ui-timepicker-' . $locale . '.js' );
-			if ( strlen( $locale ) > 2 ) {
+			if ( strlen( $locale ) > 2 )
+			{
 				// Also check alternate i18n filenames
 				// (e.g. jquery.ui.datepicker-de.js instead of jquery.ui.datepicker-de-DE.js)
 				$date_paths[] = 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . substr( $locale, 0, 2 ) . '.js';
@@ -59,8 +60,8 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -148,8 +149,8 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function translate_format( $field )
 		{
 			return strtr( $field['js_options']['dateFormat'], self::$date_format_translation )
-				. $field['js_options']['separator']
-				. strtr( $field['js_options']['timeFormat'], self::$time_format_translation );
+			. $field['js_options']['separator']
+			. strtr( $field['js_options']['timeFormat'], self::$time_format_translation );
 		}
 	}
 }

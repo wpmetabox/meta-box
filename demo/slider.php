@@ -3,7 +3,7 @@ add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_slider' );
 function prefix_register_meta_box_slider( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Slider Demo', 'textdomain', 'meta-box' ),
+		'title' => __( 'Slider Demo', 'meta-box', 'meta-box' ),
 		'fields' => array(
 			array(
 				'name' => __( 'Slider', 'meta-box' ),

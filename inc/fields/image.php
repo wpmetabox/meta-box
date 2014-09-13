@@ -60,8 +60,8 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -99,11 +99,11 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		static function get_uploaded_images( $images, $field )
 		{
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-images_{$field['id']}" );
-			$delete_nonce = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
-			$classes = array( 'rwmb-images', 'rwmb-uploaded' );
-			if ( count( $images ) <= 0  )
+			$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
+			$classes       = array( 'rwmb-images', 'rwmb-uploaded' );
+			if ( count( $images ) <= 0 )
 				$classes[] = 'hidden';
-			$ul = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
+			$ul   = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
 			$html = sprintf(
 				$ul,
 				implode( ' ', $classes ),
@@ -135,7 +135,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 		{
 			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'meta-box' ) );
 			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'meta-box' ) );
-			$li = '
+			$li          = '
 				<li id="item_%s">
 					<img src="%s" />
 					<div class="rwmb-image-bar">

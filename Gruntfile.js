@@ -51,7 +51,7 @@ module.exports = function ( grunt )
 		},
 
 		// Check PHP coding standards
-		phpcs        : {
+		phpcs          : {
 			all    : {
 				dir: allPhpFiles
 			},
@@ -64,12 +64,13 @@ module.exports = function ( grunt )
 		},
 
 		// Optimize images
-		imagemin     : {
+		imagemin       : {
 			all: {
 				files: [{
 					expand: true,
 					cwd   : 'img/',
-					src   : ['*.{png,jpg,gif}'] // Only plugin files
+					src   : ['*.*'], // Only plugin files
+					dest  : 'img'
 				}]
 			}
 		},
@@ -78,15 +79,12 @@ module.exports = function ( grunt )
 		addtextdomain  : {
 			options: {
 				textdomain   : '',       // Project text domain.
-				updateDomains: ['rwmb']  // List of text domains to replace. Update old text domain to use plugin slug
+				updateDomains: ['rwmb', 'textdomain']  // List of text domains to replace. Update old text domain to use plugin slug
 			},
 			release: {
 				files: [{
 					expand: true,
-					src   : [
-						'**/*.php'
-						//'!demo/*'
-					]
+					src   : allPhpFiles
 				}]
 			}
 		},
@@ -115,11 +113,7 @@ module.exports = function ( grunt )
 				},
 				files  : [{
 					expand: true,
-					src   : [
-						'**/*.php',
-						'!demo/*',
-						'!node_modules/**'
-					]
+					src   : allPhpFiles
 				}]
 			}
 		},
@@ -152,16 +146,16 @@ module.exports = function ( grunt )
 		},
 
 		// Watch source files
-		watch     : {
-			css      : {
+		watch          : {
+			css: {
 				files: allCssFiles,
 				tasks: ['autoprefixer', 'csscomb']
 			},
-			js       : {
+			js : {
 				files: allJsFiles,
 				tasks: ['jshint']
 			},
-			php      : {
+			php: {
 				files: allPhpFiles,
 				tasks: ['phplint', 'phpcs']
 			}

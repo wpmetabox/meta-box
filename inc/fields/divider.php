@@ -19,8 +19,8 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		/**
 		 * Show begin HTML markup for fields
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -32,8 +32,8 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		/**
 		 * Show end HTML markup for fields
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */

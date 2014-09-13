@@ -24,8 +24,8 @@ if ( ! class_exists( 'RWMB_Thickbox_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */

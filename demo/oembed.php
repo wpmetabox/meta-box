@@ -3,7 +3,7 @@ add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_oembed' );
 function prefix_register_meta_box_oembed( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'oEmbed Demo', 'textdomain', 'meta-box' ),
+		'title' => __( 'oEmbed Demo', 'meta-box', 'meta-box' ),
 		'fields' => array(
 			array(
 				'id'       => 'oembed',

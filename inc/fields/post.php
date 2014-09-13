@@ -22,8 +22,8 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -52,7 +52,7 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 			$default_post_type = __( 'Post', 'meta-box' );
 			if ( is_string( $field['post_type'] ) )
 			{
-				$post_type_object = get_post_type_object( $field['post_type'] );
+				$post_type_object  = get_post_type_object( $field['post_type'] );
 				$default_post_type = $post_type_object->labels->singular_name;
 			}
 
@@ -67,14 +67,14 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 
 			if ( $field['parent'] )
 			{
-				$field['multiple'] = false;
+				$field['multiple']   = false;
 				$field['field_name'] = 'parent_id';
 			}
 
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
 				'post_type'      => $field['post_type'],
 				'post_status'    => 'publish',
-				'posts_per_page' => -1,
+				'posts_per_page' => - 1,
 			) );
 
 			switch ( $field['field_type'] )
@@ -106,8 +106,10 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 			if ( isset( $field['parent'] ) && $field['parent'] )
 			{
 				$post = get_post( $post_id );
+
 				return $post->post_parent;
 			}
+
 			return RWMB_Select_Field::meta( $post_id, $saved, $field );
 		}
 
@@ -137,16 +139,17 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 		 */
 		static function get_options( $field )
 		{
-			$query = new WP_Query( $field['query_args'] );
-			if ( $query->have_posts() ) {
-				while( $query->have_posts() )
+			$options = array();
+			$query   = new WP_Query( $field['query_args'] );
+			if ( $query->have_posts() )
+			{
+				while ( $query->have_posts() )
 				{
-					$post = $query->next_post();
+					$post               = $query->next_post();
 					$options[$post->ID] = $post->post_title;
 				}
-			} else {
-				$options = array();
 			}
+
 			return $options;
 		}
 	}

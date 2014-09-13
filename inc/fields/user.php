@@ -22,8 +22,8 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -50,9 +50,9 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			
+
 			$default_post_type = __( 'User', 'meta-box' );
-			
+
 			$field = wp_parse_args( $field, array(
 				'field_type' => 'select_advanced',
 				'parent'     => false,
@@ -97,8 +97,10 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 			if ( isset( $field['parent'] ) && $field['parent'] )
 			{
 				$post = get_post( $post_id );
+
 				return $post->post_parent;
 			}
+
 			return RWMB_Select_Field::meta( $post_id, $saved, $field );
 		}
 
@@ -132,8 +134,9 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 			$options = array();
 			foreach ( $results as $result )
 			{
-				$options[$result->ID] = $result->display_name ;
+				$options[$result->ID] = $result->display_name;
 			}
+
 			return $options;
 		}
 	}

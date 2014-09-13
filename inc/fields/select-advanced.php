@@ -26,8 +26,8 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */

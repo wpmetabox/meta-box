@@ -21,8 +21,8 @@ if ( ! class_exists( 'RWMB_File_Input_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -56,6 +56,7 @@ if ( ! class_exists( 'RWMB_File_Input_Field' ) )
 				'size'        => 30,
 				'placeholder' => '',
 			) );
+
 			return $field;
 		}
 	}

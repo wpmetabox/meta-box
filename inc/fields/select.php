@@ -19,8 +19,8 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -136,7 +136,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 				$html .= sprintf(
 					$option,
 					$value,
-					selected( in_array( $value, (array)$meta ), true, false ),
+					selected( in_array( $value, (array) $meta ), true, false ),
 					$label
 				);
 			}

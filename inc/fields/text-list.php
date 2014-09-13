@@ -16,12 +16,12 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$html = '';
+			$html  = '';
 			$input = '<label><input type="text" class="rwmb-text-list" name="%s" id="%s" value="%s" placeholder="%s" /> %s</label>';
 
 			$i = 0;
 			foreach ( $field['options'] as $value => $label )
-			{				
+			{
 				$html .= sprintf(
 					$input,
 					$field['field_name'],
@@ -30,8 +30,9 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 					$value,
 					$label
 				);
-				$i++;		
+				$i ++;
 			}
+
 			return $html;
 		}
 
