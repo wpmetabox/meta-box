@@ -51,7 +51,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		static function get_embed( $url )
 		{
 			$embed = @wp_oembed_get( $url );
-			return $embed ? $embed : __( 'Embed HTML not available.', 'rwmb' );
+			return $embed ? $embed : __( 'Embed HTML not available.', 'meta-box' );
 		}
 
 		/**
@@ -73,7 +73,7 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 				$field['id'],
 				$meta,
 				$field['size'],
-				__( 'Preview', 'rwmb' ),
+				__( 'Preview', 'meta-box' ),
 				$meta ? self::get_embed( $meta ) : ''
 			);
 		}

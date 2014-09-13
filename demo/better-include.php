@@ -13,10 +13,10 @@ global $meta_boxes;
 $meta_boxes = array();
 
 $meta_boxes[] = array(
-	'title'  => __( 'Meta Box Title', 'rwmb' ),
+	'title'  => __( 'Meta Box Title', 'meta-box' ),
 	'fields' => array(
 		array(
-			'name' => __( 'Your images', 'rwmb' ),
+			'name' => __( 'Your images', 'meta-box' ),
 			'id'   => "{$prefix}img",
 			'type' => 'plupload_image',
 		),

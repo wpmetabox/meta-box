@@ -44,12 +44,29 @@ module.exports = function ( grunt )
 			all    : allJsFiles // Lint all JS files, except *.min.js (libraries)
 		},
 
+		// Add text domain
+		addtextdomain  : {
+			options: {
+				textdomain   : '',       // Project text domain.
+				updateDomains: ['rwmb']  // List of text domains to replace. Update old text domain to use plugin slug
+			},
+			release: {
+				files: [{
+					expand: true,
+					src   : [
+						'**/*.php'
+						//'!demo/*'
+					]
+				}]
+			}
+		},
+
 		// Check text domain
 		checktextdomain: {
 			release: {
 				options: {
-					text_domain: 'rwmb', // Specify allowed domain(s)
-					keywords   : [       // List keyword specifications
+					text_domain: 'meta-box', // Specify allowed domain(s)
+					keywords   : [           // List keyword specifications
 						'__:1,2d',
 						'_e:1,2d',
 						'_x:1,2c,3d',
@@ -129,6 +146,7 @@ module.exports = function ( grunt )
 
 		// Translation
 		'checktextdomain',
+		'addtextdomain',
 		'makepot'
 	] );
 };
