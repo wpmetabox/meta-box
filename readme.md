@@ -41,9 +41,17 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 - select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
 - slider, range
 - taxonomy
+- taxonomy_advanced
 - text, url, email, number, oembed
 - textarea
 - wysiwyg
+
+### Premium Extensions
+
+- [Meta Box Show Hide (Javascript)](http://premium.deluxeblogtips.com/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](http://premium.deluxeblogtips.com/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](http://premium.deluxeblogtips.com/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](http://premium.deluxeblogtips.com/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
 ***
 
