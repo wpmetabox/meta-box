@@ -104,6 +104,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			$screen = get_current_screen();
 
+            foreach ( $this->meta_box['pages'] as $key => $page ) {
+                if ( is_array( $page ) ) {
+                    if ( isset( $page['page'] ) ) {
+                        $this->meta_box['pages'][] = $page['page'];
+                    }
+                    unset( $this->meta_box['pages'][ $key ] );
+                }
+            }
+
 			// Enqueue scripts and styles for registered pages (post types) only
 			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
 				return;
