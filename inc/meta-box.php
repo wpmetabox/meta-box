@@ -104,6 +104,15 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			$screen = get_current_screen();
 
+            foreach ( $this->meta_box['pages'] as $key => $page ) {
+                if ( is_array( $page ) ) {
+                    if ( isset( $page['page'] ) ) {
+                        $this->meta_box['pages'][] = $page['page'];
+                    }
+                    unset( $this->meta_box['pages'][ $key ] );
+                }
+            }
+
 			// Enqueue scripts and styles for registered pages (post types) only
 			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
 				return;
@@ -170,6 +179,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
+				if ( is_array( $page ) && isset( $page['id'] ) && isset( $page['page'] ) ) {
+					$id = $page['id'];
+					$page = $page['page']; // Go ahead and reset page here since we've already saved id to a variable
+					if ( isset( $_GET['post'] ) && $_GET['post'] != $id ) {
+						// Don't add the metabox if we're not on the correct page
+						continue;
+					}
+				} elseif ( is_array( $page ) ) {
+					// The correct variables weren't passed in, so silently fail
+					continue;
+				}
+
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
