@@ -170,6 +170,18 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $this->meta_box['pages'] as $page )
 			{
+                if (is_array($page) && isset($page['id']) && isset($page['page'])) {
+                    $id = $page['id'];
+                    $page = $page['page']; // Go ahead and reset page here since we've already saved id to a variable
+                    if (isset($_GET['post']) && $id != $_GET['post']) {
+                        // Don't add the metabox if we're not on the correct page
+                        continue;
+                    }
+                } elseif (is_array($page)) {
+                    // The correct variables weren't passed in, so silently fail
+                    continue;
+                }
+
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
