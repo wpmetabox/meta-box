@@ -9,8 +9,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 	 * A class to rapid develop meta boxes for custom & built in content types
 	 * Piggybacks on WordPress
 	 *
-	 * @author Rilwis
-	 * @author Co-Authors @see https://github.com/rilwis/meta-box
+	 * @author  Rilwis
+	 * @author  Co-Authors @see https://github.com/rilwis/meta-box
 	 * @license GNU GPL2+
 	 * @package RW Meta Box
 	 */
@@ -112,7 +112,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Load clone script conditionally
 			$has_clone = false;
-			$fields = self::get_fields( $this->fields );
+			$fields    = self::get_fields( $this->fields );
 
 			foreach ( $fields as $field )
 			{
@@ -158,7 +158,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**************************************************
-		 SHOW META BOX
+		 * SHOW META BOX
 		 **************************************************/
 
 		/**
@@ -199,6 +199,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				$hidden[] = $this->meta_box['id'];
 			}
+
 			return $hidden;
 		}
 
@@ -216,7 +217,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Container
 			printf(
 				'<div class="rwmb-meta-box" data-autosave="%s">',
-				$this->meta_box['autosave']  ? 'true' : 'false'
+				$this->meta_box['autosave'] ? 'true' : 'false'
 			);
 
 			wp_nonce_field( "rwmb-save-{$this->meta_box['id']}", "nonce_{$this->meta_box['id']}" );
@@ -241,7 +242,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					{
 						var rwmb = {
 							validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
-							summaryMessage : "' . esc_js( __( 'Please correct the errors highlighted below and try again.', 'rwmb' ) ) . '"
+							summaryMessage : "' . esc_js( __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) . '"
 						};
 					}
 					else
@@ -264,7 +265,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**************************************************
-		 SAVE META BOX
+		 * SAVE META BOX
 		 **************************************************/
 
 		/**
@@ -282,7 +283,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$this->saved = true;
 
 			// Check whether form is submitted properly
-			$id = $this->meta_box['id'];
+			$id    = $this->meta_box['id'];
 			$nonce = isset( $_POST["nonce_{$id}"] ) ? sanitize_key( $_POST["nonce_{$id}"] ) : '';
 			if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $nonce, "rwmb-save-{$id}" ) )
 				return;
@@ -324,7 +325,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**************************************************
-		 HELPER FUNCTIONS
+		 * HELPER FUNCTIONS
 		 **************************************************/
 
 		/**
@@ -368,16 +369,16 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			foreach ( $fields as &$field )
 			{
 				$field = wp_parse_args( $field, array(
-					'multiple'      => false,
-					'clone'         => false,
-					'std'           => '',
-					'desc'          => '',
-					'format'        => '',
-					'before'        => '',
-					'after'         => '',
-					'field_name'    => isset( $field['id'] ) ? $field['id'] : '',
-					'required'      => false,
-					'placeholder'   => '',
+					'multiple'    => false,
+					'clone'       => false,
+					'std'         => '',
+					'desc'        => '',
+					'format'      => '',
+					'before'      => '',
+					'after'       => '',
+					'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
+					'required'    => false,
+					'placeholder' => '',
 				) );
 
 				do_action( 'rwmb_before_normalize_field', $field );
@@ -420,6 +421,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			// Relace whitespace with underscores
 			$class = str_replace( ' ', '_', $class );
+
 			return class_exists( $class ) ? $class : false;
 		}
 
@@ -445,6 +447,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					return true;
 				}
 			}
+
 			return false;
 		}
 	}

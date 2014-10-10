@@ -1,6 +1,7 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
+
 require_once RWMB_FIELDS_DIR . 'image.php';
 if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 {
@@ -19,7 +20,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-image-advanced', 'rwmbImageAdvanced', array(
-				'frameTitle' => __( 'Select Images', 'rwmb' ),
+				'frameTitle' => __( 'Select Images', 'meta-box' ),
 			) );
 		}
 
@@ -60,14 +61,14 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
 		static function html( $meta, $field )
 		{
-			$i18n_title = apply_filters( 'rwmb_image_advanced_select_string', _x( 'Select or Upload Images', 'image upload', 'rwmb' ), $field );
+			$i18n_title   = apply_filters( 'rwmb_image_advanced_select_string', _x( 'Select or Upload Images', 'image upload', 'meta-box' ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-media_{$field['id']}" );
 
 			// Uploaded images
@@ -98,30 +99,31 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		static function value( $new, $old, $post_id, $field )
 		{
 			$new = (array) $new;
+
 			return array_unique( array_merge( $old, $new ) );
 		}
 
 		static function print_templates()
 		{
-			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
-			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
+			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'meta-box' ) );
+			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'meta-box' ) );
 			?>
 			<script id="tmpl-rwmb-image-advanced" type="text/html">
 				<# _.each( attachments, function( attachment ) { #>
-				<li id="item_{{{ attachment.id }}}">
-					<# if ( attachment.sizes.hasOwnProperty( 'thumbnail' ) ) { #>
-						<img src="{{{ attachment.sizes.thumbnail.url }}}">
-					<# } else { #>
-						<img src="{{{ attachment.sizes.full.url }}}">
-					<# } #>
-					<div class="rwmb-image-bar">
-						<a title="<?php echo esc_attr( $i18n_edit ); ?>" class="rwmb-edit-file" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
-						<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}">&times;</a>
-					</div>
-				</li>
-				<# } ); #>
+					<li id="item_{{{ attachment.id }}}">
+						<# if ( attachment.sizes.hasOwnProperty( 'thumbnail' ) ) { #>
+							<img src="{{{ attachment.sizes.thumbnail.url }}}">
+							<# } else { #>
+								<img src="{{{ attachment.sizes.full.url }}}">
+								<# } #>
+									<div class="rwmb-image-bar">
+										<a title="<?php echo esc_attr( $i18n_edit ); ?>" class="rwmb-edit-file" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
+										<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}">&times;</a>
+									</div>
+					</li>
+					<# } ); #>
 			</script>
-			<?php
+		<?php
 		}
 
 	}

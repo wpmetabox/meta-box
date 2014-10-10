@@ -29,7 +29,7 @@ if ( ! class_exists( 'RWMB_Common' ) )
 		{
 			// l18n translation files
 			$locale = get_locale();
-			$dir = trailingslashit( RWMB_DIR . 'lang' );
+			$dir    = trailingslashit( RWMB_DIR . 'lang' );
 			$mofile = "{$dir}{$locale}.mo";
 
 			// In themes/plugins/mu-plugins directory

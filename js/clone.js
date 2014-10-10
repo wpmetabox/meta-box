@@ -1,43 +1,6 @@
 jQuery( function ( $ )
 {
-	// Add more clones
-	$( '.add-clone' ).on( 'click', function ( e )
-	{
-		e.preventDefault();
-
-		var $input = $( this ).parents( '.rwmb-input' );
-
-		if ( $( this ).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
-		{
-			cloneWYSIWYG( $input );
-		}
-		else
-		{
-			clone( $input );
-		}
-
-		toggleRemoveButtons( $input );
-	} );
-
-	// Remove clones
-	$( '.rwmb-input' ).on( 'click', '.remove-clone', function ( e )
-	{
-		e.preventDefault();
-
-		var $this = $( this ),
-			$input = $this.parents( '.rwmb-input' );
-
-		// Remove clone only if there're 2 or more of them
-		if ( $input.find( '.rwmb-clone' ).length <= 1 )
-			return;
-
-		$this.parent().remove();
-
-		// Toggle remove buttons
-		toggleRemoveButtons( $input );
-	} );
-
-	toggleRemoveButtons();
+	'use strict';
 
 	/**
 	 * Clone fields
@@ -58,7 +21,7 @@ jQuery( function ( $ )
 		{
 			var $this = $( this );
 
-			if ( $this.attr( 'type' ) == 'radio' || $this.attr( 'type' ) == 'checkbox' )
+			if ( $this.attr( 'type' ) === 'radio' || $this.attr( 'type' ) === 'checkbox' )
 			{
 				// Reset 'checked' attribute
 				$this.removeAttr( 'checked' );
@@ -72,7 +35,7 @@ jQuery( function ( $ )
 			// Get the field name, and increment
 			var name = $this.attr( 'name' ).replace( /\[(\d+)\]/, function ( match, p1 )
 			{
-				return '[' + ( parseInt( p1 ) + 1 ) + ']';
+				return '[' + ( parseInt( p1, 10 ) + 1 ) + ']';
 			} );
 
 			// Update the "name" attribute
@@ -87,7 +50,7 @@ jQuery( function ( $ )
 				{
 					id = id.replace( /_(\d+)/, function ( match, p1 )
 					{
-						return '_' + ( parseInt( p1 ) + 1 );
+						return '_' + ( parseInt( p1, 10 ) + 1 );
 					} );
 				}
 				else
@@ -108,7 +71,7 @@ jQuery( function ( $ )
 				{
 					value = value.replace( /_(\d+)/, function ( match, p1 )
 					{
-						return '_' + ( parseInt( p1 ) + 1 );
+						return '_' + ( parseInt( p1, 10 ) + 1 );
 					} );
 				}
 				else
@@ -124,6 +87,31 @@ jQuery( function ( $ )
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
+	}
+
+	/**
+	 * Hide remove buttons when there's only 1 of them
+	 *
+	 * @param $el jQuery element. If not supplied, the function will applies for all fields
+	 *
+	 * @return void
+	 */
+	function toggleRemoveButtons( $el )
+	{
+		var $button;
+		$el = $el || $( '.rwmb-field' );
+		$el.each( function ()
+		{
+			$button = $( this ).find( '.remove-clone' );
+			if ( $button.length < 2 )
+			{
+				$button.hide();
+			}
+			else
+			{
+				$button.show();
+			}
+		} );
 	}
 
 	/**
@@ -143,7 +131,7 @@ jQuery( function ( $ )
 		var new_index = 0;
 		var new_name = field_name.replace( /\[(\d+)\]/, function ( match, p1 )
 		{
-			new_index = ( parseInt( p1 ) + 1 );
+			new_index = ( parseInt( p1, 10 ) + 1 );
 			return '[' + new_index + ']';
 		} );
 
@@ -186,8 +174,8 @@ jQuery( function ( $ )
 
 
 			//Get TinyMCE setting for our fields
-			var tmceinit = tinyMCEPreInit.mceInit[  $clone_first.find( 'textarea.wp-editor-area' ).attr( 'name' ) ];
-			var tmceqtinit = tinyMCEPreInit.qtInit[ $clone_first.find( 'textarea.wp-editor-area' ).attr( 'name' ) ];
+			var tmceinit = tinyMCEPreInit.mceInit[$clone_first.find( 'textarea.wp-editor-area' ).attr( 'name' )];
+			var tmceqtinit = tinyMCEPreInit.qtInit[$clone_first.find( 'textarea.wp-editor-area' ).attr( 'name' )];
 
 			//Replace id & elements with new created field names
 			tmceinit.elements = new_name;
@@ -198,16 +186,16 @@ jQuery( function ( $ )
 			{
 				tinymce.init( tmceinit );
 			}
-			catch (e)
+			catch ( e )
 			{
 			}
-			if ( typeof(QTags) == 'function' )
+			if ( typeof(QTags) === 'function' )
 			{
 				try
 				{
 					quicktags( tmceqtinit );
 				}
-				catch (e)
+				catch ( e )
 				{
 				}
 			}
@@ -221,21 +209,45 @@ jQuery( function ( $ )
 
 	}
 
-	/**
-	 * Hide remove buttons when there's only 1 of them
-	 *
-	 * @param $el jQuery element. If not supplied, the function will applies for all fields
-	 *
-	 * @return void
-	 */
-	function toggleRemoveButtons( $el )
+
+	// Add more clones
+	$( '.add-clone' ).on( 'click', function ( e )
 	{
-		var $button;
-		$el = $el || $( '.rwmb-field' );
-		$el.each( function ()
+		e.preventDefault();
+
+		var $input = $( this ).parents( '.rwmb-input' );
+
+		if ( $( this ).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 		{
-			$button = $( this ).find( '.remove-clone' );
-			$button.length < 2 ? $button.hide() : $button.show();
-		} );
-	}
+			cloneWYSIWYG( $input );
+		}
+		else
+		{
+			clone( $input );
+		}
+
+		toggleRemoveButtons( $input );
+	} );
+
+	// Remove clones
+	$( '.rwmb-input' ).on( 'click', '.remove-clone', function ( e )
+	{
+		e.preventDefault();
+
+		var $this = $( this ),
+			$input = $this.parents( '.rwmb-input' );
+
+		// Remove clone only if there're 2 or more of them
+		if ( $input.find( '.rwmb-clone' ).length <= 1 )
+		{
+			return;
+		}
+
+		$this.parent().remove();
+
+		// Toggle remove buttons
+		toggleRemoveButtons( $input );
+	} );
+
+	toggleRemoveButtons();
 } );

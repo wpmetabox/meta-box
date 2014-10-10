@@ -1,15 +1,19 @@
-jQuery( document ).ready( function( $ )
+jQuery( function ( $ )
 {
+	'use strict';
+
 	var $form = $( '#post' );
 
 	// Required field styling
-	$.each( rwmb.validationOptions.rules, function( k, v )
+	$.each( rwmb.validationOptions.rules, function ( k, v )
 	{
 		if ( v['required'] )
+		{
 			$( '#' + k ).parent().siblings( '.rwmb-label' ).addClass( 'required' ).append( '<span>*</span>' );
+		}
 	} );
 
-	rwmb.validationOptions.invalidHandler = function( form, validator )
+	rwmb.validationOptions.invalidHandler = function ()
 	{
 		// Re-enable the submit ( publish/update ) button and hide the ajax indicator
 		$( '#publish' ).removeClass( 'button-primary-disabled' );

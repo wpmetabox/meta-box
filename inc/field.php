@@ -8,14 +8,18 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return void
 		 */
-		static function add_actions() {}
+		static function add_actions()
+		{
+		}
 
 		/**
 		 * Enqueue scripts and styles
 		 *
 		 * @return void
 		 */
-		static function admin_enqueue_scripts() {}
+		static function admin_enqueue_scripts()
+		{
+		}
 
 		/**
 		 * Show field HTML
@@ -33,7 +37,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			global $post;
 
 			$field_class = RW_Meta_Box::get_class_name( $field );
-			$meta = call_user_func( array( $field_class, 'meta' ), $post->ID, $saved, $field );
+			$meta        = call_user_func( array( $field_class, 'meta' ), $post->ID, $saved, $field );
 
 			// Apply filter to field meta value
 			// 1st filter applies to all fields
@@ -67,7 +71,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 				foreach ( $meta as $index => $sub_meta )
 				{
-					$sub_field = $field;
+					$sub_field               = $field;
 					$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 					if ( $index > 0 )
 					{
@@ -203,7 +207,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		static function end_html( $meta, $field )
 		{
 			$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ) ) : '';
-			$desc = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
+			$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 			// Closes the container
 			$html = "{$button}{$desc}</div>";
@@ -218,7 +222,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function add_clone_button()
 		{
-			return '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'rwmb' ) . '</a>';
+			return '<a href="#" class="rwmb-button button-primary add-clone">' . __( '+', 'meta-box' ) . '</a>';
 		}
 
 		/**
@@ -228,7 +232,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function remove_clone_button()
 		{
-			return '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'rwmb' ) . '</a>';
+			return '<a href="#" class="rwmb-button button remove-clone">' . __( '&#8211;', 'meta-box' ) . '</a>';
 		}
 
 		/**
@@ -284,6 +288,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			if ( '' === $new || array() === $new )
 			{
 				delete_post_meta( $post_id, $name );
+
 				return;
 			}
 

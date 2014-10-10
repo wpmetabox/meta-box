@@ -1,0 +1,35 @@
+{
+  "name": "meta-box",
+  "version": "4.3.10",
+  "description": "Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rilwis/meta-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rilwis/meta-box/issues"
+  },
+  "author": "Tran Ngoc Tuan Anh <rilwis@gmail.com>",
+  "homepage": "http://www.deluxeblogtips.com/meta-box/",
+  "license": {
+    "type": "GPL 2.0+",
+    "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^1.0.1",
+    "grunt-checktextdomain": "^0.1.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-imagemin": "^0.8.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-csscomb": "^3.0.0",
+    "grunt-phpcs": "^0.2.3",
+    "grunt-phplint": "0.0.5",
+    "grunt-wp-deploy": "^1.0.3",
+    "grunt-wp-i18n": "^0.4.8",
+    "jshint-stylish": "^0.4.0",
+    "load-grunt-tasks": "^0.4.0"
+  }
+}

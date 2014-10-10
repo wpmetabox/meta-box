@@ -2,10 +2,10 @@
 
 class RWMB_Loader
 {
-	static function load( $RWMB_URL, $RWMB_DIR )
- 	{
-		define( 'RWMB_URL', $RWMB_URL );
-		define( 'RWMB_DIR', $RWMB_DIR );
+	static function load( $url, $dir )
+	{
+		define( 'RWMB_URL', $url );
+		define( 'RWMB_DIR', $dir );
 
 		define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
 		define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );

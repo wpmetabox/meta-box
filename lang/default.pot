@@ -1,0 +1,174 @@
+# <!=Copyright (C) 2014 Rilwis
+# This file is distributed under the GPL2+.=!>
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box 4.3.10\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
+"POT-Creation-Date: 2014-09-13 10:50:22+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: inc/field.php:225
+msgid "+"
+msgstr ""
+
+#: inc/field.php:235
+msgid "&#8211;"
+msgstr ""
+
+#: inc/fields/button.php:35
+msgid "Click me"
+msgstr ""
+
+#: inc/fields/file-advanced.php:23
+msgid "Select Files"
+msgstr ""
+
+#: inc/fields/file-advanced.php:66
+msgctxt "file upload"
+msgid "Select or Upload Files"
+msgstr ""
+
+#: inc/fields/file-advanced.php:103 inc/fields/file.php:168
+msgctxt "file upload"
+msgid "Delete"
+msgstr ""
+
+#: inc/fields/file-advanced.php:104 inc/fields/file.php:169
+msgctxt "file upload"
+msgid "Edit"
+msgstr ""
+
+#: inc/fields/file-input.php:17
+msgid "Select File"
+msgstr ""
+
+#: inc/fields/file-input.php:40
+msgid "Select"
+msgstr ""
+
+#: inc/fields/file-input.php:42
+msgid "Remove"
+msgstr ""
+
+#: inc/fields/file.php:19
+msgid "You may only upload maximum %d file"
+msgstr ""
+
+#: inc/fields/file.php:20
+msgid "You may only upload maximum %d files"
+msgstr ""
+
+#: inc/fields/file.php:98
+msgid "Error: Cannot delete file"
+msgstr ""
+
+#: inc/fields/file.php:111
+msgctxt "file upload"
+msgid "Upload Files"
+msgstr ""
+
+#: inc/fields/file.php:112
+msgctxt "file upload"
+msgid "+ Add new file"
+msgstr ""
+
+#: inc/fields/image-advanced.php:23
+msgid "Select Images"
+msgstr ""
+
+#: inc/fields/image-advanced.php:71
+msgctxt "image upload"
+msgid "Select or Upload Images"
+msgstr ""
+
+#: inc/fields/image-advanced.php:108 inc/fields/image.php:136
+msgctxt "image upload"
+msgid "Delete"
+msgstr ""
+
+#: inc/fields/image-advanced.php:109 inc/fields/image.php:137
+msgctxt "image upload"
+msgid "Edit"
+msgstr ""
+
+#: inc/fields/image.php:70 inc/fields/thickbox-image.php:34
+msgctxt "image upload"
+msgid "Upload Images"
+msgstr ""
+
+#: inc/fields/image.php:71
+msgctxt "image upload"
+msgid "+ Add new image"
+msgstr ""
+
+#: inc/fields/map.php:48
+msgid "Find Address"
+msgstr ""
+
+#: inc/fields/oembed.php:55
+msgid "Embed HTML not available."
+msgstr ""
+
+#: inc/fields/oembed.php:77
+msgid "Preview"
+msgstr ""
+
+#: inc/fields/plupload-image.php:105
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr ""
+
+#: inc/fields/plupload-image.php:106
+msgctxt "image upload"
+msgid "or"
+msgstr ""
+
+#: inc/fields/plupload-image.php:107
+msgctxt "image upload"
+msgid "Select Files"
+msgstr ""
+
+#: inc/fields/plupload-image.php:183
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr ""
+
+#: inc/fields/post.php:52
+msgid "Post"
+msgstr ""
+
+#: inc/fields/post.php:66 inc/fields/taxonomy.php:40 inc/fields/user.php:62
+msgid "Select a %s"
+msgstr ""
+
+#: inc/fields/user.php:54
+msgid "User"
+msgstr ""
+
+#: inc/meta-box.php:245
+msgid "Please correct the errors highlighted below and try again."
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "Meta Box"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.deluxeblogtips.com/meta-box"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Rilwis"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.deluxeblogtips.com"
+msgstr ""

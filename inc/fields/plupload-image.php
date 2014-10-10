@@ -9,7 +9,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		/**
 		 * Add field actions
 		 *
-		 * @return	void
+		 * @return    void
 		 */
 		static function add_actions()
 		{
@@ -26,14 +26,14 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		static function handle_upload()
 		{
 			global $wpdb;
-			$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+			$post_id  = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
 			$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
 
 			check_ajax_referer( "rwmb-upload-images_{$field_id}" );
 
 			// You can use WP's wp_handle_upload() function:
-			$file       = $_FILES['async-upload'];
-			$file_attr  = wp_handle_upload( $file, array( 'test_form' => false ) );
+			$file      = $_FILES['async-upload'];
+			$file_attr = wp_handle_upload( $file, array( 'test_form' => false ) );
 			//Get next menu_order
 			$meta = get_post_meta( $post_id, $field_id, false );
 			if ( empty( $meta ) )
@@ -91,8 +91,8 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -102,15 +102,15 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$meta = ( array ) $meta;
 
 			// Filter to change the drag & drop box background string
-			$i18n_drop   = apply_filters( 'rwmb_plupload_image_drop_string', _x( 'Drop images here', 'image upload', 'rwmb' ), $field );
-			$i18n_or     = apply_filters( 'rwmb_plupload_image_or_string', _x( 'or', 'image upload', 'rwmb' ), $field );
-			$i18n_select = apply_filters( 'rwmb_plupload_image_select_string', _x( 'Select Files', 'image upload', 'rwmb' ), $field );
+			$i18n_drop   = apply_filters( 'rwmb_plupload_image_drop_string', _x( 'Drop images here', 'image upload', 'meta-box' ), $field );
+			$i18n_or     = apply_filters( 'rwmb_plupload_image_or_string', _x( 'or', 'image upload', 'meta-box' ), $field );
+			$i18n_select = apply_filters( 'rwmb_plupload_image_select_string', _x( 'Select Files', 'image upload', 'meta-box' ), $field );
 
 			// Uploaded images
 
 			// Check for max_file_uploads
-			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js', 'new-files');
-			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads']  )
+			$classes = array( 'rwmb-drag-drop', 'drag-drop', 'hide-if-no-js', 'new-files' );
+			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
 				$classes[] = 'hidden';
 
 
@@ -152,6 +152,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		static function value( $new, $old, $post_id, $field )
 		{
 			$new = (array) $new;
+
 			return array_unique( array_merge( $old, $new ) );
 		}
 
@@ -165,30 +166,30 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['js_options'] = array(
-				'runtimes'				=> 'html5,silverlight,flash,html4',
-				'file_data_name'		=> 'async-upload',
+				'runtimes'            => 'html5,silverlight,flash,html4',
+				'file_data_name'      => 'async-upload',
 				//'container'				=> $field['id'] . '-container',
-				'browse_button'			=> $field['id'] . '-browse-button',
-				'drop_element'			=> $field['id'] . '-dragdrop',
-				'multiple_queues'		=> true,
-				'max_file_size'			=> wp_max_upload_size() . 'b',
-				'url'					=> admin_url( 'admin-ajax.php' ),
-				'flash_swf_url'			=> includes_url( 'js/plupload/plupload.flash.swf' ),
-				'silverlight_xap_url'	=> includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'multipart'				=> true,
-				'urlstream_upload'		=> true,
-				'filters'				=> array(
+				'browse_button'       => $field['id'] . '-browse-button',
+				'drop_element'        => $field['id'] . '-dragdrop',
+				'multiple_queues'     => true,
+				'max_file_size'       => wp_max_upload_size() . 'b',
+				'url'                 => admin_url( 'admin-ajax.php' ),
+				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+				'multipart'           => true,
+				'urlstream_upload'    => true,
+				'filters'             => array(
 					array(
-						'title'      => _x( 'Allowed Image Files', 'image upload', 'rwmb' ),
+						'title'      => _x( 'Allowed Image Files', 'image upload', 'meta-box' ),
 						'extensions' => 'jpg,jpeg,gif,png',
 					),
 				),
-				'multipart_params'		=> array(
-					'field_id'	=> $field['id'],
-					'action' 	=> 'rwmb_plupload_image_upload',
+				'multipart_params'    => array(
+					'field_id' => $field['id'],
+					'action'   => 'rwmb_plupload_image_upload',
 				)
 			);
-			$field = parent::normalize_field( $field );
+			$field               = parent::normalize_field( $field );
 
 			return $field;
 		}

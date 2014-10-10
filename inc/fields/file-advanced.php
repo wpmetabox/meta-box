@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-file-advanced', 'rwmbFileAdvanced', array(
-				'frameTitle' => __( 'Select Files', 'rwmb' ),
+				'frameTitle' => __( 'Select Files', 'meta-box' ),
 			) );
 		}
 
@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			$attachment_ids = isset( $_POST['attachment_ids'] ) ? (array) $_POST['attachment_ids'] : array();
 
 			check_ajax_referer( "rwmb-attach-file_{$field_id}" );
-			foreach( $attachment_ids as $attachment_id )
+			foreach ( $attachment_ids as $attachment_id )
 			{
 				add_post_meta( $post_id, $field_id, $attachment_id, false );
 			}
@@ -56,14 +56,14 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
 		static function html( $meta, $field )
 		{
-			$i18n_title  = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select or Upload Files', 'file upload', 'rwmb' ), $field );
+			$i18n_title   = apply_filters( 'rwmb_file_advanced_select_string', _x( 'Select or Upload Files', 'file upload', 'meta-box' ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-file_{$field['id']}" );
 
 			// Uploaded files
@@ -94,28 +94,31 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 		static function value( $new, $old, $post_id, $field )
 		{
 			$new = (array) $new;
+
 			return array_unique( array_merge( $old, $new ) );
 		}
 
 		static function print_templates()
 		{
-			$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'rwmb' ) );
-			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'rwmb' ) );
+			$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
+			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
 			?>
 			<script id="tmpl-rwmb-file-advanced" type="text/html">
 				<# _.each( attachments, function( attachment ) { #>
-				<li>
-					<div class="rwmb-icon"><img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>"></div>
-					<div class="rwmb-info">
-						<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
-						<p>{{{ attachment.mime }}}</p>
-						<a title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
-						<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}"><?php echo esc_html( $i18n_delete ); ?></a>
-					</div>
-				</li>
-				<# } ); #>
+					<li id="item_{{{ attachment.id }}}">
+						<div class="rwmb-icon">
+							<img src="<# if ( attachment.type == 'image' ){ #>{{{ attachment.sizes.thumbnail.url }}}<# } else { #>{{{ attachment.icon }}}<# } #>">
+						</div>
+						<div class="rwmb-info">
+							<a href="{{{ attachment.url }}}" target="_blank">{{{ attachment.title }}}</a>
+							<p>{{{ attachment.mime }}}</p>
+							<a title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ attachment.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
+							<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-delete-file" href="#" data-attachment_id="{{{ attachment.id }}}"><?php echo esc_html( $i18n_delete ); ?></a>
+						</div>
+					</li>
+					<# } ); #>
 			</script>
-			<?php
+		<?php
 		}
 	}
 }

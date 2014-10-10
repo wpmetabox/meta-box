@@ -1,5 +1,4 @@
-input[type="range"] {
-	-webkit-border-radius: 2px;
+input[type='range'] {
 	border-radius: 2px;
 	border: 1px solid #dfdfdf;
 }

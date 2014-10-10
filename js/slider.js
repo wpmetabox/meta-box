@@ -1,7 +1,6 @@
 jQuery( function( $ )
 {
-	$( ':input.rwmb-slider-value' ).each( rwmb_update_slider );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-slider-value', rwmb_update_slider );
+	'use strict';
 
 	function rwmb_update_slider()
 	{
@@ -34,4 +33,7 @@ jQuery( function( $ )
 
 		$slider.slider( options );
 	}
+
+	$( ':input.rwmb-slider-value' ).each( rwmb_update_slider );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-slider-value', rwmb_update_slider );
 } );

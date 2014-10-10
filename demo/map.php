@@ -3,17 +3,17 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
 function your_prefix_register_meta_boxes( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title'  => __( 'Google Map', 'rwmb' ),
+		'title'  => __( 'Google Map', 'meta-box' ),
 		'fields' => array(
 			array(
 				'id'            => 'address',
-				'name'          => __( 'Address', 'rwmb' ),
+				'name'          => __( 'Address', 'meta-box' ),
 				'type'          => 'text',
-				'std'           => __( 'Hanoi, Vietnam', 'rwmb' ),
+				'std'           => __( 'Hanoi, Vietnam', 'meta-box' ),
 			),
 			array(
 				'id'            => 'loc',
-				'name'          => __( 'Location', 'rwmb' ),
+				'name'          => __( 'Location', 'meta-box' ),
 				'type'          => 'map',
 				'std'           => '-6.233406,-35.049906,15',     // 'latitude,longitude[,zoom]' (zoom is optional)
 				'style'         => 'width: 500px; height: 500px',

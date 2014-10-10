@@ -20,15 +20,15 @@ if ( ! class_exists( 'RWMB_Image_Select_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
 		static function html( $meta, $field )
 		{
 			$html = array();
-			$tpl = '<label class="rwmb-image-select"><img src="%s"><input type="%s" class="hidden" name="%s" value="%s"%s></label>';
+			$tpl  = '<label class="rwmb-image-select"><img src="%s"><input type="%s" class="hidden" name="%s" value="%s"%s></label>';
 
 			$meta = (array) $meta;
 			foreach ( $field['options'] as $value => $image )
@@ -56,6 +56,7 @@ if ( ! class_exists( 'RWMB_Image_Select_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['field_name'] .= $field['multiple'] ? '[]' : '';
+
 			return $field;
 		}
 	}

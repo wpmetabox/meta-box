@@ -36,10 +36,10 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			// Set default args
 			$field['options']['args'] = ! isset( $field['options']['args'] ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
 
-			$tax = get_taxonomy( $field['options']['taxonomy'] );
-			$field['placeholder'] = empty( $field['placeholder'] ) ? sprintf( __( 'Select a %s' , 'rwmb' ), $tax->labels->singular_name ) : $field['placeholder'];
+			$tax                  = get_taxonomy( $field['options']['taxonomy'] );
+			$field['placeholder'] = empty( $field['placeholder'] ) ? sprintf( __( 'Select a %s', 'meta-box' ), $tax->labels->singular_name ) : $field['placeholder'];
 
-			switch( $field['options']['type'] )
+			switch ( $field['options']['type'] )
 			{
 				case 'select_advanced':
 					$field = RWMB_Select_Advanced_Field::normalize_field( $field );
@@ -54,7 +54,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 					break;
 				default:
 					$field['options']['type'] = 'select';
-					$field = RWMB_Select_Field::normalize_field( $field );
+					$field                    = RWMB_Select_Field::normalize_field( $field );
 			}
 
 			if ( in_array( $field['options']['type'], array( 'checkbox_tree', 'select_tree' ) ) )
@@ -92,18 +92,18 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			$html = '';
 
-			switch( $options['type'] )
+			switch ( $options['type'] )
 			{
 				case 'checkbox_list':
 					$html = RWMB_Checkbox_List_Field::html( $meta, $field );
 					break;
 				case 'checkbox_tree':
 					$elements = self::process_terms( $terms );
-					$html    .= self::walk_checkbox_tree( $meta, $field, $elements, $options['parent'], true );
+					$html .= self::walk_checkbox_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_tree':
 					$elements = self::process_terms( $terms );
-					$html    .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], true );
+					$html .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_advanced':
 					$html = RWMB_Select_Advanced_Field::html( $meta, $field );
@@ -131,12 +131,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		{
 			if ( ! isset( $elements[$parent] ) )
 				return;
-			$terms  = $elements[$parent];
+			$terms            = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
-			$hidden = $active ? '' : 'hidden';
+			$hidden           = $active ? '' : 'hidden';
 
 			$html = "<ul class = 'rw-taxonomy-tree {$hidden}'>";
-			$li = '<li><label><input type="checkbox" name="%s" value="%s"%s> %s</label>';
+			$li   = '<li><label><input type="checkbox" name="%s" value="%s"%s> %s</label>';
 			foreach ( $terms as $term )
 			{
 				$html .= sprintf(
@@ -168,18 +168,18 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		{
 			if ( ! isset( $elements[$parent] ) )
 				return;
-			$terms    = $elements[$parent];
+			$terms            = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
 
-			$classes = array( 'rw-taxonomy-tree' );
+			$classes   = array( 'rw-taxonomy-tree' );
 			$classes[] = $active ? 'active' : 'disabled';
 			$classes[] = "rwmb-taxonomy-{$parent}";
 
-			$html  = '<div class="' . implode( ' ', $classes ) . '">';
+			$html = '<div class="' . implode( ' ', $classes ) . '">';
 			$html .= RWMB_Select_Field::html( $meta, $field );
 			foreach ( $terms as $term )
 			{
-				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta )  );
+				$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta ) );
 			}
 			$html .= '</div>';
 
@@ -201,6 +201,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			{
 				$elements[$term->parent][] = $term;
 			}
+
 			return $elements;
 		}
 
@@ -214,10 +215,11 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		static function get_options( $terms = array() )
 		{
 			$options = array();
-			foreach( $terms as $term )
+			foreach ( $terms as $term )
 			{
 				$options[$term->term_id] = $term->name;
 			}
+
 			return $options;
 		}
 

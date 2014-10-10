@@ -20,8 +20,8 @@ if ( ! class_exists( 'RWMB_Map_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_Map_Field' ) )
 				$html .= sprintf(
 					'<button class="button rwmb-map-goto-address-button" value="%s">%s</button>',
 					is_array( $address ) ? implode( ',', $address ) : $address,
-					__( 'Find Address', 'rwmb' )
+					__( 'Find Address', 'meta-box' )
 				);
 			}
 

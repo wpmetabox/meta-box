@@ -19,8 +19,8 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
@@ -51,6 +51,7 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 				'max'  => 10,
 				'step' => 1,
 			) );
+
 			return $field;
 		}
 

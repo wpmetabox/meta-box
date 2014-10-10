@@ -1,5 +1,7 @@
-jQuery( document ).ready( function( $ )
+jQuery( function( $ )
 {
+	'use strict';
+
 	$( '.rw-taxonomy-tree input:checkbox' ).change( function()
 	{
 		var $this = $( this ),
