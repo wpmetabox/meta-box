@@ -7,11 +7,11 @@ Tested up to: 4.0
 Stable tag: 4.3.10
 License: GPLv2 or later
 
-Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress. Works with custom post types and supports various field types.
+Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful, easy-to-use and can be extended with extensions.
 
 == Description ==
 
-Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
+Meta Box plugin provides powerful API to implement custom meta boxes and custom fields in editing pages (add new/edit post) in WordPress. It works with any custom post type and supports lots of field types.
 
 ### Features
 
@@ -19,7 +19,7 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrated with themes
 
-**You can also add more features to meta box via [premium extensions](http://premium.deluxeblogtips.com)**.
+**You can also add more features to meta box via [premium extensions](http://metabox.io)**.
 
 ### Supported fields
 
@@ -46,17 +46,20 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 
 ### Premium Extensions
 
-- [Meta Box Show Hide (Javascript)](http://premium.deluxeblogtips.com/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
-- [Meta Box Tabs](http://premium.deluxeblogtips.com/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
-- [Meta Box Columns](http://premium.deluxeblogtips.com/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
-- [Meta Box Include Exclude](http://premium.deluxeblogtips.com/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+- [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
+- [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](http://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](http://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](http://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+
+See all premium extensions [here](http://metabox.io).
 
 ### Plugin Links
 
-- [Project Page](http://www.deluxeblogtips.com/meta-box/)
-- [Documentation](http://www.deluxeblogtips.com/meta-box/getting-started/)
+- [Project Page](http://metabox.io/meta-box/)
+- [Documentation](http://metabox.io/documentation/)
 - [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
-- [Premium Extensions](http://premium.deluxeblogtips.com)
+- [Premium Extensions](http://metabox.io)
 
 == Installation ==
 
