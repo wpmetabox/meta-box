@@ -63,7 +63,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 			$field['options']['textarea_name'] = $field['field_name'];
 
 			// Use new wp_editor() since WP 3.3
-			wp_editor( $meta, $field['field_name'], $field['options'] );
+			wp_editor( $meta, $field['id'], $field['options'] );
 
 			$editor = ob_get_clean();
 			if ( $field['clone'] )
