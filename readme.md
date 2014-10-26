@@ -5,7 +5,7 @@
 **Plugin Links**
 
 - [Project Page](http://metabox.io/meta-box/)
-- [Documentation](http://metabox.io/documentation/)
+- [Documentation](http://metabox.io/docs/)
 - [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
 - [Premium Extensions](http://metabox.io)
 
@@ -64,7 +64,7 @@ See all premium extensions [here](http://metabox.io).
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin API, please read [this tutorial](http://www.deluxeblogtips.com/meta-box/getting-started/).
+To getting started with the plugin API, please read [this tutorial](http://metabox.io/docs/getting-started/).
 
 ***
 
