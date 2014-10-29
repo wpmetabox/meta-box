@@ -17,34 +17,10 @@ Meta Box plugin is a complete tool to create meta box and custom fields in WordP
 
 ### Features
 
-* Easily registers multiple custom meta boxes for posts, pages or custom post types
+* Easily register multiple custom meta boxes for posts, pages or custom post types
+* Supports a lot of [field types](http://metabox.io/docs/define-fields/)
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
-* Easily integrated with themes
-
-**You can also add more features to meta box via [premium extensions](http://metabox.io)**.
-
-### Supported fields
-
-- button
-- checkbox, checkbox_list
-- color
-- date, time, datetime
-- divider
-- file, file_advanced, file_input (allow to upload or paste file URL)
-- heading
-- hidden
-- image, thickbox_image, plupload_image, image_advanced, image_select (or radio image)
-- map
-- password
-- post
-- radio
-- select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
-- slider, range
-- taxonomy
-- taxonomy_advanced
-- text, url, email, number, oembed
-- textarea
-- wysiwyg
+* Easily integrate with themes
 
 ### Premium Extensions
 
@@ -82,6 +58,12 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 ***
 
 ## Changelog
+
+#### 4.3.11
+* Bug fix: use field id instead of field_name for wysiwyg field
+* Improvement: allow to sort files
+* Improvement: use 'meta-box' text domain instead of 'rwmb'
+* Improvement: coding standards
 
 #### 4.3.10
 * Bug fix: upload & reorder for image fields
