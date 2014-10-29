@@ -7,7 +7,7 @@ Tested up to: 4.0
 Stable tag: 4.3.11
 License: GPLv2 or later
 
-Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful, easy-to-use and can be extended with extensions.
+Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
 
 == Description ==
 
