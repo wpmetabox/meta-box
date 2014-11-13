@@ -4,6 +4,8 @@ class RWMB_Loader
 {
 	static function load( $url, $dir )
 	{
+		define( 'RWMB_VER', '4.3.11' );
+		
 		define( 'RWMB_URL', $url );
 		define( 'RWMB_DIR', $dir );
 
