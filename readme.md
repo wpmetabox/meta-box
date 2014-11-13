@@ -4,54 +4,33 @@
 
 **Plugin Links**
 
-- [Project Page](http://www.deluxeblogtips.com/meta-box/)
-- [Documentation](http://www.deluxeblogtips.com/meta-box/getting-started/)
+- [Project Page](http://metabox.io/meta-box/)
+- [Documentation](http://metabox.io/docs/)
 - [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
-- [Premium Extensions](http://premium.deluxeblogtips.com)
+- [Premium Extensions](http://metabox.io)
 
 ***
 
 ## Description
 
-Meta Box plugin provides an API to easily implement custom meta boxes in editing pages (add new/edit post) in WordPress. It works with custom post types and supports various field types.
+Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful, easy-to-use and can be extended with extensions.
 
 ### Features
 
-* Easily registers multiple custom meta boxes for posts, pages or custom post types
+* Easily register multiple custom meta boxes for posts, pages or custom post types
+* Supports a lot of [field types](http://metabox.io/docs/define-fields/)
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
-* Easily integrated with themes
-
-**You can also add more features to meta box via [premium extensions](http://premium.deluxeblogtips.com)**.
-
-### Supported fields
-
-- button
-- checkbox, checkbox_list
-- color
-- date, time, datetime
-- divider
-- file, file_advanced, file_input (allow to upload or paste file URL)
-- heading
-- hidden
-- image, thickbox_image, plupload_image, image_advanced, image_select (or radio image)
-- map
-- password
-- post
-- radio
-- select, select_advanced (uses [select2](http://ivaynberg.github.com/select2/))
-- slider, range
-- taxonomy
-- taxonomy_advanced
-- text, url, email, number, oembed
-- textarea
-- wysiwyg
+* Easily integrate with themes
 
 ### Premium Extensions
 
-- [Meta Box Show Hide (Javascript)](http://premium.deluxeblogtips.com/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
-- [Meta Box Tabs](http://premium.deluxeblogtips.com/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
-- [Meta Box Columns](http://premium.deluxeblogtips.com/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
-- [Meta Box Include Exclude](http://premium.deluxeblogtips.com/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+- [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
+- [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](http://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](http://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](http://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+
+See all premium extensions [here](http://metabox.io).
 
 ***
 
@@ -61,7 +40,7 @@ Meta Box plugin provides an API to easily implement custom meta boxes in editing
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin API, please read [this tutorial](http://www.deluxeblogtips.com/meta-box/getting-started/).
+To getting started with the plugin API, please read [this tutorial](http://metabox.io/docs/getting-started/).
 
 ***
 
@@ -79,6 +58,12 @@ To getting started with the plugin API, please read [this tutorial](http://www.d
 ***
 
 ## Changelog
+
+#### 4.3.11
+* Bug fix: use field id instead of field_name for wysiwyg field
+* Improvement: allow to sort files
+* Improvement: use 'meta-box' text domain instead of 'rwmb'
+* Improvement: coding standards
 
 #### 4.3.10
 * Bug fix: upload & reorder for image fields
