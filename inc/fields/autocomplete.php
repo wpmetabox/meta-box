@@ -14,9 +14,9 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' )  ) {
 		 */
 		static function admin_enqueue_scripts() 
 		{
-			wp_enqueue_style( 'rwmb-autocomplete-css', RWMB_CSS_URL . '/autocomplete.css', array( 'wp-admin' ), RWMB_VER );
+			wp_enqueue_style( 'rwmb-autocomplete-css', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
 			wp_enqueue_script('jquery-ui-autocomplete');
-			wp_register_script( 'rwmb-autocomplete-js', $path . '/js/autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
+			wp_register_script( 'rwmb-autocomplete-js', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-autocomplete-js', 'translated_strings', array( 'delete' => __('Delete', 'meta-box' ) ) );
 			wp_enqueue_script( 'rwmb-autocomplete-js' );
 		}

@@ -27,8 +27,9 @@ function autoCompleteInit(auto_id, field_name, services) {
 		    return false;
 		},
 		select: function( event, ui ) {
-			var id = ui.item.value.match(/#(\d+)\s/)[1];
-			var name = ui.item.value.match(/#\d+\s-\s(.+)/)[1];
+			console.log (ui.item.value);
+			var id = ui.item.value.match(/#([a-zA-Z0-9]+)\s/)[1];
+			var name = ui.item.value.match(/#[a-zA-Z0-9]+\s-\s(.+)/)[1];
 
 			$(".autocompleteResults").append('<div class="lineAutocomplete">' +
 				'<div class="id">' +
