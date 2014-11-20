@@ -1,0 +1,23 @@
+.lineAutocomplete {
+	border-bottom: 1px solid #cccccc;
+	padding: 2px 0;
+}
+
+.lineAutocomplete .id,
+.lineAutocomplete .name {
+	float: left;
+}
+
+.lineAutocomplete .id {
+	width: 10%;
+}
+
+.lineAutocomplete .name {
+	width: 80%;
+}
+
+.lineAutocomplete .actions {
+	width: 10%;
+	float: right;
+	cursor: pointer;
+}

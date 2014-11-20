@@ -240,6 +240,17 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 					'value2' => __( 'Label2', 'meta-box' ),
 				),
 			),
+			// AUTOCOMPLETE
+			array(
+				'name' => __( 'Autocomplete', 'meta-box' ),
+				'id'   => "{$prefix}autocomplete",
+				'type' => 'autocomplete',
+				// Options of autocomplete, in format 'value' => 'Label'
+				'options' => array(
+					'value1' => __( 'Label1', 'meta-box' ),
+					'value2' => __( 'Label2', 'meta-box' ),
+				),
+			),
 			// EMAIL
 			array(
 				'name'  => __( 'Email', 'meta-box' ),
