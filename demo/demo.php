@@ -152,6 +152,7 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'type' => 'heading',
 				'name' => __( 'Heading', 'meta-box' ),
 				'id'   => 'fake_id', // Not used but needed for plugin
+				'desc' => __( 'Optional description for this heading', 'meta-box' ),
 			),
 			// SLIDER
 			array(
