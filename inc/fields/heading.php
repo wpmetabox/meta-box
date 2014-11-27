@@ -42,7 +42,7 @@ if ( ! class_exists( 'RWMB_Heading_Field' ) )
 		 */
 		static function end_html( $meta, $field )
 		{
-			return '';
+			return $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 		}
 	}
 }
