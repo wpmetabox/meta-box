@@ -2,46 +2,43 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Autocomplete_Field' )  ) {
-	
+if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
+{
 	class RWMB_Autocomplete_Field extends RWMB_Field
 	{
-
 		/**
 		 * Enqueue scripts and styles
 		 *
 		 * @return void
 		 */
-		static function admin_enqueue_scripts() 
+		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_style( 'rwmb-autocomplete-css', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
-			wp_enqueue_script('jquery-ui-autocomplete');
-			wp_register_script( 'rwmb-autocomplete-js', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
-			wp_localize_script( 'rwmb-autocomplete-js', 'translated_strings', array( 'delete' => __('Delete', 'meta-box' ) ) );
-			wp_enqueue_script( 'rwmb-autocomplete-js' );
+			wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
+			wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-autocomplete', 'translated_strings', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
 		}
 
 		/**
 		 * Get field HTML
 		 *
-		 * @param mixed  $meta
-		 * @param array  $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
 		 * @return string
 		 */
 		static function html( $meta, $field )
 		{
-			if (!is_array($meta))
-				$meta = array($meta);
+			if ( ! is_array( $meta ) )
+				$meta = array( $meta );
 
 			$html = '<div class="lineAutocomplete">';
 
-				$html .= '<div class="autocompleteInput">' . PHP_EOL;
-	            	$html .= '<input id="' . $field['id'] . 'Input" size="50">' . PHP_EOL;
-	            $html .= '</div>' . PHP_EOL;
+			$html .= '<div class="autocompleteInput">';
+			$html .= '<input id="' . $field['id'] . 'Input" size="50">';
+			$html .= '</div>';
 
-	            $html .= '<div class="autocompleteResults">' . PHP_EOL;
-					$tpl = '<div class="lineAutocomplete">
+			$html .= '<div class="autocompleteResults">';
+			$tpl = '<div class="lineAutocomplete">
 						<div class="id">
 		 					<p>#%s</p>
 		                </div>
@@ -55,39 +52,42 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' )  ) {
 		                <input type="hidden" class="rwmb-autocomplete" name="%s" value="%s">
 		            </div>';
 
-		            
-					foreach ( $field['options'] as $value => $label ) {
-						if ( in_array( $value, $meta ) ) 
-							$html .= sprintf(
-								$tpl,
-								$value,
-								$label,
-								__('Delete', 'meta-box' ),
-								$field['field_name'],
-								$value
-							);
-					}
-            	$html .= '</div>' . PHP_EOL;
-
-            $html .= '</div>' . PHP_EOL;
-
-            $html .= '<script type="text/javascript">' . PHP_EOL;
-            	$html .= 'var ' . $field['id'] . '_data = [';
-            	foreach ( $field['options'] as $value => $label ) {
-					if ( !in_array( $value, $meta ) ) 
-						$html .= sprintf(
-							'"#%s - %s",',
-							$value,
-							$label
-						);
+			foreach ( $field['options'] as $value => $label )
+			{
+				if ( in_array( $value, $meta ) )
+				{
+					$html .= sprintf(
+						$tpl,
+						$value,
+						$label,
+						__( 'Delete', 'meta-box' ),
+						$field['field_name'],
+						$value
+					);
 				}
-            	$html .= '];';
+			}
+			$html .= '</div>';
 
-            	$html .= 'jQuery(document).ready(function() {';
-            	$html .= 'autoCompleteInit("' . $field['id'] . 'Input", "' . $field['field_name'] . '", ' . $field['id'] . '_data);';
-            	$html .= '});';
+			$html .= '</div>';
 
-            $html .= '</script>' . PHP_EOL;
+			$html .= '<script type="text/javascript">';
+			$html .= 'var ' . $field['id'] . '_data = [';
+			foreach ( $field['options'] as $value => $label )
+			{
+				if ( ! in_array( $value, $meta ) )
+					$html .= sprintf(
+						'"#%s - %s",',
+						$value,
+						$label
+					);
+			}
+			$html .= '];';
+
+			$html .= 'jQuery(document).ready(function() {';
+			$html .= 'autoCompleteInit("' . $field['id'] . 'Input", "' . $field['field_name'] . '", ' . $field['id'] . '_data);';
+			$html .= '});';
+
+			$html .= '</script>';
 
 			return $html;
 		}

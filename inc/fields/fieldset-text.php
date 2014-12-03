@@ -16,7 +16,7 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			if ( count( $meta ) == 1 && trim( $meta[0] ) == '' )
+			if ( 1 == count( $meta ) && '' == trim( $meta[0] ) )
 				$meta = '';
 
 			$html   = array();

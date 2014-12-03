@@ -113,7 +113,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
 				$classes[] = 'hidden';
 
-
 			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload

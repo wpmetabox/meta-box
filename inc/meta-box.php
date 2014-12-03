@@ -278,7 +278,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		function save_post( $post_id )
 		{
 			// Check if this function is called to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
-			if ( $this->saved === true )
+			if ( true === $this->saved )
 				return;
 			$this->saved = true;
 
