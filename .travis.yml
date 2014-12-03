@@ -26,14 +26,14 @@ env:
     # @link https://github.com/WordPress/WordPress
     - WP_VERSION=master WP_MULTISITE=0
     - WP_VERSION=master WP_MULTISITE=1
+    # WordPress 4.0
+    # @link https://github.com/WordPress/WordPress/tree/4.0-branch
+    - WP_VERSION=4.0 WP_MULTISITE=0
+    - WP_VERSION=4.0 WP_MULTISITE=1
     # WordPress 3.9
     # @link https://github.com/WordPress/WordPress/tree/3.9-branch
     - WP_VERSION=3.9 WP_MULTISITE=0
     - WP_VERSION=3.9 WP_MULTISITE=1
-    # WordPress 3.8
-    # @link https://github.com/WordPress/WordPress/tree/3.8-branch
-    - WP_VERSION=3.8 WP_MULTISITE=0
-    - WP_VERSION=3.8 WP_MULTISITE=1
 
 # Declare 5.6 beta in test matrix.
 # @link https://buddypress.trac.wordpress.org/ticket/5620
@@ -107,7 +107,7 @@ script:
     # --standard: Use WordPress as the standard.
     # --extensions: Only sniff PHP files.
     # localhost: /Applications/XAMPP/xamppfiles/htdocs/develop/php-codesniffer/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
-    - $WP_DEVELOP_DIR/php-codesniffer/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
+    - $WP_DEVELOP_DIR/php-codesniffer/scripts/phpcs -s -n . --standard=./codesniffer.ruleset.xml --extensions=php
 
 # Receive notifications for build results.
 # @link http://docs.travis-ci.com/user/notifications/#Email-notifications
