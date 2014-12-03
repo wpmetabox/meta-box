@@ -26,10 +26,7 @@ if ( ! class_exists( 'RWMB_Heading_Field' ) )
 		 */
 		static function begin_html( $meta, $field )
 		{
-			return sprintf(
-				'<h4>%s</h4>',
-				$field['name']
-			);
+			return sprintf( '<h4>%s</h4>', $field['name'] );
 		}
 
 		/**
@@ -42,7 +39,9 @@ if ( ! class_exists( 'RWMB_Heading_Field' ) )
 		 */
 		static function end_html( $meta, $field )
 		{
-			return $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
+			$id = $field['id'] ? " id='{$field['id']}-description" : '';
+
+			return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 		}
 	}
 }
