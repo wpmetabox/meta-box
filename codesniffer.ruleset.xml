@@ -12,5 +12,6 @@
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page" />
 		<exclude name="WordPress.XSS.EscapeOutput" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 	</rule>
 </ruleset>
