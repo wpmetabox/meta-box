@@ -320,11 +320,11 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'name'    => __( 'Posts (Pages)', 'meta-box' ),
 				'id'      => "{$prefix}pages",
 				'type'    => 'post',
-
 				// Post type
 				'post_type' => 'page',
 				// Field type, either 'select' or 'select_advanced' (default)
 				'field_type' => 'select_advanced',
+				'placeholder' => __( 'Select an Item', 'meta-box' ),
 				// Query arguments (optional). No settings means get all published posts
 				'query_args' => array(
 					'post_status'    => 'publish',
