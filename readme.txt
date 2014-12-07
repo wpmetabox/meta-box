@@ -3,8 +3,8 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 4.0
-Stable tag: 4.3.11
+Tested up to: 4.0.1
+Stable tag: 4.4.0
 License: GPLv2 or later
 
 Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
@@ -51,6 +51,13 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 1. Supported fields
 
 == Changelog ==
+
+= 4.4.0 =
+* New: 'autocomplete' field.
+* Improvement: field id is now optional (heading, divider)
+* Improvement: heading now supports 'description'
+* Improvement: update select2 library to version 3.5.2
+* Improvement: coding standards
 
 = 4.3.11 =
 * Bug fix: use field id instead of field_name for wysiwyg field

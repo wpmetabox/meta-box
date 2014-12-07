@@ -59,6 +59,13 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ## Changelog
 
+#### 4.4.0
+* New: 'autocomplete' field.
+* Improvement: field id is now optional (heading, divider)
+* Improvement: heading now supports 'description'
+* Improvement: update select2 library to version 3.5.2
+* Improvement: coding standards
+
 #### 4.3.11
 * Bug fix: use field id instead of field_name for wysiwyg field
 * Improvement: allow to sort files
