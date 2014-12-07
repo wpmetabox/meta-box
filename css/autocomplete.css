@@ -1,22 +1,13 @@
-.lineAutocomplete {
-	border-bottom: 1px solid #cccccc;
-	padding: 2px 0;
+.rwmb-autocomplete-result {
+	border-bottom: 1px solid #ccc;
+	padding: 1em 0;
+	overflow: hidden;
 }
-
-.lineAutocomplete .id,
-.lineAutocomplete .name {
+.rwmb-autocomplete-result .label {
 	float: left;
+	width: 90%;
 }
-
-.lineAutocomplete .id {
-	width: 10%;
-}
-
-.lineAutocomplete .name {
-	width: 80%;
-}
-
-.lineAutocomplete .actions {
+.rwmb-autocomplete-result .actions {
 	width: 10%;
 	float: right;
 	cursor: pointer;

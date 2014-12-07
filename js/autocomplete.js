@@ -1,62 +1,62 @@
-function autoCompleteInit(auto_id, field_name, services) {
-	$ = jQuery;
-	function split( val ) {
-	    return val.split( /,\s*/ );
+jQuery( function ( $ )
+{
+	'use strict';
+
+	/**
+	 * Update date picker element
+	 * Used for static & dynamic added elements (when clone)
+	 */
+	function updateAutocomplete( e )
+	{
+		var $this = $( this ),
+			$result = $this.next(),
+			name = $this.data( 'name' );
+
+		// If the function is called on cloning, then change the field name and clear all results
+		// @see clone.js
+		if ( e.hasOwnProperty( 'type' ) && 'clone' == e.type )
+		{
+			name = name.replace( /\[(\d+)\]/, function ( match, p1 )
+			{
+				return '[' + ( parseInt( p1, 10 ) + 1 ) + ']';
+			} );
+
+			// Update the "data-name" attribute for further cloning
+			$this.attr( 'data-name', name );
+
+			// Clear all results
+			$result.html( '' );
+		}
+
+		$this.removeClass( 'ui-autocomplete-input' ).attr( 'id', '' )
+			.autocomplete( {
+			minLength: 0,
+			source   : $this.data( 'options' ),
+			select   : function ( event, ui )
+			{
+				$result.append(
+					'<div class="rwmb-autocomplete-result">' +
+					'<div class="label">' + ui.item.label + '</div>' +
+					'<div class="actions">' + RWMB_Autocomplete.delete + '</div>' +
+					'<input type="hidden" class="rwmb-autocomplete-value" name="' + name + '" value="' + ui.item.value + '">' +
+					'</div>'
+				);
+
+				// Reinitialize value
+				this.value = '';
+
+				return false;
+			}
+		} );
 	}
-	function extractLast( term ) {
-	    return split( term ).pop();
-	}
 
-	$( "#" + auto_id )
-	  // don't navigate away from the field on tab when selecting an item
-	.bind( "keydown", function( event ) {
-	    if ( event.keyCode === $.ui.keyCode.TAB && $( this ).autocomplete( "instance" ).menu.active ) {
-	        event.preventDefault();
-	    }
-	})
-    .autocomplete({
-		minLength: 0,
-		source: function( request, response ) {
-		    // delegate back to autocomplete, but extract the last term
-		    response( $.ui.autocomplete.filter(
-		        services, extractLast( request.term )
-		    ) );
-		},
-		focus: function() {
-		    // prevent value inserted on focus
-		    return false;
-		},
-		select: function( event, ui ) {
-			console.log (ui.item.value);
-			var id = ui.item.value.match(/#([a-zA-Z0-9]+)\s/)[1];
-			var name = ui.item.value.match(/#[a-zA-Z0-9]+\s-\s(.+)/)[1];
+	$( '.rwmb-autocomplete-wrapper input[type="text"]' ).each( updateAutocomplete );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-autocomplete', updateAutocomplete );
 
-			$(".autocompleteResults").append('<div class="lineAutocomplete">' +
-				'<div class="id">' +
-						'<p>#' + id + '</p>' +
-			    '</div>' +
-			    '<div class="name">' +
-						'<p>' + name + ' +</p>' +
-			    '</div>' +
-			    '<div class="actions">' +
-			        '<p>' + translated_strings.delete + '</p>' +
-			    '</div>' +
-			    '<div class="clear"></div>' +
-			    '<input type="hidden" class="rwmb-autocomplete" name="' + field_name + '" value="' + id + '">' +
-			'</div>');
-
-			// reinitialize value
-			this.value = '';
-
-			return false;
-        }
-    });
-
-    // handle remove action
-	$(document).on("click", ".lineAutocomplete .actions", function() {
-
-		// remove line
-		$(this).parent(".lineAutocomplete").remove();
-
-	});
-}
+	// Handle remove action
+	$( document ).on( 'click', '.rwmb-autocomplete-result .actions', function ()
+	{
+		// remove result
+		$( this ).parent().remove();
+	} );
+} );

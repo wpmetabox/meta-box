@@ -33,13 +33,18 @@ jQuery( function ( $ )
 			}
 
 			// Get the field name, and increment
-			var name = $this.attr( 'name' ).replace( /\[(\d+)\]/, function ( match, p1 )
+			// Not all fields require id, such as 'autocomplete'
+			var name = $this.attr( 'name' );
+			if ( name )
 			{
-				return '[' + ( parseInt( p1, 10 ) + 1 ) + ']';
-			} );
+				name = name.replace( /\[(\d+)\]/, function ( match, p1 )
+				{
+					return '[' + ( parseInt( p1, 10 ) + 1 ) + ']';
+				} );
 
-			// Update the "name" attribute
-			$this.attr( 'name', name );
+				// Update the "name" attribute
+				$this.attr( 'name', name );
+			}
 
 			// Get the field id, and increment
 			// Not all fields require id, such as 'radio', 'checkbox_list'
