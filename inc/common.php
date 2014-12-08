@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Common' ) )
 			$mofile = "{$dir}{$locale}.mo";
 
 			// In themes/plugins/mu-plugins directory
-			load_textdomain( 'rwmb', $mofile );
+			load_textdomain( 'meta-box', $mofile );
 		}
 
 		/**
