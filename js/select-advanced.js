@@ -5,9 +5,12 @@ jQuery( function ( $ )
 	function rwmb_update_select_advanced()
 	{
 		var $this = $( this ),
-			options = $this.data( 'options' );
+			options = $this.data( 'options' ),
+			width = $this.siblings( '.select2-container' ).width();
 		$this.siblings( '.select2-container' ).remove();
+		$this.removeAttr('style');
 		$this.select2( options );
+		$this.siblings( '.select2-container' ).width(width);
 	}
 
 	$( ':input.rwmb-select-advanced' ).each( rwmb_update_select_advanced );
