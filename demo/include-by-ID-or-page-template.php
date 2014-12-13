@@ -6,7 +6,7 @@ $meta_boxes   = array();
 $meta_boxes[] = array(
 	'id'     => 'any_id',
 	'title'  => __( 'Meta Box Title', 'meta-box' ),
-	'pages'  => array( 'post' ),
+	'post_types' => post,
 	'fields' => array(
 
 		// IMAGE UPLOAD

@@ -105,7 +105,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$screen = get_current_screen();
 
 			// Enqueue scripts and styles for registered pages (post types) only
-			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
+			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['post_types'] ) )
 				return;
 
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
@@ -168,13 +168,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function add_meta_boxes()
 		{
-			foreach ( $this->meta_box['pages'] as $page )
+			foreach ( $this->meta_box['post_types'] as $post_type )
 			{
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
 					array( $this, 'show' ),
-					$page,
+					$post_type,
 					$this->meta_box['context'],
 					$this->meta_box['priority']
 				);
@@ -193,7 +193,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			if (
 				'post' === $screen->base
-				&& in_array( $screen->post_type, $this->meta_box['pages'] )
+				&& in_array( $screen->post_type, $this->meta_box['post_types'] )
 				&& $this->meta_box['default_hidden']
 			)
 			{
@@ -342,10 +342,26 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				'id'             => sanitize_title( $meta_box['title'] ),
 				'context'        => 'normal',
 				'priority'       => 'high',
-				'pages'          => array( 'post' ),
+				'post_types'     => 'post',
 				'autosave'       => false,
 				'default_hidden' => false,
 			) );
+
+			/**
+			 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions
+			 *
+			 * @since 4.4.1
+			 */
+			if ( ! empty( $meta_box['pages'] ) )
+			{
+				$meta_box['post_types'] = $meta_box['pages'];
+			}
+
+			// Allow to set 'post_types' param by string
+			if ( is_string( $meta_box['post_types'] ) )
+			{
+				$meta_box['post_types'] = array( $meta_box['post_types'] );
+			}
 
 			// Set default values for fields
 			$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );

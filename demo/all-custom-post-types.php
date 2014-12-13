@@ -13,7 +13,7 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 	$meta_boxes[] = array(
 		'id'     => 'personal',
 		'title'  => __( 'Personal Information', 'meta-box' ),
-		'pages'  => $post_types,
+		'post_types' => $post_types,
 
 		'fields' => array(
 			array(
