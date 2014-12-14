@@ -22,15 +22,25 @@ Meta Box plugin is a complete tool to create meta box and custom fields in WordP
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrate with themes
 
+### Documentation
+
+- [Getting Started](http://metabox.io/docs/getting-started/)
+- [Register Meta Boxes](http://metabox.io/docs/registering-meta-boxes/)
+- [Define Fields](http://metabox.io/docs/define-fields/)
+- [Get Meta Value](http://metabox.io/docs/get-meta-value/)
+
+See more documentation [here](http://metabox.io/docs/).
+
 ### Premium Extensions
 
+- [Meta Box Template](http://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
 - [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
 - [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
 - [Meta Box Tabs](http://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
 - [Meta Box Columns](http://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
 - [Meta Box Include Exclude](http://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
-See all premium extensions [here](http://metabox.io).
+See all premium extensions [here](http://metabox.io/plugins/).
 
 ***
 
@@ -58,6 +68,12 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 ***
 
 ## Changelog
+
+#### 4.4.1
+* Fix: wrong text domain
+* Fix: `select_advanced` field not cloning
+* Fix: cloned emails are not saved
+* Improvement: Use `post_types` instead of `pages`, accept string for single post type as well. Fallback to `pages` for previous versions.
 
 #### 4.4.0
 * New: 'autocomplete' field.
