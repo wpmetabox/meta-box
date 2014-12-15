@@ -127,7 +127,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		{
 			$html = '';
 			if ( $field['placeholder'] )
-				$html = 'select' == $field['type'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+				$html = ('select' == $field['type'] || ($field['type'] == 'taxonomy' && $field['display_type'] == 'select') ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 
 			$option = '<option value="%s"%s>%s</option>';
 
