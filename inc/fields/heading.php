@@ -39,7 +39,7 @@ if ( ! class_exists( 'RWMB_Heading_Field' ) )
 		 */
 		static function end_html( $meta, $field )
 		{
-			$id = $field['id'] ? " id='{$field['id']}-description" : '';
+			$id = $field['id'] ? " id='{$field['id']}-description'" : '';
 
 			return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 		}
