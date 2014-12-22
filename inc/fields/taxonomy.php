@@ -90,7 +90,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 
 			$field['options'] = self::get_options( $terms );
 			$field['display_type'] = $options['type'];
-			
+
 			$html = '';
 
 			switch ( $options['type'] )
@@ -131,7 +131,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		static function walk_checkbox_tree( $meta, $field, $elements, $parent = 0, $active = false )
 		{
 			if ( ! isset( $elements[$parent] ) )
-				return;
+				return '';
 			$terms            = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
 			$hidden           = $active ? '' : 'hidden';
@@ -168,7 +168,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		static function walk_select_tree( $meta, $field, $elements, $parent = 0, $active = false )
 		{
 			if ( ! isset( $elements[$parent] ) )
-				return;
+				return '';
 			$terms            = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
 

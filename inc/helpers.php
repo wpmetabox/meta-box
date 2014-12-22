@@ -135,9 +135,8 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 
 			$args = wp_parse_args( $args, array(
-					'type' => 'text',
-				)
-			);
+				'type' => 'text',
+			) );
 
 			// Set 'multiple' for fields based on 'type'
 			if ( ! isset( $args['multiple'] ) )
@@ -153,7 +152,11 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 					$files = array();
 					foreach ( $meta as $id )
 					{
-						$files[$id] = self::file_info( $id );
+						// Get only info of existing attachments
+						if ( get_attached_file( $id ) )
+						{
+							$files[$id] = self::file_info( $id );
+						}
 					}
 					$meta = $files;
 				}
@@ -175,7 +178,11 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 					$images = array();
 					foreach ( $meta as $id )
 					{
-						$images[$id] = self::image_info( $id, $args );
+						// Get only info of existing attachments
+						if ( get_attached_file( $id ) )
+						{
+							$images[$id] = self::image_info( $id, $args );
+						}
 					}
 					$meta = $images;
 				}
