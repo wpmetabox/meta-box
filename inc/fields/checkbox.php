@@ -7,6 +7,16 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 	class RWMB_Checkbox_Field extends RWMB_Field
 	{
 		/**
+		 * Enqueue scripts and styles
+		 *
+		 * @return void
+		 */
+		static function admin_enqueue_scripts()
+		{
+			wp_enqueue_style( 'rwmb-checkbox', RWMB_CSS_URL . 'checkbox.css', array(), RWMB_VER );
+		}
+
+		/**
 		 * Get field HTML
 		 *
 		 * @param mixed $meta
@@ -16,12 +26,32 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
+			$desc = $field['desc'] ? "<span id='{$field['id']}_description' class='description'>{$field['desc']}</span>" : '';
 			return sprintf(
-				'<input type="checkbox" class="rwmb-checkbox" name="%s" id="%s" value="1" %s>',
+				'<label><input type="checkbox" class="rwmb-checkbox" name="%s" id="%s" value="1" %s> %s</label>',
 				$field['field_name'],
 				$field['id'],
-				checked( ! empty( $meta ), 1, false )
+				checked( ! empty( $meta ), 1, false ),
+				$desc
 			);
+		}
+
+		/**
+		 * Show end HTML markup for fields
+		 *
+		 * @param mixed $meta
+		 * @param array $field
+		 *
+		 * @return string
+		 */
+		static function end_html( $meta, $field )
+		{
+			$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ) ) : '';
+
+			// Closes the container
+			$html = "$button</div>";
+
+			return $html;
 		}
 
 		/**
