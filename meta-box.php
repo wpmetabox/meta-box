@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Meta Box
-Plugin URI: http://www.deluxeblogtips.com/meta-box
+Plugin URI: http://metabox.io
 Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0
 Version: 4.4.1
 Author: Rilwis
