@@ -246,6 +246,13 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function meta( $post_id, $saved, $field )
 		{
+			/**
+			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
+			 * to prevent notice error when displayin fields
+			 */
+			if ( empty( $field['id'] ) )
+				return '';
+
 			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
