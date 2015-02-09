@@ -16,10 +16,13 @@ jQuery( function ( $ )
 	}
 
 	// Set language if available
-	var locale = RWMB_Timepicker.lang;
-	if ( $.timepicker.regional.hasOwnProperty( locale ) )
+	if ( $.timepicker.regional.hasOwnProperty( RWMB_Timepicker.locale ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[locale] );
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Timepicker.locale] );
+	}
+	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Timepicker.localeShort ) )
+	{
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Timepicker.localeShort] );
 	}
 
 	$( '.rwmb-time' ).each( update );

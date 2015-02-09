@@ -27,12 +27,18 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			 * Localization
 			 * Use 1 minified JS file which contains all languages for simpilicity (in version < 4.4.2 we use separated JS files).
 			 * The language is set in Javascript
+			 *
+			 * Note: we use full locale (de-DE) and fallback to short locale (de)
 			 */
-			$locale = substr( str_replace( '_', '-', get_locale() ), 0, 2 );
+			$locale = str_replace( '_', '-', get_locale() );
+			$locale_short = substr( $locale, 0, 2 );
 			wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
 
 			wp_enqueue_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
-			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array( 'lang' => $locale ) );
+			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array(
+				'locale'      => $locale,
+				'localeShort' => $locale_short,
+			) );
 		}
 
 		/**
