@@ -3,8 +3,8 @@ Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 4.0.1
-Stable tag: 4.4.1
+Tested up to: 4.1
+Stable tag: 4.4.2
 License: GPLv2 or later
 
 Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
@@ -31,6 +31,8 @@ See more documentation [here](http://metabox.io/docs/).
 
 ### Premium Extensions
 
+- [Meta Box Group](http://metabox.io/plugins/meta-box-group/): Organize custom fields in groups for better appearance and structure. Groups can be cloned.
+- [Meta Box Builder](http://metabox.io/plugins/meta-box-builder/): Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
 - [Meta Box Template](http://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
 - [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
 - [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
@@ -61,6 +63,16 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 1. Supported fields
 
 == Changelog ==
+
+= 4.4.2 =
+* Fix: Values of text_list field not showing correctly
+* Fix: Time picker field cannot select hour > 22, time > 58
+* Fix: Notice error when showing fields which don't have ID
+* Fix: Don't return non-existing files or images via rwmb_meta function
+* Fix: CSS alignment for taxonomy tree
+* Fix: Placeholder not working for "select" taxonomy
+* Improvement: Update timepicker to latest version
+* Improvement: Improve output markup for checkbox field
 
 = 4.4.1 =
 * Fix: wrong text domain
