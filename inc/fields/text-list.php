@@ -26,7 +26,7 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 					$input,
 					$field['field_name'],
 					$field['id'],
-					$meta[$i],
+					isset( $meta[$i] ) ? esc_attr( $meta[$i] ) : '',
 					$value,
 					$label
 				);
@@ -56,8 +56,6 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 			$single = $field['clone'] || ! $field['multiple'];
 			$meta   = get_post_meta( $post_id, $field['id'], $single );
 			$meta   = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-
-			$meta = array_map( 'esc_attr', (array) $meta );
 
 			return $meta;
 		}
