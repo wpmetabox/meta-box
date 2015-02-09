@@ -36,7 +36,6 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			}
 
 			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', $deps, RWMB_VER, true );
-			wp_localize_script( 'rwmb-date', 'RWMB_Datepicker', array( 'lang' => $locale ) );
 		}
 
 		/**
