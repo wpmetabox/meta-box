@@ -413,3 +413,62 @@ function rwmb_meta( $key, $args = array(), $post_id = null )
 {
 	return RWMB_Helper::meta( $key, $args, $post_id );
 }
+
+/**
+ * Get value of custom field.
+ * This is used to replace old version of rwmb_meta key. rwmb_meta will be used internally only.
+ *
+ * @uses   rwmb_meta()
+ * @param  string   $key     Meta key. Required.
+ * @param  int|null $post_id Post ID. null for current post. Optional.
+ * @return mixed             false if field doesn't exist. Field value otherwise.
+ */
+function rwmb_get_field( $key, $post_id = null )
+{
+	/**
+	 * Search all the registered meta box to find needed field
+	 * The field will have all needed parameters which we can pass to rwmb_meta function without
+	 * having users to manually set them (field type, multiple, ect.). So users only need to remember
+	 * field ID only.
+	 */
+	$found = false;
+	$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
+	foreach ( $meta_boxes as $meta_box )
+	{
+		foreach ( $meta_box['fields'] as $field )
+		{
+			if ( $key == $field['id'] )
+			{
+				$found = true;
+				break;
+			}
+		}
+	}
+
+	// If field doesn't exist, return false
+	if ( ! $found )
+	{
+		return false . 'asdfasd';
+	}
+
+
+	// Normalize field to make sure all params are set properly
+	$field = wp_parse_args( $field, array(
+		'id'          => '',
+		'multiple'    => false,
+		'clone'       => false,
+		'std'         => '',
+		'desc'        => '',
+		'format'      => '',
+		'before'      => '',
+		'after'       => '',
+		'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
+		'required'    => false,
+		'placeholder' => '',
+	) );
+	$field = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize_field' ), $field );
+
+	// Use rwmb_meta to get field value
+	return rwmb_meta( $key, $field, $post_id );
+}
+
