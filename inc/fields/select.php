@@ -127,7 +127,12 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		{
 			$html = '';
 			if ( $field['placeholder'] )
-				$html = ('select' == $field['type'] || ($field['type'] == 'taxonomy' && $field['display_type'] == 'select') ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+			{
+				$show_placeholder = ( 'select' == $field['type'] ) // Normal select field
+					|| ( isset( $field['field_type'] ) && 'select' == $field['field_type'] ) // For 'post' field
+					|| ( isset( $field['display_type'] ) && 'select' == $field['display_type'] ); // For 'taxonomy' field
+				$html = $show_placeholder ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+			}
 
 			$option = '<option value="%s"%s>%s</option>';
 
