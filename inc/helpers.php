@@ -448,9 +448,8 @@ function rwmb_get_field( $key, $post_id = null )
 	// If field doesn't exist, return false
 	if ( ! $found )
 	{
-		return false . 'asdfasd';
+		return false;
 	}
-
 
 	// Normalize field to make sure all params are set properly
 	$field = wp_parse_args( $field, array(
@@ -468,7 +467,7 @@ function rwmb_get_field( $key, $post_id = null )
 	) );
 	$field = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize_field' ), $field );
 
-	// Use rwmb_meta to get field value
-	return rwmb_meta( $key, $field, $post_id );
+	// Get field value
+	return RWMB_Helper::meta( $key, $field, $post_id );
 }
 
