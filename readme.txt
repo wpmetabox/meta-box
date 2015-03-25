@@ -64,6 +64,14 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 == Changelog ==
 
+= 4.4.3 =
+* Fix: Incorrect path to loader image for `plupload_image`
+* Fix: Missing placeholder for `post` field when `field_type` = `select`
+* Improvement: No errors showing if invalid value is returned from `rwmb_meta_boxes` filter
+* Improvement: Add filter for add/remove clone buttons text
+* Improvement: Add French translation
+
+
 = 4.4.2 =
 * Fix: Values of text_list field not showing correctly
 * Fix: Time picker field cannot select hour > 22, time > 58
