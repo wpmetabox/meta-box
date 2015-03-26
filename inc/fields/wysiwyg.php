@@ -74,6 +74,17 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 			return $editor;
 		}
+		
+		/**
+		 * Escape meta for field output
+		 *
+		 * @param mixed $meta
+		 *
+		 * @return mixed
+		 */
+		static function esc_meta( $meta ) {
+			return $meta;	
+		}
 
 		/**
 		 * Normalize parameters for field
