@@ -264,11 +264,21 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
-			// Escape attributes for non-wysiwyg fields
-			if ( 'wysiwyg' !== $field['type'] )
-				$meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
+			// Escape attributes
+			$meta = self::esc_meta( $meta );
 
 			return $meta;
+		}
+		
+		/**
+		 * Escape meta for field output
+		 *
+		 * @param mixed $meta
+		 *
+		 * @return mixed
+		 */
+		static function esc_meta( $meta ) {
+			return is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );	
 		}
 
 		/**
