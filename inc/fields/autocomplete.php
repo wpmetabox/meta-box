@@ -31,13 +31,21 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = array( $meta );
 
-			$options = array();
-			foreach ( $field['options'] as $value => $label )
+			if( is_string( $field['options'] ) ) 
 			{
-				$options[] = array(
-					'value' => $value,
-					'label' => $label,
-				);
+				$options = $field['options'];
+			} 
+			else 
+			{
+				$options = array();
+				foreach ( $field['options'] as $value => $label )
+				{
+					$options[] = array(
+						'value' => $value,
+						'label' => $label,
+					);
+				}
+				$options = json_encode( $options );
 			}
 
 			// Input field that triggers autocomplete.
@@ -47,7 +55,7 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 				'<input type="text" class="rwmb-autocomplete" id="%s" data-name="%s" data-options="%s" size="%s">',
 				$field['id'],
 				$field['field_name'],
-				esc_attr( json_encode( $options ) ),
+				esc_attr( $options ),
 				$field['size']
 			);
 
