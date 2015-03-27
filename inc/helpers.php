@@ -452,120 +452,129 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 	RWMB_Helper::on_load();
 }
 
-/**
- * Get post meta
- *
- * @param string   $key     Meta key. Required.
- * @param int|null $post_id Post ID. null for current post. Optional
- * @param array    $args    Array of arguments. Optional.
- *
- * @return mixed
- */
-function rwmb_meta( $key, $args = array(), $post_id = null )
+if( ! function_exists( 'rwmb_meta' ) ) 
 {
-	return RWMB_Helper::meta( $key, $args, $post_id );
+  /**
+   * Get post meta
+   *
+   * @param string   $key     Meta key. Required.
+   * @param int|null $post_id Post ID. null for current post. Optional
+   * @param array    $args    Array of arguments. Optional.
+   *
+   * @return mixed
+   */
+  function rwmb_meta( $key, $args = array(), $post_id = null )
+  {
+  	return RWMB_Helper::meta( $key, $args, $post_id );
+  }
 }
 
-/**
- * Get value of custom field.
- * This is used to replace old version of rwmb_meta key.
- *
- * @param  string   $key     Meta key. Required.
- * @param  int|null $post_id Post ID. null for current post. Optional.
- * @return mixed             false if field doesn't exist. Field value otherwise.
- */
-function rwmb_get_field( $key, $post_id = null )
+if( ! function_exists( 'rwmb_get_field' ) ) 
 {
-	$field = RWMB_Helper::find_field( $key );
+  /**
+   * Get value of custom field.
+   * This is used to replace old version of rwmb_meta key.
+   *
+   * @param  string   $key     Meta key. Required.
+   * @param  int|null $post_id Post ID. null for current post. Optional.
+   * @return mixed             false if field doesn't exist. Field value otherwise.
+   */
+  function rwmb_get_field( $key, $post_id = null )
+  {
+  	$field = RWMB_Helper::find_field( $key );
 
-	// Get field value
-	return $field ? RWMB_Helper::meta( $key, $field, $post_id ) : false;
+  	// Get field value
+  	return $field ? RWMB_Helper::meta( $key, $field, $post_id ) : false;
+  }
 }
 
-/**
- * Display the value of a field
- *
- * @param  string   $key     Meta key. Required.
- * @param  int|null $post_id Post ID. null for current post. Optional.
- * @param  bool     $echo    Display field meta value? Default `true` which works in almost all cases. We use `false` for the [rwmb_meta] shortcode
- *
- * @return string
- */
-function rwmb_the_field( $key, $post_id = null, $echo = true )
+if( ! function_exists( 'rwmb_the_field' ) ) 
 {
-	// Find field
-	$field = RWMB_Helper::find_field( $key );
-	if ( ! $field )
-		return;
+  /**
+   * Display the value of a field
+   *
+   * @param  string   $key     Meta key. Required.
+   * @param  int|null $post_id Post ID. null for current post. Optional.
+   * @param  bool     $echo    Display field meta value? Default `true` which works in almost all cases. We use `false` for the [rwmb_meta] shortcode
+   *
+   * @return string
+   */
+  function rwmb_the_field( $key, $post_id = null, $echo = true )
+  {
+  	// Find field
+  	$field = RWMB_Helper::find_field( $key );
+  	if ( ! $field )
+  		return;
 
-	// Get field meta value
-	$meta = RWMB_Helper::meta( $key, $field, $post_id );
-	if ( empty( $meta ) )
-		return;
+  	// Get field meta value
+  	$meta = RWMB_Helper::meta( $key, $field, $post_id );
+  	if ( empty( $meta ) )
+  		return;
 
-	// Default output is meta value
-	$output = $meta;
+  	// Default output is meta value
+  	$output = $meta;
 
-	switch ( $field['type'] )
-	{
-		case 'checkbox':
-			$output = $field['name'];
-			break;
-		case 'radio':
-			$output = $field['options'][$meta];
-			break;
-		case 'file':
-		case 'file_advanced':
-			$output = '<ul>';
-			foreach ( $meta as $file )
-			{
-				$output .= sprintf(
-					'<li><a href="%s" title="%s">%s</a></li>',
-					$file['url'],
-					$file['title'],
-					$file['name']
-				);
-			}
-			$output .= '</ul>';
-			break;
-		case 'image':
-		case 'plupload_image':
-		case 'thickbox_image':
-		case 'image_advanced':
-			$output = '<ul>';
-			foreach ( $meta as $image )
-			{
-				$output .= sprintf(
-					'<li><img src="%s" alt="%s" title="%s" /></li>',
-					$image['url'],
-					$image['alt'],
-					$image['title']
-				);
-			}
-			$output .= '</ul>';
-			break;
-		case 'taxonomy':
-			$output = '<ul>';
-			foreach ( $meta as $term )
-			{
-				$output .= sprintf(
-					'<li><a href="%s" title="%s">%s</a></li>',
-					get_term_link( $term, $field['taxonomy'] ),
-					$term->name,
-					$term->name
-				);
-			}
-			$output .= '</ul>';
-			break;
-		default:
-			if ( is_array( $meta ) )
-			{
-				$output = '<ul><li>' . implode( '</li><li>', $meta ) . '</li></ul>';
-			}
-	}
+  	switch ( $field['type'] )
+  	{
+  		case 'checkbox':
+  			$output = $field['name'];
+  			break;
+  		case 'radio':
+  			$output = $field['options'][$meta];
+  			break;
+  		case 'file':
+  		case 'file_advanced':
+  			$output = '<ul>';
+  			foreach ( $meta as $file )
+  			{
+  				$output .= sprintf(
+  					'<li><a href="%s" title="%s">%s</a></li>',
+  					$file['url'],
+  					$file['title'],
+  					$file['name']
+  				);
+  			}
+  			$output .= '</ul>';
+  			break;
+  		case 'image':
+  		case 'plupload_image':
+  		case 'thickbox_image':
+  		case 'image_advanced':
+  			$output = '<ul>';
+  			foreach ( $meta as $image )
+  			{
+  				$output .= sprintf(
+  					'<li><img src="%s" alt="%s" title="%s" /></li>',
+  					$image['url'],
+  					$image['alt'],
+  					$image['title']
+  				);
+  			}
+  			$output .= '</ul>';
+  			break;
+  		case 'taxonomy':
+  			$output = '<ul>';
+  			foreach ( $meta as $term )
+  			{
+  				$output .= sprintf(
+  					'<li><a href="%s" title="%s">%s</a></li>',
+  					get_term_link( $term, $field['taxonomy'] ),
+  					$term->name,
+  					$term->name
+  				);
+  			}
+  			$output .= '</ul>';
+  			break;
+  		default:
+  			if ( is_array( $meta ) )
+  			{
+  				$output = '<ul><li>' . implode( '</li><li>', $meta ) . '</li></ul>';
+  			}
+  	}
 
-	if ( $echo )
-		echo $output;
+  	if ( $echo )
+  		echo $output;
 
-	return $output;
+  	return $output;
+  }
 }
