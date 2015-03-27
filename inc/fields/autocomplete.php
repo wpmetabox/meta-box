@@ -59,7 +59,7 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 				$field['size']
 			);
 
-			$results = '<div class="rwmb-autocomplete-results">';
+			$html .= '<div class="rwmb-autocomplete-results">';
 
 			// Each value is displayed with label and 'Delete' option
 			// The hidden input has to have ".rwmb-*" class to make clone work
@@ -70,11 +70,31 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 					<input type="hidden" class="rwmb-autocomplete-value" name="%s" value="%s">
 				</div>
 			';
-			foreach ( $field['options'] as $value => $label )
+
+			if( is_array( $field['options'] ) ) 
 			{
-				if ( in_array( $value, $meta ) )
+				foreach ( $field['options'] as $value => $label )
 				{
-					$results .= sprintf(
+					if ( in_array( $value, $meta ) )
+					{
+						$html .= sprintf(
+							$tpl,
+							$label,
+							__( 'Delete', 'meta-box' ),
+							$field['field_name'],
+							$value
+						);
+					}
+				}
+			}
+			else
+			{
+				foreach ( $meta as $value )
+				{
+					if( empty( $value ) )
+						continue;
+					$label = apply_filters( 'rwmb_autocomplete_result_label', $value, $field );
+					$html .= sprintf(
 						$tpl,
 						$label,
 						__( 'Delete', 'meta-box' ),
@@ -83,9 +103,8 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 					);
 				}
 			}
-			$results .= '</div>'; // .rwmb-autocomplete-results
 
-			$html .= apply_filters( 'rwmb_autocomplete_results_html', $results, $meta, $field );
+			$html .= '</div>'; // .rwmb-autocomplete-results
 
 			return $html;
 		}
