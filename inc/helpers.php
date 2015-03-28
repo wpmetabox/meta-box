@@ -15,120 +15,15 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 	class RWMB_Helper
 	{
 		/**
-		 * Do actions when class is loaded
-		 *
-		 * @return void
-		 */
-		static function on_load()
-		{
-			add_shortcode( 'rwmb_meta', array( __CLASS__, 'shortcode' ) );
-		}
-
-		/**
-		 * Shortcode to display meta value
-		 *
-		 * @param $atts Array of shortcode attributes, same as meta() function, but has more "meta_key" parameter
-		 *
-		 * @see meta() function below
-		 *
-		 * @return string
-		 */
-		static function shortcode( $atts )
-		{
-			$atts = wp_parse_args( $atts, array(
-				'type'    => 'text',
-				'post_id' => get_the_ID(),
-			) );
-			if ( empty( $atts['meta_key'] ) )
-				return '';
-
-			$meta = self::meta( $atts['meta_key'], $atts, $atts['post_id'] );
-
-			// Get uploaded files info
-			if ( in_array( $atts['type'], array( 'file', 'file_advanced' ) ) )
-			{
-				$content = '<ul>';
-				foreach ( $meta as $file )
-				{
-					$content .= sprintf(
-						'<li><a href="%s" title="%s">%s</a></li>',
-						$file['url'],
-						$file['title'],
-						$file['name']
-					);
-				}
-				$content .= '</ul>';
-			}
-
-			// Get uploaded images info
-			elseif ( in_array( $atts['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
-			{
-				$content = '<ul>';
-				foreach ( $meta as $image )
-				{
-					// Link thumbnail to full size image?
-					if ( isset( $atts['link'] ) && $atts['link'] )
-					{
-						$content .= sprintf(
-							'<li><a href="%s" title="%s"><img src="%s" alt="%s" title="%s" /></a></li>',
-							$image['full_url'],
-							$image['title'],
-							$image['url'],
-							$image['alt'],
-							$image['title']
-						);
-					}
-					else
-					{
-						$content .= sprintf(
-							'<li><img src="%s" alt="%s" title="%s" /></li>',
-							$image['url'],
-							$image['alt'],
-							$image['title']
-						);
-					}
-				}
-				$content .= '</ul>';
-			}
-
-			// Get post terms
-			elseif ( 'taxonomy' == $atts['type'] )
-			{
-				$content = '<ul>';
-				foreach ( $meta as $term )
-				{
-					$content .= sprintf(
-						'<li><a href="%s" title="%s">%s</a></li>',
-						get_term_link( $term, $atts['taxonomy'] ),
-						$term->name,
-						$term->name
-					);
-				}
-				$content .= '</ul>';
-			}
-
-			// Normal multiple fields: checkbox_list, select with multiple values
-			elseif ( is_array( $meta ) )
-			{
-				$content = '<ul><li>' . implode( '</li><li>', $meta ) . '</li></ul>';
-			}
-
-			else
-			{
-				$content = $meta;
-			}
-
-			return apply_filters( 'rwmb_shortcode', $content );
-		}
-
-		/**
 		 * Find field by field ID
 		 * This function finds field in meta boxes registered by 'rwmb_meta_boxes' filter
 		 * Note: if users use old code to add meta boxes, this function might not work properly
-		 * @param  string $id Field ID
+		 *
+		 * @param  string $field_id Field ID
+		 *
 		 * @return array|false Field params (array) if success. False otherwise.
 		 */
-		static function find_field( $id )
+		static function find_field( $field_id )
 		{
 			$found = false;
 
@@ -140,7 +35,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			{
 				foreach ( $meta_box['fields'] as $field )
 				{
-					if ( $key == $field['id'] )
+					if ( $field_id == $field['id'] )
 					{
 						$found = true;
 						break;
@@ -448,133 +343,111 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			return $html;
 		}
 	}
-
-	RWMB_Helper::on_load();
 }
 
-if( ! function_exists( 'rwmb_meta' ) ) 
+if ( ! function_exists( 'rwmb_meta' ) )
 {
-  /**
-   * Get post meta
-   *
-   * @param string   $key     Meta key. Required.
-   * @param int|null $post_id Post ID. null for current post. Optional
-   * @param array    $args    Array of arguments. Optional.
-   *
-   * @return mixed
-   */
-  function rwmb_meta( $key, $args = array(), $post_id = null )
-  {
-  	return RWMB_Helper::meta( $key, $args, $post_id );
-  }
+	/**
+	 * Get post meta
+	 *
+	 * @param string   $key     Meta key. Required.
+	 * @param int|null $post_id Post ID. null for current post. Optional
+	 * @param array    $args    Array of arguments. Optional.
+	 *
+	 * @return mixed
+	 */
+	function rwmb_meta( $key, $args = array(), $post_id = null )
+	{
+		return RWMB_Helper::meta( $key, $args, $post_id );
+	}
 }
 
-if( ! function_exists( 'rwmb_get_field' ) ) 
+if ( ! function_exists( 'rwmb_get_field' ) )
 {
-  /**
-   * Get value of custom field.
-   * This is used to replace old version of rwmb_meta key.
-   *
-   * @param  string   $key     Meta key. Required.
-   * @param  int|null $post_id Post ID. null for current post. Optional.
-   * @return mixed             false if field doesn't exist. Field value otherwise.
-   */
-  function rwmb_get_field( $key, $post_id = null )
-  {
-  	$field = RWMB_Helper::find_field( $key );
+	/**
+	 * Get value of custom field.
+	 * This is used to replace old version of rwmb_meta key.
+	 *
+	 * @param  string   $field_id Field ID. Required.
+	 * @param  array    $args     Additional arguments. Rarely used. See specific fields for details
+	 * @param  int|null $post_id  Post ID. null for current post. Optional.
+	 *
+	 * @return mixed false if field doesn't exist. Field value otherwise.
+	 */
+	function rwmb_get_field( $field_id, $args = array(), $post_id = null )
+	{
+		$field = RWMB_Helper::find_field( $field_id );
 
-  	// Get field value
-  	return $field ? RWMB_Helper::meta( $key, $field, $post_id ) : false;
-  }
+		// Get field value
+		$value = $field ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id ) : false;
+
+		/**
+		 * Allow developers to change the returned value of field
+		 *
+		 * @param mixed    $value   Field value
+		 * @param array    $field   Field parameter
+		 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param int|null $post_id Post ID. null for current post. Optional.
+		 */
+
+		return apply_filters( 'rwmb_get_field', $value, $field, $args, $post_id );
+	}
 }
 
-if( ! function_exists( 'rwmb_the_field' ) ) 
+if ( ! function_exists( 'rwmb_the_field' ) )
 {
-  /**
-   * Display the value of a field
-   *
-   * @param  string   $key     Meta key. Required.
-   * @param  int|null $post_id Post ID. null for current post. Optional.
-   * @param  bool     $echo    Display field meta value? Default `true` which works in almost all cases. We use `false` for the [rwmb_meta] shortcode
-   *
-   * @return string
-   */
-  function rwmb_the_field( $key, $post_id = null, $echo = true )
-  {
-  	// Find field
-  	$field = RWMB_Helper::find_field( $key );
-  	if ( ! $field )
-  		return;
+	/**
+	 * Display the value of a field
+	 *
+	 * @param  string   $field_id Field ID. Required.
+	 * @param  array    $args     Additional arguments. Rarely used. See specific fields for details
+	 * @param  int|null $post_id  Post ID. null for current post. Optional.
+	 * @param  bool     $echo     Display field meta value? Default `true` which works in almost all cases. We use `false` for  the [rwmb_meta] shortcode
+	 *
+	 * @return string
+	 */
+	function rwmb_the_field( $field_id, $args = array(), $post_id = null, $echo = true )
+	{
+		// Find field
+		$field = RWMB_Helper::find_field( $field_id );
 
-  	// Get field meta value
-  	$meta = RWMB_Helper::meta( $key, $field, $post_id );
-  	if ( empty( $meta ) )
-  		return;
+		if ( ! $field )
+			return '';
 
-  	// Default output is meta value
-  	$output = $meta;
+		$output = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'the_value' ), $field, $args, $post_id );
 
-  	switch ( $field['type'] )
-  	{
-  		case 'checkbox':
-  			$output = $field['name'];
-  			break;
-  		case 'radio':
-  			$output = $field['options'][$meta];
-  			break;
-  		case 'file':
-  		case 'file_advanced':
-  			$output = '<ul>';
-  			foreach ( $meta as $file )
-  			{
-  				$output .= sprintf(
-  					'<li><a href="%s" title="%s">%s</a></li>',
-  					$file['url'],
-  					$file['title'],
-  					$file['name']
-  				);
-  			}
-  			$output .= '</ul>';
-  			break;
-  		case 'image':
-  		case 'plupload_image':
-  		case 'thickbox_image':
-  		case 'image_advanced':
-  			$output = '<ul>';
-  			foreach ( $meta as $image )
-  			{
-  				$output .= sprintf(
-  					'<li><img src="%s" alt="%s" title="%s" /></li>',
-  					$image['url'],
-  					$image['alt'],
-  					$image['title']
-  				);
-  			}
-  			$output .= '</ul>';
-  			break;
-  		case 'taxonomy':
-  			$output = '<ul>';
-  			foreach ( $meta as $term )
-  			{
-  				$output .= sprintf(
-  					'<li><a href="%s" title="%s">%s</a></li>',
-  					get_term_link( $term, $field['taxonomy'] ),
-  					$term->name,
-  					$term->name
-  				);
-  			}
-  			$output .= '</ul>';
-  			break;
-  		default:
-  			if ( is_array( $meta ) )
-  			{
-  				$output = '<ul><li>' . implode( '</li><li>', $meta ) . '</li></ul>';
-  			}
-  	}
+		if ( $echo )
+			echo $output;
 
-  	if ( $echo )
-  		echo $output;
+		return $output;
+	}
+}
 
-  	return $output;
-  }
+if ( ! function_exists( 'rwmb_meta_shortcode' ) )
+{
+	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
+
+	/**
+	 * Shortcode to display meta value
+	 *
+	 * @param $atts Array of shortcode attributes, same as meta() function, but has more "meta_key" parameter
+	 *
+	 * @see meta() function below
+	 *
+	 * @return string
+	 */
+	function rwmb_meta_shortcode( $atts )
+	{
+		$atts = wp_parse_args( $atts, array(
+			'post_id' => get_the_ID(),
+		) );
+		if ( empty( $atts['meta_key'] ) )
+			return '';
+
+		$field_id = $atts['meta_key'];
+		$post_id  = $atts['post_id'];
+		unset( $atts['meta_key'], $atts['post_id'] );
+
+		return rwmb_the_field( $field_id, $atts, $post_id, false );
+	}
 }

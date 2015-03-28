@@ -250,7 +250,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return mixed
 		 */
-		static function meta( $post_id, $saved, $field )
+		static function meta( $post_id, $saved, $field, $escape = true )
 		{
 			/**
 			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
@@ -265,11 +265,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			// Escape attributes
-			$meta = self::esc_meta( $meta );
+			if ( $escape )
+				$meta = self::esc_meta( $meta );
 
 			return $meta;
 		}
-		
+
 		/**
 		 * Escape meta for field output
 		 *
@@ -277,8 +278,9 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return mixed
 		 */
-		static function esc_meta( $meta ) {
-			return is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );	
+		static function esc_meta( $meta )
+		{
+			return is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
 		}
 
 		/**
@@ -353,6 +355,61 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		static function normalize_field( $field )
 		{
 			return $field;
+		}
+
+		/**
+		 * Get the field value
+		 * The difference between this function and 'meta' function is 'meta' function always returns the raw value
+		 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
+		 * - For checkbox/radio/select field: return the option label instead of 'yes/no' or selected value
+		 * - For file/image: return array of file/image information instead of file/image IDs
+		 * It uses 'meta' function internally to get field's meta value, but each field can extend this function and
+		 * add more data to the returned value. See specific field classes for details.
+		 *
+		 * @use self::meta()
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function get_value( $field, $args = array(), $post_id = null )
+		{
+			if ( ! $post_id )
+				$post_id = get_the_ID();
+
+			// Get raw meta value in the database, no escape
+			$value = self::meta( $post_id, false, $field, false );
+
+			/**
+			 * Return the meta value by default.
+			 * For specific fields, the returned value might be different. See each field class for details
+			 */
+
+			return $value;
+		}
+
+		/**
+		 * Output the field value
+		 * Depends on field value and field types, each field can extend this method to output its value in its own way
+		 * See specific field classes for details.
+		 *
+		 * Note: we don't echo the field value directly. We return the output HTML of field, which will be used in
+		 * rwmb_the_field function later.
+		 *
+		 * @use self::get_value()
+		 * @see rwmb_the_field()
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return string HTML output of the field
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
 		}
 	}
 }
