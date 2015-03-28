@@ -389,8 +389,9 @@ if ( ! function_exists( 'rwmb_get_field' ) )
 		 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 		 * @param int|null $post_id Post ID. null for current post. Optional.
 		 */
+		$value = apply_filters( 'rwmb_get_field', $value, $field, $args, $post_id );
 
-		return apply_filters( 'rwmb_get_field', $value, $field, $args, $post_id );
+		return $value;
 	}
 }
 
@@ -416,6 +417,16 @@ if ( ! function_exists( 'rwmb_the_field' ) )
 
 		$output = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'the_value' ), $field, $args, $post_id );
 
+		/**
+		 * Allow developers to change the returned value of field
+		 *
+		 * @param mixed    $value   Field HTML output
+		 * @param array    $field   Field parameter
+		 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param int|null $post_id Post ID. null for current post. Optional.
+		 */
+		$output = apply_filters( 'rwmb_the_field', $output, $field, $args, $post_id );
+
 		if ( $echo )
 			echo $output;
 
@@ -425,8 +436,6 @@ if ( ! function_exists( 'rwmb_the_field' ) )
 
 if ( ! function_exists( 'rwmb_meta_shortcode' ) )
 {
-	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
-
 	/**
 	 * Shortcode to display meta value
 	 *
@@ -450,4 +459,6 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) )
 
 		return rwmb_the_field( $field_id, $atts, $post_id, false );
 	}
+
+	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
 }

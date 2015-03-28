@@ -361,8 +361,8 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 * Get the field value
 		 * The difference between this function and 'meta' function is 'meta' function always returns the raw value
 		 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
-		 * - For checkbox/radio/select field: return the option label instead of 'yes/no' or selected value
-		 * - For file/image: return array of file/image information instead of file/image IDs
+		 * for file/image: return array of file/image information instead of file/image IDs
+		 *
 		 * It uses 'meta' function internally to get field's meta value, but each field can extend this function and
 		 * add more data to the returned value. See specific field classes for details.
 		 *
@@ -386,7 +386,6 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			 * Return the meta value by default.
 			 * For specific fields, the returned value might be different. See each field class for details
 			 */
-
 			return $value;
 		}
 

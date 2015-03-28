@@ -71,5 +71,28 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		{
 			return empty( $new ) ? 0 : 1;
 		}
+
+		/**
+		 * Output the field value
+		 * Display 'Yes' or 'No' instead of '1' and '0'
+		 *
+		 * Note: we don't echo the field value directly. We return the output HTML of field, which will be used in
+		 * rwmb_the_field function later.
+		 *
+		 * @use self::get_value()
+		 * @see rwmb_the_field()
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return string HTML output of the field
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+
+			return $value ? __( 'Yes', 'meta-box' ) : __( 'No', 'meta-box' );
+		}
 	}
 }

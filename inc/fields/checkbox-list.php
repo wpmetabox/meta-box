@@ -61,9 +61,7 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 		/**
 		 * Save meta value
 		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
+		 * Otherwise value is saved as multiple entries
 		 *
 		 * @param $new
 		 * @param $old
@@ -100,6 +98,51 @@ if ( ! class_exists( 'RWMB_Checkbox_List_Field' ) )
 				$field['field_name'] .= '[]';
 
 			return $field;
+		}
+
+		/**
+		 * Output the field value
+		 * Display option name instead of option value
+		 *
+		 * @use self::meta()
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = parent::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$output = '<ul>';
+			if ( $field['clone'] )
+			{
+				foreach ( $value as $subvalue )
+				{
+					$output .= '<li>';
+					$output .= '<ul>';
+					foreach ( $subvalue as $option )
+					{
+						$output .= '<li>' . $field['options'][$option] . '</li>';
+					}
+					$output .= '</ul>';
+					$output .= '</li>';
+				}
+			}
+			else
+			{
+				foreach ( $value as $option )
+				{
+					$output .= '<li>' . $field['options'][$option] . '</li>';
+				}
+			}
+			$output .= '</ul>';
+
+			return $output;
 		}
 	}
 }
