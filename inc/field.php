@@ -250,7 +250,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return mixed
 		 */
-		static function meta( $post_id, $saved, $field, $escape = true )
+		static function meta( $post_id, $saved, $field )
 		{
 			/**
 			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
@@ -265,8 +265,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			// Escape attributes
-			if ( $escape )
-				$meta = self::esc_meta( $meta );
+			$meta = self::esc_meta( $meta );
 
 			return $meta;
 		}
@@ -379,8 +378,20 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			if ( ! $post_id )
 				$post_id = get_the_ID();
 
-			// Get raw meta value in the database, no escape
-			$value = self::meta( $post_id, false, $field, false );
+			/**
+			 * Get raw meta value in the database, no escape
+			 * Very similar to self::meta() function
+			 */
+
+			/**
+			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
+			 * to prevent notice error when displayin fields
+			 */
+			if ( empty( $field['id'] ) )
+			{
+				$value = '';
+			}
+			$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 
 			/**
 			 * Return the meta value by default.
