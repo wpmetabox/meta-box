@@ -60,7 +60,12 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 == Frequently Asked Questions ==
 
 == Screenshots ==
-1. Supported fields
+1. Text Fields
+1. Basic Fields
+1. Advanced Fields
+1. File Image Upload Fields
+1. Media Fields
+1. Post Taxonomy Fields
 
 == Changelog ==
 
