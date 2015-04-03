@@ -250,7 +250,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return mixed
 		 */
-		static function meta( $post_id, $saved, $field, $escape = true )
+		static function meta( $post_id, $saved, $field )
 		{
 			/**
 			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
@@ -265,8 +265,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
 			// Escape attributes
-			if ( $escape )
-				$meta = self::esc_meta( $meta );
+			$meta = self::esc_meta( $meta );
 
 			return $meta;
 		}
@@ -359,14 +358,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 		/**
 		 * Get the field value
-		 * The difference between this function and 'meta' function is 'meta' function always returns the raw value
+		 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
 		 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
 		 * for file/image: return array of file/image information instead of file/image IDs
 		 *
-		 * It uses 'meta' function internally to get field's meta value, but each field can extend this function and
-		 * add more data to the returned value. See specific field classes for details.
-		 *
-		 * @use self::meta()
+		 * Each field can extend this function and add more data to the returned value.
+		 * See specific field classes for details.
 		 *
 		 * @param  array    $field   Field parameters
 		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
@@ -379,8 +376,20 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			if ( ! $post_id )
 				$post_id = get_the_ID();
 
-			// Get raw meta value in the database, no escape
-			$value = self::meta( $post_id, false, $field, false );
+			/**
+			 * Get raw meta value in the database, no escape
+			 * Very similar to self::meta() function
+			 */
+
+			/**
+			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
+			 * to prevent notice error when display in fields
+			 */
+			$value = '';
+			if ( !empty( $field['id'] ) )
+			{
+				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+			}
 
 			/**
 			 * Return the meta value by default.
@@ -408,7 +417,18 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
+			$value = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
+			$output = $value;
+			if ( is_array( $value ) )
+			{
+				$output = '<ul>';
+				foreach ( $value as $subvalue )
+				{
+					$output .= '<li>' . $subvalue . '</li>';
+				}
+				$output .= '</ul>';
+			}
+			return $output;
 		}
 	}
 }

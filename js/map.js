@@ -91,6 +91,21 @@
 				that.geocodeAddress();
 				return false;
 			} );
+
+			/**
+			 * Add a custom event that allows other scripts to refresh the maps when needed
+			 * For example: when maps is in tabs or hidden div (this is known issue of Google Maps)
+			 *
+			 * @see https://developers.google.com/maps/documentation/javascript/reference
+			 *      ('resize' Event)
+			 */
+			$( window ).on( 'rwmb_map_refresh', function()
+			{
+				if ( that.map )
+				{
+					google.maps.event.trigger( that.map, 'resize' );
+				}
+			} );
 		},
 
 		// Autocomplete address
@@ -180,6 +195,7 @@
 			field.init();
 
 			$( this ).data( 'mapController', field );
+
 		} );
 
 		$( '.rwmb-input' ).on( 'clone', function ()

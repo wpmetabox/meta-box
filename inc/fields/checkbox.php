@@ -37,24 +37,6 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		}
 
 		/**
-		 * Show end HTML markup for fields
-		 *
-		 * @param mixed $meta
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function end_html( $meta, $field )
-		{
-			$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ) ) : '';
-
-			// Closes the container
-			$html = "$button</div>";
-
-			return $html;
-		}
-
-		/**
 		 * Set the value of checkbox to 1 or 0 instead of 'checked' and empty string
 		 * This prevents using default value once the checkbox has been unchecked
 		 *
