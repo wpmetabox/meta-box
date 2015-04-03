@@ -25,8 +25,6 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 		 */
 		static function find_field( $field_id )
 		{
-			$found = false;
-
 			// Get all meta boxes registered with 'rwmb_meta_boxes' hook
 			$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
 
@@ -37,35 +35,12 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				{
 					if ( $field_id == $field['id'] )
 					{
-						$found = true;
-						break;
+						return $field;
 					}
 				}
 			}
 
-			// If field doesn't exist, return false
-			if ( ! $found )
-			{
-				return false;
-			}
-
-			// Normalize field to make sure all params are set properly
-			$field = wp_parse_args( $field, array(
-				'id'          => '',
-				'multiple'    => false,
-				'clone'       => false,
-				'std'         => '',
-				'desc'        => '',
-				'format'      => '',
-				'before'      => '',
-				'after'       => '',
-				'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
-				'required'    => false,
-				'placeholder' => '',
-			) );
-			$field = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize_field' ), $field );
-
-			return $field;
+			return false;
 		}
 
 		/**
