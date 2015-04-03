@@ -264,8 +264,10 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
+			do_action( 'add_debug_info', $meta );
+
 			// Escape attributes
-			$meta = self::esc_meta( $meta );
+			$meta = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'esc_meta' ), $meta );
 
 			return $meta;
 		}
@@ -386,7 +388,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			 * to prevent notice error when display in fields
 			 */
 			$value = '';
-			if ( !empty( $field['id'] ) )
+			if ( ! empty( $field['id'] ) )
 			{
 				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 			}
@@ -417,7 +419,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			$value = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
+			$value  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
 			$output = $value;
 			if ( is_array( $value ) )
 			{
