@@ -264,8 +264,6 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
 
-			do_action( 'add_debug_info', $meta );
-
 			// Escape attributes
 			$meta = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'esc_meta' ), $meta );
 

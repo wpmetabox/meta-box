@@ -16,7 +16,6 @@ if ( ! class_exists( 'RWMB_Key_Value_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			do_action( 'add_debug_info', $meta );
 			$tpl = '<input type="text" class="rwmb-key-val" name="%s[]" value="%s"> <input type="text" class="rwmb-key-val" name="%s[]" value="%s">';
 
 			$key = isset( $meta[0] ) ? $meta[0] : '';
