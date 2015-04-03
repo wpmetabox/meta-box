@@ -417,7 +417,18 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
+			$value = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
+			$output = $value;
+			if ( is_array( $value ) )
+			{
+				$output = '<ul>';
+				foreach ( $value as $subvalue )
+				{
+					$output .= '<li>' . $subvalue . '</li>';
+				}
+				$output .= '</ul>';
+			}
+			return $output;
 		}
 	}
 }
