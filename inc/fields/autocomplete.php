@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 {
-	class RWMB_Autocomplete_Field extends RWMB_Field
+	class RWMB_Autocomplete_Field extends RWMB_Field_Multiple_Values
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -31,11 +31,11 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 			if ( ! is_array( $meta ) )
 				$meta = array( $meta );
 
-			if( is_string( $field['options'] ) ) 
+			if ( is_string( $field['options'] ) )
 			{
 				$options = $field['options'];
-			} 
-			else 
+			}
+			else
 			{
 				$options = array();
 				foreach ( $field['options'] as $value => $label )
@@ -71,7 +71,7 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 				</div>
 			';
 
-			if( is_array( $field['options'] ) ) 
+			if ( is_array( $field['options'] ) )
 			{
 				foreach ( $field['options'] as $value => $label )
 				{
@@ -91,7 +91,7 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 			{
 				foreach ( $meta as $value )
 				{
-					if( empty( $value ) )
+					if ( empty( $value ) )
 						continue;
 					$label = apply_filters( 'rwmb_autocomplete_result_label', $value, $field );
 					$html .= sprintf(
@@ -110,52 +110,6 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 		}
 
 		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * @see "save" method for better understanding
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'], $field['clone'] );
-			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-
-			return $meta;
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			if ( ! $field['clone'] )
-			{
-				parent::save( $new, $old, $post_id, $field );
-
-				return;
-			}
-
-			if ( empty( $new ) )
-				delete_post_meta( $post_id, $field['id'] );
-			else
-				update_post_meta( $post_id, $field['id'], $new );
-		}
-
-		/**
 		 * Normalize parameters for field
 		 *
 		 * @param array $field
@@ -164,15 +118,10 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
+			$field = parent::normalize_field( $field );
 			$field = wp_parse_args( $field, array(
 				'size' => 30,
 			) );
-
-			$field['multiple']   = true;
-			$field['field_name'] = $field['id'];
-			if ( ! $field['clone'] )
-				$field['field_name'] .= '[]';
-
 			return $field;
 		}
 	}

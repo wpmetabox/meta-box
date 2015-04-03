@@ -358,14 +358,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 		/**
 		 * Get the field value
-		 * The difference between this function and 'meta' function is 'meta' function always returns the raw value
+		 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
 		 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
 		 * for file/image: return array of file/image information instead of file/image IDs
 		 *
-		 * It uses 'meta' function internally to get field's meta value, but each field can extend this function and
-		 * add more data to the returned value. See specific field classes for details.
-		 *
-		 * @use self::meta()
+		 * Each field can extend this function and add more data to the returned value.
+		 * See specific field classes for details.
 		 *
 		 * @param  array    $field   Field parameters
 		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
@@ -385,13 +383,13 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 			/**
 			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
-			 * to prevent notice error when displayin fields
+			 * to prevent notice error when display in fields
 			 */
-			if ( empty( $field['id'] ) )
+			$value = '';
+			if ( !empty( $field['id'] ) )
 			{
-				$value = '';
+				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 			}
-			$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
 
 			/**
 			 * Return the meta value by default.
