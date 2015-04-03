@@ -2,9 +2,9 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Text_Field' ) )
+if ( ! class_exists( 'RWMB_Custom_Html_Field' ) )
 {
-	class RWMB_Text_Field extends RWMB_Field
+	class RWMB_Custom_Html_Field extends RWMB_Field
 	{
 		/**
 		 * Get field HTML
@@ -16,6 +16,8 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
+			$html = !empty( $field[ 'std' ] ) ?  $field[ 'std' ] : '';
+
 			if( empty( $field[ 'callback' ] ) )
 				return '';
 
@@ -25,7 +27,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 			}
 			else
 			{
-				$html = apply_filters( 'rwmb_custom_field_html', '', $meta, $field );
+				$html = apply_filters( 'rwmb_custom_field_html', $html, $meta, $field );
 			}
 			return $html;
 		}
