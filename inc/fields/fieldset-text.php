@@ -16,63 +16,71 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			if ( 1 == count( $meta ) && '' == trim( $meta[0] ) )
-				$meta = '';
+			$html = array();
+			$tpl  = '<label>%s <input type="text" class="rwmb-fieldset-text" name="%s[%d][%s]" value="%s"></label>';
 
-			$html   = array();
-			$before = '<fieldset><legend>' . $field['desc'] . '</legend>';
-			$after  = '</fieldset>';
-
-			$tpl = '<label>%s <input type="text" class="rwmb-fieldset-text" name="%s[%s][%d]" placeholder="%s" value="%s" /></label>';
-
-			for ( $n = 0; $n < $field['rows']; $n ++ )
+			for ( $row = 0; $row < $field['rows']; $row ++ )
 			{
-				foreach ( $field['options'] as $k => $v )
+				foreach ( $field['options'] as $key => $label )
 				{
-					$fid = $field['id'];
-					if ( is_array( $meta ) && ! empty( $meta ) )
-						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, $meta[$v][$n] );
-					else
-						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, '' );
+					$value  = isset( $meta[$row][$key] ) ? $meta[$row][$key] : '';
+					$html[] = sprintf( $tpl, $label, $field['id'], $row, $key, $value );
 				}
 				$html[] = '<br>';
 			}
 
-			$out = $before . implode( ' ', $html ) . $after;
+			$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
 			return $out;
 		}
 
 		/**
-		 * Get meta value
+		 * Show end HTML markup for fields
+		 * Do not show field description. Field description is shown before list of fields
 		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
+		 * @param mixed $meta
+		 * @param array $field
 		 *
-		 * @return array
+		 * @return string
 		 */
-		static function meta( $post_id, $saved, $field )
+		static function end_html( $meta, $field )
 		{
-			$meta = get_post_meta( $post_id, $field['id'] );
+			$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ), $field ) : '';
 
-			if ( is_array( $meta ) && ! empty( $meta ) )
-				$meta = $meta[0];
+			// Closes the container
+			$html = "$button</div>";
 
+			return $html;
+		}
+
+		/**
+		 * Escape meta for field output
+		 *
+		 * @param mixed $meta
+		 *
+		 * @return mixed
+		 */
+		static function esc_meta( $meta )
+		{
+			foreach ( $meta as &$pairs )
+			{
+				$pairs = array_map( 'esc_attr', $pairs );
+			}
 			return $meta;
 		}
 
 		/**
-		 * Save meta value
+		 * Normalize parameters for field
 		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
+		 * @param array $field
+		 *
+		 * @return array
 		 */
-		static function save( $new, $old, $post_id, $field )
+		static function normalize_field( $field )
 		{
-			update_post_meta( $post_id, $field['id'], $new, $old );
+			$field['multiple'] = false;
+			return $field;
 		}
+
 	}
 }
