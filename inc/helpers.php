@@ -66,26 +66,8 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 
 			$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
 
-			// Get uploaded files info
-			if ( in_array( $args['type'], array( 'file', 'file_advanced' ) ) )
-			{
-				if ( is_array( $meta ) && ! empty( $meta ) )
-				{
-					$files = array();
-					foreach ( $meta as $id )
-					{
-						// Get only info of existing attachments
-						if ( get_attached_file( $id ) )
-						{
-							$files[$id] = self::file_info( $id );
-						}
-					}
-					$meta = $files;
-				}
-			}
-
 			// Get uploaded images info
-			elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
+			if ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
 			{
 				global $wpdb;
 
@@ -144,26 +126,6 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			}
 
 			return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
-		}
-
-		/**
-		 * Get uploaded file information
-		 *
-		 * @param int $id Attachment file ID (post ID). Required.
-		 *
-		 * @return array|bool False if file not found. Array of (id, name, path, url) on success
-		 */
-		static function file_info( $id )
-		{
-			$path = get_attached_file( $id );
-
-			return array(
-				'ID'    => $id,
-				'name'  => basename( $path ),
-				'path'  => $path,
-				'url'   => wp_get_attachment_url( $id ),
-				'title' => get_the_title( $id ),
-			);
 		}
 
 		/**
@@ -329,11 +291,13 @@ if ( ! function_exists( 'rwmb_meta' ) )
 	 * @param int|null $post_id Post ID. null for current post. Optional
 	 * @param array    $args    Array of arguments. Optional.
 	 *
+	 * @deprecated Use rwmb_get_field instead
+	 *
 	 * @return mixed
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null )
 	{
-		return RWMB_Helper::meta( $key, $args, $post_id );
+		return rwmb_get_field( $key, $args, $post_id );
 	}
 }
 

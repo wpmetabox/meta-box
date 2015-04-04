@@ -304,5 +304,91 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 			return empty( $meta ) ? array() : (array) $meta;
 		}
+
+		/**
+		 * Get the field value
+		 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
+		 * of the field saved in the database, while this function returns more meaningful value of the field
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Not used for this field
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Full info of uploaded files
+		 */
+		static function get_value( $field, $args = array(), $post_id = null )
+		{
+			if ( ! $post_id )
+				$post_id = get_the_ID();
+
+			/**
+			 * Get raw meta value in the database, no escape
+			 * Very similar to self::meta() function
+			 */
+			$file_ids = get_post_meta( $post_id, $field['id'], false );
+
+			// For each file, get full file info
+			$value = array();
+			foreach ( $file_ids as $file_id )
+			{
+				$value[$file_id] = self::file_info( $file_id );
+			}
+
+			return $value;
+		}
+
+		/**
+		 * Output the field value
+		 * Display option name instead of option value
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$output = '<ul>';
+			foreach ( $value as $file_id => $file_info )
+			{
+				$output .= sprintf(
+					'<li>
+						%s
+						<a href="%s" target="_blank">%s</a>
+					</li>',
+					wp_get_attachment_image( $file_id, array( 16, 16 ), true ),
+					wp_get_attachment_url( $file_id ),
+					get_the_title( $file_id )
+				);
+			}
+			$output .= '</ul>';
+
+			return $output;
+		}
+
+		/**
+		 * Get uploaded file information
+		 *
+		 * @param int $file_id Attachment file ID (post ID). Required.
+		 *
+		 * @return array|bool False if file not found. Array of (id, name, path, url) on success
+		 */
+		static function file_info( $file_id )
+		{
+			$path = get_attached_file( $file_id );
+
+			return array(
+				'ID'    => $file_id,
+				'name'  => basename( $path ),
+				'path'  => $path,
+				'url'   => wp_get_attachment_url( $file_id ),
+				'title' => get_the_title( $file_id ),
+			);
+		}
 	}
 }
