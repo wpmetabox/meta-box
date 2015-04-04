@@ -1,6 +1,6 @@
 # Meta Box WordPress Plugin
 
-![Travis-CI Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)
+[![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
 
 **Plugin Links**
 
