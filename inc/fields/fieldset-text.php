@@ -82,5 +82,42 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 			return $field;
 		}
 
+		/**
+		 * Output the field value
+		 * Display options in format Label: value in unordered list
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$output = '<table>';
+			$output .= '<thead><tr>';
+			foreach ( $field['options'] as $key => $label )
+			{
+				$output .= "<th>$label</th>";
+			}
+			$output .= '</tr></thead><tbody>';
+
+			foreach ( $value as $subvalue )
+			{
+				$output .= '<tr>';
+				foreach ( $subvalue as $value )
+				{
+					$output .= "<td>$value</td>";
+				}
+				$output .= '</tr>';
+			}
+			$output .= '</tbody></table>';
+
+			return $output;
+		}
 	}
 }

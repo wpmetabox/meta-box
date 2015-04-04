@@ -128,8 +128,6 @@ if ( ! class_exists( 'RWMB_Field_Multiple_Values' ) )
 		 * Output the field value
 		 * Display option name instead of option value
 		 *
-		 * @use self::meta()
-		 *
 		 * @param  array    $field   Field parameters
 		 * @param  array    $args    Additional arguments. Not used for these fields.
 		 * @param  int|null $post_id Post ID. null for current post. Optional.
