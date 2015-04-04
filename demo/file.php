@@ -20,7 +20,7 @@ function your_prefix_file_demo( $meta_boxes )
 
 				// Maximum file uploads
 				'max_file_uploads' => 2,
-			)
+			),
 		),
 	);
 	return $meta_boxes;
