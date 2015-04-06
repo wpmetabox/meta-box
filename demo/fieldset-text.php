@@ -27,7 +27,7 @@ function your_prefix_fieldset_text_demo( $meta_boxes )
 					'address' => __( 'Address', 'your-prefix' ),
 					'email'   => __( 'Email', 'your-prefix' ),
 				),
-			)
+			),
 		),
 	);
 	return $meta_boxes;
