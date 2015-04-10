@@ -56,11 +56,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			if ( ! is_admin() )
 				return;
 
-			/**
-			 * Assign meta box values to local variables and add it's missed values
-			 * Since version 4.5+ we don't need normalizing here, but still keep it for backward compatibility
-			 * (register via 'admin_init')
-			 */
+			// Assign meta box values to local variables and add it's missed values
 			$this->meta_box   = self::normalize( $meta_box );
 			$this->fields     = &$this->meta_box['fields'];
 			$this->validation = &$this->meta_box['validation'];

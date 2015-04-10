@@ -38,7 +38,7 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 				$field['field_name'],
 				$field['id'],
 				$field['size'],
-				$field['multiple'] ? ' multiple="multiple"' : '',
+				$field['multiple'] ? ' multiple' : '',
 				esc_attr( json_encode( $field['js_options'] ) )
 			);
 

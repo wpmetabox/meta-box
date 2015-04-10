@@ -31,7 +31,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 				$field['field_name'],
 				$field['id'],
 				$field['size'],
-				$field['multiple'] ? ' multiple="multiple"' : ''
+				$field['multiple'] ? ' multiple' : ''
 			);
 
 			$html .= self::options_html( $field, $meta );

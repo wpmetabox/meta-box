@@ -49,13 +49,6 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$default_post_type = __( 'Post', 'meta-box' );
-			if ( is_string( $field['post_type'] ) )
-			{
-				$post_type_object  = get_post_type_object( $field['post_type'] );
-				$default_post_type = $post_type_object->labels->singular_name;
-			}
-
 			$field = wp_parse_args( $field, array(
 				'post_type'  => 'post',
 				'field_type' => 'select_advanced',
@@ -63,7 +56,10 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 				'query_args' => array(),
 			) );
 
-			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'meta-box' ), $default_post_type ) : $field['std'];
+			$post_type_object = get_post_type_object( $field['post_type'] );
+			$post_type_label  = $post_type_object->labels->singular_name;
+
+			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'meta-box' ), $post_type_label ) : $field['std'];
 
 			if ( $field['parent'] )
 			{

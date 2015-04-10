@@ -25,27 +25,6 @@ function rwmb_register_meta_boxes()
 	}
 }
 
-/**
- * Normalize parameters of meta boxes and fields AFTER all meta boxes are registered
- * Priority 1000 makes sure this callback performs after all meta boxes are registered
- */
-add_filter( 'rwmb_meta_boxes', 'rwmb_normalize', 1000 );
-
-/**
- * Normalize parameters of meta boxes and fields
- *
- * @use RW_Meta_Box::normalize()
- *
- * @param array $meta_boxes Registered meta boxes
- *
- * @return array
- */
-function rwmb_normalize( $meta_boxes )
-{
-	// Call normalize helper function in RW_Meta_Box class
-	return array_map( array( 'RW_Meta_Box', 'normalize' ), $meta_boxes );
-}
-
 add_action( 'edit_page_form', 'rwmb_fix_page_template' );
 
 /**
