@@ -62,9 +62,9 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		 */
 		static function esc_meta( $meta )
 		{
-			foreach ( $meta as &$pairs )
+			foreach ( (array)$meta as &$pairs )
 			{
-				$pairs = array_map( 'esc_attr', $pairs );
+				$pairs = array_map( 'esc_attr', (array)$pairs );
 			}
 			return $meta;
 		}

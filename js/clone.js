@@ -9,7 +9,7 @@ jQuery( function ( $ )
 	 */
 	function clone( $container )
 	{
-		var $clone_last = $container.find( '.rwmb-clone:last' ),
+		var $clone_last = $container.children( '.rwmb-clone:last' ),
 			$clone = $clone_last.clone(),
 			$input;
 
@@ -216,13 +216,13 @@ jQuery( function ( $ )
 
 
 	// Add more clones
-	$( '.add-clone' ).on( 'click', function ( e )
+	$( '#poststuff' ).on( 'click', '.add-clone', function ( e )
 	{
 		e.preventDefault();
 
-		var $input = $( this ).parents( '.rwmb-input' );
+		var $input = $( this ).closest( '.rwmb-input' );
 
-		if ( $( this ).parents( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
+		if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 		{
 			cloneWYSIWYG( $input );
 		}
@@ -240,7 +240,7 @@ jQuery( function ( $ )
 		e.preventDefault();
 
 		var $this = $( this ),
-			$input = $this.parents( '.rwmb-input' );
+			$input = $this.closest( '.rwmb-input' );
 
 		// Remove clone only if there're 2 or more of them
 		if ( $input.find( '.rwmb-clone' ).length <= 1 )
