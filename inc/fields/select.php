@@ -72,12 +72,12 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		 * If field is cloneable, value is saved as a single entry in DB
 		 * Otherwise value is saved as multiple entries (for backward compatibility)
 		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
 		 * @param $new
 		 * @param $old
 		 * @param $post_id
 		 * @param $field
+		 *
+		 * @return void
 		 */
 		static function save( $new, $old, $post_id, $field )
 		{
@@ -131,7 +131,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 				$show_placeholder = ( 'select' == $field['type'] ) // Normal select field
 					|| ( isset( $field['field_type'] ) && 'select' == $field['field_type'] ) // For 'post' field
 					|| ( isset( $field['display_type'] ) && 'select' == $field['display_type'] ); // For 'taxonomy' field
-				$html = $show_placeholder ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+				$html             = $show_placeholder ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 			}
 
 			$option = '<option value="%s"%s>%s</option>';

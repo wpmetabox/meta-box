@@ -2,23 +2,13 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "select" field is loaded
+// Make sure "select-advanced" field is loaded
 require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
 if ( ! class_exists( 'RWMB_Post_Field' ) )
 {
-	class RWMB_Post_Field extends RWMB_Field
+	class RWMB_Post_Field extends RWMB_Select_Advanced_Field
 	{
-		/**
-		 * Enqueue scripts and styles
-		 *
-		 * @return void
-		 */
-		static function admin_enqueue_scripts()
-		{
-			RWMB_Select_Advanced_Field::admin_enqueue_scripts();
-		}
-
 		/**
 		 * Get field HTML
 		 *
@@ -106,24 +96,7 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 				return $post->post_parent;
 			}
 
-			return RWMB_Select_Field::meta( $post_id, $saved, $field );
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			return RWMB_Select_Field::save( $new, $old, $post_id, $field );
+			return parent::meta( $post_id, $saved, $field );
 		}
 
 		/**
