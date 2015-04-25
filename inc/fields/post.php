@@ -121,5 +121,67 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 
 			return $options;
 		}
+
+		/**
+		 * Output the field value
+		 * Display link to post
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return string Link(s) to post
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			if ( $field['clone'] )
+			{
+				$output = '<ul>';
+				if ( $field['multiple'] )
+				{
+					$output .= '<li>';
+					foreach ( $value as $subvalue )
+					{
+						$output .= '<ul><li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $subvalue ) ) . '</li></ul>';
+					}
+					$output .= '</li>';
+				}
+				else
+				{
+					$output .= '<li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $value ) ) . '</li>';
+				}
+				$output .= '</ul>';
+			}
+			else
+			{
+				$output = $field['multiple'] ? '<ul><li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $value ) ) . '</li></ul>' : self::get_post_link( $value );
+			}
+
+			return $output;
+		}
+
+		/**
+		 * Get post link to output in the frontend
+		 *
+		 * @param int $post_id Post ID
+		 *
+		 * @return string
+		 */
+		static function get_post_link( $post_id )
+		{
+			return sprintf(
+				'<a href="%s" title="%s">%s</a>',
+				esc_url( get_permalink( $post_id ) ),
+				the_title_attribute( array(
+					'post' => $post_id,
+					'echo' => false,
+				) ),
+				get_the_title( $post_id )
+			);
+		}
 	}
 }

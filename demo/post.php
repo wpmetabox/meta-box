@@ -14,6 +14,9 @@ function your_prefix_post_demo( $meta_boxes )
 				'id'          => 'post',
 				'type'        => 'post',
 
+				// 'clone'       => true,
+				// 'multiple'    => true,
+
 				// Post type
 				'post_type'   => 'page',
 
@@ -24,6 +27,7 @@ function your_prefix_post_demo( $meta_boxes )
 				'placeholder' => __( 'Select an Item', 'meta-box' ),
 
 				// Query arguments (optional). No settings means get all published posts
+				// @see https://codex.wordpress.org/Class_Reference/WP_Query
 				'query_args'  => array(
 					'post_status'    => 'publish',
 					'posts_per_page' => - 1,
