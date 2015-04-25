@@ -66,34 +66,8 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 
 			$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
 
-			// Get uploaded images info
-			if ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
-			{
-				global $wpdb;
-
-				$meta = $wpdb->get_col( $wpdb->prepare( "
-					SELECT meta_value FROM $wpdb->postmeta
-					WHERE post_id = %d AND meta_key = '%s'
-					ORDER BY meta_id ASC
-				", $post_id, $key ) );
-
-				if ( is_array( $meta ) && ! empty( $meta ) )
-				{
-					$images = array();
-					foreach ( $meta as $id )
-					{
-						// Get only info of existing attachments
-						if ( get_attached_file( $id ) )
-						{
-							$images[$id] = self::image_info( $id, $args );
-						}
-					}
-					$meta = $images;
-				}
-			}
-
 			// Get terms
-			elseif ( 'taxonomy_advanced' == $args['type'] )
+			if ( 'taxonomy_advanced' == $args['type'] )
 			{
 				if ( ! empty( $args['taxonomy'] ) )
 				{
@@ -126,42 +100,6 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			}
 
 			return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
-		}
-
-		/**
-		 * Get uploaded image information
-		 *
-		 * @param int   $id   Attachment image ID (post ID). Required.
-		 * @param array $args Array of arguments (for size). Required.
-		 *
-		 * @return array|bool False if file not found. Array of (id, name, path, url) on success
-		 */
-		static function image_info( $id, $args = array() )
-		{
-			$args = wp_parse_args( $args, array(
-				'size' => 'thumbnail',
-			) );
-
-			$img_src = wp_get_attachment_image_src( $id, $args['size'] );
-			if ( empty( $img_src ) )
-				return false;
-
-			$attachment = get_post( $id );
-			$path       = get_attached_file( $id );
-
-			return array(
-				'ID'          => $id,
-				'name'        => basename( $path ),
-				'path'        => $path,
-				'url'         => $img_src[0],
-				'width'       => $img_src[1],
-				'height'      => $img_src[2],
-				'full_url'    => wp_get_attachment_url( $id ),
-				'title'       => $attachment->post_title,
-				'caption'     => $attachment->post_excerpt,
-				'description' => $attachment->post_content,
-				'alt'         => get_post_meta( $id, '_wp_attachment_image_alt', true ),
-			);
 		}
 
 		/**

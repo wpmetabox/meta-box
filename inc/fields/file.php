@@ -331,7 +331,10 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$value = array();
 			foreach ( $file_ids as $file_id )
 			{
-				$value[$file_id] = self::file_info( $file_id );
+				if ( $file_info = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'file_info' ), $file_id, $args ) )
+				{
+					$value[$file_id] = $file_info;
+				}
 			}
 
 			return $value;
@@ -357,11 +360,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			foreach ( $value as $file_id => $file_info )
 			{
 				$output .= sprintf(
-					'<li>
-						%s
-						<a href="%s" target="_blank">%s</a>
-					</li>',
-					wp_get_attachment_image( $file_id, array( 16, 16 ), true ),
+					'<li><a href="%s" target="_blank">%s</a></li>',
 					wp_get_attachment_url( $file_id ),
 					get_the_title( $file_id )
 				);
@@ -374,13 +373,18 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		/**
 		 * Get uploaded file information
 		 *
-		 * @param int $file_id Attachment file ID (post ID). Required.
+		 * @param int   $file_id Attachment file ID (post ID). Required.
+		 * @param array $args    Array of arguments (for size).
 		 *
 		 * @return array|bool False if file not found. Array of (id, name, path, url) on success
 		 */
-		static function file_info( $file_id )
+		static function file_info( $file_id, $args = array() )
 		{
 			$path = get_attached_file( $file_id );
+			if ( ! $path )
+			{
+				return false;
+			}
 
 			return array(
 				'ID'    => $file_id,
