@@ -31,6 +31,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			// Find field
 			foreach ( $meta_boxes as $meta_box )
 			{
+				$meta_box = RW_Meta_Box::normalize( $meta_box );
 				foreach ( $meta_box['fields'] as $field )
 				{
 					if ( $field_id == $field['id'] )
