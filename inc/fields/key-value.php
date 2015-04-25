@@ -129,11 +129,7 @@ if ( ! class_exists( 'RWMB_Key_Value_Field' ) )
 
 		/**
 		 * Output the field value
-		 * Depends on field value and field types, each field can extend this method to output its value in its own way
-		 * See specific field classes for details.
-		 *
-		 * Note: we don't echo the field value directly. We return the output HTML of field, which will be used in
-		 * rwmb_the_field function later.
+		 * Display unordered list of key - value pairs
 		 *
 		 * @use self::get_value()
 		 * @see rwmb_the_field()

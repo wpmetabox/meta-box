@@ -160,7 +160,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 
 		/**
 		 * Output the field value
-		 * Display option name instead of option value
+		 * Display unordered list of images with option for size and link to full size
 		 *
 		 * @param  array    $field   Field parameters
 		 * @param  array    $args    Additional arguments. Not used for these fields.

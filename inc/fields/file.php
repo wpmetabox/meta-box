@@ -342,7 +342,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 
 		/**
 		 * Output the field value
-		 * Display option name instead of option value
+		 * Display unordered list of files
 		 *
 		 * @param  array    $field   Field parameters
 		 * @param  array    $args    Additional arguments. Not used for these fields.
