@@ -6,18 +6,18 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_map_demo' );
 function your_prefix_map_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title'  => __( 'Google Map', 'meta-box' ),
+		'title'  => __( 'Google Map', 'your-prefix' ),
 		'fields' => array(
 			// Map requires at least one address field (with type = text)
 			array(
 				'id'   => 'address',
-				'name' => __( 'Address', 'meta-box' ),
+				'name' => __( 'Address', 'your-prefix' ),
 				'type' => 'text',
-				'std'  => __( 'Hanoi, Vietnam', 'meta-box' ),
+				'std'  => __( 'Hanoi, Vietnam', 'your-prefix' ),
 			),
 			array(
 				'id'            => 'map',
-				'name'          => __( 'Location', 'meta-box' ),
+				'name'          => __( 'Location', 'your-prefix' ),
 				'type'          => 'map',
 
 				// Default location: 'latitude,longitude[,zoom]' (zoom is optional)
