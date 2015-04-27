@@ -1,5 +1,5 @@
 === Meta Box ===
-Contributors: rilwis, franz-josef-kaiser, Omnicia, funkedgeek, PerWiklander, ruanmer
+Contributors: rilwis, fitwp, f-j-kaiser, Omnicia, funkedgeek, PerWiklander, ruanmer
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
@@ -69,13 +69,22 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 == Changelog ==
 
+
+= 4.5 =
+* Improvement: Separate `esc_meta` method
+* Improvement: Add ability to use URL to retrieve options for autocomplete field
+* Improvement: Add `rwmb_get_field` and `rwmb_the_field` functions to get and display field values in the frontend
+* Improvement: Add field type `custom_html` to display any HTML in the meta box
+* Improvement: Add field type `key_value` which allows users to add any number of key-value pairs
+* Improvement: Use single JS file to display Google Maps in the frontend. No more inline Javascript.
+* Improvement: Code refactor
+
 = 4.4.3 =
 * Fix: Incorrect path to loader image for `plupload_image`
 * Fix: Missing placeholder for `post` field when `field_type` = `select`
 * Improvement: No errors showing if invalid value is returned from `rwmb_meta_boxes` filter
 * Improvement: Add filter for add/remove clone buttons text
 * Improvement: Add French translation
-
 
 = 4.4.2 =
 * Fix: Values of text_list field not showing correctly

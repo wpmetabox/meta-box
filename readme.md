@@ -71,6 +71,14 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ## Changelog
 
+#### 4.5
+* Improvement: Separate `esc_meta` method
+* Improvement: Add ability to use URL to retrieve options for autocomplete field
+* Improvement: Add `rwmb_get_field` and `rwmb_the_field` functions to get and display field values in the frontend
+* Improvement: Add field type `custom_html` to display any HTML in the meta box
+* Improvement: Add field type `key_value` which allows users to add any number of key-value pairs
+* Improvement: Use single JS file to display Google Maps in the frontend. No more inline Javascript.
+* Improvement: Code refactor
 
 #### 4.4.3
 * Fix: Incorrect path to loader image for `plupload_image`
