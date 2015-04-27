@@ -3,8 +3,8 @@ Contributors: rilwis, fitwp, f-j-kaiser, Omnicia, funkedgeek, PerWiklander, ruan
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 4.1
-Stable tag: 4.4.2
+Tested up to: 4.2
+Stable tag: 4.5
 License: GPLv2 or later
 
 Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
