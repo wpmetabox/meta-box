@@ -302,9 +302,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $field['id'];
-				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
-				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
+				$name   = $field['id'];
+				$single = $field['clone'] || ! $field['multiple'];
+				$old    = get_post_meta( $post_id, $name, $single );
+				$new    = isset( $_POST[$name] ) ? $_POST[$name] : ( $single ? '' : array() );
 
 				// Allow field class change the value
 				$new = call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );

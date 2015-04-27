@@ -31,6 +31,24 @@ function your_prefix_select_demo( $meta_boxes )
 				// Placeholder
 				'placeholder' => __( 'Select an Item', 'your-prefix' ),
 			),
+			array(
+				'name'        => __( 'Select Advanced', 'your-prefix' ),
+				'id'          => 'select_advanced',
+				'type'        => 'select_advanced',
+
+				// Array of 'value' => 'Label' pairs for select box
+				'options'     => array(
+					'value1' => __( 'Label1', 'your-prefix' ),
+					'value2' => __( 'Label2', 'your-prefix' ),
+				),
+
+				// Select multiple values, optional. Default is false.
+				'multiple'    => false,
+
+				'std'         => 'value2', // Default value, optional
+				'placeholder' => __( 'Select an Item', 'your-prefix' ),
+			),
+
 		)
 	);
 

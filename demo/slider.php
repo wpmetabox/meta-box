@@ -1,6 +1,9 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_slider' );
-function prefix_register_meta_box_slider( $meta_boxes )
+/**
+ * This file demonstrates how to use 'slider' field
+ */
+add_filter( 'rwmb_meta_boxes', 'your_prefix_slider_demo' );
+function your_prefix_slider_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
 		'title' => __( 'Slider Demo', 'your-prefix', 'your-prefix' ),
@@ -21,7 +24,7 @@ function prefix_register_meta_box_slider( $meta_boxes )
 					'step'  => 5,
 				),
 
-				'clone' => true,
+				//'clone' => true,
 			),
 		),
 	);
