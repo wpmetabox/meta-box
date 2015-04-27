@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 {
-	class RWMB_Text_List_Field extends RWMB_Field
+	class RWMB_Text_List_Field extends RWMB_Field_Multiple_Values
 	{
 		/**
 		 * Get field HTML
@@ -16,92 +16,79 @@ if ( ! class_exists( 'RWMB_Text_List_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$html  = '';
-			$input = '<label><input type="text" class="rwmb-text-list" name="%s" id="%s" value="%s" placeholder="%s" /> %s</label>';
+			$html  = array();
+			$input = '<label><input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"> %s</label>';
 
 			$i = 0;
-			foreach ( $field['options'] as $value => $label )
+			foreach ( $field['options'] as $placeholder => $label )
 			{
-				$html .= sprintf(
+				$html[] = sprintf(
 					$input,
 					$field['field_name'],
-					$field['id'],
 					isset( $meta[$i] ) ? esc_attr( $meta[$i] ) : '',
-					$value,
+					$placeholder,
 					$label
 				);
 				$i ++;
 			}
 
-			return $html;
+			return implode( ' ', $html );
 		}
 
 		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
+		 * Output the field value
+		 * Display option name instead of option value
 		 *
-		 * @see "save" method for better understanding
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
 		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
+		 * @return mixed Field value
 		 */
-		static function meta( $post_id, $saved, $field )
+		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			$single = $field['clone'] || ! $field['multiple'];
-			$meta   = get_post_meta( $post_id, $field['id'], $single );
-			$meta   = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
 
-			return $meta;
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			if ( ! $field['clone'] )
+			$output = '<ul>';
+			if ( $field['clone'] )
 			{
-				parent::save( $new, $old, $post_id, $field );
+				foreach ( $value as $subvalue )
+				{
+					$output .= '<li>';
+					$output .= '<ul>';
 
-				return;
+					$i = 0;
+					foreach ( $field['options'] as $placeholder => $label )
+					{
+						$output .= sprintf(
+							'<li><label>%s</label>: %s</li>',
+							$label,
+							isset( $subvalue[$i] ) ? $subvalue[$i] : ''
+						);
+						$i ++;
+					}
+					$output .= '</ul>';
+					$output .= '</li>';
+				}
 			}
-
-			if ( empty( $new ) )
-				delete_post_meta( $post_id, $field['id'] );
 			else
-				update_post_meta( $post_id, $field['id'], $new );
-		}
+			{
+				$i = 0;
+				foreach ( $field['options'] as $placeholder => $label )
+				{
+					$output .= sprintf(
+						'<li><label>%s</label>: %s</li>',
+						$label,
+						isset( $value[$i] ) ? $value[$i] : ''
+					);
+					$i ++;
+				}
+			}
+			$output .= '</ul>';
 
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field['multiple']   = true;
-			$field['field_name'] = $field['id'];
-			if ( ! $field['clone'] )
-				$field['field_name'] .= '[]';
-
-			return $field;
+			return $output;
 		}
 	}
 }

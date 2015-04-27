@@ -54,22 +54,6 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		}
 
 		/**
-		 * Escape meta for field output
-		 *
-		 * @param mixed $meta
-		 *
-		 * @return mixed
-		 */
-		static function esc_meta( $meta )
-		{
-			foreach ( (array) $meta as $k => $pairs )
-			{
-				$meta[$k] = array_map( 'esc_attr', (array) $pairs );
-			}
-			return $meta;
-		}
-
-		/**
 		 * Normalize parameters for field
 		 *
 		 * @param array $field
@@ -100,7 +84,7 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 
 			$output = '<table>';
 			$output .= '<thead><tr>';
-			foreach ( $field['options'] as $key => $label )
+			foreach ( $field['options'] as $label )
 			{
 				$output .= "<th>$label</th>";
 			}
