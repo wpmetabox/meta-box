@@ -3,7 +3,7 @@ add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_image_select' );
 function prefix_register_meta_box_image_select( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Image Select Demo', 'your-prefix', 'your-prefix' ),
+		'title' => __( 'Image Select Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
 				'id'       => 'layout',

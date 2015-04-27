@@ -298,11 +298,12 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			$value = self::get_value( $field, $args, $post_id );
+			$class = RW_Meta_Box::get_class_name( $field );
+			$value = call_user_func( array( $class, 'get_value' ), $field, $args, $post_id );
 			if ( ! $value || is_wp_error( $value ) )
 				return '';
 
-			$function = array( __CLASS__, 'get_option_label' );
+			$function = array( $class, 'get_option_label' );
 
 			if ( $field['clone'] )
 			{

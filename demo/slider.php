@@ -6,7 +6,7 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_slider_demo' );
 function your_prefix_slider_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Slider Demo', 'your-prefix', 'your-prefix' ),
+		'title' => __( 'Slider Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
 				'name' => __( 'Slider', 'your-prefix' ),
