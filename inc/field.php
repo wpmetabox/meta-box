@@ -254,12 +254,13 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			/**
 			 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
-			 * to prevent notice error when displayin fields
+			 * to prevent notice error when displaying fields
 			 */
 			if ( empty( $field['id'] ) )
 				return '';
 
-			$meta = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+			$single = $field['clone'] || ! $field['multiple'];
+			$meta   = get_post_meta( $post_id, $field['id'], $single );
 
 			// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
@@ -279,7 +280,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function esc_meta( $meta )
 		{
-			return is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
+			if ( is_array( $meta ) )
+			{
+				array_walk_recursive( $meta, 'esc_attr' );
+				return $meta;
+			}
+			return esc_attr( $meta );
 		}
 
 		/**
@@ -388,7 +394,8 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			$value = '';
 			if ( ! empty( $field['id'] ) )
 			{
-				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+				$single = $field['clone'] || ! $field['multiple'];
+				$value  = get_post_meta( $post_id, $field['id'], $single );
 			}
 
 			/**

@@ -42,32 +42,6 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		}
 
 		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * @see "save" method for better understanding
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$single = $field['clone'] || ! $field['multiple'];
-			$meta   = get_post_meta( $post_id, $field['id'], $single );
-			$meta   = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-
-			$meta = array_map( 'esc_attr', (array) $meta );
-
-			return $meta;
-		}
-
-		/**
 		 * Save meta value
 		 * If field is cloneable, value is saved as a single entry in DB
 		 * Otherwise value is saved as multiple entries (for backward compatibility)
@@ -147,6 +121,75 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			}
 
 			return $html;
+		}
+
+		/**
+		 * Output the field value
+		 * Display unordered list of option labels, not option values
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return string Link(s) to post
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$function = array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' );
+
+			if ( $field['clone'] )
+			{
+				$output = '<ul>';
+				if ( $field['multiple'] )
+				{
+					foreach ( $value as $subvalue )
+					{
+						$output .= '<li>';
+						array_walk_recursive( $subvalue, $function, $field );
+						$output .= '<ul><li>' . implode( '</li><li>', $subvalue ) . '</li></ul>';
+						$output .= '</li>';
+					}
+				}
+				else
+				{
+					array_walk_recursive( $value, $function, $field );
+					$output = '<li>' . implode( '</li><li>', $value ) . '</li>';
+				}
+				$output .= '</ul>';
+			}
+			else
+			{
+				if ( $field['multiple'] )
+				{
+					array_walk_recursive( $value, $function, $field );
+					$output = '<ul><li>' . implode( '</li><li>', $value ) . '</li></ul>';
+				}
+				else
+				{
+					call_user_func_array( $function, array( &$value, 0, $field ) );
+					$output = $value;
+				}
+			}
+
+			return $output;
+		}
+
+		/**
+		 * Get option label to display in the frontend
+		 *
+		 * @param int   $value Option value
+		 * @param int   $index Array index
+		 * @param array $field Field parameter
+		 *
+		 * @return string
+		 */
+		static function get_option_label( &$value, $index, $field )
+		{
+			$value = $field['options'][$value];
 		}
 	}
 }

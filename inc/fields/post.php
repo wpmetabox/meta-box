@@ -123,64 +123,24 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 		}
 
 		/**
-		 * Output the field value
-		 * Display link to post
+		 * Get post link to display in the frontend
 		 *
-		 * @param  array    $field   Field parameters
-		 * @param  array    $args    Additional arguments. Not used for these fields.
-		 * @param  int|null $post_id Post ID. null for current post. Optional.
-		 *
-		 * @return string Link(s) to post
-		 */
-		static function the_value( $field, $args = array(), $post_id = null )
-		{
-			$value = self::get_value( $field, $args, $post_id );
-			if ( ! $value )
-				return '';
-
-			if ( $field['clone'] )
-			{
-				$output = '<ul>';
-				if ( $field['multiple'] )
-				{
-					$output .= '<li>';
-					foreach ( $value as $subvalue )
-					{
-						$output .= '<ul><li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $subvalue ) ) . '</li></ul>';
-					}
-					$output .= '</li>';
-				}
-				else
-				{
-					$output .= '<li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $value ) ) . '</li>';
-				}
-				$output .= '</ul>';
-			}
-			else
-			{
-				$output = $field['multiple'] ? '<ul><li>' . implode( '</li><li>', array_map( array( __CLASS__, 'get_post_link' ), $value ) ) . '</li></ul>' : self::get_post_link( $value );
-			}
-
-			return $output;
-		}
-
-		/**
-		 * Get post link to output in the frontend
-		 *
-		 * @param int $post_id Post ID
+		 * @param int   $value Option value, e.g. post ID
+		 * @param int   $index Array index
+		 * @param array $field Field parameter
 		 *
 		 * @return string
 		 */
-		static function get_post_link( $post_id )
+		static function get_option_label( &$value, $index, $field )
 		{
-			return sprintf(
+			$value = sprintf(
 				'<a href="%s" title="%s">%s</a>',
-				esc_url( get_permalink( $post_id ) ),
+				esc_url( get_permalink( $value ) ),
 				the_title_attribute( array(
-					'post' => $post_id,
+					'post' => $value,
 					'echo' => false,
 				) ),
-				get_the_title( $post_id )
+				get_the_title( $value )
 			);
 		}
 	}
