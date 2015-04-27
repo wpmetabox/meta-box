@@ -268,6 +268,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Escape attributes
 			$meta = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'esc_meta' ), $meta );
 
+			// Make sure meta value is an array for clonable and multiple fields
+			if ( $field['clone'] || $field['multiple'] )
+			{
+				$meta = (array) $meta;
+			}
+
 			return $meta;
 		}
 
@@ -315,6 +321,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			$name = $field['id'];
 
+			// Remove post meta if it's empty
 			if ( '' === $new || array() === $new )
 			{
 				delete_post_meta( $post_id, $name );
@@ -322,6 +329,20 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 				return;
 			}
 
+			// If field is cloneable, value is saved as a single entry in the database
+			if ( $field['clone'] )
+			{
+				$new = (array) $new;
+				foreach ( $new as $k => $v )
+				{
+					if ( '' === $v )
+						unset( $new[$k] );
+				}
+				update_post_meta( $post_id, $name, $new );
+				return;
+			}
+
+			// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour)
 			if ( $field['multiple'] )
 			{
 				foreach ( $new as $new_value )
@@ -334,20 +355,11 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 					if ( ! in_array( $old_value, $new ) )
 						delete_post_meta( $post_id, $name, $old_value );
 				}
+				return;
 			}
-			else
-			{
-				if ( $field['clone'] )
-				{
-					$new = (array) $new;
-					foreach ( $new as $k => $v )
-					{
-						if ( '' === $v )
-							unset( $new[$k] );
-					}
-				}
-				update_post_meta( $post_id, $name, $new );
-			}
+
+			// Default: just update post meta
+			update_post_meta( $post_id, $name, $new );
 		}
 
 		/**
@@ -396,6 +408,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			{
 				$single = $field['clone'] || ! $field['multiple'];
 				$value  = get_post_meta( $post_id, $field['id'], $single );
+
+				// Make sure meta value is an array for clonable and multiple fields
+				if ( $field['clone'] || $field['multiple'] )
+				{
+					$value = (array) $value;
+				}
 			}
 
 			/**

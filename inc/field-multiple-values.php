@@ -16,69 +16,6 @@ if ( ! class_exists( 'RWMB_Field_Multiple_Values' ) )
 	class RWMB_Field_Multiple_Values extends RWMB_Field
 	{
 		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries
-		 *
-		 * @see "save" method for better understanding
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'], $field['clone'] );
-			$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-			if ( ! is_array( $meta ) )
-			{
-				$meta = array();
-			}
-
-			// Escape values
-			if ( $field['clone'] )
-			{
-				foreach ( $meta as &$submeta )
-				{
-					$submeta = array_map( 'esc_attr', $submeta );
-				}
-			}
-			else
-			{
-				$meta = array_map( 'esc_attr', $meta );
-			}
-
-			return $meta;
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			if ( ! $field['clone'] )
-			{
-				parent::save( $new, $old, $post_id, $field );
-
-				return;
-			}
-
-			if ( empty( $new ) )
-				delete_post_meta( $post_id, $field['id'] );
-			else
-				update_post_meta( $post_id, $field['id'], $new );
-		}
-
-		/**
 		 * Normalize parameters for field
 		 *
 		 * @param array $field
@@ -93,35 +30,6 @@ if ( ! class_exists( 'RWMB_Field_Multiple_Values' ) )
 				$field['field_name'] .= '[]';
 
 			return $field;
-		}
-
-		/**
-		 * Get the field value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries
-		 *
-		 * @param  array    $field   Field parameters
-		 * @param  array    $args    Additional arguments. Not used for these fields.
-		 * @param  int|null $post_id Post ID. null for current post. Optional.
-		 *
-		 * @return mixed Field value
-		 */
-		static function get_value( $field, $args = array(), $post_id = null )
-		{
-			if ( ! $post_id )
-				$post_id = get_the_ID();
-
-			/**
-			 * Get raw meta value in the database, no escape
-			 * Very similar to self::meta() function
-			 */
-			$value = get_post_meta( $post_id, $field['id'], $field['clone'] );
-			if ( ! is_array( $value ) )
-			{
-				$value = array();
-			}
-
-			return $value;
 		}
 
 		/**
