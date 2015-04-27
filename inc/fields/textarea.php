@@ -26,7 +26,7 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 				$meta
 			);
 		}
-		
+
 		/**
 		 * Escape meta for field output
 		 *
@@ -34,10 +34,10 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 *
 		 * @return mixed
 		 */
-		static function esc_meta( $meta ) {
-			return is_array( $meta ) ? array_map( 'esc_textarea', $meta ) : esc_textarea( $meta );	
+		static function esc_meta( $meta )
+		{
+			return is_array( $meta ) ? array_map( 'esc_textarea', $meta ) : esc_textarea( $meta );
 		}
-
 
 		/**
 		 * Normalize parameters for field

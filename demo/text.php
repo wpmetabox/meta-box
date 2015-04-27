@@ -1,12 +1,12 @@
 <?php
 /**
- * This file demonstrates how to use 'slider' field
+ * This file demonstrates how to use 'text' field
  */
-add_filter( 'rwmb_meta_boxes', 'your_prefix_slider_demo' );
-function your_prefix_slider_demo( $meta_boxes )
+add_filter( 'rwmb_meta_boxes', 'your_prefix_text_demo' );
+function your_prefix_text_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title'  => __( 'Slider Demo', 'your-prefix' ),
+		'title'  => __( 'Text Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
 				'name'        => __( 'Text', 'your-prefix' ),
