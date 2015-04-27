@@ -3,11 +3,11 @@ add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_image_select' );
 function prefix_register_meta_box_image_select( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Image Select Demo', 'meta-box', 'meta-box' ),
+		'title' => __( 'Image Select Demo', 'your-prefix', 'your-prefix' ),
 		'fields' => array(
 			array(
 				'id'       => 'layout',
-				'name'     => __( 'Layout', 'meta-box' ),
+				'name'     => __( 'Layout', 'your-prefix' ),
 				'type'     => 'image_select',
 
 				// Array of 'value' => 'Image Source' pairs

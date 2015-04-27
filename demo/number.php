@@ -6,7 +6,7 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_number_demo' );
 function your_prefix_number_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title'  => __( 'Number Field Demo', 'meta-box' ),
+		'title'  => __( 'Number Field Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
 				'id'          => 'number',

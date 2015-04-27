@@ -5,26 +5,26 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 {
 	$prefix = 'your_prefix_';
 	$meta_boxes[] = array(
-		'title' => __( 'Date Time Picker With JS Options', 'meta-box' ),
+		'title' => __( 'Date Time Picker With JS Options', 'your-prefix' ),
 
 		'fields' => array(
 			array(
-				'name' => __( 'Date', 'meta-box' ),
+				'name' => __( 'Date', 'your-prefix' ),
 				'id'   => $prefix . 'date',
 				'type' => 'date',
 
 				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
 				'js_options' => array(
-					'appendText'      => __( '(yyyy-mm-dd)', 'meta-box' ),
+					'appendText'      => __( '(yyyy-mm-dd)', 'your-prefix' ),
 					'autoSize'        => true,
-					'buttonText'      => __( 'Select Date', 'meta-box' ),
-					'dateFormat'      => __( 'yy-mm-dd', 'meta-box' ),
+					'buttonText'      => __( 'Select Date', 'your-prefix' ),
+					'dateFormat'      => __( 'yy-mm-dd', 'your-prefix' ),
 					'numberOfMonths'  => 2,
 					'showButtonPanel' => true,
 				),
 			),
 			array(
-				'name' => __( 'Datetime', 'meta-box' ),
+				'name' => __( 'Datetime', 'your-prefix' ),
 				'id'   => $prefix . 'datetime',
 				'type' => 'datetime',
 
@@ -35,7 +35,7 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				),
 			),
 			array(
-				'name' => __( 'Time', 'meta-box' ),
+				'name' => __( 'Time', 'your-prefix' ),
 				'id'   => $prefix . 'time',
 				'type' => 'time',
 

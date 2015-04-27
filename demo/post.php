@@ -6,11 +6,11 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_post_demo' );
 function your_prefix_post_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title'  => __( 'Post Field Demo', 'meta-box' ),
+		'title'  => __( 'Post Field Demo', 'your-prefix' ),
 
 		'fields' => array(
 			array(
-				'name'        => __( 'Post', 'meta-box' ),
+				'name'        => __( 'Post', 'your-prefix' ),
 				'id'          => 'post',
 				'type'        => 'post',
 
@@ -24,7 +24,7 @@ function your_prefix_post_demo( $meta_boxes )
 				'field_type'  => 'select_advanced',
 
 				// Placeholder
-				'placeholder' => __( 'Select an Item', 'meta-box' ),
+				'placeholder' => __( 'Select an Item', 'your-prefix' ),
 
 				// Query arguments (optional). No settings means get all published posts
 				// @see https://codex.wordpress.org/Class_Reference/WP_Query
