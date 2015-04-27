@@ -74,7 +74,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 			return $editor;
 		}
-		
+
 		/**
 		 * Escape meta for field output
 		 *
@@ -82,8 +82,9 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 *
 		 * @return mixed
 		 */
-		static function esc_meta( $meta ) {
-			return $meta;	
+		static function esc_meta( $meta )
+		{
+			return $meta;
 		}
 
 		/**
