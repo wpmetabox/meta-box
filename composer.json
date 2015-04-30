@@ -9,7 +9,7 @@
     "meta-box",
     "wordpress-plugin"
   ],
-  "version": "4.4.1",
+  "version": "4.5.1",
   "description": "Easily create custom meta boxes in WordPress.",
   "homepage": "http://www.deluxeblogtips.com/meta-box/",
   "license": "GPLv2",

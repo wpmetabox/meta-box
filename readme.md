@@ -71,6 +71,11 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ## Changelog
 
+#### 4.5.1
+* Improvement: Add ability to use multiple post types for `post` field
+* Fix: Duplicated description for `checkbox` field
+* Fix: Blank gallery for image fields
+
 #### 4.5
 * Improvement: Separate `esc_meta` method
 * Improvement: Add ability to use URL to retrieve options for autocomplete field

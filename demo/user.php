@@ -25,8 +25,7 @@ function your_prefix_user_demo( $meta_boxes )
 
 				// Query arguments (optional). No settings means get all published users
 				// @see https://codex.wordpress.org/Function_Reference/get_users
-				'query_args'  => array(
-				)
+				'query_args'  => array()
 			),
 		)
 	);

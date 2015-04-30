@@ -18,5 +18,7 @@
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
 	</rule>
 </ruleset>
