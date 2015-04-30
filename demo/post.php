@@ -17,8 +17,11 @@ function your_prefix_post_demo( $meta_boxes )
 				// 'clone'       => true,
 				// 'multiple'    => true,
 
-				// Post type
-				'post_type'   => 'page',
+				// Post type: string (for single post type) or array (for multiple post types)
+				'post_type'   => array( 'post', 'page' ),
+
+				// Default selected value (post ID)
+				'std'         => 1,
 
 				// Field type, either 'select' or 'select_advanced' (default)
 				'field_type'  => 'select_advanced',
