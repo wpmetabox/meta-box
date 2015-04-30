@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Meta Box Script For WordPress\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-03 15:09+0700\n"
-"PO-Revision-Date: 2012-12-29 23:42-0500\n"
-"Last-Translator: Adel Qalieh <aqalieh95@gmail.com>\n"
+"PO-Revision-Date: 2015-04-28 18:18+0100\n"
+"Last-Translator: David <david@closemarketing.es>\n"
 "Language-Team: Adel Qalieh <aqalieh95@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,10 +13,11 @@ msgstr ""
 "_nx_noop:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Language: es\n"
 "X-Source-Language: en\n"
 "Language: es\n"
+"X-Generator: Poedit 1.7.6\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc/fields\n"
 
@@ -65,27 +66,32 @@ msgstr "+ Añadir un archivo nuevo"
 msgid "Order saved"
 msgstr "El orden guardado"
 
-#: ../inc/fields/image.php:91 ../inc/fields/plupload-image.php:156
+#: ../inc/fields/image.php:91
+#: ../inc/fields/plupload-image.php:156
 msgctxt "image upload"
 msgid "Uploaded files"
 msgstr "Archivos subidos"
 
-#: ../inc/fields/image.php:92 ../inc/fields/plupload-image.php:112
+#: ../inc/fields/image.php:92
+#: ../inc/fields/plupload-image.php:112
 msgctxt "image upload"
 msgid "Delete this file"
 msgstr "Eliminar este archivo"
 
-#: ../inc/fields/image.php:93 ../inc/fields/plupload-image.php:113
+#: ../inc/fields/image.php:93
+#: ../inc/fields/plupload-image.php:113
 msgctxt "image upload"
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../inc/fields/image.php:94 ../inc/fields/plupload-image.php:114
+#: ../inc/fields/image.php:94
+#: ../inc/fields/plupload-image.php:114
 msgctxt "image upload"
 msgid "Edit"
-msgstr "Edit"
+msgstr "Editar"
 
-#: ../inc/fields/image.php:95 ../inc/fields/plupload-image.php:157
+#: ../inc/fields/image.php:95
+#: ../inc/fields/plupload-image.php:157
 msgctxt "image upload"
 msgid "Upload files"
 msgstr "Subir archivos"
