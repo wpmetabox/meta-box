@@ -17,5 +17,6 @@
 		<exclude name="WordPress.WP.EnqueuedResources" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
 	</rule>
 </ruleset>
