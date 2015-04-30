@@ -271,7 +271,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Make sure meta value is an array for clonable and multiple fields
 			if ( $field['clone'] || $field['multiple'] )
 			{
-				$meta = (array) $meta;
+				$meta = is_array( $meta ) ? $meta : array();
 			}
 
 			return $meta;

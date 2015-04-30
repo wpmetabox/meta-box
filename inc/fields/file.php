@@ -290,22 +290,6 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		}
 
 		/**
-		 * Standard meta retrieval
-		 *
-		 * @param int   $post_id
-		 * @param array $field
-		 * @param bool  $saved
-		 *
-		 * @return mixed
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$meta = parent::meta( $post_id, $saved, $field );
-
-			return empty( $meta ) ? array() : (array) $meta;
-		}
-
-		/**
 		 * Get the field value
 		 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
 		 * of the field saved in the database, while this function returns more meaningful value of the field
