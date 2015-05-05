@@ -65,7 +65,7 @@ script:
     # Search for PHP syntax errors.
     - find . \( -name '*.php' \) -exec php -lf {} \;
     # WordPress Coding Standards
- - $WP_DEVELOP_DIR/php-codesniffer/scripts/phpcs -s -n . --standard=./codesniffer.ruleset.xml --extensions=php
+    - $WP_DEVELOP_DIR/php-codesniffer/scripts/phpcs -s -n . --standard=./codesniffer.ruleset.xml --extensions=php
 
 notifications:
     email: false
