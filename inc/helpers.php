@@ -57,13 +57,14 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 		{
 			$post_id = empty( $post_id ) ? get_the_ID() : $post_id;
 			$args    = wp_parse_args( $args, array(
-				'type' => 'text',
+				'type'     => 'text',
+				'multiple' => false,
 			) );
 
-			// Set 'multiple' for fields based on 'type'
-			if ( ! isset( $args['multiple'] ) )
+			// Always set 'multiple' true for following field types
+			if ( in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) ) )
 			{
-				$args['multiple'] = in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) );
+				$args['multiple'] = true;
 			}
 
 			$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
