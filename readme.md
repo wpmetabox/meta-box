@@ -1,6 +1,9 @@
 # Meta Box WordPress Plugin
 
 [![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
+[![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![License](https://img.shields.io/packagist/l/rilwis/meta-box.svg)](http://metabox.io)
 
 **Plugin Links**
 
