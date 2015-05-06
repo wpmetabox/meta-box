@@ -2,6 +2,10 @@
 * text=auto
 
 # Ignore files when export
+demo export-ignore
+node_modules export-ignore
+.DS_Store
+Thumbs.db
 .csscomb.json export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
@@ -13,3 +17,5 @@ Gruntfile.js export-ignore
 meta-box-loader.php export-ignore
 package.json export-ignore
 readme.md export-ignore
+lang/*.po export-ignore
+lang/*.pot export-ignore

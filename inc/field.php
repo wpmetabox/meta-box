@@ -65,10 +65,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Cloneable fields
 			if ( $field['clone'] )
 			{
-				$meta = (array) $meta;
-
 				$field_html = '';
 
+				/**
+				 * Note: $meta must contain value so that the foreach loop runs!
+				 * @see self::meta()
+				 */
 				foreach ( $meta as $index => $sub_meta )
 				{
 					$sub_field               = $field;
@@ -271,7 +273,15 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			// Make sure meta value is an array for clonable and multiple fields
 			if ( $field['clone'] || $field['multiple'] )
 			{
-				$meta = (array) $meta;
+				if ( empty( $meta ) || ! is_array( $meta ) )
+				{
+					/**
+					 * Note: if field is clonable, $meta must be an array with values
+					 * so that the foreach loop in self::show() runs properly
+					 * @see self::show()
+					 */
+					$meta = $field['clone'] ? array( '' ) : array();
+				}
 			}
 
 			return $meta;
@@ -412,7 +422,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 				// Make sure meta value is an array for clonable and multiple fields
 				if ( $field['clone'] || $field['multiple'] )
 				{
-					$value = (array) $value;
+					$value = is_array( $value ) && $value ? $value : array();
 				}
 			}
 
