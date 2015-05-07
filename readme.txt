@@ -69,6 +69,12 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 == Changelog ==
 
+= 4.5.2 =
+* Improvement: Add Persian (Farsi) language. Thank Ahmad Azimi.
+* Improvement: Update Spanish translation. Thank David Perez.
+* Fix: Cloning text fields
+* Fix: rwmb_meta works incorrectly for image fields if multiple=false
+
 = 4.5.1 =
 * Improvement: Add ability to use multiple post types for `post` field
 * Fix: Duplicated description for `checkbox` field
