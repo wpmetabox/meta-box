@@ -130,7 +130,12 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			// Get map
 			elseif ( 'map' == $args['type'] )
 			{
-				$meta = RWMB_Map_Field::the_value( array( 'id' => $key, 'multiple' => false ), $args, $post_id );
+				$field = array(
+					'id'       => $key,
+					'multiple' => false,
+					'clone'    => false,
+				);
+				$meta = RWMB_Map_Field::the_value( $field, $args, $post_id );
 			}
 			return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 		}
