@@ -45,7 +45,7 @@ if ( ! class_exists( 'RWMB_Autocomplete_Field' ) )
 						'label' => $label,
 					);
 				}
-				$options = json_encode( $options );
+				$options = wp_json_encode( $options );
 			}
 
 			// Input field that triggers autocomplete.

@@ -144,7 +144,7 @@ if ( ! class_exists( 'RWMB_Map_Field' ) )
 
 			$output = sprintf(
 				'<div class="rwmb-map-canvas" data-map_options="%s" style="width:%s;height:%s"></div>',
-				esc_attr( json_encode( $args ) ),
+				esc_attr( wp_json_encode( $args ) ),
 				esc_attr( $args['width'] ),
 				esc_attr( $args['height'] )
 			);
