@@ -57,7 +57,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 				$meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
-				esc_attr( json_encode( $field['js_options'] ) )
+				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
 		}
 

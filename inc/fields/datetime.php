@@ -98,7 +98,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 				isset( $field['timestamp'] ) && $field['timestamp'] ? date( self::translate_format( $field ), $meta ) : $meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
-				esc_attr( json_encode( $field['js_options'] ) )
+				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
 		}
 

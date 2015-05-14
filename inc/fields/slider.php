@@ -38,7 +38,7 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 					<span class="rwmb-slider-value-label">%s<span>%s</span>%s</span>
 					<input type="hidden" name="%s" value="%s" class="rwmb-slider-value">
 				</div>',
-				$field['id'], esc_attr( json_encode( $field['js_options'] ) ),
+				$field['id'], esc_attr( wp_json_encode( $field['js_options'] ) ),
 				$field['prefix'], $meta, $field['suffix'],
 				$field['field_name'], $meta
 			);
