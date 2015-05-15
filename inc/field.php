@@ -298,7 +298,10 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			if ( is_array( $meta ) )
 			{
-				array_walk_recursive( $meta, 'esc_attr' );
+				array_walk_recursive( $meta, function( &$item, $key )
+				{
+					$item = esc_attr($item);
+				} );
 				return $meta;
 			}
 			return esc_attr( $meta );

@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				'<input type="text" class="rwmb-text" name="%s" id="%s" value="%s" placeholder="%s" size="%s" %s>%s',
 				$field['field_name'],
 				$field['id'],
-				esc_attr( $meta ),
+				$meta,
 				$field['placeholder'],
 				$field['size'],
 				$field['datalist'] ? "list='{$field['datalist']['id']}'" : '',
