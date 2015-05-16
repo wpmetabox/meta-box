@@ -72,6 +72,10 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ***
 
+### [![phpstorm](https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png)](https://www.jetbrains.com/phpstorm/)
+
+***
+
 ## Changelog
 
 #### 4.5.2
