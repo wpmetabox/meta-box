@@ -298,13 +298,20 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			if ( is_array( $meta ) )
 			{
-				array_walk_recursive( $meta, function( &$item, $key )
-				{
-					$item = esc_attr($item);
-				} );
+				array_walk_recursive( $meta, 'RWMB_Field::esc_str' );
 				return $meta;
 			}
 			return esc_attr( $meta );
+		}
+
+		/**
+		 * Escape for each item in meta array
+		 *
+		 * @param $str
+		 */
+		static function esc_str( &$str )
+		{
+			$str = esc_attr( $str );
 		}
 
 		/**
