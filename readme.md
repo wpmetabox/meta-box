@@ -78,6 +78,11 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ## Changelog
 
+#### 4.5.3
+* Improvement: Use `wp_json_encode` instead of `json_encode`. Thank Sam Ford.
+* Fix: Escape value for cloneable fields
+* Fix: Notice for missing parameters for `rwmb_meta` field for `map`
+
 #### 4.5.2
 * Improvement: Add Persian (Farsi) language. Thank Ahmad Azimi.
 * Improvement: Update Spanish translation. Thank David Perez.
