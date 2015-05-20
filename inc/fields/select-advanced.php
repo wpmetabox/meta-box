@@ -46,6 +46,12 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 
 			$html .= '</select>';
 
+			$html .= '<div class="checkbox rwmb-select-all">
+					    <label>
+					      <input type="checkbox"> Select all
+					    </label>
+					  </div>';
+
 			return $html;
 		}
 

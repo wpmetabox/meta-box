@@ -14,6 +14,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		static function admin_enqueue_scripts()
 		{
 			wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
+			wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
 		}
 
 		/**
@@ -37,6 +38,12 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 			$html .= self::options_html( $field, $meta );
 
 			$html .= '</select>';
+
+			$html .= '<div class="checkbox rwmb-select-all">
+					    <label>
+					      <input type="checkbox"> Select all
+					    </label>
+					  </div>';
 
 			return $html;
 		}
