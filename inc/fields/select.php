@@ -41,7 +41,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 
 			$html .= '<div class="checkbox rwmb-select-all">
 					    <label>
-					      <input type="checkbox"> Select all
+					      <input type="checkbox">' . __( 'Select all', 'meta-box' ) . '
 					    </label>
 					  </div>';
 
