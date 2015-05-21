@@ -222,6 +222,16 @@ jQuery( function ( $ )
 
 		var $input = $( this ).closest( '.rwmb-input' );
 
+		// Check max clone allow
+		var $maxOfClone = parseInt( $input.data( 'max-clone' ) ),
+			$numOfClone = $( '.rwmb-clone', $input ).length;
+
+		if ( $numOfClone >= $maxOfClone )
+		{
+			$( '.add-clone', $input ).remove();
+			return;
+		}
+
 		if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 		{
 			cloneWYSIWYG( $input );

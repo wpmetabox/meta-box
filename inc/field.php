@@ -188,13 +188,20 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			if ( empty( $field['name'] ) )
 				return '<div class="rwmb-input">';
 
+			$data = '';
+			if ( is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
+			{
+				$data .= 'data-max-clone=' . $field['max_clone'];
+			}
+
 			return sprintf(
 				'<div class="rwmb-label">
 					<label for="%s">%s</label>
 				</div>
-				<div class="rwmb-input">',
+				<div class="rwmb-input" %s>',
 				$field['id'],
-				$field['name']
+				$field['name'],
+				$data
 			);
 		}
 
