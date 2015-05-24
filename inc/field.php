@@ -99,6 +99,9 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 					// Remove clone button
 					$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_field );
 
+					// Drag clone button
+					$input_html .= call_user_func( array( $field_class, 'drag_clone_button' ), $sub_field );
+
 					$input_html .= '</div>';
 
 					$field_html .= $input_html;
@@ -248,6 +251,19 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			$text = apply_filters( 'rwmb_remove_clone_button_text', __( '&#8211;', 'meta-box' ), $field );
 			return "<a href='#' class='rwmb-button button remove-clone'>$text</a>";
+		}
+
+		/**
+		 * Drag clone button
+		 *
+		 * @param array $field Field parameter
+		 *
+		 * @return string $html
+		 */
+		static function drag_clone_button( $field )
+		{
+			$text = apply_filters( 'rwmb_drag_clone_button_text', __( '<span class="dashicons dashicons-sort"></span>', 'meta-box' ), $field );
+			return "<a href='#' class='rwmb-button button drag-clone'>$text</a>";
 		}
 
 		/**

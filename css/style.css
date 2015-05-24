@@ -47,7 +47,14 @@
 .rwmb-button.remove-clone {
 	position: absolute;
 	top: 0;
+	right: 35px;
+}
+.rwmb-button.drag-clone {
+	position: absolute;
+	top: 0;
 	right: 0;
+	cursor: move;
+	padding: 3px 4px;
 }
 
 /* Fix empty block below admin footer (issue #24) */
