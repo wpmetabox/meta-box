@@ -54,7 +54,7 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 			if ( empty( $field['placeholder'] ) )
 			{
 				$label = __( 'Select a post', 'meta-box' );
-				if ( is_string( $field['post_type'] ) )
+				if ( is_string( $field['post_type'] ) && post_type_exists( $field['post_type'] ) )
 				{
 					$post_type_object = get_post_type_object( $field['post_type'] );
 					$label            = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
