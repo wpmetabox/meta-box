@@ -192,7 +192,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 				return '<div class="rwmb-input">';
 
 			$data = '';
-			if ( is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
+			if ( isset( $field['max_clone'] ) && is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
 			{
 				$data .= 'data-max-clone=' . $field['max_clone'];
 			}
