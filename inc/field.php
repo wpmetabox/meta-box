@@ -188,14 +188,17 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function begin_html( $meta, $field )
 		{
-			if ( empty( $field['name'] ) )
-				return '<div class="rwmb-input">';
-
 			$data = '';
 			if ( isset( $field['max_clone'] ) && is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
 			{
 				$data .= 'data-max-clone=' . $field['max_clone'];
 			}
+
+			if ( empty( $field['name'] ) )
+				return sprintf(
+					'<div class="rwmb-input" %s>',
+					$data
+				);
 
 			return sprintf(
 				'<div class="rwmb-label">
