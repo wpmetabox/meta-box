@@ -7,12 +7,12 @@ jQuery( function ( $ )
 	 */
 	function selectToggle( inputWrapper )
 	{
-		var $checkbox = $( '.rwmb-select-all :checkbox', inputWrapper ),
+		var $link = $( '.rwmb-select-all a', inputWrapper ),
 			$element = $( '.rwmb-select', inputWrapper );
 
-		$checkbox.on( 'change', function()
+		$link.click( function()
 		{
-			var $type = $checkbox.is( ':checked' ) ? 'all' : 'none';
+			var $type = $( this ).hasClass( 'select-all' ) ? 'all' : 'none';
 
 			if ( 'all' == $type )
 			{

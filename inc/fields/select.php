@@ -39,14 +39,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 
 			$html .= '</select>';
 
-			if ( $field['multiple'] === true )
-			{
-				$html .= '<div class="checkbox rwmb-select-all">
-						    <label>
-						      <input type="checkbox">' . __( 'Select all', 'meta-box' ) . '
-						    </label>
-						  </div>';
-			}
+			$html .= self::get_select_all_html( $field['multiple'] );
 
 			return $html;
 		}
@@ -200,6 +193,24 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		static function get_option_label( &$value, $index, $field )
 		{
 			$value = $field['options'][$value];
+		}
+
+		/**
+		 * Get html for select all|none for multiple select
+		 *
+		 * @param $multiple
+		 *
+		 * @return string
+		 */
+		static function get_select_all_html( $multiple )
+		{
+			if ( $multiple === true )
+			{
+				return '<div class="checkbox rwmb-select-all">
+						' . __( 'Select', 'meta-box' ) . ': <a class="select-all" href="javascript:;">' . __( 'All', 'meta-box' ) . '</a> | <a class="select-none" href="javascript:;">' . __( 'None', 'meta-box' ) . '</a>
+					</div>';
+			}
+			return '';
 		}
 	}
 }

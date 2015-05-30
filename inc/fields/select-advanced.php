@@ -46,14 +46,7 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 
 			$html .= '</select>';
 
-			if ( $field['multiple'] === true )
-			{
-				$html .= '<div class="checkbox rwmb-select-all">
-						    <label>
-						      <input type="checkbox">' . __( 'Select all', 'meta-box' ) . '
-						    </label>
-						  </div>';
-			}
+			$html .= self::get_select_all_html( $field['multiple'] );
 
 			return $html;
 		}
