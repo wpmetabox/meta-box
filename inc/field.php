@@ -87,6 +87,10 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 					// Wrap field HTML in a div with class="rwmb-clone" if needed
 					$input_html = '<div class="rwmb-clone">';
 
+					// Drag clone icon
+					if ( isset( $field['sort_clone'] ) && $field['sort_clone'] )
+						$input_html .= "<a href='javascript:;' class='drag-clone'></a>";
+
 					// Call separated methods for displaying each type of field
 					$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
 
@@ -98,9 +102,6 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 					// Remove clone button
 					$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_field );
-
-					// Drag clone button
-					$input_html .= call_user_func( array( $field_class, 'drag_clone_button' ), $sub_field );
 
 					$input_html .= '</div>';
 
@@ -254,19 +255,6 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		{
 			$text = apply_filters( 'rwmb_remove_clone_button_text', __( '&#8211;', 'meta-box' ), $field );
 			return "<a href='#' class='rwmb-button button remove-clone'>$text</a>";
-		}
-
-		/**
-		 * Drag clone button
-		 *
-		 * @param array $field Field parameter
-		 *
-		 * @return string $html
-		 */
-		static function drag_clone_button( $field )
-		{
-			$text = apply_filters( 'rwmb_drag_clone_button_text', __( '<span class="dashicons dashicons-sort"></span>', 'meta-box' ), $field );
-			return "<a href='#' class='rwmb-button button drag-clone'>$text</a>";
 		}
 
 		/**

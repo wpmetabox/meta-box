@@ -36,6 +36,7 @@
 	min-height: 24px;
 	margin-bottom: 5px;
 	position: relative;
+	clear: both;
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
@@ -47,14 +48,14 @@
 .rwmb-button.remove-clone {
 	position: absolute;
 	top: 0;
-	right: 35px;
-}
-.rwmb-button.drag-clone {
-	position: absolute;
-	top: 0;
 	right: 0;
+}
+.drag-clone {
 	cursor: move;
-	padding: 3px 4px;
+	background: url('../img/drag_icon.gif') no-repeat;
+	height: 35px;
+	width: 15px;
+	float: left;
 }
 
 /* Fix empty block below admin footer (issue #24) */
