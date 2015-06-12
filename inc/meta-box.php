@@ -387,8 +387,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			{
 				$field = wp_parse_args( $field, array(
 					'id'          => '',
+					'name'        => '',
 					'multiple'    => false,
 					'clone'       => false,
+					'max_clone'   => 0,
 					'std'         => '',
 					'desc'        => '',
 					'format'      => '',

@@ -10,6 +10,17 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 	class RWMB_Post_Field extends RWMB_Select_Advanced_Field
 	{
 		/**
+		 * Enqueue scripts and styles
+		 *
+		 * @return void
+		 */
+		static function admin_enqueue_scripts()
+		{
+			RWMB_Select_Field::admin_enqueue_scripts();
+			RWMB_Select_Advanced_Field::admin_enqueue_scripts();
+		}
+
+		/**
 		 * Get field HTML
 		 *
 		 * @param mixed $meta

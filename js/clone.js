@@ -120,6 +120,30 @@ jQuery( function ( $ )
 	}
 
 	/**
+	 * Toggle add button
+	 * Used with [data-max-clone] attribute. When max clone is reached, the add button is hid and vice versa
+	 *
+	 * @param $input jQuery element of input div
+	 *
+	 * @return void
+	 */
+	function toggleAddButton( $input )
+	{
+		var $button = $input.find( '.add-clone' ),
+			maxClone = parseInt( $input.data( 'max-clone' ) ),
+			numClone = $input.find( '.rwmb-clone' ).length;
+
+		if ( numClone == maxClone )
+		{
+			$button.hide();
+		}
+		else
+		{
+			$button.show();
+		}
+	}
+
+	/**
 	 * Clone WYSIWYG field
 	 * @param $container
 	 * @return void
@@ -214,23 +238,12 @@ jQuery( function ( $ )
 
 	}
 
-
 	// Add more clones
 	$( '#poststuff' ).on( 'click', '.add-clone', function ( e )
 	{
 		e.preventDefault();
 
 		var $input = $( this ).closest( '.rwmb-input' );
-
-		// Check max clone allow
-		var $maxOfClone = parseInt( $input.data( 'max-clone' ) ),
-			$numOfClone = $( '.rwmb-clone', $input ).length;
-
-		if ( $numOfClone == --$maxOfClone )
-			$( '.add-clone', $input ).remove();
-
-		if ( $numOfClone > $maxOfClone )
-			return;
 
 		if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 		{
@@ -242,31 +255,31 @@ jQuery( function ( $ )
 		}
 
 		toggleRemoveButtons( $input );
-	} );
-
+		toggleAddButton( $input );
+	} )
 	// Remove clones
-	$( '.rwmb-input' ).on( 'click', '.remove-clone', function ( e )
+	.on( 'click', '.remove-clone', function ( e )
 	{
 		e.preventDefault();
 
 		var $this = $( this ),
 			$input = $this.closest( '.rwmb-input' );
 
-		// Remove clone only if there're 2 or more of them
-		if ( $input.find( '.rwmb-clone' ).length <= 1 )
+		// Remove clone only if there are 2 or more of them
+		if ( $input.find( '.rwmb-clone' ).length < 2 )
 		{
 			return;
 		}
 
 		$this.parent().remove();
 
-		// Toggle remove buttons
 		toggleRemoveButtons( $input );
+		toggleAddButton( $input )
 	} );
 
 	toggleRemoveButtons();
 
-	$( '.rwmb-input' ).sortable({
+	$( '.rwmb-input' ).sortable( {
 		handle: '.drag-clone'
-	});
+	} );
 } );

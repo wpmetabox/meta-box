@@ -2,71 +2,74 @@ jQuery( function ( $ )
 {
 	'use strict';
 
-	/**
-	 * Select all/none for select tag
-	 */
-	function selectToggle( inputWrapper )
-	{
-		var $link = $( '.rwmb-select-all a', inputWrapper ),
-			$element = $( '.rwmb-select', inputWrapper );
-
-		$link.click( function()
+	// Object stores all necessary methods for select All/None actions
+	var select = {
+		/**
+		 * Select all/none for select tag
+		 *
+		 * @param $input jQuery selector for input wrapper
+		 *
+		 * @return void
+		 */
+		selectAllNone: function ( $input )
 		{
-			var $type = $( this ).hasClass( 'select-all' ) ? 'all' : 'none';
+			var $element = $input.find( 'select' );
 
-			if ( 'all' == $type )
+			$input.on( 'click', '.rwmb-select-all-none a', function ( e )
 			{
-				var selected = [];
-				$element.find( 'option' ).each( function( i, e )
+				e.preventDefault();
+				if ( 'all' == $( this ).data( 'type' ) )
 				{
-					var $value = $( e ).attr( 'value' );
-
-					if ( $value != '' )
+					var selected = [];
+					$element.find( 'option' ).each( function ( i, e )
 					{
-						selected[selected.length] = $value;
-					}
+						var $value = $( e ).attr( 'value' );
+
+						if ( $value != '' )
+						{
+							selected.push( $value );
+						}
+					} );
+					$element.val( selected ).trigger( 'change' );
+				}
+				else
+				{
+					$element.val( '' );
+				}
+			} );
+		},
+
+		/**
+		 * Add event listener for select all/none links when click
+		 *
+		 * @param $el jQuery element
+		 *
+		 * @return void
+		 */
+		bindEvents: function ( $el )
+		{
+			$el = $el || $( this );
+			var $input = $el.closest( '.rwmb-input' ),
+				$clone = $( '.rwmb-clone', $input );
+
+			if ( $clone.length )
+			{
+				$clone.each( function ()
+				{
+					select.selectAllNone( $( this ) );
 				} );
-				$element.val( selected );
 			}
 			else
 			{
-				$element.val('');
+				select.selectAllNone( $input );
 			}
-		} );
-	}
-
-	/**
-	 *
-	 */
-	function bindSelectAllEvent( selector )
-	{
-		var $input = selector.closest( '.rwmb-input' ),
-			$clone = $( '.rwmb-clone', $input );
-
-		if ( $clone.length )
-		{
-			$clone.each( function ()
-			{
-				selectToggle( $( this ) );
-			} );
 		}
-		else
-		{
-			selectToggle( $input );
-		}
-	}
+	};
 
-	/**
-	 * Turn select field into beautiful dropdown with select2 library
-	 * This function is called when document ready and when clone button is clicked (to update the new cloned field)
-	 *
-	 * @return void
-	 */
-	function update()
-	{
-		bindSelectAllEvent( $(this) );
-	}
+	// Assign to global variable so we can access to this object from select advanced field
+	window.rwmbSelect = select;
 
-	$( ':input.rwmb-select' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select', update );
+	// Run for select field
+	$( ':input.rwmb-select' ).each( select.bindEvents );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select', select.bindEvents );
 } );

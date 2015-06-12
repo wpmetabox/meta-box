@@ -81,10 +81,7 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'desc'        => '',
-				'name'        => $field['id'],
-				'size'        => $field['multiple'] ? 5 : 0,
-				'placeholder' => '',
+				'size' => $field['multiple'] ? 5 : 0,
 			) );
 			if ( ! $field['clone'] && $field['multiple'] )
 				$field['field_name'] .= '[]';
@@ -206,8 +203,8 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		{
 			if ( $multiple === true )
 			{
-				return '<div class="checkbox rwmb-select-all">
-						' . __( 'Select', 'meta-box' ) . ': <a class="select-all" href="javascript:;">' . __( 'All', 'meta-box' ) . '</a> | <a class="select-none" href="javascript:;">' . __( 'None', 'meta-box' ) . '</a>
+				return '<div class="rwmb-select-all-none">
+						' . __( 'Select', 'meta-box' ) . ': <a data-type="all" href="#">' . __( 'All', 'meta-box' ) . '</a> | <a data-type="none" href="#">' . __( 'None', 'meta-box' ) . '</a>
 					</div>';
 			}
 			return '';
