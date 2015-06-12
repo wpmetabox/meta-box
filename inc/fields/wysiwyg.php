@@ -114,7 +114,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 		static function footer_scripts()
 		{
-			echo '<script> var rwmb_cloneable_editors = ' . wp_json_encode( self::$cloneable_editors ) . ';</script>';
+			echo '<script> var rwmb_cloneable_editors = ' , wp_json_encode( self::$cloneable_editors ) , ';</script>';
 		}
 	}
 }

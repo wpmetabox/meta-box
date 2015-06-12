@@ -241,13 +241,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					if ( typeof rwmb == "undefined" )
 					{
 						var rwmb = {
-							validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
-							summaryMessage : "' . esc_js( __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) . '"
+							validationOptions : jQuery.parseJSON( \'' , json_encode( $this->validation ) , '\' ),
+							summaryMessage : "' , esc_js( __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) , '"
 						};
 					}
 					else
 					{
-						var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
+						var tempOptions = jQuery.parseJSON( \'' , json_encode( $this->validation ) . '\' );
 						jQuery.extend( true, rwmb.validationOptions, tempOptions );
 					}
 					</script>
