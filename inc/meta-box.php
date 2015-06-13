@@ -389,8 +389,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'id'          => '',
 					'name'        => '',
 					'multiple'    => false,
-					'clone'       => false,
-					'max_clone'   => 0,
 					'std'         => '',
 					'desc'        => '',
 					'format'      => '',
@@ -399,6 +397,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
 					'required'    => false,
 					'placeholder' => '',
+
+					'clone'       => false,
+					'max_clone'   => 0,
+					'sort_clone'  => false,
 				) );
 
 				$class = self::get_class_name( $field );

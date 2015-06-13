@@ -88,7 +88,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 					$input_html = '<div class="rwmb-clone">';
 
 					// Drag clone icon
-					if ( isset( $field['sort_clone'] ) && $field['sort_clone'] )
+					if ( $field['sort_clone'] )
 						$input_html .= "<a href='javascript:;' class='drag-clone'></a>";
 
 					// Call separated methods for displaying each type of field

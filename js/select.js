@@ -2,8 +2,11 @@ jQuery( function ( $ )
 {
 	'use strict';
 
-	// Object stores all necessary methods for select All/None actions
-	var select = {
+	/**
+	 * Object stores all necessary methods for select All/None actions
+	 * Assign to global variable so we can access to this object from select advanced field
+	 */
+	var select = window.rwmbSelect = {
 		/**
 		 * Select all/none for select tag
 		 *
@@ -48,9 +51,11 @@ jQuery( function ( $ )
 		 */
 		bindEvents: function ( $el )
 		{
+			console.log( $el, 'first' );
 			$el = $el || $( this );
+			console.log( $el );
 			var $input = $el.closest( '.rwmb-input' ),
-				$clone = $( '.rwmb-clone', $input );
+				$clone = $input.find( '.rwmb-clone' );
 
 			if ( $clone.length )
 			{
@@ -66,10 +71,17 @@ jQuery( function ( $ )
 		}
 	};
 
-	// Assign to global variable so we can access to this object from select advanced field
-	window.rwmbSelect = select;
+	/**
+	 * Update select field when clicking clone button
+	 *
+	 * @return void
+	 */
+	function update()
+	{
+		select.bindEvents( $( this ) );
+	}
 
 	// Run for select field
-	$( ':input.rwmb-select' ).each( select.bindEvents );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select', select.bindEvents );
+	$( ':input.rwmb-select' ).each( update );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select', update );
 } );
