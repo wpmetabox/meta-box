@@ -51,9 +51,6 @@ jQuery( function ( $ )
 		 */
 		bindEvents: function ( $el )
 		{
-			console.log( $el, 'first' );
-			$el = $el || $( this );
-			console.log( $el );
 			var $input = $el.closest( '.rwmb-input' ),
 				$clone = $input.find( '.rwmb-clone' );
 

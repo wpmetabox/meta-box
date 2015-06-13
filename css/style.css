@@ -50,10 +50,10 @@
 	top: 0;
 	right: 0;
 }
-.drag-clone {
+.rwmb-clone-icon {
 	cursor: move;
-	background: url('../img/drag_icon.gif') no-repeat;
-	height: 35px;
+	background: url(../img/drag_icon.gif) no-repeat;
+	height: 23px;
 	width: 15px;
 	float: left;
 }
