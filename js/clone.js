@@ -280,6 +280,6 @@ jQuery( function ( $ )
 	toggleRemoveButtons();
 
 	$( '.rwmb-input' ).sortable( {
-		handle: '.drag-clone'
+		handle: '.rwmb-clone-icon'
 	} );
 } );
