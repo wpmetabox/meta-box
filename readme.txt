@@ -69,6 +69,10 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 == Changelog ==
 
+= 4.5.5 =
+* Fix: CSS alignment for sort clone icon for field type `group` (require Meta Box Group extension)
+* Fix: rwmbSelect is not defined
+
 = 4.5.4 =
 * Improvement: Add "Select All|None" for `select`, `select_advanced`, `post` fields
 * Improvement: Add `max_clone` parameter which limits number of clones

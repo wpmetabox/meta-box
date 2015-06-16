@@ -9,7 +9,7 @@
     "meta-box",
     "wordpress-plugin"
   ],
-  "version": "4.5.4",
+  "version": "4.5.5",
   "description": "Easily create custom meta boxes in WordPress.",
   "homepage": "http://metabox.io",
   "license": "GPLv2",
