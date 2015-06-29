@@ -10,4 +10,5 @@
 }
 .rwmb-color-wrapper .wp-picker-holder {
 	position: absolute;
+	z-index: 1;
 }
