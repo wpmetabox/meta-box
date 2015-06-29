@@ -92,11 +92,12 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
+			$meta = $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta;
 			return sprintf(
 				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s">',
 				$field['field_name'],
-				isset( $field['timestamp'] ) && $field['timestamp'] ? date( self::translate_format( $field ), $meta ) : $meta,
-				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
+				$meta,
+				$field['clone'] ? '' : $field['id'],
 				$field['size'],
 				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
