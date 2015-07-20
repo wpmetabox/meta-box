@@ -76,8 +76,6 @@ if ( ! class_exists( 'RWMB_Image_Select_Field' ) )
 			if ( ! $value )
 				return '';
 
-			$function = array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' );
-
 			if ( $field['clone'] )
 			{
 				$output = '<ul>';
