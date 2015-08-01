@@ -47,7 +47,7 @@ jQuery( function ( $ )
 			// Set marker title
 			if ( options.marker_title )
 			{
-				marker.setTitle( mapOptions.marker_title );
+				marker.setTitle( options.marker_title );
 			}
 		}
 
