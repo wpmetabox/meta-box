@@ -7,7 +7,8 @@
     "select2",
     "wp-admin",
     "meta-box",
-    "wordpress-plugin"
+    "wordpress-plugin",
+    "custom-field"
   ],
   "description": "Easily create custom meta boxes in WordPress.",
   "homepage": "http://metabox.io",

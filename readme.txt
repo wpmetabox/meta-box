@@ -3,8 +3,8 @@ Contributors: rilwis, fitwp, f-j-kaiser, Omnicia, funkedgeek, PerWiklander, ruan
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 4.5.5
+Tested up to: 4.2.3
+Stable tag: 4.5.6
 License: GPLv2 or later
 
 Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
@@ -68,6 +68,11 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.5.6 =
+* Fix: Warning for timestamp for datetime field.
+* Fix: z-index for color picker.
+* Fix: Marker title in map
 
 = 4.5.5 =
 * Fix: CSS alignment for sort clone icon for field type `group` (require Meta Box Group extension)

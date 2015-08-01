@@ -78,6 +78,11 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ## Changelog
 
+#### 4.5.6
+* Fix: Warning for timestamp for datetime field.
+* Fix: z-index for color picker.
+* Fix: Marker title in map
+
 #### 4.5.5
 * Fix: CSS alignment for sort clone icon for field type `group` (require Meta Box Group extension)
 * Fix: rwmbSelect is not defined
