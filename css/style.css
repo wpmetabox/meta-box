@@ -37,6 +37,7 @@
 	margin-bottom: 5px;
 	position: relative;
 	clear: both;
+	background: #fff;
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
