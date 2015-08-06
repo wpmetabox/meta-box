@@ -7,11 +7,24 @@ jQuery( function ( $ )
 	// Object holds all methods related to fields' index when clone
 	var cloneIndex = {
 		/**
+		 * Reset index for fields in .rwmb-clone
+		 * Must be done when add/remove or sort clone
+		 * @param $container A div container which has all fields
+		 */
+		reset      : function ( $container )
+		{
+			var index = 0;
+			$container.find( '.rwmb-clone' ).each( function ()
+			{
+				cloneIndex.set( $( this ), index++ );
+			} );
+		},
+		/**
 		 * Set index for fields in a .rwmb-clone
 		 * @param $clone .rwmb-clone element
 		 * @param index Index value
 		 */
-		set      : function ( $clone, index )
+		set        : function ( $clone, index )
 		{
 			$clone.find( ':input[class|="rwmb"]' ).each( function ()
 			{
@@ -41,19 +54,6 @@ jQuery( function ( $ )
 			}
 		},
 		/**
-		 * Reset index for fields in .rwmb-clone
-		 * Must be done when add/remove or sort clone
-		 * @param $container A div container which has all fields
-		 */
-		reset    : function ( $container )
-		{
-			var index = 0;
-			$container.find( '.rwmb-clone' ).each( function ()
-			{
-				cloneIndex.set( $( this ), index++ );
-			} );
-		},
-		/**
 		 * Replace an attribute of a field with updated index
 		 * @param index New index value
 		 * @param value Attribute value
@@ -62,34 +62,17 @@ jQuery( function ( $ )
 		 * @param alternative Check if attribute does not contain any integer, will reset the attribute?
 		 * @return string
 		 */
-		replace  : function ( index, value, before, after, alternative )
+		replace    : function ( index, value, before, after, alternative )
 		{
 			before = before || '';
 			after = after || '';
 			alternative = alternative || true;
 
 			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) ),
-				match = value.match( regex ),
-				oldValue = match && match[1] ? match[1] : null,
-				newValue = before + cloneIndex.calculate( index, oldValue ) + after;
+				newValue = before + index + after;
 
-			return oldValue ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
+			return regex.test( value ) ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
 		},
-		/**
-		 * Calculate new index
-		 * @param index New index value. If -1 then auto increase current index
-		 * @param value Old index value
-		 * @return int New index
-		 */
-		calculate: function ( index, value )
-		{
-			if ( -1 === index )
-			{
-				return value ? (parseInt( value, 10 ) + 1) : 0;
-			}
-			return index;
-		},
-
 		/**
 		 * Helper function to escape string in regular expression
 		 * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
@@ -116,8 +99,6 @@ jQuery( function ( $ )
 		$clone.insertAfter( $clone_last );
 		$input = $clone.find( ':input[class|="rwmb"]' );
 
-		cloneIndex.set( $clone, -1 );
-
 		$input.each( function ()
 		{
 			var $field = $( this );
@@ -132,6 +113,8 @@ jQuery( function ( $ )
 				$field.val( '' );
 			}
 		} );
+
+		cloneIndex.reset( $container );
 
 		// Toggle remove buttons
 		toggleRemoveButtons( $input );
@@ -167,7 +150,7 @@ jQuery( function ( $ )
 			maxClone = parseInt( $container.data( 'max-clone' ) ),
 			numClone = $container.find( '.rwmb-clone' ).length;
 
-		$button[numClone < maxClone ? 'show' : 'hide']();
+		$button[isNaN( maxClone ) || (maxClone && numClone < maxClone) ? 'show' : 'hide']();
 	}
 
 	/**
