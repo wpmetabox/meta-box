@@ -143,36 +143,31 @@ jQuery( function ( $ )
 	/**
 	 * Hide remove buttons when there's only 1 of them
 	 *
-	 * @param $el jQuery element. If not supplied, the function will applies for all fields
+	 * @param $container .rwmb-input container
 	 *
 	 * @return void
 	 */
-	function toggleRemoveButtons( $el )
+	function toggleRemoveButtons( $container )
 	{
-		var $button;
-		$el = $el || $( '.rwmb-field' );
-		$el.each( function ()
-		{
-			$button = $( this ).find( '.remove-clone' );
-			$button[$button.length < 2 ? 'addClass' : 'removeClass']( 'hidden' );
-		} );
+		var $button = $container.find( '.remove-clone' );
+		$button[$button.length < 2 ? 'hide' : 'show']();
 	}
 
 	/**
 	 * Toggle add button
 	 * Used with [data-max-clone] attribute. When max clone is reached, the add button is hid and vice versa
 	 *
-	 * @param $input jQuery element of input div
+	 * @param $container .rwmb-input container
 	 *
 	 * @return void
 	 */
-	function toggleAddButton( $input )
+	function toggleAddButton( $container )
 	{
-		var $button = $input.find( '.add-clone' ),
-			maxClone = parseInt( $input.data( 'max-clone' ) ),
-			numClone = $input.find( '.rwmb-clone' ).length;
+		var $button = $container.find( '.add-clone' ),
+			maxClone = parseInt( $container.data( 'max-clone' ) ),
+			numClone = $container.find( '.rwmb-clone' ).length;
 
-		$button[numClone == maxClone ? 'addClass' : 'removeClass']( 'hidden' );
+		$button[numClone < maxClone ? 'show' : 'hide']();
 	}
 
 	/**
@@ -276,21 +271,21 @@ jQuery( function ( $ )
 		{
 			e.preventDefault();
 
-			var $input = $( this ).closest( '.rwmb-input' );
+			var $container = $( this ).closest( '.rwmb-input' );
 
-			cloneIndex.reset( $input );
+			cloneIndex.reset( $container );
 
 			if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 			{
-				cloneWYSIWYG( $input );
+				cloneWYSIWYG( $container );
 			}
 			else
 			{
-				clone( $input );
+				clone( $container );
 			}
 
-			toggleRemoveButtons( $input );
-			toggleAddButton( $input );
+			toggleRemoveButtons( $container );
+			toggleAddButton( $container );
 		} )
 		// Remove clones
 		.on( 'click', '.remove-clone', function ( e )
@@ -298,36 +293,34 @@ jQuery( function ( $ )
 			e.preventDefault();
 
 			var $this = $( this ),
-				$input = $this.closest( '.rwmb-input' );
+				$container = $this.closest( '.rwmb-input' );
 
 			// Remove clone only if there are 2 or more of them
-			if ( $input.find( '.rwmb-clone' ).length < 2 )
+			if ( $container.find( '.rwmb-clone' ).length < 2 )
 			{
 				return;
 			}
 
-			cloneIndex.reset( $input );
 			$this.parent().remove();
-			toggleRemoveButtons( $input );
-			toggleAddButton( $input )
+			cloneIndex.reset( $container );
+			toggleRemoveButtons( $container );
+			toggleAddButton( $container )
 		} );
 
-	toggleRemoveButtons();
-
-
-	var $input = $( '.rwmb-input' );
-	$input.each( function ()
+	$( '.rwmb-input' ).each( function ()
 	{
-		cloneIndex.reset( $( this ) );
-	} );
+		var $container = $( this );
+		cloneIndex.reset( $container );
+		toggleRemoveButtons( $container );
+		toggleAddButton( $container );
 
-	$input.sortable( {
-		handle     : '.rwmb-clone-icon',
-		placeholder: ' rwmb-clone rwmb-clone-placeholder',
-		update     : function ( event, ui )
-		{
-			var $parent = ui.item.closest( '.rwmb-input' );
-			cloneIndex.reset( $parent );
-		}
+		$container.sortable( {
+			handle     : '.rwmb-clone-icon',
+			placeholder: ' rwmb-clone rwmb-clone-placeholder',
+			update     : function ()
+			{
+				cloneIndex.reset( $container );
+			}
+		} );
 	} );
 } );
