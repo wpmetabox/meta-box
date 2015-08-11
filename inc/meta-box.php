@@ -86,13 +86,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Hide meta box if it's set 'default_hidden'
 			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
 
-			// Save post meta
-			add_action( 'save_post', array( $this, 'save_post' ) );
-
-			// Attachment uses other hooks
-			// @see wp_update_post(), wp_insert_attachment()
-			add_action( 'edit_attachment', array( $this, 'save_post' ) );
-			add_action( 'add_attachment', array( $this, 'save_post' ) );
+			// Save post meta			
+			foreach( $this->meta_box['post_types'] as $post_type ) 
+			{
+				if( 'attachment' === $post_type )	\
+				{
+					// Attachment uses other hooks
+					// @see wp_update_post(), wp_insert_attachment()
+					add_action( 'edit_attachment', array( $this, 'save_post' ) );
+					add_action( 'add_attachment', array( $this, 'save_post' ) );
+				}
+				else
+				{
+					add_action( "save_post_{$post_type}", array( $this, 'save_post' ) );
+				}
+			}		
 		}
 
 		/**
