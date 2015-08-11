@@ -1,5 +1,5 @@
 === Meta Box ===
-Contributors: rilwis, fitwp, f-j-kaiser, Omnicia, funkedgeek, PerWiklander, ruanmer
+Contributors: rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
 Requires at least: 3.5
