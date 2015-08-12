@@ -89,7 +89,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Save post meta			
 			foreach( $this->meta_box['post_types'] as $post_type ) 
 			{
-				if( 'attachment' === $post_type )	\
+				if( 'attachment' === $post_type )
 				{
 					// Attachment uses other hooks
 					// @see wp_update_post(), wp_insert_attachment()
