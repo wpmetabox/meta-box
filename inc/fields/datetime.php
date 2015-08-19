@@ -24,7 +24,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 * @var array
 		 */
 		static $time_format_translation = array(
-			'H'  => 'H', 'HH' => 'H', 'h' => 'H', 'hh' => 'H',
+			'H'  => 'G', 'HH' => 'H', 'h' => 'g', 'hh' => 'h',
 			'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A',
 		);
 
