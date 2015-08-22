@@ -60,6 +60,8 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 				'type'     => 'text',
 				'multiple' => false,
 			) );
+			
+			
 
 			// Always set 'multiple' true for following field types
 			if ( in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) ) )
@@ -136,6 +138,10 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 					'clone'    => false,
 				);
 				$meta = RWMB_Map_Field::the_value( $field, $args, $post_id );
+			}
+			elseif ( 'oembed' == $args['type'] )
+			{
+				$meta = ( $embed = @wp_oembed_get( $meta ) ) ? $embed : $meta;	
 			}
 			return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 		}
