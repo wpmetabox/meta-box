@@ -13,7 +13,7 @@
   "description": "Easily create custom meta boxes in WordPress.",
   "homepage": "http://metabox.io",
   "license": "GPL-2.0",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "authors": [
     {
       "name": "Tran Ngoc Tuan Anh",
