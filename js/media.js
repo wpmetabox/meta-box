@@ -8,7 +8,7 @@ jQuery( function ( $ )
 		MediaList, MediaItem;
 		
 	MediaList = views.MediaList = Backbone.View.extend( {
-		template: wp.template('rwmb-media'),
+		template: wp.template('rwmb-media-list'),
 		itemViews: {},
 		events: {
 			'click .rwmb-add-media' : function(){
@@ -17,41 +17,55 @@ jQuery( function ( $ )
 			}
 		},
 		initialize: function( options ){
-			this.name = this.$el.data('name') || options.name;
-			this.values = this.$el.data('values') || options.values;
+			var that = this;
+			this.input = $( options.input );
+			this.values = this.input.val().split(',');
 			this.type = this.$el.data('mime-type') || options.type;
-			this.multiple = this.$el.data('multiple');
-			//this.multiple = 'undefined' === typeof this.multiple ? false : this.multiple; 
+			this.max = this.$el.data('max-files') || options.maxFiles;
 			//Collection
-			this.collection = new wp.media.model.Attachments();			
+			this.collection = new wp.media.model.Attachments();		
+			
+			this.render();	
 			
 			this.listenTo( this.collection, 'add', function( model, collection, options ){
-				var item = this.itemViews[model.cid] =  new MediaItem({ model: model, collection: collection, name: this.name }) ;
-				this.$( '.rwmb-media-list' ).append(item.el);
-				
-				if( ! this.multiple ) {
-					if( this.collection.length > 1 )
-						this.collection.reset( [model], options );
+				if( this.max > 0 && this.collection.length > this.max )
+				{
+					this.collection.pop( model);
 					this.$( '.rwmb-add-media' ).hide();
+				} 
+				else
+				{
+					var item = this.itemViews[model.cid] =  new MediaItem({ model: model, collection: collection }) ;
+					this.$( '.rwmb-media-list' ).append(item.el);
 				}
+				
+				this.updateInput();
 			} );
 			
 			this.listenTo( this.collection, 'remove', function( model, collection, options ){
 				this.itemViews[model.cid].remove();
 				delete this.itemViews[model.cid];
-				if( ! this.multiple && this.collection.length < 1 )
+				if( this.max > 0 && this.collection.length < this.max )
 					this.$( '.rwmb-add-media' ).show();
+				
+				this.updateInput();
 			} );
 			
-			this.listenTo( this.collection, 'reset', function( collection, options ){
-				_.each( this.itemViews, function( item ){
-					item.remove();
-				}, this );
-				delete this.itemViews;
-				this.itemViews = {};
+			this.$( '.rwmb-media-list' ).sortable({
+				stop: function( event, ui ) {
+					that.$( '.rwmb-media-list' ).children().each( function() {
+						var cid = $( this ).data( 'cid' );
+						
+						if( cid ) {
+							var model =  that.collection.get( cid );
+							if( model ) {
+								that.collection.remove( model );
+								that.collection.add( model );
+							}
+						}
+					} );
+				}
 			} );
-			
-			this.$( '.rwmb-media-list' ).sortable();
 			
 			if( ! _.isEmpty( this.values) ) {
 				 this.collection.props.set( {					
@@ -60,7 +74,7 @@ jQuery( function ( $ )
 					orderby: 'post__in',
 					order: 'ASC', 
 					type: this.type,
-					perPage:  this.multiple ? -1 : 1 
+					perPage:  this.max || -1  
 				} );
 				this.collection.more();	
 			}				
@@ -68,7 +82,6 @@ jQuery( function ( $ )
 		
 		frame: function() {
 			var ids = this.collection.pluck('id');
-			console.log(this.multiple);
 			// Destroy the previous collection frame.
 			if ( this._frame ) {
 				this.stopListening( this._frame );
@@ -77,7 +90,7 @@ jQuery( function ( $ )
 			
 			this._frame = wp.media( {
 				className: 'media-frame rwmb-media-frame',
-				multiple : this.multiple,
+				multiple :  true,
 				title    : 'Select Media',
 				library  : {
 					type: this.type,
@@ -93,15 +106,25 @@ jQuery( function ( $ )
 			} );
 			
 			this._frame.open();			
-		}
+		},
+		
+		render: function() {
+			this.$el.html( this.template( {} ) );
+			return this;	
+		},
+		
+		updateInput: _.debounce( function(){
+			var ids = this.collection.pluck( 'id' );
+			this.input.val( ids.join( ',' ) );
+		}, 500 )
 	} );
 	
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName: 'li',
 		template: wp.template( 'rwmb-media-item' ),
 		initialize: function( options ) {
-			this.name = options.name;
 			this.render();	
+			this.$el.data( 'cid', this.model.cid );
 		}, 
 		
 		events: {
@@ -114,12 +137,14 @@ jQuery( function ( $ )
 		
 		render: function() {
 			var attrs = _.clone( this.model.attributes );
-			this.$el.html( this.template( {name: this.name, attachment: attrs } ) );
+			this.$el.html( this.template( attrs ) );
 			return this;	
 		}
 	} );
 	
-	$( '.rwmb-media' ).each( function( index ){
-		new MediaList( { el: this } );
-	} );
+	function rwmb_update_media(){
+		new MediaList( { input: this, el: $( this ).siblings('div.rwmb-media-view')} );
+	}
+	$( ':input.rwmb-media' ).each( rwmb_update_media );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-media', rwmb_update_media );
 } );

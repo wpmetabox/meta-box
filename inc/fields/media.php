@@ -39,21 +39,15 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$i18n_add   = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
-			$meta =  wp_json_encode( (array) $meta );
-
+			$meta = (array) $meta;
+			$meta = implode( ',', $meta );
 			$html .= sprintf(
-				'<div class="rwmb-media"  data-name="%s" data-values="%s" data-mime-type="%s" data-multiple="%s">
-					<ul class="rwmb-media-list"></ul>
-					<a href="#" class="rwmb-add-media button">
-						<span class="dashicons dashicons-plus rwmb-icon"></span>%s
-					</a>
-				</div>',
+				'<input type="hidden" name="%s" value="%s" class="rwmb-media" />
+				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s"></div>',
 				$field['field_name'],
 				esc_attr( $meta ),
 				$field['mime_type'],
-				$field['multiple'] ? 'true' : 'false',
-				$i18n_add				
+				$field['max_file_uploads'] 
 			);
 
 			return $html;
@@ -70,14 +64,58 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		{
 			$field             = wp_parse_args( $field, array(
 				'std'              => array(),
-				'multiple'         => true,
 				'mime_type'        => '',
+				'max_file_uploads' => 0,
 			) );
 			
-			if ( ! $field['clone'] && $field['multiple'] )
-				$field['field_name'] .= '[]';
+			$field['multiple'] = false;			
+
 
 			return $field;
+		}
+		
+		/**
+		 * Get meta value
+		 *
+		 * @param int   $post_id
+		 * @param bool  $saved
+		 * @param array $field
+		 *
+		 * @return mixed
+		 */
+		static function meta( $post_id, $saved, $field )
+		{
+			$field['multiple'] = true;
+
+			return parent::meta( $post_id, $saved, $field );
+		}
+
+		
+		/**
+		 * Get field value
+		 * It's the combination of new (uploaded) images and saved images
+		 *
+		 * @param array $new
+		 * @param array $old
+		 * @param int   $post_id
+		 * @param array $field
+		 *
+		 * @return array|mixed
+		 */
+		static function value( $new, $old, $post_id, $field )
+		{
+			if( $field['clone'] )
+			{
+				foreach( $new as &$value )
+				{
+					$value = explode( ',', $value );
+				}
+			}
+			else
+			{
+				$new = explode( ',', $new );	
+			}
+			return $new;
 		}
 		
 		/**
@@ -104,17 +142,11 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			if ( $field['clone'] )
 			{
 				$new = (array) $new;
-				foreach ( $new as $k => $v )
-				{
-					if ( '' === $v )
-						unset( $new[$k] );
-				}
+				$new = array_filter( $new );
 				update_post_meta( $post_id, $name, $new );
 				return;
 			}
-
-			// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour)
-			if ( $field['multiple'] )
+			else
 			{
 				foreach ( $new as $new_value )
 				{
@@ -122,31 +154,28 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 				}
 				return;
 			}
-
-			// Default: just update post meta
-			update_post_meta( $post_id, $name, $new );
 		}
 		
 		static function print_templates()
 		{
 			$i18n_remove   = apply_filters( 'rwmb_attachment_remove_string', _x( 'Remove', 'attachment', 'meta-box' ) );
+			$i18n_add   = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
 			?>
 			<script id="tmpl-rwmb-media-item" type="text/html">
 				<div class="rwmb-media-preview">
 					<div class="rwmb-media-content" >
 						<div class="centered">
-							<# if( 'image' === data.attachment.type && data.attachment.sizes ){ #>
-							
-								<# if ( data.attachment.sizes.thumbnail ) { #>
-									<img src="{{{ data.attachment.sizes.thumbnail.url }}}">
+							<# if( 'image' === data.type && data.sizes ){ #>							
+								<# if ( data.sizes.thumbnail ) { #>
+									<img src="{{{ data.sizes.thumbnail.url }}}">
 								<# } else { #>
-									<img src="{{{ data.attachment.sizes.full.url }}}">
+									<img src="{{{ data.sizes.full.url }}}">
 								<# } #>
 							<# } else { #>
-								<# if ( data.attachment.image && data.attachment.image.src && data.attachment.image.src !== data.attachment.icon ) { #>
-									<img src="{{ data.attachment.image.src }}" />
+								<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+									<img src="{{ data.image.src }}" />
 								<# } else { #>
-									<img src="{{ data.attachment.icon }}" />
+									<img src="{{ data.icon }}" />
 								<# } #>
 							<# } #>	
 						</div>				
@@ -155,7 +184,13 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 				<a href="#" class="rwmb-remove-media">
 					<span class="dashicons dashicons-no"></span>
 				</a>
-				<input type="hidden" name="{{{ data.name }}}" value="{{{ data.attachment.id }}}" />
+			</script>
+            
+            <script id="tmpl-rwmb-media-list" type="text/html"> 
+				<ul class="rwmb-media-list"></ul>
+					<a href="#" class="rwmb-add-media button">
+						<span class="dashicons dashicons-plus rwmb-icon"></span><?php echo $i18n_add; ?>
+					</a>
 			</script>
 			<?php
 		}
