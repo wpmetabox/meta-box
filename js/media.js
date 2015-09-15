@@ -31,24 +31,25 @@ jQuery( function ( $ )
 				if( this.max > 0 && this.collection.length > this.max )
 				{
 					this.collection.pop( model);
-					this.$( '.rwmb-add-media' ).hide();
 				} 
 				else
 				{
 					var item = this.itemViews[model.cid] =  new MediaItem({ model: model, collection: collection }) ;
 					this.$( '.rwmb-media-list' ).append(item.el);
 				}
-				
+				this.updateButton();
 				this.updateInput();
 			} );
 			
 			this.listenTo( this.collection, 'remove', function( model, collection, options ){
-				this.itemViews[model.cid].remove();
-				delete this.itemViews[model.cid];
-				if( this.max > 0 && this.collection.length < this.max )
-					this.$( '.rwmb-add-media' ).show();
+				if( this.itemViews[model.cid] )
+				{
+					this.itemViews[model.cid].remove();
+					delete this.itemViews[model.cid];
+				}
 				
 				this.updateInput();
+				this.updateButton();
 			} );
 			
 			this.$( '.rwmb-media-list' ).sortable({
@@ -77,7 +78,7 @@ jQuery( function ( $ )
 					perPage:  this.max || -1  
 				} );
 				this.collection.more();	
-			}				
+			}		
 		},
 		
 		frame: function() {
@@ -111,6 +112,18 @@ jQuery( function ( $ )
 		render: function() {
 			this.$el.html( this.template( {} ) );
 			return this;	
+		},
+		
+		updateButton: function(){
+			if( this.max > 0 && this.collection.length >= this.max )
+			{
+				console.log('too big');
+				this.$( '.rwmb-add-media' ).hide();
+			}
+			else
+			{
+				this.$( '.rwmb-add-media' ).show();
+			}
 		},
 		
 		updateInput: _.debounce( function(){
