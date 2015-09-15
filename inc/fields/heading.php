@@ -26,7 +26,8 @@ if ( ! class_exists( 'RWMB_Heading_Field' ) )
 		 */
 		static function begin_html( $meta, $field )
 		{
-			return sprintf( '<h4>%s</h4>', $field['name'] );
+			$attributes = empty( $field['id'] ) ? '' : " id='{$field['id']}'";
+			return sprintf( '<h4%s>%s</h4>', $attributes, $field['name'] );
 		}
 
 		/**
