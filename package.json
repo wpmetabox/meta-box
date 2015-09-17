@@ -1,6 +1,6 @@
 {
   "name": "meta-box",
-  "version": "4.5.6",
+  "version": "4.5.7",
   "description": "Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress.",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
     "url": "https://github.com/rilwis/meta-box/issues"
   },
   "author": "Tran Ngoc Tuan Anh <rilwis@gmail.com>",
-  "homepage": "http://www.deluxeblogtips.com/meta-box/",
+  "homepage": "https://metabox.io",
   "license": {
     "type": "GPL 2.0+",
     "url": "http://www.gnu.org/licenses/gpl-2.0.html"

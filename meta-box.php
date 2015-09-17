@@ -3,17 +3,19 @@
 Plugin Name: Meta Box
 Plugin URI: http://metabox.io
 Description: Create meta box for editing pages in WordPress. Compatible with custom post types since WP 3.0
-Version: 4.5.6
+Version: 4.5.7
 Author: Rilwis
 Author URI: http://www.deluxeblogtips.com
 License: GPL2+
+Text Domain: meta-box
+Domain Path: /lang/
 */
 
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
 // Script version, used to add version for scripts and styles
-define( 'RWMB_VER', '4.5.6' );
+define( 'RWMB_VER', '4.5.7' );
 
 // Define plugin URLs, for fast enqueuing scripts and styles
 if ( ! defined( 'RWMB_URL' ) )

@@ -1,10 +1,10 @@
 === Meta Box ===
 Contributors: rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: http://www.deluxeblogtips.com/donate
-Tags: meta-box, custom-fields, custom-field, meta, meta-boxes
+Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 3.5
-Tested up to: 4.2.3
-Stable tag: 4.5.6
+Tested up to: 4.3.1
+Stable tag: 4.5.7
 License: GPLv2 or later
 
 Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
@@ -16,38 +16,39 @@ Meta Box plugin provides powerful API to implement custom meta boxes and custom 
 ### Features
 
 * Easily register multiple custom meta boxes for posts, pages or custom post types
-* Supports a lot of [field types](http://metabox.io/docs/define-fields/)
+* Supports a lot of [field types](https://metabox.io/docs/define-fields/)
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrate with themes
 
 ### Documentation
 
-- [Getting Started](http://metabox.io/docs/getting-started/)
-- [Register Meta Boxes](http://metabox.io/docs/registering-meta-boxes/)
-- [Define Fields](http://metabox.io/docs/define-fields/)
-- [Get Meta Value](http://metabox.io/docs/get-meta-value/)
+- [Getting Started](https://metabox.io/docs/getting-started/)
+- [Register Meta Boxes](https://metabox.io/docs/registering-meta-boxes/)
+- [Define Fields](https://metabox.io/docs/define-fields/)
+- [Get Meta Value](https://metabox.io/docs/get-meta-value/)
 
-See more documentation [here](http://metabox.io/docs/).
+See more documentation [here](https://metabox.io/docs/).
 
 ### Premium Extensions
 
-- [Meta Box Group](http://metabox.io/plugins/meta-box-group/): Organize custom fields in groups for better appearance and structure. Groups can be cloned.
-- [Meta Box Builder](http://metabox.io/plugins/meta-box-builder/): Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
-- [Meta Box Template](http://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
-- [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
-- [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
-- [Meta Box Tabs](http://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
-- [Meta Box Columns](http://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
-- [Meta Box Include Exclude](http://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+- [Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/): Control the visibility of Meta Boxes and Fields or even HTML elements with ease.
+- [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Organize custom fields in groups for better appearance and structure. Groups can be cloned.
+- [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
+- [Meta Box Template](https://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
+- [Meta Box Tooltip](https://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
+- [Meta Box Show Hide (Javascript)](https://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](https://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](https://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
-See all premium extensions [here](http://metabox.io/plugins/).
+See all premium extensions [here](https://metabox.io/plugins/).
 
 ### Plugin Links
 
-- [Project Page](http://metabox.io/meta-box/)
-- [Documentation](http://metabox.io/docs/)
+- [Project Page](https://metabox.io/meta-box/)
+- [Documentation](https://metabox.io/docs/)
 - [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
-- [Premium Extensions](http://metabox.io)
+- [Premium Extensions](https://metabox.io)
 
 == Installation ==
 
@@ -55,7 +56,7 @@ See all premium extensions [here](http://metabox.io/plugins/).
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin API, please read [this tutorial](http://metabox.io/docs/getting-started/).
+To getting started with the plugin API, please read [this tutorial](https://metabox.io/docs/getting-started/).
 
 == Frequently Asked Questions ==
 
@@ -68,6 +69,15 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.5.7 =
+* Fix: Always set std as value for hidden field
+* Fix: `rwmb_meta` now can display rich content from `oembed` field
+* Fix: Wrong format for `datetime` field
+* Fix: Check and reset clone index when add/remove/sort clones
+* Improvement: Optionally display ID attribute for heading and divider
+* Improvement: Adding new style to date field to match WordPress style
+* Improvement: Change saving hooks to specific post types to prevent saving images to wrong post
 
 = 4.5.6 =
 * Fix: Warning for timestamp for datetime field.
