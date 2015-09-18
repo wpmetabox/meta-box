@@ -1,13 +1,16 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_image_select' );
-function prefix_register_meta_box_image_select( $meta_boxes )
+/**
+ * This file demonstrates how to use 'image_select' field
+ */
+add_filter( 'rwmb_meta_boxes', 'your_prefix_image_select_demo' );
+function your_prefix_image_select_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Image Select Demo', 'meta-box', 'meta-box' ),
+		'title' => __( 'Image Select Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
-				'id'       => 'layout',
-				'name'     => __( 'Layout', 'meta-box' ),
+				'id'       => 'image_select',
+				'name'     => __( 'Layout', 'your-prefix' ),
 				'type'     => 'image_select',
 
 				// Array of 'value' => 'Image Source' pairs

@@ -1,13 +1,16 @@
 # Meta Box WordPress Plugin
 
-![Travis-CI Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)
+[![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
+[![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![License](https://img.shields.io/packagist/l/rilwis/meta-box.svg)](https://metabox.io)
 
 **Plugin Links**
 
-- [Project Page](http://metabox.io/meta-box/)
-- [Documentation](http://metabox.io/docs/)
+- [Project Page](https://metabox.io/meta-box/)
+- [Documentation](https://metabox.io/docs/)
 - [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
-- [Premium Extensions](http://metabox.io)
+- [Premium Extensions](https://metabox.io)
 
 ***
 
@@ -18,19 +21,32 @@ Meta Box plugin is a complete tool to create meta box and custom fields in WordP
 ### Features
 
 * Easily register multiple custom meta boxes for posts, pages or custom post types
-* Supports a lot of [field types](http://metabox.io/docs/define-fields/)
+* Supports a lot of [field types](https://metabox.io/docs/define-fields/)
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
 * Easily integrate with themes
 
+### Documentation
+
+- [Getting Started](https://metabox.io/docs/getting-started/)
+- [Register Meta Boxes](https://metabox.io/docs/registering-meta-boxes/)
+- [Define Fields](https://metabox.io/docs/define-fields/)
+- [Get Meta Value](https://metabox.io/docs/get-meta-value/)
+
+See more documentation [here](https://metabox.io/docs/).
+
 ### Premium Extensions
 
-- [Meta Box Tooltip](http://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
-- [Meta Box Show Hide (Javascript)](http://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
-- [Meta Box Tabs](http://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
-- [Meta Box Columns](http://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
-- [Meta Box Include Exclude](http://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
+- [Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/): Control the visibility of Meta Boxes and Fields or even HTML elements with ease.
+- [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Organize custom fields in groups for better appearance and structure. Groups can be cloned.
+- [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
+- [Meta Box Template](https://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
+- [Meta Box Tooltip](https://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
+- [Meta Box Show Hide (Javascript)](https://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](https://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](https://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
-See all premium extensions [here](http://metabox.io).
+See all premium extensions [here](https://metabox.io/plugins/).
 
 ***
 
@@ -40,7 +56,7 @@ See all premium extensions [here](http://metabox.io).
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin API, please read [this tutorial](http://metabox.io/docs/getting-started/).
+To getting started with the plugin API, please read [this tutorial](https://metabox.io/docs/getting-started/).
 
 ***
 
@@ -57,7 +73,91 @@ To getting started with the plugin API, please read [this tutorial](http://metab
 
 ***
 
+### [![phpstorm](https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png)](https://www.jetbrains.com/phpstorm/)
+
+***
+
 ## Changelog
+
+#### 4.5.7
+* Fix: Always set std as value for hidden field
+* Fix: `rwmb_meta` now can display rich content from `oembed` field
+* Fix: Wrong format for `datetime` field
+* Fix: Check and reset clone index when add/remove/sort clones
+* Improvement: Optionally display ID attribute for heading and divider
+* Improvement: Adding new style to date field to match WordPress style
+* Improvement: Change saving hooks to specific post types to prevent saving images to wrong post
+
+#### 4.5.6
+* Fix: Warning for timestamp for datetime field.
+* Fix: z-index for color picker.
+* Fix: Marker title in map
+
+#### 4.5.5
+* Fix: CSS alignment for sort clone icon for field type `group` (require Meta Box Group extension)
+* Fix: rwmbSelect is not defined
+
+#### 4.5.4
+* Improvement: Add "Select All|None" for `select`, `select_advanced`, `post` fields
+* Improvement: Add `max_clone` parameter which limits number of clones
+* Improvement: Add `sort_clone` parameter which allows users to sort (drag and drop) cloned inputs
+* Improvement: Add Polish language. Thank Michael
+* Fix: Prevent warning when post type doesn't exist (`post` field)
+
+#### 4.5.3
+* Improvement: Use `wp_json_encode` instead of `json_encode`. Thank Sam Ford.
+* Fix: Escape value for cloneable fields
+* Fix: Notice for missing parameters for `rwmb_meta` field for `map`
+
+#### 4.5.2
+* Improvement: Add Persian (Farsi) language. Thank Ahmad Azimi.
+* Improvement: Update Spanish translation. Thank David Perez.
+* Fix: Cloning text fields
+* Fix: rwmb_meta works incorrectly for image fields if multiple=false
+
+#### 4.5.1
+* Improvement: Add ability to use multiple post types for `post` field
+* Fix: Duplicated description for `checkbox` field
+* Fix: Blank gallery for image fields
+
+#### 4.5
+* Improvement: Separate `esc_meta` method
+* Improvement: Add ability to use URL to retrieve options for autocomplete field
+* Improvement: Add `rwmb_get_field` and `rwmb_the_field` functions to get and display field values in the frontend
+* Improvement: Add field type `custom_html` to display any HTML in the meta box
+* Improvement: Add field type `key_value` which allows users to add any number of key-value pairs
+* Improvement: Use single JS file to display Google Maps in the frontend. No more inline Javascript.
+* Improvement: Code refactor
+
+#### 4.4.3
+* Fix: Incorrect path to loader image for `plupload_image`
+* Fix: Missing placeholder for `post` field when `field_type` = `select`
+* Improvement: No errors showing if invalid value is returned from `rwmb_meta_boxes` filter
+* Improvement: Add filter for add/remove clone buttons text
+* Improvement: Add French translation
+
+#### 4.4.2
+* Fix: Values of text_list field not showing correctly
+* Fix: Time picker field cannot select hour > 22, time > 58
+* Fix: Notice error when showing fields which don't have ID
+* Fix: Don't return non-existing files or images via rwmb_meta function
+* Fix: CSS alignment for taxonomy tree
+* Fix: Placeholder not working for "select" taxonomy
+* Improvement: Update timepicker to latest version
+* Improvement: Improve output markup for checkbox field
+
+#### 4.4.1
+* Fix: wrong text domain
+* Fix: `select_advanced` field not cloning
+* Fix: cloned emails are not saved
+* Improvement: Use `post_types` instead of `pages`, accept string for single post type as well. Fallback to `pages` for previous versions.
+
+#### 4.4.0
+* New: 'autocomplete' field.
+* Improvement: field id is now optional (heading, divider)
+* Improvement: heading now supports 'description'
+* Improvement: update select2 library to version 3.5.2
+* Improvement: coding standards
 
 #### 4.3.11
 * Bug fix: use field id instead of field_name for wysiwyg field

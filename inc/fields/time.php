@@ -18,30 +18,27 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_register_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
-			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7' );
+			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.min.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '1.5.0' );
 
 			$url = RWMB_JS_URL . 'jqueryui';
-			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '0.9.7', true );
-			$deps = array( 'jquery-ui-timepicker' );
+			wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.min.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '1.5.0', true );
 
-			$locale                   = str_replace( '_', '-', get_locale() );
-			$timepicker_locale_js_url = '';
-			if ( file_exists( RWMB_DIR . "js/jqueryui/timepicker-i18n/jquery-ui-timepicker-{$locale}.js" ) )
-			{
-				$timepicker_locale_js_url = "{$url}/timepicker-i18n/jquery-ui-timepicker-{$locale}.js";
-			}
-			elseif ( strlen( $locale ) > 2 && file_exists( RWMB_DIR . 'js/jqueryui/timepicker-i18n/jquery-ui-timepicker-' . substr( $locale, 0, 2 ) . '.js' ) )
-			{
-				$timepicker_locale_js_url = "{$url}/timepicker-i18n/jquery-ui-timepicker-" . substr( $locale, 0, 2 ) . '.js';
-			}
-			if ( $timepicker_locale_js_url )
-			{
-				wp_register_script( 'jquery-ui-timepicker-i18n', $timepicker_locale_js_url, array( 'jquery-ui-timepicker' ), '0.9.7', true );
-				$deps = array( 'jquery-ui-timepicker-i18n' );
-			}
+			/**
+			 * Localization
+			 * Use 1 minified JS file which contains all languages for simpilicity (in version < 4.4.2 we use separated JS files).
+			 * The language is set in Javascript
+			 *
+			 * Note: we use full locale (de-DE) and fallback to short locale (de)
+			 */
+			$locale = str_replace( '_', '-', get_locale() );
+			$locale_short = substr( $locale, 0, 2 );
+			wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
 
-			wp_enqueue_script( 'rwmb-time', RWMB_JS_URL . 'time.js', $deps, RWMB_VER, true );
-			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array( 'lang' => $locale ) );
+			wp_enqueue_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
+			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array(
+				'locale'      => $locale,
+				'localeShort' => $locale_short,
+			) );
 		}
 
 		/**
@@ -55,12 +52,12 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		static function html( $meta, $field )
 		{
 			return sprintf(
-				'<input type="text" class="rwmb-time" name="%s" value="%s" id="%s" size="%s" data-options="%s" />',
+				'<input type="text" class="rwmb-time" name="%s" value="%s" id="%s" size="%s" data-options="%s">',
 				$field['field_name'],
 				$meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
-				esc_attr( json_encode( $field['js_options'] ) )
+				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
 		}
 
@@ -82,7 +79,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			// Use 'js_options' instead
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
 				'showButtonPanel' => true,
-				'timeFormat'      => empty( $field['format'] ) ? 'hh:mm:ss' : $field['format'],
+				'timeFormat'      => empty( $field['format'] ) ? 'HH:mm' : $field['format'],
 			) );
 
 			return $field;

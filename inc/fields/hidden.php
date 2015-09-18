@@ -17,10 +17,10 @@ if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 		static function html( $meta, $field )
 		{
 			return sprintf(
-				'<input type="hidden" class="rwmb-hidden" name="%s" id="%s" value="%s" />',
+				'<input type="hidden" class="rwmb-hidden" name="%s" id="%s" value="%s">',
 				$field['field_name'],
 				$field['id'],
-				$meta
+				$field['std']
 			);
 		}
 	}

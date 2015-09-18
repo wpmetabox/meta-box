@@ -136,6 +136,6 @@ jQuery( function ( $ )
 	 */
 	function addThrobber( file )
 	{
-		$( '#' + file.id + '-throbber' ).html( '<img class="rwmb-loader" height="64" width="64" src="' + RWMB.url + '"img/loader.gif">' );
+		$( '#' + file.id + '-throbber' ).html( '<img class="rwmb-loader" height="64" width="64" src="' + RWMB.url + 'img/loader.gif">' );
 	}
 } );

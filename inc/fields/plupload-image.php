@@ -113,7 +113,6 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 			if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
 				$classes[] = 'hidden';
 
-
 			$html = self::get_uploaded_images( $meta, $field );
 
 			// Show form upload
@@ -128,7 +127,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$field['id'],
 				implode( ' ', $classes ),
 				wp_create_nonce( "rwmb-upload-images_{$field['id']}" ),
-				esc_attr( json_encode( $field['js_options'] ) ),
+				esc_attr( wp_json_encode( $field['js_options'] ) ),
 				$i18n_drop,
 				$i18n_or,
 				$field['id'],

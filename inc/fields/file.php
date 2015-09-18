@@ -290,19 +290,93 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 		}
 
 		/**
-		 * Standard meta retrieval
+		 * Get the field value
+		 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
+		 * of the field saved in the database, while this function returns more meaningful value of the field
 		 *
-		 * @param int   $post_id
-		 * @param array $field
-		 * @param bool  $saved
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Not used for this field
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
 		 *
-		 * @return mixed
+		 * @return mixed Full info of uploaded files
 		 */
-		static function meta( $post_id, $saved, $field )
+		static function get_value( $field, $args = array(), $post_id = null )
 		{
-			$meta = parent::meta( $post_id, $saved, $field );
+			if ( ! $post_id )
+				$post_id = get_the_ID();
 
-			return empty( $meta ) ? array() : (array) $meta;
+			/**
+			 * Get raw meta value in the database, no escape
+			 * Very similar to self::meta() function
+			 */
+			$file_ids = get_post_meta( $post_id, $field['id'], false );
+
+			// For each file, get full file info
+			$value = array();
+			foreach ( $file_ids as $file_id )
+			{
+				if ( $file_info = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'file_info' ), $file_id, $args ) )
+				{
+					$value[$file_id] = $file_info;
+				}
+			}
+
+			return $value;
+		}
+
+		/**
+		 * Output the field value
+		 * Display unordered list of files
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$output = '<ul>';
+			foreach ( $value as $file_id => $file_info )
+			{
+				$output .= sprintf(
+					'<li><a href="%s" target="_blank">%s</a></li>',
+					wp_get_attachment_url( $file_id ),
+					get_the_title( $file_id )
+				);
+			}
+			$output .= '</ul>';
+
+			return $output;
+		}
+
+		/**
+		 * Get uploaded file information
+		 *
+		 * @param int   $file_id Attachment file ID (post ID). Required.
+		 * @param array $args    Array of arguments (for size).
+		 *
+		 * @return array|bool False if file not found. Array of (id, name, path, url) on success
+		 */
+		static function file_info( $file_id, $args = array() )
+		{
+			$path = get_attached_file( $file_id );
+			if ( ! $path )
+			{
+				return false;
+			}
+
+			return array(
+				'ID'    => $file_id,
+				'name'  => basename( $path ),
+				'path'  => $path,
+				'url'   => wp_get_attachment_url( $file_id ),
+				'title' => get_the_title( $file_id ),
+			);
 		}
 	}
 }

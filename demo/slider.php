@@ -1,18 +1,21 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'prefix_register_meta_box_slider' );
-function prefix_register_meta_box_slider( $meta_boxes )
+/**
+ * This file demonstrates how to use 'slider' field
+ */
+add_filter( 'rwmb_meta_boxes', 'your_prefix_slider_demo' );
+function your_prefix_slider_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'Slider Demo', 'meta-box', 'meta-box' ),
+		'title' => __( 'Slider Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
-				'name' => __( 'Slider', 'meta-box' ),
+				'name' => __( 'Slider', 'your-prefix' ),
 				'id'   => 'slider',
 				'type' => 'slider',
 
 				// Text labels displayed before and after value
-				'prefix' => __( '$', 'meta-box' ),
-				'suffix' => __( ' USD', 'meta-box' ),
+				'prefix' => __( '$', 'your-prefix' ),
+				'suffix' => __( ' USD', 'your-prefix' ),
 
 				// jQuery UI slider options. See here http://api.jqueryui.com/slider/
 				'js_options' => array(
@@ -21,7 +24,7 @@ function prefix_register_meta_box_slider( $meta_boxes )
 					'step'  => 5,
 				),
 
-				'clone' => true,
+				//'clone' => true,
 			),
 		),
 	);

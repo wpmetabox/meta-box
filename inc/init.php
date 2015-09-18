@@ -14,6 +14,11 @@ add_action( 'admin_init', 'rwmb_register_meta_boxes' );
 function rwmb_register_meta_boxes()
 {
 	$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
+
+	// Prevent errors showing if invalid value is returned from the filter above
+	if ( empty( $meta_boxes ) || ! is_array( $meta_boxes ) )
+		return;
+
 	foreach ( $meta_boxes as $meta_box )
 	{
 		new RW_Meta_Box( $meta_box );

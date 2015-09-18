@@ -16,7 +16,8 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			$url = RWMB_CSS_URL . 'jqueryui';
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
-			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
+			wp_register_style( 'wp-datepicker', RWMB_CSS_URL ."datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
+			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'wp-datepicker' ), '1.8.17' );
 
 			// Load localized scripts
 			$locale     = str_replace( '_', '-', get_locale() );
@@ -36,7 +37,6 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			}
 
 			wp_enqueue_script( 'rwmb-date', RWMB_JS_URL . 'date.js', $deps, RWMB_VER, true );
-			wp_localize_script( 'rwmb-date', 'RWMB_Datepicker', array( 'lang' => $locale ) );
 		}
 
 		/**
@@ -55,7 +55,7 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 				$meta,
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
-				esc_attr( json_encode( $field['js_options'] ) )
+				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
 		}
 

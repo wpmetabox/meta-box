@@ -1,0 +1,14 @@
+.rwmb-autocomplete-result {
+	border-bottom: 1px solid #ccc;
+	padding: 1em 0;
+	overflow: hidden;
+}
+.rwmb-autocomplete-result .label {
+	float: left;
+	width: 90%;
+}
+.rwmb-autocomplete-result .actions {
+	width: 10%;
+	float: right;
+	cursor: pointer;
+}

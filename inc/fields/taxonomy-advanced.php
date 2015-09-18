@@ -58,5 +58,37 @@ if ( ! class_exists( 'RWMB_Taxonomy_Advanced_Field' ) )
 
 			return $meta;
 		}
+
+		/**
+		 * Get the field value
+		 * Return list of post term objects
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return array List of post term objects
+		 */
+		static function get_value( $field, $args = array(), $post_id = null )
+		{
+			if ( ! $post_id )
+				$post_id = get_the_ID();
+
+			$value = self::meta( $post_id, '', $field );
+
+			// Allow to pass more arguments to "get_terms"
+			$args  = wp_parse_args( array(
+				'include'    => $value,
+				'hide_empty' => false,
+			), $args );
+			$value = get_terms( $field['options']['taxonomy'], $args );
+
+			// Get single value if necessary
+			if ( ! $field['clone'] && ! $field['multiple'] )
+			{
+				$value = reset( $value );
+			}
+			return $value;
+		}
 	}
 }

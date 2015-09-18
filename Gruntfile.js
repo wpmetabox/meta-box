@@ -45,24 +45,6 @@ module.exports = function ( grunt )
 			all    : allJsFiles // Lint all JS files, except *.min.js (libraries)
 		},
 
-		// Check PHP syntax error
-		phplint        : {
-			all: allPhpFiles
-		},
-
-		// Check PHP coding standards
-		phpcs          : {
-			all    : {
-				dir: allPhpFiles
-			},
-			options: {
-				bin           : '/Applications/MAMP/bin/php/php5.4.19/bin/phpcs',
-				standard      : 'codesniffer.ruleset.xml',
-				reportFile    : 'phpcs.txt',
-				ignoreExitCode: true
-			}
-		},
-
 		// Optimize images
 		imagemin       : {
 			all: {
@@ -154,10 +136,6 @@ module.exports = function ( grunt )
 			js : {
 				files: allJsFiles,
 				tasks: ['jshint']
-			},
-			php: {
-				files: allPhpFiles,
-				tasks: ['phplint', 'phpcs']
 			}
 		},
 
@@ -192,18 +170,6 @@ module.exports = function ( grunt )
 					dest  : '../../release/<%= pkg.name %>'
 				}]
 			}
-		},
-
-		// Deploy to wordpress.org
-		wp_deploy      : {
-			release: {
-				options: {
-					plugin_slug: 'meta-box',
-					svn_user   : 'rilwis',
-					build_dir  : 'release', // Relative path to your build directory
-					max_buffer : 1024 * 1024
-				}
-			}
 		}
 	} );
 
@@ -219,12 +185,6 @@ module.exports = function ( grunt )
 	// JS tasks
 	grunt.registerTask( 'js', [
 		'jshint'
-	] );
-
-	// PHP tasks
-	grunt.registerTask( 'php', [
-		'phplint',
-		'phpcs'
 	] );
 
 	// Image tasks
@@ -243,7 +203,6 @@ module.exports = function ( grunt )
 	grunt.registerTask( 'default', [
 		'css',
 		'js',
-		'php',
 		'image',
 		'translation'
 	] );
@@ -251,10 +210,8 @@ module.exports = function ( grunt )
 	// Deploy to wordpress.org, steps:
 	// - Remove 'old release' folder if exists
 	// - Copy new files to that folder
-	// - Deploy to wordpress.org
 	grunt.registerTask( 'release', [
 		'clean',
 		'copy'
-		//'wp_deploy'
 	] );
 };

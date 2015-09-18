@@ -26,7 +26,8 @@ if ( ! class_exists( 'RWMB_Divider_Field' ) )
 		 */
 		static function begin_html( $meta, $field )
 		{
-			return '<hr>';
+			$attributes = empty( $field['id'] ) ? '' : " id='{$field['id']}'";
+			return "<hr$attributes>";
 		}
 
 		/**

@@ -158,5 +158,85 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 			);
 		}
 
+		/**
+		 * Output the field value
+		 * Display unordered list of images with option for size and link to full size
+		 *
+		 * @param  array    $field   Field parameters
+		 * @param  array    $args    Additional arguments. Not used for these fields.
+		 * @param  int|null $post_id Post ID. null for current post. Optional.
+		 *
+		 * @return mixed Field value
+		 */
+		static function the_value( $field, $args = array(), $post_id = null )
+		{
+			$value = self::get_value( $field, $args, $post_id );
+			if ( ! $value )
+				return '';
+
+			$output = '<ul>';
+			foreach ( $value as $file_id => $file_info )
+			{
+				$img = sprintf(
+					'<img src="%s" alt="%s" title="%s">',
+					esc_url( $file_info['url'] ),
+					esc_attr( $file_info['alt'] ),
+					esc_attr( $file_info['title'] )
+				);
+
+				// Link thumbnail to full size image?
+				if ( isset( $args['link'] ) && $args['link'] )
+				{
+					$img = sprintf(
+						'<a href="%s" title="%s">%s</a>',
+						esc_url( $file_info['full_url'] ),
+						esc_attr( $file_info['title'] ),
+						$img
+					);
+				}
+
+				$output .= "<li>$img</li>";
+			}
+			$output .= '</ul>';
+
+			return $output;
+		}
+
+		/**
+		 * Get uploaded file information
+		 *
+		 * @param int   $file_id Attachment image ID (post ID). Required.
+		 * @param array $args    Array of arguments (for size).
+		 *
+		 * @return array|bool False if file not found. Array of image info on success
+		 */
+		static function file_info( $file_id, $args = array() )
+		{
+			$args = wp_parse_args( $args, array(
+				'size' => 'thumbnail',
+			) );
+
+			$img_src = wp_get_attachment_image_src( $file_id, $args['size'] );
+			if ( ! $img_src )
+			{
+				return false;
+			}
+
+			$attachment = get_post( $file_id );
+			$path       = get_attached_file( $file_id );
+			return array(
+				'ID'          => $file_id,
+				'name'        => basename( $path ),
+				'path'        => $path,
+				'url'         => $img_src[0],
+				'width'       => $img_src[1],
+				'height'      => $img_src[2],
+				'full_url'    => wp_get_attachment_url( $file_id ),
+				'title'       => $attachment->post_title,
+				'caption'     => $attachment->post_excerpt,
+				'description' => $attachment->post_content,
+				'alt'         => get_post_meta( $file_id, '_wp_attachment_image_alt', true ),
+			);
+		}
 	}
 }

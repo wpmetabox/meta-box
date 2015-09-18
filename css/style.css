@@ -1,16 +1,27 @@
 /* =Styles for 'normal' meta boxes
 -------------------------------------------------------------- */
 
+/* Clearfix for field */
+.rwmb-field:before,
+.rwmb-field:after {
+	content: " ";
+	display: table;
+}
+.rwmb-field:after {
+	clear: both;
+}
 .rwmb-field {
+	*zoom: 1;
+
 	margin: 0 0 10px;
 }
 .rwmb-label,
 .rwmb-input {
-	display: inline-block;
 	vertical-align: top;
+	float: left;
 }
 .rwmb-label {
-	width: 24%;
+	width: 25%;
 }
 .rwmb-label.required > span {
 	color: #c00;
@@ -34,20 +45,35 @@
 /* Clone */
 .rwmb-clone {
 	min-height: 24px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	position: relative;
+	clear: both;
+	background: #fff;
+	display: table-row;
+}
+.rwmb-clone > * {
+	display: table-cell;
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
 	margin: 6px 0 0 4px;
 }
-.rwmb-button {
-	float: right;
-}
 .rwmb-button.remove-clone {
-	position: absolute;
-	top: 0;
-	right: 0;
+	text-decoration: none;
+	color: #c00;
+}
+.remove-clone:focus {
+	outline: 0;
+	box-shadow: none;
+}
+.rwmb-button.add-clone {
+	margin-top: 5px;
+}
+.rwmb-clone-icon {
+	cursor: move;
+	background: url(../img/drag_icon.gif) no-repeat;
+	height: 23px;
+	width: 15px;
 }
 
 /* Fix empty block below admin footer (issue #24) */

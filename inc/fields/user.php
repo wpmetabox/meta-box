@@ -7,18 +7,8 @@ require_once RWMB_FIELDS_DIR . 'select-advanced.php';
 
 if ( ! class_exists( 'RWMB_User_Field' ) )
 {
-	class RWMB_User_Field extends RWMB_Field
+	class RWMB_User_Field extends RWMB_Select_Advanced_Field
 	{
-		/**
-		 * Enqueue scripts and styles
-		 *
-		 * @return void
-		 */
-		static function admin_enqueue_scripts()
-		{
-			RWMB_Select_Advanced_Field::admin_enqueue_scripts();
-		}
-
 		/**
 		 * Get field HTML
 		 *
@@ -50,16 +40,13 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-
-			$default_post_type = __( 'User', 'meta-box' );
-
 			$field = wp_parse_args( $field, array(
 				'field_type' => 'select_advanced',
 				'parent'     => false,
 				'query_args' => array(),
 			) );
 
-			$field['std'] = empty( $field['std'] ) ? sprintf( __( 'Select a %s', 'meta-box' ), $default_post_type ) : $field['std'];
+			$field['std'] = empty( $field['std'] ) ? __( 'Select an user', 'meta-box' ) : $field['std'];
 
 			$field['query_args'] = wp_parse_args( $field['query_args'], array(
 				'orderby' => 'display_name',
@@ -80,48 +67,6 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 		}
 
 		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * @see "save" method for better understanding
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			if ( isset( $field['parent'] ) && $field['parent'] )
-			{
-				$post = get_post( $post_id );
-
-				return $post->post_parent;
-			}
-
-			return RWMB_Select_Field::meta( $post_id, $saved, $field );
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			return RWMB_Select_Field::save( $new, $old, $post_id, $field );
-		}
-
-		/**
 		 * Get users
 		 *
 		 * @param array $field
@@ -138,6 +83,21 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 			}
 
 			return $options;
+		}
+
+		/**
+		 * Get option label to display in the frontend
+		 *
+		 * @param int   $value Option value
+		 * @param int   $index Array index
+		 * @param array $field Field parameter
+		 *
+		 * @return string
+		 */
+		static function get_option_label( &$value, $index, $field )
+		{
+			$user  = get_userdata( $value );
+			$value = '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';
 		}
 	}
 }

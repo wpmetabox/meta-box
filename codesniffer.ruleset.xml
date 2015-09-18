@@ -5,10 +5,20 @@
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
+		<exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
 		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
 		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page" />
+		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_link" />
 		<exclude name="WordPress.XSS.EscapeOutput" />
+		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
+		<exclude name="WordPress.WP.EnqueuedResources" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
 	</rule>
 </ruleset>

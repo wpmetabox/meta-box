@@ -86,13 +86,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Hide meta box if it's set 'default_hidden'
 			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
 
-			// Save post meta
-			add_action( 'save_post', array( $this, 'save_post' ) );
-
-			// Attachment uses other hooks
-			// @see wp_update_post(), wp_insert_attachment()
-			add_action( 'edit_attachment', array( $this, 'save_post' ) );
-			add_action( 'add_attachment', array( $this, 'save_post' ) );
+			// Save post meta			
+			foreach( $this->meta_box['post_types'] as $post_type ) 
+			{
+				if( 'attachment' === $post_type )
+				{
+					// Attachment uses other hooks
+					// @see wp_update_post(), wp_insert_attachment()
+					add_action( 'edit_attachment', array( $this, 'save_post' ) );
+					add_action( 'add_attachment', array( $this, 'save_post' ) );
+				}
+				else
+				{
+					add_action( "save_post_{$post_type}", array( $this, 'save_post' ) );
+				}
+			}		
 		}
 
 		/**
@@ -105,7 +113,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$screen = get_current_screen();
 
 			// Enqueue scripts and styles for registered pages (post types) only
-			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['pages'] ) )
+			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['post_types'] ) )
 				return;
 
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
@@ -168,13 +176,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function add_meta_boxes()
 		{
-			foreach ( $this->meta_box['pages'] as $page )
+			foreach ( $this->meta_box['post_types'] as $post_type )
 			{
 				add_meta_box(
 					$this->meta_box['id'],
 					$this->meta_box['title'],
 					array( $this, 'show' ),
-					$page,
+					$post_type,
 					$this->meta_box['context'],
 					$this->meta_box['priority']
 				);
@@ -193,7 +201,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			if (
 				'post' === $screen->base
-				&& in_array( $screen->post_type, $this->meta_box['pages'] )
+				&& in_array( $screen->post_type, $this->meta_box['post_types'] )
 				&& $this->meta_box['default_hidden']
 			)
 			{
@@ -241,13 +249,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					if ( typeof rwmb == "undefined" )
 					{
 						var rwmb = {
-							validationOptions : jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' ),
-							summaryMessage : "' . esc_js( __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) . '"
+							validationOptions : jQuery.parseJSON( \'' , json_encode( $this->validation ) , '\' ),
+							summaryMessage : "' , esc_js( __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) , '"
 						};
 					}
 					else
 					{
-						var tempOptions = jQuery.parseJSON( \'' . json_encode( $this->validation ) . '\' );
+						var tempOptions = jQuery.parseJSON( \'' , json_encode( $this->validation ) . '\' );
 						jQuery.extend( true, rwmb.validationOptions, tempOptions );
 					}
 					</script>
@@ -278,7 +286,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		function save_post( $post_id )
 		{
 			// Check if this function is called to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
-			if ( $this->saved === true )
+			if ( true === $this->saved )
 				return;
 			$this->saved = true;
 
@@ -302,9 +310,10 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			foreach ( $this->fields as $field )
 			{
-				$name = $field['id'];
-				$old  = get_post_meta( $post_id, $name, ! $field['multiple'] );
-				$new  = isset( $_POST[$name] ) ? $_POST[$name] : ( $field['multiple'] ? array() : '' );
+				$name   = $field['id'];
+				$single = $field['clone'] || ! $field['multiple'];
+				$old    = get_post_meta( $post_id, $name, $single );
+				$new    = isset( $_POST[$name] ) ? $_POST[$name] : ( $single ? '' : array() );
 
 				// Allow field class change the value
 				$new = call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );
@@ -342,10 +351,26 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				'id'             => sanitize_title( $meta_box['title'] ),
 				'context'        => 'normal',
 				'priority'       => 'high',
-				'pages'          => array( 'post' ),
+				'post_types'     => 'post',
 				'autosave'       => false,
 				'default_hidden' => false,
 			) );
+
+			/**
+			 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions
+			 *
+			 * @since 4.4.1
+			 */
+			if ( ! empty( $meta_box['pages'] ) )
+			{
+				$meta_box['post_types'] = $meta_box['pages'];
+			}
+
+			// Allow to set 'post_types' param by string
+			if ( is_string( $meta_box['post_types'] ) )
+			{
+				$meta_box['post_types'] = array( $meta_box['post_types'] );
+			}
 
 			// Set default values for fields
 			$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
@@ -366,11 +391,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		static function normalize_fields( $fields )
 		{
-			foreach ( $fields as &$field )
+			foreach ( $fields as $k => $field )
 			{
 				$field = wp_parse_args( $field, array(
+					'id'          => '',
+					'name'        => '',
 					'multiple'    => false,
-					'clone'       => false,
 					'std'         => '',
 					'desc'        => '',
 					'format'      => '',
@@ -379,14 +405,23 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
 					'required'    => false,
 					'placeholder' => '',
+
+					'clone'       => false,
+					'max_clone'   => 0,
+					'sort_clone'  => false,
 				) );
 
-				do_action( 'rwmb_before_normalize_field', $field );
-				do_action( "rwmb_before_normalize_{$field['type']}_field", $field );
-				do_action( "rwmb_before_normalize_{$field['id']}_field", $field );
+				$class = self::get_class_name( $field );
+
+				// Make sure field has correct 'type', ignore warning error when users forget to set field type or set incorrect one
+				if ( false === $class )
+				{
+					unset( $fields[$k] );
+					continue;
+				}
 
 				// Allow field class add/change default field values
-				$field = call_user_func( array( self::get_class_name( $field ), 'normalize_field' ), $field );
+				$field = call_user_func( array( $class, 'normalize_field' ), $field );
 
 				if ( isset( $field['fields'] ) )
 					$field['fields'] = self::normalize_fields( $field['fields'] );
@@ -396,9 +431,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
 				$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
 
-				do_action( 'rwmb_after_normalize_field', $field );
-				do_action( "rwmb_after_normalize_{$field['type']}_field", $field );
-				do_action( "rwmb_after_normalize_{$field['id']}_field", $field );
+				$fields[$k] = $field;
 			}
 
 			return $fields;

@@ -41,7 +41,17 @@ if ( ! class_exists( 'RWMB_Email_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			return sanitize_email( $new );
+			if ( $field['clone'] )
+			{
+				$new = (array) $new;
+				$new = array_map( 'sanitize_email', $new );
+			}
+			else
+			{
+				$new = sanitize_email( $new );
+			}
+
+			return $new;
 		}
 	}
 }

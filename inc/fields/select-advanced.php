@@ -20,7 +20,8 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 			wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
 			wp_register_script( 'select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '3.2', true );
-			wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'select2' ), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
+			wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'select2', 'rwmb-select' ), RWMB_VER, true );
 		}
 
 		/**
@@ -38,13 +39,15 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 				$field['field_name'],
 				$field['id'],
 				$field['size'],
-				$field['multiple'] ? ' multiple="multiple"' : '',
-				esc_attr( json_encode( $field['js_options'] ) )
+				$field['multiple'] ? ' multiple' : '',
+				esc_attr( wp_json_encode( $field['js_options'] ) )
 			);
 
 			$html .= self::options_html( $field, $meta );
 
 			$html .= '</select>';
+
+			$html .= self::get_select_all_html( $field['multiple'] );
 
 			return $html;
 		}
