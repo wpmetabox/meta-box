@@ -49,26 +49,31 @@
 	position: relative;
 	clear: both;
 	background: #fff;
+	display: table-row;
+}
+.rwmb-clone > * {
+	display: table-cell;
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
 	margin: 6px 0 0 4px;
 }
-.rwmb-button {
-	float: right;
-}
 .rwmb-button.remove-clone {
-	position: absolute;
-	top: 0;
-	right: 0;
+	text-decoration: none;
+	color: #c00;
+}
+.remove-clone:focus {
+	outline: 0;
+	box-shadow: none;
+}
+.rwmb-button.add-clone {
+	margin-top: 5px;
 }
 .rwmb-clone-icon {
 	cursor: move;
 	background: url(../img/drag_icon.gif) no-repeat;
 	height: 23px;
 	width: 15px;
-	float: left;
-	/*margin-left: -15px;*/
 }
 
 /* Fix empty block below admin footer (issue #24) */
