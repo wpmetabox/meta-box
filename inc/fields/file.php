@@ -138,7 +138,7 @@ if ( ! class_exists( 'RWMB_File_Field' ) )
 			$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 			$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
-			$classes = array( 'rwmb-file', 'rwmb-uploaded' );
+			$classes = array( 'rwmb-file-list', 'rwmb-uploaded' );
 			if ( count( $files ) <= 0 )
 				$classes[] = 'hidden';
 			$ol   = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';

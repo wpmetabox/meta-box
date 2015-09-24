@@ -1,72 +1,65 @@
-.rwmb-media-list:after {
-	visibility: hidden;
+.rwmb-media-list li,
+.rwmb-media-list li.ui-state-highlight {
+	width: 250px;
+	height: 80px;
+	margin: 0 10px 10px 0;
+	-webkit-transition: width .25s, opacity .25s, -webkit-opacity .25s;
+	        transition: width .25s, opacity .25s;
+	vertical-align: top;
+}
+.rwmb-media-list .rwmb-icon {
+	width: 80px;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+}
+.rwmb-media-list .rwmb-icon img {
+	max-height: 80px;
+	max-width: 80px;
 	display: block;
-	content: "";
-	clear: both;
-	height: 0;
 }
-
-.rwmb-media-list > li {
-	width: 150px;	
-	position: relative;
-	float: left;
-	padding: 0;
-	margin: 5px;
-	background:rgba( 255, 255, 255, .8);
-	 box-sizing: border-box;
+.rwmb-media-list .rwmb-info {
+	width: 150px;
+	vertical-align: top;
+	overflow: hidden;
 }
-.rwmb-media-preview {
-	position: relative;	
-	width: 100%;
+.rwmb-media-list .rwmb-info p {
+	margin: .1em 0;
 }
-
-.rwmb-media-preview:before {
-	content: '';
- 	display: block;
-  	padding-top: 100%;	
-}
-
-.rwmb-media-content {
-	position:  absolute;
-	overflow:hidden;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-}
-
-.rwmb-media-content .centered {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	-webkit-transform: translate(50%,50%);
-	-ms-transform: translate(50%,50%);
-	transform: translate(50%,50%);  
-}
-
-.rwmb-media-content .centered img{
-	-webkit-transform: translate(-50%,-50%);
-	-ms-transform: translate(-50%,-50%);
-	transform: translate(-50%,-50%);  
-}
-
-
-.rwmb-remove-media{
-	position: absolute;
-	z-index: 10;
+.rwmb-media-list .rwmb-info a {
+	font-weight: bold;
 	text-decoration: none;
-	color:inherit;	
-	display: none;
-	right: 5px;
-	top: 5px;
+}
+.rwmb-media-list li,
+.rwmb-media-list .rwmb-icon,
+.rwmb-media-list .rwmb-info {
+	display: inline-block;
+}
+.rwmb-media-list .rwmb-icon,
+.rwmb-media-list .rwmb-info {
+	margin: 0 0 2px 2px;
 }
 
-.rwmb-media-view li:hover .rwmb-remove-media{
-	display: block;	
+.rwmb-media-list li.removed {
+	width: 0;
+	margin: 0;
+	        opacity: 0;
+	-webkit-opacity: 0;
+	   -moz-opacity: 0;
+	     -o-opacity: 0;
 }
 
+.rwmb-media-list li.removed:after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+	opacity: .4;
+	background-color: #f00;
+}
 .rwmb-media-view .rwmb-add-media {
 	padding-left: 5px;
 	margin-right: 5px;

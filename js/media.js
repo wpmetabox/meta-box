@@ -53,6 +53,8 @@ jQuery( function ( $ )
 			} );
 			
 			this.$( '.rwmb-media-list' ).sortable({
+				placeholder: 'ui-state-highlight',
+				items      : 'li',
 				stop: function( event, ui ) {
 					that.$( '.rwmb-media-list' ).children().each( function() {
 						var cid = $( this ).data( 'cid' );
@@ -117,7 +119,6 @@ jQuery( function ( $ )
 		updateButton: function(){
 			if( this.max > 0 && this.collection.length >= this.max )
 			{
-				console.log('too big');
 				this.$( '.rwmb-add-media' ).hide();
 			}
 			else
