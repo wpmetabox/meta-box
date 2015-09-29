@@ -85,7 +85,6 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		static function meta( $post_id, $saved, $field )
 		{
 			$field['multiple'] = true;
-
 			return parent::meta( $post_id, $saved, $field );
 		}
 

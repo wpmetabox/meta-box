@@ -13,8 +13,17 @@
 	padding: 0;
 	margin: 5px;
 	background:rgba( 255, 255, 255, .8);
-	 box-sizing: border-box;
+	box-sizing: border-box;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
+
+.rwmb-media-list > li:hover {
+	-webkit-transform: translateY(-3px);
+	-moz-transform: translateY(-3px);
+	transform: translateY(-3px);	
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
 .rwmb-media-preview {
 	position: relative;	
 	width: 100%;
@@ -94,7 +103,6 @@
 	bottom: 0;
 	background: rgba( 255, 255, 255, .9 );
 	padding: 5px;	
-	overflow: hidden;
 }
 
 .rwmb-media-view li.image .rwmb-media-info {
@@ -110,6 +118,7 @@
 .rwmb-media-view .rwmb-media-info h4 {
 	margin: .1em 0;	
 	white-space: nowrap;
+	overflow: hidden;
 }
 
 .rwmb-media-view li:hover .rwmb-media-info h4 {
