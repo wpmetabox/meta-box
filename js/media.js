@@ -138,6 +138,7 @@ jQuery( function ( $ )
 		initialize: function( options ) {
 			this.render();	
 			this.$el.data( 'cid', this.model.cid );
+			this.$el.addClass( this.model.get( 'type' ) );
 		}, 
 		
 		events: {
