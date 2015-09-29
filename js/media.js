@@ -65,7 +65,8 @@ jQuery( function ( $ )
 							}
 						}
 					} );
-				}
+				},
+				delay: 150
 			} );
 			
 			if( ! _.isEmpty( this.values) ) {
@@ -159,6 +160,7 @@ jQuery( function ( $ )
 	function rwmb_update_media(){
 		new MediaList( { input: this, el: $( this ).siblings('div.rwmb-media-view')} );
 	}
+	
 	$( ':input.rwmb-media' ).each( rwmb_update_media );
 	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-media', rwmb_update_media );
 } );

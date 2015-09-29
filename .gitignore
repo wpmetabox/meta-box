@@ -42,3 +42,4 @@ dwsync.xml
 .svn
 .CVS
 .idea
+*.tmp
