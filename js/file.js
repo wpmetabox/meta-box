@@ -133,7 +133,7 @@ jQuery( document ).ready( function ( $ )
 	} );
 
 	// Reorder images
-	$( '.rwmb-file-list' ).each( function ()
+	$( '.rwmb-file' ).each( function ()
 	{
 		var $this = $( this ),
 			data = {

@@ -158,27 +158,39 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		
 		static function print_templates()
 		{
-			$i18n_remove   = apply_filters( 'rwmb_data_remove_string', _x( 'Remove', 'data', 'meta-box' ) );
+			$i18n_remove   = apply_filters( 'rwmb_attachment_remove_string', _x( 'Remove', 'attachment', 'meta-box' ) );
 			$i18n_add   = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
-			$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
 			?>
 			<script id="tmpl-rwmb-media-item" type="text/html">
-				<div class="rwmb-icon">
-					<img src="<# if ( data.type == 'image' ){ #>{{{ data.sizes.thumbnail.url }}}<# } else { #>{{{ data.icon }}}<# } #>">
+				<div class="rwmb-media-preview">
+					<div class="rwmb-media-content" >
+						<div class="centered">
+							<# if( 'image' === data.type && data.sizes ){ #>							
+								<# if ( data.sizes.thumbnail ) { #>
+									<img src="{{{ data.sizes.thumbnail.url }}}">
+								<# } else { #>
+									<img src="{{{ data.sizes.full.url }}}">
+								<# } #>
+							<# } else { #>
+								<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+									<img src="{{ data.image.src }}" />
+								<# } else { #>
+									<img src="{{ data.icon }}" />
+								<# } #>
+							<# } #>	
+						</div>				
+					</div>					
 				</div>
-				<div class="rwmb-info">
-					<a href="{{{ data.url }}}" target="_blank">{{{ data.title }}}</a>
-					<p>{{{ data.mime }}}</p>
-					<a title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank"><?php echo esc_html( $i18n_edit ); ?></a> |
-					<a title="<?php echo esc_attr( $i18n_delete ); ?>" class="rwmb-remove-media" href="#" ><?php echo esc_html( $i18n_remove ); ?></a>
-				</div>
+				<a href="#" class="rwmb-remove-media">
+					<span class="dashicons dashicons-no"></span>
+				</a>
 			</script>
             
             <script id="tmpl-rwmb-media-list" type="text/html"> 
 				<ul class="rwmb-media-list"></ul>
-				<a href="#" class="rwmb-add-media button">
-					<span class="dashicons dashicons-plus rwmb-icon"></span><?php echo $i18n_add; ?>
-				</a>
+					<a href="#" class="rwmb-add-media button">
+						<span class="dashicons dashicons-plus rwmb-icon"></span><?php echo $i18n_add; ?>
+					</a>
 			</script>
 			<?php
 		}
