@@ -46,13 +46,9 @@
 .rwmb-clone {
 	min-height: 24px;
 	margin-bottom: 10px;
-	position: relative; /* Must use !important because when sort clone, it applies position: absolute */
+	position: relative;
 	clear: both;
 	background: #fff;
-	/*display: table-row;*/
-}
-.rwmb-clone > * {
-	/*display: table-cell;*/
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
@@ -60,7 +56,9 @@
 }
 .rwmb-button.remove-clone {
 	text-decoration: none;
-	color: #c00;
+	color: #fff;
+	background: #c00;
+	border-radius: 50%;
 	display: inline-block;
 	position: absolute;
 	top: 0;

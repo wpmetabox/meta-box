@@ -254,7 +254,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function remove_clone_button( $field )
 		{
-			$icon = '<i class="dashicons dashicons-dismiss"></i>';
+			$icon = '<i class="dashicons dashicons-minus"></i>';
 			$text = apply_filters( 'rwmb_remove_clone_button_text', $icon, $field );
 			return "<a href='#' class='rwmb-button remove-clone'>$text</a>";
 		}

@@ -28,8 +28,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		static function html( $meta, $field )
 		{
 			return sprintf(
-				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="%s" />
-				<div class="rwmb-color-picker"></div>',
+				'<input class="rwmb-color" type="text" name="%s" id="%s" value="%s" size="%s">',
 				$field['field_name'],
 				empty( $field['clone'] ) ? $field['id'] : '',
 				$meta,
