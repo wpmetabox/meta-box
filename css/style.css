@@ -46,13 +46,13 @@
 .rwmb-clone {
 	min-height: 24px;
 	margin-bottom: 10px;
-	position: relative;
+	position: relative; /* Must use !important because when sort clone, it applies position: absolute */
 	clear: both;
 	background: #fff;
-	display: table-row;
+	/*display: table-row;*/
 }
 .rwmb-clone > * {
-	display: table-cell;
+	/*display: table-cell;*/
 }
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
@@ -61,6 +61,10 @@
 .rwmb-button.remove-clone {
 	text-decoration: none;
 	color: #c00;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 .remove-clone:focus {
 	outline: 0;
@@ -74,6 +78,20 @@
 	background: url(../img/drag_icon.gif) no-repeat;
 	height: 23px;
 	width: 15px;
+	vertical-align: top;
+	display: inline-block;
+}
+.rwmb-clone-placeholder {
+	background: #fcf8e3;
+	border: 1px solid #faebcc;
+	display: block;
+}
+
+/* Specific cloning styles for fields */
+.rwmb-checkbox_list-clone > label:not(:first-of-type),
+.rwmb-select-clone > .rwmb-select-all-none,
+.rwmb-select_advanced-clone > .rwmb-select-all-none {
+	padding-left: 15px;
 }
 
 /* Fix empty block below admin footer (issue #24) */

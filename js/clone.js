@@ -300,6 +300,12 @@ jQuery( function ( $ )
 		$container.sortable( {
 			handle     : '.rwmb-clone-icon',
 			placeholder: ' rwmb-clone rwmb-clone-placeholder',
+			items      : '.rwmb-clone',
+			start      : function ( event, ui )
+			{
+				// Make the placeholder has the same height as dragged item
+				ui.placeholder.height( ui.item.height() );
+			},
 			update     : function ()
 			{
 				cloneIndex.reset( $container );

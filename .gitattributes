@@ -3,6 +3,7 @@
 
 # Ignore files when export
 demo export-ignore
+tests export-ignore
 node_modules export-ignore
 .DS_Store
 Thumbs.db
