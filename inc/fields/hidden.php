@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 				'<input type="hidden" class="rwmb-hidden" name="%s" id="%s" value="%s">',
 				$field['field_name'],
 				$field['id'],
-				$field['std']
+				$meta
 			);
 		}
 	}
