@@ -88,7 +88,6 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			return parent::meta( $post_id, $saved, $field );
 		}
 
-
 		/**
 		 * Get field value
 		 * It's the combination of new (uploaded) images and saved images
@@ -134,7 +133,6 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			{
 				return;
 			}
-
 
 			// If field is cloneable, value is saved as a single entry in the database
 			if ( $field['clone'] )

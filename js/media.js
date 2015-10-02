@@ -133,7 +133,6 @@ jQuery( function ( $ )
 		{
 			if ( this.max > 0 && this.collection.length >= this.max )
 			{
-				console.log( 'too big' );
 				this.$( '.rwmb-add-media' ).hide();
 			}
 			else
@@ -176,11 +175,15 @@ jQuery( function ( $ )
 		}
 	} );
 
-	function rwmb_update_media()
+	/**
+	 * Initialize media fields
+	 * @return void
+	 */
+	function initMediaField()
 	{
 		new MediaList( { input: this, el: $( this ).siblings( 'div.rwmb-media-view' ) } );
 	}
 
-	$( ':input.rwmb-media' ).each( rwmb_update_media );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-media', rwmb_update_media );
+	$( ':input.rwmb-media' ).each( initMediaField );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-media', initMediaField );
 } );
