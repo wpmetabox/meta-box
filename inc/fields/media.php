@@ -159,7 +159,7 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		static function print_templates()
 		{
 			$i18n_remove = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
-			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
+			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) );
 			$i18n_edit   = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
 			$i18n_view   = apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) );
 			$i18n_title  = _x( 'No Title', 'media', 'meta-box' );
@@ -207,9 +207,7 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 
 			<script id="tmpl-rwmb-media-list" type="text/html">
 				<ul class="rwmb-media-list"></ul>
-				<a href="#" class="rwmb-add-media button">
-					<span class="dashicons dashicons-plus rwmb-icon"></span><?php echo $i18n_add; ?>
-				</a>
+				<a href="#" class="rwmb-add-media button"><?php echo $i18n_add; ?></a>
 			</script>
 			<?php
 		}
