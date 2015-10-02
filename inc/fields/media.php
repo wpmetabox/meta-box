@@ -17,7 +17,7 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone' ), RWMB_VER, true );
 		}
-		
+
 		/**
 		 * Add actions
 		 *
@@ -41,18 +41,18 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		{
 			$meta = (array) $meta;
 			$meta = implode( ',', $meta );
-			$html .= sprintf(
-				'<input type="hidden" name="%s" value="%s" class="rwmb-media" />
+			$html = sprintf(
+				'<input type="hidden" name="%s" value="%s" class="rwmb-media">
 				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s"></div>',
 				$field['field_name'],
 				esc_attr( $meta ),
 				$field['mime_type'],
-				$field['max_file_uploads'] 
+				$field['max_file_uploads']
 			);
 
 			return $html;
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -62,17 +62,17 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field             = wp_parse_args( $field, array(
+			$field = wp_parse_args( $field, array(
 				'std'              => array(),
 				'mime_type'        => '',
 				'max_file_uploads' => 0,
 			) );
-			
-			$field['multiple'] = false;	
+
+			$field['multiple'] = false;
 
 			return $field;
 		}
-		
+
 		/**
 		 * Get meta value
 		 *
@@ -88,7 +88,7 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			return parent::meta( $post_id, $saved, $field );
 		}
 
-		
+
 		/**
 		 * Get field value
 		 * It's the combination of new (uploaded) images and saved images
@@ -102,20 +102,20 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		 */
 		static function value( $new, $old, $post_id, $field )
 		{
-			if( $field['clone'] )
+			if ( $field['clone'] )
 			{
-				foreach( $new as &$value )
+				foreach ( $new as &$value )
 				{
 					$value = explode( ',', $value );
 				}
 			}
 			else
 			{
-				$new = explode( ',', $new );	
+				$new = explode( ',', $new );
 			}
 			return $new;
 		}
-		
+
 		/**
 		 * Save meta value
 		 *
@@ -127,9 +127,9 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		static function save( $new, $old, $post_id, $field )
 		{
 			$name = $field['id'];
-			
+
 			delete_post_meta( $post_id, $name );
-			
+
 			if ( '' === $new || array() === $new )
 			{
 				return;
@@ -153,20 +153,24 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 				return;
 			}
 		}
-		
+
+		/**
+		 * Template for media item
+		 * @return void
+		 */
 		static function print_templates()
 		{
-			$i18n_remove   = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
-			$i18n_add   = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
+			$i18n_remove = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
+			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( 'Add Media', 'media', 'meta-box' ) );
 			$i18n_edit   = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
 			$i18n_view   = apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) );
-			$i18n_title   = _x( 'No Title', 'media', 'meta-box' );
+			$i18n_title  = _x( 'No Title', 'media', 'meta-box' );
 			?>
 			<script id="tmpl-rwmb-media-item" type="text/html">
 				<div class="rwmb-media-preview">
-					<div class="rwmb-media-content" >
+					<div class="rwmb-media-content">
 						<div class="centered">
-							<# if( 'image' === data.type && data.sizes ){ #>							
+							<# if ( 'image' === data.type && data.sizes ) { #>
 								<# if ( data.sizes.thumbnail ) { #>
 									<img src="{{{ data.sizes.thumbnail.url }}}">
 								<# } else { #>
@@ -178,9 +182,9 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 								<# } else { #>
 									<img src="{{ data.icon }}" />
 								<# } #>
-							<# } #>	
-						</div>				
-					</div>					
+							<# } #>
+						</div>
+					</div>
 				</div>
 				<div class="rwmb-overlay"></div>
 				<div class="rwmb-media-bar">
@@ -192,12 +196,18 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 					</a>
 				</div>
 				<div class="rwmb-media-info">
-					<h4><a href="{{{ data.url }}}" target="_blank" title="<?php echo esc_attr( $i18n_view ); ?>"><# if( data.title ) { #> {{{ data.title }}} <# } else { #> <?php echo esc_attr( $i18n_title ); ?> <# } #></a></h4>
+					<h4>
+						<a href="{{{ data.url }}}" target="_blank" title="<?php echo esc_attr( $i18n_view ); ?>">
+							<# if( data.title ) { #> {{{ data.title }}}
+								<# } else { #> <?php echo esc_attr( $i18n_title ); ?>
+							<# } #>
+						</a>
+					</h4>
 					<p>{{{ data.mime }}}</p>
 				</div>
 			</script>
-            
-            <script id="tmpl-rwmb-media-list" type="text/html"> 
+
+			<script id="tmpl-rwmb-media-list" type="text/html">
 				<ul class="rwmb-media-list"></ul>
 				<a href="#" class="rwmb-add-media button">
 					<span class="dashicons dashicons-plus rwmb-icon"></span><?php echo $i18n_add; ?>
