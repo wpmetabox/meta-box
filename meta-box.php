@@ -43,6 +43,9 @@ foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )
 // Meta box class
 require_once RWMB_INC_DIR . 'meta-box.php';
 
+// Validation module
+require_once RWMB_INC_DIR . 'validation.php';
+
 // Helper function to retrieve meta value
 require_once RWMB_INC_DIR . 'helpers.php';
 
