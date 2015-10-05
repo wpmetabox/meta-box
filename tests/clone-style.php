@@ -61,11 +61,39 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 					),
 			),
 			array(
+				'id'         => 'select1a',
+				'name'       => 'Select Single',
+				'type'       => 'select',
+				'clone'      => true,
+				'sort_clone' => false,
+				'options'    =>
+					array(
+						'm' => 'Male',
+						'f' => 'Female',
+					),
+			),
+			array(
 				'id'         => 'select2',
 				'name'       => 'Select Multiple',
 				'type'       => 'select',
 				'clone'      => true,
 				'sort_clone' => true,
+				'multiple'   => true,
+				'options'    =>
+					array(
+						'usa' => 'United States',
+						'uk'  => 'United Kingdom',
+						'vn'  => 'Vietnam',
+						'ger' => 'Germany',
+						'fr'  => 'France',
+					),
+			),
+			array(
+				'id'         => 'select2a',
+				'name'       => 'Select Multiple',
+				'type'       => 'select',
+				'clone'      => true,
+				'sort_clone' => false,
 				'multiple'   => true,
 				'options'    =>
 					array(
@@ -83,6 +111,22 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 				'multiple'   => true,
 				'clone'      => true,
 				'sort_clone' => true,
+				'options'    =>
+					array(
+						'usa' => 'United States',
+						'uk'  => 'United Kingdom',
+						'vn'  => 'Vietnam',
+						'ger' => 'Germany',
+						'fr'  => 'France',
+					),
+			),
+			array(
+				'id'         => 'select_advanced1a',
+				'name'       => 'Select Advanced',
+				'type'       => 'select_advanced',
+				'multiple'   => true,
+				'clone'      => true,
+				'sort_clone' => false,
 				'options'    =>
 					array(
 						'usa' => 'United States',

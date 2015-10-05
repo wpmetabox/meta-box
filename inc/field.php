@@ -85,7 +85,12 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 						$sub_field['field_name'] .= '[]';
 
 					// Wrap field HTML in a div with class="rwmb-clone" if needed
-					$input_html = '<div class="rwmb-clone rwmb-' . $field['type'] . '-clone">';
+					$class = "rwmb-clone rwmb-{$field['type']}-clone";
+					if ( $field['sort_clone'] )
+					{
+						$class .= ' rwmb-sort-clone';
+					}
+					$input_html = "<div class='$class'>";
 
 					// Drag clone icon
 					if ( $field['sort_clone'] )

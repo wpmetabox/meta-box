@@ -86,9 +86,9 @@
 }
 
 /* Specific cloning styles for fields */
-.rwmb-checkbox_list-clone > label:not(:first-of-type),
-.rwmb-select-clone > .rwmb-select-all-none,
-.rwmb-select_advanced-clone > .rwmb-select-all-none {
+.rwmb-checkbox_list-clone.rwmb-sort-clone > label:not(:first-of-type),
+.rwmb-select-clone.rwmb-sort-clone > .rwmb-select-all-none,
+.rwmb-select_advanced-clone.rwmb-sort-clone > .rwmb-select-all-none {
 	padding-left: 15px;
 }
 
