@@ -69,7 +69,7 @@ if ( ! class_exists( 'RWMB_Select_Advanced_Field' ) )
 
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
 				'allowClear'  => true,
-				'width'       => 'resolve',
+				'width'       => 'off',
 				'placeholder' => $field['placeholder'],
 			) );
 
