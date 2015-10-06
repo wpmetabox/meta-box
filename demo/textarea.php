@@ -27,7 +27,7 @@ function your_prefix_textarea_demo( $meta_boxes )
 				'rows'        => 5,
 
 				// Number of columns
-				'columns'     => 5,
+				'cols'        => 5,
 			),
 		),
 	);
