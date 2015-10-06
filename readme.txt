@@ -7,18 +7,20 @@ Tested up to: 4.3.1
 Stable tag: 4.5.7
 License: GPLv2 or later
 
-Meta Box plugin is a complete tool to create meta box and custom fields in WordPress: lightweight, powerful and easy-to-use.
+Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
 
 == Description ==
 
-Meta Box plugin provides powerful API to implement custom meta boxes and custom fields in editing pages (add new/edit post) in WordPress. It works with any custom post type and supports lots of field types.
+Meta Box plugin provides powerful API to implement custom meta boxes and custom fields for any post type in WordPress. It extends the default WordPress functionality to add more flexible data to posts, pages or any custom post types which makes your website look like a professional Content Management Systems.
 
 ### Features
 
 * Easily register multiple custom meta boxes for posts, pages or custom post types
-* Supports a lot of [field types](https://metabox.io/docs/define-fields/)
+* Supports more than 35 [field types](https://metabox.io/docs/define-fields/): (text, textarea, wysiwyg, image, file, post, select, checkbox, radio buttons, date time picker, taxonomy, user, oembed and more to come!)
+* Uses the native WordPress meta data storage and functions for ease of use and fast processing
 * Has built-in hooks which allow you to change the appearance and behavior of meta boxes
-* Easily integrate with themes
+* Easily integrate with themes and plugins
+* Compatible with WPML multilingual plugin
 
 ### Documentation
 
