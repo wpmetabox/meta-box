@@ -69,7 +69,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 
 				/**
 				 * Note: $meta must contain value so that the foreach loop runs!
-				 * @see self::meta()
+				 * @see meta()
 				 */
 				foreach ( $meta as $index => $sub_meta )
 				{
