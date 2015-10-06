@@ -15,6 +15,14 @@ jQuery( function ( $ )
 			{
 				this.frame();
 				return false;
+			},
+			
+			'destroy' : function(){
+				if( this.forceDelete ) {
+					_.each( _.clone( this.collection.models ), function( model ) {
+						model.destroy();
+					});
+				}
 			}
 		},
 		initialize: function ( options )
@@ -23,7 +31,8 @@ jQuery( function ( $ )
 			this.input = $( options.input );
 			this.values = this.input.val().split( ',' );
 			this.type = this.$el.data( 'mime-type' ) || options.type;
-			this.max = this.$el.data( 'max-files' ) || options.maxFiles;
+			this.max = this.$el.data( 'max-files' ) || options.maxFiles || 0;
+			this.forceDelete = this.$el.data( 'force-delete' ) || options.forceDelete || false;
 			//Collection
 			this.collection = new wp.media.model.Attachments();
 
@@ -51,7 +60,11 @@ jQuery( function ( $ )
 					this.itemViews[model.cid].remove();
 					delete this.itemViews[model.cid];
 				}
-
+				
+				if( this.forceDelete ) {
+					model.destroy();
+				}
+				
 				this.updateInput();
 				this.updateButton();
 			} );
@@ -186,4 +199,7 @@ jQuery( function ( $ )
 
 	$( ':input.rwmb-media' ).each( initMediaField );
 	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-media', initMediaField );
+	$( '.rwmb-input' ).on( 'remove', '.rwmb-media-clone', function(){
+		$( this ).find( 'div.rwmb-media-view' ).trigger( 'destroy' );
+	} );
 } );

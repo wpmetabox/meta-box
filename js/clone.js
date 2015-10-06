@@ -282,7 +282,7 @@ jQuery( function ( $ )
 				return;
 			}
 
-			$this.parent().remove();
+			$this.parent().trigger( 'remove' ).remove();
 			cloneIndex.reset( $container );
 			toggleRemoveButtons( $container );
 			toggleAddButton( $container )

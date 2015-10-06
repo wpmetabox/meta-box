@@ -43,11 +43,12 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			$meta = implode( ',', $meta );
 			$html = sprintf(
 				'<input type="hidden" name="%s" value="%s" class="rwmb-media">
-				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s"></div>',
+				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s" data-force-delete="%s"></div>',
 				$field['field_name'],
 				esc_attr( $meta ),
 				$field['mime_type'],
-				$field['max_file_uploads']
+				$field['max_file_uploads'] ,
+				$field['force_delete'] ? 'true' : 'false'
 			);
 
 			return $html;
