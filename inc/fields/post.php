@@ -137,6 +137,8 @@ if ( ! class_exists( 'RWMB_Post_Field' ) )
 				while ( $query->have_posts() )
 				{
 					$post               = $query->next_post();
+					$title 				= apply_filters( 'rwmb_post_field_title', $post->post_title, $post );
+					$title 				= apply_filters( "rwmb_{$field['id']}_field_title", $title, $post );
 					$options[$post->ID] = $post->post_title;
 				}
 			}
