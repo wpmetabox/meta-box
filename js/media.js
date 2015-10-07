@@ -169,6 +169,9 @@ jQuery( function ( $ )
 			this.render();
 			this.$el.data( 'cid', this.model.cid );
 			this.$el.addClass( this.model.get( 'type' ) );
+			this.listenTo( this.model, 'destroy', function( model ) {
+				this.remove();
+			} );
 		},
 
 		events: {
