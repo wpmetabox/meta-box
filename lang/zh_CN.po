@@ -252,7 +252,7 @@ msgstr "地址"
 
 #: ../demo/map.php:15
 msgid "Hanoi, Vietnam"
-msgstr "越南, 河南"
+msgstr "河南，郑州"
 
 #: ../demo/map.php:19
 msgid "Location"
