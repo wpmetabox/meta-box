@@ -52,8 +52,8 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				return;
 
 			// Assign meta box values to local variables and add it's missed values
-			$this->meta_box   = self::normalize( $meta_box );
-			$this->fields     = &$this->meta_box['fields'];
+			$this->meta_box = self::normalize( $meta_box );
+			$this->fields   = &$this->meta_box['fields'];
 
 			// Allow users to show/hide meta box
 			// 1st action applies to all meta boxes
@@ -81,9 +81,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			add_filter( 'default_hidden_meta_boxes', array( $this, 'hide' ), 10, 2 );
 
 			// Save post meta
-			foreach( $this->meta_box['post_types'] as $post_type )
+			foreach ( $this->meta_box['post_types'] as $post_type )
 			{
-				if( 'attachment' === $post_type )
+				if ( 'attachment' === $post_type )
 				{
 					// Attachment uses other hooks
 					// @see wp_update_post(), wp_insert_attachment()
@@ -104,10 +104,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function admin_enqueue_scripts()
 		{
-			$screen = get_current_screen();
-
-			// Enqueue scripts and styles for registered pages (post types) only
-			if ( 'post' != $screen->base || ! in_array( $screen->post_type, $this->meta_box['post_types'] ) )
+			if ( ! $this->is_edit_screen() )
 				return;
 
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
@@ -134,6 +131,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 
 			/**
 			 * Allow developers to enqueue more scripts and styles
+			 *
 			 * @param RW_Meta_Box $object Meta Box object
 			 */
 			do_action( 'rwmb_enqueue_scripts', $this );
@@ -193,11 +191,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function hide( $hidden, $screen )
 		{
-			if (
-				'post' === $screen->base
-				&& in_array( $screen->post_type, $this->meta_box['post_types'] )
-				&& $this->meta_box['default_hidden']
-			)
+			if ( $this->is_edit_screen( $screen ) && $this->meta_box['default_hidden'] )
 			{
 				$hidden[] = $this->meta_box['id'];
 			}
@@ -455,6 +449,22 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			}
 
 			return false;
+		}
+
+		/**
+		 * Check if we're on the right edit screen.
+		 *
+		 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
+		 *
+		 * @return bool
+		 */
+		function is_edit_screen( $screen = null )
+		{
+			if ( ! ( $screen instanceof WP_Screen ) )
+			{
+				$screen = get_current_screen();
+			}
+			return 'post' == $screen->base && in_array( $screen->post_type, $this->meta_box['post_types'] );
 		}
 	}
 }
