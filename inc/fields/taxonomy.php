@@ -169,6 +169,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		{
 			if ( ! isset( $elements[$parent] ) )
 				return '';
+			$meta             = empty( $meta ) ? array() : ( ! is_array( $meta ) ? array() : $meta );
 			$terms            = $elements[$parent];
 			$field['options'] = self::get_options( $terms );
 
