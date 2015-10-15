@@ -54,8 +54,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Advanced_Field' ) )
 		static function meta( $post_id, $saved, $field )
 		{
 			$meta = get_post_meta( $post_id, $field['id'], true );
-			$meta = array_map( 'intval', array_filter( explode( ',', $meta . ',' ) ) );
-
+			$meta = wp_parse_id_list( $meta );
 			return $meta;
 		}
 

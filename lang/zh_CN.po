@@ -270,7 +270,7 @@ msgstr "+"
 msgid "&#8211;"
 msgstr "&#8211;"
 
-#: ../inc/fields/file-advanced.php:23
+#: ../inc/fields/file-advanced.php:23H
 #, php-format
 msgid "You may only upload maximum %d file"
 msgstr "最多能上传%d 个文件"
