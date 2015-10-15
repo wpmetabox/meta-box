@@ -38,17 +38,22 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		 * @return string
 		 */
 		static function html( $meta, $field )
-		{
+		{			
+			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) );
 			$meta = (array) $meta;
 			$meta = implode( ',', $meta );
 			$html = sprintf(
 				'<input type="hidden" name="%s" value="%s" class="rwmb-media">
-				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s" data-force-delete="%s"></div>',
+				<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s" data-force-delete="%s">
+					<ul class="rwmb-media-list"></ul>
+					<a href="#" class="rwmb-add-media button">%s</a>
+				</div>',
 				$field['field_name'],
 				esc_attr( $meta ),
 				$field['mime_type'],
 				$field['max_file_uploads'] ,
-				$field['force_delete'] ? 'true' : 'false'
+				$field['force_delete'] ? 'true' : 'false',
+				$i18n_add
 			);
 
 			return $html;
@@ -160,7 +165,6 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		static function print_templates()
 		{
 			$i18n_remove = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
-			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) );
 			$i18n_edit   = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
 			$i18n_view   = apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) );
 			$i18n_title  = _x( 'No Title', 'media', 'meta-box' );
@@ -185,15 +189,6 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 						</div>
 					</div>
 				</div>
-				<div class="rwmb-overlay"></div>
-				<div class="rwmb-media-bar">
-					<a class="rwmb-edit-media" title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank">
-						<span class="dashicons dashicons-edit"></span>
-					</a>
-					<a href="#" class="rwmb-remove-media" title="<?php echo esc_attr( $i18n_remove ); ?>">
-						<span class="dashicons dashicons-no-alt"></span>
-					</a>
-				</div>
 				<div class="rwmb-media-info">
 					<h4>
 						<a href="{{{ data.url }}}" target="_blank" title="<?php echo esc_attr( $i18n_view ); ?>">
@@ -203,12 +198,15 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 						</a>
 					</h4>
 					<p>{{{ data.mime }}}</p>
+					<p>
+						<a class="rwmb-edit-media" title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank">
+							<span class="dashicons dashicons-edit"></span><?php echo esc_attr( $i18n_edit ); ?>
+						</a>
+						<a href="#" class="rwmb-remove-media" title="<?php echo esc_attr( $i18n_remove ); ?>">
+							<span class="dashicons dashicons-no-alt"></span><?php echo esc_attr( $i18n_remove ); ?>
+						</a>
+					</p>
 				</div>
-			</script>
-
-			<script id="tmpl-rwmb-media-list" type="text/html">
-				<ul class="rwmb-media-list"></ul>
-				<a href="#" class="rwmb-add-media button"><?php echo $i18n_add; ?></a>
 			</script>
 			<?php
 		}

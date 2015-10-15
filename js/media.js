@@ -10,6 +10,9 @@ jQuery( function ( $ )
 	MediaList = views.MediaList = Backbone.View.extend( {
 		template  : wp.template( 'rwmb-media-list' ),
 		itemViews : {},
+		createItemView: function( options ){
+			return new MediaItem( options );
+		},
 		events    : {
 			'click .rwmb-add-media': function ()
 			{
@@ -35,9 +38,6 @@ jQuery( function ( $ )
 			this.forceDelete = this.$el.data( 'force-delete' ) || options.forceDelete || false;
 			//Collection
 			this.collection = new wp.media.model.Attachments();
-
-			this.render();
-
 			this.listenTo( this.collection, 'add', function ( model, collection, options )
 			{
 				if ( this.max > 0 && this.collection.length > this.max )
@@ -46,7 +46,7 @@ jQuery( function ( $ )
 				}
 				else
 				{
-					var item = this.itemViews[model.cid] = new MediaItem( { model: model, collection: collection } );
+					var item = this.itemViews[model.cid] =  this.createItemView( { model: model, collection: collection, template: '' } );
 					this.$( '.rwmb-media-list' ).append( item.el );
 				}
 				this.updateButton();
@@ -134,12 +134,6 @@ jQuery( function ( $ )
 			} );
 
 			this._frame.open();
-		},
-
-		render: function ()
-		{
-			this.$el.html( this.template( {} ) );
-			return this;
 		},
 
 		updateButton: function ()
