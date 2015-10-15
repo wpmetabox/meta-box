@@ -1,15 +1,15 @@
 <?php
-/*
-Plugin Name: Meta Box
-Plugin URI: http://metabox.io
-Description: Create custom meta boxes and custom fields for any post type in WordPress.
-Version: 4.5.7
-Author: Rilwis
-Author URI: http://www.deluxeblogtips.com
-License: GPL2+
-Text Domain: meta-box
-Domain Path: /lang/
-*/
+/**
+ * Plugin Name: Meta Box
+ * Plugin URI: https://metabox.io
+ * Description: Create custom meta boxes and custom fields for any post type in WordPress.
+ * Version: 4.5.7
+ * Author: Rilwis
+ * Author URI: http://www.deluxeblogtips.com
+ * License: GPL2+
+ * Text Domain: meta-box
+ * Domain Path: /lang/
+ */
 
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
