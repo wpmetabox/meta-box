@@ -36,6 +36,8 @@ jQuery( function ( $ )
 			this.type = this.$el.data( 'mime-type' ) || options.type;
 			this.max = this.$el.data( 'max-files' ) || options.maxFiles || 0;
 			this.forceDelete = this.$el.data( 'force-delete' ) || options.forceDelete || false;
+			
+			this.$( '.rwmb-media-list' ).empty();
 			//Collection
 			this.collection = new wp.media.model.Attachments();
 			this.listenTo( this.collection, 'add', function ( model, collection, options )
