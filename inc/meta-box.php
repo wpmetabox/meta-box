@@ -110,20 +110,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
 
 			// Load clone script conditionally
-			$has_clone = false;
-			$fields    = self::get_fields( $this->fields );
-
+			$fields = self::get_fields( $this->fields );
 			foreach ( $fields as $field )
 			{
 				if ( $field['clone'] )
-					$has_clone = true;
-
-				// Enqueue scripts and styles for fields
-				call_user_func( array( self::get_class_name( $field ), 'admin_enqueue_scripts' ) );
+				{
+					wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
+					break;
+				}
 			}
 
-			if ( $has_clone )
-				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
+			// Enqueue scripts and styles for fields
+			foreach ( $fields as $field )
+			{
+				call_user_func( array( self::get_class_name( $field ), 'admin_enqueue_scripts' ) );
+			}
 
 			// Auto save
 			if ( $this->meta_box['autosave'] )

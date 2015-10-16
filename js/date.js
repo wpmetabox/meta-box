@@ -6,7 +6,7 @@ jQuery( function ( $ )
 	 * Update date picker element
 	 * Used for static & dynamic added elements (when clone)
 	 */
-	function rwmb_update_date_picker()
+	function update()
 	{
 		var $this = $( this ),
 			options = $this.data( 'options' );
@@ -15,6 +15,6 @@ jQuery( function ( $ )
 		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datepicker( options );
 	}
 
-	$( ':input.rwmb-date' ).each( rwmb_update_date_picker );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-date', rwmb_update_date_picker );
+	$( ':input.rwmb-date' ).each( update );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-date', update );
 } );
