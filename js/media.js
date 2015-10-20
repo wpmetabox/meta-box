@@ -15,15 +15,8 @@ jQuery( function ( $ )
 		},
 		
 		addItemView: function( item ){
-			if ( this.props.maxFiles > 0 && this.collection.length > this.props.maxFiles )
-			{
-				this.collection.pop( item );
-			}
-			else
-			{
-				this.itemViews[item.cid] = this.createItemView( { model: item, collection: this.collection } );
-				this.$el.append( this.itemViews[item.cid].el );	
-			}			
+			this.itemViews[item.cid] = this.createItemView( { model: item, collection: this.collection, props: this.props } );
+			this.$el.append( this.itemViews[item.cid].el );				
 		},
 		
 		render: function(){
@@ -35,6 +28,7 @@ jQuery( function ( $ )
 			var that = this;
 			this.itemViews = {};
 			this.props = options.props;
+			
 			this.listenTo( this.collection, 'add', this.addItemView );
 
 			this.listenTo( this.collection, 'remove', function( item, collection ) {
@@ -44,7 +38,8 @@ jQuery( function ( $ )
 					delete this.itemViews[item.cid];
 				}
 			} );
-
+			
+			//Sort media using sortable
 			this.$el.sortable( {
 				stop : function ( event, ui )
 				{
@@ -77,7 +72,7 @@ jQuery( function ( $ )
 	} );
 	
 	MediaField = views.MediaField = Backbone.View.extend( {
-		events    : {
+		events : {
 			'destroy' : function(){
 				if( this.forceDelete ) {
 					_.each( _.clone( this.collection.models ), function( model ) {
@@ -87,40 +82,36 @@ jQuery( function ( $ )
 			}
 		},
 		
-		createMediaList: function()
-		{
-			return new MediaList( { collection: this.collection, props: this.props } );
-		},
-		
-		createNewMediaButton: function()
-		{
-			return new MediaButton( { collection: this.collection, props: this.props } );
-		},
-		
 		initialize: function ( options )
 		{
 			var that = this;
 			this.input = $( options.input );
 			this.values = this.input.val().split( ',' );
 			this.props = this.$el.data();
-			this.createMediaList = options.createMediaList || this.createMediaList;
 			
-			//Collection
+			//Create collection
 			this.collection = new wp.media.model.Attachments();
+			
+			//Render
 			this.render();
 			
+			//Update input
 			this.listenTo( this.collection, 'add remove reset', _.debounce( function ()
 			{
 				var ids = this.collection.pluck( 'id' );
-				this.input.val( ids.join( ',' ) );
+				this.input.val( ids.join( ',' ) );				
 			}, 500 ) );
 			
-			this.listenTo( this.collection, 'remove', function( model ) {
-				if( this.props.forceDelete ) {
-					model.destroy();	
+			//Limit max files
+			this.listenTo( this.collection, 'add', function( item, collection )
+			{
+				if ( this.props.maxFiles > 0 && this.collection.length > this.props.maxFiles )
+				{
+					this.collection.pop();
 				}
 			} );
-
+			
+			//Load initial media
 			if ( !_.isEmpty( this.values ) )
 			{
 				this.collection.props.set( {
@@ -136,15 +127,18 @@ jQuery( function ( $ )
 		},
 		
 		render: function() {
+			//Empty then add parts
 			this.$el.empty();
-			this.$el.append( this.createMediaList().el );
-			this.$el.append( this.createNewMediaButton().el );
+			this.$el.append( new MediaList( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
 		}
 	} );
 	
 	ImageField = views.ImageField = MediaField.extend( {
-		createMediaList: function(){
-			return new ImageList( { collection: this.collection, props: this.props } );
+		render: function() {
+			this.$el.empty();
+			this.$el.append( new ImageList( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
 		} 
 	} );
 	
@@ -232,6 +226,7 @@ jQuery( function ( $ )
 		template  : wp.template( 'rwmb-media-item' ),
 		initialize: function ( options )
 		{
+			this.props = options.props;
 			this.render();
 			this.$el.data( 'cid', this.model.cid );
 			this.listenTo( this.model, 'destroy', function( model ) {
@@ -243,6 +238,10 @@ jQuery( function ( $ )
 			'click .rwmb-remove-media': function ( e )
 			{
 				this.collection.remove( this.model );
+				if( this.props.forceDelete ) {
+					this.model.destroy();	
+				}
+				
 				return false;
 			}
 		},
