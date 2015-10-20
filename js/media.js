@@ -10,22 +10,20 @@ jQuery( function ( $ )
 	MediaList = views.MediaList = Backbone.View.extend( {
 		tagName: 'ul',
 		className: 'rwmb-media-list',
-		itemViews : {},
 		createItemView: function( options ){
 			return new MediaItem( options );
 		},
 		
 		addItemView: function( item ){
-			this.itemViews[item.cid] = this.itemViews[item.cid] || this.createItemView( { model: item, collection: this.collection } );
-			this.$el.append( this.itemViews[item.cid].el );	
-		},
-		
-		removeItemView: function( item ) {
-			if ( this.itemViews[item.cid] )
+			if ( this.props.maxFiles > 0 && this.collection.length > this.props.maxFiles )
 			{
-				this.itemViews[item.cid].remove();
-				delete this.itemViews[item.cid];
+				this.collection.pop( item );
 			}
+			else
+			{
+				this.itemViews[item.cid] = this.createItemView( { model: item, collection: this.collection } );
+				this.$el.append( this.itemViews[item.cid].el );	
+			}			
 		},
 		
 		render: function(){
@@ -35,9 +33,17 @@ jQuery( function ( $ )
 		
 		initialize: function( options ) {
 			var that = this;
+			this.itemViews = {};
+			this.props = options.props;
 			this.listenTo( this.collection, 'add', this.addItemView );
 
-			this.listenTo( this.collection, 'remove', this.removeItemView );
+			this.listenTo( this.collection, 'remove', function( item, collection ) {
+				if ( this.itemViews[item.cid] )
+				{
+					this.itemViews[item.cid].remove();
+					delete this.itemViews[item.cid];
+				}
+			} );
 
 			this.$el.sortable( {
 				stop : function ( event, ui )
@@ -83,7 +89,7 @@ jQuery( function ( $ )
 		
 		createMediaList: function()
 		{
-			return new MediaList( { collection: this.collection } );
+			return new MediaList( { collection: this.collection, props: this.props } );
 		},
 		
 		createNewMediaButton: function()
@@ -138,7 +144,7 @@ jQuery( function ( $ )
 	
 	ImageField = views.ImageField = MediaField.extend( {
 		createMediaList: function(){
-			return new ImageList( { collection: this.collection } );
+			return new ImageList( { collection: this.collection, props: this.props } );
 		} 
 	} );
 	
@@ -229,7 +235,7 @@ jQuery( function ( $ )
 			this.render();
 			this.$el.data( 'cid', this.model.cid );
 			this.listenTo( this.model, 'destroy', function( model ) {
-				this.remove();
+				this.collection.remove( this.model );
 			} );
 		},
 
@@ -237,7 +243,6 @@ jQuery( function ( $ )
 			'click .rwmb-remove-media': function ( e )
 			{
 				this.collection.remove( this.model );
-				this.remove();
 				return false;
 			}
 		},
