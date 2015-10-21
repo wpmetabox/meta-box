@@ -50,7 +50,14 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		 */
 		static function get_embed( $url )
 		{
+			// Try oembed first
 			$embed = @wp_oembed_get( $url );
+
+			// If no oembed provides found, try WordPress auto embed
+			if ( ! $embed )
+			{
+				$embed = $GLOBALS['wp_embed']->shortcode( array(), $url );
+			}
 
 			return $embed ? $embed : __( 'Embed HTML not available.', 'meta-box' );
 		}
