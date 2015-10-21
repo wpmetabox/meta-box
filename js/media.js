@@ -5,7 +5,7 @@ jQuery( function ( $ )
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
-		MediaField,MediaList, MediaItem, ImageField, ImageList, ImageItem, MediaButton, UploadButton;
+		MediaField,MediaList, MediaItem, ImageField, ImageList, ImageItem, MediaButton, MediaStatus, UploadButton;
 	
 	MediaList = views.MediaList = Backbone.View.extend( {
 		tagName: 'ul',
@@ -130,6 +130,7 @@ jQuery( function ( $ )
 			//Empty then add parts
 			this.$el.empty();
 			this.$el.append( new MediaList( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
 		}
 	} );
@@ -138,8 +139,28 @@ jQuery( function ( $ )
 		render: function() {
 			this.$el.empty();
 			this.$el.append( new ImageList( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
 		} 
+	} );
+	
+	MediaStatus = views.MediaStatus = Backbone.View.extend( {
+		tagName: 'p',
+		template: wp.template( 'rwmb-media-status' ),
+		initialize: function( options )
+		{
+			this.props = options.props;
+			this.listenTo( this.collection, 'add remove reset', this.render );
+			this.render();	
+		},
+		
+		render: function(){
+			var data = {
+				items: this.collection.length,
+				maxFiles: this.props.maxFiles
+			};			
+			this.$el.html( this.template( data ) );
+		}
 	} );
 	
 	MediaButton = views.MediaButton = Backbone.View.extend( {

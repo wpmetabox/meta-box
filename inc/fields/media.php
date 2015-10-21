@@ -164,6 +164,8 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			$i18n_remove = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
 			$i18n_edit   = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
 			$i18n_view   = apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) );
+			$i18n_single_files   = apply_filters( 'rwmb_media_no_files_string', _x( ' file selected. ', 'media', 'meta-box' ) );
+			$i18n_multiple_files   = apply_filters( 'rwmb_media_no_files_string', _x( ' files selected. ', 'media', 'meta-box' ) );
 			$i18n_title  = _x( 'No Title', 'media', 'meta-box' );
 			?>
 			<script id="tmpl-rwmb-media-item" type="text/html">
@@ -239,6 +241,12 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
             
             <script id="tmpl-rwmb-add-media" type="text/html">
 				<?php echo $i18n_add; ?>
+			</script>
+            
+             <script id="tmpl-rwmb-media-status" type="text/html">
+				{{{ data.items }}}<# if ( data.maxFiles > 0 ) { #> /{{{ data.maxFiles }}} <# } #>
+				<# if ( data.items > 1 || data.items < 1 ) { #>  <?php echo $i18n_multiple_files; ?> <# } else {#> <?php echo $i18n_single_files; ?> <# } #>
+				
 			</script>
 			<?php
 		}
