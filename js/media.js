@@ -130,8 +130,8 @@ jQuery( function ( $ )
 			//Empty then add parts
 			this.$el.empty();
 			this.$el.append( new MediaList( { collection: this.collection, props: this.props } ).el );
-			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 		}
 	} );
 	
@@ -139,13 +139,14 @@ jQuery( function ( $ )
 		render: function() {
 			this.$el.empty();
 			this.$el.append( new ImageList( { collection: this.collection, props: this.props } ).el );
-			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 		} 
 	} );
 	
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
-		tagName: 'p',
+		tagName: 'span',
+		className: 'rwmb-media-status',
 		template: wp.template( 'rwmb-media-status' ),
 		initialize: function( options )
 		{

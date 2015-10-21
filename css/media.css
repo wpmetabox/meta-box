@@ -1,3 +1,6 @@
+.rwmb-media-list{
+	margin: 5px 0;	
+}
 .rwmb-media-list:after {
 	visibility: hidden;
 	display: block;
@@ -139,5 +142,13 @@ li.rwmb-image-item .rwmb-media-preview {
 .rwmb-media-view li:hover .rwmb-media-bar,
 .rwmb-media-view li:hover .rwmb-overlay {
 	display: block;
+}
+
+.rwmb-media-status {
+	display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 26px;
+    height: 28px;
 }
 
