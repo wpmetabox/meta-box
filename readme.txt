@@ -11,7 +11,7 @@ Meta Box plugin is a powerful, professional solution to create custom meta boxes
 
 == Description ==
 
-Meta Box plugin provides powerful API to implement custom meta boxes and custom fields for any post type in WordPress. It extends the default WordPress functionality to add more flexible data to posts, pages or any custom post types which makes your website look like a professional Content Management Systems.
+**Meta Box plugin provides powerful API to implement custom meta boxes and custom fields for any post type in WordPress**. It extends the default WordPress functionality to add more flexible data to posts, pages or any custom post types which makes your website look like a professional Content Management Systems.
 
 ### Features
 
@@ -33,17 +33,15 @@ See more documentation [here](https://metabox.io/docs/).
 
 ### Premium Extensions
 
-Name|Description
----|---
-[Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/)|Control the visibility of Meta Boxes and Fields or even HTML elements with ease.
-[Meta Box Group](https://metabox.io/plugins/meta-box-group/)|Organize custom fields in groups for better appearance and structure. Groups can be cloned.
-[Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)|Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
-[Meta Box Template](https://metabox.io/plugins/meta-box-template/)|Define custom meta boxes and custom fields easier with templates.
-[Meta Box Tooltip](https://metabox.io/plugins/meta-box-tooltip/)|Display help information for fields using beautiful tooltips.
-[Meta Box Show Hide (Javascript)](https://metabox.io/plugins/meta-box-show-hide-javascript/)|Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
-[Meta Box Tabs](https://metabox.io/plugins/meta-box-tabs/)|Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
-[Meta Box Columns](https://metabox.io/plugins/meta-box-columns/)|Display fields more beautiful by putting them into 12-columns grid.
-[Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/)|Show/hide meta boxes by ID, page template, taxonomy or custom function.
+- [Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/): Control the visibility of Meta Boxes and Fields or even HTML elements with ease.
+- [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Organize custom fields in groups for better appearance and structure. Groups can be cloned.
+- [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
+- [Meta Box Template](https://metabox.io/plugins/meta-box-template/): Define custom meta boxes and custom fields easier with templates.
+- [Meta Box Tooltip](https://metabox.io/plugins/meta-box-tooltip/): Display help information for fields using beautiful tooltips.
+- [Meta Box Show Hide (Javascript)](https://metabox.io/plugins/meta-box-show-hide-javascript/): Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
+- [Meta Box Tabs](https://metabox.io/plugins/meta-box-tabs/): Create tabs for meta boxes easily. Support 3 WordPress-native tab styles and tab icon.
+- [Meta Box Columns](https://metabox.io/plugins/meta-box-columns/): Display fields more beautiful by putting them into 12-columns grid.
+- [Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/): Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
 See all premium extensions [here](https://metabox.io/plugins/).
 
