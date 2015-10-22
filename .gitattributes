@@ -19,3 +19,4 @@ package.json export-ignore
 readme.md export-ignore
 lang/*.po export-ignore
 lang/*.pot export-ignore
+lang/*.md
