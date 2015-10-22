@@ -244,8 +244,10 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			</script>
 
 			<script id="tmpl-rwmb-media-status" type="text/html">
-				{{{ data.items }}}<# if ( data.maxFiles > 0 ) { #>/{{{ data.maxFiles }}} <# } #>
-				<# if ( data.items > 1 || data.items < 1 ) { #>  <?php echo $i18n_multiple_files; ?> <# } else {#> <?php echo $i18n_single_files; ?> <# } #>
+				<# if ( data.maxFiles > 0 ) { #>
+					{{{ data.items }}}/{{{ data.maxFiles }}}
+					<# if ( data.items > 1 || data.items < 1 ) { #>  <?php echo $i18n_multiple_files; ?> <# } else {#> <?php echo $i18n_single_files; ?> <# } #>
+				<# } #>
 			</script>
 			<?php
 		}

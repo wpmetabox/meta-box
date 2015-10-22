@@ -1,5 +1,5 @@
 .rwmb-media-list{
-	margin: 5px 0;	
+	margin: 5px 0;
 }
 .rwmb-media-list:after {
 	visibility: hidden;
@@ -142,6 +142,7 @@ li.rwmb-image-item .rwmb-media-preview {
 .rwmb-media-view li:hover .rwmb-media-bar,
 .rwmb-media-view li:hover .rwmb-overlay {
 	display: block;
+	cursor: move;
 }
 
 .rwmb-media-status {
