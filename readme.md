@@ -36,7 +36,7 @@ Meta Box plugin is a powerful, professional solution to create custom meta boxes
 
 See more documentation [here](https://metabox.io/docs/).
 
-### Premium Extensions
+### Extensions
 
 Name|Description
 ---|---
@@ -53,7 +53,7 @@ Name|Description
 [Meta Box Columns](https://metabox.io/plugins/meta-box-columns/)|Display fields more beautiful by putting them into 12-columns grid.
 [Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/)|Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
-See all premium extensions [here](https://metabox.io/plugins/).
+See all extensions [here](https://metabox.io/plugins/).
 
 ***
 
