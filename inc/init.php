@@ -37,7 +37,7 @@ add_action( 'edit_page_form', 'rwmb_fix_page_template' );
  * @return void
  * @since 4.3.10
  */
-function rwmb_fix_page_template( $post )
+function rwmb_fix_page_template( WP_Post $post )
 {
 	$template       = get_post_meta( $post->ID, '_wp_page_template', true );
 	$page_templates = wp_get_theme()->get_page_templates();

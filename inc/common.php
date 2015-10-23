@@ -19,7 +19,7 @@ if ( ! class_exists( 'RWMB_Common' ) )
 		 * Add actions when class is loaded.
 		 * @return void
 		 */
-		public static function on_load()
+		public static function load()
 		{
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 
@@ -51,5 +51,5 @@ if ( ! class_exists( 'RWMB_Common' ) )
 		}
 	}
 
-	RWMB_Common::on_load();
+	RWMB_Common::load();
 }

@@ -207,7 +207,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function show()
 		{
-			global $post;
+			$post = get_post();
 
 			$saved = self::has_been_saved( $post->ID, $this->fields );
 
