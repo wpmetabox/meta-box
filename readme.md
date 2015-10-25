@@ -36,13 +36,16 @@ Meta Box plugin is a powerful, professional solution to create custom meta boxes
 
 See more documentation [here](https://metabox.io/docs/).
 
-### Premium Extensions
+### Extensions
 
 Name|Description
 ---|---
-[Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/)|Control the visibility of Meta Boxes and Fields or even HTML elements with ease.
-[Meta Box Group](https://metabox.io/plugins/meta-box-group/)|Organize custom fields in groups for better appearance and structure. Groups can be cloned.
-[Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)|Drag and Drop to create Meta Boxes and Custom Fields has never been easier.
+[MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/)|Create and manage custom post types easily in WordPress with an easy-to-use interface.
+[Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/)|Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
+[Meta Box Text Limiter](https://wordpress.org/plugins/meta-box-text-limiter/)|Limit the number of characters or words entered for text and textarea fields.
+[Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/)|Add visibility dependency for custom meta boxes and custom fields in WordPress.
+[Meta Box Group](https://metabox.io/plugins/meta-box-group/)|Create repeatable groups of custom fields for better appearance and structure.
+[Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)|Create custom meta boxes and custom fields in WordPress using the drag-and-drop interface.
 [Meta Box Template](https://metabox.io/plugins/meta-box-template/)|Define custom meta boxes and custom fields easier with templates.
 [Meta Box Tooltip](https://metabox.io/plugins/meta-box-tooltip/)|Display help information for fields using beautiful tooltips.
 [Meta Box Show Hide (Javascript)](https://metabox.io/plugins/meta-box-show-hide-javascript/)|Toggle meta boxes by page template, post format, taxonomy (including category) via Javascript.
@@ -50,7 +53,7 @@ Name|Description
 [Meta Box Columns](https://metabox.io/plugins/meta-box-columns/)|Display fields more beautiful by putting them into 12-columns grid.
 [Meta Box Include Exclude](https://metabox.io/plugins/meta-box-include-exclude/)|Show/hide meta boxes by ID, page template, taxonomy or custom function.
 
-See all premium extensions [here](https://metabox.io/plugins/).
+See all extensions [here](https://metabox.io/plugins/).
 
 ***
 

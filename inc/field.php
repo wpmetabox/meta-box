@@ -34,7 +34,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function show( $field, $saved )
 		{
-			global $post;
+			$post = get_post();
 
 			$field_class = RW_Meta_Box::get_class_name( $field );
 			$meta        = call_user_func( array( $field_class, 'meta' ), $post->ID, $saved, $field );

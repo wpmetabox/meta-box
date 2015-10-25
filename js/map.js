@@ -122,7 +122,6 @@
 			$( '#' + this.addressField ).autocomplete( {
 				source: function ( request, response )
 				{
-					// TODO: add 'region' option, to help bias geocoder.
 					that.geocoder.geocode( {
 						'address': request.term
 					}, function ( results )
