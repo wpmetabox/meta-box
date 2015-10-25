@@ -299,48 +299,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
-			$class = RW_Meta_Box::get_class_name( $field );
-			$value = call_user_func( array( $class, 'get_value' ), $field, $args, $post_id );
-			if ( ! $value || is_wp_error( $value ) )
-				return '';
-
-			$function = array( $class, 'get_option_label' );
-
-			if ( $field['clone'] )
-			{
-				$output = '<ul>';
-				if ( $field['multiple'] )
-				{
-					foreach ( $value as $subvalue )
-					{
-						$output .= '<li>';
-						array_walk_recursive( $subvalue, $function, $field );
-						$output .= '<ul><li>' . implode( '</li><li>', $subvalue ) . '</li></ul>';
-						$output .= '</li>';
-					}
-				}
-				else
-				{
-					array_walk_recursive( $value, $function, $field );
-					$output = '<li>' . implode( '</li><li>', $value ) . '</li>';
-				}
-				$output .= '</ul>';
-			}
-			else
-			{
-				if ( $field['multiple'] )
-				{
-					array_walk_recursive( $value, $function, $field );
-					$output = '<ul><li>' . implode( '</li><li>', $value ) . '</li></ul>';
-				}
-				else
-				{
-					call_user_func_array( $function, array( &$value, 0, $field ) );
-					$output = $value;
-				}
-			}
-
-			return $output;
+			return RWMB_Select_Field::the_value( $field, $args, $post_id );
 		}
 
 		/**
