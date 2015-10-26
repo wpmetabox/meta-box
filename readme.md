@@ -86,6 +86,18 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.6
+
+* Improvement: the plugin translation is now handled in translate.wordpress.org. While the plugin keeps old translation as backward compatibility, it's recommended to translate everything in translate.wordpress.org. Language packs will be automatically updated by WordPress.
+* Improvement: rewrite code for `file_advanced` and `image_advanced`, which share the same code base. These fields are now clonable and not autosave (you have to save post to save files)! Props @funkatronic.
+* Improvement: restyle clone icon, sort clone icon and add clone button for better UI. The new UI now is compatible with `color` and `date` fields
+* Improvement: separate validation module into 1 class, for better code structure
+* Improvement: add `pattern` attribute for `url` field
+* Improvement: improve code quality
+* Fix: missing "checked" when clone radio
+* Fix: language file name for Dutch
+* Fix: oembed not render preview if provider is added via `wp_embed_register_handler`
+
 #### 4.5.7
 * Fix: Always set std as value for hidden field
 * Fix: `rwmb_meta` now can display rich content from `oembed` field
