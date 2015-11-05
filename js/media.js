@@ -189,14 +189,14 @@ jQuery( function ( $ )
 					}
 				} );
 	
-				this.listenTo( this._frame, 'select', function ()
+			/*	this.listenTo( this._frame, 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
 					selection.each( function ( item )
 					{
 						this.collection.add( item );
 					}, this );
-				} );
+				} );*/
 	
 				this._frame.open();
 			},
