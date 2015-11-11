@@ -171,7 +171,8 @@ jQuery( function ( $ )
 		events: 
 		{
 			'click': function(){
-				var ids = this.collection.pluck( 'id' );
+				var models = this.collection.models;
+					
 				// Destroy the previous collection frame.
 				if ( this._frame )
 				{
@@ -183,9 +184,9 @@ jQuery( function ( $ )
 					className: 'media-frame rwmb-media-frame',
 					multiple : true,
 					title    : 'Select Media',
+					editing:   true,
 					library  : {
 						type   : this.props.mimeType,
-						exclude: ids
 					}
 				} );
 	
@@ -197,7 +198,7 @@ jQuery( function ( $ )
 						this.collection.add( item );
 					}, this );
 				} );
-	
+
 				this._frame.open();
 			},
 		}, 
