@@ -2,9 +2,12 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+// Make sure "input" field is loaded
+require_once RWMB_FIELDS_DIR . 'input.php';
+
 if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 {
-	class RWMB_Checkbox_Field extends RWMB_Field
+	class RWMB_Checkbox_Field extends RWMB_Input_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -26,12 +29,30 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
+			$attributes = $field['attributes'];
+			$attributes['value'] = 1;
 			return sprintf(
-				'<input type="checkbox" class="rwmb-checkbox" name="%s" id="%s" value="1" %s>',
-				$field['field_name'],
-				$field['id'],
+				'<input %s value="1" %s>',
+				self::render_attributes( $attributes ),
 				checked( ! empty( $meta ), 1, false )
 			);
+		}
+		
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = parent::normalize_field( $field );
+			$field['attributes']['list'] = FALSE;
+			$field['attributes']['type'] = 'checkbox';
+			$field['attributes']['class'] = 'rwmb-checkbox';
+
+			return $field;
 		}
 
 		/**

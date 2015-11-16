@@ -2,9 +2,12 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+// Make sure "input" field is loaded
+require_once RWMB_FIELDS_DIR . 'input.php';
+
 if ( ! class_exists( 'RWMB_Radio_Field' ) )
 {
-	class RWMB_Radio_Field extends RWMB_Field
+	class RWMB_Radio_Field extends RWMB_Input_Field
 	{
 		/**
 		 * Get field HTML
@@ -17,20 +20,39 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		static function html( $meta, $field )
 		{
 			$html = array();
-			$tpl  = '<label><input type="radio" class="rwmb-radio" name="%s" value="%s"%s> %s</label>';
-
+			$tpl  = '<label><input %s %s> %s</label>';
+			$attributes = $field['attributes'];
+			
 			foreach ( $field['options'] as $value => $label )
 			{
+				$attributes['value'] = $value;
 				$html[] = sprintf(
 					$tpl,
-					$field['field_name'],
-					$value,
+					self::render_attributes( $attributes ),
 					checked( $value, $meta, false ),
 					$label
 				);
 			}
 
 			return implode( ' ', $html );
+		}
+		
+		/**
+		 * Normalize parameters for field
+		 *
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function normalize_field( $field )
+		{
+			$field = parent::normalize_field( $field );
+			$field['attributes']['list'] = FALSE;
+			$field['attributes']['id'] = FALSE;
+			$field['attributes']['type'] = 'radio';
+			$field['attributes']['class'] = 'rwmb-radio';
+
+			return $field;
 		}
 
 		/**
