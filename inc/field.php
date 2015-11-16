@@ -397,7 +397,33 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			return $field;
+			return wp_parse_args( $field, array(
+				'attributes' => array()
+			) );
+		}
+		
+		/**
+		 * Renders an attribute array into an html attributes string
+		 *
+		 * @param array $attributes
+		 *
+		 * @return string
+		 */
+		static function render_attributes( $attributes )
+		{
+			$attr_string = '';
+			foreach( $attributes as $key => $Value )
+			{
+				if( $value )
+				{
+					$attr_string .= sprintf( 
+						' %s="%s"', 
+						$key, 
+						$value 
+					);
+				}	
+			}
+			return $attr_string;
 		}
 
 		/**
