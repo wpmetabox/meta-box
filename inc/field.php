@@ -412,7 +412,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		static function render_attributes( $attributes )
 		{
 			$attr_string = '';
-			foreach( $attributes as $key => $Value )
+			foreach( $attributes as $key => $value )
 			{
 				if( $value )
 				{
