@@ -2,9 +2,12 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+// Make sure "text" field is loaded
+require_once RWMB_FIELDS_DIR . 'date.php';
+
 if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 {
-	class RWMB_Datetime_Field extends RWMB_Field
+	class RWMB_Datetime_Field extends RWMB_Input_Field
 	{
 		/**
 		 * Translate date format from jQuery UI datepicker to PHP date()
@@ -84,27 +87,6 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		}
 
 		/**
-		 * Get field HTML
-		 *
-		 * @param mixed $meta
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
-		{
-			$meta = $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta;
-			return sprintf(
-				'<input type="text" class="rwmb-datetime" name="%s" value="%s" id="%s" size="%s" data-options="%s">',
-				$field['field_name'],
-				$meta,
-				$field['clone'] ? '' : $field['id'],
-				$field['size'],
-				esc_attr( wp_json_encode( $field['js_options'] ) )
-			);
-		}
-
-		/**
 		 * Calculates the timestamp from the datetime string and returns it
 		 * if $field['timestamp'] is set or the datetime string if not
 		 *
@@ -124,6 +106,21 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 
 			return $d ? $d->getTimestamp() : 0;
 		}
+		
+		/**
+		 * Get meta value
+		 *
+		 * @param int   $post_id
+		 * @param bool  $saved
+		 * @param array $field
+		 *
+		 * @return mixed
+		 */
+		static function meta( $post_id, $saved, $field )
+		{
+			$meta = parent::meta( $post_id, $saved, $field );
+			return $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta;
+		}
 
 		/**
 		 * Normalize parameters for field
@@ -135,19 +132,19 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size'       => 30,
-				'js_options' => array(),
 				'timestamp'  => false,
 			) );
 
 			// Deprecate 'format', but keep it for backward compatible
 			// Use 'js_options' instead
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
-				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
 				'timeFormat'      => 'HH:mm',
-				'showButtonPanel' => true,
 				'separator'       => ' ',
 			) );
+			
+			$field = RWMB_Date_Field::normalize_field( $field );
+			
+			$field['attributes']['class'] = 'rwmb-datetime';
 
 			return $field;
 		}

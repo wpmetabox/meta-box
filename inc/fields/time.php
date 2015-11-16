@@ -2,9 +2,12 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+// Make sure "text" field is loaded
+require_once RWMB_FIELDS_DIR . 'text.php';
+
 if ( ! class_exists( 'RWMB_Time_Field' ) )
 {
-	class RWMB_Time_Field extends RWMB_Field
+	class RWMB_Time_Field extends RWMB_Text_Field
 	{
 		/**
 		 * Enqueue scripts and styles
@@ -42,26 +45,6 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		}
 
 		/**
-		 * Get field HTML
-		 *
-		 * @param mixed $meta
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
-		{
-			return sprintf(
-				'<input type="text" class="rwmb-time" name="%s" value="%s" id="%s" size="%s" data-options="%s">',
-				$field['field_name'],
-				$meta,
-				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
-				$field['size'],
-				esc_attr( wp_json_encode( $field['js_options'] ) )
-			);
-		}
-
-		/**
 		 * Normalize parameters for field
 		 *
 		 * @param array $field
@@ -71,7 +54,6 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size'       => 30,
 				'js_options' => array(),
 			) );
 
@@ -81,6 +63,14 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 				'showButtonPanel' => true,
 				'timeFormat'      => empty( $field['format'] ) ? 'HH:mm' : $field['format'],
 			) );
+			
+			$field['attributes'] = wp_parse_args( $field['attributes'], array(
+				'data-options'    => wp_json_encode( $field['js_options'] ),
+			) );
+			
+			$field = parent::normalize_field( $field );
+			
+			$field['attributes']['class'] = 'rwmb-time';
 
 			return $field;
 		}

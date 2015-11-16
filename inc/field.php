@@ -419,7 +419,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 					$attr_string .= sprintf( 
 						' %s="%s"', 
 						$key, 
-						$value 
+						esc_attr( $value ) 
 					);
 				}	
 			}
