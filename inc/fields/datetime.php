@@ -108,18 +108,15 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		}
 		
 		/**
-		 * Get meta value
+		 * Escape meta for field output
 		 *
-		 * @param int   $post_id
-		 * @param bool  $saved
-		 * @param array $field
+		 * @param mixed $meta
 		 *
 		 * @return mixed
 		 */
-		static function meta( $post_id, $saved, $field )
+		static function esc_meta( $meta )
 		{
-			$meta = parent::meta( $post_id, $saved, $field );
-			return $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta;
+			return is_array( $meta ) ? array_map( __METHOD__, $meta ) : ( $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta );
 		}
 
 		/**
