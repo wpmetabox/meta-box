@@ -24,7 +24,7 @@ jQuery( function ( $ )
 		}
 
 		// Show color picker
-		$this.wpColorPicker();
+		$this.wpColorPicker( $this.data( 'options' ) );
 	}
 
 	$( ':input.rwmb-color' ).each( initColorPicker );

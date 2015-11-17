@@ -45,12 +45,23 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'size' => 7,
-				'maxlength' => 7,
-				'pattern' => '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+				'size'          => 7,
+				'maxlength'     => 7,
+				'pattern'       => '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
+				'js_options'     => array()
+			) );
+			
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'defaultColor'    => FALSE,
+				'hide'            => TRUE,
+				'palettes'        => TRUE,
 			) );
 			
 			$field = parent::normalize_field( $field );
+			
+			$field['attributes'] = wp_parse_args( $field['attributes'], array(
+				'data-options'    => wp_json_encode( $field['js_options'] ),
+			) );
 			
 			$field['attributes']['class'] = 'rwmb-color';
 
