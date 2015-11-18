@@ -42,7 +42,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
-			wp_register_style( 'wp-datepicker', RWMB_CSS_URL ."datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
+			wp_register_style( 'wp-datepicker', RWMB_CSS_URL . 'datepicker.css', array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_register_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.min.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider', 'wp-datepicker' ), '1.5.0' );
 
@@ -56,7 +56,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 			 *
 			 * Note: we use full locale (de-DE) and fallback to short locale (de)
 			 */
-			$locale = str_replace( '_', '-', get_locale() );
+			$locale       = str_replace( '_', '-', get_locale() );
 			$locale_short = substr( $locale, 0, 2 );
 
 			wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
@@ -119,8 +119,9 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function meta( $post_id, $saved, $field )
 		{
 			$meta = parent::meta( $post_id, $saved, $field );
-			if( is_array( $meta ) ) {
-				foreach( $meta as $key => $value )
+			if ( is_array( $meta ) )
+			{
+				foreach ( $meta as $key => $value )
 				{
 					$meta[$key] = $field['timestamp'] && $value ? date( self::translate_format( $field ), intval( $value ) ) : $value;
 				}
@@ -142,18 +143,18 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = wp_parse_args( $field, array(
-				'timestamp'  => false,
+				'timestamp' => false,
 			) );
 
 			// Deprecate 'format', but keep it for backward compatible
 			// Use 'js_options' instead
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
-				'timeFormat'      => 'HH:mm',
-				'separator'       => ' ',
+				'timeFormat' => 'HH:mm',
+				'separator'  => ' ',
 			) );
-			
+
 			$field = RWMB_Date_Field::normalize_field( $field );
-			
+
 			$field['attributes']['class'] = 'rwmb-datetime';
 
 			return $field;

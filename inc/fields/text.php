@@ -19,22 +19,22 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = parent::normalize_field( $field );
-			
+
 			$field = wp_parse_args( $field, array(
 				'size'        => 30,
 				'maxlength'   => 30,
-				'pattern'     => FALSE,
+				'pattern'     => false,
 				'placeholder' => '',
 			) );
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
 				'size'        => $field['size'],
 				'maxlength'   => $field['maxlength'],
 				'pattern'     => $field['pattern'],
 				'placeholder' => $field['placeholder'],
 			) );
-			
-			$field['attributes']['type'] = 'text';
+
+			$field['attributes']['type']  = 'text';
 			$field['attributes']['class'] = 'rwmb-text';
 
 			return $field;

@@ -401,7 +401,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 				'attributes' => array()
 			) );
 		}
-		
+
 		/**
 		 * Renders an attribute array into an html attributes string
 		 *
@@ -412,16 +412,16 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		static function render_attributes( $attributes )
 		{
 			$attr_string = '';
-			foreach( $attributes as $key => $value )
+			foreach ( $attributes as $key => $value )
 			{
-				if( $value )
+				if ( $value )
 				{
-					$attr_string .= sprintf( 
-						' %s="%s"', 
-						$key, 
-						esc_attr( $value ) 
+					$attr_string .= sprintf(
+						' %s="%s"',
+						$key,
+						esc_attr( $value )
 					);
-				}	
+				}
 			}
 			return $attr_string;
 		}

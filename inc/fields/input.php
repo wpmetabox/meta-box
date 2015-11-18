@@ -16,10 +16,10 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$attributes = $field['attributes'];
+			$attributes          = $field['attributes'];
 			$attributes['value'] = $meta;
 			return sprintf(
-				'<input %s >%s',
+				'<input %s>%s',
 				self::render_attributes( $attributes ),
 				self::datalist_html( $field )
 			);
@@ -34,27 +34,28 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
+			$field = parent::normalize_field( $field );
 			$field = wp_parse_args( $field, array(
-				'datalist'    => FALSE,
-				'disabled'    => FALSE,
-				'required'    => FALSE,
-				'readonly'    => FALSE
+				'datalist' => false,
+				'disabled' => false,
+				'required' => false,
+				'readonly' => false
 			) );
-			if( $field['datalist'] )
+			if ( $field['datalist'] )
 			{
 				$field['datalist'] = wp_parse_args( $field['datalist'], array(
-					'id'          => $field['id'] . '_list',
-					'options'     => array()
+					'id'      => $field['id'] . '_list',
+					'options' => array()
 				) );
 			}
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'disabled'    => $field['disabled'],
-				'list'        => $field['datalist'] ? $field['datalist']['id'] : FALSE ,
-				'readonly'    => $field['readonly'],
-				'required'    => $field['required'],
-				'name'        => $field['field_name'], 
-				'id'          => $field['clone'] ? FALSE : $field['id']
+				'disabled' => $field['disabled'],
+				'list'     => $field['datalist'] ? $field['datalist']['id'] : false,
+				'readonly' => $field['readonly'],
+				'required' => $field['required'],
+				'name'     => $field['field_name'],
+				'id'       => $field['clone'] ? false : $field['id']
 			) );
 
 			return $field;

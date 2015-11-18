@@ -19,20 +19,20 @@ if ( ! class_exists( 'RWMB_Number_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = parent::normalize_field( $field );
-			
+
 			$field = wp_parse_args( $field, array(
-				'step'        => 1,
-				'min'         => 0,
-				'max'         => FALSE,
+				'step' => 1,
+				'min'  => 0,
+				'max'  => false,
 			) );
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'step'        => $field['step'],
-				'max'         => $field['max'],
-				'min'         => $field['min'],
+				'step' => $field['step'],
+				'max'  => $field['max'],
+				'min'  => $field['min'],
 			) );
-			
-			$field['attributes']['type'] = 'number';
+
+			$field['attributes']['type']  = 'number';
 			$field['attributes']['class'] = 'rwmb-number';
 
 			return $field;

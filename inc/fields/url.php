@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_URL_Field' ) )
 		{
 			$field = parent::normalize_field( $field );
 
-			$field['attributes']['type'] = 'url';
+			$field['attributes']['type']  = 'url';
 			$field['attributes']['class'] = 'rwmb-url';
 
 			return $field;

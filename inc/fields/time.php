@@ -33,7 +33,7 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 			 *
 			 * Note: we use full locale (de-DE) and fallback to short locale (de)
 			 */
-			$locale = str_replace( '_', '-', get_locale() );
+			$locale       = str_replace( '_', '-', get_locale() );
 			$locale_short = substr( $locale, 0, 2 );
 			wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
 
@@ -63,13 +63,13 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 				'showButtonPanel' => true,
 				'timeFormat'      => empty( $field['format'] ) ? 'HH:mm' : $field['format'],
 			) );
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'data-options'    => wp_json_encode( $field['js_options'] ),
+				'data-options' => wp_json_encode( $field['js_options'] ),
 			) );
-			
+
 			$field = parent::normalize_field( $field );
-			
+
 			$field['attributes']['class'] = 'rwmb-time';
 
 			return $field;

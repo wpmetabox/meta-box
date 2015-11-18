@@ -33,12 +33,12 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 				'max'  => 10,
 				'step' => 1,
 			) );
-			
+
 			$field = parent::normalize_field( $field );
-			
-			$field['attributes']['type'] = 'range';
+
+			$field['attributes']['type']  = 'range';
 			$field['attributes']['class'] = 'rwmb-range';
-			
+
 			return $field;
 		}
 

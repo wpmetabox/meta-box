@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_Password_Field' ) )
 		{
 			$field = parent::normalize_field( $field );
 
-			$field['attributes']['type'] = 'password';
+			$field['attributes']['type']  = 'password';
 			$field['attributes']['class'] = 'rwmb-password';
 
 			return $field;

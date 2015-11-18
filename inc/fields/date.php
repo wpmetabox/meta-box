@@ -19,7 +19,7 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 			$url = RWMB_CSS_URL . 'jqueryui';
 			wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
 			wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
-			wp_register_style( 'wp-datepicker', RWMB_CSS_URL ."datepicker.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
+			wp_register_style( 'wp-datepicker', RWMB_CSS_URL . 'datepicker.css', array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
 			wp_enqueue_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'wp-datepicker' ), '1.8.17' );
 
 			// Load localized scripts
@@ -62,13 +62,13 @@ if ( ! class_exists( 'RWMB_Date_Field' ) )
 				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
 				'showButtonPanel' => true,
 			) );
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'data-options'    => wp_json_encode( $field['js_options'] ),
+				'data-options' => wp_json_encode( $field['js_options'] ),
 			) );
-			
+
 			$field = parent::normalize_field( $field );
-			
+
 			$field['attributes']['class'] = 'rwmb-date';
 
 			return $field;

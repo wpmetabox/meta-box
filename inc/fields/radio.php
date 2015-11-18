@@ -19,14 +19,14 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$html = array();
-			$tpl  = '<label><input %s %s> %s</label>';
+			$html       = array();
+			$tpl        = '<label><input %s %s> %s</label>';
 			$attributes = $field['attributes'];
-			
+
 			foreach ( $field['options'] as $value => $label )
 			{
 				$attributes['value'] = $value;
-				$html[] = sprintf(
+				$html[]              = sprintf(
 					$tpl,
 					self::render_attributes( $attributes ),
 					checked( $value, $meta, false ),
@@ -36,7 +36,7 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 
 			return implode( ' ', $html );
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -47,9 +47,10 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field = parent::normalize_field( $field );
-			$field['attributes']['list'] = FALSE;
-			$field['attributes']['id'] = FALSE;
-			$field['attributes']['type'] = 'radio';
+
+			$field['attributes']['list']  = false;
+			$field['attributes']['id']    = false;
+			$field['attributes']['type']  = 'radio';
 			$field['attributes']['class'] = 'rwmb-radio';
 
 			return $field;

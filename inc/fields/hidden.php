@@ -19,8 +19,8 @@ if ( ! class_exists( 'RWMB_Hidden_Field' ) )
 		static function normalize_field( $field )
 		{
 			$field['attributes'] = array(
-				'name'        => $field['field_name'], 
-				'id'          => $field['clone'] ? FALSE : $field['id']
+				'name' => $field['field_name'],
+				'id'   => $field['clone'] ? false : $field['id']
 			);
 
 			return $field;

@@ -8,7 +8,7 @@ require_once RWMB_FIELDS_DIR . 'text.php';
 if ( ! class_exists( 'RWMB_Email_Field' ) )
 {
 	class RWMB_Email_Field extends RWMB_Text_Field
-	{		
+	{
 		/**
 		 * Normalize parameters for field
 		 *
@@ -20,12 +20,12 @@ if ( ! class_exists( 'RWMB_Email_Field' ) )
 		{
 			$field = parent::normalize_field( $field );
 
-			$field['attributes']['type'] = 'email';
+			$field['attributes']['type']  = 'email';
 			$field['attributes']['class'] = 'rwmb-email';
 
 			return $field;
 		}
-		
+
 		/**
 		 * Sanitize email
 		 *

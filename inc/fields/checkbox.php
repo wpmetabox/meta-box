@@ -29,7 +29,7 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 */
 		static function html( $meta, $field )
 		{
-			$attributes = $field['attributes'];
+			$attributes          = $field['attributes'];
 			$attributes['value'] = 1;
 			return sprintf(
 				'<input %s value="1" %s>',
@@ -37,7 +37,7 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 				checked( ! empty( $meta ), 1, false )
 			);
 		}
-		
+
 		/**
 		 * Normalize parameters for field
 		 *
@@ -47,9 +47,9 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field = parent::normalize_field( $field );
-			$field['attributes']['list'] = FALSE;
-			$field['attributes']['type'] = 'checkbox';
+			$field                        = parent::normalize_field( $field );
+			$field['attributes']['list']  = false;
+			$field['attributes']['type']  = 'checkbox';
 			$field['attributes']['class'] = 'rwmb-checkbox';
 
 			return $field;
