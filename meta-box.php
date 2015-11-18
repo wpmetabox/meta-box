@@ -3,7 +3,7 @@
  * Plugin Name: Meta Box
  * Plugin URI: https://metabox.io
  * Description: Create custom meta boxes and custom fields for any post type in WordPress.
- * Version: 4.6
+ * Version: 4.7
  * Author: Rilwis
  * Author URI: http://www.deluxeblogtips.com
  * License: GPL2+
@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Script version, used to add version for scripts and styles
-define( 'RWMB_VER', '4.6' );
+define( 'RWMB_VER', '4.7' );
 
 // Define plugin URLs, for fast enqueuing scripts and styles
 if ( ! defined( 'RWMB_URL' ) )

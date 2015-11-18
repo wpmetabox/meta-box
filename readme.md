@@ -86,6 +86,12 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.7
+
+* Improvement: add `attributes` for all input fields (text, number, email, ...) so users can add any custom attributes for them. Also added default attributes `required`, `disabled`, `readonly`, `maxlength` and `pattern` for those fields as well. These attributes will be merged into the `attributes`.
+* Improvement: add `js_options` for color field which allows users to define custom color palettes and other attributes for color picker. See the options in [Iris page](http://automattic.github.io/Iris/).
+* Fix: fix for file and image uploaded via `file_advanced` and `image_advanced` not showing up.
+
 #### 4.6
 
 * Improvement: the plugin translation is now handled in translate.wordpress.org. While the plugin keeps old translation as backward compatibility, it's recommended to translate everything in translate.wordpress.org. Language packs will be automatically updated by WordPress.
