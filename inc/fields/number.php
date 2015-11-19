@@ -26,11 +26,13 @@ if ( ! class_exists( 'RWMB_Number_Field' ) )
 				'max'  => false,
 			) );
 
-			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'step' => $field['step'],
-				'max'  => $field['max'],
-				'min'  => $field['min'],
-			) );
+			if( isset( $field['attributes'] ) ) {
+				$field['attributes'] = wp_parse_args( $field['attributes'], array(
+					'step' => $field['step'],
+					'max'  => $field['max'],
+					'min'  => $field['min'],
+				) );
+			}
 
 			$field['attributes']['type']  = 'number';
 			$field['attributes']['class'] = 'rwmb-number';

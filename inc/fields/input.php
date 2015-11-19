@@ -49,14 +49,16 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 				) );
 			}
 
-			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'disabled' => $field['disabled'],
-				'list'     => $field['datalist'] ? $field['datalist']['id'] : false,
-				'readonly' => $field['readonly'],
-				'required' => $field['required'],
-				'name'     => $field['field_name'],
-				'id'       => $field['clone'] ? false : $field['id']
-			) );
+			if( isset( $field['attributes'] ) ) {
+				$field['attributes'] = wp_parse_args( $field['attributes'], array(
+					'disabled' => $field['disabled'],
+					'list'     => $field['datalist'] ? $field['datalist']['id'] : false,
+					'readonly' => $field['readonly'],
+					'required' => $field['required'],
+					'name'     => $field['field_name'],
+					'id'       => $field['clone'] ? false : $field['id']
+				) );
+			}
 
 			return $field;
 		}

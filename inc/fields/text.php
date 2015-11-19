@@ -27,12 +27,14 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				'placeholder' => '',
 			) );
 
-			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'size'        => $field['size'],
-				'maxlength'   => $field['maxlength'],
-				'pattern'     => $field['pattern'],
-				'placeholder' => $field['placeholder'],
-			) );
+			if( isset( $field['attributes'] ) ) {
+				$field['attributes'] = wp_parse_args( $field['attributes'], array(
+					'size'        => $field['size'],
+					'maxlength'   => $field['maxlength'],
+					'pattern'     => $field['pattern'],
+					'placeholder' => $field['placeholder'],
+				) );
+			}
 
 			$field['attributes']['type']  = 'text';
 			$field['attributes']['class'] = 'rwmb-text';
