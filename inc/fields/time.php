@@ -64,9 +64,11 @@ if ( ! class_exists( 'RWMB_Time_Field' ) )
 				'timeFormat'      => empty( $field['format'] ) ? 'HH:mm' : $field['format'],
 			) );
 
-			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'data-options' => wp_json_encode( $field['js_options'] ),
-			) );
+			if( isset( $field['attributes'] ) ) {
+				$field['attributes'] = wp_parse_args( $field['attributes'], array(
+					'data-options' => wp_json_encode( $field['js_options'] ),
+				) );
+			}
 
 			$field = parent::normalize_field( $field );
 
