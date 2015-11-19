@@ -99,13 +99,41 @@ if ( ! class_exists( 'RWMB_OEmbed_Field' ) )
 		static function the_value( $field, $args = array(), $post_id = null )
 		{
 			$value = self::get_value( $field, $args, $post_id );
-			if ( $field['clone'] )
+			
+			if(isset($args['output']) && $args['output'] == 'array')
+			$arrayOutput = true;
+			else
+			$arrayOutput = false;
+			
+			
+			if ( $field['clone']  || $field['multiple'])
 			{
+				if($arrayOutput)
+				$output = array();
+				else
 				$output = '<ul>';
+				
 				foreach ( $value as $subvalue )
 				{
-					$output .= '<li>' . self::get_embed( $subvalue ) . '</li>';
+					if(is_array($subvalue))
+					{
+						foreach($subvalue as $subsubvalue)
+						{
+							if(!$arrayOutput)
+							$output .= '<li>' . self::get_embed( $subsubvalue ) . '</li>';
+							else
+							$output[] = self::get_embed( $subsubvalue );
+						}
+					}
+					else
+					{
+						if(!$arrayOutput)
+						$output .= '<li>' . self::get_embed( $subvalue ) . '</li>';
+						else
+						$output[] = self::get_embed( $subvalue );
+					}
 				}
+				if(!$arrayOutput)
 				$output .= '</ul>';
 			}
 			else
