@@ -21,7 +21,6 @@ if ( ! class_exists( 'RWMB_Email_Field' ) )
 			$field = parent::normalize_field( $field );
 
 			$field['attributes']['type']  = 'email';
-			$field['attributes']['class'] = 'rwmb-email';
 
 			return $field;
 		}

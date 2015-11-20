@@ -47,10 +47,9 @@ if ( ! class_exists( 'RWMB_Checkbox_Field' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			$field                        = parent::normalize_field( $field );
-			$field['attributes']['list']  = false;
-			$field['attributes']['type']  = 'checkbox';
-			$field['attributes']['class'] = 'rwmb-checkbox';
+			$field                       = parent::normalize_field( $field );
+			$field['attributes']['list'] = false;
+			$field['attributes']['type'] = 'checkbox';
 
 			return $field;
 		}

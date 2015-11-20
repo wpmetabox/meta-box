@@ -156,8 +156,6 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 
 			$field = RWMB_Date_Field::normalize_field( $field );
 
-			$field['attributes']['class'] = 'rwmb-datetime';
-
 			return $field;
 		}
 

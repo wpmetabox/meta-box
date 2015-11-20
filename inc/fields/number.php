@@ -32,8 +32,7 @@ if ( ! class_exists( 'RWMB_Number_Field' ) )
 				'min'  => $field['min'],
 			) );
 
-			$field['attributes']['type']  = 'number';
-			$field['attributes']['class'] = 'rwmb-number';
+			$field['attributes']['type'] = 'number';
 
 			return $field;
 		}

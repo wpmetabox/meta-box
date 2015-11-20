@@ -34,8 +34,7 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				'placeholder' => $field['placeholder'],
 			) );
 
-			$field['attributes']['type']  = 'text';
-			$field['attributes']['class'] = 'rwmb-text';
+			$field['attributes']['type'] = 'text';
 
 			return $field;
 		}

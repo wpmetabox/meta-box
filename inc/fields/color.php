@@ -63,8 +63,6 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 				'data-options' => wp_json_encode( $field['js_options'] ),
 			) );
 
-			$field['attributes']['class'] = 'rwmb-color';
-
 			return $field;
 		}
 	}

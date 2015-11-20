@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'RWMB_Input_Field' ) )
 {
-	class RWMB_Input_Field extends RWMB_Field
+	abstract class RWMB_Input_Field extends RWMB_Field
 	{
 		/**
 		 * Get field HTML
@@ -39,13 +39,13 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 				'datalist' => false,
 				'disabled' => false,
 				'required' => false,
-				'readonly' => false
+				'readonly' => false,
 			) );
 			if ( $field['datalist'] )
 			{
 				$field['datalist'] = wp_parse_args( $field['datalist'], array(
 					'id'      => $field['id'] . '_list',
-					'options' => array()
+					'options' => array(),
 				) );
 			}
 
@@ -55,7 +55,8 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 				'readonly' => $field['readonly'],
 				'required' => $field['required'],
 				'name'     => $field['field_name'],
-				'id'       => $field['clone'] ? false : $field['id']
+				'class'    => "rwmb-{$field['type']}",
+				'id'       => $field['clone'] ? false : $field['id'],
 			) );
 
 			return $field;
@@ -70,7 +71,7 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 		 */
 		static function datalist_html( $field )
 		{
-			if ( ! $field['datalist'] )
+			if ( empty( $field['datalist'] ) )
 				return '';
 
 			$datalist = $field['datalist'];

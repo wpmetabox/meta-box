@@ -48,10 +48,9 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		{
 			$field = parent::normalize_field( $field );
 
-			$field['attributes']['list']  = false;
-			$field['attributes']['id']    = false;
-			$field['attributes']['type']  = 'radio';
-			$field['attributes']['class'] = 'rwmb-radio';
+			$field['attributes']['list'] = false;
+			$field['attributes']['id']   = false;
+			$field['attributes']['type'] = 'radio';
 
 			return $field;
 		}

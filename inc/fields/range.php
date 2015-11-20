@@ -36,8 +36,7 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 
 			$field = parent::normalize_field( $field );
 
-			$field['attributes']['type']  = 'range';
-			$field['attributes']['class'] = 'rwmb-range';
+			$field['attributes']['type'] = 'range';
 
 			return $field;
 		}
