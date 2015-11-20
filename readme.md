@@ -86,6 +86,10 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.7.2
+
+* Fix: notice undefined index in date, time fields.
+
 #### 4.7.1
 
 * Fix: remove default `maxlength = 30` for text fields.
