@@ -113,6 +113,7 @@ jQuery( function ( $ )
 			{
 				var ids = that.collection.pluck( 'id' );
 				that.input.val( ids.join( ',' ) );
+				that.input.trigger( 'change' );
 			}, 500 ) );
 
 			//Limit max files
