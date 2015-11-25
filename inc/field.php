@@ -418,20 +418,13 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 				{
 					if( true === $value )
 					{
-						$attr_string .= sprintf(
-							' %s="%s"',
-							$key,
-							esc_attr( $key )
-						);
+						$value = $key;
 					}
-					else
-					{
-						$attr_string .= sprintf(
-							' %s="%s"',
-							$key,
-							esc_attr( $value )
-						);
-					}
+					$attr_string .= sprintf(
+						' %s="%s"',
+						$key,
+						esc_attr( $value )
+					);
 				}
 			}
 			return $attr_string;
