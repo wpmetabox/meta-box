@@ -416,10 +416,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 			{
 				if ( $value )
 				{
-					if( true === $value )
-					{
-						$value = $key;
-					}
+					$value = ( true === $value ) ? $key : $value;
 					$attr_string .= sprintf(
 						' %s="%s"',
 						$key,
