@@ -125,7 +125,7 @@ if ( ! class_exists( 'RWMB_Helper' ) )
 			// Get post terms
 			elseif ( 'taxonomy' == $args['type'] )
 			{
-				$meta = empty( $args['taxonomy'] ) ? array() : wp_get_post_terms( $post_id, $args['taxonomy'] );
+				$meta = empty( $args['taxonomy'] ) ? array() : get_the_terms( $post_id, $args['taxonomy'] );
 			}
 			// Get map
 			elseif ( 'map' == $args['type'] )

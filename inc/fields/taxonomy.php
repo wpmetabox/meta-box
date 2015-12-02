@@ -255,7 +255,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		{
 			$options = $field['options'];
 
-			$meta = wp_get_post_terms( $post_id, $options['taxonomy'] );
+			$meta = get_the_terms( $post_id, $options['taxonomy'] );
 			$meta = is_array( $meta ) ? $meta : (array) $meta;
 			$meta = wp_list_pluck( $meta, 'term_id' );
 
