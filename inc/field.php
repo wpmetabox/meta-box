@@ -397,9 +397,21 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 */
 		static function normalize_field( $field )
 		{
-			return wp_parse_args( $field, array(
+			$field =  wp_parse_args( $field, array(
+				'disabled' => false,
+				'required' => false,
 				'attributes' => array()
 			) );
+			
+			$field['attributes'] = wp_parse_args( $field['attributes'], array(
+				'disabled' => $field['disabled'],
+				'required' => $field['required'],
+				'class'    => "rwmb-{$field['type']}",
+				'id'       => $field['clone'] ? false : $field['id'],
+				'name'     => $field['field_name'],
+			) );
+			
+			return $field;
 		}
 
 		/**

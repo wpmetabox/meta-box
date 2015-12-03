@@ -18,6 +18,7 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 		{
 			$attributes          = $field['attributes'];
 			$attributes['value'] = $meta;
+
 			return sprintf(
 				'<input %s>%s',
 				self::render_attributes( $attributes ),
@@ -37,8 +38,6 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 			$field = parent::normalize_field( $field );
 			$field = wp_parse_args( $field, array(
 				'datalist' => false,
-				'disabled' => false,
-				'required' => false,
 				'readonly' => false,
 			) );
 			if ( $field['datalist'] )
@@ -50,13 +49,8 @@ if ( ! class_exists( 'RWMB_Input_Field' ) )
 			}
 
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'disabled' => $field['disabled'],
 				'list'     => $field['datalist'] ? $field['datalist']['id'] : false,
 				'readonly' => $field['readonly'],
-				'required' => $field['required'],
-				'name'     => $field['field_name'],
-				'class'    => "rwmb-{$field['type']}",
-				'id'       => $field['clone'] ? false : $field['id'],
 			) );
 
 			return $field;
