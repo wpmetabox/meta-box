@@ -107,12 +107,12 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 			{
 				foreach ( $new as &$value )
 				{
-					$value = explode( ',', $value );
+					$value = wp_parse_id_list( $value );
 				}
 			}
 			else
 			{
-				$new = explode( ',', $new );
+				$new = wp_parse_id_list( $new );
 			}
 			return $new;
 		}
