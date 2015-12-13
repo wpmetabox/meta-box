@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 				foreach ( $field['options'] as $key => $label )
 				{
 					$value  = isset( $meta[$row][$key] ) ? $meta[$row][$key] : '';
-					$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
+					$field['attributes']['name'] = $field['field_name'] . "[{$row}][{$key}]";
 					$html[] = sprintf( $tpl, $label, parent::html( $value, $field) );
 				}
 				$html[] = '<br>';
