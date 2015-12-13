@@ -24,7 +24,7 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 				foreach ( $field['options'] as $key => $label )
 				{
 					$value  = isset( $meta[$row][$key] ) ? $meta[$row][$key] : '';
-					$html[] = sprintf( $tpl, $label, $field['id'], $row, $key, $value );
+					$html[] = sprintf( $tpl, $label, $field['field_name'], $row, $key, $value );
 				}
 				$html[] = '<br>';
 			}
