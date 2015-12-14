@@ -21,17 +21,13 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		{
 			$html = array();
 			$tpl  = '<label>%s %s</label>';
-
-			for ( $row = 0; $row < $field['rows']; $row ++ )
+			
+			foreach ( $field['options'] as $key => $label )
 			{
-				foreach ( $field['options'] as $key => $label )
-				{
-					$value  = isset( $meta[$row][$key] ) ? $meta[$row][$key] : '';
-					$field['attributes']['name'] = $field['field_name'] . "[{$row}][{$key}]";
-					$html[] = sprintf( $tpl, $label, parent::html( $value, $field) );
-				}
-				$html[] = '<br>';
-			}
+				$value  = isset( $meta[$key] ) ? $meta[$key] : '';
+				$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
+				$html[] = sprintf( $tpl, $label, parent::html( $value, $field) );
+			}		
 
 			$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
