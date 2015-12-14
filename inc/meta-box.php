@@ -207,9 +207,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function show()
 		{
-			$post = get_post();
-
-			$saved = self::has_been_saved( $post->ID, $this->fields );
+			$saved = self::is_saved( $this->fields );
 
 			// Container
 			printf(
@@ -374,9 +372,9 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 					'required'    => false,
 					'placeholder' => '',
 
-					'clone'       => false,
-					'max_clone'   => 0,
-					'sort_clone'  => false,
+					'clone'      => false,
+					'max_clone'  => 0,
+					'sort_clone' => false,
 				) );
 
 				$class = self::get_class_name( $field );
@@ -427,19 +425,21 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		}
 
 		/**
-		 * Check if meta box has been saved
-		 * This helps saving empty value in meta fields (for text box, check box, etc.)
+		 * Check if meta box is saved before.
+		 * This helps saving empty value in meta fields (for text box, check box, etc.) and set the correct
+		 * default values.
 		 *
-		 * @param int   $post_id
 		 * @param array $fields
 		 *
 		 * @return bool
 		 */
-		static function has_been_saved( $post_id, $fields )
+		static function is_saved( $fields )
 		{
+			$post = get_post();
+
 			foreach ( $fields as $field )
 			{
-				$value = get_post_meta( $post_id, $field['id'], ! $field['multiple'] );
+				$value = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
 				if (
 					( ! $field['multiple'] && '' !== $value )
 					|| ( $field['multiple'] && array() !== $value )
