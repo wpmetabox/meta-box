@@ -207,7 +207,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 */
 		function show()
 		{
-			$saved = self::is_saved( $this->fields );
+			$saved = $this->is_saved();
 
 			// Container
 			printf(
@@ -429,15 +429,13 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		 * This helps saving empty value in meta fields (for text box, check box, etc.) and set the correct
 		 * default values.
 		 *
-		 * @param array $fields
-		 *
 		 * @return bool
 		 */
-		static function is_saved( $fields )
+		public function is_saved()
 		{
 			$post = get_post();
 
-			foreach ( $fields as $field )
+			foreach ( $this->fields as $field )
 			{
 				$value = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
 				if (
