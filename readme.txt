@@ -3,8 +3,8 @@ Contributors: rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omn
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 3.5
-Tested up to: 4.3.1
-Stable tag: 4.7.2
+Tested up to: 4.4
+Stable tag: 4.7.3
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
@@ -75,6 +75,16 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 == Changelog ==
 
+= 4.7.3 =
+
+* Improvement: add `change` event for `file_advanced` and `image_advanced` fields.
+* Improvement: add support for boolean attributes.
+* Improvement: add support for boolean attributes.
+* Improvement: add Russian language.
+* Improvement: changed `wp_get_post_terms` to `get_the_terms` to use WordPress cache.
+* Improvement: refactored code to make textarea, select use attributes.
+* Improvement: `fieldset_text` now cloneable. Also removed `rows` option for this field.
+* Improvement: refactored `has_been_saved()` function.
 
 = 4.7.2 =
 

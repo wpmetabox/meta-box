@@ -86,6 +86,17 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.7.3
+
+* Improvement: add `change` event for `file_advanced` and `image_advanced` fields.
+* Improvement: add support for boolean attributes.
+* Improvement: add support for boolean attributes.
+* Improvement: add Russian language.
+* Improvement: changed `wp_get_post_terms` to `get_the_terms` to use WordPress cache.
+* Improvement: refactored code to make textarea, select use attributes.
+* Improvement: `fieldset_text` now cloneable. Also removed `rows` option for this field.
+* Improvement: refactored `has_been_saved()` function.
+
 #### 4.7.2
 
 * Fix: notice undefined index in date, time fields.
