@@ -236,6 +236,7 @@ if ( ! class_exists( 'RWMB_Image_Field' ) )
 				'caption'     => $attachment->post_excerpt,
 				'description' => $attachment->post_content,
 				'alt'         => get_post_meta( $file_id, '_wp_attachment_image_alt', true ),
+				'srcset'      => wp_get_attachment_image_srcset( $file_id ),
 			);
 		}
 	}
