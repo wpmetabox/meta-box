@@ -43,18 +43,18 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
-			$field = parent::normalize_field( $field );
+			$field = parent::normalize( $field );
 			$field = wp_parse_args( $field, array(
 				'cols' 			=> 60,
-				'rows' 			=> 3,	
+				'rows' 			=> 3,
 				'maxlength' 	=> false,
 				'wrap'			=> false,
 				'readonly'		=> false,
-				'placeholder'	=> '',						
+				'placeholder'	=> '',
 			) );
-			
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
 				'cols' 			=> $field['cols'],
 				'rows' 			=> $field['rows'],

@@ -42,7 +42,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'size'       => 7,
@@ -57,7 +57,7 @@ if ( ! class_exists( 'RWMB_Color_Field' ) )
 				'palettes'     => true,
 			) );
 
-			$field = parent::normalize_field( $field );
+			$field = parent::normalize( $field );
 
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
 				'data-options' => wp_json_encode( $field['js_options'] ),

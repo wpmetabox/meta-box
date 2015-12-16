@@ -396,7 +396,7 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'disabled'   => false,

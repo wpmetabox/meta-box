@@ -14,10 +14,10 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
-			$field = parent::normalize_field( $field );			
-			$field['mime_type'] = 'image';			
+			$field = parent::normalize( $field );
+			$field['mime_type'] = 'image';
 
 			return $field;
 		}
@@ -31,7 +31,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_Field' ) )
 		 * @return string
 		 */
 		static function html( $meta, $field )
-		{			
+		{
 			$i18n_add    = apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) );
 			$meta = (array) $meta;
 			$meta = implode( ',', $meta );

@@ -162,7 +162,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field['js_options'] = array(
 				'runtimes'            => 'html5,silverlight,flash,html4',
@@ -188,7 +188,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 					'action'   => 'rwmb_plupload_image_upload',
 				)
 			);
-			$field               = parent::normalize_field( $field );
+			$field               = parent::normalize( $field );
 
 			return $field;
 		}

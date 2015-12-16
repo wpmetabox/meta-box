@@ -38,7 +38,7 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'field_type' => 'select_advanced',
@@ -58,11 +58,11 @@ if ( ! class_exists( 'RWMB_User_Field' ) )
 			switch ( $field['field_type'] )
 			{
 				case 'select':
-					return RWMB_Select_Field::normalize_field( $field );
+					return RWMB_Select_Field::normalize( $field );
 					break;
 				case 'select_advanced':
 				default:
-					return RWMB_Select_Advanced_Field::normalize_field( $field );
+					return RWMB_Select_Advanced_Field::normalize( $field );
 			}
 		}
 

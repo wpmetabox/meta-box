@@ -21,13 +21,13 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		{
 			$html = array();
 			$tpl  = '<label>%s %s</label>';
-			
+
 			foreach ( $field['options'] as $key => $label )
 			{
 				$value  = isset( $meta[$key] ) ? $meta[$key] : '';
 				$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
 				$html[] = sprintf( $tpl, $label, parent::html( $value, $field) );
-			}		
+			}
 
 			$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
@@ -41,9 +41,9 @@ if ( ! class_exists( 'RWMB_Fieldset_Text_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
-			$field = parent::normalize_field( $field );
+			$field = parent::normalize( $field );
 			$field['multiple'] = false;
 			$field['attributes']['id'] = false;
 			return $field;

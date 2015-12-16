@@ -119,7 +119,7 @@ if ( ! class_exists( 'RWMB_Key_Value_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field['clone']    = true;
 			$field['multiple'] = false;

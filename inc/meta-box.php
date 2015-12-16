@@ -383,7 +383,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				}
 
 				// Allow field class add/change default field values
-				$field = call_user_func( array( $class, 'normalize_field' ), $field );
+				$field = call_user_func( array( $class, 'normalize' ), $field );
 
 				if ( isset( $field['fields'] ) )
 					$field['fields'] = self::normalize_fields( $field['fields'] );

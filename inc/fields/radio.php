@@ -44,9 +44,9 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
-			$field = parent::normalize_field( $field );
+			$field = parent::normalize( $field );
 
 			$field['attributes']['list'] = false;
 			$field['attributes']['id']   = false;

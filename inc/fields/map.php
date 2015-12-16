@@ -64,7 +64,7 @@ if ( ! class_exists( 'RWMB_Map_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'std'           => '',

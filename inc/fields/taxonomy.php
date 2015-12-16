@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$default_args = array(
 				'hide_empty' => false,
@@ -42,19 +42,19 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 			switch ( $field['options']['type'] )
 			{
 				case 'select_advanced':
-					$field = RWMB_Select_Advanced_Field::normalize_field( $field );
+					$field = RWMB_Select_Advanced_Field::normalize( $field );
 					break;
 				case 'checkbox_list':
 				case 'checkbox_tree':
-					$field = RWMB_Checkbox_List_Field::normalize_field( $field );
+					$field = RWMB_Checkbox_List_Field::normalize( $field );
 					break;
 				case 'select':
 				case 'select_tree':
-					$field = RWMB_Select_Field::normalize_field( $field );
+					$field = RWMB_Select_Field::normalize( $field );
 					break;
 				default:
 					$field['options']['type'] = 'select';
-					$field                    = RWMB_Select_Field::normalize_field( $field );
+					$field                    = RWMB_Select_Field::normalize( $field );
 			}
 
 			if ( in_array( $field['options']['type'], array( 'checkbox_tree', 'select_tree' ) ) )

@@ -22,7 +22,7 @@ if ( ! class_exists( 'RWMB_Field_Multiple_Values' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field['multiple']   = true;
 			$field['field_name'] = $field['id'];

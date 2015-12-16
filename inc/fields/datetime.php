@@ -140,7 +140,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'timestamp'  => false,
@@ -154,7 +154,7 @@ if ( ! class_exists( 'RWMB_Datetime_Field' ) )
 				'separator'  => ' ',
 			) );
 
-			$field = RWMB_Date_Field::normalize_field( $field );
+			$field = RWMB_Date_Field::normalize( $field );
 
 			return $field;
 		}

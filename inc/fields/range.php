@@ -26,7 +26,7 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 		 *
 		 * @return array
 		 */
-		static function normalize_field( $field )
+		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
 				'min'  => 0,
@@ -34,7 +34,7 @@ if ( ! class_exists( 'RWMB_Range_Field' ) )
 				'step' => 1,
 			) );
 
-			$field = parent::normalize_field( $field );
+			$field = parent::normalize( $field );
 
 			$field['attributes']['type'] = 'range';
 
