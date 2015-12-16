@@ -53,6 +53,7 @@ if ( ! class_exists( 'RWMB_Slider_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field               = parent::normalize( $field );
 			$field               = wp_parse_args( $field, array(
 				'prefix'     => '',
 				'suffix'     => '',

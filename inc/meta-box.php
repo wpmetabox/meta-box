@@ -355,24 +355,6 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 		{
 			foreach ( $fields as $k => $field )
 			{
-				$field = wp_parse_args( $field, array(
-					'id'          => '',
-					'name'        => '',
-					'multiple'    => false,
-					'std'         => '',
-					'desc'        => '',
-					'format'      => '',
-					'before'      => '',
-					'after'       => '',
-					'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
-					'required'    => false,
-					'placeholder' => '',
-
-					'clone'      => false,
-					'max_clone'  => 0,
-					'sort_clone' => false,
-				) );
-
 				$class = self::get_class_name( $field );
 
 				// Make sure field has correct 'type', ignore warning error when users forget to set field type or set incorrect one
@@ -414,7 +396,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			// Uppercase first words
 			$class = 'RWMB_' . ucwords( $type ) . '_Field';
 
-			// Relace whitespace with underscores
+			// Replace whitespace with underscores
 			$class = str_replace( ' ', '_', $class );
 
 			return class_exists( $class ) ? $class : false;

@@ -121,6 +121,7 @@ if ( ! class_exists( 'RWMB_Key_Value_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field             = parent::normalize( $field );
 			$field['clone']    = true;
 			$field['multiple'] = false;
 

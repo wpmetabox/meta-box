@@ -96,6 +96,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field = parent::normalize( $field );
 			$field = wp_parse_args( $field, array(
 				'raw'     => false,
 				'options' => array(),
@@ -114,7 +115,7 @@ if ( ! class_exists( 'RWMB_Wysiwyg_Field' ) )
 
 		static function footer_scripts()
 		{
-			echo '<script> var rwmb_cloneable_editors = ' , wp_json_encode( self::$cloneable_editors ) , ';</script>';
+			echo '<script> var rwmb_cloneable_editors = ', wp_json_encode( self::$cloneable_editors ), ';</script>';
 		}
 	}
 }

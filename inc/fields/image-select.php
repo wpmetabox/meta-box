@@ -55,6 +55,7 @@ if ( ! class_exists( 'RWMB_Image_Select_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field = parent::normalize( $field );
 			$field['field_name'] .= $field['multiple'] ? '[]' : '';
 
 			return $field;

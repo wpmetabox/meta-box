@@ -63,6 +63,7 @@ if ( ! class_exists( 'RWMB_Media_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field = parent::normalize( $field );
 			$field = wp_parse_args( $field, array(
 				'std'              => array(),
 				'mime_type'        => '',

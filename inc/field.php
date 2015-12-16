@@ -399,9 +399,24 @@ if ( ! class_exists( 'RWMB_Field ' ) )
 		static function normalize( $field )
 		{
 			$field = wp_parse_args( $field, array(
+				'id'          => '',
+				'name'        => '',
+				'multiple'    => false,
+				'std'         => '',
+				'desc'        => '',
+				'format'      => '',
+				'before'      => '',
+				'after'       => '',
+				'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
+				'placeholder' => '',
+
+				'clone'      => false,
+				'max_clone'  => 0,
+				'sort_clone' => false,
+
 				'disabled'   => false,
 				'required'   => false,
-				'attributes' => array()
+				'attributes' => array(),
 			) );
 
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(

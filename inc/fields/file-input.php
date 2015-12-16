@@ -52,6 +52,7 @@ if ( ! class_exists( 'RWMB_File_Input_Field' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field = parent::normalize( $field );
 			$field = wp_parse_args( $field, array(
 				'size'        => 30,
 				'placeholder' => '',

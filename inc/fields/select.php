@@ -77,17 +77,16 @@ if ( ! class_exists( 'RWMB_Select_Field' ) )
 		 */
 		static function normalize( $field )
 		{
-			if ( ! $field['clone'] && $field['multiple'] )
-				$field['field_name'] .= '[]';
-
 			$field = parent::normalize( $field );
 			$field = wp_parse_args( $field, array(
 				'size' => $field['multiple'] ? 5 : 0,
 			) );
 
+			$field['field_name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
+
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'multiple'     => $field['multiple'],
-				'size'         => $field['size'],
+				'multiple' => $field['multiple'],
+				'size'     => $field['size'],
 			) );
 
 			return $field;

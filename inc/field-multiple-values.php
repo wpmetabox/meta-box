@@ -24,6 +24,7 @@ if ( ! class_exists( 'RWMB_Field_Multiple_Values' ) )
 		 */
 		static function normalize( $field )
 		{
+			$field               = parent::normalize( $field );
 			$field['multiple']   = true;
 			$field['field_name'] = $field['id'];
 			if ( ! $field['clone'] )
