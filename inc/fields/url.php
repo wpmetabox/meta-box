@@ -35,6 +35,6 @@ class RWMB_URL_Field extends RWMB_Text_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		return is_array( $new ) ? array_map( 'esc_url', $new ) : esc_url( $new );
+		return is_array( $new ) ? array_map( 'esc_url_raw', $new ) : esc_url_raw( $new );
 	}
 }
