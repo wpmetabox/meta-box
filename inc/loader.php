@@ -78,19 +78,14 @@ class RWMB_Loader
 	 */
 	public function load_files()
 	{
-		require_once RWMB_INC_DIR . 'common.php';
-		new RWMB_Common;
-
+		// Fields
 		require_once RWMB_INC_DIR . 'field.php';
-		require_once RWMB_INC_DIR . 'field-multiple-values.php';
-
-		// Field classes
 		foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )
 		{
 			require_once $file;
 		}
 
-		// Meta box class
+		// Meta Box class
 		require_once RWMB_INC_DIR . 'meta-box.php';
 
 		// Validation module
@@ -101,6 +96,7 @@ class RWMB_Loader
 		require_once RWMB_INC_DIR . 'helpers.php';
 
 		// Main file
-		require_once RWMB_INC_DIR . 'init.php';
+		require_once RWMB_INC_DIR . 'core.php';
+		new RWMB_Core;
 	}
 }
