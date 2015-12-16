@@ -31,6 +31,8 @@ define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
 
 
 require_once RWMB_INC_DIR . 'common.php';
+new RWMB_Common;
+
 require_once RWMB_INC_DIR . 'field.php';
 require_once RWMB_INC_DIR . 'field-multiple-values.php';
 
@@ -45,6 +47,7 @@ require_once RWMB_INC_DIR . 'meta-box.php';
 
 // Validation module
 require_once RWMB_INC_DIR . 'validation.php';
+new RWMB_Validation;
 
 // Helper function to retrieve meta value
 require_once RWMB_INC_DIR . 'helpers.php';

@@ -246,7 +246,7 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) )
 	/**
 	 * Shortcode to display meta value
 	 *
-	 * @param $atts Array of shortcode attributes, same as meta() function, but has more "meta_key" parameter
+	 * @param array $atts Shortcode attributes, same as meta() function, but has more "meta_key" parameter
 	 *
 	 * @see meta() function below
 	 *

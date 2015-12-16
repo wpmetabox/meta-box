@@ -1,8 +1,4 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
-// Meta Box Class
 if ( ! class_exists( 'RW_Meta_Box' ) )
 {
 	/**

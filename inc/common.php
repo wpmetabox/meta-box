@@ -5,9 +5,6 @@
  * @package Meta Box
  */
 
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
 if ( ! class_exists( 'RWMB_Common' ) )
 {
 	/**
@@ -17,21 +14,19 @@ if ( ! class_exists( 'RWMB_Common' ) )
 	{
 		/**
 		 * Add actions when class is loaded.
-		 * @return void
 		 */
-		public static function load()
+		public function __construct()
 		{
-			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
+			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 
 			$plugin = 'meta-box/meta-box.php';
-			add_filter( "plugin_action_links_$plugin", array( __CLASS__, 'plugin_links' ) );
+			add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_links' ) );
 		}
 
 		/**
 		 * Load plugin translation.
-		 * @return void
 		 */
-		public static function load_textdomain()
+		public function load_textdomain()
 		{
 			load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/lang/' );
 		}
@@ -43,13 +38,11 @@ if ( ! class_exists( 'RWMB_Common' ) )
 		 * @param array $links Array of action links
 		 * @return array
 		 */
-		public static function plugin_links( $links )
+		public function plugin_links( $links )
 		{
 			$links[] = '<a href="http://metabox.io/docs/">' . __( 'Documentation', 'meta-box' ) . '</a>';
 			$links[] = '<a href="http://metabox.io/plugins/">' . __( 'Extensions', 'meta-box' ) . '</a>';
 			return $links;
 		}
 	}
-
-	RWMB_Common::load();
 }
