@@ -2,9 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-require_once RWMB_FIELDS_DIR . 'multiple-values.php';
-
-class RWMB_Autocomplete_Field extends RWMB_Field_Multiple_Values
+class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 {
 	/**
 	 * Enqueue scripts and styles

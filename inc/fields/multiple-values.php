@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * - If field is cloneable, value is saved as a single entry in the database
  * - Otherwise value is saved as multiple entries
  */
-class RWMB_Field_Multiple_Values extends RWMB_Field
+abstract class RWMB_Multiple_Values_Field extends RWMB_Field
 {
 	/**
 	 * Normalize parameters for field

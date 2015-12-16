@@ -2,9 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-require_once RWMB_FIELDS_DIR . 'multiple-values.php';
-
-class RWMB_Checkbox_List_Field extends RWMB_Field_Multiple_Values
+class RWMB_Checkbox_List_Field extends RWMB_Multiple_Values_Field
 {
 	/**
 	 * Get field HTML

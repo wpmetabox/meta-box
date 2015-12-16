@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "input" field is loaded
-require_once RWMB_FIELDS_DIR . 'input.php';
-
 class RWMB_Radio_Field extends RWMB_Input_Field
 {
 	/**

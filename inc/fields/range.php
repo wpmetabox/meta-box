@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "number" field is loaded
-require_once RWMB_FIELDS_DIR . 'number.php';
-
 class RWMB_Range_Field extends RWMB_Number_Field
 {
 	/**

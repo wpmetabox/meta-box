@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "text" field is loaded
-require_once RWMB_FIELDS_DIR . 'url.php';
-
 class RWMB_OEmbed_Field extends RWMB_URL_Field
 {
 	/**

@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "select-advanced" field is loaded
-require_once RWMB_FIELDS_DIR . 'select-advanced.php';
-
 class RWMB_Post_Field extends RWMB_Select_Advanced_Field
 {
 	/**

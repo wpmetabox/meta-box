@@ -36,7 +36,8 @@ class RWMB_Loader
 		$this->url = $url ? esc_url_raw( $url ) : $this->base_url();
 
 		$this->constants();
-		$this->load_files();
+		spl_autoload_register( array( $this, 'autoload' ) );
+		$this->init();
 	}
 
 	/**
@@ -74,29 +75,55 @@ class RWMB_Loader
 	}
 
 	/**
-	 * Load plugin's files
+	 * Autoload fields' classes.
+	 * @param string $class Class name
 	 */
-	public function load_files()
+	public function autoload( $class )
 	{
-		// Fields
-		require_once RWMB_INC_DIR . 'field.php';
-		foreach ( glob( RWMB_FIELDS_DIR . '*.php' ) as $file )
+		// Only load plugin's classes
+		if ( 'RW_Meta_Box' != $class && 0 !== strpos( $class, 'RWMB_' ) )
 		{
-			require_once $file;
+			return;
 		}
 
-		// Meta Box class
-		require_once RWMB_INC_DIR . 'meta-box.php';
+		// Get file name
+		if ( 'RW_Meta_Box' == $class )
+		{
+			$file = 'meta-box';
+		}
+		else
+		{
+			// Remove prefix 'RWMB_'
+			$file = substr( $class, 5 );
+
+			// Optional '_Field'
+			$file = preg_replace( '/_Field$/', '', $file );
+		}
+
+		$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
+
+		$dirs = array( RWMB_INC_DIR, RWMB_FIELDS_DIR );
+		foreach ( $dirs as $dir )
+		{
+			if ( file_exists( trailingslashit( $dir ) . $file ) )
+			{
+				require trailingslashit( $dir ) . $file;
+			}
+		}
+	}
+
+	/**
+	 * Initialize plugin
+	 */
+	public function init()
+	{
+		// Bootstrap
+		new RWMB_Core;
 
 		// Validation module
-		require_once RWMB_INC_DIR . 'validation.php';
 		new RWMB_Validation;
 
-		// Helper function to retrieve meta value
-		require_once RWMB_INC_DIR . 'helpers.php';
-
-		// Main file
-		require_once RWMB_INC_DIR . 'core.php';
-		new RWMB_Core;
+		// Helper class and functions to retrieve meta value
+		require RWMB_INC_DIR . 'helpers.php';
 	}
 }

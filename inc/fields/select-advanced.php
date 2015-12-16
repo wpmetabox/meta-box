@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "select" field is loaded
-require_once RWMB_FIELDS_DIR . 'select.php';
-
 class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 {
 	/**

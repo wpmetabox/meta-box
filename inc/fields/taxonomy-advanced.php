@@ -1,7 +1,6 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
-require_once RWMB_FIELDS_DIR . 'taxonomy.php';
 
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 {

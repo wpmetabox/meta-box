@@ -1,8 +1,6 @@
 <?php
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
-require_once RWMB_FIELDS_DIR . 'select-advanced.php';
-require_once RWMB_FIELDS_DIR . 'checkbox-list.php';
 
 class RWMB_Taxonomy_Field extends RWMB_Field
 {

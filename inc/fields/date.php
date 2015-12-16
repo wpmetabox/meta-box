@@ -2,9 +2,6 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-// Make sure "text" field is loaded
-require_once RWMB_FIELDS_DIR . 'text.php';
-
 class RWMB_Date_Field extends RWMB_Text_Field
 {
 	/**
