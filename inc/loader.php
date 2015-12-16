@@ -7,71 +7,60 @@
  */
 
 /**
- * Plugin loader class
+ * Plugin loader class.
  * @package Meta Box
  */
 class RWMB_Loader
 {
 	/**
-	 * Plugin base URL
-	 * @var string
+	 * Class constructor.
 	 */
-	public $url;
-
-	/**
-	 * Plugin base path
-	 * @var string
-	 */
-	public $dir;
-
-	/**
-	 * Class constructor
-	 * @param string $url
-	 * @param string $dir
-	 */
-	public function __construct( $url = '', $dir = '' )
+	public function __construct()
 	{
-		$this->dir = $dir ? $dir : plugin_dir_path( dirname( __FILE__ ) );
-		$this->dir = trailingslashit( wp_normalize_path( $this->dir ) );
-		$this->url = $url ? esc_url_raw( $url ) : $this->base_url();
-
 		$this->constants();
 		spl_autoload_register( array( $this, 'autoload' ) );
 		$this->init();
 	}
 
 	/**
-	 * Get plugin base URL
-	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
-	 * @return string
-	 */
-	public function base_url()
-	{
-		// Get correct URL and path to wp-content
-		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
-		$content_dir = untrailingslashit( dirname( dirname( get_stylesheet_directory() ) ) );
-		$content_dir = wp_normalize_path( $content_dir );
-
-		return str_replace( $content_dir, $content_url, $this->dir );
-	}
-
-	/**
-	 * Define plugin constants
+	 * Define plugin constants.
 	 */
 	public function constants()
 	{
 		// Script version, used to add version for scripts and styles
 		define( 'RWMB_VER', '4.7.3' );
 
+		list( $path, $url ) = $this->get_path();
+
 		// Plugin URLs, for fast enqueuing scripts and styles
-		define( 'RWMB_URL', $this->url );
+		define( 'RWMB_URL', $url );
 		define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
 		define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
 		// Plugin paths, for including files
-		define( 'RWMB_DIR', $this->dir );
+		define( 'RWMB_DIR', $path );
 		define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
 		define( 'RWMB_FIELDS_DIR', trailingslashit( RWMB_INC_DIR . 'fields' ) );
+	}
+
+	/**
+	 * Get plugin base path and URL.
+	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
+	 * @return array Path and URL.
+	 */
+	public function get_path()
+	{
+		// Plugin base path
+		$path = plugin_dir_path( dirname( __FILE__ ) );
+		$path = trailingslashit( wp_normalize_path( $path ) );
+
+		// Get plugin base URL
+		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
+		$content_dir = untrailingslashit( dirname( dirname( get_stylesheet_directory() ) ) );
+		$content_dir = wp_normalize_path( $content_dir );
+		$url         = str_replace( $content_dir, $content_url, $path );
+
+		return array( $path, $url );
 	}
 
 	/**
@@ -113,11 +102,11 @@ class RWMB_Loader
 	}
 
 	/**
-	 * Initialize plugin
+	 * Initialize plugin.
 	 */
 	public function init()
 	{
-		// Bootstrap
+		// Plugin core
 		new RWMB_Core;
 
 		// Validation module
