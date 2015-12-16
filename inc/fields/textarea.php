@@ -52,7 +52,6 @@ if ( ! class_exists( 'RWMB_Textarea_Field' ) )
 				'maxlength' 	=> false,
 				'wrap'			=> false,
 				'readonly'		=> false,
-				'placeholder'	=> '',
 			) );
 
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(

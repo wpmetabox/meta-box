@@ -24,7 +24,6 @@ if ( ! class_exists( 'RWMB_Text_Field' ) )
 				'size'        => 30,
 				'maxlength'   => false,
 				'pattern'     => false,
-				'placeholder' => '',
 			) );
 
 			$field['attributes'] = wp_parse_args( $field['attributes'], array(
