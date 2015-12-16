@@ -23,7 +23,7 @@
     }
   ],
   "autoload": {
-    "files": ["meta-box-loader.php"],
+    "files": ["composer-loader.php"],
     "classmap": [
       "inc/fields",
       "inc/common.php",
