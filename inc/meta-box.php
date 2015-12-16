@@ -3,10 +3,9 @@
  * A class to rapid develop meta boxes for custom & built in content types
  * Piggybacks on WordPress
  *
- * @author  Rilwis
- * @author  Co-Authors @see https://github.com/rilwis/meta-box
+ * @author  Tran Ngoc Tuan Anh <rilwis@gmail.com>
  * @license GNU GPL2+
- * @package RW Meta Box
+ * @package Meta Box
  */
 class RW_Meta_Box
 {
