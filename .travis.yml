@@ -11,8 +11,8 @@ php:
 
 env:
   - WP_VERSION=master
+  - WP_VERSION=4.4
   - WP_VERSION=4.3
-  - WP_VERSION=4.2
 
 matrix:
   allow_failures:
@@ -41,7 +41,6 @@ before_script:
   - phpenv rehash
 
 script:
-  - find . \( -name '*.php' \) -exec php -lf {} \;
   - $WP_DEVELOP_DIR/php-codesniffer/scripts/phpcs -s -n . --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests
 
 notifications:

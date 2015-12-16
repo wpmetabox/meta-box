@@ -274,10 +274,7 @@ if ( ! class_exists( 'RWMB_Taxonomy_Field' ) )
 		 */
 		static function get_value( $field, $args = array(), $post_id = null )
 		{
-			if ( ! $post_id )
-				$post_id = get_the_ID();
-
-			$value = wp_get_post_terms( $post_id, $field['options']['taxonomy'] );
+			$value = self::meta( $post_id, false, $field );
 
 			// Get single value if necessary
 			if ( ! $field['clone'] && ! $field['multiple'] )
