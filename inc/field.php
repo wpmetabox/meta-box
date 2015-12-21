@@ -416,6 +416,7 @@ abstract class RWMB_Field
 			'max_clone'  => 0,
 			'sort_clone' => false,
 
+			'class'      => '',
 			'disabled'   => false,
 			'required'   => false,
 			'attributes' => array(),
