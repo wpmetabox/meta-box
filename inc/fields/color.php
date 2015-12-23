@@ -16,21 +16,6 @@ class RWMB_Color_Field extends RWMB_Text_Field
 	}
 
 	/**
-	 * Don't save '#' when no color is chosen
-	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
-	 *
-	 * @return int
-	 */
-	static function value( $new, $old, $post_id, $field )
-	{
-		return '#' === $new ? '' : $new;
-	}
-
-	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
