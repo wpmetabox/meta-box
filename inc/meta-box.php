@@ -389,7 +389,7 @@ class RW_Meta_Box
 	{
 		// Convert underscores to whitespace so ucwords works as expected. Otherwise: plupload_image -> Plupload_image instead of Plupload_Image
 		$type = str_replace( '-', '_', $field['type'] );
-        $type = str_replace( '_', ' ', $field['type'] );
+		$type = str_replace( '_', ' ', $field['type'] );
 
 		// Uppercase first words
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
