@@ -51,12 +51,26 @@ class RWMB_Loader
 	public function get_path()
 	{
 		// Plugin base path
-		$path = plugin_dir_path( dirname( __FILE__ ) );
+		$path = dirname( dirname( __FILE__ ) );
+
+		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
+		if ( false === strpos( $path, ABSPATH ) )
+		{
+			if ( ! function_exists( 'is_plugin_active' ) )
+			{
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			if ( is_plugin_active( 'meta-box/meta-box.php' ) )
+			{
+				$path = trailingslashit( WP_PLUGIN_DIR ) . 'meta-box';
+			}
+		}
+
 		$path = trailingslashit( wp_normalize_path( $path ) );
 
 		// Get plugin base URL
 		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
-		$content_dir = untrailingslashit( dirname( dirname( get_stylesheet_directory() ) ) );
+		$content_dir = untrailingslashit( WP_CONTENT_DIR );
 		$content_dir = wp_normalize_path( $content_dir );
 		$url         = str_replace( $content_dir, $content_url, $path );
 
