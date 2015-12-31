@@ -442,20 +442,16 @@ abstract class RWMB_Field
 	 */
 	static function render_attributes( $attributes )
 	{
-		$attr_string = '';
+		$output = '';
 		foreach ( $attributes as $key => $value )
 		{
-			if ( $value )
+			if ( false === $value || '' === $value )
 			{
-				$value = ( true === $value ) ? $key : $value;
-				$attr_string .= sprintf(
-					' %s="%s"',
-					$key,
-					esc_attr( $value )
-				);
+				continue;
 			}
+			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
 		}
-		return $attr_string;
+		return $output;
 	}
 
 	/**
