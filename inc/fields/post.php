@@ -32,7 +32,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			if ( is_string( $field['post_type'] ) && post_type_exists( $field['post_type'] ) )
 			{
 				$post_type_object		= get_post_type_object( $field['post_type'] );
-
 				$field['placeholder']	= sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
 		}

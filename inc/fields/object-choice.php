@@ -78,8 +78,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$field = RWMB_Input_Field::normalize( $field );
 				$field['attributes']['class'] = "rwmb-choice";
 				$field['attributes']['id']   = false;
-				$field['attributes']['type'] = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
-				$field['attributes']['name'] .= 	! $field['clone'] && $field['multiple'] ? '[]' : '';			
+				$field['attributes']['type'] = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';			
 				break;
 			case 'select_advanced':
 				$field['attributes']['class'] = "rwmb-choice rwmb-select_advanced";
@@ -92,6 +91,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$field = RWMB_Select_Field::normalize( $field );
 				break;
 		}
+		
+		$field['attributes']['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 
 		return $field;
 	}
