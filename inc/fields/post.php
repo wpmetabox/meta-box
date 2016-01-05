@@ -43,10 +43,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		}
 
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
-			'post_type'      => $field['post_type'],
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
+		$field['query_args']['post_type'] =  $field['post_type'];
+		
 
 		$field = parent::normalize( $field );
 		
