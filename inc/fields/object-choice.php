@@ -23,8 +23,23 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	static function html( $meta, $field )
 	{
 		$field_class = RW_Meta_Box::get_class_name( $field );
+		$meta = (array) $meta;
 		$options = call_user_func( array( $field_class, 'get_options' ), $field );
-		return '';
+		$output = '';
+		switch ( $field['field_type'] )
+		{
+			case 'checkbox_list':
+			case 'radio_list':
+				$output .= call_user_func( array( $field_class, 'render_list' ), $options, $meta, $field );
+				break;
+			case 'select_advanced':
+			case 'select':
+			case 'select_tree':
+			default:
+				$output .= call_user_func( array( $field_class, 'render_select' ), $options, $meta, $field );
+				break;
+		}
+		return $output;
 	}
 	
 	/**
@@ -40,7 +55,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		$field = wp_parse_args( $field, array(
 			'flat' 			=> true,
 			'parent' 		=> 0,
-			'query_args' 	=> array()
+			'query_args' 	=> array(),
+			'field_type'	=> 'select'
 		) );
 		
 		if( 'checkbox_tree' === $field['field_type'] )
@@ -56,24 +72,39 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		
 		switch ( $field['field_type'] )
 		{
-			case 'select_advanced':
-				$field = RWMB_Select_Advanced_Field::normalize( $field );
-				break;
 			case 'checkbox_list':
 			case 'radio_list':
-				$field = RWMB_Checkbox_List_Field::normalize( $field );
+				$field['multiple'] = 'radio_list' === $field['field_type'] ? false : true;
+				$field = RWMB_Input_Field::normalize( $field );
+				$field['attributes']['class'] = "rwmb-choice";
+				$field['attributes']['id']   = false;
+				$field['attributes']['type'] = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
+				$field['attributes']['name'] .= 	! $field['clone'] && $field['multiple'] ? '[]' : '';			
+				break;
+			case 'select_advanced':
+				$field['attributes']['class'] = "rwmb-choice rwmb-select_advanced";
+				$field = RWMB_Select_Advanced_Field::normalize( $field );
+				$field['flat'] = true;
 				break;
 			case 'select':
 			case 'select_tree':
+			default:
 				$field = RWMB_Select_Field::normalize( $field );
 				break;
-			default:
-				$field['field_type']	= 'select';
-				$field					= RWMB_Select_Field::normalize( $field );	
 		}
 
 		return $field;
 	}
+	
+	static function get_db_fields()
+	{
+		return array(
+            'parent'    => '',
+            'id'        => '',
+            'label'     => '',              
+        );
+	}
+	
 	
 	/**
 	 * Enqueue scripts and styles
@@ -84,16 +115,40 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	{
 		wp_enqueue_style( 'rwmb-object-choice', RWMB_CSS_URL . 'object-choice.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-object-choice', RWMB_JS_URL . 'object-choice.js', array(), RWMB_VER, true );
+		RWMB_Select_Field::admin_enqueue_scripts();
+		RWMB_Select_Advanced_Field::admin_enqueue_scripts();
 	}
 	
 	static function render_list( $options, $meta, $field )
 	{
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$db_fields = call_user_func( array( $field_class, 'get_db_fields' ), $field );
+		$walker = new RWMB_Choice_List_Walker( $db_fields, $field, $meta );
 		
+		$output = '<ul class="rwmb-choice-list">';
+		
+		$output .= $walker->walk( $options, $field['flat'] ? -1 : 0 );
+		$output .= '</ul>';
+		return $output;
 	}
 	
 	static function render_select( $options, $meta, $field )
 	{
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$db_fields = call_user_func( array( $field_class, 'get_db_fields' ), $field );
+		$walker = new RWMB_Select_Walker( $db_fields, $field, $meta );
 		
+		$output = sprintf(
+			'<select %s>',
+			self::render_attributes( $field['attributes'] )
+		);
+		if( 'select' === $field['field_type'] && false === $field['multiple'] )
+		{
+			$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		}
+		$output .= $walker->walk( $options, $field['flat'] ? -1 : 0 );
+		$output .= '</select>';
+		return $output;
 	}
 	
 	static function render_select_tree( $options, $meta, $field )
@@ -167,7 +222,7 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 * @param array  $args
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-		$output .= "<ul class='rwmb-choicelist-children hidden'>";
+		$output .= "<ul class='rwmb-choice-list hidden'>";
 	}
 
 	/**
@@ -194,12 +249,12 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
         $label = $this->db_fields['label'];  
         $id =  $this->db_fields['id'];   
         $meta = $this->meta;
+		$attributes = $this->field['attributes'];
+		$attributes['value'] = $object->$id;
    
-		/** This filter is documented in wp-includes/post-template.php */
 		$output .= sprintf(
-			'<li><label><input type="checkbox" class="rwmb-checkbox-list" name="%s" value="%s"%s> %s </label>',
-            $this->field['field_name'],
-			$object->$id,
+			'<li><label><input %s %s>%s</label>',
+			RWMB_Field::render_attributes( $attributes ),			
 			checked( in_array( $object->$id, $meta ), 1, false ),
 			$object->$label
 		);

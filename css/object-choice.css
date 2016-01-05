@@ -1,7 +1,7 @@
-.rwmb-checklist li{
+.rwmb-choice-list li{
 	line-height: 22px;
 }
 
-.rwmb-checklist-children {
+li .rwmb-choice-list {
 	margin-left: 18px;
 }

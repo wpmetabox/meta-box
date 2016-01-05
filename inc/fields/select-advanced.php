@@ -30,12 +30,8 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	static function html( $meta, $field )
 	{
 		$html = sprintf(
-			'<select class="rwmb-select-advanced" name="%s" id="%s" size="%s"%s data-options="%s">',
-			$field['field_name'],
-			$field['id'],
-			$field['size'],
-			$field['multiple'] ? ' multiple' : '',
-			esc_attr( wp_json_encode( $field['js_options'] ) )
+			'<select %s>',
+			self::render_attributes( $field['attributes'] )
 		);
 
 		$html .= self::options_html( $field, $meta );
@@ -56,16 +52,21 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	static function normalize( $field )
 	{
-		$field = parent::normalize( $field );
-
 		$field = wp_parse_args( $field, array(
 			'js_options' => array(),
-		) );
+			'placeholder' => 'Select an item'
+		) ); 
+		
+		$field = parent::normalize( $field );		
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
 			'allowClear'  => true,
 			'width'       => 'off',
 			'placeholder' => $field['placeholder'],
+		) );
+		
+		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+			'data-options'  => wp_json_encode( $field['js_options'] ),
 		) );
 
 		return $field;

@@ -2,39 +2,8 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class RWMB_Post_Field extends RWMB_Select_Advanced_Field
+class RWMB_Post_Field extends RWMB_Object_Choice_Field
 {
-	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
-	 */
-	static function admin_enqueue_scripts()
-	{
-		RWMB_Select_Field::admin_enqueue_scripts();
-		RWMB_Select_Advanced_Field::admin_enqueue_scripts();
-	}
-
-	/**
-	 * Get field HTML
-	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 *
-	 * @return string
-	 */
-	static function html( $meta, $field )
-	{
-		$field['options'] = self::get_options( $field );
-		switch ( $field['field_type'] )
-		{
-			case 'select':
-				return RWMB_Select_Field::html( $meta, $field );
-			case 'select_advanced':
-			default:
-				return RWMB_Select_Advanced_Field::html( $meta, $field );
-		}
-	}
 
 	/**
 	 * Normalize parameters for field
@@ -80,15 +49,18 @@ class RWMB_Post_Field extends RWMB_Select_Advanced_Field
 			'posts_per_page' => - 1,
 		) );
 
-		switch ( $field['field_type'] )
-		{
-			case 'select':
-				return RWMB_Select_Field::normalize( $field );
-				break;
-			case 'select_advanced':
-			default:
-				return RWMB_Select_Advanced_Field::normalize( $field );
-		}
+		$field = parent::normalize( $field );
+		
+		return $field;
+	}
+	
+	static function get_db_fields()
+	{
+		return array(
+            'parent'    => 'post_parent',
+            'id'        => 'ID',
+            'label'     => 'post_title',              
+        );
 	}
 
 	/**
@@ -125,20 +97,9 @@ class RWMB_Post_Field extends RWMB_Select_Advanced_Field
 	 */
 	static function get_options( $field )
 	{
-		$options = array();
-		$query   = new WP_Query( $field['query_args'] );
-		if ( $query->have_posts() )
-		{
-			while ( $query->have_posts() )
-			{
-				$post               = $query->next_post();
-				$title 				= apply_filters( 'rwmb_post_field_title', $post->post_title, $post );
-				$title 				= apply_filters( "rwmb_{$field['id']}_field_title", $title, $post );
-				$options[$post->ID] = $title;
-			}
-		}
 
-		return $options;
+		$query   = new WP_Query( $field['query_args'] );
+		return $query->have_posts() ? $query->posts : array();
 	}
 
 	/**

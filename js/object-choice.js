@@ -19,7 +19,7 @@ jQuery( function( $ )
 		}
 	}
 	
-	$( '.rwmb-checklist :checkbox' )
+	$( '.rwmb-choice-list :checkbox' )
 		.each( updateChecklist )
 		.change( updateChecklist );	
 } );
