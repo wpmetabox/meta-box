@@ -23,8 +23,58 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	static function html( $meta, $field )
 	{
 		$field_class = RW_Meta_Box::get_class_name( $field );
+		$options = call_user_func( array( $field_class, 'get_options' ), $field );
 		return '';
 	}
+	
+	/**
+	 * Normalize parameters for field
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */
+	static function normalize( $field )
+	{
+		$field = parent::normalize( $field );
+		$field = wp_parse_args( $field, array(
+			'flat' 			=> true,
+			'parent' 		=> 0,
+			'query_args' 	=> array()
+		) );
+		
+		if( 'checkbox_tree' === $field['field_type'] )
+		{
+			$field['field_type'] = 'checkbox_list';
+			$field['flat'] = false;
+		}
+		
+		if( 'radio_list' === $field['field_type'] )
+		{
+			$field['flat'] = true;
+		}
+		
+		switch ( $field['field_type'] )
+		{
+			case 'select_advanced':
+				$field = RWMB_Select_Advanced_Field::normalize( $field );
+				break;
+			case 'checkbox_list':
+			case 'radio_list':
+				$field = RWMB_Checkbox_List_Field::normalize( $field );
+				break;
+			case 'select':
+			case 'select_tree':
+				$field = RWMB_Select_Field::normalize( $field );
+				break;
+			default:
+				$field['field_type']	= 'select';
+				$field					= RWMB_Select_Field::normalize( $field );	
+		}
+
+		return $field;
+	}
+	
 	/**
 	 * Enqueue scripts and styles
 	 *
@@ -51,7 +101,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		
 	}
 		
-	static function query( $field )
+	static function get_options( $field )
 	{
 		return array();
 	}
@@ -107,7 +157,7 @@ class RWMB_Select_Walker extends RWMB_Walker
 	}
 }
 
-class RWMB_Checklist_Walker extends RWMB_Walker
+class RWMB_Choice_List_Walker extends RWMB_Walker
 {
   /**
 	 * @see Walker::start_lvl()
@@ -117,7 +167,7 @@ class RWMB_Checklist_Walker extends RWMB_Walker
 	 * @param array  $args
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-		$output .= "<ul class='rwmb-checklist-children hidden'>";
+		$output .= "<ul class='rwmb-choicelist-children hidden'>";
 	}
 
 	/**
