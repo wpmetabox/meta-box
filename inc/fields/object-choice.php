@@ -53,7 +53,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	{
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'flat' 			=> true,
+			'flatten' 			=> true,
 			'parent' 		=> 0,
 			'query_args' 	=> array(),
 			'field_type'	=> 'select'
@@ -62,12 +62,12 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		if( 'checkbox_tree' === $field['field_type'] )
 		{
 			$field['field_type'] = 'checkbox_list';
-			$field['flat'] = false;
+			$field['flatten'] = false;
 		}
 		
 		if( 'radio_list' === $field['field_type'] )
 		{
-			$field['flat'] = true;
+			$field['flatten'] = true;
 		}
 		
 		switch ( $field['field_type'] )
@@ -84,7 +84,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			case 'select_advanced':
 				$field['attributes']['class'] = "rwmb-choice rwmb-select_advanced";
 				$field = RWMB_Select_Advanced_Field::normalize( $field );
-				$field['flat'] = true;
+				$field['flatten'] = true;
 				break;
 			case 'select':
 			case 'select_tree':
@@ -127,7 +127,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		
 		$output = '<ul class="rwmb-choice-list">';
 		
-		$output .= $walker->walk( $options, $field['flat'] ? -1 : 0 );
+		$output .= $walker->walk( $options, $field['flatten'] ? -1 : 0 );
 		$output .= '</ul>';
 		return $output;
 	}
@@ -146,7 +146,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		{
 			$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 		}
-		$output .= $walker->walk( $options, $field['flat'] ? -1 : 0 );
+		$output .= $walker->walk( $options, $field['flatten'] ? -1 : 0 );
 		$output .= '</select>';
 		return $output;
 	}
@@ -222,7 +222,7 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 * @param array  $args
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-		$output .= "<ul class='rwmb-choice-list hidden'>";
+		$output .= "<ul class='rwmb-choice-list'>";
 	}
 
 	/**

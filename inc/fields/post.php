@@ -16,7 +16,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'post_type'  => 'post',
-			'field_type' => 'select_advanced',
+			'field_type' => 'select',
 			'parent'     => false,
 			'query_args' => array(),
 		) );
@@ -28,13 +28,13 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		 */
 		if ( empty( $field['placeholder'] ) )
 		{
-			$label = __( 'Select a post', 'meta-box' );
+			$field['placeholder'] = __( 'Select a post', 'meta-box' );
 			if ( is_string( $field['post_type'] ) && post_type_exists( $field['post_type'] ) )
 			{
-				$post_type_object = get_post_type_object( $field['post_type'] );
-				$label            = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
+				$post_type_object		= get_post_type_object( $field['post_type'] );
+
+				$field['placeholder']	= sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
-			$field['placeholder'] = $label;
 		}
 
 		if ( $field['parent'] )
