@@ -27,7 +27,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 		$attributes          = $field['attributes'];
 		$attributes['value'] = 1;
 		return sprintf(
-			'<input %s value="1" %s>',
+			'<input %s %s>',
 			self::render_attributes( $attributes ),
 			checked( ! empty( $meta ), 1, false )
 		);
