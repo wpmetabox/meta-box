@@ -57,10 +57,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	static function get_db_fields()
 	{
 		return array(
-            'parent'    => 'post_parent',
-            'id'        => 'ID',
-            'label'     => 'post_title',              
-        );
+			'parent'    => 'post_parent',
+			'id'        => 'ID',
+			'label'     => 'post_title',              
+		);
 	}
 
 	/**
