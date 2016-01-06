@@ -49,10 +49,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	static function get_db_fields()
 	{
 		return array(
-            'parent'    => 'parent',
-            'id'        => 'ID',
-            'label'     => 'display_name',              
-        );
+			'parent'    => 'parent',
+			'id'        => 'ID',
+			'label'     => 'display_name',              
+		);
 	}
 	/**
 	 * Get option label to display in the frontend

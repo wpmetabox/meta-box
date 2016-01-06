@@ -65,15 +65,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			$field['flatten'] = false;
 		}
 		
-		if( 'radio_list' === $field['field_type'] )
-		{
-			$field['flatten'] = true;
-		}
-		
 		switch ( $field['field_type'] )
 		{
 			case 'checkbox_list':
 			case 'radio_list':
+				$field['flatten'] = 'radio_list' === $field['field_type'] ? true : $field['flatten'];
 				$field['multiple'] = 'radio_list' === $field['field_type'] ? false : true;
 				$field = RWMB_Input_Field::normalize( $field );
 				$field['attributes']['class'] = "rwmb-choice";
