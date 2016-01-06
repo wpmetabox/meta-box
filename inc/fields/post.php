@@ -14,6 +14,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 */
 	static function normalize( $field )
 	{
+		/**
+		 * Set default field args
+		 */
 		$field = wp_parse_args( $field, array(
 			'post_type'  => 'post',
 			'field_type' => 'select',
@@ -35,13 +38,19 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 				$field['placeholder']	= sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
 		}
-
+		
+		/**
+		 * Set parent option, which will change field name to `parent_id` to save as post parent
+		 */
 		if ( $field['parent'] )
 		{
 			$field['multiple']   = false;
 			$field['field_name'] = 'parent_id';
 		}
-
+		
+		/**
+		 * Set default query args
+		 */
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
@@ -54,6 +63,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		return $field;
 	}
 	
+	/**
+	 * Get field names of object to be used by walker
+	 *
+	 * @return array
+	 */
 	static function get_db_fields()
 	{
 		return array(
@@ -81,7 +95,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		if ( isset( $field['parent'] ) && $field['parent'] )
 		{
 			$post = get_post( $post_id );
-
 			return $post->post_parent;
 		}
 
@@ -89,7 +102,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	}
 
 	/**
-	 * Get posts
+	 * Get options for walker
 	 *
 	 * @param array $field
 	 *
@@ -97,7 +110,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 */
 	static function get_options( $field )
 	{
-
 		$query   = new WP_Query( $field['query_args'] );
 		return $query->have_posts() ? $query->posts : array();
 	}

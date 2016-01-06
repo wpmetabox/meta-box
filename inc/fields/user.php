@@ -13,15 +13,27 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 */
 	static function normalize( $field )
 	{
+		/**
+		 * Set default field args
+		 */
 		$field = wp_parse_args( $field, array(
 			'field_type' => 'select',
 			'query_args' => array(),
 		) );
 		
+		/**
+		 * Set to always flat
+		 */
 		$field['flatten'] = true;
-
+		
+		/**
+		 * Set default placeholder
+		 */
 		$field['placeholder'] = empty( $field['placeholder'] ) ? __( 'Select an user', 'meta-box' ) : $field['placeholder'];
-
+		
+		/**
+		 * Set default query args
+		 */
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'orderby' => 'display_name',
 			'order'   => 'asc',
@@ -46,6 +58,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 		return $options;
 	}
 	
+	/**
+	 * Get field names of object to be used by walker
+	 *
+	 * @return array
+	 */
 	static function get_db_fields()
 	{
 		return array(

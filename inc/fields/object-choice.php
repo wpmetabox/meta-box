@@ -93,6 +93,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		return $field;
 	}
 	
+	/**
+	 * Get field names of object to be used by walker
+	 *
+	 * @return array
+	 */
 	static function get_db_fields()
 	{
 		return array(
@@ -116,6 +121,15 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		RWMB_Select_Advanced_Field::admin_enqueue_scripts();
 	}
 	
+	/**
+	 * Render checkbox_list or radio_list using walker
+	 *
+	 * @param $options
+	 * @param $meta
+	 * @param $field
+	 *
+	 * @return array
+	 */
 	static function render_list( $options, $meta, $field )
 	{
 		$field_class = RW_Meta_Box::get_class_name( $field );
@@ -129,6 +143,15 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		return $output;
 	}
 	
+	/**
+	 * Render select or select_advanced using walker
+	 *
+	 * @param $options
+	 * @param $meta
+	 * @param $field
+	 *
+	 * @return array
+	 */
 	static function render_select( $options, $meta, $field )
 	{
 		$field_class = RW_Meta_Box::get_class_name( $field );
@@ -148,11 +171,27 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		return $output;
 	}
 	
+	/**
+	 * Render select_tree
+	 *
+	 * @param $options
+	 * @param $meta
+	 * @param $field
+	 *
+	 * @return array
+	 */
 	static function render_select_tree( $options, $meta, $field )
 	{
 		
 	}
-		
+	
+	/**
+	 * Get options for walker
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */	
 	static function get_options( $field )
 	{
 		return array();
@@ -188,9 +227,9 @@ class RWMB_Select_Walker extends RWMB_Walker
 	 * @see Walker::start_el()
 	 *
 	 * @param string $output               Passed by reference. Used to append additional content.
-	 * @param object $page                 Page data object.
-	 * @param int    $depth                Depth of page. 
-	 * @param int    $current_object_id    Page ID.
+	 * @param object $object               Item
+	 * @param int    $depth                Depth of Item. 
+	 * @param int    $current_object_id    Item id.
 	 * @param array  $args
 	 */
 	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
@@ -215,7 +254,7 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 * @see Walker::start_lvl()
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of page. 
+	 * @param int    $depth  Depth of item. 
 	 * @param array  $args
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
@@ -226,7 +265,7 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 * @see Walker::end_lvl()
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of page. 
+	 * @param int    $depth  Depth of item. 
 	 * @param array  $args
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() ) {
@@ -237,17 +276,17 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 * @see Walker::start_el()
 	 *
 	 * @param string $output               Passed by reference. Used to append additional content.
-	 * @param object $page                 Page data object.
-	 * @param int    $depth                Depth of page. 
-	 * @param int    $current_object_id    Page ID.
+	 * @param object $object               Item data object.
+	 * @param int    $depth                Depth of item. 
+	 * @param int    $current_object_id    Item ID.
 	 * @param array  $args
 	 */
 	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
-        $label = $this->db_fields['label'];  
-        $id =  $this->db_fields['id'];   
-        $meta = $this->meta;
-		$attributes = $this->field['attributes'];
-		$attributes['value'] = $object->$id;
+        $label					= $this->db_fields['label'];  
+        $id 					= $this->db_fields['id'];   
+        $meta 					= $this->meta;
+		$attributes 			= $this->field['attributes'];
+		$attributes['value'] 	= $object->$id;
    
 		$output .= sprintf(
 			'<li><label><input %s %s>%s</label>',
