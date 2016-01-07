@@ -32,9 +32,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			case 'radio_list':
 				$output .= call_user_func( array( $field_class, 'render_list' ), $options, $meta, $field );
 				break;
+			case 'select_tree':
+				$output .= call_user_func( array( $field_class, 'render_select_tree' ), $options, $meta, $field );
+				break;
 			case 'select_advanced':
 			case 'select':
-			case 'select_tree':
 			default:
 				$output .= call_user_func( array( $field_class, 'render_select' ), $options, $meta, $field );
 				break;
@@ -182,7 +184,20 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	 */
 	static function render_select_tree( $options, $meta, $field )
 	{
+		$output = '';
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$db_fields = call_user_func( array( $field_class, 'get_db_fields' ), $field );
+		$parent = $db_fields['parent'];
+		$children = array();
 		
+		foreach( $options as $o )
+		{
+			$children[$o->$parent][] = $o;
+		}
+		$top_level = isset( $children[0] ) ? $children[0] : $children[$options[0]->$parent];
+		$output .= call_user_func( array( $field_class, 'render_select' ), $top_level, $meta, $field );
+		
+		return $output;
 	}
 	
 	/**
