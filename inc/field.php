@@ -421,6 +421,9 @@ abstract class RWMB_Field
 			'required'   => false,
 			'attributes' => array(),
 		) );
+		
+		//Make sure all letters are lower case for id 
+		$field['id'] = strtolower( $field['id'] );
 
 		$field['attributes'] = wp_parse_args( $field['attributes'], array(
 			'disabled' => $field['disabled'],
