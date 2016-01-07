@@ -103,9 +103,7 @@ class RWMB_Select_Field extends RWMB_Field
 		$html = '';
 		if ( $field['placeholder'] )
 		{
-			$show_placeholder = ( 'select' === $field['type'] ) // Normal select field
-				|| ( isset( $field['field_type'] ) && 'select' === $field['field_type'] ) // For 'post' field
-				|| ( isset( $field['display_type'] ) && 'select' === $field['display_type'] ); // For 'taxonomy' field
+			$show_placeholder = ( 'select' === $field['type'] ) ; // For 'taxonomy' field
 			$html             = $show_placeholder ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 		}
 

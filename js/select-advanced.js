@@ -18,6 +18,6 @@ jQuery( function ( $ )
 		rwmbSelect.bindEvents( $this );
 	}
 
-	$( ':input.rwmb-select-advanced' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select-advanced', update );
+	$( ':input.rwmb-select_advanced' ).each( update );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select_advanced', update );
 } );
