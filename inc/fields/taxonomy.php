@@ -14,6 +14,16 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	static function normalize( $field )
 	{
 		/**
+		 * Backwards compatibility with field args
+		 */
+		if( isset( $field['options']['args'] ) )
+		{
+			$field['query_args'] = $field['options']['args']; 
+			$field['taxonomy'] = $field['options']['taxonomy'];
+			$field['field_type'] = $field['options']['type'];
+		}
+		
+		/**
 		 * Set default field args
 		 */
 		$field = wp_parse_args( $field, array(
@@ -21,15 +31,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 			'field_type' => 'select',
 			'query_args' => array(),
 		) );
-		
-		/**
-		 * Backwards compatibility with field args
-		 */
-		if( isset( $field['options']['args'] ) )
-		{
-			$field['query_args'] = $field['options']['args']; 
-			$field['taxonomy'] = $field['options']['taxonomy'];
-		}
 		
 		/**
 		 * Set default query args
