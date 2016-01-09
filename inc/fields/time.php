@@ -60,11 +60,24 @@ class RWMB_Time_Field extends RWMB_Text_Field
 		) );
 
 		$field = parent::normalize( $field );
-
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
-			'data-options' => wp_json_encode( $field['js_options'] ),
-		) );
-
 		return $field;
 	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes =  wp_parse_args( $attributes, array(
+			'data-options' => wp_json_encode( $field['js_options'] ),
+		) );
+			
+		return $attributes;
+	}	
 }

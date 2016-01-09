@@ -14,7 +14,8 @@ class RWMB_Textarea_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = $field['attributes'];
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
 		return sprintf(
 			'<textarea %s>%s</textarea>',
 			self::render_attributes( $attributes ),
@@ -52,7 +53,21 @@ class RWMB_Textarea_Field extends RWMB_Field
 			'readonly'		=> false,
 		) );
 
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
 			'cols' 			=> $field['cols'],
 			'rows' 			=> $field['rows'],
 			'maxlength' 	=> $field['maxlength'],
@@ -60,8 +75,8 @@ class RWMB_Textarea_Field extends RWMB_Field
 			'readonly'		=> $field['readonly'],
 			'placeholder'	=> $field['placeholder'],
 		) );
-		$field['attributes']['class'] .= ' large-text';
-
-		return $field;
-	}
+		$attributes['class'] .= ' large-text';
+			
+		return $attributes;
+	}	
 }

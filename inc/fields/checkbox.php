@@ -24,29 +24,31 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes          = $field['attributes'];
-		$attributes['value'] = 1;
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, 1 );
+
 		return sprintf(
 			'<input %s %s>',
 			self::render_attributes( $attributes ),
 			checked( ! empty( $meta ), 1, false )
 		);
 	}
-
+	
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field
 	 *
 	 * @param array $field
+	 * @param mixed value
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	static function get_attributes( $field, $value = null )
 	{
-		$field                       = parent::normalize( $field );
-		$field['attributes']['list'] = false;
-		$field['attributes']['type'] = 'checkbox';
-
-		return $field;
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'checkbox';
+		$attributes['list'] = false;		
+		
+		return $attributes;
 	}
 
 	/**

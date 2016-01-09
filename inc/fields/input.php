@@ -14,8 +14,8 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes          = $field['attributes'];
-		$attributes['value'] = $meta;
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
 
 		return sprintf(
 			'<input %s>%s',
@@ -46,12 +46,28 @@ abstract class RWMB_Input_Field extends RWMB_Field
 			) );
 		}
 
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
-			'list'     => $field['datalist'] ? $field['datalist']['id'] : false,
-			'readonly' => $field['readonly'],
-		) );
-
 		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
+			'list'			=> $field['datalist'] ? $field['datalist']['id'] : false,
+			'readonly'		=> $field['readonly'],
+			'value'			=> $value,
+			'placeholder'	=> $field['placeholder'],
+		) );
+		
+		return $attributes;
 	}
 
 	/**

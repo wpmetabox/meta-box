@@ -16,11 +16,11 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 	{
 		$html       = array();
 		$tpl        = '<label><input %s %s> %s</label>';
-		$attributes = $field['attributes'];
-
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		
 		foreach ( $field['options'] as $value => $label )
 		{
-			$attributes['value'] = $value;
+			$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $value );
 			$html[]              = sprintf(
 				$tpl,
 				self::render_attributes( $attributes ),
@@ -31,23 +31,23 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 
 		return implode( ' ', $html );
 	}
-
+	
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field
 	 *
 	 * @param array $field
+	 * @param mixed value
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	static function get_attributes( $field, $value = null )
 	{
-		$field = parent::normalize( $field );
-
-		$field['attributes']['list'] = false;
-		$field['attributes']['id']   = false;
-		$field['attributes']['type'] = 'radio';
-
-		return $field;
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['list'] = false;
+		$attributes['id']   = false;
+		$attributes['type'] = 'radio';
+			
+		return $attributes;
 	}
 
 	/**

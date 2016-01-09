@@ -153,6 +153,21 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 
 		return $field;
 	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = RWMB_Date_Field::get_attributes( $field, $value );
+			
+		return $attributes;
+	}
 
 	/**
 	 * Returns a date() compatible format string from the JavaScript format

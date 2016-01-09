@@ -21,14 +21,27 @@ class RWMB_Number_Field extends RWMB_Input_Field
 			'max'  => false,
 		) );
 
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
 			'step' => $field['step'],
 			'max'  => $field['max'],
 			'min'  => $field['min'],
 		) );
-
-		$field['attributes']['type'] = 'number';
-
-		return $field;
+		$attributes['type'] = 'number';
+			
+		return $attributes;
 	}
 }

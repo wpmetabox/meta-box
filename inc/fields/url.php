@@ -5,20 +5,20 @@ defined( 'ABSPATH' ) || exit;
 class RWMB_URL_Field extends RWMB_Text_Field
 {
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field
 	 *
 	 * @param array $field
+	 * @param mixed value
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	static function get_attributes( $field, $value = null )
 	{
-		$field = parent::normalize( $field );
-
-		$field['attributes']['type'] = 'url';
-
-		return $field;
-	}
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'url';
+			
+		return $attributes;
+	}	
 
 	/**
 	 * Sanitize url

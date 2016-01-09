@@ -81,13 +81,26 @@ class RWMB_Select_Field extends RWMB_Field
 		) );
 
 		$field['field_name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
-
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
 			'multiple' => $field['multiple'],
 			'size'     => $field['size'],
 		) );
 
-		return $field;
+		return $attributes;
 	}
 
 	/**

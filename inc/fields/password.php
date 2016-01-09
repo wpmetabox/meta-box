@@ -5,18 +5,18 @@ defined( 'ABSPATH' ) || exit;
 class RWMB_Password_Field extends RWMB_Text_Field
 {
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field
 	 *
 	 * @param array $field
+	 * @param mixed value
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	static function get_attributes( $field, $value = null )
 	{
-		$field = parent::normalize( $field );
-
-		$field['attributes']['type'] = 'password';
-
-		return $field;
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'password';
+			
+		return $attributes;
 	}
 }

@@ -21,15 +21,29 @@ class RWMB_Text_Field extends RWMB_Input_Field
 			'pattern'     => false,
 		) );
 
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
 			'size'        => $field['size'],
 			'maxlength'   => $field['maxlength'],
 			'pattern'     => $field['pattern'],
 			'placeholder' => $field['placeholder'],
 		) );
-
-		$field['attributes']['type'] = 'text';
-
-		return $field;
+		
+		$attributes['type'] = 'text';
+		
+		return $attributes;
 	}
 }

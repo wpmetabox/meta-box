@@ -15,9 +15,22 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	{
 		$field = parent::normalize( $field );
 
-		$field['attributes']['type']  = 'email';
-
 		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'email';	
+		return $attributes;
 	}
 
 	/**

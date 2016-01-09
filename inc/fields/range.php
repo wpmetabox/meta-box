@@ -31,9 +31,23 @@ class RWMB_Range_Field extends RWMB_Number_Field
 
 		$field = parent::normalize( $field );
 
-		$field['attributes']['type'] = 'range';
-
 		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'range';
+			
+		return $attributes;
 	}
 
 	/**

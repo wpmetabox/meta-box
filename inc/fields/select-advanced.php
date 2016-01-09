@@ -29,9 +29,11 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	static function html( $meta, $field )
 	{
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
 		$html = sprintf(
 			'<select %s>',
-			self::render_attributes( $field['attributes'] )
+			self::render_attributes( $attributes )
 		);
 
 		$html .= self::options_html( $field, $meta );
@@ -64,11 +66,25 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 			'width'       => 'off',
 			'placeholder' => $field['placeholder'],
 		) );
-		
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
 			'data-options'  => wp_json_encode( $field['js_options'] ),
 		) );
 
-		return $field;
+		return $attributes;
 	}
 }

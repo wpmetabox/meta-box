@@ -77,12 +77,12 @@ abstract class RWMB_Field
 			foreach ( $meta as $index => $sub_meta )
 			{
 				$sub_field               = $field;
-				$sub_field['attributes']['name'] = $subfield['field_name'] = $field['field_name'] . "[{$index}]";
+				$subfield['field_name'] = $field['field_name'] . "[{$index}]";
 				if ( $index > 0 )
 				{
 					if ( isset( $sub_field['address_field'] ) )
 						$sub_field['address_field'] = $field['address_field'] . "_{$index}";
-					$sub_field['attributes']['id'] = $sub_field['id'] = $field['id'] . "_{$index}";
+					$sub_field['id'] = $field['id'] . "_{$index}";
 				}
 				if ( $field['multiple'] )
 				{
@@ -428,15 +428,28 @@ abstract class RWMB_Field
 		//Make sure all letters are lower case for id 
 		$field['id'] = strtolower( $field['id'] );
 
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+		return $field;
+	}
+	
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = wp_parse_args( $field['attributes'], array(
 			'disabled' => $field['disabled'],
 			'required' => $field['required'],
 			'class'    => "rwmb-{$field['type']}",
 			'id'       => $field['clone'] ? false : $field['id'],
 			'name'     => $field['field_name'],
 		) );
-
-		return $field;
+		
+		return $attributes;
 	}
 	
 	/**
