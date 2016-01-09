@@ -3,5 +3,13 @@
 }
 
 li .rwmb-choice-list {
-	margin-left: 18px;
+	margin-left: 15px;
+}
+
+.rwmb-select-tree {
+	display: inline-block;
+}
+
+.rwmb-select-tree.hidden {
+	display: none;
 }
