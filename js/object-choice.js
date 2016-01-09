@@ -37,5 +37,7 @@ jQuery( function( $ )
 			.prop( 'selectedIndex', 0 );			
 	}
 	
-	$( '.rwmb-input' ).on( 'change', '.rwmb-select-tree select', updateSelectTree );
+	$( '.rwmb-input' )
+		.on( 'change', '.rwmb-select-tree select', updateSelectTree )
+		.on( 'clone', '.rwmb-select-tree select', updateSelectTree );
 } );
