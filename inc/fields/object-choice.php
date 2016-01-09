@@ -84,6 +84,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$field = RWMB_Select_Field::normalize( $field );
 				break;
 		}
+		
+		$field['attributes']['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : ''; 
 
 		return $field;
 	}
