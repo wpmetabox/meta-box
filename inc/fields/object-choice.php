@@ -1,11 +1,4 @@
 <?php
-
-/*TODO:
-* - render functions for checklist, select and select tree
-* - hierarchy option  
-* - standardize options for normalize
-* - use render_attributes 
-*/ 
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
@@ -103,10 +96,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	static function get_db_fields()
 	{
 		return array(
-            'parent'    => '',
-            'id'        => '',
-            'label'     => '',              
-        );
+			'parent'    => '',
+			'id'        => '',
+			'label'     => '',              
+		);
 	}
 	
 	
