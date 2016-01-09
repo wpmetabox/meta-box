@@ -22,6 +22,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 		) );
 		
 		/**
+		 * Prevent select tree for user since it's not hierarchical
+		 */
+		 $field['field_type'] = 'select_tree' === $field['field_type'] ? 'select' : $field['field_type']; 
+		
+		/**
 		 * Set to always flat
 		 */
 		$field['flatten'] = true;

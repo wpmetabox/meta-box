@@ -53,6 +53,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 			}
 		}
 		
+		/**
+		 * Prevent cloning for taxonomy field 
+		 */
+		$field['clone'] = false;
+		
 		$field = parent::normalize( $field );
 		return $field;
 	}
@@ -70,42 +75,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
             'label'     => 'name',              
         );
 	}
-
-	/**
-	 * Walker for displaying select in tree format
-	 *
-	 * @param        $meta
-	 * @param        $field
-	 * @param        $elements
-	 * @param int    $parent
-	 * @param bool   $active
-	 *
-	 * @return string
-	 */
-	static function walk_select_tree( $meta, $field, $elements, $parent = 0, $active = false )
-	{
-		if ( ! isset( $elements[$parent] ) )
-			return '';
-		$meta             = empty( $meta ) ? array() : ( ! is_array( $meta ) ? array() : $meta );
-		$terms            = $elements[$parent];
-		$field['options'] = self::get_options( $terms );
-
-		$classes   = array( 'rw-taxonomy-tree' );
-		$classes[] = $active ? 'active' : 'disabled';
-		$classes[] = "rwmb-taxonomy-{$parent}";
-
-		$html = '<div class="' . implode( ' ', $classes ) . '">';
-		$html .= RWMB_Select_Field::html( $meta, $field );
-		foreach ( $terms as $term )
-		{
-			$html .= self::walk_select_tree( $meta, $field, $elements, $term->term_id, $active && in_array( $term->term_id, $meta ) );
-		}
-		$html .= '</div>';
-
-		return $html;
-	}
-
-
 
 	/**
 	 * Get options for selects, checkbox list, etc via the terms

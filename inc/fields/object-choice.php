@@ -83,8 +83,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$field = RWMB_Select_Advanced_Field::normalize( $field );
 				$field['flatten'] = true;
 				break;
-			case 'select':
 			case 'select_tree':
+				$field['attributes']['multiple'] = false;
+				$field['multiple'] = true;
+				break;
+			case 'select':
 			default:
 				$field = RWMB_Select_Field::normalize( $field );
 				break;
@@ -184,19 +187,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	 */
 	static function render_select_tree( $options, $meta, $field )
 	{
-		$output = '';
 		$field_class = RW_Meta_Box::get_class_name( $field );
 		$db_fields = call_user_func( array( $field_class, 'get_db_fields' ), $field );
-		$parent = $db_fields['parent'];
-		$children = array();
-		
-		foreach( $options as $o )
-		{
-			$children[$o->$parent][] = $o;
-		}
-		$top_level = isset( $children[0] ) ? $children[0] : $children[$options[0]->$parent];
-		$output .= call_user_func( array( $field_class, 'render_select' ), $top_level, $meta, $field );
-		
+		$walker = new RWMB_Select_Tree_Walker( $db_fields, $field, $meta );
+		$output = $walker->walk( $options );
+
 		return $output;
 	}
 	
@@ -322,4 +317,76 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	public function end_el( &$output, $page, $depth = 0, $args = array() ) {
 		$output .= "</li>";
 	}  
+}
+
+class RWMB_Select_Tree_Walker 
+{
+    /**
+    * Field data.
+    *
+    * @access public
+    * @var string
+    */
+    public $field;
+    public $meta = array();
+    
+    function __construct( $db_fields, $field, $meta )
+    {
+        $this->db_fields = wp_parse_args( (array) $db_fields, array(
+            'parent'    => '',
+            'id'        => '',
+            'label'     => '',              
+        ) );
+       $this->field = $field; 
+       $this->meta = (array) $meta;
+    }
+	
+	function walk( $options )
+	{
+		$parent = $this->db_fields['parent'];
+		$label = $this->db_fields['label'];  
+		$id =  $this->db_fields['id'];  
+		$children = array();
+		
+		foreach( $options as $o )
+		{
+			$children[$o->$parent][] = $o;
+		}
+		$top_level = isset( $children[0] ) ? 0 : $options[0]->$parent;
+		return $this->display_level( $children, $top_level, true );
+	}
+	
+	function display_level( $options, $parent_id = 0, $active = false )
+	{
+		$parent = $this->db_fields['parent'];
+		$label = $this->db_fields['label'];  
+		$id =  $this->db_fields['id'];  
+		$field = $this->field;
+		$meta = $this->meta;
+		$walker = new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
+		
+		$children = $options[$parent_id];
+		$output = sprintf( 
+			'<div class="rwmb-select-tree %s" data-parent-id="%s"><select %s>', 
+			$active ? '' : 'hidden', 
+			$parent_id, 
+			RWMB_Field::render_attributes( $this->field['attributes'] ) 
+		);
+		$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		$output .= $walker->walk( $children, -1 );
+		$output .= '</select>';
+		
+		foreach( $children as $c)
+		{
+			if( isset( $options[$c->$id] ) )
+			{
+				$output .= $this->display_level( $options, $c->$id, in_array( $c->$id, $meta ) && $active );
+			}
+			
+		}
+		
+		$output .= '</div>';
+		
+		return $output;		
+	}
 }
