@@ -56,7 +56,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'flatten' 			=> true,
-			'parent' 		=> 0,
 			'query_args' 	=> array(),
 			'field_type'	=> 'select'
 		) );
