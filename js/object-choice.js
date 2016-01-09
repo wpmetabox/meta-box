@@ -19,7 +19,9 @@ jQuery( function( $ )
 		}
 	}
 	
-	$( '.rwmb-input' ).on( 'change', '.rwmb-choice-list :checkbox', updateChecklist );
+	$( '.rwmb-input' )
+		.on( 'change', '.rwmb-choice-list :checkbox', updateChecklist )
+		.on( 'clone', '.rwmb-choice-list :checkbox', updateChecklist );
 	$( '.rwmb-choice-list :checkbox' ).each( updateChecklist );	
 	
 	
