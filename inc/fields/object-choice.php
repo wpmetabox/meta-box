@@ -48,7 +48,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	{
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'flatten' 			=> true,
+			'flatten' 		=> true,
 			'query_args' 	=> array(),
 			'field_type'	=> 'select'
 		) );
@@ -239,9 +239,16 @@ abstract class RWMB_Walker extends Walker
     * Field data.
     *
     * @access public
-    * @var string
+    * @var array
     */
     public $field;
+	
+	/**
+    * Meta data.
+    *
+    * @access public
+    * @var array
+    */
     public $meta = array();
     
     function __construct( $db_fields, $field, $meta )
@@ -389,14 +396,14 @@ class RWMB_Select_Tree_Walker
 	
 	function display_level( $options, $parent_id = 0, $active = false )
 	{
-		$parent 				= $this->db_fields['parent'];
-		$label					= $this->db_fields['label'];  
-		$id 					=  $this->db_fields['id'];  
-		$field 					= $this->field;
-		$meta					= $this->meta;
-		$walker 				= new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
-		$field_class 			= RW_Meta_Box::get_class_name( $field );
-		$attributes 			= call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
+		$parent			= $this->db_fields['parent'];
+		$label			= $this->db_fields['label'];  
+		$id 			= $this->db_fields['id'];  
+		$field			= $this->field;
+		$meta			= $this->meta;
+		$walker			= new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
+		$field_class	= RW_Meta_Box::get_class_name( $field );
+		$attributes		= call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
 		
 		$children = $options[$parent_id];
 		$output = sprintf( 
