@@ -17,12 +17,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		 * Backwards compatibility with field args
 		 */
 		if( isset( $field['options']['args'] ) )
-		{
-			$field['query_args'] = $field['options']['args']; 
-			$field['taxonomy'] = $field['options']['taxonomy'];
-			$field['field_type'] = $field['options']['type'];
-		}
-		
+			$field['query_args'] =  $field['options']['args']; 
+		if( isset( $field['options']['taxonomy'] ) )
+			$field['taxonomy'] =  $field['options']['taxonomy']; 
+		if( isset( $field['options']['type'] ) )
+			$field['field_type'] =  $field['options']['type']; 
+
 		/**
 		 * Set default field args
 		 */
