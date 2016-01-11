@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) || exit;
 
 class RWMB_Post_Field extends RWMB_Object_Choice_Field
 {
-
 	/**
 	 * Normalize parameters for field
 	 *
@@ -34,11 +33,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			$field['placeholder'] = __( 'Select a post', 'meta-box' );
 			if ( is_string( $field['post_type'] ) && post_type_exists( $field['post_type'] ) )
 			{
-				$post_type_object		= get_post_type_object( $field['post_type'] );
-				$field['placeholder']	= sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
+				$post_type_object     = get_post_type_object( $field['post_type'] );
+				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
 		}
-		
+
 		/**
 		 * Set parent option, which will change field name to `parent_id` to save as post parent
 		 */
@@ -47,22 +46,22 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			$field['multiple']   = false;
 			$field['field_name'] = 'parent_id';
 		}
-		
+
 		/**
 		 * Set default query args
 		 */
-		$field['query_args'] = wp_parse_args( $field['query_args'], array(
+		$field['query_args']              = wp_parse_args( $field['query_args'], array(
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
-		$field['query_args']['post_type'] =  $field['post_type'];
-		
+		$field['query_args']['post_type'] = $field['post_type'];
+
 
 		$field = parent::normalize( $field );
-		
+
 		return $field;
 	}
-	
+
 	/**
 	 * Get field names of object to be used by walker
 	 *
@@ -71,9 +70,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	static function get_db_fields()
 	{
 		return array(
-			'parent'    => 'post_parent',
-			'id'        => 'ID',
-			'label'     => 'post_title',              
+			'parent' => 'post_parent',
+			'id'     => 'ID',
+			'label'  => 'post_title',
 		);
 	}
 
@@ -110,7 +109,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 */
 	static function get_options( $field )
 	{
-		$query   = new WP_Query( $field['query_args'] );
+		$query = new WP_Query( $field['query_args'] );
 		return $query->have_posts() ? $query->posts : array();
 	}
 

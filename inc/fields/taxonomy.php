@@ -16,29 +16,29 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Backwards compatibility with field args
 		 */
-		if( isset( $field['options']['args'] ) )
-			$field['query_args'] =  $field['options']['args']; 
-		if( isset( $field['options']['taxonomy'] ) )
-			$field['taxonomy'] =  $field['options']['taxonomy']; 
-		if( isset( $field['options']['type'] ) )
-			$field['field_type'] =  $field['options']['type']; 
+		if ( isset( $field['options']['args'] ) )
+			$field['query_args'] = $field['options']['args'];
+		if ( isset( $field['options']['taxonomy'] ) )
+			$field['taxonomy'] = $field['options']['taxonomy'];
+		if ( isset( $field['options']['type'] ) )
+			$field['field_type'] = $field['options']['type'];
 
 		/**
 		 * Set default field args
 		 */
 		$field = wp_parse_args( $field, array(
-			'taxonomy'  => 'category',
+			'taxonomy'   => 'category',
 			'field_type' => 'select',
 			'query_args' => array(),
 		) );
-		
+
 		/**
 		 * Set default query args
 		 */
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'hide_empty' => false,
 		) );
-		
+
 		/**
 		 * Set default placeholder
 		 * - If multiple taxonomies: show 'Select a term'
@@ -49,20 +49,20 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 			$field['placeholder'] = __( 'Select a term', 'meta-box' );
 			if ( is_string( $field['taxonomy'] ) && taxonomy_exists( $field['taxonomy'] ) )
 			{
-				$taxonomy_object		= get_taxonomy( $field['taxonomy'] );
-				$field['placeholder']	= sprintf( __( 'Select a %s', 'meta-box' ), $taxonomy_object->labels->singular_name );
+				$taxonomy_object      = get_taxonomy( $field['taxonomy'] );
+				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $taxonomy_object->labels->singular_name );
 			}
 		}
-		
+
 		/**
-		 * Prevent cloning for taxonomy field 
+		 * Prevent cloning for taxonomy field
 		 */
 		$field['clone'] = false;
-		
+
 		$field = parent::normalize( $field );
 		return $field;
 	}
-	
+
 	/**
 	 * Get field names of object to be used by walker
 	 *
@@ -71,16 +71,16 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	static function get_db_fields()
 	{
 		return array(
-            'parent'    => 'parent',
-            'id'        => 'term_id',
-            'label'     => 'name',              
-        );
+			'parent' => 'parent',
+			'id'     => 'term_id',
+			'label'  => 'name',
+		);
 	}
 
 	/**
 	 * Get options for selects, checkbox list, etc via the terms
 	 *
-	 * @param array $terms Array of term objects
+	 * @param array $field Field parameters
 	 *
 	 * @return array
 	 */

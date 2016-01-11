@@ -20,22 +20,22 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 			'field_type' => 'select',
 			'query_args' => array(),
 		) );
-		
+
 		/**
 		 * Prevent select tree for user since it's not hierarchical
 		 */
-		 $field['field_type'] = 'select_tree' === $field['field_type'] ? 'select' : $field['field_type']; 
-		
+		$field['field_type'] = 'select_tree' === $field['field_type'] ? 'select' : $field['field_type'];
+
 		/**
 		 * Set to always flat
 		 */
 		$field['flatten'] = true;
-		
+
 		/**
 		 * Set default placeholder
 		 */
 		$field['placeholder'] = empty( $field['placeholder'] ) ? __( 'Select an user', 'meta-box' ) : $field['placeholder'];
-		
+
 		/**
 		 * Set default query args
 		 */
@@ -45,8 +45,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 			'role'    => '',
 			'fields'  => 'all',
 		) );
-		$field = parent::normalize( $field );
-		
+		$field               = parent::normalize( $field );
+
 		return $field;
 	}
 
@@ -62,7 +62,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 		$options = get_users( $field['query_args'] );
 		return $options;
 	}
-	
+
 	/**
 	 * Get field names of object to be used by walker
 	 *
@@ -71,11 +71,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	static function get_db_fields()
 	{
 		return array(
-			'parent'    => 'parent',
-			'id'        => 'ID',
-			'label'     => 'display_name',              
+			'parent' => 'parent',
+			'id'     => 'ID',
+			'label'  => 'display_name',
 		);
 	}
+
 	/**
 	 * Get option label to display in the frontend
 	 *
