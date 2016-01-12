@@ -66,3 +66,9 @@
     width: 200px; /*must have*/
     height: 200px; /*must have*/
 }
+
+/* Better Date-picker styles */
+#ui-datepicker-div {
+    background: rgb(35, 40, 45);
+    padding: 1rem;
+}
