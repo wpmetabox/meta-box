@@ -77,7 +77,7 @@ abstract class RWMB_Field
 			foreach ( $meta as $index => $sub_meta )
 			{
 				$sub_field               = $field;
-				$subfield['field_name'] = $field['field_name'] . "[{$index}]";
+				$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 				if ( $index > 0 )
 				{
 					if ( isset( $sub_field['address_field'] ) )
@@ -85,10 +85,7 @@ abstract class RWMB_Field
 					$sub_field['id'] = $field['id'] . "_{$index}";
 				}
 				if ( $field['multiple'] )
-				{
-					$sub_field['attributes']['name'] = $subfield['field_name'] .= '[]';
-						
-				}
+					$sub_field['field_name'] .= '[]';
 
 				// Wrap field HTML in a div with class="rwmb-clone" if needed
 				$class = "rwmb-clone rwmb-{$field['type']}-clone";
