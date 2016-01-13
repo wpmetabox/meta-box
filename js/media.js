@@ -8,8 +8,8 @@ jQuery( function ( $ )
 		MediaField, MediaList, MediaItem, ImageField, ImageList, ImageItem, MediaButton, MediaStatus, UploadButton;
 
 	MediaList = views.MediaList = Backbone.View.extend( {
-		tagName       : 'ul',
-		className     : 'rwmb-media-list',
+		tagName       	: 'ul',
+		className     	: 'rwmb-media-list',
 		createItemView: function ( options )
 		{
 			return new MediaItem( options );
