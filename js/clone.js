@@ -36,13 +36,6 @@ jQuery( function ( $ )
 				{
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
-
-				// ID attribute
-				var id = $field.attr( 'id' );
-				if ( id )
-				{
-					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
-				}
 			} );
 
 			// Address button's value attribute
