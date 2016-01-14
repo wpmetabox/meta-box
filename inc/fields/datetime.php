@@ -80,7 +80,24 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 			'localeShort' => $locale_short,
 		) );
 	}
-
+	
+	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	static function html( $meta, $field )
+	{
+		$output = parent::html( $meta, $field );
+		if( $field['inline'] )
+		{
+			$output .= '<div class="rwmb-datetime-inline"></div>';	
+		}
+	}
+	
 	/**
 	 * Calculates the timestamp from the datetime string and returns it
 	 * if $field['timestamp'] is set or the datetime string if not
@@ -139,6 +156,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'timestamp'  => false,
+			'inline'	 => false,
 			'js_options' => array()
 		) );
 

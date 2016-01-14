@@ -38,6 +38,24 @@ class RWMB_Time_Field extends RWMB_Text_Field
 			'localeShort' => $locale_short,
 		) );
 	}
+	
+	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	static function html( $meta, $field )
+	{
+		$output = parent::html( $meta, $field );
+		if( $field['inline'] )
+		{
+			$output .= '<div class="rwmb-time-inline"></div>';	
+		}
+		return $output;
+	}
 
 	/**
 	 * Normalize parameters for field
@@ -50,6 +68,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'js_options' => array(),
+			'inline'	 => false,
 		) );
 
 		// Deprecate 'format', but keep it for backward compatible
