@@ -17,7 +17,8 @@
 	font-size: 13px;
 	margin: 0;
 }
-.ui-datepicker .ui-datepicker-header {
+.ui-datepicker .ui-datepicker-header,
+.ui-timepicker-div .ui-widget-header{
 	border: none;
 	background: #23282d;
 	color: #fff;
@@ -100,6 +101,7 @@
 /* Other Datepicker Color Schemes */
 /* Blue */
 .admin-color-blue .ui-datepicker .ui-datepicker-header,
+.admin-color-blue .ui-timepicker-div .ui-widget-header,
 .admin-color-blue .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-blue .ui-datepicker thead {
 	background: #4796b3;
@@ -113,6 +115,7 @@
 }
 /* Coffee */
 .admin-color-coffee .ui-datepicker .ui-datepicker-header,
+.admin-color-cofee .ui-timepicker-div .ui-widget-header,
 .admin-color-coffee .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-coffee .ui-datepicker thead {
 	background: #46403c;
@@ -126,6 +129,7 @@
 }
 /* Ectoplasm */
 .admin-color-ectoplasm .ui-datepicker .ui-datepicker-header,
+.admin-color-ectoplasm .ui-timepicker-div .ui-widget-header,
 .admin-color-ectoplasm .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-ectoplasm .ui-datepicker thead {
 	background: #413256;
@@ -139,6 +143,7 @@
 }
 /* Midnight */
 .admin-color-midnight .ui-datepicker .ui-datepicker-header,
+.admin-color-midnight .ui-timepicker-div .ui-widget-header,
 .admin-color-midnight .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-midnight .ui-datepicker thead {
 	background: #26292c;
@@ -152,6 +157,7 @@
 }
 /* Ocean */
 .admin-color-ocean .ui-datepicker .ui-datepicker-header,
+.admin-color-ocean .ui-timepicker-div .ui-widget-header,
 .admin-color-ocean .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-ocean .ui-datepicker thead {
 	background: #627c83;
@@ -165,6 +171,7 @@
 }
 /* Sunrise */
 .admin-color-sunrise .ui-datepicker .ui-datepicker-header,
+.admin-color-sunrise .ui-timepicker-div .ui-widget-header,
 .admin-color-sunrise .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-sunrise .ui-datepicker thead {
 	background: #be3631;
@@ -178,6 +185,7 @@
 }
 /* Light */
 .admin-color-light .ui-datepicker .ui-datepicker-header,
+.admin-color-light .ui-timepicker-div .ui-widget-header,
 .admin-color-light .ui-datepicker .ui-datepicker-header .ui-state-hover,
 .admin-color-light .ui-datepicker thead {
 	background: #e5e5e5;

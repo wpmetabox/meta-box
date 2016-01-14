@@ -96,6 +96,8 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 		{
 			$output .= '<div class="rwmb-datetime-inline"></div>';	
 		}
+		
+		return $output;
 	}
 	
 	/**
