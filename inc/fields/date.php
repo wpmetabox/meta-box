@@ -5,6 +5,24 @@ defined( 'ABSPATH' ) || exit;
 class RWMB_Date_Field extends RWMB_Text_Field
 {
 	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	static function html( $meta, $field )
+	{
+		$output = parent::html( $meta, $field );
+		if( $field['inline'] )
+		{
+			$output .= '<div class="rwmb-date-inline"></div>';	
+		}		
+		return $output;
+	}
+	
+	/**
 	 * Enqueue scripts and styles
 	 *
 	 * @return void
@@ -49,6 +67,7 @@ class RWMB_Date_Field extends RWMB_Text_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'js_options' => array(),
+			'inline'	 => false,
 		) );
 
 		// Deprecate 'format', but keep it for backward compatible
