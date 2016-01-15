@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A class to rapid develop meta boxes for custom & built in content types
  * Piggybacks on WordPress
@@ -363,7 +364,7 @@ class RW_Meta_Box
 
 			// Allow field class add/change default field values
 			$field = call_user_func( array( $class, 'normalize' ), $field );
-			
+
 			if ( isset( $field['fields'] ) )
 				$field['fields'] = self::normalize_fields( $field['fields'] );
 
@@ -382,22 +383,14 @@ class RW_Meta_Box
 	 * Get field class name
 	 *
 	 * @param array $field Field array
-	 *
-	 * @return bool|string Field class name OR false on failure
+	 * @return string Field class name
 	 */
 	static function get_class_name( $field )
 	{
-		// Convert underscores to whitespace so ucwords works as expected. Otherwise: plupload_image -> Plupload_image instead of Plupload_Image
-		$type = str_replace( '-', '_', $field['type'] );
-		$type = str_replace( '_', ' ', $field['type'] );
-
-		// Uppercase first words
+		$type  = str_replace( array( '-', '_' ), ' ', $field['type'] );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
-
-		// Replace whitespace with underscores
 		$class = str_replace( ' ', '_', $class );
-
-		return class_exists( $class ) ? $class : false;
+		return $class;
 	}
 
 	/**
