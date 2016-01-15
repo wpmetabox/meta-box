@@ -102,6 +102,9 @@ jQuery( function ( $ )
 				// Reset value
 				$field.val( '' );
 			}
+			
+			// Set unique id
+			$input.attr( 'id', _.uniqueId( 'rwmb-clone-' ) );
 		} );
 
 		$clone.insertAfter( $last );
@@ -109,6 +112,8 @@ jQuery( function ( $ )
 
 		// Toggle remove buttons
 		toggleRemoveButtons( $input );
+		
+		
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
