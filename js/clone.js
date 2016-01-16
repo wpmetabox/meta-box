@@ -97,6 +97,10 @@ jQuery( function ( $ )
 				// Reset 'checked' attribute
 				$field.prop( 'checked', false );
 			}
+			else if( $field.is( 'select' ) )
+			{
+				$field.prop( 'selectedIndex', 0 )
+			}
 			else
 			{
 				// Reset value
