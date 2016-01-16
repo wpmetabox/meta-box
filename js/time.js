@@ -12,7 +12,7 @@ jQuery( function ( $ )
 			options = $this.data( 'options' );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).timepicker( options );
+		$this.removeClass( 'hasDatepicker' ).timepicker( options );
 	}
 
 	// Set language if available

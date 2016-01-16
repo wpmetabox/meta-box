@@ -12,7 +12,7 @@ jQuery( function ( $ )
 			options = $this.data( 'options' );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
-		$this.removeClass( 'hasDatepicker' ).attr( 'id', '' ).datepicker( options );
+		$this.removeClass( 'hasDatepicker' ).datepicker( options );
 	}
 
 	$( ':input.rwmb-date' ).each( update );
