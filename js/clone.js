@@ -87,18 +87,25 @@ jQuery( function ( $ )
 	{
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
-			$input = $clone.find( ':input[class|="rwmb"]' );
+			$input = $clone.find( ':input[class|="rwmb"]' ),
+			max = 0;
+			
+		$input.each(function() {
+			max = Math.max( this.id.match(/\d+$/)[0], max );
+		});
 
 		$input.each( function ()
 		{
-			var $field = $( this );
-			if ( $field.attr( 'type' ) === 'radio' || $field.attr( 'type' ) === 'checkbox' )
+			var $field = $( this ),
+				id = this.id;
+			if ( $field.is( ':radio' ) || $field.is( ':checkbox' ) )
 			{
 				// Reset 'checked' attribute
 				$field.prop( 'checked', false );
 			}
 			else if( $field.is( 'select' ) )
 			{
+				//Reset select to first
 				$field.prop( 'selectedIndex', 0 )
 			}
 			else
@@ -108,16 +115,14 @@ jQuery( function ( $ )
 			}
 			
 			// Set unique id
-			$field.attr( 'id', _.uniqueId( 'rwmb-clone-' ) );
+			$field.attr( 'id', cloneIndex.replace( ++max, id, '_' ) );
 		} );
 
 		$clone.insertAfter( $last );
 		cloneIndex.reset( $container );
 
 		// Toggle remove buttons
-		toggleRemoveButtons( $input );
-		
-		
+		toggleRemoveButtons( $input );		
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
