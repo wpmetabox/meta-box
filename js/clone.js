@@ -89,9 +89,10 @@ jQuery( function ( $ )
 			$clone = $last.clone(),
 			$input = $clone.find( ':input[class|="rwmb"]' ),
 			max = 0;
-			
+		
+		//Get max from ids 	
 		$input.each(function() {
-			max = Math.max( this.id.match(/\d+$/)[0], max );
+			max = Math.max( this.id.match(/\d+$/)[0] || 0, max );
 		});
 
 		$input.each( function ()
