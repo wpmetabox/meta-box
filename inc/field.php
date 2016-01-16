@@ -452,9 +452,7 @@ abstract class RWMB_Field
 	static function get_unique_id( $field )
 	{
 		static $index = 0;
-		$id = "{$field['id']}_{$index}";
-		$index++;
-		return $id;
+		return $field['id'] . '_' . $index++;
 	}
 	
 	/**
