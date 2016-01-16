@@ -104,7 +104,7 @@ jQuery( function ( $ )
 			}
 			
 			// Set unique id
-			$input.attr( 'id', _.uniqueId( 'rwmb-clone-' ) );
+			$field.attr( 'id', _.uniqueId( 'rwmb-clone-' ) );
 		} );
 
 		$clone.insertAfter( $last );
