@@ -442,7 +442,7 @@ abstract class RWMB_Field
 			'disabled' => $field['disabled'],
 			'required' => $field['required'],
 			'class'    => "rwmb-{$field['type']}",
-			'id'       => self::get_unique_id( $field ),
+			'id'       => $field['clone'] ? self::get_unique_id( $field ) : $field['id'],
 			'name'     => $field['field_name'],
 		) );
 		
@@ -452,7 +452,7 @@ abstract class RWMB_Field
 	static function get_unique_id( $field )
 	{
 		static $index = 0;
-		$id = $field['clone'] ? "{$field['id']}_{$index}" : $field['id'];
+		$id = "{$field['id']}_{$index}";
 		$index++;
 		return $id;
 	}
