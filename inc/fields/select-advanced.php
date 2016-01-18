@@ -11,10 +11,10 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	static function admin_enqueue_scripts()
 	{
-		wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2/select2.css', array(), '3.2' );
+		wp_enqueue_style( 'select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
-		wp_register_script( 'select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '3.2', true );
+		wp_register_script( 'select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.1', true );
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'select2', 'rwmb-select' ), RWMB_VER, true );
 	}
@@ -63,7 +63,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
 			'allowClear'  => true,
-			'width'       => 'off',
+			'width'       => 'none',
 			'placeholder' => $field['placeholder'],
 		) );
 
