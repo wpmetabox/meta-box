@@ -89,11 +89,12 @@ jQuery( function ( $ )
 			$clone = $last.clone(),
 			$input = $clone.find( ':input[class|="rwmb"]' ),
 			max = 0;
-		
-		//Get max from ids 	
-		$input.each(function() {
-			max = Math.max( this.id.match(/\d+$/)[0] || 0, max );
-		});
+
+		// Get max from ids
+		$input.each( function ()
+		{
+			max = Math.max( this.id.match( /\d+$/ )[0] || 0, max );
+		} );
 
 		$input.each( function ()
 		{
@@ -104,9 +105,9 @@ jQuery( function ( $ )
 				// Reset 'checked' attribute
 				$field.prop( 'checked', false );
 			}
-			else if( $field.is( 'select' ) )
+			else if ( $field.is( 'select' ) )
 			{
-				//Reset select to first
+				// Reset select to first
 				$field.prop( 'selectedIndex', 0 )
 			}
 			else
@@ -114,16 +115,13 @@ jQuery( function ( $ )
 				// Reset value
 				$field.val( '' );
 			}
-			
+
 			// Set unique id
 			$field.attr( 'id', cloneIndex.replace( ++max, id, '_' ) );
 		} );
 
 		$clone.insertAfter( $last );
 		cloneIndex.reset( $container );
-
-		// Toggle remove buttons
-		toggleRemoveButtons( $input );		
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
@@ -261,8 +259,6 @@ jQuery( function ( $ )
 			e.preventDefault();
 
 			var $container = $( this ).closest( '.rwmb-input' );
-
-			cloneIndex.reset( $container );
 
 			if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 			{
