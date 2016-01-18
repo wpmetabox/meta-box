@@ -35,7 +35,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-
+		$html .= '<option></option>';
 		$html .= self::options_html( $field, $meta );
 
 		$html .= '</select>';

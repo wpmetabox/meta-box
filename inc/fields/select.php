@@ -29,7 +29,9 @@ class RWMB_Select_Field extends RWMB_Field
 			'<select %s>',
 			self::render_attributes( $field['attributes'] )
 		);
-
+		
+		$html .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		
 		$html .= self::options_html( $field, $meta );
 
 		$html .= '</select>';
@@ -114,11 +116,6 @@ class RWMB_Select_Field extends RWMB_Field
 	static function options_html( $field, $meta )
 	{
 		$html = '';
-		if ( $field['placeholder'] )
-		{
-			$show_placeholder = ( 'select' === $field['type'] ) ; // For 'taxonomy' field
-			$html             = $show_placeholder ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-		}
 
 		$option = '<option value="%s"%s>%s</option>';
 
