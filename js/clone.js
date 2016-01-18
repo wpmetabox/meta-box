@@ -36,6 +36,13 @@ jQuery( function ( $ )
 				{
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
+
+				// ID attribute
+				var id = this.id;
+				if ( id )
+				{
+					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
+				}
 			} );
 
 			// Address button's value attribute
@@ -87,19 +94,12 @@ jQuery( function ( $ )
 	{
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
-			$input = $clone.find( ':input[class|="rwmb"]' ),
-			max = 0;
+			$input = $clone.find( ':input[class|="rwmb"]' );
 
-		// Get max from ids
+		// Reset value for fields
 		$input.each( function ()
 		{
-			max = Math.max( this.id.match( /\d+$/ )[0] || 0, max );
-		} );
-
-		$input.each( function ()
-		{
-			var $field = $( this ),
-				id = this.id;
+			var $field = $( this );
 			if ( $field.is( ':radio' ) || $field.is( ':checkbox' ) )
 			{
 				// Reset 'checked' attribute
@@ -115,12 +115,11 @@ jQuery( function ( $ )
 				// Reset value
 				$field.val( '' );
 			}
-
-			// Set unique id
-			$field.attr( 'id', cloneIndex.replace( ++max, id, '_' ) );
 		} );
 
 		$clone.insertAfter( $last );
+
+		// Reset fields index. Must run before trigger clone event.
 		cloneIndex.reset( $container );
 
 		// Trigger custom clone event
@@ -253,7 +252,7 @@ jQuery( function ( $ )
 	}
 
 	$( '#poststuff' )
-		// Add clones
+	// Add clones
 		.on( 'click', '.add-clone', function ( e )
 		{
 			e.preventDefault();
