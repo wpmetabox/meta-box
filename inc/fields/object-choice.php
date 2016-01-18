@@ -192,7 +192,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-		if ( 'select' === $field['field_type'] && false === $field['multiple'] )
+		if ( false === $field['multiple'] )
 		{
 			$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 		}
