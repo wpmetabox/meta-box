@@ -46,7 +46,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'checkbox';
-		$attributes['list'] = false;		
+		$attributes['list'] = false;
 		
 		return $attributes;
 	}

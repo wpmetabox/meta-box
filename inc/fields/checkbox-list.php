@@ -17,10 +17,11 @@ class RWMB_Checkbox_List_Field extends RWMB_Multiple_Values_Field
 		$meta = (array) $meta;
 		$html = array();
 		$tpl  = '<label><input %s %s> %s</label>';
+		$field_class = RW_Meta_Box::get_class_name( $field );
 
 		foreach ( $field['options'] as $value => $label )
 		{
-			$attributes = RWMB_Checkbox_Field::get_attributes( $field, $value );
+			$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $value );
 			$html[] = sprintf(
 				$tpl,
 				self::render_attributes( $attributes ),
@@ -41,9 +42,14 @@ class RWMB_Checkbox_List_Field extends RWMB_Multiple_Values_Field
 	 */
 	static function normalize( $field )
 	{
-		$field = parent::normalize( $field );
-		$field = RWMB_Checkbox_Field::normalize( $field );
-
-		return $field;
+		return RWMB_Checkbox_Field::normalize( $field );
+	}
+	
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = RWMB_Checkbox_Field::get_attributes( $field, $value );
+		$attributes['id'] 	 = false;
+		
+		return $attributes;
 	}
 }

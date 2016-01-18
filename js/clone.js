@@ -38,7 +38,7 @@ jQuery( function ( $ )
 				}
 
 				// ID attribute
-				var id = $field.attr( 'id' );
+				var id = this.id;
 				if ( id )
 				{
 					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
@@ -96,13 +96,19 @@ jQuery( function ( $ )
 			$clone = $last.clone(),
 			$input = $clone.find( ':input[class|="rwmb"]' );
 
+		// Reset value for fields
 		$input.each( function ()
 		{
 			var $field = $( this );
-			if ( $field.attr( 'type' ) === 'radio' || $field.attr( 'type' ) === 'checkbox' )
+			if ( $field.is( ':radio' ) || $field.is( ':checkbox' ) )
 			{
 				// Reset 'checked' attribute
 				$field.prop( 'checked', false );
+			}
+			else if ( $field.is( 'select' ) )
+			{
+				// Reset select to first
+				$field.prop( 'selectedIndex', 0 )
 			}
 			else
 			{
@@ -112,10 +118,9 @@ jQuery( function ( $ )
 		} );
 
 		$clone.insertAfter( $last );
-		cloneIndex.reset( $container );
 
-		// Toggle remove buttons
-		toggleRemoveButtons( $input );
+		// Reset fields index. Must run before trigger clone event.
+		cloneIndex.reset( $container );
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
@@ -247,14 +252,12 @@ jQuery( function ( $ )
 	}
 
 	$( '#poststuff' )
-		// Add clones
+	// Add clones
 		.on( 'click', '.add-clone', function ( e )
 		{
 			e.preventDefault();
 
 			var $container = $( this ).closest( '.rwmb-input' );
-
-			cloneIndex.reset( $container );
 
 			if ( $( this ).closest( '.rwmb-field' ).hasClass( 'rwmb-wysiwyg-wrapper' ) )
 			{

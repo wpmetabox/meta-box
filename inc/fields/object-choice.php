@@ -99,7 +99,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			case 'radio_list':
 				$attributes          = RWMB_Input_Field::get_attributes( $field, $value );
 				$attributes['class'] = "rwmb-choice";
-				$attributes['id']    = false;
+				$attributes['id']    = false;	
 				$attributes['type']  = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
 				break;
 			case 'select_advanced':
@@ -109,6 +109,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			case 'select_tree':
 				$attributes             = RWMB_Select_Field::get_attributes( $field, $value );
 				$attributes['multiple'] = false;
+				$attributes['id']       = false;	
 				break;
 			case 'select':
 			default:
@@ -191,7 +192,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-		if ( 'select' === $field['field_type'] && false === $field['multiple'] )
+		if ( false === $field['multiple'] )
 		{
 			$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 		}

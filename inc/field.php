@@ -442,7 +442,7 @@ abstract class RWMB_Field
 			'disabled' => $field['disabled'],
 			'required' => $field['required'],
 			'class'    => "rwmb-{$field['type']}",
-			'id'       => $field['clone'] ? false : $field['id'],
+			'id'       => $field['id'],
 			'name'     => $field['field_name'],
 		) );
 		
