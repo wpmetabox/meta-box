@@ -82,7 +82,7 @@ abstract class RWMB_Field
 				{
 					if ( isset( $sub_field['address_field'] ) )
 						$sub_field['address_field'] = $field['address_field'] . "_{$index}";
-					//$sub_field['id'] = $field['id'] . "_{$index}";
+					$sub_field['id'] = $field['id'] . "_{$index}";
 				}
 				if ( $field['multiple'] )
 					$sub_field['field_name'] .= '[]';
