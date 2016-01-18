@@ -44,7 +44,7 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['list'] = false;
-		$attributes['id'] 	= self::get_unique_id( $field );
+		$attributes['id'] 	= false;
 		$attributes['type'] = 'radio';
 			
 		return $attributes;

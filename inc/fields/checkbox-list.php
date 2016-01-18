@@ -42,16 +42,13 @@ class RWMB_Checkbox_List_Field extends RWMB_Multiple_Values_Field
 	 */
 	static function normalize( $field )
 	{
-		$field = parent::normalize( $field );
-		$field = RWMB_Checkbox_Field::normalize( $field );
-
-		return $field;
+		return RWMB_Checkbox_Field::normalize( $field );
 	}
 	
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = RWMB_Checkbox_Field::get_attributes( $field, $value );
-		$attributes['id'] 	 = self::get_unique_id( $field );
+		$attributes['id'] 	 = false;
 		
 		return $attributes;
 	}
