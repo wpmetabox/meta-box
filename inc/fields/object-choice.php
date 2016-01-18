@@ -97,23 +97,25 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		{
 			case 'checkbox_list':
 			case 'radio_list':
-				$attributes          = RWMB_Input_Field::get_attributes( $field, $value );
-				$attributes['class'] = "rwmb-choice";
-				$attributes['id']    = false;	
-				$attributes['type']  = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
+				$attributes           = RWMB_Input_Field::get_attributes( $field, $value );
+				$attributes['class'] .= " rwmb-choice";
+				$attributes['id']     = false;	
+				$attributes['type']   = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
 				break;
 			case 'select_advanced':
-				$attributes          = RWMB_Select_Advanced_Field::get_attributes( $field, $value );
-				$attributes['class'] = "rwmb-choice rwmb-select_advanced";
+				$attributes           = RWMB_Select_Advanced_Field::get_attributes( $field, $value );
+				$attributes['class'] .= " rwmb-select_advanced";
 				break;
 			case 'select_tree':
 				$attributes             = RWMB_Select_Field::get_attributes( $field, $value );
 				$attributes['multiple'] = false;
-				$attributes['id']       = false;	
+				$attributes['id']       = false;
+				$attributes['class'] .= " rwmb-select";	
 				break;
 			case 'select':
 			default:
-				$attributes = RWMB_Select_Field::get_attributes( $field, $value );
+				$attributes           = RWMB_Select_Field::get_attributes( $field, $value );
+				$attributes['class'] .= " rwmb-select";
 				break;
 		}
 
