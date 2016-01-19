@@ -106,31 +106,8 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function save( $new, $old, $post_id, $field )
 	{
-		$name = $field['id'];
-
-		delete_post_meta( $post_id, $name );
-
-		if ( '' === $new || array() === $new )
-		{
-			return;
-		}
-
-		// If field is cloneable, value is saved as a single entry in the database
-		if ( $field['clone'] )
-		{
-			$new = (array) $new;
-			$new = array_filter( $new );
-			update_post_meta( $post_id, $name, $new );
-			return;
-		}
-		else
-		{
-			foreach ( $new as $new_value )
-			{
-				add_post_meta( $post_id, $name, $new_value, false );
-			}
-			return;
-		}
+		delete_post_meta( $post_id, $field['id'] );
+		parent::save( $new, array(), $post_id, $field );
 	}
 
 	/**
