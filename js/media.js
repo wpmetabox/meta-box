@@ -68,8 +68,8 @@ jQuery( function ( $ )
 			var that = this;
 			this.$input = $( options.input );
 			this.values = this.$input.val().split( ',' );
-			this.props = this.$el.data();
-			this.props.fieldName = this.$input.attr( 'name' );
+			this.props = new Backbone.Model( this.$el.data() );
+			this.props.set( 'fieldName', this.$input.attr( 'name' ) );
 
 			//Create collection
 			this.collection = new wp.media.model.Attachments();
@@ -80,7 +80,8 @@ jQuery( function ( $ )
 			//Limit max files
 			this.listenTo( this.collection, 'add', function ( item, collection )
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length > this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length > maxFiles )
 				{
 					this.collection.pop();
 				}
@@ -94,22 +95,26 @@ jQuery( function ( $ )
 					include: this.values,
 					orderby: 'post__in',
 					order  : 'ASC',
-					type   : this.props.mimeType,
-					perPage: this.props.maxFiles || -1
+					type   : this.props.get( 'mimeType' ),
+					perPage: this.props.get( 'maxFiles' ) || -1
 				} );
 				this.collection.more();
 			}
 
 			//Listen for destroy event on input
-			this.$input.on( 'remove', function(){
-				if ( that.props.forceDelete )
-				{
-					_.each( _.clone( that.collection.models ), function ( model )
+			this.$input
+				.on( 'remove', function(){
+					if ( that.props.gat( 'forceDelete' ) )
 					{
-						model.destroy();
-					} );
-				}
-			} )
+						_.each( _.clone( that.collection.models ), function ( model )
+						{
+							model.destroy();
+						} );
+					}
+				} )
+				.on( 'set', function(){
+					that.props.set( 'fieldName', that.$input.attr( 'name' ) );
+				})
 		},
 
 		render: function ()
@@ -147,7 +152,7 @@ jQuery( function ( $ )
 		{
 			var data = {
 				items   : this.collection.length,
-				maxFiles: this.props.maxFiles
+				maxFiles: this.props.get( 'maxFiles' )
 			};
 			this.$el.html( this.template( data ) );
 		}
@@ -175,7 +180,7 @@ jQuery( function ( $ )
 					title    : 'Select Media',
 					editing  : true,
 					library  : {
-						type: this.props.mimeType
+						type: this.props.get( 'mimeType' )
 					}
 				} );
 
@@ -199,7 +204,8 @@ jQuery( function ( $ )
 			this.props = options.props;
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length >= this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length >= maxFiles )
 				{
 					this.$el.hide();
 				}
@@ -219,7 +225,8 @@ jQuery( function ( $ )
 			this.props = options.props;
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length >= this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length >= maxFiles )
 				{
 					this.$el.hide();
 				}
@@ -249,7 +256,7 @@ jQuery( function ( $ )
 			'click .rwmb-remove-media': function ( e )
 			{
 				this.collection.remove( this.model );
-				if ( this.props.forceDelete )
+				if ( this.props.get( 'forceDelete' ) )
 				{
 					this.model.destroy();
 				}
@@ -261,7 +268,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.model.attributes );
-			attrs.fieldName = this.props.fieldName;
+			attrs.fieldName = this.props.get( 'fieldName' );
 			this.$el.html( this.template( attrs ) );
 			return this;
 		}

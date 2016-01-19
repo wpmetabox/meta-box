@@ -125,7 +125,7 @@ class RWMB_Media_Field extends RWMB_Field
 		$i18n_title          = _x( 'No Title', 'media', 'meta-box' );
 		?>
 		<script id="tmpl-rwmb-media-item" type="text/html">
-			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}">
+			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
 			<div class="rwmb-media-preview">
 				<div class="rwmb-media-content">
 					<div class="centered">
@@ -166,7 +166,7 @@ class RWMB_Media_Field extends RWMB_Field
 		</script>
 
 		<script id="tmpl-rwmb-image-item" type="text/html">
-			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}">
+			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
 			<div class="rwmb-media-preview">
 				<div class="rwmb-media-content">
 					<div class="centered">
