@@ -219,25 +219,6 @@ jQuery( function ( $ )
 		}
 	} );
 
-	UploadButton = views.UploadButton = Backbone.View.extend( {
-		initialize: function ( options )
-		{
-			this.props = options.props;
-			this.listenTo( this.collection, 'add remove reset', function ()
-			{
-				var maxFiles = this.props.get( 'maxFiles' );
-				if ( maxFiles > 0 && this.collection.length >= maxFiles )
-				{
-					this.$el.hide();
-				}
-				else
-				{
-					this.$el.show();
-				}
-			} );
-		}
-	} );
-
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName   : 'li',
 		className : 'rwmb-media-item',
