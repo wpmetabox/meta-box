@@ -32,7 +32,7 @@ class RWMB_Map_Field extends RWMB_Field
 	static function html( $meta, $field )
 	{
 		$html = '<div class="rwmb-map-field">';
-
+		
 		$html .= sprintf(
 			'<div class="rwmb-map-canvas" data-default-loc="%s"></div>
 			<input type="hidden" name="%s" class="rwmb-map-coordinate" value="%s">',

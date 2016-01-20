@@ -43,6 +43,8 @@ jQuery( function ( $ )
 				{
 					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
 				}
+
+				$field.trigger( 'set' );
 			} );
 
 			// Address button's value attribute

@@ -49,26 +49,7 @@ jQuery( function ( $ )
 			} );
 
 			//Sort media using sortable
-			this.$el.sortable( {
-				stop : function ( event, ui )
-				{
-					that.$el.children().each( function ()
-					{
-						var cid = $( this ).data( 'cid' );
-
-						if ( cid )
-						{
-							var model = that.collection.get( cid );
-							if ( model )
-							{
-								that.collection.remove( model );
-								that.collection.add( model );
-							}
-						}
-					} );
-				},
-				delay: 150
-			} );
+			this.$el.sortable( { delay: 150 } );
 
 			this.render();
 		}
@@ -82,25 +63,13 @@ jQuery( function ( $ )
 	} );
 
 	MediaField = views.MediaField = Backbone.View.extend( {
-		events: {
-			destroy: function ()
-			{
-				if ( this.forceDelete )
-				{
-					_.each( _.clone( this.collection.models ), function ( model )
-					{
-						model.destroy();
-					} );
-				}
-			}
-		},
-
 		initialize: function ( options )
 		{
 			var that = this;
-			this.input = $( options.input );
-			this.values = this.input.val().split( ',' );
-			this.props = this.$el.data();
+			this.$input = $( options.input );
+			this.values = this.$input.val().split( ',' );
+			this.props = new Backbone.Model( this.$el.data() );
+			this.props.set( 'fieldName', this.$input.attr( 'name' ) );
 
 			//Create collection
 			this.collection = new wp.media.model.Attachments();
@@ -108,18 +77,11 @@ jQuery( function ( $ )
 			//Render
 			this.render();
 
-			//Update input
-			this.listenTo( this.collection, 'add remove reset', _.debounce( function ()
-			{
-				var ids = that.collection.pluck( 'id' );
-				that.input.val( ids.join( ',' ) );
-				that.input.trigger( 'change' );
-			}, 500 ) );
-
 			//Limit max files
 			this.listenTo( this.collection, 'add', function ( item, collection )
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length > this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length > maxFiles )
 				{
 					this.collection.pop();
 				}
@@ -133,11 +95,26 @@ jQuery( function ( $ )
 					include: this.values,
 					orderby: 'post__in',
 					order  : 'ASC',
-					type   : this.props.mimeType,
-					perPage: this.props.maxFiles || -1
+					type   : this.props.get( 'mimeType' ),
+					perPage: this.props.get( 'maxFiles' ) || -1
 				} );
 				this.collection.more();
 			}
+
+			//Listen for destroy event on input
+			this.$input
+				.on( 'remove', function(){
+					if ( that.props.gat( 'forceDelete' ) )
+					{
+						_.each( _.clone( that.collection.models ), function ( model )
+						{
+							model.destroy();
+						} );
+					}
+				} )
+				.on( 'set', function(){
+					that.props.set( 'fieldName', that.$input.attr( 'name' ) );
+				})
 		},
 
 		render: function ()
@@ -175,7 +152,7 @@ jQuery( function ( $ )
 		{
 			var data = {
 				items   : this.collection.length,
-				maxFiles: this.props.maxFiles
+				maxFiles: this.props.get( 'maxFiles' )
 			};
 			this.$el.html( this.template( data ) );
 		}
@@ -203,7 +180,7 @@ jQuery( function ( $ )
 					title    : 'Select Media',
 					editing  : true,
 					library  : {
-						type: this.props.mimeType
+						type: this.props.get( 'mimeType' )
 					}
 				} );
 
@@ -227,7 +204,8 @@ jQuery( function ( $ )
 			this.props = options.props;
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length >= this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length >= maxFiles )
 				{
 					this.$el.hide();
 				}
@@ -247,7 +225,8 @@ jQuery( function ( $ )
 			this.props = options.props;
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
-				if ( this.props.maxFiles > 0 && this.collection.length >= this.props.maxFiles )
+				var maxFiles = this.props.get( 'maxFiles' );
+				if ( maxFiles > 0 && this.collection.length >= maxFiles )
 				{
 					this.$el.hide();
 				}
@@ -267,7 +246,6 @@ jQuery( function ( $ )
 		{
 			this.props = options.props;
 			this.render();
-			this.$el.data( 'cid', this.model.cid );
 			this.listenTo( this.model, 'destroy', function ( model )
 			{
 				this.collection.remove( this.model );
@@ -278,7 +256,7 @@ jQuery( function ( $ )
 			'click .rwmb-remove-media': function ( e )
 			{
 				this.collection.remove( this.model );
-				if ( this.props.forceDelete )
+				if ( this.props.get( 'forceDelete' ) )
 				{
 					this.model.destroy();
 				}
@@ -290,6 +268,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.model.attributes );
+			attrs.fieldName = this.props.get( 'fieldName' );
 			this.$el.html( this.template( attrs ) );
 			return this;
 		}
@@ -314,17 +293,9 @@ jQuery( function ( $ )
 		new ImageField( { input: this, el: $( this ).siblings( 'div.rwmb-media-view' ) } );
 	}
 
-	$( ':input.rwmb-media' ).each( initMediaField );
-	$( ':input.rwmb-image-advanced' ).each( initImageField );
+	$( ':input.rwmb-file_advanced' ).each( initMediaField );
+	$( ':input.rwmb-image_advanced' ).each( initImageField );
 	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-media', initMediaField )
-		.on( 'remove', '.rwmb-media-clone', function ()
-		{
-			$( this ).find( 'div.rwmb-media-view' ).trigger( 'destroy' );
-		} )
-		.on( 'clone', ':input.rwmb-image-advanced', initImageField )
-		.on( 'remove', '.rwmb-image_advanced-clone', function ()
-		{
-			$( this ).find( 'div.rwmb-media-view' ).trigger( 'destroy' );
-		} );
+		.on( 'clone', ':input.rwmb-file_advanced', initMediaField )
+		.on( 'clone', ':input.rwmb-image_advanced', initImageField )
 } );

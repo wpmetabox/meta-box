@@ -37,13 +37,15 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$meta = (array) $meta;
-		$meta = implode( ',', $meta );
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$meta        = (array) $meta;
+		$meta        = implode( ',', $meta );
+		$attributes  = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
+
 		$html = sprintf(
-			'<input type="hidden" name="%s" value="%s" class="rwmb-media">
+			'<input %s>
 			<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s" data-force-delete="%s"></div>',
-			$field['field_name'],
-			esc_attr( $meta ),
+			self::render_attributes( $attributes ),
 			$field['mime_type'],
 			$field['max_file_uploads'],
 			$field['force_delete'] ? 'true' : 'false'
@@ -69,51 +71,29 @@ class RWMB_Media_Field extends RWMB_Field
 			'force_delete'     => false,
 		) );
 
-		$field['multiple'] = false;
+		$field['multiple'] = true;
 
 		return $field;
 	}
 
 	/**
-	 * Get meta value
+	 * Get the attributes for a field
 	 *
-	 * @param int   $post_id
-	 * @param bool  $saved
 	 * @param array $field
+	 * @param mixed value
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	static function get_attributes( $field, $value = null )
 	{
-		$field['multiple'] = true;
-		return parent::meta( $post_id, $saved, $field );
-	}
+		$attributes             = parent::get_attributes( $field, $value );
+		$attributes['type']     = 'hidden';
+		$attributes['name']    .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
+		$attributes['disabled'] = true;
+		$attributes['id']       = false;
+		$attributes['value']    = $value;
 
-	/**
-	 * Get field value
-	 * It's the combination of new (uploaded) images and saved images
-	 *
-	 * @param array $new
-	 * @param array $old
-	 * @param int   $post_id
-	 * @param array $field
-	 *
-	 * @return array|mixed
-	 */
-	static function value( $new, $old, $post_id, $field )
-	{
-		if ( $field['clone'] )
-		{
-			foreach ( $new as &$value )
-			{
-				$value = wp_parse_id_list( $value );
-			}
-		}
-		else
-		{
-			$new = wp_parse_id_list( $new );
-		}
-		return $new;
+		return $attributes;
 	}
 
 	/**
@@ -126,31 +106,8 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function save( $new, $old, $post_id, $field )
 	{
-		$name = $field['id'];
-
-		delete_post_meta( $post_id, $name );
-
-		if ( '' === $new || array() === $new )
-		{
-			return;
-		}
-
-		// If field is cloneable, value is saved as a single entry in the database
-		if ( $field['clone'] )
-		{
-			$new = (array) $new;
-			$new = array_filter( $new );
-			update_post_meta( $post_id, $name, $new );
-			return;
-		}
-		else
-		{
-			foreach ( $new as $new_value )
-			{
-				add_post_meta( $post_id, $name, $new_value, false );
-			}
-			return;
-		}
+		delete_post_meta( $post_id, $field['id'] );
+		parent::save( $new, array(), $post_id, $field );
 	}
 
 	/**
@@ -168,6 +125,7 @@ class RWMB_Media_Field extends RWMB_Field
 		$i18n_title          = _x( 'No Title', 'media', 'meta-box' );
 		?>
 		<script id="tmpl-rwmb-media-item" type="text/html">
+			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
 			<div class="rwmb-media-preview">
 				<div class="rwmb-media-content">
 					<div class="centered">
@@ -208,6 +166,7 @@ class RWMB_Media_Field extends RWMB_Field
 		</script>
 
 		<script id="tmpl-rwmb-image-item" type="text/html">
+			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
 			<div class="rwmb-media-preview">
 				<div class="rwmb-media-content">
 					<div class="centered">
