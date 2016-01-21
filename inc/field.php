@@ -93,7 +93,7 @@ abstract class RWMB_Field
 				{
 					$class .= ' rwmb-sort-clone';
 				}
-				$input_html = "<div class='$class'>";
+				$input_html = "<div class='{$class}' data-clone-index='{$index}''>";
 
 				// Drag clone icon
 				if ( $field['sort_clone'] )
@@ -421,13 +421,13 @@ abstract class RWMB_Field
 			'required'   => false,
 			'attributes' => array(),
 		) );
-		
-		//Make sure all letters are lower case for id 
+
+		//Make sure all letters are lower case for id
 		$field['id'] = strtolower( $field['id'] );
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -445,10 +445,10 @@ abstract class RWMB_Field
 			'id'       => $field['id'],
 			'name'     => $field['field_name'],
 		) );
-		
+
 		return $attributes;
 	}
-	
+
 	/**
 	 * Renders an attribute array into an html attributes string
 	 *

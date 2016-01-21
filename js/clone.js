@@ -7,19 +7,6 @@ jQuery( function ( $ )
 	// Object holds all methods related to fields' index when clone
 	var cloneIndex = {
 		/**
-		 * Reset index for fields in .rwmb-clone
-		 * Must be done when add/remove or sort clone
-		 * @param $container A div container which has all fields
-		 */
-		reset      : function ( $container )
-		{
-			var index = 0;
-			$container.find( '.rwmb-clone' ).each( function ()
-			{
-				cloneIndex.set( $( this ), index++ );
-			} );
-		},
-		/**
 		 * Set index for fields in a .rwmb-clone
 		 * @param $clone .rwmb-clone element
 		 * @param index Index value
@@ -46,6 +33,9 @@ jQuery( function ( $ )
 
 				$field.trigger( 'set' );
 			} );
+
+			//Set data attribute
+			$clone.data( 'clone-index', index );
 
 			// Address button's value attribute
 			var $address = $clone.find( '.rwmb-map-goto-address-button' );
@@ -96,7 +86,13 @@ jQuery( function ( $ )
 	{
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
-			$input = $clone.find( ':input[class|="rwmb"]' );
+			$input = $clone.find( ':input[class|="rwmb"]' ),
+			lastIndex = 0;
+
+		//Get max from ids
+ 		$container.children( '.rwmb-clone' ).each(function() {
+ 			lastIndex = Math.max( $( this ).data( 'clone-index'), lastIndex );
+		});
 
 		// Reset value for fields
 		$input.each( function ()
@@ -119,10 +115,11 @@ jQuery( function ( $ )
 			}
 		} );
 
+		//Insert Clone
 		$clone.insertAfter( $last );
 
-		// Reset fields index. Must run before trigger clone event.
-		cloneIndex.reset( $container );
+		// Set fields index. Must run before trigger clone event.
+		cloneIndex.set( $clone, lastIndex + 1 );
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );
@@ -288,7 +285,6 @@ jQuery( function ( $ )
 			}
 
 			$this.parent().trigger( 'remove' ).remove();
-			cloneIndex.reset( $container );
 			toggleRemoveButtons( $container );
 			toggleAddButton( $container )
 		} );
@@ -296,7 +292,6 @@ jQuery( function ( $ )
 	$( '.rwmb-input' ).each( function ()
 	{
 		var $container = $( this );
-		cloneIndex.reset( $container );
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
 
@@ -308,10 +303,6 @@ jQuery( function ( $ )
 			{
 				// Make the placeholder has the same height as dragged item
 				ui.placeholder.height( ui.item.height() );
-			},
-			update     : function ()
-			{
-				cloneIndex.reset( $container );
 			}
 		} );
 	} );
