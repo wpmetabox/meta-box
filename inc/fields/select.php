@@ -25,13 +25,14 @@ class RWMB_Select_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
+		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 		$html = sprintf(
 			'<select %s>',
-			self::render_attributes( $field['attributes'] )
+			self::render_attributes( $attributes )
 		);
-		
+
 		$html .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-		
+
 		$html .= self::options_html( $field, $meta );
 
 		$html .= '</select>';
@@ -85,7 +86,7 @@ class RWMB_Select_Field extends RWMB_Field
 		$field['field_name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
