@@ -17,7 +17,7 @@ class RWMB_Email_Field extends RWMB_Text_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -29,7 +29,7 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'email';	
+		$attributes['type'] = 'email';
 		return $attributes;
 	}
 
@@ -45,16 +45,6 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		if ( $field['clone'] )
-		{
-			$new = (array) $new;
-			$new = array_map( 'sanitize_email', $new );
-		}
-		else
-		{
-			$new = sanitize_email( $new );
-		}
-
-		return $new;
+		return $field['clone'] ? array_map( 'sanitize_email', (array) $new ) : sanitize_email( $new );
 	}
 }

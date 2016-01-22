@@ -43,33 +43,6 @@ class RWMB_Select_Field extends RWMB_Field
 	}
 
 	/**
-	 * Save meta value
-	 * If field is cloneable, value is saved as a single entry in DB
-	 * Otherwise value is saved as multiple entries (for backward compatibility)
-	 *
-	 * @param $new
-	 * @param $old
-	 * @param $post_id
-	 * @param $field
-	 *
-	 * @return void
-	 */
-	static function save( $new, $old, $post_id, $field )
-	{
-		if ( ! $field['clone'] )
-		{
-			parent::save( $new, $old, $post_id, $field );
-
-			return;
-		}
-
-		if ( empty( $new ) )
-			delete_post_meta( $post_id, $field['id'] );
-		else
-			update_post_meta( $post_id, $field['id'], $new );
-	}
-
-	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field

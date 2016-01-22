@@ -14,8 +14,7 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 
 		return sprintf(
 			'<input %s>%s',
@@ -48,7 +47,7 @@ abstract class RWMB_Input_Field extends RWMB_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -66,7 +65,7 @@ abstract class RWMB_Input_Field extends RWMB_Field
 			'value'			=> $value,
 			'placeholder'	=> $field['placeholder'],
 		) );
-		
+
 		return $attributes;
 	}
 
