@@ -362,6 +362,8 @@ abstract class RWMB_Field
 		if ( $field['clone'] )
 		{
 			$new = (array) $new;
+			//Reset inexes
+			$new = array_values( $new );
 			foreach ( $new as $k => $v )
 			{
 				if ( '' === $v )
