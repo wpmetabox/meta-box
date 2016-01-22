@@ -25,13 +25,14 @@ class RWMB_Select_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
+		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 		$html = sprintf(
 			'<select %s>',
-			self::render_attributes( $field['attributes'] )
+			self::render_attributes( $attributes )
 		);
-		
+
 		$html .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-		
+
 		$html .= self::options_html( $field, $meta );
 
 		$html .= '</select>';
@@ -39,33 +40,6 @@ class RWMB_Select_Field extends RWMB_Field
 		$html .= self::get_select_all_html( $field['multiple'] );
 
 		return $html;
-	}
-
-	/**
-	 * Save meta value
-	 * If field is cloneable, value is saved as a single entry in DB
-	 * Otherwise value is saved as multiple entries (for backward compatibility)
-	 *
-	 * @param $new
-	 * @param $old
-	 * @param $post_id
-	 * @param $field
-	 *
-	 * @return void
-	 */
-	static function save( $new, $old, $post_id, $field )
-	{
-		if ( ! $field['clone'] )
-		{
-			parent::save( $new, $old, $post_id, $field );
-
-			return;
-		}
-
-		if ( empty( $new ) )
-			delete_post_meta( $post_id, $field['id'] );
-		else
-			update_post_meta( $post_id, $field['id'], $new );
 	}
 
 	/**
@@ -85,7 +59,7 @@ class RWMB_Select_Field extends RWMB_Field
 		$field['field_name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *

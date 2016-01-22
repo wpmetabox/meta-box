@@ -24,8 +24,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, 1 );
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, 1 );
 
 		return sprintf(
 			'<input %s %s>',
@@ -33,7 +32,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 			checked( ! empty( $meta ), 1, false )
 		);
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -47,7 +46,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'checkbox';
 		$attributes['list'] = false;
-		
+
 		return $attributes;
 	}
 
