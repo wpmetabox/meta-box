@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-abstract class RWMB_Key_Value_Field extends RWMB_Field
+abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 {
 	/**
 	 * Get field HTML
@@ -14,13 +14,17 @@ abstract class RWMB_Key_Value_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$tpl = '<input type="text" class="rwmb-key-val" name="%s[]" value="%s" placeholder="' . esc_attr__( 'Key', 'meta-box' ) . '">';
-		$tpl .= '<input type="text" class="rwmb-key-val" name="%s[]" value="%s" placeholder="' . esc_attr__( 'Value', 'meta-box' ) . '">';
-
+		//Key
 		$key = isset( $meta[0] ) ? $meta[0] : '';
-		$val = isset( $meta[1] ) ? $meta[1] : '';
+		$attributes = self::get_attributes( $field, $key );
+		$attributes['placeholder'] = esc_attr__( 'Key', 'meta-box' );
+		$html = sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
-		$html = sprintf( $tpl, $field['field_name'], $key, $field['field_name'], $val );
+		//Value
+		$val = isset( $meta[1] ) ? $meta[1] : '';
+		$attributes = self::get_attributes( $field, $val );
+		$attributes['placeholder'] = esc_attr__( 'Value', 'meta-box' ) ;
+		$html .= sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		return $html;
 	}
@@ -121,7 +125,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Field
 	{
 		$field             = parent::normalize( $field );
 		$field['clone']    = true;
-		$field['multiple'] = false;
+		$field['multiple'] = true;
 
 		return $field;
 	}
