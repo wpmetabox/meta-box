@@ -45,6 +45,7 @@ jQuery( function ( $ )
 				$address.attr( 'value', cloneIndex.replace( index, value, '_' ) );
 			}
 		},
+
 		/**
 		 * Replace an attribute of a field with updated index
 		 * @param index New index value
@@ -65,6 +66,7 @@ jQuery( function ( $ )
 
 			return regex.test( value ) ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
 		},
+
 		/**
 		 * Helper function to escape string in regular expression
 		 * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
@@ -74,6 +76,23 @@ jQuery( function ( $ )
 		escapeRegex: function ( string )
 		{
 			return string.replace( /[.*+?^${}()|[\]\\]/g, "\\$&" );
+		},
+
+		nextIndex: function ( $container )
+		{
+			var nextIndex = $container.data( 'next-index' );
+			if( undefined === nextIndex )
+			{
+				console.log( 'get last indext');
+				//Get max from ids
+				nextIndex = 0;
+				$container.children( '.rwmb-clone' ).each(function() {
+					nextIndex = Math.max( $( this ).data( 'clone-index'), nextIndex );
+				});
+			}
+
+			$container.data( 'next-index', ++nextIndex );
+			return nextIndex;
 		}
 	};
 
@@ -87,12 +106,7 @@ jQuery( function ( $ )
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
 			$input = $clone.find( ':input[class|="rwmb"]' ),
-			lastIndex = 0;
-
-		//Get max from ids
- 		$container.children( '.rwmb-clone' ).each(function() {
- 			lastIndex = Math.max( $( this ).data( 'clone-index'), lastIndex );
-		});
+			nextIndex = cloneIndex.nextIndex($container);
 
 		// Reset value for fields
 		$input.each( function ()
@@ -117,9 +131,8 @@ jQuery( function ( $ )
 
 		//Insert Clone
 		$clone.insertAfter( $last );
-
 		// Set fields index. Must run before trigger clone event.
-		cloneIndex.set( $clone, lastIndex + 1 );
+		cloneIndex.set( $clone, nextIndex );
 
 		// Trigger custom clone event
 		$input.trigger( 'clone' );

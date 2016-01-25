@@ -207,11 +207,7 @@ abstract class RWMB_Field
 			);
 		}
 
-		$data_max_clone = '';
-		if ( is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
-		{
-			$data_max_clone .= ' data-max-clone=' . $field['max_clone'];
-		}
+		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
 
 		$input_open = sprintf(
 			'<div class="rwmb-input"%s>',
