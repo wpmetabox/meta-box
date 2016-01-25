@@ -83,7 +83,6 @@ jQuery( function ( $ )
 			var nextIndex = $container.data( 'next-index' );
 			if( undefined === nextIndex )
 			{
-				console.log( 'get last indext');
 				//Get max from ids
 				nextIndex = 0;
 				$container.children( '.rwmb-clone' ).each(function() {
