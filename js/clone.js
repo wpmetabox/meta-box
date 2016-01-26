@@ -132,7 +132,7 @@ jQuery( function ( $ )
 		cloneIndex.set( $clone, nextIndex );
 
 		// Trigger custom clone event
-		$input.trigger( 'clone', { index: nextIndex, container: $container } );
+		$input.trigger( 'clone', nextIndex );
 	}
 
 	/**
