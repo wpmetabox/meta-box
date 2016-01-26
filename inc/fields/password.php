@@ -25,7 +25,7 @@ class RWMB_Password_Field extends RWMB_Text_Field
 		if($new != $old){
 			return wp_hash_password( parent::value( $new, $old, $post_id, $field ) );
 		} else {
-			return parent::value( $new, $old, $post_id, $field )
+			return parent::value( $new, $old, $post_id, $field );
 		}
 	}
 }
