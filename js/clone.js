@@ -30,8 +30,6 @@ jQuery( function ( $ )
 				{
 					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
 				}
-
-				$field.trigger( 'set' );
 			} );
 
 			//Set data attribute
@@ -134,7 +132,7 @@ jQuery( function ( $ )
 		cloneIndex.set( $clone, nextIndex );
 
 		// Trigger custom clone event
-		$input.trigger( 'clone' );
+		$input.trigger( 'clone', { index: nextIndex, container: $container } );
 	}
 
 	/**
