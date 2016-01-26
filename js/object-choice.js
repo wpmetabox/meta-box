@@ -4,8 +4,8 @@ jQuery( function( $ )
 	function updateChecklist()
 	{
 		var $this = $( this ),
-			$children = $this.closest( 'li' ).children('ul');	
-			
+			$children = $this.closest( 'li' ).children('ul');
+
 		if ( $this.is( ':checked' ) )
 		{
 			$children.removeClass( 'hidden' );
@@ -18,13 +18,13 @@ jQuery( function( $ )
 				.removeAttr( 'checked' );
 		}
 	}
-	
+
 	$( '.rwmb-input' )
-		.on( 'change', '.rwmb-choice-list :checkbox', updateChecklist )
-		.on( 'clone', '.rwmb-choice-list :checkbox', updateChecklist );
-	$( '.rwmb-choice-list :checkbox' ).each( updateChecklist );	
-	
-	
+		.on( 'change', '.rwmb-choice-list.collapse :checkbox', updateChecklist )
+		.on( 'clone', '.rwmb-choice-list.collapse :checkbox', updateChecklist );
+	$( '.rwmb-choice-list.collapse :checkbox' ).each( updateChecklist );
+
+
 	function updateSelectTree()
 	{
 		var $this = $( this ),
@@ -36,9 +36,9 @@ jQuery( function( $ )
 		$notSelected
 			.addClass( 'hidden' )
 			.find( 'select' )
-			.prop( 'selectedIndex', 0 );			
+			.prop( 'selectedIndex', 0 );
 	}
-	
+
 	$( '.rwmb-input' )
 		.on( 'change', '.rwmb-select-tree select', updateSelectTree )
 		.on( 'clone', '.rwmb-select-tree select', updateSelectTree );

@@ -62,6 +62,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		{
 			case 'checkbox_list':
 			case 'radio_list':
+				$field = wp_parse_args( $field, array(
+					'collapse' => true
+				) );
 				$field['flatten']  = 'radio_list' === $field['field_type'] ? true : $field['flatten'];
 				$field['multiple'] = 'radio_list' === $field['field_type'] ? false : true;
 				$field             = RWMB_Input_Field::normalize( $field );
@@ -99,7 +102,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			case 'radio_list':
 				$attributes           = RWMB_Input_Field::get_attributes( $field, $value );
 				$attributes['class'] .= " rwmb-choice";
-				$attributes['id']     = false;	
+				$attributes['id']     = false;
 				$attributes['type']   = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
 				break;
 			case 'select_advanced':
@@ -110,7 +113,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$attributes             = RWMB_Select_Field::get_attributes( $field, $value );
 				$attributes['multiple'] = false;
 				$attributes['id']       = false;
-				$attributes['class'] .= " rwmb-select";	
+				$attributes['class'] .= " rwmb-select";
 				break;
 			case 'select':
 			default:
@@ -167,7 +170,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 		$db_fields   = call_user_func( array( $field_class, 'get_db_fields' ), $field );
 		$walker      = new RWMB_Choice_List_Walker( $db_fields, $field, $meta );
 
-		$output = '<ul class="rwmb-choice-list">';
+		$output = sprintf( '<ul class="rwmb-choice-list %s">', $field['collapse'] ? 'collapse' : '' );
 
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</ul>';
