@@ -387,8 +387,6 @@ class RWMB_Select_Tree_Walker
 	function walk( $options )
 	{
 		$parent   = $this->db_fields['parent'];
-		$label    = $this->db_fields['label'];
-		$id       = $this->db_fields['id'];
 		$children = array();
 
 		foreach ( $options as $o )
@@ -401,8 +399,6 @@ class RWMB_Select_Tree_Walker
 
 	function display_level( $options, $parent_id = 0, $active = false )
 	{
-		$parent      = $this->db_fields['parent'];
-		$label       = $this->db_fields['label'];
 		$id          = $this->db_fields['id'];
 		$field       = $this->field;
 		$meta        = $this->meta;
