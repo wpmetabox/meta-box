@@ -25,15 +25,6 @@
   "autoload": {
     "files": [
       "meta-box.php"
-    ],
-    "classmap": [
-      "inc/",
-      "inc/fields",
-      "inc/field.php",
-      "inc/meta-box.php",
-      "inc/validation.php",
-      "inc/helpers.php",
-      "inc/core.php"
     ]
   }
 }
