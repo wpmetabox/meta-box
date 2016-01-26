@@ -32,9 +32,6 @@ jQuery( function ( $ )
 				}
 			} );
 
-			//Set data attribute
-			$clone.data( 'clone-index', index );
-
 			// Address button's value attribute
 			var $address = $clone.find( '.rwmb-map-goto-address-button' );
 			if ( $address.length )
@@ -79,17 +76,7 @@ jQuery( function ( $ )
 		nextIndex: function ( $container )
 		{
 			var nextIndex = $container.data( 'next-index' );
-			if ( undefined === nextIndex )
-			{
-				//Get max from ids
-				nextIndex = 0;
-				$container.children( '.rwmb-clone' ).each( function ()
-				{
-					nextIndex = Math.max( $( this ).data( 'clone-index' ), nextIndex );
-				} );
-			}
-
-			$container.data( 'next-index', ++nextIndex );
+			$container.data( 'next-index', nextIndex + 1 );
 			return nextIndex;
 		}
 	};
@@ -305,6 +292,8 @@ jQuery( function ( $ )
 		var $container = $( this );
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
+
+		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length )
 
 		$container.sortable( {
 			handle     : '.rwmb-clone-icon',

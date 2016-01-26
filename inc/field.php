@@ -93,7 +93,7 @@ abstract class RWMB_Field
 				{
 					$class .= ' rwmb-sort-clone';
 				}
-				$input_html = "<div class='{$class}' data-clone-index='{$index}''>";
+				$input_html = "<div class='{$class}'>";
 
 				// Drag clone icon
 				if ( $field['sort_clone'] )
