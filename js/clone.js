@@ -132,7 +132,7 @@ jQuery( function ( $ )
 		cloneIndex.set( $clone, nextIndex );
 
 		// Trigger custom clone event
-		$input.trigger( 'clone', { index: nextIndex, container: $container } );
+		$input.trigger( 'clone', nextIndex );
 	}
 
 	/**
@@ -145,7 +145,7 @@ jQuery( function ( $ )
 	function toggleRemoveButtons( $container )
 	{
 		var $button = $container.find( '.remove-clone' );
-		$button[$button.length < 2 ? 'hide' : 'show']();
+		$button.toggle( $button.length > 1 );
 	}
 
 	/**
@@ -162,7 +162,7 @@ jQuery( function ( $ )
 			maxClone = parseInt( $container.data( 'max-clone' ) ),
 			numClone = $container.find( '.rwmb-clone' ).length;
 
-		$button[isNaN( maxClone ) || (maxClone && numClone < maxClone) ? 'show' : 'hide']();
+		$button.toggle( isNaN( maxClone ) || (maxClone && numClone < maxClone ) );
 	}
 
 	/**
