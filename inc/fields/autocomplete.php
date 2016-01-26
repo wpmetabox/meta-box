@@ -50,11 +50,11 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 		// This field doesn't store field values, so it doesn't have "name" attribute.
 		// The value(s) of the field is store in hidden input(s). See below.
 		$html = sprintf(
-			'<input type="text" class="rwmb-autocomplete" id="%s" data-name="%s" data-options="%s" size="%s">',
-			$field['id'],
+			'<input type="text" class="rwmb-autocomplete-search" size="%s">
+			<input type="hidden" name="%s" class="rwmb-autocomplete" data-options="%s" disabled>',
+			$field['size'],
 			$field['field_name'],
-			esc_attr( $options ),
-			$field['size']
+			esc_attr( $options )
 		);
 
 		$html .= '<div class="rwmb-autocomplete-results">';
