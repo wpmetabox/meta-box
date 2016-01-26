@@ -93,7 +93,7 @@ abstract class RWMB_Field
 				{
 					$class .= ' rwmb-sort-clone';
 				}
-				$input_html = "<div class='$class'>";
+				$input_html = "<div class='{$class}' data-clone-index='{$index}''>";
 
 				// Drag clone icon
 				if ( $field['sort_clone'] )
@@ -207,11 +207,7 @@ abstract class RWMB_Field
 			);
 		}
 
-		$data_max_clone = '';
-		if ( is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 )
-		{
-			$data_max_clone .= ' data-max-clone=' . $field['max_clone'];
-		}
+		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
 
 		$input_open = sprintf(
 			'<div class="rwmb-input"%s>',
@@ -362,6 +358,8 @@ abstract class RWMB_Field
 		if ( $field['clone'] )
 		{
 			$new = (array) $new;
+			//Reset inexes
+			$new = array_values( $new );
 			foreach ( $new as $k => $v )
 			{
 				if ( '' === $v )
@@ -421,13 +419,13 @@ abstract class RWMB_Field
 			'required'   => false,
 			'attributes' => array(),
 		) );
-		
-		//Make sure all letters are lower case for id 
+
+		//Make sure all letters are lower case for id
 		$field['id'] = strtolower( $field['id'] );
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -445,10 +443,10 @@ abstract class RWMB_Field
 			'id'       => $field['id'],
 			'name'     => $field['field_name'],
 		) );
-		
+
 		return $attributes;
 	}
-	
+
 	/**
 	 * Renders an attribute array into an html attributes string
 	 *

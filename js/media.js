@@ -112,9 +112,6 @@ jQuery( function ( $ )
 						} );
 					}
 				} )
-				.on( 'set', function(){
-					that.props.set( 'fieldName', that.$input.attr( 'name' ) );
-				})
 		},
 
 		render: function ()
