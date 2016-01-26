@@ -11,7 +11,7 @@ jQuery( function ( $ )
 		 * @param $clone .rwmb-clone element
 		 * @param index Index value
 		 */
-		set        : function ( $clone, index )
+		set: function ( $clone, index )
 		{
 			$clone.find( ':input[class|="rwmb"]' ).each( function ()
 			{
@@ -53,7 +53,7 @@ jQuery( function ( $ )
 		 * @param alternative Check if attribute does not contain any integer, will reset the attribute?
 		 * @return string
 		 */
-		replace    : function ( index, value, before, after, alternative )
+		replace: function ( index, value, before, after, alternative )
 		{
 			before = before || '';
 			after = after || '';
@@ -79,13 +79,14 @@ jQuery( function ( $ )
 		nextIndex: function ( $container )
 		{
 			var nextIndex = $container.data( 'next-index' );
-			if( undefined === nextIndex )
+			if ( undefined === nextIndex )
 			{
 				//Get max from ids
 				nextIndex = 0;
-				$container.children( '.rwmb-clone' ).each(function() {
-					nextIndex = Math.max( $( this ).data( 'clone-index'), nextIndex );
-				});
+				$container.children( '.rwmb-clone' ).each( function ()
+				{
+					nextIndex = Math.max( $( this ).data( 'clone-index' ), nextIndex );
+				} );
 			}
 
 			$container.data( 'next-index', ++nextIndex );
@@ -103,7 +104,7 @@ jQuery( function ( $ )
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
 			$input = $clone.find( ':input[class|="rwmb"]' ),
-			nextIndex = cloneIndex.nextIndex($container);
+			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Reset value for fields
 		$input.each( function ()
@@ -126,7 +127,7 @@ jQuery( function ( $ )
 			}
 		} );
 
-		//Insert Clone
+		// Insert Clone
 		$clone.insertAfter( $last );
 		// Set fields index. Must run before trigger clone event.
 		cloneIndex.set( $clone, nextIndex );
@@ -162,7 +163,7 @@ jQuery( function ( $ )
 			maxClone = parseInt( $container.data( 'max-clone' ) ),
 			numClone = $container.find( '.rwmb-clone' ).length;
 
-		$button.toggle( isNaN( maxClone ) || (maxClone && numClone < maxClone ) );
+		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
 	}
 
 	/**
