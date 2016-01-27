@@ -2,6 +2,9 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Radio field class.
+ */
 class RWMB_Radio_Field extends RWMB_Input_Field
 {
 	/**
@@ -14,14 +17,13 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$html       = array();
-		$tpl        = '<label><input %s %s> %s</label>';
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		
+		$html = array();
+		$tpl  = '<label><input %s %s> %s</label>';
+
 		foreach ( $field['options'] as $value => $label )
 		{
-			$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $value );
-			$html[]              = sprintf(
+			$attributes = self::get_attributes( $field, $value );
+			$html[]     = sprintf(
 				$tpl,
 				self::render_attributes( $attributes ),
 				checked( $value, $meta, false ),
@@ -31,22 +33,22 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 
 		return implode( ' ', $html );
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
 	{
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes         = parent::get_attributes( $field, $value );
 		$attributes['list'] = false;
 		$attributes['id']   = false;
 		$attributes['type'] = 'radio';
-			
+
 		return $attributes;
 	}
 
@@ -65,7 +67,6 @@ class RWMB_Radio_Field extends RWMB_Input_Field
 	static function the_value( $field, $args = array(), $post_id = null )
 	{
 		$value = parent::get_value( $field, $args, $post_id );
-
 		return empty( $value ) ? '' : $field['options'][$value];
 	}
 }

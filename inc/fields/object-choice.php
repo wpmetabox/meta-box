@@ -2,6 +2,9 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Abstract field to select an object: post, user, taxonomy, etc.
+ */
 abstract class RWMB_Object_Choice_Field extends RWMB_Field
 {
 	/**
@@ -140,7 +143,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 			'label'  => '',
 		);
 	}
-
 
 	/**
 	 * Enqueue scripts and styles
