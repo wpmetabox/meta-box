@@ -19,8 +19,7 @@ class RWMB_Helper
 	 */
 	static function find_field( $field_id )
 	{
-		// Get all meta boxes registered with 'rwmb_meta_boxes' hook
-		$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
+		$meta_boxes = RWMB_Core::get_meta_boxes();
 
 		// Find field
 		foreach ( $meta_boxes as $meta_box )
