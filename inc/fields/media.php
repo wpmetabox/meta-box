@@ -2,6 +2,9 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Media field class which users WordPress media popup to upload and select files.
+ */
 class RWMB_Media_Field extends RWMB_Field
 {
 	/**
@@ -37,13 +40,13 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$meta        = (array) $meta;
-		$meta        = implode( ',', $meta );
-		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$meta       = (array) $meta;
+		$meta       = implode( ',', $meta );
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 
 		$html = sprintf(
 			'<input %s>
-			<div class="rwmb-media-view"  data-mime-type="%s" data-max-files="%s" data-force-delete="%s"></div>',
+			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s"></div>',
 			self::render_attributes( $attributes ),
 			$field['mime_type'],
 			$field['max_file_uploads'],
@@ -79,7 +82,7 @@ class RWMB_Media_Field extends RWMB_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
