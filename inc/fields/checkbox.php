@@ -37,7 +37,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
