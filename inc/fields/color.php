@@ -2,12 +2,13 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Color field class.
+ */
 class RWMB_Color_Field extends RWMB_Text_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -16,10 +17,9 @@ class RWMB_Color_Field extends RWMB_Text_Field
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -41,13 +41,12 @@ class RWMB_Color_Field extends RWMB_Text_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
-	 *
+	 * @param mixed $value
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
@@ -56,7 +55,20 @@ class RWMB_Color_Field extends RWMB_Text_Field
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
-		
+
 		return $attributes;
+	}
+
+	/**
+	 * Output color field as a dot.
+	 * @param array $field
+	 * @param array $args
+	 * @param null  $post_id
+	 * @return string
+	 */
+	static function the_value( $field, $args = array(), $post_id = null )
+	{
+		$value = self::get_value( $field, $args, $post_id );
+		return "<span style='display:inline-block;width:20px;height:20px;border-radius:50%;background:$value;'></span>";
 	}
 }
