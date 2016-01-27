@@ -27,7 +27,7 @@ class RWMB_Checkbox_List_Field extends RWMB_Multiple_Values_Field
 			$html[]     = sprintf(
 				$tpl,
 				self::render_attributes( $attributes ),
-				checked( in_array( $value, $meta ), 1, false ),
+				checked( in_array( (string) $value, $meta, true ), 1, false ),
 				$label
 			);
 		}

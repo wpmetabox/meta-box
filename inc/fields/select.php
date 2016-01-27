@@ -98,7 +98,7 @@ class RWMB_Select_Field extends RWMB_Field
 			$html .= sprintf(
 				$option,
 				$value,
-				selected( in_array( $value, (array) $meta ), true, false ),
+				selected( in_array( (string) $value, (array) $meta, true ), true, false ),
 				$label
 			);
 		}
