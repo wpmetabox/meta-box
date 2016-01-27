@@ -68,7 +68,21 @@ class RWMB_Color_Field extends RWMB_Text_Field
 	 */
 	static function the_value( $field, $args = array(), $post_id = null )
 	{
-		$value = self::get_value( $field, $args, $post_id );
-		return "<span style='display:inline-block;width:20px;height:20px;border-radius:50%;background:$value;'></span>";
+		$value    = self::get_value( $field, $args, $post_id );
+		$template = "<span style='display:inline-block;width:20px;height:20px;border-radius:50%%;background:%s;'></span>";
+		if ( is_array( $value ) )
+		{
+			$output = '<ul>';
+			foreach ( $value as $subvalue )
+			{
+				$output .= '<li>' . sprintf( $template, $subvalue ) . '</li>';
+			}
+			$output .= '</ul>';
+		}
+		else
+		{
+			$output = sprintf( $template, $value );
+		}
+		return $output;
 	}
 }
