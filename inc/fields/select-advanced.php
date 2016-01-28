@@ -29,8 +29,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$attributes = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 		$html = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
@@ -57,9 +56,9 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		$field = wp_parse_args( $field, array(
 			'js_options' => array(),
 			'placeholder' => 'Select an item'
-		) ); 
-		
-		$field = parent::normalize( $field );		
+		) );
+
+		$field = parent::normalize( $field );
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
 			'allowClear'  => true,
@@ -69,7 +68,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *

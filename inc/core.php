@@ -45,27 +45,30 @@ class RWMB_Core
 	}
 
 	/**
-	 * Register meta boxes via a filter.
+	 * Register meta boxes.
 	 * Advantages:
 	 * - prevents incorrect hook.
-	 * - prevents duplicated global variables.
-	 * - allows users to remove/hide registered meta boxes.
 	 * - no need to check for class existences.
 	 */
 	public function register_meta_boxes()
 	{
-		$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
-
-		// Prevent errors showing if invalid value is returned from the filter above
-		if ( empty( $meta_boxes ) || ! is_array( $meta_boxes ) )
-		{
-			return;
-		}
-
+		$meta_boxes = self::get_meta_boxes();
 		foreach ( $meta_boxes as $meta_box )
 		{
 			new RW_Meta_Box( $meta_box );
 		}
+	}
+
+	/**
+	 * Get registered meta boxes via a filter.
+	 * Advantages:
+	 * - prevents duplicated global variables.
+	 * - allows users to remove/hide registered meta boxes.
+	 */
+	static public function get_meta_boxes()
+	{
+		$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
+		return empty( $meta_boxes ) || ! is_array( $meta_boxes ) ? array() : $meta_boxes;
 	}
 
 	/**

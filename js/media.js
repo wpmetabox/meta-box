@@ -112,9 +112,6 @@ jQuery( function ( $ )
 						} );
 					}
 				} )
-				.on( 'set', function(){
-					that.props.set( 'fieldName', that.$input.attr( 'name' ) );
-				})
 		},
 
 		render: function ()
@@ -216,25 +213,6 @@ jQuery( function ( $ )
 			} );
 
 			this.render();
-		}
-	} );
-
-	UploadButton = views.UploadButton = Backbone.View.extend( {
-		initialize: function ( options )
-		{
-			this.props = options.props;
-			this.listenTo( this.collection, 'add remove reset', function ()
-			{
-				var maxFiles = this.props.get( 'maxFiles' );
-				if ( maxFiles > 0 && this.collection.length >= maxFiles )
-				{
-					this.$el.hide();
-				}
-				else
-				{
-					this.$el.show();
-				}
-			} );
 		}
 	} );
 

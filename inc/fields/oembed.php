@@ -67,14 +67,13 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 */
 	static function html( $meta, $field )
 	{
+		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 		return sprintf(
-			'<input type="url" class="rwmb-oembed" name="%s" id="%s" value="%s" size="%s">
+			'<input %s>
 			<a href="#" class="show-embed button">%s</a>
 			<span class="spinner"></span>
 			<div class="embed-code">%s</div>',
-			$field['field_name'],
-			$field['id'],
-			$meta,
+			self::render_attributes( $attributes ),
 			$field['size'],
 			__( 'Preview', 'meta-box' ),
 			$meta ? self::get_embed( $meta ) : ''

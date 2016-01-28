@@ -30,7 +30,7 @@ class RWMB_Loader
 		// Script version, used to add version for scripts and styles
 		define( 'RWMB_VER', '4.7.3' );
 
-		list( $path, $url ) = $this->get_path();
+		list( $path, $url ) = self::get_path();
 
 		// Plugin URLs, for fast enqueuing scripts and styles
 		define( 'RWMB_URL', $url );
@@ -45,13 +45,15 @@ class RWMB_Loader
 
 	/**
 	 * Get plugin base path and URL.
+	 * The method is static and can be used in extensions.
 	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
+	 * @param string $base Base folder path
 	 * @return array Path and URL.
 	 */
-	public function get_path()
+	static public function get_path( $base = '' )
 	{
 		// Plugin base path
-		$path = dirname( dirname( __FILE__ ) );
+		$path = $base ? $base : dirname( dirname( __FILE__ ) );
 
 		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
 		if ( false === strpos( $path, ABSPATH ) )
@@ -60,9 +62,10 @@ class RWMB_Loader
 			{
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			if ( is_plugin_active( 'meta-box/meta-box.php' ) )
+			$basename = basename( $path );
+			if ( is_plugin_active( "$basename/$basename.php" ) )
 			{
-				$path = trailingslashit( WP_PLUGIN_DIR ) . 'meta-box';
+				$path = trailingslashit( WP_PLUGIN_DIR ) . $basename;
 			}
 		}
 
@@ -90,11 +93,8 @@ class RWMB_Loader
 		}
 
 		// Get file name
-		if ( 'RW_Meta_Box' == $class )
-		{
-			$file = 'meta-box';
-		}
-		else
+		$file = 'meta-box';
+		if ( 'RW_Meta_Box' != $class )
 		{
 			// Remove prefix 'RWMB_'
 			$file = substr( $class, 5 );
@@ -108,9 +108,10 @@ class RWMB_Loader
 		$dirs = array( RWMB_INC_DIR, RWMB_FIELDS_DIR );
 		foreach ( $dirs as $dir )
 		{
-			if ( file_exists( trailingslashit( $dir ) . $file ) )
+			if ( file_exists( $dir . $file ) )
 			{
-				require trailingslashit( $dir ) . $file;
+				require $dir . $file;
+				return;
 			}
 		}
 	}
@@ -126,7 +127,7 @@ class RWMB_Loader
 		// Validation module
 		new RWMB_Validation;
 
-		// Helper class and functions to retrieve meta value
-		require RWMB_INC_DIR . 'helpers.php';
+		// Public functions
+		require RWMB_INC_DIR . 'functions.php';
 	}
 }
