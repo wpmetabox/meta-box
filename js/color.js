@@ -9,7 +9,19 @@ jQuery( function ( $ )
 	function update()
 	{
 		var $this = $( this ),
-			$container = $this.closest( '.rwmb-color-clone' );
+			$container = $this.closest( '.rwmb-color-clone' ),
+			data = $.extend(
+				{
+					change: function()
+					{
+						$( this ).trigger( 'color:change' );
+					},
+					clear: function()
+					{
+						$( this ).trigger( 'color:clear' );
+					}
+				},
+				$this.data( 'options' ) );
 
 		// Clone doesn't have input for color picker, we have to add the input and remove the color picker container
 		if ( $container.length > 0 )
@@ -18,7 +30,7 @@ jQuery( function ( $ )
 		}
 
 		// Show color picker
-		$this.wpColorPicker( $this.data( 'options' ) );
+		$this.wpColorPicker( data );
 	}
 
 	$( ':input.rwmb-color' ).each( update );
