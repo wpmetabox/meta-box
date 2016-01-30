@@ -73,6 +73,12 @@ jQuery( function ( $ )
 			return string.replace( /[.*+?^${}()|[\]\\]/g, "\\$&" );
 		},
 
+		/**
+		 * Helper function to create next index for clones
+		 * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+		 * @param string
+		 * @return integer
+		 */
 		nextIndex: function ( $container )
 		{
 			var nextIndex = $container.data( 'next-index' );
@@ -245,7 +251,6 @@ jQuery( function ( $ )
 			//Trigger custom clone event
 			textarea.trigger( 'clone' );
 		}
-
 	}
 
 	$( '#poststuff' )
