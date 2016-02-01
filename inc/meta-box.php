@@ -109,7 +109,7 @@ class RW_Meta_Box
 		{
 			if ( $field['clone'] )
 			{
-				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery' ), RWMB_VER, true );
+				wp_enqueue_script( 'rwmb-clone', RWMB_JS_URL . 'clone.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
 				break;
 			}
 		}

@@ -252,7 +252,7 @@ jQuery( function ( $ )
 		}
 	}
 
-	$( '#poststuff' )
+	$( '#wpbody-content' )
 	// Add clones
 		.on( 'click', '.add-clone', function ( e )
 		{
@@ -297,7 +297,7 @@ jQuery( function ( $ )
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
 
-		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length )
+		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length );
 
 		$container.sortable( {
 			handle     : '.rwmb-clone-icon',
