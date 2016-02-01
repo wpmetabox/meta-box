@@ -60,16 +60,17 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 
 		// Adds file as attachment to WordPress
 		$id = wp_insert_attachment( $attachment, $file_attr['file'], $post_id );
-		if ( ! is_wp_error( $id ) )
-		{
-			wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
 
-			// Save file ID in meta field
-			add_post_meta( $post_id, $field_id, $id, false );
-			wp_send_json_success( self::img_html( $id ) );
+		if ( is_wp_error( $id ) )
+		{
+			wp_send_json_error();
 		}
 
-		exit;
+		wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
+
+		// Save file ID in meta field
+		add_post_meta( $post_id, $field_id, $id, false );
+		wp_send_json_success( self::img_html( $id ) );
 	}
 
 	/**
@@ -184,7 +185,7 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 			'multipart_params'    => array(
 				'field_id' => $field['id'],
 				'action'   => 'rwmb_plupload_image_upload',
-			)
+			),
 		);
 		$field               = parent::normalize( $field );
 
