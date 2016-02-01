@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Map field class.
+ */
 class RWMB_Map_Field extends RWMB_Field
 {
 	/**

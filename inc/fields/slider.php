@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * jQueryUI slider field class.
+ */
 class RWMB_Slider_Field extends RWMB_Field
 {
 	/**

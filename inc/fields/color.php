@@ -1,7 +1,4 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Color field class.
  */

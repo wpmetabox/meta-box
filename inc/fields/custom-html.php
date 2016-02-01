@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Custom HTML field class.
+ */
 class RWMB_Custom_Html_Field extends RWMB_Field
 {
 	/**

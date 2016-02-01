@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Select field class.
+ */
 class RWMB_Select_Field extends RWMB_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Taxonomy field class which set post terms when saving.
+ */
 class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * File input field class which uses an input for file URL.
+ */
 class RWMB_File_Input_Field extends RWMB_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Abstract input field class which is used for all <input> fields.
+ */
 abstract class RWMB_Input_Field extends RWMB_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Image select field class which uses images as radio options.
+ */
 class RWMB_Image_Select_Field extends RWMB_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Key-value field class.
+ */
 abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Fieldset text class.
+ */
 class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 {
 	/**

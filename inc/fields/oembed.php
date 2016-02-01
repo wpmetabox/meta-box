@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * oEmbed field class.
+ */
 class RWMB_OEmbed_Field extends RWMB_URL_Field
 {
 	/**

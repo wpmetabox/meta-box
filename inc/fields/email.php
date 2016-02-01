@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Email field class.
+ */
 class RWMB_Email_Field extends RWMB_Text_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Select advanced field which uses select2 library.
+ */
 class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 {
 	/**

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Button field class.
+ */
 class RWMB_Button_Field extends RWMB_Field
 {
 	/**

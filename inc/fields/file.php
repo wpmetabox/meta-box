@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * File field class which uses HTML <input type="file"> to upload file.
+ */
 class RWMB_File_Field extends RWMB_Field
 {
 	/**

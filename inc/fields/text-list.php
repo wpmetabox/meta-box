@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Text list field class.
+ */
 class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field
 {
 	/**

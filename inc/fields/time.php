@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Time field class.
+ */
 class RWMB_Time_Field extends RWMB_Text_Field
 {
 	/**
@@ -39,7 +39,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 			'localeShort' => $locale_short,
 		) );
 	}
-	
+
 	/**
 	 * Get field HTML
 	 *
@@ -53,7 +53,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 		$output = parent::html( $meta, $field );
 		if( $field['inline'] )
 		{
-			$output .= '<div class="rwmb-time-inline"></div>';	
+			$output .= '<div class="rwmb-time-inline"></div>';
 		}
 		return $output;
 	}
@@ -82,7 +82,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 		$field = parent::normalize( $field );
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -97,7 +97,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 		$attributes =  wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
-			
+
 		return $attributes;
-	}	
+	}
 }

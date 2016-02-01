@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Number field class.
+ */
 class RWMB_Number_Field extends RWMB_Input_Field
 {
 	/**
@@ -23,7 +23,7 @@ class RWMB_Number_Field extends RWMB_Input_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
@@ -41,7 +41,7 @@ class RWMB_Number_Field extends RWMB_Input_Field
 			'min'  => $field['min'],
 		) );
 		$attributes['type'] = 'number';
-			
+
 		return $attributes;
 	}
 }

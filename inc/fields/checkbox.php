@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Checkbox field class.
+ */
 class RWMB_Checkbox_Field extends RWMB_Input_Field
 {
 	/**

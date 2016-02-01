@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Taxonomy advanced field class which saves terms' IDs in the post meta.
+ */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 {
 	/**

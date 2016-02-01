@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Autocomplete field class.
+ */
 class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 {
 	/**

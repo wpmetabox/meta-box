@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * WYSIWYG (editor) field class.
+ */
 class RWMB_Wysiwyg_Field extends RWMB_Field
 {
 	static $cloneable_editors = array();
