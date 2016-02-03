@@ -50,7 +50,7 @@ class RWMB_Thickbox_Image_Field extends RWMB_Image_Field
 	 * @param int   $post_id
 	 * @param array $field
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{

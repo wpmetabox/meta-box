@@ -6,8 +6,6 @@ class RWMB_Time_Field extends RWMB_Text_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return    void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -62,7 +60,6 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -87,7 +84,7 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

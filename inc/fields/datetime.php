@@ -115,10 +115,8 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 	{
 		if ( ! $field['timestamp'] )
 			return $new;
-
-		$d = DateTime::createFromFormat( self::translate_format( $field ), $new );
-
-		return $d ? $d->getTimestamp() : 0;
+		$date = DateTime::createFromFormat( self::translate_format( $field ), $new );
+		return $date ? $date->getTimestamp() : 0;
 	}
 
 	/**
@@ -178,7 +176,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

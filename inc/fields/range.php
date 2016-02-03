@@ -6,8 +6,6 @@ class RWMB_Range_Field extends RWMB_Number_Field
 {
 	/**
 	 * Enqueue styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -38,7 +36,7 @@ class RWMB_Range_Field extends RWMB_Number_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

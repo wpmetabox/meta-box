@@ -8,7 +8,6 @@ class RWMB_Text_Field extends RWMB_Input_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -28,7 +27,7 @@ class RWMB_Text_Field extends RWMB_Input_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

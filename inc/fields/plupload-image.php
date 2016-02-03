@@ -1,13 +1,12 @@
 <?php
+
 /**
  * Image upload field which uses plupload library to drag and drop files to upload.
  */
 class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 {
 	/**
-	 * Add field actions
-	 *
-	 * @return    void
+	 * Add field actions.
 	 */
 	static function add_actions()
 	{
@@ -16,10 +15,7 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	}
 
 	/**
-	 * Upload
-	 * Ajax callback function
-	 *
-	 * @return string Error or (XML-)response
+	 * Upload ajax callback function.
 	 */
 	static function handle_upload()
 	{
@@ -59,24 +55,22 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 		);
 
 		// Adds file as attachment to WordPress
-		$id = wp_insert_attachment( $attachment, $file_attr['file'], $post_id );
+		$attachment_id = wp_insert_attachment( $attachment, $file_attr['file'], $post_id );
 
-		if ( is_wp_error( $id ) )
+		if ( is_wp_error( $attachment_id ) )
 		{
 			wp_send_json_error();
 		}
 
-		wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file_attr['file'] ) );
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file_attr['file'] ) );
 
 		// Save file ID in meta field
-		add_post_meta( $post_id, $field_id, $id, false );
-		wp_send_json_success( self::img_html( $id ) );
+		add_post_meta( $post_id, $field_id, $attachment_id, false );
+		wp_send_json_success( self::img_html( $attachment_id ) );
 	}
 
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -145,12 +139,11 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	 * @param int   $post_id
 	 * @param array $field
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
 		$new = (array) $new;
-
 		return array_unique( array_merge( $old, $new ) );
 	}
 

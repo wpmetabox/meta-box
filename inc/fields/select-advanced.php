@@ -6,8 +6,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -73,7 +71,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
