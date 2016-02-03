@@ -32,12 +32,7 @@ class RW_Meta_Box
 
 	/**
 	 * Create meta box based on given data
-	 *
-	 * @see demo/demo.php file for details
-	 *
 	 * @param array $meta_box Meta box definition
-	 *
-	 * @return RW_Meta_Box
 	 */
 	function __construct( $meta_box )
 	{
@@ -240,8 +235,6 @@ class RW_Meta_Box
 	 * Save data from meta box
 	 *
 	 * @param int $post_id Post ID
-	 *
-	 * @return void
 	 */
 	function save_post( $post_id )
 	{
@@ -251,9 +244,8 @@ class RW_Meta_Box
 		$this->saved = true;
 
 		// Check whether form is submitted properly
-		$id    = $this->meta_box['id'];
-		$nonce = isset( $_POST["nonce_{$id}"] ) ? sanitize_key( $_POST["nonce_{$id}"] ) : '';
-		if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $nonce, "rwmb-save-{$id}" ) )
+		$nonce = (string) filter_input( INPUT_POST, "nonce_{$this->meta_box['id']}" );
+		if ( ! wp_verify_nonce( $nonce, "rwmb-save-{$this->meta_box['id']}" ) )
 			return;
 
 		// Autosave
@@ -390,8 +382,7 @@ class RW_Meta_Box
 
 	/**
 	 * Check if meta box is saved before.
-	 * This helps saving empty value in meta fields (for text box, check box, etc.) and set the correct
-	 * default values.
+	 * This helps saving empty value in meta fields (for text box, check box, etc.) and set the correct default values.
 	 *
 	 * @return bool
 	 */
