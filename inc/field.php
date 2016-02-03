@@ -41,27 +41,10 @@ abstract class RWMB_Field
 
 		$field_class = RW_Meta_Box::get_class_name( $field );
 		$meta        = call_user_func( array( $field_class, 'meta' ), $post_id, $saved, $field );
-
-		// Apply filter to field meta value
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$meta = apply_filters( 'rwmb_field_meta', $meta, $field, $saved );
-		$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta, $field, $saved );
-		$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta, $field, $saved );
-
-		$type = $field['type'];
-		$id   = $field['id'];
+		$meta        = RWMB_Core::filter( 'field_meta', $meta, $field, $saved );
 
 		$begin = call_user_func( array( $field_class, 'begin_html' ), $meta, $field );
-
-		// Apply filter to field begin HTML
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$begin = apply_filters( 'rwmb_begin_html', $begin, $field, $meta );
-		$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
-		$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
+		$begin = RWMB_Core::filter( 'begin_html', $begin, $field, $meta );
 
 		// Separate code for cloneable and non-cloneable fields to make easy to maintain
 
@@ -101,12 +84,7 @@ abstract class RWMB_Field
 
 				// Call separated methods for displaying each type of field
 				$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
-
-				// Apply filter to field HTML
-				// 1st filter applies to all fields with the same type
-				// 2nd filter applies to current field only
-				$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $sub_meta );
-				$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $sub_meta );
+				$input_html = RWMB_Core::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 				// Remove clone button
 				$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_field );
@@ -121,35 +99,16 @@ abstract class RWMB_Field
 		{
 			// Call separated methods for displaying each type of field
 			$field_html = call_user_func( array( $field_class, 'html' ), $meta, $field );
-
-			// Apply filter to field HTML
-			// 1st filter applies to all fields with the same type
-			// 2nd filter applies to current field only
-			$field_html = apply_filters( "rwmb_{$type}_html", $field_html, $field, $meta );
-			$field_html = apply_filters( "rwmb_{$id}_html", $field_html, $field, $meta );
+			$field_html = RWMB_Core::filter( 'html', $field_html, $field, $meta );
 		}
 
 		$end = call_user_func( array( $field_class, 'end_html' ), $meta, $field );
+		$end = RWMB_Core::filter( 'end_html', $end, $field, $meta );
 
-		// Apply filter to field end HTML
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$end = apply_filters( 'rwmb_end_html', $end, $field, $meta );
-		$end = apply_filters( "rwmb_{$type}_end_html", $end, $field, $meta );
-		$end = apply_filters( "rwmb_{$id}_end_html", $end, $field, $meta );
-
-		// Apply filter to field wrapper
-		// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
-		// 1st filter applies to all fields
-		// 1st filter applies to all fields with the same type
-		// 2nd filter applies to current field only
-		$html = apply_filters( 'rwmb_wrapper_html', "{$begin}{$field_html}{$end}", $field, $meta );
-		$html = apply_filters( "rwmb_{$type}_wrapper_html", $html, $field, $meta );
-		$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
+		$html = RWMB_Core::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended
-		$classes = array( 'rwmb-field', "rwmb-{$type}-wrapper" );
+		$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
 		if ( 'hidden' === $field['type'] )
 			$classes[] = 'hidden';
 		if ( ! empty( $field['required'] ) )
@@ -162,14 +121,7 @@ abstract class RWMB_Field
 			implode( ' ', $classes ),
 			$html
 		);
-
-		// Allow to change output of outer div
-		// 1st filter applies to all fields
-		// 1st filter applies to all fields with the same type
-		// 2nd filter applies to current field only
-		$outer_html = apply_filters( 'rwmb_outer_html', $outer_html, $field, $meta );
-		$outer_html = apply_filters( "rwmb_{$type}_outer_html", $outer_html, $field, $meta );
-		$outer_html = apply_filters( "rwmb_{$id}_outer_html", $outer_html, $field, $meta );
+		$outer_html = RWMB_Core::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html;
 	}
@@ -430,7 +382,7 @@ abstract class RWMB_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param       mixed value
 	 *
 	 * @return array
 	 */

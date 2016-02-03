@@ -277,12 +277,7 @@ class RW_Meta_Box
 
 			// Allow field class change the value
 			$new = call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );
-
-			// Use filter to change field value
-			// 1st filter applies to all fields with the same type
-			// 2nd filter applies to current field only
-			$new = apply_filters( "rwmb_{$field['type']}_value", $new, $field, $old );
-			$new = apply_filters( "rwmb_{$name}_value", $new, $field, $old );
+			$new = RWMB_Core::filter( 'value', $new, $field, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one
 			call_user_func( array( self::get_class_name( $field ), 'save' ), $new, $old, $post_id, $field );
