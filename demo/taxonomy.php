@@ -21,7 +21,7 @@ function your_prefix_taxonomy_demo( $meta_boxes )
 					'field_type' => 'select_tree',
 
 					// Additional arguments for get_terms() function. Optional
-					'query_args'     => array()
+					'query_args' => array()
 				),
 			),
 		),
