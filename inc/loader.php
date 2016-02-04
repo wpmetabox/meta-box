@@ -105,7 +105,7 @@ class RWMB_Loader
 
 		$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
 
-		$dirs = array( RWMB_INC_DIR, RWMB_FIELDS_DIR );
+		$dirs = array( RWMB_INC_DIR, RWMB_FIELDS_DIR, trailingslashit( RWMB_INC_DIR . 'walkers' ) );
 		foreach ( $dirs as $dir )
 		{
 			if ( file_exists( $dir . $file ) )
