@@ -1,3 +1,9 @@
+engines:
+  phpmd:
+    enabled: true
+    checks:
+      Controversial/CamelCaseParameterName:
+        enabled: false
 languages:
   JavaScript: true
   PHP: true
