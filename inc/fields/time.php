@@ -43,13 +43,12 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
 		$output = parent::html( $meta, $field );
-		if( $field['inline'] )
+		if ( $field['inline'] )
 		{
 			$output .= '<div class="rwmb-time-inline"></div>';
 		}
@@ -85,16 +84,14 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	 *
 	 * @param array $field
 	 * @param mixed $value
-	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes =  wp_parse_args( $attributes, array(
+		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
-
 		return $attributes;
 	}
 }
