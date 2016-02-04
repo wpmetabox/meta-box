@@ -5,9 +5,7 @@
 class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -21,7 +19,6 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
@@ -29,11 +26,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 		if ( ! is_array( $meta ) )
 			$meta = array( $meta );
 
-		if ( is_string( $field['options'] ) )
-		{
-			$options = $field['options'];
-		}
-		else
+		$options = $field['options'];
+		if ( ! is_string( $field['options'] ) )
 		{
 			$options = array();
 			foreach ( $field['options'] as $value => $label )
@@ -111,7 +105,6 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )

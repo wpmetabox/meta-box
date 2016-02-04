@@ -6,8 +6,6 @@ class RWMB_Image_Select_Field extends RWMB_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -20,7 +18,6 @@ class RWMB_Image_Select_Field extends RWMB_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
@@ -48,7 +45,6 @@ class RWMB_Image_Select_Field extends RWMB_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -66,7 +62,6 @@ class RWMB_Image_Select_Field extends RWMB_Field
 	 * @param  array    $field   Field parameters
 	 * @param  array    $args    Additional arguments. Not used for these fields.
 	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
 	 * @return mixed Field value
 	 */
 	static function the_value( $field, $args = array(), $post_id = null )
@@ -83,7 +78,7 @@ class RWMB_Image_Select_Field extends RWMB_Field
 				foreach ( $value as $subvalue )
 				{
 					$output .= '<li><ul>';
-					foreach ( $subvalue as &$option )
+					foreach ( $subvalue as $option )
 					{
 						$output .= sprintf( '<li><img src="%s"></li>', esc_url( $field['options'][$value] ) );
 					}
@@ -92,7 +87,7 @@ class RWMB_Image_Select_Field extends RWMB_Field
 			}
 			else
 			{
-				foreach ( $value as &$subvalue )
+				foreach ( $value as $subvalue )
 				{
 					$output .= sprintf( '<li><img src="%s"></li>', esc_url( $field['options'][$subvalue] ) );
 				}
@@ -104,7 +99,7 @@ class RWMB_Image_Select_Field extends RWMB_Field
 			if ( $field['multiple'] )
 			{
 				$output = '<ul>';
-				foreach ( $value as &$subvalue )
+				foreach ( $value as $subvalue )
 				{
 					$output .= sprintf( '<li><img src="%s"></li>', esc_url( $field['options'][$subvalue] ) );
 				}
