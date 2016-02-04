@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Image upload field which uses plupload library to drag and drop files to upload.
  */
@@ -19,49 +18,27 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	 */
 	static function handle_upload()
 	{
-		global $wpdb;
-		$post_id  = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-		$field_id = isset( $_REQUEST['field_id'] ) ? $_REQUEST['field_id'] : '';
+		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
 
 		check_ajax_referer( "rwmb-upload-images_{$field_id}" );
 
-		// You can use WP's wp_handle_upload() function:
-		$file      = $_FILES['async-upload'];
-		$file_attr = wp_handle_upload( $file, array( 'test_form' => false ) );
-		//Get next menu_order
-		$meta = get_post_meta( $post_id, $field_id, false );
-		if ( empty( $meta ) )
-		{
-			$next = 0;
-		}
-		else
-		{
-			$meta = implode( ',', (array) $meta );
-			$max  = $wpdb->get_var( "
-				SELECT MAX(menu_order) FROM {$wpdb->posts}
-				WHERE post_type = 'attachment'
-				AND ID in ({$meta})
-			" );
-			$next = is_numeric( $max ) ? (int) $max + 1 : 0;
-		}
-
+		$file       = $_FILES['async-upload'];
+		$file_attr  = wp_handle_upload( $file, array( 'test_form' => false ) );
 		$attachment = array(
 			'guid'           => $file_attr['url'],
 			'post_mime_type' => $file_attr['type'],
 			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file['name'] ) ),
 			'post_content'   => '',
 			'post_status'    => 'inherit',
-			'menu_order'     => $next,
 		);
 
 		// Adds file as attachment to WordPress
 		$attachment_id = wp_insert_attachment( $attachment, $file_attr['file'], $post_id );
-
 		if ( is_wp_error( $attachment_id ) )
 		{
 			wp_send_json_error();
 		}
-
 		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file_attr['file'] ) );
 
 		// Save file ID in meta field
@@ -70,7 +47,7 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	}
 
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -82,11 +59,10 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
@@ -131,7 +107,7 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	}
 
 	/**
-	 * Get field value
+	 * Get field value.
 	 * It's the combination of new (uploaded) images and saved images
 	 *
 	 * @param array $new
@@ -148,10 +124,9 @@ class RWMB_Plupload_Image_Field extends RWMB_Image_Field
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
