@@ -4,6 +4,14 @@ engines:
     checks:
       Controversial/CamelCaseParameterName:
         enabled: false
+  csslint:
+    enabled: true
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
 languages:
   JavaScript: true
   PHP: true
