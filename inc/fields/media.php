@@ -39,7 +39,7 @@ class RWMB_Media_Field extends RWMB_Field
 	{
 		$meta       = (array) $meta;
 		$meta       = implode( ',', $meta );
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$attributes = self::get_attributes( $field, $meta );
 
 		$html = sprintf(
 			'<input %s>

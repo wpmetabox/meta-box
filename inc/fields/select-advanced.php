@@ -22,23 +22,19 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$attributes = self::get_attributes( $field, $meta );
 		$html = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
 		$html .= '<option></option>';
 		$html .= self::options_html( $field, $meta );
-
 		$html .= '</select>';
-
 		$html .= self::get_select_all_html( $field['multiple'] );
-
 		return $html;
 	}
 
@@ -46,7 +42,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -72,7 +67,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 *
 	 * @param array $field
 	 * @param mixed $value
-	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )

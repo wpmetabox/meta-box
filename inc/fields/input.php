@@ -9,25 +9,18 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
 		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
-
-		return sprintf(
-			'<input %s>%s',
-			self::render_attributes( $attributes ),
-			self::datalist_html( $field )
-		);
+		return sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist_html( $field ) );
 	}
 
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -44,7 +37,6 @@ abstract class RWMB_Input_Field extends RWMB_Field
 				'options' => array(),
 			) );
 		}
-
 		return $field;
 	}
 
@@ -53,17 +45,16 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 *
 	 * @param array $field
 	 * @param mixed $value
-	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
-			'list'			=> $field['datalist'] ? $field['datalist']['id'] : false,
-			'readonly'		=> $field['readonly'],
-			'value'			=> $value,
-			'placeholder'	=> $field['placeholder'],
+			'list'        => $field['datalist'] ? $field['datalist']['id'] : false,
+			'readonly'    => $field['readonly'],
+			'value'       => $value,
+			'placeholder' => $field['placeholder'],
 		) );
 
 		return $attributes;
@@ -73,7 +64,6 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 * Create datalist, if any
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function datalist_html( $field )
@@ -82,18 +72,12 @@ abstract class RWMB_Input_Field extends RWMB_Field
 			return '';
 
 		$datalist = $field['datalist'];
-		$html     = sprintf(
-			'<datalist id="%s">',
-			$datalist['id']
-		);
-
+		$html     = sprintf( '<datalist id="%s">', $datalist['id'] );
 		foreach ( $datalist['options'] as $option )
 		{
 			$html .= sprintf( '<option value="%s"></option>', $option );
 		}
-
 		$html .= '</datalist>';
-
 		return $html;
 	}
 }

@@ -5,9 +5,7 @@
 class RWMB_Checkbox_Field extends RWMB_Input_Field
 {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -19,13 +17,11 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, 1 );
-
+		$attributes = self::get_attributes( $field, 1 );
 		return sprintf(
 			'<input %s %s>',
 			self::render_attributes( $attributes ),
@@ -34,11 +30,10 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
 	 * @param array $field
 	 * @param mixed $value
-	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
@@ -87,7 +82,6 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	static function the_value( $field, $args = array(), $post_id = null )
 	{
 		$value = self::get_value( $field, $args, $post_id );
-
 		return $value ? __( 'Yes', 'meta-box' ) : __( 'No', 'meta-box' );
 	}
 }

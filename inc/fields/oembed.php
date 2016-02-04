@@ -1,5 +1,4 @@
 <?php
-
 /**
  * oEmbed field class.
  */
@@ -7,8 +6,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -18,8 +15,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 
 	/**
 	 * Add actions
-	 *
-	 * @return void
 	 */
 	static function add_actions()
 	{
@@ -28,8 +23,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 
 	/**
 	 * Ajax callback for returning oEmbed HTML
-	 *
-	 * @return void
 	 */
 	static function wp_ajax_get_embed()
 	{
@@ -41,7 +34,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 * Get embed html from url
 	 *
 	 * @param string $url
-	 *
 	 * @return string
 	 */
 	static function get_embed( $url )
@@ -63,12 +55,11 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$attributes = self::get_attributes( $field, $meta );
 		return sprintf(
 			'<input %s>
 			<a href="#" class="show-embed button">%s</a>

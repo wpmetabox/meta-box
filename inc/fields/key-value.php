@@ -9,21 +9,20 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
 		// Key
-		$key = isset( $meta[0] ) ? $meta[0] : '';
-		$attributes = self::get_attributes( $field, $key );
+		$key                       = isset( $meta[0] ) ? $meta[0] : '';
+		$attributes                = self::get_attributes( $field, $key );
 		$attributes['placeholder'] = esc_attr__( 'Key', 'meta-box' );
-		$html = sprintf( '<input %s>', self::render_attributes( $attributes ) );
+		$html                      = sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		// Value
-		$val = isset( $meta[1] ) ? $meta[1] : '';
-		$attributes = self::get_attributes( $field, $val );
-		$attributes['placeholder'] = esc_attr__( 'Value', 'meta-box' ) ;
+		$val                       = isset( $meta[1] ) ? $meta[1] : '';
+		$attributes                = self::get_attributes( $field, $val );
+		$attributes['placeholder'] = esc_attr__( 'Value', 'meta-box' );
 		$html .= sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		return $html;
@@ -34,7 +33,6 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function begin_html( $meta, $field )
@@ -62,16 +60,12 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ), $field ) : '';
-
-		// Closes the container
-		$html = "$button</div>";
-
+		$button = $field['clone'] ? self::add_clone_button( $field ) : '';
+		$html   = "$button</div>";
 		return $html;
 	}
 
@@ -79,7 +73,6 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 * Escape meta for field output
 	 *
 	 * @param mixed $meta
-	 *
 	 * @return mixed
 	 */
 	static function esc_meta( $meta )
@@ -92,7 +85,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	}
 
 	/**
-	 * Sanitize email
+	 * Sanitize field value.
 	 *
 	 * @param mixed $new
 	 * @param mixed $old
@@ -108,9 +101,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 			if ( empty( $arr[0] ) && empty( $arr[1] ) )
 				$arr = false;
 		}
-
 		$new = array_filter( $new );
-
 		return $new;
 	}
 
@@ -118,7 +109,6 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -126,7 +116,6 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 		$field             = parent::normalize( $field );
 		$field['clone']    = true;
 		$field['multiple'] = true;
-
 		return $field;
 	}
 
