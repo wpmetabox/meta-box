@@ -8,7 +8,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 * Add default value for 'taxonomy' field
 	 *
 	 * @param $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -137,7 +136,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 */
 	static function get_value( $field, $args = array(), $post_id = null )
 	{
-		$value = self::meta( $post_id, false, $field );
+		$value = get_the_terms( $post_id, $field['taxonomy'] );
 
 		// Get single value if necessary
 		if ( ! $field['clone'] && ! $field['multiple'] )
