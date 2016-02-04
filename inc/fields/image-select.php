@@ -80,7 +80,7 @@ class RWMB_Image_Select_Field extends RWMB_Field
 					$output .= '<li><ul>';
 					foreach ( $subvalue as $option )
 					{
-						$output .= sprintf( '<li><img src="%s"></li>', esc_url( $field['options'][$value] ) );
+						$output .= sprintf( '<li><img src="%s"></li>', esc_url( $field['options'][$option] ) );
 					}
 					$output .= '</ul></li>';
 				}
