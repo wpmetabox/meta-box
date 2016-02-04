@@ -302,16 +302,14 @@ abstract class RWMB_Field
 		if ( '' === $new || array() === $new )
 		{
 			delete_post_meta( $post_id, $name );
-
 			return;
 		}
 
 		// If field is cloneable, value is saved as a single entry in the database
 		if ( $field['clone'] )
 		{
-			$new = (array) $new;
-			//Reset inexes
-			$new = array_values( $new );
+			// Reset indexes
+			$new = array_values( (array) $new );
 			foreach ( $new as $k => $v )
 			{
 				if ( '' === $v )
@@ -324,15 +322,15 @@ abstract class RWMB_Field
 		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour)
 		if ( $field['multiple'] )
 		{
-			foreach ( $new as $new_value )
+			$new_values = array_diff( $new, $old );
+			foreach ( $new_values as $new_value )
 			{
-				if ( ! in_array( $new_value, $old ) )
-					add_post_meta( $post_id, $name, $new_value, false );
+				add_post_meta( $post_id, $name, $new_value, false );
 			}
-			foreach ( $old as $old_value )
+			$old_values = array_diff( $old, $new );
+			foreach ( $old_values as $old_value )
 			{
-				if ( ! in_array( $old_value, $new ) )
-					delete_post_meta( $post_id, $name, $old_value );
+				delete_post_meta( $post_id, $name, $old_value );
 			}
 			return;
 		}
