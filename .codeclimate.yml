@@ -1,9 +1,6 @@
 engines:
   phpmd:
     enabled: true
-    checks:
-      Controversial/CamelCaseParameterName:
-        enabled: false
   csslint:
     enabled: true
   eslint:
