@@ -4,3 +4,6 @@ languages:
 exclude_paths:
 - tests/**/*
 - demo/**/*
+- js/*.min.js
+- js/jqueryui/**/*
+- js/select2/**/*
