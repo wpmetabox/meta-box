@@ -71,16 +71,14 @@ abstract class RWMB_Field
 					$sub_field['field_name'] .= '[]';
 
 				// Wrap field HTML in a div with class="rwmb-clone" if needed
-				$class = "rwmb-clone rwmb-{$field['type']}-clone";
+				$class     = "rwmb-clone rwmb-{$field['type']}-clone";
+				$sort_icon = '';
 				if ( $field['sort_clone'] )
 				{
 					$class .= ' rwmb-sort-clone';
+					$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 				}
-				$input_html = "<div class='{$class}'>";
-
-				// Drag clone icon
-				if ( $field['sort_clone'] )
-					$input_html .= "<a href='javascript:;' class='rwmb-clone-icon'></a>";
+				$input_html = "<div class='$class'>" . $sort_icon;
 
 				// Call separated methods for displaying each type of field
 				$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
@@ -108,17 +106,15 @@ abstract class RWMB_Field
 		$html = RWMB_Core::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended
-		$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
+		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'] ;
 		if ( 'hidden' === $field['type'] )
-			$classes[] = 'hidden';
+			$classes .= ' hidden';
 		if ( ! empty( $field['required'] ) )
-			$classes[] = 'required';
-		if ( ! empty( $field['class'] ) )
-			$classes[] = $field['class'];
+			$classes .= ' required';
 
 		$outer_html = sprintf(
 			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
-			implode( ' ', $classes ),
+			trim( $classes ),
 			$html
 		);
 		$outer_html = RWMB_Core::filter( 'outer_html', $outer_html, $field, $meta );
