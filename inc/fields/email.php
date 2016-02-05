@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Email field class.
+ */
 class RWMB_Email_Field extends RWMB_Text_Field
 {
 	/**
@@ -22,7 +22,7 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

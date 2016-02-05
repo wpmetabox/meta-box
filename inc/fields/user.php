@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * User field class.
+ */
 class RWMB_User_Field extends RWMB_Object_Choice_Field
 {
 	/**

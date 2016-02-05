@@ -1,13 +1,12 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
 
+/**
+ * Image field class which uses <input type="file"> to upload.
+ */
 class RWMB_Image_Field extends RWMB_File_Field
 {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -19,9 +18,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 	}
 
 	/**
-	 * Add actions
-	 *
-	 * @return void
+	 * Add custom actions.
 	 */
 	static function add_actions()
 	{
@@ -33,20 +30,16 @@ class RWMB_Image_Field extends RWMB_File_Field
 	}
 
 	/**
-	 * Ajax callback for reordering images
-	 *
-	 * @return void
+	 * Ajax callback for reordering images.
 	 */
 	static function wp_ajax_reorder_images()
 	{
-		$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-		$order    = isset( $_POST['order'] ) ? $_POST['order'] : '';
-		$post_id  = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
+		$order    = (string) filter_input( INPUT_POST, 'order' );
 
 		check_ajax_referer( "rwmb-reorder-images_{$field_id}" );
-
 		parse_str( $order, $items );
-
 		delete_post_meta( $post_id, $field_id );
 		foreach ( $items['item'] as $item )
 		{
@@ -101,9 +94,9 @@ class RWMB_Image_Field extends RWMB_File_Field
 		$classes       = array( 'rwmb-images', 'rwmb-uploaded' );
 		if ( count( $images ) <= 0 )
 			$classes[] = 'hidden';
-		$ul   = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
+		$list = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s">';
 		$html = sprintf(
-			$ul,
+			$list,
 			implode( ' ', $classes ),
 			$field['id'],
 			$delete_nonce,
@@ -116,9 +109,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 		{
 			$html .= self::img_html( $image );
 		}
-
 		$html .= '</ul>';
-
 		return $html;
 	}
 
@@ -126,14 +117,13 @@ class RWMB_Image_Field extends RWMB_File_Field
 	 * Get HTML markup for ONE uploaded image
 	 *
 	 * @param int $image Image ID
-	 *
 	 * @return string
 	 */
 	static function img_html( $image )
 	{
 		$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'meta-box' ) );
-		$li          = '
+		$item        = '
 			<li id="item_%s">
 				<img src="%s" />
 				<div class="rwmb-image-bar">
@@ -148,7 +138,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 		$link = get_edit_post_link( $image );
 
 		return sprintf(
-			$li,
+			$item,
 			$image,
 			$src,
 			$i18n_edit, $link, $i18n_edit,
@@ -173,7 +163,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 			return '';
 
 		$output = '<ul>';
-		foreach ( $value as $file_id => $file_info )
+		foreach ( $value as $file_info )
 		{
 			$img = sprintf(
 				'<img src="%s" alt="%s" title="%s">',

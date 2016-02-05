@@ -1,17 +1,20 @@
 <?php
 /**
- * Select Tree Walker
- * For cascading select fields.  Uses RWMB_Select_Walker
+ * Select Tree Walker for cascading select fields.
+ * @uses RWMB_Select_Walker
  */
 class RWMB_Select_Tree_Walker
 {
 	/**
 	 * Field data.
-	 *
-	 * @access public
 	 * @var string
 	 */
 	public $field;
+
+	/**
+	 * Field meta value.
+	 * @var array
+	 */
 	public $meta = array();
 
 	function __construct( $db_fields, $field, $meta )
@@ -64,11 +67,9 @@ class RWMB_Select_Tree_Walker
 			{
 				$output .= $this->display_level( $options, $c->$id, in_array( $c->$id, $meta ) && $active );
 			}
-
 		}
 
 		$output .= '</div>';
-
 		return $output;
 	}
 }

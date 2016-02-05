@@ -18,7 +18,7 @@ jQuery( function ( $ )
 		var $dropArea = $( this ),
 			$imageList = $dropArea.siblings( '.rwmb-uploaded' ),
 			uploaderData = $dropArea.data( 'js_options' ),
-			uploader = {};
+			uploader;
 
 		// Extend uploaderData
 		uploaderData.multipart_params = $.extend(
@@ -74,7 +74,6 @@ jQuery( function ( $ )
 			} );
 			up.refresh();
 			up.start();
-
 		} );
 
 		uploader.bind( 'Error', function ( up, e )
@@ -115,8 +114,7 @@ jQuery( function ( $ )
 			.fadeOut( 'slow', function ()
 			{
 				$( this ).remove();
-			}
-		);
+			} );
 	}
 
 	/**

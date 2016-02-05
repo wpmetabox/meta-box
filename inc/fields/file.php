@@ -1,13 +1,11 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * File field class which uses HTML <input type="file"> to upload file.
+ */
 class RWMB_File_Field extends RWMB_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -20,9 +18,7 @@ class RWMB_File_Field extends RWMB_Field
 	}
 
 	/**
-	 * Add actions
-	 *
-	 * @return void
+	 * Add custom actions
 	 */
 	static function add_actions()
 	{
@@ -32,32 +28,26 @@ class RWMB_File_Field extends RWMB_Field
 		// Delete file via Ajax
 		add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'wp_ajax_delete_file' ) );
 
-		// allow reordering
+		// Allow reordering files
 		add_action( 'wp_ajax_rwmb_reorder_files', array( __CLASS__, 'wp_ajax_reorder_files' ) );
 	}
 
 	/**
 	 * Ajax callback for reordering images
-	 *
-	 * @return void
 	 */
 	static function wp_ajax_reorder_files()
 	{
-		$field_id = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-		$order    = isset( $_POST['order'] ) ? $_POST['order'] : '';
-		$post_id  = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
+		$order    = (string) filter_input( INPUT_POST, 'order' );
 
 		check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
-
 		parse_str( $order, $items );
-
 		delete_post_meta( $post_id, $field_id );
-
 		foreach ( $items['item'] as $item )
 		{
 			add_post_meta( $post_id, $field_id, $item, false );
 		}
-
 		wp_send_json_success();
 	}
 
@@ -74,23 +64,20 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Ajax callback for deleting files.
 	 * Modified from a function used by "Verve Meta Boxes" plugin
-	 *
 	 * @link http://goo.gl/LzYSq
-	 * @return void
 	 */
 	static function wp_ajax_delete_file()
 	{
-		$post_id       = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
-		$field_id      = isset( $_POST['field_id'] ) ? $_POST['field_id'] : 0;
-		$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
-		$force_delete  = isset( $_POST['force_delete'] ) ? intval( $_POST['force_delete'] ) : 0;
+		$post_id       = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
+		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
+		$force_delete  = (int) filter_input( INPUT_POST, 'force_delete', FILTER_SANITIZE_NUMBER_INT );
 
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-
 		delete_post_meta( $post_id, $field_id, $attachment_id );
-		$ok = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
+		$success = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
-		if ( $ok )
+		if ( $success )
 			wp_send_json_success();
 		else
 			wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
@@ -139,9 +126,9 @@ class RWMB_File_Field extends RWMB_Field
 		$classes = array( 'rwmb-file', 'rwmb-uploaded' );
 		if ( count( $files ) <= 0 )
 			$classes[] = 'hidden';
-		$ol   = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
+		$list = '<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">';
 		$html = sprintf(
-			$ol,
+			$list,
 			implode( ' ', $classes ),
 			$field['id'],
 			$delete_nonce,
@@ -165,7 +152,7 @@ class RWMB_File_Field extends RWMB_Field
 	{
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
-		$li          = '
+		$item        = '
 		<li id="item_%s">
 			<div class="rwmb-icon">%s</div>
 			<div class="rwmb-info">
@@ -179,7 +166,7 @@ class RWMB_File_Field extends RWMB_Field
 		$mime_type = get_post_mime_type( $attachment_id );
 
 		return sprintf(
-			$li,
+			$item,
 			$attachment_id,
 			wp_get_attachment_image( $attachment_id, array( 60, 60 ), true ),
 			wp_get_attachment_url( $attachment_id ),

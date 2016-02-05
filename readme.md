@@ -1,6 +1,7 @@
 # Meta Box WordPress Plugin
 
 [![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
+[![Code Climate](https://codeclimate.com/github/rilwis/meta-box/badges/gpa.svg)](https://codeclimate.com/github/rilwis/meta-box)
 [![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
 [![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
 [![License](https://img.shields.io/packagist/l/rilwis/meta-box.svg)](https://metabox.io)
@@ -40,7 +41,9 @@ See more documentation [here](https://metabox.io/docs/).
 
 Name|Description
 ---|---
-[MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/)|Create and manage custom post types easily in WordPress with an easy-to-use interface.
+[MB Term Meta](https://metabox.io/plugins/mb-term-meta/)|Add meta data to categories, tags or any custom taxonomy with simple syntax.
+[MB Settings Page](https://metabox.io/plugins/mb-settings-page/)|Create settings pages for themes, plugins or websites with beautiful syntax.
+[MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/)|Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
 [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/)|Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
 [Meta Box Text Limiter](https://wordpress.org/plugins/meta-box-text-limiter/)|Limit the number of characters or words entered for text and textarea fields.
 [Meta Box Conditional Logic](https://metabox.io/plugins/meta-box-conditional-logic/)|Add visibility dependency for custom meta boxes and custom fields in WordPress.

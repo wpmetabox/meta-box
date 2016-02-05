@@ -1,13 +1,11 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * HTML5 range field class.
+ */
 class RWMB_Range_Field extends RWMB_Number_Field
 {
 	/**
 	 * Enqueue styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -33,12 +31,12 @@ class RWMB_Range_Field extends RWMB_Number_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
@@ -46,7 +44,7 @@ class RWMB_Range_Field extends RWMB_Number_Field
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'range';
-			
+
 		return $attributes;
 	}
 

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Date field class.
+ */
 class RWMB_Date_Field extends RWMB_Text_Field
 {
 	/**
@@ -17,11 +17,11 @@ class RWMB_Date_Field extends RWMB_Text_Field
 		$output = parent::html( $meta, $field );
 		if( $field['inline'] )
 		{
-			$output .= '<div class="rwmb-date-inline"></div>';	
-		}		
+			$output .= '<div class="rwmb-date-inline"></div>';
+		}
 		return $output;
 	}
-	
+
 	/**
 	 * Enqueue scripts and styles
 	 *
@@ -78,15 +78,15 @@ class RWMB_Date_Field extends RWMB_Text_Field
 		) );
 
 		$field = parent::normalize( $field );
-		
+
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
@@ -96,7 +96,7 @@ class RWMB_Date_Field extends RWMB_Text_Field
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
-			
+
 		return $attributes;
 	}
 }

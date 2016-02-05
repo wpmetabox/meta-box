@@ -1,0 +1,9 @@
+languages:
+  JavaScript: true
+  PHP: true
+exclude_paths:
+- tests/**/*
+- demo/**/*
+- js/*.min.js
+- js/jqueryui/**/*
+- js/select2/**/*

@@ -1,7 +1,4 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Abstract field to select an object: post, user, taxonomy, etc.
  */

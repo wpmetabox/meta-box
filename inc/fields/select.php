@@ -1,13 +1,11 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Select field class.
+ */
 class RWMB_Select_Field extends RWMB_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -64,7 +62,7 @@ class RWMB_Select_Field extends RWMB_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

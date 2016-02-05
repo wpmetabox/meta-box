@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Divider field class.
+ */
 class RWMB_Divider_Field extends RWMB_Field
 {
 	/**

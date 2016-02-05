@@ -1,7 +1,4 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Image advanced field class which users WordPress media popup to upload and select images.
  */

@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Button field class.
+ */
 class RWMB_Button_Field extends RWMB_Field
 {
 	/**
@@ -9,31 +9,24 @@ class RWMB_Button_Field extends RWMB_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, null );
-		return sprintf(
-			'<a href="#" %s>%s</a>',
-			self::render_attributes( $attributes ),
-			$field['std']
-		);
+		$attributes = self::get_attributes( $field );
+		return sprintf( '<a href="#" %s>%s</a>', self::render_attributes( $attributes ), $field['std'] );
 	}
 
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
 	{
 		$field        = parent::normalize( $field );
 		$field['std'] = $field['std'] ? $field['std'] : __( 'Click me', 'meta-box' );
-
 		return $field;
 	}
 
@@ -41,8 +34,7 @@ class RWMB_Button_Field extends RWMB_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
-	 *
+	 * @param mixed $value
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )

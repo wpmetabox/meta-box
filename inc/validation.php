@@ -1,16 +1,16 @@
 <?php
 /**
- * Validation module
+ * Validation module.
  * @package Meta Box
  */
 
 /**
- * Validation class
+ * Validation class.
  */
 class RWMB_Validation
 {
 	/**
-	 * Add hooks when module is loaded
+	 * Add hooks when module is loaded.
 	 */
 	public function __construct()
 	{
@@ -19,21 +19,20 @@ class RWMB_Validation
 	}
 
 	/**
-	 * Output validation rules of each meta box
-	 * The rules are outputted in [data-rules] attribute of an hidden div and will be converted into JSON by JS
+	 * Output validation rules of each meta box.
+	 * The rules are outputted in [data-rules] attribute of an hidden <script> and will be converted into JSON by JS.
 	 * @param RW_Meta_Box $object Meta Box object
 	 */
 	public function rules( RW_Meta_Box $object )
 	{
 		if ( ! empty( $object->meta_box['validation'] ) )
 		{
-			// Use script tag with type="text/html" to prevent browser to render
-			echo '<script type="text/html" class="rwmb-validation-rules hidden" data-rules="' . esc_attr( json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+			echo '<script type="text/html" class="rwmb-validation-rules" data-rules="' . esc_attr( json_encode( $object->meta_box['validation'] ) ) . '"></script>';
 		}
 	}
 
 	/**
-	 * Enqueue scripts for validation
+	 * Enqueue scripts for validation.
 	 */
 	public function scripts()
 	{

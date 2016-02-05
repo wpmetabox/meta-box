@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Text list field class.
+ */
 class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field
 {
 	/**
@@ -17,17 +17,17 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field
 		$html  = array();
 		$input = '<label><input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"> %s</label>';
 
-		$i = 0;
+		$count = 0;
 		foreach ( $field['options'] as $placeholder => $label )
 		{
 			$html[] = sprintf(
 				$input,
 				$field['field_name'],
-				isset( $meta[$i] ) ? esc_attr( $meta[$i] ) : '',
+				isset( $meta[$count] ) ? esc_attr( $meta[$count] ) : '',
 				$placeholder,
 				$label
 			);
-			$i ++;
+			$count ++;
 		}
 
 		return implode( ' ', $html );

@@ -41,27 +41,10 @@ abstract class RWMB_Field
 
 		$field_class = RW_Meta_Box::get_class_name( $field );
 		$meta        = call_user_func( array( $field_class, 'meta' ), $post_id, $saved, $field );
-
-		// Apply filter to field meta value
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$meta = apply_filters( 'rwmb_field_meta', $meta, $field, $saved );
-		$meta = apply_filters( "rwmb_{$field['type']}_meta", $meta, $field, $saved );
-		$meta = apply_filters( "rwmb_{$field['id']}_meta", $meta, $field, $saved );
-
-		$type = $field['type'];
-		$id   = $field['id'];
+		$meta        = RWMB_Core::filter( 'field_meta', $meta, $field, $saved );
 
 		$begin = call_user_func( array( $field_class, 'begin_html' ), $meta, $field );
-
-		// Apply filter to field begin HTML
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$begin = apply_filters( 'rwmb_begin_html', $begin, $field, $meta );
-		$begin = apply_filters( "rwmb_{$type}_begin_html", $begin, $field, $meta );
-		$begin = apply_filters( "rwmb_{$id}_begin_html", $begin, $field, $meta );
+		$begin = RWMB_Core::filter( 'begin_html', $begin, $field, $meta );
 
 		// Separate code for cloneable and non-cloneable fields to make easy to maintain
 
@@ -88,25 +71,18 @@ abstract class RWMB_Field
 					$sub_field['field_name'] .= '[]';
 
 				// Wrap field HTML in a div with class="rwmb-clone" if needed
-				$class = "rwmb-clone rwmb-{$field['type']}-clone";
+				$class     = "rwmb-clone rwmb-{$field['type']}-clone";
+				$sort_icon = '';
 				if ( $field['sort_clone'] )
 				{
 					$class .= ' rwmb-sort-clone';
+					$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 				}
-				$input_html = "<div class='{$class}'>";
-
-				// Drag clone icon
-				if ( $field['sort_clone'] )
-					$input_html .= "<a href='javascript:;' class='rwmb-clone-icon'></a>";
+				$input_html = "<div class='$class'>" . $sort_icon;
 
 				// Call separated methods for displaying each type of field
 				$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
-
-				// Apply filter to field HTML
-				// 1st filter applies to all fields with the same type
-				// 2nd filter applies to current field only
-				$input_html = apply_filters( "rwmb_{$type}_html", $input_html, $field, $sub_meta );
-				$input_html = apply_filters( "rwmb_{$id}_html", $input_html, $field, $sub_meta );
+				$input_html = RWMB_Core::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 				// Remove clone button
 				$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_field );
@@ -121,55 +97,27 @@ abstract class RWMB_Field
 		{
 			// Call separated methods for displaying each type of field
 			$field_html = call_user_func( array( $field_class, 'html' ), $meta, $field );
-
-			// Apply filter to field HTML
-			// 1st filter applies to all fields with the same type
-			// 2nd filter applies to current field only
-			$field_html = apply_filters( "rwmb_{$type}_html", $field_html, $field, $meta );
-			$field_html = apply_filters( "rwmb_{$id}_html", $field_html, $field, $meta );
+			$field_html = RWMB_Core::filter( 'html', $field_html, $field, $meta );
 		}
 
 		$end = call_user_func( array( $field_class, 'end_html' ), $meta, $field );
+		$end = RWMB_Core::filter( 'end_html', $end, $field, $meta );
 
-		// Apply filter to field end HTML
-		// 1st filter applies to all fields
-		// 2nd filter applies to all fields with the same type
-		// 3rd filter applies to current field only
-		$end = apply_filters( 'rwmb_end_html', $end, $field, $meta );
-		$end = apply_filters( "rwmb_{$type}_end_html", $end, $field, $meta );
-		$end = apply_filters( "rwmb_{$id}_end_html", $end, $field, $meta );
-
-		// Apply filter to field wrapper
-		// This allow users to change whole HTML markup of the field wrapper (i.e. table row)
-		// 1st filter applies to all fields
-		// 1st filter applies to all fields with the same type
-		// 2nd filter applies to current field only
-		$html = apply_filters( 'rwmb_wrapper_html', "{$begin}{$field_html}{$end}", $field, $meta );
-		$html = apply_filters( "rwmb_{$type}_wrapper_html", $html, $field, $meta );
-		$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
+		$html = RWMB_Core::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended
-		$classes = array( 'rwmb-field', "rwmb-{$type}-wrapper" );
+		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'] ;
 		if ( 'hidden' === $field['type'] )
-			$classes[] = 'hidden';
+			$classes .= ' hidden';
 		if ( ! empty( $field['required'] ) )
-			$classes[] = 'required';
-		if ( ! empty( $field['class'] ) )
-			$classes[] = $field['class'];
+			$classes .= ' required';
 
 		$outer_html = sprintf(
 			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
-			implode( ' ', $classes ),
+			trim( $classes ),
 			$html
 		);
-
-		// Allow to change output of outer div
-		// 1st filter applies to all fields
-		// 1st filter applies to all fields with the same type
-		// 2nd filter applies to current field only
-		$outer_html = apply_filters( 'rwmb_outer_html', $outer_html, $field, $meta );
-		$outer_html = apply_filters( "rwmb_{$type}_outer_html", $outer_html, $field, $meta );
-		$outer_html = apply_filters( "rwmb_{$id}_outer_html", $outer_html, $field, $meta );
+		$outer_html = RWMB_Core::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html;
 	}
@@ -350,16 +298,14 @@ abstract class RWMB_Field
 		if ( '' === $new || array() === $new )
 		{
 			delete_post_meta( $post_id, $name );
-
 			return;
 		}
 
 		// If field is cloneable, value is saved as a single entry in the database
 		if ( $field['clone'] )
 		{
-			$new = (array) $new;
-			//Reset inexes
-			$new = array_values( $new );
+			// Reset indexes
+			$new = array_values( (array) $new );
 			foreach ( $new as $k => $v )
 			{
 				if ( '' === $v )
@@ -372,15 +318,15 @@ abstract class RWMB_Field
 		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour)
 		if ( $field['multiple'] )
 		{
-			foreach ( $new as $new_value )
+			$new_values = array_diff( $new, $old );
+			foreach ( $new_values as $new_value )
 			{
-				if ( ! in_array( $new_value, $old ) )
-					add_post_meta( $post_id, $name, $new_value, false );
+				add_post_meta( $post_id, $name, $new_value, false );
 			}
-			foreach ( $old as $old_value )
+			$old_values = array_diff( $old, $new );
+			foreach ( $old_values as $old_value )
 			{
-				if ( ! in_array( $old_value, $new ) )
-					delete_post_meta( $post_id, $name, $old_value );
+				delete_post_meta( $post_id, $name, $old_value );
 			}
 			return;
 		}
@@ -430,7 +376,7 @@ abstract class RWMB_Field
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */

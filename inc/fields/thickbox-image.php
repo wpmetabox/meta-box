@@ -1,7 +1,8 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Image upload field which uses thickbox library to upload.
+ * @deprecated
+ */
 class RWMB_Thickbox_Image_Field extends RWMB_Image_Field
 {
 	/**
@@ -49,7 +50,7 @@ class RWMB_Thickbox_Image_Field extends RWMB_Image_Field
 	 * @param int   $post_id
 	 * @param array $field
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{

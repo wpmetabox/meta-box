@@ -1,14 +1,13 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Text field class.
+ */
 class RWMB_Text_Field extends RWMB_Input_Field
 {
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -23,12 +22,12 @@ class RWMB_Text_Field extends RWMB_Input_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
@@ -41,9 +40,9 @@ class RWMB_Text_Field extends RWMB_Input_Field
 			'pattern'     => $field['pattern'],
 			'placeholder' => $field['placeholder'],
 		) );
-		
+
 		$attributes['type'] = 'text';
-		
+
 		return $attributes;
 	}
 }

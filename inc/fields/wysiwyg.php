@@ -1,15 +1,17 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * WYSIWYG (editor) field class.
+ */
 class RWMB_Wysiwyg_Field extends RWMB_Field
 {
+	/**
+	 * Array of cloneable editors.
+	 * @var array
+	 */
 	static $cloneable_editors = array();
 
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -23,7 +25,6 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 * @param mixed $old
 	 * @param int   $post_id
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function value( $new, $old, $post_id, $field )
@@ -32,7 +33,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 		{
 			$meta = $new;
 		}
-		else if ( $field['clone'] )
+		elseif ( $field['clone'] )
 		{
 			$meta = array_map( 'wpautop', $new );
 		}
@@ -49,7 +50,6 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
@@ -76,7 +76,6 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 * Escape meta for field output
 	 *
 	 * @param mixed $meta
-	 *
 	 * @return mixed
 	 */
 	static function esc_meta( $meta )
@@ -88,7 +87,6 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -110,8 +108,11 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 		return $field;
 	}
 
+	/**
+	 * Display list of editors' IDs in the footer for clone.
+	 */
 	static function footer_scripts()
 	{
-		echo '<script> var rwmb_cloneable_editors = ', wp_json_encode( self::$cloneable_editors ), ';</script>';
+		echo '<script>var rwmb_cloneable_editors = ', wp_json_encode( self::$cloneable_editors ), ';</script>';
 	}
 }

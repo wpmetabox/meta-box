@@ -73,6 +73,11 @@ jQuery( function ( $ )
 			return string.replace( /[.*+?^${}()|[\]\\]/g, "\\$&" );
 		},
 
+		/**
+		 * Helper function to create next index for clones
+		 * @param $container .rwmb-input container
+		 * @return integer
+		 */
 		nextIndex: function ( $container )
 		{
 			var nextIndex = $container.data( 'next-index' );
@@ -245,10 +250,9 @@ jQuery( function ( $ )
 			//Trigger custom clone event
 			textarea.trigger( 'clone' );
 		}
-
 	}
 
-	$( '#poststuff' )
+	$( '#wpbody-content' )
 	// Add clones
 		.on( 'click', '.add-clone', function ( e )
 		{
@@ -293,17 +297,17 @@ jQuery( function ( $ )
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
 
-		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length )
-
-		$container.sortable( {
-			handle     : '.rwmb-clone-icon',
-			placeholder: ' rwmb-clone rwmb-clone-placeholder',
-			items      : '.rwmb-clone',
-			start      : function ( event, ui )
-			{
-				// Make the placeholder has the same height as dragged item
-				ui.placeholder.height( ui.item.height() );
-			}
-		} );
+		$container
+			.data( 'next-index', $container.children( '.rwmb-clone' ).length )
+			.sortable( {
+				handle     : '.rwmb-clone-icon',
+				placeholder: ' rwmb-clone rwmb-clone-placeholder',
+				items      : '.rwmb-clone',
+				start      : function ( event, ui )
+				{
+					// Make the placeholder has the same height as dragged item
+					ui.placeholder.height( ui.item.height() );
+				}
+			} );
 	} );
 } );

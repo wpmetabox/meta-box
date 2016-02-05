@@ -1,13 +1,11 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Time field class.
+ */
 class RWMB_Time_Field extends RWMB_Text_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return    void
 	 */
 	static function admin_enqueue_scripts()
 	{
@@ -39,21 +37,20 @@ class RWMB_Time_Field extends RWMB_Text_Field
 			'localeShort' => $locale_short,
 		) );
 	}
-	
+
 	/**
 	 * Get field HTML
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
 	static function html( $meta, $field )
 	{
 		$output = parent::html( $meta, $field );
-		if( $field['inline'] )
+		if ( $field['inline'] )
 		{
-			$output .= '<div class="rwmb-time-inline"></div>';	
+			$output .= '<div class="rwmb-time-inline"></div>';
 		}
 		return $output;
 	}
@@ -62,7 +59,6 @@ class RWMB_Time_Field extends RWMB_Text_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	static function normalize( $field )
@@ -82,22 +78,20 @@ class RWMB_Time_Field extends RWMB_Text_Field
 		$field = parent::normalize( $field );
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
-	 *
+	 * @param mixed $value
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes =  wp_parse_args( $attributes, array(
+		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
-			
 		return $attributes;
-	}	
+	}
 }

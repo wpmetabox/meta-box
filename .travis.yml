@@ -1,5 +1,9 @@
 language: php
 
+# Ditch sudo and use containers.
+# http://docs.travis-ci.com/user/migrating-from-legacy/
+sudo: false
+
 php:
   - hhvm
   - 7.0
@@ -18,6 +22,7 @@ matrix:
   allow_failures:
     - php: 7.0
     - php: hhvm
+  fast_finish: true
 
 before_script:
   - export WP_DEVELOP_DIR=/tmp/wordpress/

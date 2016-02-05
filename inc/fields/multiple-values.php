@@ -1,7 +1,4 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
 /**
  * This class implements common methods used in fields which have multiple values
  * like checkbox list, autocomplete, etc.

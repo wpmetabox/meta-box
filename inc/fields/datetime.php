@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Datetime field class.
+ */
 class RWMB_Datetime_Field extends RWMB_Input_Field
 {
 	/**
@@ -80,7 +80,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 			'localeShort' => $locale_short,
 		) );
 	}
-	
+
 	/**
 	 * Get field HTML
 	 *
@@ -94,12 +94,12 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 		$output = parent::html( $meta, $field );
 		if( $field['inline'] )
 		{
-			$output .= '<div class="rwmb-datetime-inline"></div>';	
+			$output .= '<div class="rwmb-datetime-inline"></div>';
 		}
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Calculates the timestamp from the datetime string and returns it
 	 * if $field['timestamp'] is set or the datetime string if not
@@ -115,10 +115,8 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 	{
 		if ( ! $field['timestamp'] )
 			return $new;
-
-		$d = DateTime::createFromFormat( self::translate_format( $field ), $new );
-
-		return $d ? $d->getTimestamp() : 0;
+		$date = DateTime::createFromFormat( self::translate_format( $field ), $new );
+		return $date ? $date->getTimestamp() : 0;
 	}
 
 	/**
@@ -173,19 +171,19 @@ class RWMB_Datetime_Field extends RWMB_Input_Field
 
 		return $field;
 	}
-	
+
 	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
-	 * @param mixed value
+	 * @param mixed $value
 	 *
 	 * @return array
 	 */
 	static function get_attributes( $field, $value = null )
 	{
 		$attributes = RWMB_Date_Field::get_attributes( $field, $value );
-			
+
 		return $attributes;
 	}
 

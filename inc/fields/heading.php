@@ -1,7 +1,7 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Heading field class.
+ */
 class RWMB_Heading_Field extends RWMB_Field
 {
 	/**
