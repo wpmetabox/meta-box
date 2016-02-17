@@ -66,7 +66,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 			<span class="spinner"></span>
 			<div class="embed-code">%s</div>',
 			self::render_attributes( $attributes ),
-			$field['size'],
 			__( 'Preview', 'meta-box' ),
 			$meta ? self::get_embed( $meta ) : ''
 		);
