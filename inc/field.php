@@ -366,9 +366,6 @@ abstract class RWMB_Field
 			'attributes' => array(),
 		) );
 
-		//Make sure all letters are lower case for id
-		$field['id'] = strtolower( $field['id'] );
-
 		return $field;
 	}
 
