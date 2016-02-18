@@ -89,6 +89,13 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.8.1
+
+* Fix: select multiple value with post, user and taxonomy
+* Fix: bug in oembed field
+* Fix: fix JS/CSS compatibility with WooCommerce
+* Fix: do not force field ID to lowercase, which can potentially breaks existing fields or fields with ID of CAPS characters.
+
 #### 4.8.0
 
 * Improvement: rewrite the way the plugin loads file, which allows developers to include the plugin into themes/plugins simply by include the main file. The new loading mechanism also uses autoloading feature which prevents loading files twice and saves memory.
