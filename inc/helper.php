@@ -31,23 +31,4 @@ class RWMB_Helper
 		}
 		return false;
 	}
-
-	/**
-	 * Get post meta.
-	 *
-	 * @param string   $key     Meta key. Required.
-	 * @param int|null $post_id Post ID. null for current post. Optional
-	 * @param array    $args    Array of arguments. Optional.
-	 * @return mixed
-	 */
-	static function meta( $key, $args = array(), $post_id = null )
-	{
-		$args = wp_parse_args( $args, array(
-			'type' => 'text',
-		) );
-		$meta = in_array( $args['type'], array( 'oembed', 'map' ) ) ?
-			rwmb_the_field( $key, $args, $post_id, false ) :
-			rwmb_get_field( $key, $args, $post_id );
-		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
-	}
 }
