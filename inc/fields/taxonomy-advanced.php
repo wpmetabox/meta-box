@@ -77,7 +77,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 			'include'    => $value,
 			'hide_empty' => false,
 		), $args );
-		$value = get_terms( $field['options']['taxonomy'], $args );
+		$value = get_terms( $field['taxonomy'], $args );
 
 		// Get single value if necessary
 		if ( ! $field['clone'] && ! $field['multiple'] )
