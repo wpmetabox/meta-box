@@ -45,6 +45,12 @@ class RWMB_Helper
 		}
 		$field = isset( self::$fields[ $field_id ] ) ? self::$fields[ $field_id ]  : false;
 
-		return $field ? call_user_func( array( $class, 'normalize' ), $field ) : false;
+		if( $field )
+		{
+			$class = self::get_class_name( $field );
+			$field = call_user_func( array( $class, 'normalize' ), $field );
+		}
+
+		return $field ? $field : false;
 	}
 }
