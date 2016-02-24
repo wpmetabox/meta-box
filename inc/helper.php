@@ -47,7 +47,7 @@ class RWMB_Helper
 
 		if( $field )
 		{
-			$class = self::get_class_name( $field );
+			$class = RW_Meta_Box::get_class_name( $field );
 			$field = call_user_func( array( $class, 'normalize' ), $field );
 		}
 
