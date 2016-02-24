@@ -124,10 +124,15 @@ class RWMB_Loader
 		// Plugin core
 		new RWMB_Core;
 
-		// Validation module
-		new RWMB_Validation;
-
-		// Public functions
-		require RWMB_INC_DIR . 'functions.php';
+		if ( is_admin() )
+		{
+			// Validation module
+			new RWMB_Validation;
+		}
+		else
+		{
+			// Public functions
+			require RWMB_INC_DIR . 'functions.php';
+		}
 	}
 }
