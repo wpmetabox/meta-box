@@ -43,14 +43,8 @@ class RWMB_Helper
 		{
 			self::hash_fields();
 		}
+
 		$field = isset( self::$fields[ $field_id ] ) ? self::$fields[ $field_id ]  : false;
-
-		if( $field )
-		{
-			$class = RW_Meta_Box::get_class_name( $field );
-			$field = call_user_func( array( $class, 'normalize' ), $field );
-		}
-
-		return $field ? $field : false;
+		return $field ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize' ), $field ) : false;
 	}
 }
