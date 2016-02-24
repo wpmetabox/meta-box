@@ -39,11 +39,8 @@ class RWMB_Button_Field extends RWMB_Field
 	 */
 	static function get_attributes( $field, $value = null )
 	{
-		$attributes = $field['attributes'];
-		$attributes = wp_parse_args( $attributes, array(
-			'id' => $field['id'],
-		) );
-		$attributes['class'] .= 'button hide-if-no-js';
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['class'] .= ' button hide-if-no-js';
 
 		return $attributes;
 	}
