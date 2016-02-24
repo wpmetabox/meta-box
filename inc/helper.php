@@ -23,7 +23,6 @@ class RWMB_Helper
 		$meta_boxes = RWMB_Core::get_meta_boxes();
 		foreach ( $meta_boxes as $meta_box )
 		{
-			$meta_box = RW_Meta_Box::normalize( $meta_box );
 			foreach ( $meta_box['fields'] as $field )
 			{
 		 		self::$fields[ $field['id'] ] = $field;
@@ -44,7 +43,8 @@ class RWMB_Helper
 		{
 			self::hash_fields();
 		}
+		$field = isset( self::$fields[ $field_id ] ) ? self::$fields[ $field_id ]  : false;
 
-		return isset( self::$fields[ $field_id ] ) ? self::$fields[ $field_id ]  : false;
+		return $field ? call_user_func( array( $class, 'normalize' ), $field ) : false;
 	}
 }
