@@ -48,9 +48,9 @@ function YOURPREFIX_register_meta_boxes( $meta_boxes )
  */
 function rw_maybe_include()
 {
-	// Include in back-end only
-	if ( ! defined( 'WP_ADMIN' ) || ! WP_ADMIN )
-		return false;
+	// Always include in the frontend to make helper function work
+	if ( ! is_admin() )
+		return true;
 
 	// Always include for ajax
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
