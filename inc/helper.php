@@ -16,7 +16,6 @@ class RWMB_Helper
 
 	/**
 	 * Hash all fields into an indexed array for search
-	 *
 	 */
 	public static function hash_fields()
 	{
@@ -71,11 +70,15 @@ class RWMB_Helper
 			$args['multiple'] = true;
 		}
 		$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
-		// Get uploaded files info
-		if ( in_array( $args['type'], array( 'file', 'file_advanced' ) ) )
+
+		switch ( $args['type'] )
 		{
-			if ( is_array( $meta ) && ! empty( $meta ) )
-			{
+			case 'file':
+			case 'file_advanced':
+				if ( empty( $meta ) || ! is_array( $meta ) )
+				{
+					break;
+				}
 				$files = array();
 				foreach ( $meta as $id )
 				{
@@ -86,13 +89,15 @@ class RWMB_Helper
 					}
 				}
 				$meta = $files;
-			}
-		}
-		// Get uploaded images info
-		elseif ( in_array( $args['type'], array( 'image', 'plupload_image', 'thickbox_image', 'image_advanced' ) ) )
-		{
-			if ( is_array( $meta ) && ! empty( $meta ) )
-			{
+				break;
+			case 'image':
+			case 'plupload_image':
+			case 'thickbox_image':
+			case 'image_advanced':
+				if ( empty( $meta ) || ! is_array( $meta ) )
+				{
+					break;
+				}
 				$images = array();
 				foreach ( $meta as $id )
 				{
@@ -103,14 +108,13 @@ class RWMB_Helper
 					}
 				}
 				$meta = $images;
-			}
-		}
-		// Get terms
-		elseif ( 'taxonomy_advanced' == $args['type'] )
-		{
-			$meta = array();
-			if ( ! empty( $args['taxonomy'] ) )
-			{
+				break;
+			case 'taxonomy_advanced':
+				$meta = array();
+				if ( empty( $args['taxonomy'] ) )
+				{
+					break;
+				}
 				$term_ids = wp_parse_id_list( $meta );
 				// Allow to pass more arguments to "get_terms"
 				$func_args = wp_parse_args( array(
@@ -119,32 +123,25 @@ class RWMB_Helper
 				), $args );
 				unset( $func_args['type'], $func_args['taxonomy'], $func_args['multiple'] );
 				$meta = get_terms( $args['taxonomy'], $func_args );
-			}
-		}
-		// Get post terms
-		elseif ( 'taxonomy' == $args['type'] )
-		{
-			$meta = empty( $args['taxonomy'] ) ? array() : get_the_terms( $post_id, $args['taxonomy'] );
-		}
-		// Get map
-		elseif ( 'map' == $args['type'] )
-		{
-			$field = array(
-				'id'       => $key,
-				'multiple' => false,
-				'clone'    => false,
-			);
-			$meta  = RWMB_Map_Field::the_value( $field, $args, $post_id );
-		}
-		// Display oembed content
-		elseif ( 'oembed' == $args['type'] )
-		{
-			$field = array(
-				'id'       => $key,
-				'clone'    => $args['clone'],
-				'multiple' => $args['multiple'],
-			);
-			$meta  = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
+				break;
+			case 'taxonomy':
+				$meta = empty( $args['taxonomy'] ) ? array() : get_the_terms( $post_id, $args['taxonomy'] );
+				break;
+			case 'map':
+				$field = array(
+					'id'       => $key,
+					'multiple' => false,
+					'clone'    => false,
+				);
+				$meta  = RWMB_Map_Field::the_value( $field, $args, $post_id );
+				break;
+			case 'oembed':
+				$field = array(
+					'id'       => $key,
+					'clone'    => $args['clone'],
+					'multiple' => $args['multiple'],
+				);
+				$meta  = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
 		}
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 	}
