@@ -153,7 +153,6 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 			array(
 				'type' => 'heading',
 				'name' => __( 'Heading', 'your-prefix' ),
-				'id'   => 'fake_id', // Not used but needed for plugin
 				'desc' => __( 'Optional description for this heading', 'your-prefix' ),
 			),
 			// SLIDER
@@ -354,7 +353,6 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 			// DIVIDER
 			array(
 				'type' => 'divider',
-				'id'   => 'fake_divider_id', // Not used, but needed
 			),
 			// FILE UPLOAD
 			array(

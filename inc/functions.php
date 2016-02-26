@@ -50,13 +50,15 @@ function rwmb_get_value( $field_id, $args = array(), $post_id = null )
 
 	/**
 	 * Allow developers to change the returned value of field
+	 * For version < 4.8.2, the filter name was 'rwmb_get_field'
 	 *
 	 * @param mixed    $value   Field value
 	 * @param array    $field   Field parameter
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 */
-	$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
+	$filter = version_compare( RWMB_VER, '4.8.2', '<' ) ? 'rwmb_get_field' : 'rwmb_get_value';
+	$value  = apply_filters( $filter, $value, $field, $args, $post_id );
 
 	return $value;
 }
@@ -83,13 +85,15 @@ function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = tr
 
 	/**
 	 * Allow developers to change the returned value of field
+	 * For version < 4.8.2, the filter name was 'rwmb_get_field'
 	 *
 	 * @param mixed    $value   Field HTML output
 	 * @param array    $field   Field parameter
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 */
-	$output = apply_filters( 'rwmb_the_value', $output, $field, $args, $post_id );
+	$filter = version_compare( RWMB_VER, '4.8.2', '<' ) ? 'rwmb_the_field' : 'rwmb_the_value';
+	$output = apply_filters( $filter, $output, $field, $args, $post_id );
 
 	if ( $echo )
 		echo $output;

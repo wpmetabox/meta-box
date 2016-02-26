@@ -24,7 +24,10 @@ class RWMB_Helper
 		{
 			foreach ( $meta_box['fields'] as $field )
 			{
-				self::$fields[$field['id']] = $field;
+				if ( ! empty( $field['id'] ) )
+				{
+					self::$fields[$field['id']] = $field;
+				}
 			}
 		}
 	}
@@ -65,7 +68,7 @@ class RWMB_Helper
 			'clone'    => false,
 		) );
 		// Always set 'multiple' true for following field types
-		if ( in_array( $args['type'], array( 'checkbox_list', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) ) )
+		if ( in_array( $args['type'], array( 'checkbox_list', 'autocomplete', 'file', 'file_advanced', 'image', 'image_advanced', 'plupload_image', 'thickbox_image' ) ) )
 		{
 			$args['multiple'] = true;
 		}
