@@ -56,7 +56,7 @@ function rwmb_get_value( $field_id, $args = array(), $post_id = null )
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 */
-	$value = apply_filters( 'rwmb_get_field', $value, $field, $args, $post_id );
+	$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
 
 	return $value;
 }
@@ -89,7 +89,7 @@ function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = tr
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 */
-	$output = apply_filters( 'rwmb_the_field', $output, $field, $args, $post_id );
+	$output = apply_filters( 'rwmb_the_value', $output, $field, $args, $post_id );
 
 	if ( $echo )
 		echo $output;

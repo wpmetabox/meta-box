@@ -69,52 +69,23 @@ class RWMB_Helper
 		{
 			$args['multiple'] = true;
 		}
-		$meta = get_post_meta( $post_id, $key, ! $args['multiple'] );
+
+		$field = array(
+			'id'       => $key,
+			'type'     => $args['type'],
+			'clone'    => $args['clone'],
+			'multiple' => $args['multiple'],
+		);
+		$class = RW_Meta_Box::get_class_name( $field );
 
 		switch ( $args['type'] )
 		{
-			case 'file':
-			case 'file_advanced':
-				if ( empty( $meta ) || ! is_array( $meta ) )
-				{
-					break;
-				}
-				$files = array();
-				foreach ( $meta as $id )
-				{
-					// Get only info of existing attachments
-					if ( get_attached_file( $id ) )
-					{
-						$files[$id] = RWMB_File_Field::file_info( $id );
-					}
-				}
-				$meta = $files;
-				break;
-			case 'image':
-			case 'plupload_image':
-			case 'thickbox_image':
-			case 'image_advanced':
-				if ( empty( $meta ) || ! is_array( $meta ) )
-				{
-					break;
-				}
-				$images = array();
-				foreach ( $meta as $id )
-				{
-					// Get only info of existing attachments
-					if ( get_attached_file( $id ) )
-					{
-						$images[$id] = RWMB_Image_Field::file_info( $id, $args );
-					}
-				}
-				$meta = $images;
-				break;
 			case 'taxonomy_advanced':
-				$meta = array();
 				if ( empty( $args['taxonomy'] ) )
 				{
 					break;
 				}
+				$meta     = get_post_meta( $post_id, $key, ! $args['multiple'] );
 				$term_ids = wp_parse_id_list( $meta );
 				// Allow to pass more arguments to "get_terms"
 				$func_args = wp_parse_args( array(
@@ -136,12 +107,11 @@ class RWMB_Helper
 				$meta  = RWMB_Map_Field::the_value( $field, $args, $post_id );
 				break;
 			case 'oembed':
-				$field = array(
-					'id'       => $key,
-					'clone'    => $args['clone'],
-					'multiple' => $args['multiple'],
-				);
-				$meta  = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
+				$meta = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
+				break;
+			default:
+				$meta = call_user_func( array( $class, 'get_value' ), $field, $args, $post_id );
+				break;
 		}
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 	}
