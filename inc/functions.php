@@ -14,6 +14,14 @@
  */
 function rwmb_meta( $key, $args = array(), $post_id = null )
 {
+	/**
+	 * If meta boxes is registered in the backend only, we can't get field's params
+	 * This is for backward compatibility with version < 4.8.0
+	 */
+	if ( false == RWMB_Helper::find_field( $key ) )
+	{
+		return apply_filters( 'rwmb_meta', RWMB_Helper::meta( $key, $args, $post_id ) );
+	}
 	$args = wp_parse_args( $args, array(
 		'type' => 'text',
 	) );
