@@ -89,6 +89,11 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.8.2
+* Fix: re-add code for backward compatibility for helper function
+* Fix:  undefined 'class' attribute for button
+* Improvement: speedup the helper function
+
 #### 4.8.1
 
 * Fix: select multiple value with post, user and taxonomy
