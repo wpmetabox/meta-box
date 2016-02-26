@@ -392,6 +392,10 @@ class RW_Meta_Box
 
 		foreach ( $this->fields as $field )
 		{
+			if ( empty( $field['id'] ) )
+			{
+				continue;
+			}
 			$value = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
 			if (
 				( ! $field['multiple'] && '' !== $value )
