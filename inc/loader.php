@@ -131,10 +131,8 @@ class RWMB_Loader
 			// Validation module
 			new RWMB_Validation;
 		}
-		else
-		{
-			// Public functions
-			require RWMB_INC_DIR . 'functions.php';
-		}
+
+		// Public functions
+		require RWMB_INC_DIR . 'functions.php';
 	}
 }
