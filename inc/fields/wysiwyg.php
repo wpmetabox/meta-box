@@ -60,9 +60,10 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 		ob_start();
 
 		$field['options']['textarea_name'] = $field['field_name'];
+		$attributes = self::get_attributes( $field );
 
 		// Use new wp_editor() since WP 3.3
-		wp_editor( $meta, $field['id'], $field['options'] );
+		wp_editor( $meta, $attributes['id'], $field['options'] );
 
 		return ob_get_clean();
 	}
