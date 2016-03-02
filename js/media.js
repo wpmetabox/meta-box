@@ -5,19 +5,14 @@ jQuery( function ( $ )
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
-		MediaField, MediaList, MediaItem, ImageField, ImageList, ImageItem, MediaButton, MediaStatus, UploadButton;
+		MediaField, MediaList, MediaItem, ImageField, ImageItem, MediaButton, MediaStatus, UploadButton;
 
 	MediaList = views.MediaList = Backbone.View.extend( {
 		tagName       	: 'ul',
 		className     	: 'rwmb-media-list',
-		createItemView: function ( options )
-		{
-			return new MediaItem( options );
-		},
-
 		addItemView: function ( item )
 		{
-			this.itemViews[item.cid] = this.createItemView( {
+			this.itemViews[item.cid] = new this.itemView( {
 				model     : item,
 				collection: this.collection,
 				props     : this.props
@@ -36,6 +31,7 @@ jQuery( function ( $ )
 			var that = this;
 			this.itemViews = {};
 			this.props = options.props;
+			this.itemView = options.itemView || MediaItem;
 
 			this.listenTo( this.collection, 'add', this.addItemView );
 
@@ -52,13 +48,6 @@ jQuery( function ( $ )
 			this.$el.sortable( { delay: 150 } );
 
 			this.render();
-		}
-	} );
-
-	ImageList = views.ImageList = MediaList.extend( {
-		createItemView: function ( options )
-		{
-			return new ImageItem( options );
 		}
 	} );
 
@@ -128,7 +117,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			this.$el.empty();
-			this.$el.append( new ImageList( { collection: this.collection, props: this.props } ).el );
+			this.$el.append( new MediaList( { collection: this.collection, props: this.props, itemView: ImageItem } ).el );
 			this.$el.append( new MediaButton( { collection: this.collection, props: this.props } ).el );
 			this.$el.append( new MediaStatus( { collection: this.collection, props: this.props } ).el );
 		}
@@ -202,13 +191,10 @@ jQuery( function ( $ )
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
 				var maxFiles = this.props.get( 'maxFiles' );
-				if ( maxFiles > 0 && this.collection.length >= maxFiles )
+
+				if ( maxFiles > 0 )
 				{
-					this.$el.hide();
-				}
-				else
-				{
-					this.$el.show();
+					this.$el.toggle( this.collection.length < maxFiles );
 				}
 			} );
 
