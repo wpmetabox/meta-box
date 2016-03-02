@@ -139,7 +139,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		$value = get_the_terms( $post_id, $field['taxonomy'] );
 
 		// Get single value if necessary
-		if ( ! $field['clone'] && ! $field['multiple'] )
+		if ( ! $field['clone'] && ! $field['multiple'] && is_array( $value ) )
 		{
 			$value = reset( $value );
 		}
