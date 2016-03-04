@@ -23,6 +23,14 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 					'quicktags'     => false,
 				],
 			],
+			// Sort clone
+			[
+				'name'       => 'Clone',
+				'id'         => 'wysiwyg3',
+				'type'       => 'wysiwyg',
+				'clone'      => true,
+				'sort_clone' => true,
+			],
 		],
 	];
 	if ( is_plugin_active( 'meta-box-group/meta-box-group.php' ) )
