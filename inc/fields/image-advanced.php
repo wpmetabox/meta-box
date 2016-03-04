@@ -85,9 +85,6 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	 */
 	static function print_templates()
 	{
-		$i18n_remove         = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
-		$i18n_edit           = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
-
 		?>
 		<script id="tmpl-rwmb-image-item" type="text/html">
 			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
@@ -112,10 +109,10 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 			</div>
 			<div class="rwmb-overlay"></div>
 			<div class="rwmb-media-bar">
-				<a class="rwmb-edit-media" title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank">
+				<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
 					<span class="dashicons dashicons-edit"></span>
 				</a>
-				<a href="#" class="rwmb-remove-media" title="<?php echo esc_attr( $i18n_remove ); ?>">
+				<a href="#" class="rwmb-remove-media" title="{{{ i18nRwmbMedia.remove }}}">
 					<span class="dashicons dashicons-no-alt"></span>
 				</a>
 			</div>
