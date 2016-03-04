@@ -5,6 +5,30 @@
 class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 {
 	/**
+	 * Enqueue scripts and styles
+	 *
+	 * @return void
+	 */
+	static function admin_enqueue_scripts()
+	{
+		parent::admin_enqueue_scripts();
+		wp_enqueue_style( 'rwmb-image-advanced', RWMB_CSS_URL . 'image-advanced.css', array( 'rwmb-media' ), RWMB_VER );
+		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'rwmb-media' ), RWMB_VER, true );
+	}
+
+	/**
+	 * Add actions
+	 *
+	 * @return void
+	 */
+	static function add_actions()
+	{
+		parent::add_actions();
+		// Print attachment templates
+		add_action( 'print_media_templates', array( __CLASS__, 'print_templates' ) );
+	}
+
+	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
@@ -53,5 +77,49 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	static function file_info( $file_id, $args = array() )
 	{
 		return RWMB_Image_Field::file_info( $file_id, $args );
+	}
+
+	/**
+	 * Template for media item
+	 * @return void
+	 */
+	static function print_templates()
+	{
+		$i18n_remove         = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
+		$i18n_edit           = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
+
+		?>
+		<script id="tmpl-rwmb-image-item" type="text/html">
+			<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
+			<div class="rwmb-media-preview">
+				<div class="rwmb-media-content">
+					<div class="centered">
+						<# if ( 'image' === data.type && data.sizes ) { #>
+							<# if ( data.sizes.thumbnail ) { #>
+								<img src="{{{ data.sizes.thumbnail.url }}}">
+							<# } else { #>
+								<img src="{{{ data.sizes.full.url }}}">
+							<# } #>
+						<# } else { #>
+							<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+								<img src="{{ data.image.src }}" />
+							<# } else { #>
+								<img src="{{ data.icon }}" />
+							<# } #>
+						<# } #>
+					</div>
+				</div>
+			</div>
+			<div class="rwmb-overlay"></div>
+			<div class="rwmb-media-bar">
+				<a class="rwmb-edit-media" title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
+				<a href="#" class="rwmb-remove-media" title="<?php echo esc_attr( $i18n_remove ); ?>">
+					<span class="dashicons dashicons-no-alt"></span>
+				</a>
+			</div>
+		</script>
+		<?php
 	}
 }
