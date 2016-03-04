@@ -12,11 +12,14 @@ jQuery( function ( $ )
 		className     	: 'rwmb-media-list',
 		addItemView: function ( item )
 		{
-			this.itemViews[item.cid] = new this.itemView( {
-				model     : item,
-				collection: this.collection,
-				props     : this.props
-			} );
+			if( ! this.itemViews[item.cid] )
+			{
+				this.itemViews[item.cid] = new this.itemView( {
+					model     : item,
+					collection: this.collection,
+					props     : this.props
+				} );
+			}
 			this.$el.append( this.itemViews[item.cid].el );
 		},
 
