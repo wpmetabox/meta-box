@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WYSIWYG (editor) field class.
  */
@@ -15,7 +16,8 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 */
 	static function admin_enqueue_scripts()
 	{
-		wp_enqueue_style( 'rwmb-meta-box-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', array(), RWMB_VER );
+		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', array( 'jquery' ), RWMB_VER, true );
 	}
 
 	/**
@@ -58,18 +60,12 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 		ob_start();
 
 		$field['options']['textarea_name'] = $field['field_name'];
+		$attributes = self::get_attributes( $field );
 
 		// Use new wp_editor() since WP 3.3
-		wp_editor( $meta, $field['id'], $field['options'] );
+		wp_editor( $meta, $attributes['id'], $field['options'] );
 
-		$editor = ob_get_clean();
-		if ( $field['clone'] )
-		{
-			self::$cloneable_editors[$field['id']] = $editor;
-			add_action( 'admin_print_footer_scripts', array( __CLASS__, 'footer_scripts' ), 51 );
-		}
-
-		return $editor;
+		return ob_get_clean();
 	}
 
 	/**
@@ -106,13 +102,5 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 		$field['options'] = apply_filters( 'rwmb_wysiwyg_settings', $field['options'] );
 
 		return $field;
-	}
-
-	/**
-	 * Display list of editors' IDs in the footer for clone.
-	 */
-	static function footer_scripts()
-	{
-		echo '<script>var rwmb_cloneable_editors = ', wp_json_encode( self::$cloneable_editors ), ';</script>';
 	}
 }
