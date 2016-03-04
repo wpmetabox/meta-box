@@ -299,7 +299,7 @@ class RWMB_File_Field extends RWMB_Field
 
 		// For each file, get full file info
 		$value = array();
-		foreach ( $file_ids as $file_id )
+		foreach ( (array) $file_ids as $file_id )
 		{
 			if ( $file_info = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'file_info' ), $file_id, $args ) )
 			{
