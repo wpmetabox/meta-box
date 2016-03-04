@@ -6,6 +6,7 @@ jQuery( function ( $ )
 
 	var views = rwmb.views = rwmb.views || {},
 		MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
+		rwmb.test = 'spoon';
 
 	MediaList = views.MediaList = Backbone.View.extend( {
 		tagName       	: 'ul',
@@ -163,7 +164,6 @@ jQuery( function ( $ )
 	MediaButton = views.MediaButton = Backbone.View.extend( {
 		className: 'rwmb-add-media button',
 		tagName  : 'a',
-		template : wp.template( 'rwmb-add-media' ),
 		events   : {
 			click: function ()
 			{
@@ -197,7 +197,7 @@ jQuery( function ( $ )
 		},
 		render   : function ()
 		{
-			this.$el.html( this.template( {} ) );
+			this.$el.text( i18nRwmbMedia.add );
 			return this;
 		},
 

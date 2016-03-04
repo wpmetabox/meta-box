@@ -54,10 +54,7 @@ class RWMB_File_Advanced_Field extends RWMB_Media_Field
 
 	static function print_templates()
 	{
-		$i18n_remove         = apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) );
-		$i18n_edit           = apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) );
-		$i18n_view           = apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) );
-		$i18n_title          = _x( 'No Title', 'media', 'meta-box' );
+
 
 		?>
 		<script id="tmpl-rwmb-media-item" type="text/html">
@@ -83,19 +80,19 @@ class RWMB_File_Advanced_Field extends RWMB_Media_Field
 			</div>
 			<div class="rwmb-media-info">
 				<h4>
-					<a href="{{{ data.url }}}" target="_blank" title="<?php echo esc_attr( $i18n_view ); ?>">
+					<a href="{{{ data.url }}}" target="_blank" title="{{{ i18nRwmbMedia.view }}}">
 						<# if( data.title ) { #> {{{ data.title }}}
-							<# } else { #> <?php echo esc_attr( $i18n_title ); ?>
+							<# } else { #> {{{ i18nRwmbMedia.no_title }}}
 						<# } #>
 					</a>
 				</h4>
 				<p>{{{ data.mime }}}</p>
 				<p>
-					<a class="rwmb-edit-media" title="<?php echo esc_attr( $i18n_edit ); ?>" href="{{{ data.editLink }}}" target="_blank">
-						<span class="dashicons dashicons-edit"></span><?php echo esc_attr( $i18n_edit ); ?>
+					<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
+						<span class="dashicons dashicons-edit"></span>{{{ i18nRwmbMedia.edit }}}
 					</a>
-					<a href="#" class="rwmb-remove-media" title="<?php echo esc_attr( $i18n_remove ); ?>">
-						<span class="dashicons dashicons-no-alt"></span><?php echo esc_attr( $i18n_remove ); ?>
+					<a href="#" class="rwmb-remove-media" title="{{{ i18nRwmbMedia.remove }}}">
+						<span class="dashicons dashicons-no-alt"></span>{{{ i18nRwmbMedia.remove }}}
 					</a>
 				</p>
 			</div>
