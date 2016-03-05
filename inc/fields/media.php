@@ -124,13 +124,6 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function print_templates()
 	{
-		?>
-		<script id="tmpl-rwmb-media-status" type="text/html">
-			<# if ( data.maxFiles > 0 ) { #>
-				{{{ data.items }}}/{{{ data.maxFiles }}}
-				<# if ( 1 < data.maxFiles ) { #>  {{{ i18nRwmbMedia.multiple }}} <# } else {#> {{{ i18nRwmbMedia.single }}} <# } #>
-			<# } #>
-		</script>
-		<?php
+		require_once( RWMB_INC_DIR . 'templates/media.php' );
 	}
 }
