@@ -23,7 +23,7 @@
     <h4>
       <a href="{{{ data.url }}}" target="_blank" title="{{{ i18nRwmbMedia.view }}}">
         <# if( data.title ) { #> {{{ data.title }}}
-          <# } else { #> {{{ i18nRwmbMedia.no_title }}}
+          <# } else { #> {{{ i18nRwmbMedia.noTitle }}}
         <# } #>
       </a>
     </h4>
