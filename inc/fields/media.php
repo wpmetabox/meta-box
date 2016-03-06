@@ -21,8 +21,10 @@ class RWMB_Media_Field extends RWMB_Field
 			'remove'      => apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) ),
 			'edit'        => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
 			'view'        => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
-			'no_title'    => _x( 'No Title', 'media', 'meta-box' ),
-			'loading_url' => RWMB_URL . 'img/loader.gif'
+			'noTitle'    => _x( 'No Title', 'media', 'meta-box' ),
+			'loadingUrl'  => RWMB_URL . 'img/loader.gif',
+			'extensions'  => self::get_mime_extensions(),
+			'select'      => _x( 'Select Files', 'media', 'meta-box' ),
 		) );
 	}
 
@@ -103,6 +105,25 @@ class RWMB_Media_Field extends RWMB_Field
 		$attributes['value']    = $value;
 
 		return $attributes;
+	}
+
+	static function get_mime_extensions()
+	{
+		$mime_types = wp_get_mime_types();
+		$extensions = array();
+		foreach( $mime_types as $ext => $mime )
+		{
+			$ext = explode( '|', $ext );
+			$extensions[ $mime ] = $ext;
+
+			$mime_parts = explode( '/', $mime );
+			if( empty( $extensions[ $mime_parts[0] ] ) )
+				$extensions[ $mime_parts[0] ] = array();
+			$extensions[ $mime_parts[0] ] = $extensions[ $mime_parts[0] . '/*' ] = array_merge( $extensions[ $mime_parts[0] ], $ext );
+
+		}
+
+		return $extensions;
 	}
 
 	/**

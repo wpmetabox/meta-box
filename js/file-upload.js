@@ -6,8 +6,6 @@ jQuery( function ( $ )
 
 	var views = rwmb.views = rwmb.views || {},
 		MediaField = views.MediaField,
-		MediaItem = views.MediaItem,
-		MediaList = views.MediaList,
 		FileUploadField, UploadButton;
 
 	FileUploadField = views.FileUploadField = MediaField.extend( {
@@ -33,6 +31,7 @@ jQuery( function ( $ )
 
 		initialize: function ( options )
 		{
+			this.props = options.props;
 			this.el.id = _.uniqueId( 'rwmb-upload-area-');
 			this.render();
 
@@ -50,6 +49,7 @@ jQuery( function ( $ )
 				this.initUploader();
 			}
 		},
+
 		//Initializes plupload
 		//Uses code from wp.Uploader
 		initUploader: function ()
@@ -61,12 +61,15 @@ jQuery( function ( $ )
 					multipart: true,
 					urlstream_upload: true,
 				 	drop_element: this.$dropzone[0],
-				 	browse_button: this.$browser[0] }, wp.Uploader.defaults );
+				 	browse_button: this.$browser[0],
+					filters:{
+						mime_types: [ { title: i18nRwmbMedia.select,  extensions: this.getExtensions().join( ',' ) } ]
+					}}, wp.Uploader.defaults );
 
 			// Make sure flash sends cookies (seems in IE it does without switching to urlstream mode)
 			if ( ! isIE && 'flash' === plupload.predictRuntime( this.plupload ) &&
-				( ! this.plupload.required_features || ! this.plupload.required_features.hasOwnProperty( 'send_binary_string' ) ) ) {
-
+				( ! this.plupload.required_features || ! this.plupload.required_features.hasOwnProperty( 'send_binary_string' ) ) )
+			{
 				this.plupload.required_features = this.plupload.required_features || {};
 				this.plupload.required_features.send_binary_string = true;
 			}
@@ -92,7 +95,7 @@ jQuery( function ( $ )
 						filename:    file.name,
 						menuOrder:   0,
 						uploadedTo:  wp.media.model.settings.post.id,
-						icon:        i18nRwmbMedia.loading_url
+						icon:        i18nRwmbMedia.loadingUrl
 					}, _.pick( file, 'loaded', 'size', 'percent' ) );
 
 					// Handle early mime type scanning for images.
@@ -157,12 +160,24 @@ jQuery( function ( $ )
 				if( error.file.attachment )
 					error.file.attachment.destroy();
 			} );
+		},
+
+		getExtensions: function ()
+		{
+			var mimeTypes = this.props.get( 'mimeType' ).split(','),
+				exts = [];
+
+			_.each( mimeTypes, function( current, index )
+			{
+				if( i18nRwmbMedia.extensions[ current ] )
+					exts = exts.concat( i18nRwmbMedia.extensions[ current ] );
+			});
+			return exts;
 		}
 	} );
 
-
 	/**
-	 * Initialize image fields
+	 * Initialize fields
 	 * @return void
 	 */
 	function init()
