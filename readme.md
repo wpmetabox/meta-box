@@ -89,6 +89,14 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.8.3
+* Improvement: WYSIWYG field now can be cloned. Sorting clone hasn't worked yet.
+* Fix: 'std' value not working if there is 'divider' or 'heading' field withough 'id'
+* Fix: helper function not working in AJAX or admin.
+* Fix: getting plugin's path on Windows system.
+* Fix: warning get_value of taxonomy field
+* Fix: guarantee file ids are in an array
+
 #### 4.8.2
 * Fix: re-add code for backward compatibility for helper function
 * Fix:  undefined 'class' attribute for button
