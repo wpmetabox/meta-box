@@ -55,16 +55,18 @@ jQuery( function ( $ )
 		initUploader: function ()
 		{
 			var isIE = navigator.userAgent.indexOf('Trident/') != -1 || navigator.userAgent.indexOf('MSIE ') != -1,
-				self = this;
+				self = this,
+				extensions = this.getExtensions().join( ',' );
 				this.plupload = $.extend( true, {
 					multipart_params: {},
 					multipart: true,
 					urlstream_upload: true,
 				 	drop_element: this.$dropzone[0],
 				 	browse_button: this.$browser[0],
-					filters:{
-						mime_types: [ { title: i18nRwmbMedia.select,  extensions: this.getExtensions().join( ',' ) } ]
-					}}, wp.Uploader.defaults );
+					filters:{}}, wp.Uploader.defaults );
+
+			if( extensions )
+				this.plupload.filters.mime_types = [ { title: i18nRwmbMedia.select, extensions: extensions } ];
 
 			// Make sure flash sends cookies (seems in IE it does without switching to urlstream mode)
 			if ( ! isIE && 'flash' === plupload.predictRuntime( this.plupload ) &&
