@@ -69,7 +69,7 @@ jQuery( function ( $ )
 
 			//Create views
 			this.createList();
-			this.createButton()
+			this.createAddButton()
 			this.createStatus();
 
 			//Render
@@ -117,9 +117,9 @@ jQuery( function ( $ )
 			this.list = new MediaList( { collection: this.collection, props: this.props } );
 		},
 
-		createButton: function ()
+		createAddButton: function ()
 		{
-			this.button = new MediaButton( { collection: this.collection, props: this.props } );
+			this.addButton = new MediaButton( { collection: this.collection, props: this.props } );
 		},
 
 		createStatus: function ()
@@ -134,7 +134,7 @@ jQuery( function ( $ )
 				.empty()
 				.append(
 					this.list.el,
-					this.button.el,
+					this.addButton.el,
 					this.status.el
 				);
 		}
@@ -229,7 +229,11 @@ jQuery( function ( $ )
 			this.listenTo( this.model, 'destroy', function ( model )
 			{
 				this.collection.remove( this.model );
-			} );
+			} )
+			.listenTo( this.model, 'change', function()
+			{
+				this.render();
+			});
 		},
 
 		events: {
