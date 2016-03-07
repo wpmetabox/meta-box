@@ -21,11 +21,7 @@ jQuery( function ( $ )
 		template: wp.template( 'rwmb-upload-area' ),
 		render   : function ()
 		{
-			var data = {
-				browseID: _.uniqueId( 'rwmb-upload-browser-'),
-				browseLabel: i18nRwmbMedia.add
-			};
-			this.$el.html( this.template( data ) );
+			this.$el.html( this.template( {} ) );
 			return this;
 		},
 
@@ -48,6 +44,16 @@ jQuery( function ( $ )
 			if ( this.supported ) {
 				this.initUploader();
 			}
+
+			this.listenTo( this.collection, 'add remove reset', function ()
+			{
+				var maxFiles = this.props.get( 'maxFiles' );
+
+				if ( maxFiles > 0 )
+				{
+					this.$el.toggle( this.collection.length < maxFiles );
+				}
+			} );
 		},
 
 		//Initializes plupload
@@ -80,12 +86,15 @@ jQuery( function ( $ )
 			this.uploader = new plupload.Uploader( this.plupload );
 			this.uploader.init();
 
-			this.uploader.bind( 'FilesAdded', function( up, files ) {
-				_.each( files, function( file ) {
+			this.uploader.bind( 'FilesAdded', function( up, files )
+			{
+				_.each( files, function( file )
+				{
 					var attributes, image;
 
 					// Ignore failed uploads.
-					if ( plupload.FAILED === file.status ) {
+					if ( plupload.FAILED === file.status )
+					{
 						return;
 					}
 
@@ -134,13 +143,11 @@ jQuery( function ( $ )
 				try {
 					response = JSON.parse( response.response );
 				} catch ( e ) {
-					return error( pluploadL10n.default_error, e, file );
+					return false;
 				}
 
-				if ( ! _.isObject( response ) || _.isUndefined( response.success ) )
-					return error( pluploadL10n.default_error, null, file );
-				else if ( ! response.success )
-					return error( response.data && response.data.message, response.data, file );
+				if ( ! _.isObject( response ) || _.isUndefined( response.success ) || ! response.success )
+					return false;
 
 				_.each(['file','loaded','size','percent'], function( key ) {
 					file.attachment.unset( key );
