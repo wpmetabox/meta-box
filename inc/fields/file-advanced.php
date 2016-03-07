@@ -39,4 +39,5 @@ class RWMB_File_Advanced_Field extends RWMB_Media_Field
 	{
 		return RWMB_File_Field::file_info( $file_id, $args );
 	}
+
 }
