@@ -32,8 +32,8 @@ jQuery( function ( $ )
 			this.render();
 
 			//Areas
-			this.$dropzone = this.$el;
-			this.$browser  = this.$('.rwmb-browse-button');
+			this.dropzone = this.el;
+			this.browser  = this.$('.rwmb-browse-button')[0];
 
 			this.supports = {
 				upload: wp.Uploader.browser.supported
@@ -67,8 +67,8 @@ jQuery( function ( $ )
 					multipart_params: {},
 					multipart: true,
 					urlstream_upload: true,
-				 	drop_element: this.$dropzone[0],
-				 	browse_button: this.$browser[0],
+				 	drop_element: this.dropzone,
+				 	browse_button: this.browser,
 					filters:{}}, wp.Uploader.defaults );
 
 			if( extensions )
