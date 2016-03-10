@@ -1,11 +1,3 @@
-.rwmb-choice-list li{
-	line-height: 22px;
-}
-
-li .rwmb-choice-list {
-	margin-left: 15px;
-}
-
 .rwmb-select-tree {
 	display: inline-block;
 }

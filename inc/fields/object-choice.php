@@ -122,9 +122,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$attributes['class'] .= " rwmb-select";
 				break;
 		}
-
-
-
 		return $attributes;
 	}
 
@@ -151,6 +148,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	{
 		wp_enqueue_style( 'rwmb-object-choice', RWMB_CSS_URL . 'object-choice.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-object-choice', RWMB_JS_URL . 'object-choice.js', array(), RWMB_VER, true );
+		RWMB_Input_List_Field::admin_enqueue_scripts();
 		RWMB_Select_Field::admin_enqueue_scripts();
 		RWMB_Select_Advanced_Field::admin_enqueue_scripts();
 	}
@@ -168,7 +166,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 	{
 		$field_class = RW_Meta_Box::get_class_name( $field );
 		$db_fields   = call_user_func( array( $field_class, 'get_db_fields' ), $field );
-		$walker      = new RWMB_Choice_List_Walker( $db_fields, $field, $meta );
+		$walker      = new RWMB_Input_List_Walker( $db_fields, $field, $meta );
 
 		$output = sprintf( '<ul class="rwmb-choice-list %s">', $field['collapse'] ? 'collapse' : '' );
 
