@@ -114,17 +114,16 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	}
 
 	/**
-	 * Get post link to display in the frontend
-	 *
-	 * @param int   $value Option value, e.g. post ID
-	 * @param int   $index Array index
-	 * @param array $field Field parameter
-	 *
-	 * @return string
-	 */
-	static function get_option_label( &$value, $index, $field )
-	{
-		$value = sprintf(
+   * Get option label
+   *
+   * @param string   $value Option value
+   * @param array    $field Field parameter
+   *
+   * @return string
+   */
+  static function get_option_label( $value, $field )
+  {
+    return sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_permalink( $value ) ),
 			the_title_attribute( array(
@@ -133,5 +132,5 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			) ),
 			get_the_title( $value )
 		);
-	}
+  }
 }

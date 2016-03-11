@@ -78,17 +78,16 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	}
 
 	/**
-	 * Get option label to display in the frontend
+	 * Get option label
 	 *
-	 * @param int   $value Option value
-	 * @param int   $index Array index
-	 * @param array $field Field parameter
+	 * @param string   $value Option value
+	 * @param array    $field Field parameter
 	 *
 	 * @return string
 	 */
-	static function get_option_label( &$value, $index, $field )
+	static function get_option_label( $value, $field )
 	{
 		$user  = get_userdata( $value );
-		$value = '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';
+		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';
 	}
 }

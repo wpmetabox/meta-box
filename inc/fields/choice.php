@@ -135,7 +135,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
   }
 
   /**
-   * Get option label to display in the frontend
+   * List option labels
    *
    * @param string   $value Option value
    * @param array    $field Field parameter
@@ -144,13 +144,27 @@ abstract class RWMB_Choice_Field extends RWMB_Field
    */
   static function list_option_labels( $meta, $field )
   {
-    $output = '<ul>';
+    $field_class = RW_Meta_Box::get_class_name( $field );
+    $output      = '<ul>';
     foreach( $meta as $m )
     {
-      $output .= sprintf( '<li>%s</li>', $field['options'][$value]['label'] );
+      $output .= sprintf( '<li>%s</li>', call_user_func( array( $field_class, 'get_option_label' ), $m, $field ) );
     }
 
     return $output . '</ul>';
+  }
+
+  /**
+   * Get option label
+   *
+   * @param string   $value Option value
+   * @param array    $field Field parameter
+   *
+   * @return string
+   */
+  static function get_option_label( $meta, $field )
+  {
+    return $field['options'][$meta]['label'];
   }
 
 }
