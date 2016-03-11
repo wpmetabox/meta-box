@@ -13,23 +13,6 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	}
 
   /**
-   * Get field HTML
-   *
-   * @param mixed $meta
-   * @param array $field
-   *
-   * @return string
-   */
-  static function html( $meta, $field )
-  {
-    $field_class = RW_Meta_Box::get_class_name( $field );
-    $meta        = (array) $meta;
-    $options     = call_user_func( array( $field_class, 'get_options' ), $field );
-    $db_fields   = call_user_func( array( $field_class, 'get_db_fields' ), $field );
-    return self::walk( $options, $db_fields, $meta, $field );
-  }
-
-  /**
    * Walk options
    *
    * @param mixed $meta

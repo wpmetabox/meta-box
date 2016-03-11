@@ -2,7 +2,7 @@ jQuery( function( $ )
 {
 	'use strict';
 
-	function updateSelectTree()
+	function update()
 	{
 		var $this = $( this ),
 			val = $this.val(),
@@ -17,6 +17,6 @@ jQuery( function( $ )
 	}
 
 	$( '.rwmb-input' )
-		.on( 'change', '.rwmb-select-tree select', updateSelectTree )
-		.on( 'clone', '.rwmb-select-tree select', updateSelectTree );
+		.on( 'change', '.rwmb-select-tree select', update )
+		.on( 'clone', '.rwmb-select-tree select', update );
 } );
