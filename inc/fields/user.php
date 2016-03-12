@@ -16,10 +16,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default field args
 		 */
-		$field = wp_parse_args( $field, array(
-			'field_type' => 'select',
-			'query_args' => array(),
-		) );
+		$field = parent::normalize( $field );
 
 		/**
 		 * Prevent select tree for user since it's not hierarchical
@@ -45,7 +42,6 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 			'role'    => '',
 			'fields'  => 'all',
 		) );
-		$field               = parent::normalize( $field );
 
 		return $field;
 	}

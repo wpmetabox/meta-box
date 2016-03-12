@@ -25,10 +25,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default field args
 		 */
+		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'taxonomy'   => 'category',
-			'field_type' => 'select',
-			'query_args' => array(),
 		) );
 
 		/**
@@ -58,7 +57,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		 */
 		$field['clone'] = false;
 
-		$field = parent::normalize( $field );
 		return $field;
 	}
 

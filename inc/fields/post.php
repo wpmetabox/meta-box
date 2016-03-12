@@ -16,11 +16,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default field args
 		 */
+		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'post_type'  => 'post',
-			'field_type' => 'select',
 			'parent'     => false,
-			'query_args' => array(),
 		) );
 
 		/**
@@ -55,9 +54,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			'posts_per_page' => - 1,
 		) );
 		$field['query_args']['post_type'] = $field['post_type'];
-
-
-		$field = parent::normalize( $field );
 
 		return $field;
 	}
