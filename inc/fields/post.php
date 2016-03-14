@@ -8,10 +8,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		/**
 		 * Set default field args
@@ -67,7 +66,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => 'post_parent',
@@ -89,7 +88,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		if ( isset( $field['parent'] ) && $field['parent'] )
 		{
@@ -107,7 +106,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		$query = new WP_Query( $field['query_args'] );
 		return $query->have_posts() ? $query->posts : array();
@@ -122,7 +121,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function get_option_label( &$value, $index, $field )
+	public static function get_option_label( &$value, $index, $field )
 	{
 		$value = sprintf(
 			'<a href="%s" title="%s">%s</a>',
@@ -133,5 +132,20 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			) ),
 			get_the_title( $value )
 		);
+	}
+
+	/**
+	 * Output the field value
+	 * Display unordered list of option labels, not option values
+	 *
+	 * @param  array    $field   Field parameters
+	 * @param  array    $args    Additional arguments. Not used for these fields.
+	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return string Link(s) to post
+	 */
+	public static function the_value( $field, $args = array(), $post_id = null )
+	{
+		return RWMB_Select_Field::the_value( $field, $args, $post_id );
 	}
 }

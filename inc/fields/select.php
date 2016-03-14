@@ -7,7 +7,7 @@ class RWMB_Select_Field extends RWMB_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
@@ -18,23 +18,19 @@ class RWMB_Select_Field extends RWMB_Field
 	 *
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function html( $meta, $field )
 	{
-		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
-		$html = sprintf(
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$html       = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
 
 		$html .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-
 		$html .= self::options_html( $field, $meta );
-
 		$html .= '</select>';
-
 		$html .= self::get_select_all_html( $field['multiple'] );
 
 		return $html;
@@ -44,10 +40,9 @@ class RWMB_Select_Field extends RWMB_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
@@ -63,10 +58,9 @@ class RWMB_Select_Field extends RWMB_Field
 	 *
 	 * @param array $field
 	 * @param mixed $value
-	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
@@ -82,15 +76,12 @@ class RWMB_Select_Field extends RWMB_Field
 	 *
 	 * @param array $field
 	 * @param mixed $meta
-	 *
 	 * @return array
 	 */
-	static function options_html( $field, $meta )
+	public static function options_html( $field, $meta )
 	{
-		$html = '';
-
+		$html   = '';
 		$option = '<option value="%s"%s>%s</option>';
-
 		foreach ( $field['options'] as $value => $label )
 		{
 			$html .= sprintf(
@@ -100,7 +91,6 @@ class RWMB_Select_Field extends RWMB_Field
 				$label
 			);
 		}
-
 		return $html;
 	}
 
@@ -111,16 +101,16 @@ class RWMB_Select_Field extends RWMB_Field
 	 * @param  array    $field   Field parameters
 	 * @param  array    $args    Additional arguments. Not used for these fields.
 	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
 	 * @return string Link(s) to post
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function the_value( $field, $args = array(), $post_id = null )
 	{
-		$value = self::get_value( $field, $args, $post_id );
+		$field_class = RW_Meta_Box::get_class_name( $field );
+		$value       = call_user_func( array( $field_class, 'get_value' ), $field, $args, $post_id );
 		if ( ! $value )
 			return '';
 
-		$function = array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' );
+		$function = array( $field_class, 'get_option_label' );
 
 		if ( $field['clone'] )
 		{
@@ -165,10 +155,9 @@ class RWMB_Select_Field extends RWMB_Field
 	 * @param int   $value Option value
 	 * @param int   $index Array index
 	 * @param array $field Field parameter
-	 *
 	 * @return string
 	 */
-	static function get_option_label( &$value, $index, $field )
+	public static function get_option_label( &$value, $index, $field )
 	{
 		$value = $field['options'][$value];
 	}
@@ -177,10 +166,9 @@ class RWMB_Select_Field extends RWMB_Field
 	 * Get html for select all|none for multiple select
 	 *
 	 * @param $multiple
-	 *
 	 * @return string
 	 */
-	static function get_select_all_html( $multiple )
+	public static function get_select_all_html( $multiple )
 	{
 		if ( $multiple === true )
 		{
