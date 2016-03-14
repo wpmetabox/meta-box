@@ -1,9 +1,9 @@
 <?php
 /**
- * Choice List Walker
+ * Input List Walker
  * For checkbox and radio list fields
  */
-class RWMB_Choice_List_Walker extends RWMB_Walker
+class RWMB_Input_List_Walker extends RWMB_Walker
 {
 	/**
 	 * @see Walker::start_lvl()
@@ -14,7 +14,7 @@ class RWMB_Choice_List_Walker extends RWMB_Walker
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() )
 	{
-		$output .= "<ul class='rwmb-choice-list'>";
+		$output .= "<ul class='rwmb-input-list'>";
 	}
 
 	/**

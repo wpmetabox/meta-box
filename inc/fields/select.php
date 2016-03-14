@@ -2,7 +2,7 @@
 /**
  * Select field class.
  */
-class RWMB_Select_Field extends RWMB_Field
+class RWMB_Select_Field extends RWMB_Choice_Field
 {
 	/**
 	 * Enqueue scripts and styles
@@ -14,31 +14,32 @@ class RWMB_Select_Field extends RWMB_Field
 	}
 
 	/**
-	 * Get field HTML
-	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 *
-	 * @return string
-	 */
-	static function html( $meta, $field )
-	{
-		$attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
-		$html = sprintf(
+   * Walk options
+   *
+   * @param mixed $meta
+   * @param array $field
+   * @param mixed $options
+   * @param mixed $db_fields
+   *
+   * @return string
+   */
+  static function walk( $options, $db_fields, $meta, $field )
+  {
+	  $attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$walker      = new RWMB_Select_Walker( $db_fields, $field, $meta );
+		$output = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-
-		$html .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-
-		$html .= self::options_html( $field, $meta );
-
-		$html .= '</select>';
-
-		$html .= self::get_select_all_html( $field['multiple'] );
-
-		return $html;
-	}
+		if ( false === $field['multiple'] )
+		{
+			$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		}
+		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
+		$output .= '</select>';
+		$output .= self::get_select_all_html( $field['multiple'] );
+		return $output;
+  }
 
 	/**
 	 * Normalize parameters for field
@@ -50,11 +51,11 @@ class RWMB_Select_Field extends RWMB_Field
 	static function normalize( $field )
 	{
 		$field = parent::normalize( $field );
+		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = wp_parse_args( $field, array(
 			'size' => $field['multiple'] ? 5 : 0,
 		) );
 
-		$field['field_name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 		return $field;
 	}
 
@@ -75,102 +76,6 @@ class RWMB_Select_Field extends RWMB_Field
 		) );
 
 		return $attributes;
-	}
-
-	/**
-	 * Creates html for options
-	 *
-	 * @param array $field
-	 * @param mixed $meta
-	 *
-	 * @return array
-	 */
-	static function options_html( $field, $meta )
-	{
-		$html = '';
-
-		$option = '<option value="%s"%s>%s</option>';
-
-		foreach ( $field['options'] as $value => $label )
-		{
-			$html .= sprintf(
-				$option,
-				$value,
-				selected( in_array( (string) $value, (array) $meta, true ), true, false ),
-				$label
-			);
-		}
-
-		return $html;
-	}
-
-	/**
-	 * Output the field value
-	 * Display unordered list of option labels, not option values
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string Link(s) to post
-	 */
-	static function the_value( $field, $args = array(), $post_id = null )
-	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! $value )
-			return '';
-
-		$function = array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' );
-
-		if ( $field['clone'] )
-		{
-			$output = '<ul>';
-			if ( $field['multiple'] )
-			{
-				foreach ( $value as $subvalue )
-				{
-					$output .= '<li>';
-					array_walk_recursive( $subvalue, $function, $field );
-					$output .= '<ul><li>' . implode( '</li><li>', $subvalue ) . '</li></ul>';
-					$output .= '</li>';
-				}
-			}
-			else
-			{
-				array_walk_recursive( $value, $function, $field );
-				$output = '<li>' . implode( '</li><li>', $value ) . '</li>';
-			}
-			$output .= '</ul>';
-		}
-		else
-		{
-			if ( $field['multiple'] )
-			{
-				array_walk_recursive( $value, $function, $field );
-				$output = '<ul><li>' . implode( '</li><li>', $value ) . '</li></ul>';
-			}
-			else
-			{
-				call_user_func_array( $function, array( &$value, 0, $field ) );
-				$output = $value;
-			}
-		}
-
-		return $output;
-	}
-
-	/**
-	 * Get option label to display in the frontend
-	 *
-	 * @param int   $value Option value
-	 * @param int   $index Array index
-	 * @param array $field Field parameter
-	 *
-	 * @return string
-	 */
-	static function get_option_label( &$value, $index, $field )
-	{
-		$value = $field['options'][$value];
 	}
 
 	/**

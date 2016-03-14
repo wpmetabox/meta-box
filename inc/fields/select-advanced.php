@@ -9,6 +9,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	static function admin_enqueue_scripts()
 	{
+		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
@@ -18,25 +19,30 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	}
 
 	/**
-	 * Get field HTML
-	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 * @return string
-	 */
-	static function html( $meta, $field )
-	{
-		$attributes = self::get_attributes( $field, $meta );
-		$html       = sprintf(
+   * Walk options
+   *
+   * @param mixed $meta
+   * @param array $field
+   * @param mixed $options
+   * @param mixed $db_fields
+   *
+   * @return string
+   */
+  static function walk( $options, $db_fields, $meta, $field )
+  {
+	  $attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$walker      = new RWMB_Select_Walker( $db_fields, $field, $meta );
+		$output = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-		$html .= '<option></option>';
-		$html .= self::options_html( $field, $meta );
-		$html .= '</select>';
-		$html .= self::get_select_all_html( $field['multiple'] );
-		return $html;
-	}
+
+		$output .= '<option></option>';
+		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
+		$output .= '</select>';
+		$output .= self::get_select_all_html( $field['multiple'] );
+		return $output;
+  }
 
 	/**
 	 * Normalize parameters for field
