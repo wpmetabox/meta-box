@@ -16,17 +16,25 @@ class RWMB_Helper
 
 	/**
 	 * Hash all fields into an indexed array for search
+	 * @param string $post_type Post type
 	 */
-	public static function hash_fields()
+	public static function hash_fields( $post_type )
 	{
+		self::$fields[$post_type] = array();
+
 		$meta_boxes = RWMB_Core::get_meta_boxes();
 		foreach ( $meta_boxes as $meta_box )
 		{
+			$meta_box = RW_Meta_Box::normalize( $meta_box );
+			if ( ! in_array( $post_type, $meta_box['post_types'] ) )
+			{
+				continue;
+			}
 			foreach ( $meta_box['fields'] as $field )
 			{
 				if ( ! empty( $field['id'] ) )
 				{
-					self::$fields[$field['id']] = $field;
+					self::$fields[$post_type][$field['id']] = $field;
 				}
 			}
 		}
@@ -36,18 +44,24 @@ class RWMB_Helper
 	 * Find field by field ID.
 	 * This function finds field in meta boxes registered by 'rwmb_meta_boxes' filter.
 	 *
-	 * @param  string $field_id Field ID
+	 * @param string $field_id Field ID
+	 * @param int    $post_id
 	 * @return array|false Field params (array) if success. False otherwise.
 	 */
-	public static function find_field( $field_id )
+	public static function find_field( $field_id, $post_id = null )
 	{
-		if ( empty( self::$fields ) )
+		$post_type = get_post_type( $post_id );
+		if ( empty( self::$fields[$post_type] ) )
 		{
-			self::hash_fields();
+			self::hash_fields( $post_type );
 		}
-
-		$field = isset( self::$fields[$field_id] ) ? self::$fields[$field_id] : false;
-		return $field ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize' ), $field ) : false;
+		$fields = self::$fields[$post_type];
+		if ( ! isset( $fields[$field_id] ) )
+		{
+			return false;
+		}
+		$field = $fields[$field_id];
+		return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize' ), $field );
 	}
 
 	/**

@@ -58,7 +58,7 @@ class RWMB_Loader
 		$abspath = untrailingslashit( ABSPATH );
 
 		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
-		if ( false === strpos( $path, $abspath ) )
+		if ( $abspath && false === strpos( $path, $abspath ) )
 		{
 			if ( ! function_exists( 'is_plugin_active' ) )
 			{
