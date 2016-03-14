@@ -8,7 +8,7 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	public static function admin_enqueue_scripts()
+	static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css' );
 		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array(), RWMB_VER, true );
@@ -17,7 +17,7 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	/**
 	 * Add actions
 	 */
-	public static function add_actions()
+	static function add_actions()
 	{
 		add_action( 'wp_ajax_rwmb_get_embed', array( __CLASS__, 'wp_ajax_get_embed' ) );
 	}
@@ -25,7 +25,7 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	/**
 	 * Ajax callback for returning oEmbed HTML
 	 */
-	public static function wp_ajax_get_embed()
+	static function wp_ajax_get_embed()
 	{
 		$url = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
 		wp_send_json_success( self::get_embed( $url ) );
@@ -37,15 +37,15 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 * @param string $url
 	 * @return string
 	 */
-	public static function get_embed( $url )
+	static function get_embed( $url )
 	{
 		/**
 		 * Set arguments for getting embeded HTML.
 		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin
 		 * @link https://github.com/rilwis/meta-box/issues/801
-		 * @see  WP_oEmbed::fetch()
-		 * @see  WP_Embed::shortcode()
-		 * @see  wp_embed_defaults()
+		 * @see WP_oEmbed::fetch()
+		 * @see WP_Embed::shortcode()
+		 * @see wp_embed_defaults()
 		 */
 		$args = array();
 		if ( is_admin() )
@@ -72,7 +72,7 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 * @param array $field
 	 * @return string
 	 */
-	public static function html( $meta, $field )
+	static function html( $meta, $field )
 	{
 		$attributes = self::get_attributes( $field, $meta );
 		return sprintf(
@@ -96,14 +96,9 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 *
 	 * @return mixed Field value
 	 */
-	public static function the_value( $field, $args = array(), $post_id = null )
+	static function the_value( $field, $args = array(), $post_id = null )
 	{
-		$value  = self::get_value( $field, $args, $post_id );
-		$output = '';
-		if ( empty( $value ) )
-		{
-			return $output;
-		}
+		$value = self::get_value( $field, $args, $post_id );
 		if ( $field['clone'] )
 		{
 			$output = '<ul>';
