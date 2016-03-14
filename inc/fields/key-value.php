@@ -124,7 +124,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 * Display unordered list of key - value pairs
 	 *
 	 * @use self::get_value()
-	 * @see rwmb_the_field()
+	 * @see rwmb_the_value()
 	 *
 	 * @param  array    $field   Field parameters
 	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details

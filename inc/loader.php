@@ -28,7 +28,7 @@ class RWMB_Loader
 	public function constants()
 	{
 		// Script version, used to add version for scripts and styles
-		define( 'RWMB_VER', '4.7.3' );
+		define( 'RWMB_VER', '4.8.3' );
 
 		list( $path, $url ) = self::get_path();
 
@@ -53,10 +53,12 @@ class RWMB_Loader
 	static public function get_path( $base = '' )
 	{
 		// Plugin base path
-		$path = $base ? $base : dirname( dirname( __FILE__ ) );
+		$path    = $base ? $base : dirname( dirname( __FILE__ ) );
+		$path    = untrailingslashit( $path );
+		$abspath = untrailingslashit( ABSPATH );
 
 		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
-		if ( false === strpos( $path, ABSPATH ) )
+		if ( $abspath && false === strpos( $path, $abspath ) )
 		{
 			if ( ! function_exists( 'is_plugin_active' ) )
 			{
@@ -69,13 +71,13 @@ class RWMB_Loader
 			}
 		}
 
-		$path = trailingslashit( wp_normalize_path( $path ) );
-
 		// Get plugin base URL
 		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
 		$content_dir = untrailingslashit( WP_CONTENT_DIR );
-		$content_dir = wp_normalize_path( $content_dir );
-		$url         = str_replace( $content_dir, $content_url, $path );
+		$url         = str_replace( wp_normalize_path( $content_dir ), $content_url, wp_normalize_path( $path ) );
+
+		$path = trailingslashit( $path );
+		$url  = trailingslashit( $url );
 
 		return array( $path, $url );
 	}
@@ -124,8 +126,11 @@ class RWMB_Loader
 		// Plugin core
 		new RWMB_Core;
 
-		// Validation module
-		new RWMB_Validation;
+		if ( is_admin() )
+		{
+			// Validation module
+			new RWMB_Validation;
+		}
 
 		// Public functions
 		require RWMB_INC_DIR . 'functions.php';

@@ -1,47 +1,45 @@
 <?php
-$prefix = 'rw_';
+/**
+ * This demo shows how to register meta boxes for a page by ID or page template
+ * This is created, maintained and supported by the community
+ * Use it with your own risk
+ *
+ * For more advanced and OFFICIAL support, check out the extension https://metabox.io/plugins/meta-box-include-exclude/
+ */
 
-global $meta_boxes;
-$meta_boxes   = array();
-$meta_boxes[] = array(
-	'id'     => 'any_id',
-	'title'  => __( 'Meta Box Title', 'your-prefix' ),
-	'post_types' => post,
-	'fields' => array(
-
-		// IMAGE UPLOAD
-		array(
-			'name' => __( 'Your images', 'your-prefix' ),
-			'id'   => "{$prefix}img",
-			'type' => 'plupload_image',
-		),
-	),
-);
+add_filter( 'rwmb_meta_boxes', 'YOURPREFIX_register_meta_boxes' );
 
 /**
  * Register meta boxes
- *
- * @return void
+ * @param $meta_boxes
+ * @return array
  */
-function rw_register_meta_boxes()
+function YOURPREFIX_register_meta_boxes( $meta_boxes )
 {
-	global $meta_boxes;
-
-	// Make sure there's no errors when the plugin is deactivated or during upgrade
-	if ( ! class_exists( 'RW_Meta_Box' ) )
-		return;
-
-	// Register meta boxes only for some posts/pages
+	// Check before register meta boxes
 	if ( ! rw_maybe_include() )
-		return;
-
-	foreach ( $meta_boxes as $meta_box )
 	{
-		new RW_Meta_Box( $meta_box );
+		return $meta_boxes;
 	}
-}
 
-add_action( 'admin_init', 'rw_register_meta_boxes' );
+	// Register meta boxes
+	// @see https://metabox.io/docs/registering-meta-boxes/
+	$prefix       = 'rw_';
+	$meta_boxes[] = array(
+		'id'         => 'any_id',
+		'title'      => __( 'Meta Box Title', 'your-prefix' ),
+		'post_types' => 'page',
+		'fields'     => array(
+			array(
+				'name' => __( 'Your images', 'your-prefix' ),
+				'id'   => "{$prefix}img",
+				'type' => 'plupload_image',
+			),
+		),
+	);
+
+	return $meta_boxes;
+}
 
 /**
  * Check if meta boxes is included
@@ -50,9 +48,9 @@ add_action( 'admin_init', 'rw_register_meta_boxes' );
  */
 function rw_maybe_include()
 {
-	// Include in back-end only
-	if ( ! defined( 'WP_ADMIN' ) || ! WP_ADMIN )
-		return false;
+	// Always include in the frontend to make helper function work
+	if ( ! is_admin() )
+		return true;
 
 	// Always include for ajax
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX )

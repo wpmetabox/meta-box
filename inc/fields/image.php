@@ -212,7 +212,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 
 		$attachment = get_post( $file_id );
 		$path       = get_attached_file( $file_id );
-		return array(
+		$info       = array(
 			'ID'          => $file_id,
 			'name'        => basename( $path ),
 			'path'        => $path,
@@ -224,7 +224,11 @@ class RWMB_Image_Field extends RWMB_File_Field
 			'caption'     => $attachment->post_excerpt,
 			'description' => $attachment->post_content,
 			'alt'         => get_post_meta( $file_id, '_wp_attachment_image_alt', true ),
-			'srcset'      => wp_get_attachment_image_srcset( $file_id ),
 		);
+		if ( function_exists( 'wp_get_attachment_image_srcset' ) )
+		{
+			$info['srcset'] = wp_get_attachment_image_srcset( $file_id );
+		}
+		return $info;
 	}
 }

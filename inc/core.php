@@ -11,6 +11,12 @@
 class RWMB_Core
 {
 	/**
+	 * Stores all registered meta boxes
+	 * @var array
+	 */
+	private static $meta_boxes = null;
+
+	/**
 	 * Register hooks.
 	 */
 	public function __construct()
@@ -65,10 +71,14 @@ class RWMB_Core
 	 * - prevents duplicated global variables.
 	 * - allows users to remove/hide registered meta boxes.
 	 */
-	static public function get_meta_boxes()
+	public static function get_meta_boxes()
 	{
-		$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
-		return empty( $meta_boxes ) || ! is_array( $meta_boxes ) ? array() : $meta_boxes;
+		if ( null === self::$meta_boxes )
+		{
+			self::$meta_boxes = apply_filters( 'rwmb_meta_boxes', array() );
+			self::$meta_boxes = empty( self::$meta_boxes ) || ! is_array( self::$meta_boxes ) ? array() : self::$meta_boxes;
+		}
+		return self::$meta_boxes;
 	}
 
 	/**

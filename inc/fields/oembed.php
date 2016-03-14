@@ -1,4 +1,5 @@
 <?php
+
 /**
  * oEmbed field class.
  */
@@ -38,13 +39,27 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	 */
 	static function get_embed( $url )
 	{
+		/**
+		 * Set arguments for getting embeded HTML.
+		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin
+		 * @link https://github.com/rilwis/meta-box/issues/801
+		 * @see WP_oEmbed::fetch()
+		 * @see WP_Embed::shortcode()
+		 * @see wp_embed_defaults()
+		 */
+		$args = array();
+		if ( is_admin() )
+		{
+			$args['width'] = 360;
+		}
+
 		// Try oembed first
-		$embed = wp_oembed_get( $url );
+		$embed = wp_oembed_get( $url, $args );
 
 		// If no oembed provides found, try WordPress auto embed
 		if ( ! $embed )
 		{
-			$embed = $GLOBALS['wp_embed']->shortcode( array(), $url );
+			$embed = $GLOBALS['wp_embed']->shortcode( $args, $url );
 		}
 
 		return $embed ? $embed : __( 'Embed HTML not available.', 'meta-box' );
@@ -66,7 +81,6 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 			<span class="spinner"></span>
 			<div class="embed-code">%s</div>',
 			self::render_attributes( $attributes ),
-			$field['size'],
 			__( 'Preview', 'meta-box' ),
 			$meta ? self::get_embed( $meta ) : ''
 		);

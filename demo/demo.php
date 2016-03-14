@@ -140,20 +140,19 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 					'required'  => __( 'Password is required', 'your-prefix' ),
 					'minlength' => __( 'Password must be at least 7 characters', 'your-prefix' ),
 				),
-			)
-		)
+			),
+		),
 	);
 
 	// 2nd meta box
 	$meta_boxes[] = array(
-		'title'  => __( 'Advanced Fields', 'your-prefix' ),
+		'title' => __( 'Advanced Fields', 'your-prefix' ),
 
 		'fields' => array(
 			// HEADING
 			array(
 				'type' => 'heading',
 				'name' => __( 'Heading', 'your-prefix' ),
-				'id'   => 'fake_id', // Not used but needed for plugin
 				'desc' => __( 'Optional description for this heading', 'your-prefix' ),
 			),
 			// SLIDER
@@ -309,17 +308,15 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 			),
 			// TAXONOMY
 			array(
-				'name'    => __( 'Taxonomy', 'your-prefix' ),
-				'id'      => "{$prefix}taxonomy",
-				'type'    => 'taxonomy',
-				'options' => array(
-					// Taxonomy name
-					'taxonomy' => 'category',
-					// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
-					'type'     => 'checkbox_list',
-					// Additional arguments for get_terms() function. Optional
-					'args'     => array()
-				),
+				'name'       => __( 'Taxonomy', 'your-prefix' ),
+				'id'         => "{$prefix}taxonomy",
+				'type'       => 'taxonomy',
+				// Taxonomy name
+				'taxonomy'   => 'category',
+				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
+				'field_type' => 'checkbox_list',
+				// Additional arguments for get_terms() function. Optional
+				'query_args' => array(),
 			),
 			// POST
 			array(
@@ -335,7 +332,7 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'query_args'  => array(
 					'post_status'    => 'publish',
 					'posts_per_page' => - 1,
-				)
+				),
 			),
 			// WYSIWYG/RICH TEXT EDITOR
 			array(
@@ -356,7 +353,6 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 			// DIVIDER
 			array(
 				'type' => 'divider',
-				'id'   => 'fake_divider_id', // Not used, but needed
 			),
 			// FILE UPLOAD
 			array(
@@ -404,7 +400,7 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'type' => 'button',
 				'name' => ' ', // Empty name will "align" the button to all field inputs
 			),
-		)
+		),
 	);
 
 	return $meta_boxes;

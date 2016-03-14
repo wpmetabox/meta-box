@@ -40,8 +40,10 @@ class RW_Meta_Box
 		if ( ! is_admin() )
 			return;
 
-		// Assign meta box values to local variables and add it's missed values
-		$this->meta_box = self::normalize( $meta_box );
+		$meta_box           = self::normalize( $meta_box );
+		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
+
+		$this->meta_box = $meta_box;
 		$this->fields   = &$this->meta_box['fields'];
 
 		// Allow users to show/hide meta box
@@ -305,7 +307,6 @@ class RW_Meta_Box
 
 		/**
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions
-		 *
 		 * @since 4.4.1
 		 */
 		if ( ! empty( $meta_box['pages'] ) )
@@ -318,9 +319,6 @@ class RW_Meta_Box
 		{
 			$meta_box['post_types'] = array( $meta_box['post_types'] );
 		}
-
-		// Set default values for fields
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
 
 		// Allow to add default values for meta box
 		$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );
@@ -392,6 +390,10 @@ class RW_Meta_Box
 
 		foreach ( $this->fields as $field )
 		{
+			if ( empty( $field['id'] ) )
+			{
+				continue;
+			}
 			$value = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
 			if (
 				( ! $field['multiple'] && '' !== $value )

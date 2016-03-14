@@ -366,9 +366,6 @@ abstract class RWMB_Field
 			'attributes' => array(),
 		) );
 
-		//Make sure all letters are lower case for id
-		$field['id'] = strtolower( $field['id'] );
-
 		return $field;
 	}
 
@@ -472,7 +469,7 @@ abstract class RWMB_Field
 	 * rwmb_the_field function later.
 	 *
 	 * @use self::get_value()
-	 * @see rwmb_the_field()
+	 * @see rwmb_the_value()
 	 *
 	 * @param  array    $field   Field parameters
 	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details

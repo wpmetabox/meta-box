@@ -104,6 +104,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				$attributes['class'] .= " rwmb-choice";
 				$attributes['id']     = false;
 				$attributes['type']   = 'radio_list' === $field['field_type'] ? 'radio' : 'checkbox';
+				$attributes['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 				break;
 			case 'select_advanced':
 				$attributes           = RWMB_Select_Advanced_Field::get_attributes( $field, $value );
@@ -122,7 +123,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Field
 				break;
 		}
 
-		$attributes['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
+
 
 		return $attributes;
 	}

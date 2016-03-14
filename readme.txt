@@ -2,9 +2,9 @@
 Contributors: rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
-Requires at least: 3.5
-Tested up to: 4.4
-Stable tag: 4.7.3
+Requires at least: 4.1
+Tested up to: 4.4.2
+Stable tag: 4.8.3
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
@@ -76,6 +76,49 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.8.3 =
+* Improvement: WYSIWYG field now can be cloned. Sorting clone hasn't worked yet.
+* Fix: 'std' value not working if there is 'divider' or 'heading' field withough 'id'
+* Fix: helper function not working in AJAX or admin.
+* Fix: getting plugin's path on Windows system.
+* Fix: warning get_value of taxonomy field
+* Fix: guarantee file ids are in an array
+
+= 4.8.2 =
+* Fix: re-add code for backward compatibility for helper function
+* Fix:  undefined 'class' attribute for button
+* Improvement: speedup the helper function
+
+= 4.8.1 =
+
+* Fix: select multiple value with post, user and taxonomy
+* Fix: bug in oembed field
+* Fix: fix JS/CSS compatibility with WooCommerce
+* Fix: do not force field ID to lowercase, which can potentially breaks existing fields or fields with ID of CAPS characters.
+
+= 4.8.0 =
+
+* Improvement: rewrite the way the plugin loads file, which allows developers to include the plugin into themes/plugins simply by include the main file. The new loading mechanism also uses autoloading feature which prevents loading files twice and saves memory.
+* Improvement: rewrite `user`, `post`, `taxonomy` fields using the same codebase as they're native WordPress objects and sharing similar options. Also changes the syntax of query parameters for these fields (old syntax still works). Please see docs for details.
+* Improvement: add `srcset` in the returned value of helper function for image fields
+* Improvement: better sanitize value for `url` field
+* Improvement: prevent issues with dashes in field types
+* Improvement: remove redundant value in checkbox
+* Improvement: update CSS for date, time fields
+* Improvement: select2 now updated to 4.0.1
+* Improvement: optimize code for `file_advanced` and `image_advanced` fields which now submit array of values when saving instead of single CSV value
+* Improvement: add `collapse` option to `checkbox_list` and `checkbox_tree` in `user`, `taxonomy`, `post` fields which prevents plugin save parent values.
+* Improvement: secure password field so it is no longer saved in plain text. To check if a password matches the hash, please use `wp_check_password`.
+* Improvement: change the output of `color` field in the helper function. Now it shows the color instead of hex value.
+* Improvement: add `color:change` and `color:clear` JavaScript event for detecting changes in `color` field.
+* Improvement: refactor code for better structure and security
+* Fix: rewrite the JavaScript for cloning which causes bugs for date field.
+* Fix: fix missing attributes if value is '0' or 0.
+* Fix: add missing `class` attribute for fields
+* Fix: do not auto populate color field with '#'
+* Fix: wrong callback for fix page template
+
 
 = 4.7.3 =
 
