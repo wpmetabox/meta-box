@@ -11,7 +11,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		/**
 		 * Set default field args
@@ -49,7 +49,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default query args
 		 */
-		$field['query_args']              = wp_parse_args( $field['query_args'], array(
+		$field['query_args']   = wp_parse_args( $field['query_args'], array(
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
@@ -63,7 +63,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => 'post_parent',
@@ -85,7 +85,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		if ( isset( $field['parent'] ) && $field['parent'] )
 		{
@@ -103,7 +103,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		$query = new WP_Query( $field['query_args'] );
 		return $query->have_posts() ? $query->posts : array();
@@ -117,7 +117,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
    *
    * @return string
    */
-  static function get_option_label( $value, $field )
+  public static function get_option_label( $value, $field )
   {
     return sprintf(
 			'<a href="%s" title="%s">%s</a>',

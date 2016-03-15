@@ -7,7 +7,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
@@ -23,7 +23,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
    *
    * @return string
    */
-  static function walk( $options, $db_fields, $meta, $field )
+  public static function walk( $options, $db_fields, $meta, $field )
   {
 	  $attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
 		$walker      = new RWMB_Select_Walker( $db_fields, $field, $meta );
@@ -48,7 +48,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = parent::normalize( $field );
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
@@ -67,7 +67,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
@@ -85,7 +85,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function get_select_all_html( $multiple )
+	public static function get_select_all_html( $multiple )
 	{
 		if ( $multiple === true )
 		{
