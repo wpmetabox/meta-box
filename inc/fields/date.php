@@ -15,5 +15,4 @@ class RWMB_Date_Field extends RWMB_Datetime_Field
 		wp_enqueue_style( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'rwmb-date' );
 	}
-
 }

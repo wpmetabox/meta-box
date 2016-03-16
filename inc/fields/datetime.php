@@ -132,6 +132,18 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	{
 		if ( ! $field['timestamp'] )
 			return $new;
+			
+		if( $field['clone'] )
+		{
+			$dates = array();
+			foreach( $new as $n )
+			{
+				$date = DateTime::createFromFormat( self::translate_format( $field ), $n );
+				$dates[] = $date ? $date->getTimestamp() : 0;
+			}
+			return $dates;
+		}
+
 		$date = DateTime::createFromFormat( self::translate_format( $field ), $new );
 		return $date ? $date->getTimestamp() : 0;
 	}
@@ -185,6 +197,13 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
 			'showButtonPanel' => true,
 		) );
+
+		if( $field['inline'] )
+		{
+			$field['js_options'] = wp_parse_args( $field['js_options'], array(
+				'altFieldTimeOnly' => false,
+			) );
+		}
 
 		$field = RWMB_Text_Field::normalize( $field );
 
