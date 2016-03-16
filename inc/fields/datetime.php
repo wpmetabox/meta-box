@@ -7,16 +7,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	/**
 	 * Translate date format from jQuery UI datepicker to PHP date()
 	 * It's used to store timestamp value of the field
-	 * Missing:  'o' => '', '!' => '', 'oo' => '', '@' => '', "''" => "'"
+	 * Missing:  '!' => '', 'oo' => '', '@' => '', "''" => "'"
 	 * @var array
 	 */
 	public static $date_format_translation = array(
 		'd' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l',
-		'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y',
+		'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y', 'o' => 'z'
 	);
 
 	/**
-	 * Translate date format from jQuery UI datepicker to PHP date()
+	 * Translate time format from jQuery UI datepicker to PHP date()
 	 * It's used to store timestamp value of the field
 	 * Missing: 't' => '', T' => '', 'm' => '', 's' => ''
 	 * @var array
@@ -132,7 +132,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	{
 		if ( ! $field['timestamp'] )
 			return $new;
-			
+
 		if( $field['clone'] )
 		{
 			$dates = array();
