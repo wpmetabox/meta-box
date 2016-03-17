@@ -22,6 +22,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			'parent'     => false,
 		) );
 
+		if ( ! isset( $field['query_args']['post_type'] ) )
+			$field['query_args']['post_type'] = $field['post_type'];
+
 		/**
 		 * Set default placeholder
 		 * - If multiple post types: show 'Select a post'
@@ -30,9 +33,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		if ( empty( $field['placeholder'] ) )
 		{
 			$field['placeholder'] = __( 'Select a post', 'meta-box' );
-			if ( is_string( $field['post_type'] ) && post_type_exists( $field['post_type'] ) )
+			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists(  $field['query_args']['post_type'] ) )
 			{
-				$post_type_object     = get_post_type_object( $field['post_type'] );
+				$post_type_object     = get_post_type_object(  $field['query_args']['post_type'] );
 				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
 		}
@@ -53,7 +56,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
-		$field['query_args']['post_type'] = $field['post_type'];
 
 		return $field;
 	}
