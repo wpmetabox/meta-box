@@ -14,8 +14,6 @@ jQuery( function ( $ )
 			current = $this.val(),
 			id = $this.prop( 'id' );
 
-			console.log(current);
-
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
 
 		if( $inline.length )
@@ -27,6 +25,7 @@ jQuery( function ( $ )
 				.prop( 'id', '' )
 				.timepicker( options )
 				.timepicker( "setTime", current );
+			$this.hide();
 		}
 		else
 		{
