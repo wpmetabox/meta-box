@@ -35,8 +35,20 @@ function your_prefix_image_demo( $meta_boxes )
 			),
 			array(
 				'id'               => 'plupload_image',
-				'name'             => __( 'Plupload Image', 'your-prefix' ),
+				'name'             => __( 'Plupload Image (Alias of Image Upload)', 'your-prefix' ),
 				'type'             => 'plupload_image',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Maximum image uploads
+				'max_file_uploads' => 2,
+			),
+			array(
+				'id'               => 'image_upload',
+				'name'             => __( 'Image Upload', 'your-prefix' ),
+				'type'             => 'image_upload',
 
 				// Delete image from Media Library when remove it from post meta?
 				// Note: it might affect other posts if you use same image for multiple posts
