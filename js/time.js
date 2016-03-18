@@ -25,7 +25,6 @@ jQuery( function ( $ )
 				.prop( 'id', '' )
 				.timepicker( options )
 				.timepicker( "setTime", current );
-			$this.hide();
 		}
 		else
 		{
