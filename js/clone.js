@@ -112,7 +112,7 @@ jQuery( function ( $ )
 				// Reset select to first
 				$field.prop( 'selectedIndex', 0 )
 			}
-			else
+			else if ( 'hidden' !== $field.attr( 'type' ) )
 			{
 				// Reset value
 				$field.val( '' );
