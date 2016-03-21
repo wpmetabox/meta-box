@@ -178,7 +178,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			{
 				if( $field['timestamp'] && $value )
 				{
-					$meta['key'] = array(
+					$meta[$key] = array(
 					'timestamp' => $value,
 					'formatted' => date( self::translate_format( $field ), intval( $value ) )
 					);
