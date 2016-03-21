@@ -108,7 +108,22 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	 */
 	public static function html( $meta, $field )
 	{
-		$output = parent::html( $meta, $field );
+		$output = '';
+
+		if( $field['timestamp'] )
+		{
+			$name = $field['field_name'];
+			$field = wp_parse_args( array( 'field_name' => $name . '[formatted]' ), $field );
+			$output .= sprintf(
+				'<input type="hidden" name="%s" class="rwmb-datetime-timestamp" value="%s">',
+				$name . '[timestamp]',
+				isset( $meta['timestamp'] ) ? $meta['timestamp'] : ''
+			);
+			$meta = isset( $meta['formatted'] ) ? $meta['formatted'] : '';
+		}
+
+		$output .= parent::html( $meta, $field );
+
 		if( $field['inline'] )
 		{
 			$output .= '<div class="rwmb-datetime-inline"></div>';
@@ -135,17 +150,14 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 
 		if( $field['clone'] )
 		{
-			$dates = array();
-			foreach( $new as $n )
+			foreach( $new as $key => $value )
 			{
-				$date = DateTime::createFromFormat( self::translate_format( $field ), $n );
-				$dates[] = $date ? $date->getTimestamp() : 0;
+				$new[ $key ] = isset( $value['timestamp'] ) ? $value['timestamp'] : 0;
 			}
-			return $dates;
+			return $new;
 		}
 
-		$date = DateTime::createFromFormat( self::translate_format( $field ), $new );
-		return $date ? $date->getTimestamp() : 0;
+		return isset( $new['timestamp'] ) ? $new['timestamp'] : 0;
 	}
 
 	/**
@@ -164,12 +176,24 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		{
 			foreach ( $meta as $key => $value )
 			{
-				$meta[$key] = $field['timestamp'] && $value ? date( self::translate_format( $field ), intval( $value ) ) : $value;
+				if( $field['timestamp'] && $value )
+				{
+					$meta['key'] = array(
+					'timestamp' => $value,
+					'formatted' => date( self::translate_format( $field ), intval( $value ) )
+					);
+				}
 			}
 		}
 		else
 		{
-			$meta = $field['timestamp'] && $meta ? date( self::translate_format( $field ), intval( $meta ) ) : $meta;
+			if( $field['timestamp'] && $meta )
+			{
+				$meta = array(
+				'timestamp' => $meta,
+				'formatted' => date( self::translate_format( $field ), intval( $meta ) )
+				);
+			}
 		}
 		return $meta;
 	}
