@@ -24,6 +24,22 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				),
 			),
 			array(
+				'name' => __( 'Inline Date', 'your-prefix' ),
+				'id'   => $prefix . 'inline-date',
+				'type' => 'date',
+
+				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
+				'js_options' => array(
+					'appendText'      => __( '(yyyy-mm-dd)', 'your-prefix' ),
+					'autoSize'        => true,
+					'buttonText'      => __( 'Select Date', 'your-prefix' ),
+					'dateFormat'      => __( 'yy-mm-dd', 'your-prefix' ),
+					'numberOfMonths'  => 2,
+					'showButtonPanel' => true,
+				),
+				'inline' => true,
+			),
+			array(
 				'name' => __( 'Datetime', 'your-prefix' ),
 				'id'   => $prefix . 'datetime',
 				'type' => 'datetime',
