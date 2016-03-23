@@ -50,31 +50,25 @@ class RWMB_Loader
 	 * @param string $base Base folder path
 	 * @return array Path and URL.
 	 */
-	static public function get_path( $base = '' )
+	public static function get_path( $base = '' )
 	{
 		// Plugin base path
-		$path    = $base ? $base : dirname( dirname( __FILE__ ) );
-		$path    = untrailingslashit( $path );
-		$abspath = untrailingslashit( ABSPATH );
+		$path = $base ? $base : dirname( dirname( __FILE__ ) );
+		$path = wp_normalize_path( untrailingslashit( $path ) );
 
-		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
-		if ( $abspath && false === strpos( $path, $abspath ) )
+		// Installed as a plugin?
+		if ( 0 === strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) ) || 0 === strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) ) )
 		{
-			if ( ! function_exists( 'is_plugin_active' ) )
-			{
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-			$basename = basename( $path );
-			if ( is_plugin_active( "$basename/$basename.php" ) )
-			{
-				$path = trailingslashit( WP_PLUGIN_DIR ) . $basename;
-			}
+			$url = plugins_url( '', $path . '/' . basename( $path ) );
 		}
-
-		// Get plugin base URL
-		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
-		$content_dir = untrailingslashit( WP_CONTENT_DIR );
-		$url         = str_replace( wp_normalize_path( $content_dir ), $content_url, wp_normalize_path( $path ) );
+		// Included into themes
+		else
+		{
+			// Get plugin base URL
+			$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
+			$content_dir = untrailingslashit( WP_CONTENT_DIR );
+			$url         = str_replace( wp_normalize_path( $content_dir ), $content_url, $path );
+		}
 
 		$path = trailingslashit( $path );
 		$url  = trailingslashit( $url );
