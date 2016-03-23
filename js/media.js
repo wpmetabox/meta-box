@@ -49,9 +49,14 @@ jQuery( function ( $ )
 			} );
 
 			//Sort media using sortable
-			this.$el.sortable( { delay: 150 } );
+			this.initSort();
 
 			this.render();
+		},
+
+		initSort: function ()
+		{
+			this.$el.sortable( { delay: 150 } );
 		}
 	} );
 
@@ -172,7 +177,7 @@ jQuery( function ( $ )
 				// Destroy the previous collection frame.
 				if ( this._frame )
 				{
-					this.stopListening( this._frame );
+					//this.stopListening( this._frame );
 					this._frame.dispose();
 				}
 
@@ -185,12 +190,11 @@ jQuery( function ( $ )
 						type: this.props.get( 'mimeType' )
 					}
 				} );
-
-				this.listenTo( this._frame, 'select', function ()
+				this._frame.on( 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
 					this.collection.add( selection.models );
-				} );
+				}, this );
 
 				this._frame.open();
 			}

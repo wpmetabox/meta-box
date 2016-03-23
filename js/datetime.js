@@ -22,7 +22,7 @@ jQuery( function ( $ )
 			var $pickerElement = hasInline ? $inline : $this;
 			options.onSelect = function( date, inst )
 			{
-				$timestamp.val( Math.floor( createDateAsUTC( $pickerElement.datetimepicker( 'getDate' ) )/ 1000) );
+				$timestamp.val( Math.floor( createDateAsUTC( $pickerElement.datetimepicker( 'getDate' ) ) / 1000) );
 			};
 		}
 
