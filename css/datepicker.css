@@ -1,3 +1,18 @@
+/* Fix empty block below admin footer (issue #24) */
+#ui-datepicker-div {
+	display: none;
+	z-index: 9 !important;
+}
+
+/* Style for multiple months */
+.ui-datepicker-multi .ui-datepicker-group {
+	padding: 0 .5%;
+	box-sizing: border-box;
+}
+.ui-datepicker-multi .ui-datepicker-group .ui-datepicker-calendar {
+	width: 100%;
+}
+
 /* Date Picker Default Styles */
 .ui-datepicker {
 	padding: 0;

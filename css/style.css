@@ -91,11 +91,6 @@
 	padding-left: 15px;
 }
 
-/* Fix empty block below admin footer (issue #24) */
-#ui-datepicker-div {
-	display: none;
-}
-
 /* jQuery validation */
 label.error {
 	padding-left: 3px;

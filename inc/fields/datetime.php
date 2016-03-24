@@ -12,7 +12,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	 */
 	public static $date_format_translation = array(
 		'd' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l',
-		'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y', 'o' => 'z'
+		'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y', 'o' => 'z',
 	);
 
 	/**
@@ -110,9 +110,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	{
 		$output = '';
 
-		if( $field['timestamp'] )
+		if ( $field['timestamp'] )
 		{
-			$name = $field['field_name'];
+			$name  = $field['field_name'];
 			$field = wp_parse_args( array( 'field_name' => $name . '[formatted]' ), $field );
 			$output .= sprintf(
 				'<input type="hidden" name="%s" class="rwmb-datetime-timestamp" value="%s">',
@@ -124,7 +124,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 
 		$output .= parent::html( $meta, $field );
 
-		if( $field['inline'] )
+		if ( $field['inline'] )
 		{
 			$output .= '<div class="rwmb-datetime-inline"></div>';
 		}
@@ -148,11 +148,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		if ( ! $field['timestamp'] )
 			return $new;
 
-		if( $field['clone'] )
+		if ( $field['clone'] )
 		{
-			foreach( $new as $key => $value )
+			foreach ( $new as $key => $value )
 			{
-				$new[ $key ] = isset( $value['timestamp'] ) ? $value['timestamp'] : 0;
+				$new[$key] = isset( $value['timestamp'] ) ? $value['timestamp'] : 0;
 			}
 			return $new;
 		}
@@ -176,22 +176,22 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		{
 			foreach ( $meta as $key => $value )
 			{
-				if( $field['timestamp'] && $value )
+				if ( $field['timestamp'] && $value )
 				{
 					$meta[$key] = array(
-					'timestamp' => $value,
-					'formatted' => date( self::translate_format( $field ), intval( $value ) )
+						'timestamp' => $value,
+						'formatted' => date( self::translate_format( $field ), intval( $value ) ),
 					);
 				}
 			}
 		}
 		else
 		{
-			if( $field['timestamp'] && $meta )
+			if ( $field['timestamp'] && $meta )
 			{
 				$meta = array(
-				'timestamp' => $meta,
-				'formatted' => date( self::translate_format( $field ), intval( $meta ) )
+					'timestamp' => $meta,
+					'formatted' => date( self::translate_format( $field ), intval( $meta ) ),
 				);
 			}
 		}
@@ -209,8 +209,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'timestamp'  => false,
-			'inline'	 => false,
-			'js_options' => array()
+			'inline'     => false,
+			'js_options' => array(),
 		) );
 
 		// Deprecate 'format', but keep it for backward compatible
@@ -222,7 +222,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			'showButtonPanel' => true,
 		) );
 
-		if( $field['inline'] )
+		if ( $field['inline'] )
 		{
 			$field['js_options'] = wp_parse_args( $field['js_options'], array(
 				'altFieldTimeOnly' => false,
