@@ -18,9 +18,9 @@ jQuery( function ( $ )
 		if ( $timestamp.length )
 		{
 			var $picker = $inline.length ? $inline : $this;
-			options.onSelect = function ( date, inst )
+			options.onSelect = function ()
 			{
-				$timestamp.val( Math.floor( getTimestamp( $picker.datetimepicker( 'getDate' ) ) / 1000 ) );
+				$timestamp.val( getTimestamp( $picker.datetimepicker( 'getDate' ) ) );
 			};
 		}
 
@@ -48,7 +48,8 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
-		return Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
+		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
+		return Math.floor( milliseconds / 1000 );
 	}
 
 	// Set language if available

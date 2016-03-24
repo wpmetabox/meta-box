@@ -12,7 +12,7 @@ jQuery( function ( $ )
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
 			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
-			current = $this.val();;
+			current = $this.val();
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
 		if ( $timestamp.length )
@@ -20,7 +20,7 @@ jQuery( function ( $ )
 			var $picker = $inline.length ? $inline : $this;
 			options.onSelect = function ()
 			{
-				$timestamp.val( Math.floor( getTimestamp( $picker.datepicker( 'getDate' ) ) / 1000 ) );
+				$timestamp.val( getTimestamp( $picker.datepicker( 'getDate' ) ) );
 			};
 		}
 
@@ -48,7 +48,8 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
-		return Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
+		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
+		return Math.floor( milliseconds / 1000 );
 	}
 
 	$( ':input.rwmb-date' ).each( update );
