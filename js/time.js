@@ -11,14 +11,13 @@ jQuery( function ( $ )
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			current = $this.val(),
-			id = $this.prop( 'id' );
+			current = $this.val();
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
 
 		if( $inline.length )
 		{
-			options.altField = '#' + id;
+			options.altField = '#' + $this.attr( 'id' );
 			$inline
 				.removeClass( 'hasDatepicker' )
 				.empty()

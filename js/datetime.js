@@ -11,7 +11,8 @@ jQuery( function ( $ )
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' );
+			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
+			current = $this.val();
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
 		if ( $timestamp.length )
@@ -31,7 +32,7 @@ jQuery( function ( $ )
 				.empty()
 				.prop( 'id', '' )
 				.datetimepicker( options )
-				.datetimepicker( 'setDate', $this.val() );
+				.datetimepicker( 'setDate', current );
 		}
 		else
 		{
