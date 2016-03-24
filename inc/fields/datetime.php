@@ -1,35 +1,34 @@
 <?php
+
 /**
  * Datetime field class.
  */
 class RWMB_Datetime_Field extends RWMB_Text_Field
 {
 	/**
-	 * Translate date format from jQuery UI datepicker to PHP date()
+	 * Translate date format from jQuery UI date picker to PHP date()
 	 * It's used to store timestamp value of the field
 	 * Missing:  '!' => '', 'oo' => '', '@' => '', "''" => "'"
 	 * @var array
 	 */
-	public static $date_format_translation = array(
+	protected static $date_formats = array(
 		'd' => 'j', 'dd' => 'd', 'oo' => 'z', 'D' => 'D', 'DD' => 'l',
 		'm' => 'n', 'mm' => 'm', 'M' => 'M', 'MM' => 'F', 'y' => 'y', 'yy' => 'Y', 'o' => 'z',
 	);
 
 	/**
-	 * Translate time format from jQuery UI datepicker to PHP date()
+	 * Translate time format from jQuery UI time picker to PHP date()
 	 * It's used to store timestamp value of the field
 	 * Missing: 't' => '', T' => '', 'm' => '', 's' => ''
 	 * @var array
 	 */
-	public static $time_format_translation = array(
+	protected static $time_formats = array(
 		'H'  => 'G', 'HH' => 'H', 'h' => 'g', 'hh' => 'h',
 		'mm' => 'i', 'ss' => 's', 'l' => 'u', 'tt' => 'a', 'TT' => 'A',
 	);
 
 	/**
 	 * Register scripts and styles
-	 *
-	 * @return void
 	 */
 	public static function admin_register_scripts()
 	{
@@ -47,7 +46,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 
 		/**
 		 * Localization
-		 * Use 1 minified JS file for timepicker which contains all languages for simpilicity (in version < 4.4.2 we use separated JS files).
+		 * Use 1 minified JS file for timepicker which contains all languages for simplicity (in version < 4.4.2 we use separated JS files).
 		 * The language is set in Javascript
 		 *
 		 * Note: we use full locale (de-DE) and fallback to short locale (de)
@@ -88,8 +87,6 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	public static function admin_enqueue_scripts()
 	{
@@ -116,8 +113,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			$field = wp_parse_args( array( 'field_name' => $name . '[formatted]' ), $field );
 			$output .= sprintf(
 				'<input type="hidden" name="%s" class="rwmb-datetime-timestamp" value="%s">',
-				$name . '[timestamp]',
-				isset( $meta['timestamp'] ) ? $meta['timestamp'] : ''
+				esc_attr( $name . '[timestamp]' ),
+				isset( $meta['timestamp'] ) ? intval( $meta['timestamp'] ) : ''
 			);
 			$meta = isset( $meta['formatted'] ) ? $meta['formatted'] : '';
 		}
@@ -172,28 +169,27 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	public static function meta( $post_id, $saved, $field )
 	{
 		$meta = parent::meta( $post_id, $saved, $field );
+		if ( ! $field['timestamp'] )
+		{
+			return $meta;
+		}
+		$method = array( RW_Meta_Box::get_class_name( $field ), 'translate_format' );
 		if ( is_array( $meta ) )
 		{
 			foreach ( $meta as $key => $value )
 			{
-				if ( $field['timestamp'] && $value )
-				{
-					$meta[$key] = array(
-						'timestamp' => $value,
-						'formatted' => date( self::translate_format( $field ), intval( $value ) ),
-					);
-				}
+				$meta[$key] = array(
+					'timestamp' => $value,
+					'formatted' => date( call_user_func( $method, $field ), intval( $value ) ),
+				);
 			}
 		}
 		else
 		{
-			if ( $field['timestamp'] && $meta )
-			{
-				$meta = array(
-					'timestamp' => $meta,
-					'formatted' => date( self::translate_format( $field ), intval( $meta ) ),
-				);
-			}
+			$meta = array(
+				'timestamp' => $meta,
+				'formatted' => date( call_user_func( $method, $field ), intval( $meta ) ),
+			);
 		}
 		return $meta;
 	}
@@ -202,7 +198,6 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	public static function normalize( $field )
@@ -255,16 +250,15 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	/**
 	 * Returns a date() compatible format string from the JavaScript format
 	 *
-	 * @see http://www.php.net/manual/en/function.date.php
-	 *
+	 * @link http://www.php.net/manual/en/function.date.php
 	 * @param array $field
 	 *
 	 * @return string
 	 */
 	public static function translate_format( $field )
 	{
-		return strtr( $field['js_options']['dateFormat'], self::$date_format_translation )
+		return strtr( $field['js_options']['dateFormat'], self::$date_formats )
 		. $field['js_options']['separator']
-		. strtr( $field['js_options']['timeFormat'], self::$time_format_translation );
+		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 	}
 }

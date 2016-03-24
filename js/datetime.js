@@ -11,43 +11,43 @@ jQuery( function ( $ )
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			hasInline = $inline.length > 0,
-			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
-			current = $this.val(),
-			id = $this.prop( 'id' );
+			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' );
 
-		$this.siblings( '.ui-datepicker-append' ).remove();         // Remove appended text
-		if( $timestamp.length )
+		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
+		if ( $timestamp.length )
 		{
-			var $pickerElement = hasInline ? $inline : $this;
-			options.onSelect = function( date, inst )
+			var $picker = $inline.length ? $inline : $this;
+			options.onSelect = function ( date, inst )
 			{
-				$timestamp.val( Math.floor( createDateAsUTC( $pickerElement.datetimepicker( 'getDate' ) ) / 1000) );
+				$timestamp.val( Math.floor( getTimestamp( $picker.datetimepicker( 'getDate' ) ) / 1000 ) );
 			};
 		}
 
-		if( hasInline )
+		if ( $inline.length )
 		{
-			options.altField = '#' + id;
+			options.altField = '#' + $this.attr( 'id' );
 			$inline
 				.removeClass( 'hasDatepicker' )
 				.empty()
 				.prop( 'id', '' )
 				.datetimepicker( options )
-				.datetimepicker( "setDate", current );
+				.datetimepicker( 'setDate', $this.val() );
 		}
 		else
 		{
 			$this.removeClass( 'hasDatepicker' ).datetimepicker( options );
 		}
 	}
-	//UTC functions.  See http://stackoverflow.com/a/14006555/556258
-	function createDateAsUTC(date) {
-		return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
-	}
 
-	function convertDateToUTC(date) {
-		return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+	/**
+	 * Convert date to Unix timestamp in milliseconds
+	 * @link http://stackoverflow.com/a/14006555/556258
+	 * @param date
+	 * @return number
+	 */
+	function getTimestamp( date )
+	{
+		return Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 	}
 
 	// Set language if available

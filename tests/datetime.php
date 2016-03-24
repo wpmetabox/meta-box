@@ -18,7 +18,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 					'numberOfMonths'  => 2,
 					'showButtonPanel' => true,
 				],
-				'timestamp'  => true,
+				'timestamp' => true,
 			],
 			[
 				'name' => 'Date 2',
@@ -36,6 +36,13 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 				'id'     => 'inline-date',
 				'type'   => 'date',
 				'inline' => true,
+			],
+			// Timestamp
+			[
+				'name'      => 'Date time with timestamp',
+				'type'      => 'datetime',
+				'id'        => 'datetime',
+				'timestamp' => true,
 			],
 		],
 	];
