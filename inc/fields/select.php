@@ -14,20 +14,20 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	}
 
 	/**
-   * Walk options
-   *
-   * @param mixed $meta
-   * @param array $field
-   * @param mixed $options
-   * @param mixed $db_fields
-   *
-   * @return string
-   */
-  public static function walk( $options, $db_fields, $meta, $field )
-  {
-	  $attributes  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
-		$walker      = new RWMB_Select_Walker( $db_fields, $field, $meta );
-		$output = sprintf(
+	 * Walk options
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 * @param mixed $options
+	 * @param mixed $db_fields
+	 *
+	 * @return string
+	 */
+	public static function walk( $options, $db_fields, $meta, $field )
+	{
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$walker     = new RWMB_Select_Walker( $db_fields, $field, $meta );
+		$output     = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
@@ -39,13 +39,12 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 		$output .= '</select>';
 		$output .= self::get_select_all_html( $field['multiple'] );
 		return $output;
-  }
+	}
 
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	public static function normalize( $field )
@@ -53,7 +52,8 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 		$field = parent::normalize( $field );
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = wp_parse_args( $field, array(
-			'size' => $field['multiple'] ? 5 : 0,
+			'size'            => $field['multiple'] ? 5 : 0,
+			'select_all_none' => false,
 		) );
 
 		return $field;
@@ -81,17 +81,14 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	/**
 	 * Get html for select all|none for multiple select
 	 *
-	 * @param $multiple
-	 *
+	 * @param array $field
 	 * @return string
 	 */
-	public static function get_select_all_html( $multiple )
+	public static function get_select_all_html( $field )
 	{
-		if ( $multiple === true )
+		if ( $field['multiple'] && $field['select_all_none'] )
 		{
-			return '<div class="rwmb-select-all-none">
-					' . __( 'Select', 'meta-box' ) . ': <a data-type="all" href="#">' . __( 'All', 'meta-box' ) . '</a> | <a data-type="none" href="#">' . __( 'None', 'meta-box' ) . '</a>
-				</div>';
+			return '<div class="rwmb-select-all-none">' . __( 'Select', 'meta-box' ) . ': <a data-type="all" href="#">' . __( 'All', 'meta-box' ) . '</a> | <a data-type="none" href="#">' . __( 'None', 'meta-box' ) . '</a></div>';
 		}
 		return '';
 	}
