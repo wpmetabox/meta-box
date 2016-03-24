@@ -37,7 +37,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 		}
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</select>';
-		$output .= self::get_select_all_html( $field['multiple'] );
+		$output .= self::get_select_all_html( $field );
 		return $output;
 	}
 
