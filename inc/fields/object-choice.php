@@ -7,12 +7,13 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	/**
 	 * Get field HTML
 	 *
+	 * @param mixed $options
+	 * @param mixed $db_fields
 	 * @param mixed $meta
 	 * @param array $field
-	 *
 	 * @return string
 	 */
-	static function walk( $options, $db_fields, $meta, $field )
+	public static function walk( $options, $db_fields, $meta, $field )
 	{
 		switch ( $field['field_type'] )
 		{
@@ -31,7 +32,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 				return RWMB_Select_Field::walk( $options, $db_fields, $meta, $field );
 				break;
 		}
-		return $output;
 	}
 
 	/**
@@ -41,13 +41,13 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'flatten'    => true,
 			'query_args' => array(),
-			'field_type' => 'select',
+			'field_type' => 'select_advanced',
 		) );
 
 		if ( 'checkbox_tree' === $field['field_type'] )
@@ -84,7 +84,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		switch ( $field['field_type'] )
 		{
@@ -109,10 +109,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 
 	/**
 	 * Get field names of object to be used by walker
-	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => '',
@@ -123,10 +122,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		RWMB_Input_List_Field::admin_enqueue_scripts();
 		RWMB_Select_Field::admin_enqueue_scripts();
@@ -141,7 +138,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		return array();
 	}
