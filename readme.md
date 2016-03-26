@@ -89,6 +89,23 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.8.4
+* Improvement: Refactor code for plupload_image. Introduces file_upload and image_upload field which acts the same as plupload_image but for files and images.
+* Improvement: Do not show "Embed is not available" if fields don't have any value
+* Improvement: Refactor date/time related fields. 'timestamp' now works for date field as well.
+* Improvement: Add 'inline' mode for date/datetime fields.
+* Improvement: Add option 'select_all_none' for select/select2 with default = false
+* Fix: users now can register 2 meta boxes with same field IDs for different post types.
+* Fix: width of embeded video if $content_width is too large.
+* Fix: autoloader now works more safely.
+* Fix: post field doesn't show correct post link
+* Fix: select field must call field's get_value to get field's value as 'select' is used in many non-inherited classes
+* Fix: Allows old syntax for `query_args.post_types` for post/user/taxonomy fields
+* Fix: Do not reset value for hidden field when clone
+* Fix: Missing Insert into Post button for thickbox_image field
+* Fix: Date picker cut off by TinyMCE
+* Fix: CSS for multi months in date picker
+
 #### 4.8.3
 * Improvement: WYSIWYG field now can be cloned. Sorting clone hasn't worked yet.
 * Fix: 'std' value not working if there is 'divider' or 'heading' field withough 'id'
