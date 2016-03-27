@@ -30,7 +30,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 		if ( ! is_string( $field['options'] ) )
 		{
 			$options = array();
-			foreach ( $field['options'] as $value => $label )
+			foreach ( (array) $field['options'] as $value => $label )
 			{
 				$options[] = array(
 					'value' => $value,
