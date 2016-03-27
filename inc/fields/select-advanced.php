@@ -16,14 +16,18 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.1', true );
 
 		//Localize
+		$deps  = array( 'rwmb-select2', 'rwmb-select' );
 		$dir   = RWMB_JS_URL . 'select2/i18n/';
 		$file  = str_replace( '_', '-', get_locale() );
 		$parts = explode( '-', $file );
 		$file  = file_exists( $dir . $file . 'js' ) ? $file : $parts[0];
-		wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.1', true );
+		if( file_exists( $dir . $file . '.js') ){
+			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.1', true );
+			$deps[] = 'rwmb-select2-i18n';
+		}
 
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'rwmb-select2', 'rwmb-select2-i18n', 'rwmb-select' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $deps, RWMB_VER, true );
 
 	}
 
