@@ -1,0 +1,7 @@
+.rwmb-label, .rwmb-input{
+    float: right;
+}
+label.error{
+    padding-left: auto;
+    padding-right: 3px;
+}

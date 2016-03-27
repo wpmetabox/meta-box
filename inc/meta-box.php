@@ -99,6 +99,8 @@ class RW_Meta_Box
 			return;
 
 		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
+		if( is_rtl() )
+			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 
 		// Load clone script conditionally
 		$fields = self::get_fields( $this->fields );
