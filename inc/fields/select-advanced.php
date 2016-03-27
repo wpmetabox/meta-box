@@ -13,16 +13,17 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
-		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.1', true );
+		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.2', true );
 
 		//Localize
 		$deps  = array( 'rwmb-select2', 'rwmb-select' );
 		$dir   = RWMB_JS_URL . 'select2/i18n/';
 		$file  = str_replace( '_', '-', get_locale() );
 		$parts = explode( '-', $file );
-		$file  = file_exists( $dir . $file . 'js' ) ? $file : $parts[0];
-		if( file_exists( $dir . $file . '.js') ){
-			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.1', true );
+		$file  = file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) ? $file : $parts[0];
+
+		if( file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js'  ) ){
+			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.2', true );
 			$deps[] = 'rwmb-select2-i18n';
 		}
 
