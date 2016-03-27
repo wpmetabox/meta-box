@@ -14,8 +14,18 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
 		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.1', true );
+
+		//Localize
+		$locale = get_locale();
+		$dir  = RWMB_JS_URL . 'select2/i18n/';
+		$file = str_replace( '_', '-', $locale );
+		$parts = explode( '-', $file );
+		$file = file_exists( $dir . $file . 'js' ) ? $file : $parts[0];
+		wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.1', true );
+
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'rwmb-select2', 'rwmb-select' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'rwmb-select2', 'rwmb-select2-i18n', 'rwmb-select' ), RWMB_VER, true );
+
 	}
 
 	/**

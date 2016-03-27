@@ -190,6 +190,7 @@ jQuery( function ( $ )
 						type: this.props.get( 'mimeType' )
 					}
 				} );
+				
 				this._frame.on( 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
