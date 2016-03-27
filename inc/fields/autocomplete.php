@@ -27,8 +27,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 			$meta = array( $meta );
 
 		$field['options'] = apply_filters("rwmb_autocomplete_options", $field['options'], $meta);
-
 		$options = $field['options'];
+
 		if ( ! is_string( $field['options'] ) )
 		{
 			$options = array();
