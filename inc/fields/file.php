@@ -138,7 +138,7 @@ class RWMB_File_Field extends RWMB_Field
 			$field['mime_type']
 		);
 
-		foreach ( $files as $attachment_id )
+		foreach ( (array) $files as $attachment_id )
 		{
 			$html .= self::file_html( $attachment_id );
 		}
