@@ -22,7 +22,8 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		$parts = explode( '-', $file );
 		$file  = file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) ? $file : $parts[0];
 
-		if( file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js'  ) ){
+		if ( file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) )
+		{
 			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.2', true );
 			$deps[] = 'rwmb-select2-i18n';
 		}

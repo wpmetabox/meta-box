@@ -8,7 +8,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	public static function normalize( $field )
@@ -18,8 +17,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		 */
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'post_type'  => 'post',
-			'parent'     => false,
+			'post_type' => 'post',
+			'parent'    => false,
 		) );
 
 		if ( ! isset( $field['query_args']['post_type'] ) )
@@ -33,9 +32,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		if ( empty( $field['placeholder'] ) )
 		{
 			$field['placeholder'] = __( 'Select a post', 'meta-box' );
-			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists(  $field['query_args']['post_type'] ) )
+			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists( $field['query_args']['post_type'] ) )
 			{
-				$post_type_object     = get_post_type_object(  $field['query_args']['post_type'] );
+				$post_type_object     = get_post_type_object( $field['query_args']['post_type'] );
 				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
 		}
@@ -52,7 +51,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default query args
 		 */
-		$field['query_args']   = wp_parse_args( $field['query_args'], array(
+		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
@@ -102,7 +101,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 * Get options for walker
 	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
 	public static function get_options( $field )
@@ -112,16 +110,16 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	}
 
 	/**
-   * Get option label
-   *
-   * @param string   $value Option value
-   * @param array    $field Field parameter
-   *
-   * @return string
-   */
-  public static function get_option_label( $value, $field )
-  {
-    return sprintf(
+	 * Get option label
+	 *
+	 * @param string $value Option value
+	 * @param array  $field Field parameter
+	 *
+	 * @return string
+	 */
+	public static function get_option_label( $value, $field )
+	{
+		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_permalink( $value ) ),
 			the_title_attribute( array(
@@ -130,5 +128,5 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			) ),
 			get_the_title( $value )
 		);
-  }
+	}
 }
