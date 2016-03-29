@@ -101,21 +101,26 @@
 			 */
 			$( window ).on( 'rwmb_map_refresh', function()
 			{
-				var zoom = that.map.getZoom(),
-					center = that.map.getCenter();
-
-				if ( that.map )
-				{
-					google.maps.event.trigger( that.map, 'resize' );
-					that.map.setZoom( zoom );
-					that.map.setCenter( center );
-				}
+				that.refreshMap();
 			} );
 
 			//Refresh on meta box hide and show
 			$( document ).on( 'postbox-toggled', function() {
-			    $( window ).trigger( 'rwmb_map_refresh' );
+			  that.refreshMap();
 			} );
+		},
+
+		refreshMap: function()
+		{
+			var zoom = this.map.getZoom(),
+				center = this.map.getCenter();
+
+			if ( this.map )
+			{
+				google.maps.event.trigger( this.map, 'resize' );
+				this.map.setZoom( zoom );
+				this.map.setCenter( center );
+			}
 		},
 
 		// Autocomplete address
