@@ -49,15 +49,6 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 			'options' => array(),
 		) );
 
-		$options = array();
-		foreach ( (array) $field['options'] as $value => $label )
-		{
-			$option = is_array( $label ) ? $label : array( 'label' => (string) $label, 'value' => (string) $value );
-			if ( isset( $option['label'] ) && isset( $option['value'] ) )
-				$options[$option['value']] = $option;
-		}
-
-		$field['options'] = $options;
 		return $field;
 	}
 
@@ -85,9 +76,11 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	public static function get_options( $field )
 	{
 		$options = array();
-		foreach ( $field['options'] as $option )
+		foreach ( (array) $field['options'] as $value => $label )
 		{
-			$options[] = (object) $option;
+			$option = is_array( $label ) ? $label : array( 'label' => (string) $label, 'value' => (string) $value );
+			if ( isset( $option['label'] ) && isset( $option['value'] ) )
+				$options[$option['value']] = (object) $option;
 		}
 		return $options;
 	}
@@ -161,6 +154,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function get_option_label( $value, $field )
 	{
-		return $field['options'][$value]['label'];
+		$options = call_user_func( array( RW_Meta_Box::get_class_name( $field );, 'get_options' ), $field ) );
+		return $options[$value]->label;
 	}
 }
