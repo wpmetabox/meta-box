@@ -154,7 +154,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function get_option_label( $value, $field )
 	{
-		$options = call_user_func( array( RW_Meta_Box::get_class_name( $field );, 'get_options' ), $field ) );
+		$options = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_options' ), $field );
 		return $options[$value]->label;
 	}
 }
