@@ -53,21 +53,24 @@ class RWMB_Loader
 	public static function get_path( $base = '' )
 	{
 		// Plugin base path
-		$path = $base ? $base : dirname( dirname( __FILE__ ) );
-		$path = wp_normalize_path( untrailingslashit( $path ) );
+		$path        = $base ? $base : dirname( dirname( __FILE__ ) );
+		$path        = wp_normalize_path( untrailingslashit( $path ) );
+		$content_dir = wp_normalize_path( untrailingslashit( WP_CONTENT_DIR ) );
+
+		// Default URL
+		$url = plugins_url( '', $path . '/' . basename( $path ) . '.php' );
 
 		// Installed as a plugin?
 		if ( 0 === strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) ) || 0 === strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) ) )
 		{
-			$url = plugins_url( '', $path . '/' . basename( $path ) );
+			// Do nothing
 		}
 		// Included into themes
-		else
+		elseif ( 0 === strpos( $path, $content_dir ) )
 		{
 			// Get plugin base URL
 			$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
-			$content_dir = untrailingslashit( WP_CONTENT_DIR );
-			$url         = str_replace( wp_normalize_path( $content_dir ), $content_url, $path );
+			$url         = str_replace( $content_dir, $content_url, $path );
 		}
 
 		$path = trailingslashit( $path );
