@@ -121,6 +121,20 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	}
 
 	/**
+	 * Save meta value
+	 *
+	 * @param $new
+	 * @param $old
+	 * @param $post_id
+	 * @param $field
+	 */
+	static function save( $new, $old, $post_id, $field )
+	{
+		delete_post_meta( $post_id, $field['id'] );
+		parent::save( $new, array(), $post_id, $field );
+	}
+
+	/**
 	 * Enqueue scripts and styles
 	 */
 	public static function admin_enqueue_scripts()
