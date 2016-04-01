@@ -1,6 +1,6 @@
 {
   "name": "meta-box",
-  "version": "4.8.4",
+  "version": "4.8.5",
   "description": "Meta Box plugin helps you easily implement multiple meta boxes in editing pages in WordPress.",
   "repository": {
     "type": "git",
@@ -28,5 +28,8 @@
     "grunt-wp-i18n": "^0.4.8",
     "jshint-stylish": "^0.4.0",
     "load-grunt-tasks": "^0.4.0"
+  },
+  "scripts": {
+    "zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD"
   }
 }
