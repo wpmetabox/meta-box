@@ -120,7 +120,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 		}
 		else
 		{
-			$output = $field['options'][$value]['label'];
+			$output = call_user_func( array( $field_class, 'get_option_label' ), $value, $field );
 		}
 		return $output;
 	}
