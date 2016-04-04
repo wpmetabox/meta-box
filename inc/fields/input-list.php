@@ -26,7 +26,10 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	public static function walk( $options, $db_fields, $meta, $field )
 	{
 		$walker = new RWMB_Input_List_Walker( $db_fields, $field, $meta );
-		$output = sprintf( '<ul class="rwmb-input-list %s">', $field['collapse'] ? 'collapse' : '' );
+		$output = sprintf( '<ul class="rwmb-input-list %s %s">',
+			$field['collapse'] ? 'collapse' : '',
+		 	$field['inline']   ? 'inline'   : ''
+		);
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</ul>';
 
@@ -46,9 +49,11 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'collapse' => true,
+			'inline'   => null,
 		) );
 
 		$field['flatten'] = $field['multiple'] ? $field['flatten'] : true;
+		$field['inline'] = ! $field['multiple'] && ! isset( $field['inline'] ) ? true : $field['inline'];
 
 		return $field;
 	}
@@ -63,10 +68,10 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	 */
 	public static function get_attributes( $field, $value = null )
 	{
-		$attributes          = RWMB_Input_Field::get_attributes( $field, $value );
-		$attributes['id']    = false;
-		$attributes['type']  = $field['multiple'] ? 'checkbox' : 'radio';
-		$attributes['value'] = $value;
+		$attributes           = RWMB_Input_Field::get_attributes( $field, $value );
+		$attributes['id']     = false;
+		$attributes['type']   = $field['multiple'] ? 'checkbox' : 'radio';
+		$attributes['value']  = $value;
 
 		return $attributes;
 	}

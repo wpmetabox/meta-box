@@ -2,6 +2,11 @@
 	line-height: 22px;
 }
 
+.rwmb-input-list.inline li{
+	display:inline-block;
+	margin-right: 10px;
+}
+
 li .rwmb-input-list {
 	margin-left: 15px;
 }
