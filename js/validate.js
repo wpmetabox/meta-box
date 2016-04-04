@@ -11,17 +11,18 @@ jQuery( function ( $ )
 				$( '#ajax-loading' ).attr( 'style', '' );
 				$form.siblings( '#message' ).remove();
 				$form.before( '<div id="message" class="error"><p>' + rwmbValidate.summaryMessage + '</p></div>' );
-			}
+			},
+			ignore: ''
 		};
 
 	// Gather all validation rules
 	$( '.rwmb-validation-rules' ).each( function ()
 	{
 		var subRules = $( this ).data( 'rules' );
-		jQuery.extend( true, rules, subRules );
+		$.extend( true, rules, subRules );
 
 		// Required field styling
-		$.each( subRules, function ( k, v )
+		$.each( subRules.rules, function ( k, v )
 		{
 			if ( v['required'] )
 			{
