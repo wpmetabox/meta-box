@@ -4,7 +4,15 @@
 
 .rwmb-input-list.inline li{
 	display:inline-block;
+	margin-right: 0;
+  line-height:1;
+}
+.rwmb-input-list.inline li label {
 	margin-right: 10px;
+}
+
+.rwmb-input-list.inline {
+    margin:0;
 }
 
 li .rwmb-input-list {
