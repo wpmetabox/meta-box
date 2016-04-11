@@ -356,12 +356,14 @@ class RWMB_File_Field extends RWMB_Field
 			return false;
 		}
 
-		return array(
+		$info = array(
 			'ID'    => $file_id,
 			'name'  => basename( $path ),
 			'path'  => $path,
 			'url'   => wp_get_attachment_url( $file_id ),
 			'title' => get_the_title( $file_id ),
 		);
+
+		return wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
 	}
 }
