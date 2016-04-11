@@ -11,7 +11,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		/**
 		 * Set default field args
@@ -53,7 +53,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		$options = get_users( $field['query_args'] );
 		return $options;
@@ -64,7 +64,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => 'parent',
@@ -81,7 +81,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function get_option_label( $value, $field )
+	public static function get_option_label( $value, $field )
 	{
 		$user  = get_userdata( $value );
 		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';

@@ -10,7 +10,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 * @param $field
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		/**
 		 * Backwards compatibility with field args
@@ -65,7 +65,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => 'parent',
@@ -81,7 +81,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		$options = get_terms( $field['taxonomy'], $field['query_args'] );
 		return $options;
@@ -97,7 +97,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function save( $new, $old, $post_id, $field )
+	public static function save( $new, $old, $post_id, $field )
 	{
 		$new = array_unique( array_map( 'intval', (array) $new ) );
 		$new = empty( $new ) ? null : $new;
@@ -113,7 +113,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		$meta = get_the_terms( $post_id, $field['taxonomy'] );
 		$meta = (array) $meta;
@@ -132,7 +132,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array List of post term objects
 	 */
-	static function get_value( $field, $args = array(), $post_id = null )
+	public static function get_value( $field, $args = array(), $post_id = null )
 	{
 		$value = get_the_terms( $post_id, $field['taxonomy'] );
 
@@ -152,7 +152,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function get_option_label( $value, $field )
+	public static function get_option_label( $value, $field )
 	{
 		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
