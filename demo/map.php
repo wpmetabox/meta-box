@@ -1,29 +1,33 @@
 <?php
-add_action( 'admin_init', 'test_register_meta_boxes' );
-function test_register_meta_boxes()
+/**
+ * This file demonstrates how to use 'map' field
+ */
+add_filter( 'rwmb_meta_boxes', 'your_prefix_map_demo' );
+function your_prefix_map_demo( $meta_boxes )
 {
-	if ( !class_exists( 'RW_Meta_Box' ) )
-		return;
-
-	$meta_box = array(
-		'title'  => __( 'Google Map', 'rwmb' ),
+	$meta_boxes[] = array(
+		'title'  => __( 'Google Map', 'your-prefix' ),
 		'fields' => array(
+			// Map requires at least one address field (with type = text)
 			array(
-				'id'            => 'address',
-				'name'          => __( 'Address', 'rwmb' ),
-				'type'          => 'text',
-				'std'           => __( 'Hanoi, Vietnam', 'rwmb' ),
+				'id'   => 'address',
+				'name' => __( 'Address', 'your-prefix' ),
+				'type' => 'text',
+				'std'  => __( 'Hanoi, Vietnam', 'your-prefix' ),
 			),
 			array(
-				'id'            => 'loc',
-				'name'          => __( 'Location', 'rwmb' ),
+				'id'            => 'map',
+				'name'          => __( 'Location', 'your-prefix' ),
 				'type'          => 'map',
-				'std'           => '-6.233406,-35.049906,15',     // 'latitude,longitude[,zoom]' (zoom is optional)
-				'style'         => 'width: 500px; height: 500px',
-				'address_field' => 'address',                     // Name of text field where address is entered. Can be list of text fields, separated by commas (for ex. city, state)
+
+				// Default location: 'latitude,longitude[,zoom]' (zoom is optional)
+				'std'           => '-6.233406,-35.049906,15',
+
+				// Name of text field where address is entered. Can be list of text fields, separated by commas (for ex. city, state)
+				'address_field' => 'address',
 			),
 		),
 	);
 
-	new RW_Meta_Box( $meta_box );
+	return $meta_boxes;
 }

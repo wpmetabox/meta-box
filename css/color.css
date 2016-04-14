@@ -1,7 +1,7 @@
-.rwmb-color-picker {
-	display: none; /* Hidden by default */
-	z-index: 100;
-	background: rgb(238, 238, 238);
-	border: 1px solid rgb(204, 204, 204);
+.rwmb-color-wrapper .wp-picker-container {
+	position: relative;
+}
+.rwmb-color-wrapper .wp-picker-holder {
 	position: absolute;
+	z-index: 9;
 }

@@ -1,60 +1,58 @@
-@charset "utf-8";
-/* CSS Document */
-
-.rwmb-file li{
-	width: 250px;	
-	margin:0 10px 10px 0;;	
-	-moz-transition:width 0.25s, opacity 0.25s, -moz-opacity 0.25s;
-    -webkit-transition:width 0.25s, opacity 0.25s, -webkit-opacity 0.25s;
-    -o-transition:width 0.25s, opacity 0.25s, -o-opacity 0.25s;
-    transition:width 0.25s, opacity 0.25s;
+.rwmb-file li {
+	width: 250px;
+	margin: 0 10px 10px 0;
+	-webkit-transition: width .25s, opacity .25s, -webkit-opacity .25s;
+	        transition: width .25s, opacity .25s;
 }
 .rwmb-file .rwmb-icon {
 	width: 60px;
-	text-align:center;
-	vertical-align:middle;
+	text-align: center;
+	vertical-align: middle;
 	overflow: hidden;
 }
-.rwmb-file .rwmb-icon img{
+.rwmb-file .rwmb-icon img {
 	max-height: 60px;
 	max-width: 60px;
 }
 .rwmb-file .rwmb-info {
-	width: 180px;	
-	vertical-align:top;
-	overflow:hidden;
+	width: 180px;
+	vertical-align: top;
+	overflow: hidden;
 }
 .rwmb-file .rwmb-info p {
-	margin:.1em 0;	
+	margin: .1em 0;
 }
 .rwmb-file .rwmb-info a {
-	font-weight:bold;
-	text-decoration:none;
+	font-weight: bold;
+	text-decoration: none;
 }
-.rwmb-file li, .rwmb-file .rwmb-icon, .rwmb-file .rwmb-info {
-	display:inline-block;
+.rwmb-file li,
+.rwmb-file .rwmb-icon,
+.rwmb-file .rwmb-info {
+	display: inline-block;
 }
-.rwmb-file .rwmb-icon, .rwmb-file .rwmb-info {
-	margin:0 0 2px 2px;
+.rwmb-file .rwmb-icon,
+.rwmb-file .rwmb-info {
+	margin: 0 0 2px 2px;
 }
 
 .rwmb-file li.removed {
 	width: 0;
 	margin: 0;
-	opacity: 0;
+	        opacity: 0;
 	-webkit-opacity: 0;
-	-moz-opacity: 0;
-	-o-opacity: 0;	
+	   -moz-opacity: 0;
+	     -o-opacity: 0;
 }
 
 .rwmb-file li.removed:after {
 	content: ' ';
 	position: absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	z-index: 2;
 	opacity: .4;
-	background-color: #F00;
+	background-color: #f00;
 }

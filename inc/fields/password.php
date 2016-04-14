@@ -1,31 +1,34 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
-// Make sure "text" field is loaded
-require_once RWMB_FIELDS_DIR . 'text.php';
-
-if ( ! class_exists( 'RWMB_Password_Field' ) )
+/**
+ * Password field class.
+ */
+class RWMB_Password_Field extends RWMB_Text_Field
 {
-	class RWMB_Password_Field extends RWMB_Text_Field
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed $value
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
 	{
-		/**
-		 * Get field HTML
-		 *
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
-		{
-			return sprintf(
-				'<input type="password" class="rwmb-password" name="%s" id="%s" value="%s" size="%s" />',
-				$field['field_name'],
-				$field['id'],
-				$meta,
-				$field['size']
-			);
-		}
+		$attributes         = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'password';
+		return $attributes;
+	}
+
+	/**
+	 * Store secured password in the database.
+	 * @param mixed $new
+	 * @param mixed $old
+	 * @param int   $post_id
+	 * @param array $field
+	 * @return string
+	 */
+	static function value( $new, $old, $post_id, $field )
+	{
+		$new = $new != $old ? wp_hash_password( $new ) : $new;
+		return $new;
 	}
 }

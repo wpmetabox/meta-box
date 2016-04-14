@@ -1,17 +1,23 @@
 <?php
-add_filter( 'rwmb_meta_boxes', 'PREFIX_register_meta_box_oembed' );
-function PREFIX_register_meta_box_oembed( $meta_boxes )
+/**
+ * This file demonstrates how to use 'oembed' field
+ */
+add_filter( 'rwmb_meta_boxes', 'your_prefix_oembed_demo' );
+function your_prefix_oembed_demo( $meta_boxes )
 {
 	$meta_boxes[] = array(
-		'title' => __( 'oEmbed Demo', 'textdomain' ),
+		'title'  => __( 'oEmbed Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
-				'id'       => 'oembed',
-				'name'     => __( 'oEmbed(s)', 'rwmb' ),
-				'type'     => 'oembed',
+				'id'    => 'oembed',
+				'name'  => __( 'oEmbed(s)', 'your-prefix' ),
+				'type'  => 'oembed',
 
 				// Allow to clone? Default is false
-				'clone' => true,
+				'clone' => false,
+
+				// Input size
+				'size'  => 30,
 			),
 		),
 	);

@@ -1,7 +1,6 @@
 jQuery( function( $ )
 {
-	$( ':input.rwmb-slider-value' ).each( rwmb_update_slider );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-slider-value', rwmb_update_slider );
+	'use strict';	
 
 	function rwmb_update_slider()
 	{
@@ -10,6 +9,7 @@ jQuery( function( $ )
 			$valueLabel = $slider.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
 			value = $input.val(),
 			options = $slider.data( 'options' );
+
 
 		$slider.html( '' );
 
@@ -34,4 +34,7 @@ jQuery( function( $ )
 
 		$slider.slider( options );
 	}
+
+	$( ':input.rwmb-slider-value' ).each( rwmb_update_slider );
+	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-slider-value', rwmb_update_slider );
 } );

@@ -1,4 +1,8 @@
-#post-body .rwmb-select-advanced {
+.rwmb-field .select2-container {
 	height: auto;
 	min-width: 200px;
+}
+
+#post-body .rwmb-select-all {
+	margin-top: 5px;
 }

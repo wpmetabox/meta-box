@@ -1,0 +1,21 @@
+# Normalize EOL=LF
+* text=auto
+
+# Ignore files when export
+demo export-ignore
+tests export-ignore
+node_modules export-ignore
+.DS_Store
+Thumbs.db
+*.yml export-ignore
+*.json export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.jshintrc export-ignore
+codesniffer.ruleset.xml export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+readme.md export-ignore
+lang/*.po export-ignore
+lang/*.pot export-ignore
+lang/*.md

@@ -1,77 +1,84 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
-if ( !class_exists( 'RWMB_Fieldset_Text_Field' ) )
+/**
+ * Fieldset text class.
+ */
+class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 {
-	class RWMB_Fieldset_Text_Field extends RWMB_Field
+	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	static function html( $meta, $field )
 	{
-		/**
-		 * Get field HTML
-		 *
-		 * @param mixed $meta
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
+		$html = array();
+		$tpl  = '<label>%s %s</label>';
+
+		foreach ( $field['options'] as $key => $label )
 		{
-			if ( count( $meta ) == 1 && trim( $meta[0] ) == '' )
-				$meta = '';
+			$value  = isset( $meta[$key] ) ? $meta[$key] : '';
+			$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
+			$html[] = sprintf( $tpl, $label, parent::html( $value, $field ) );
+		}
 
-			$html = array();
-			$before = '<fieldset><legend>' . $field['desc'] . '</legend>';
-			$after = '</fieldset>';
+		$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
-			$tpl = '<label>%s <input type="text" class="rwmb-fieldset-text" name="%s[%s][%d]" placeholder="%s" value="%s" /></label>';
+		return $out;
+	}
 
-			for ( $n = 0; $n < $field['rows']; $n++ )
+	/**
+	 * Normalize parameters for field
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */
+	static function normalize( $field )
+	{
+		$field = parent::normalize( $field );
+		$field['multiple'] = false;
+		$field['attributes']['id'] = false;
+		return $field;
+	}
+
+	/**
+	 * Output the field value
+	 * Display options in format Label: value in unordered list
+	 *
+	 * @param  array    $field   Field parameters
+	 * @param  array    $args    Additional arguments. Not used for these fields.
+	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return mixed Field value
+	 */
+	static function the_value( $field, $args = array(), $post_id = null )
+	{
+		$value = self::get_value( $field, $args, $post_id );
+		if ( ! $value )
+			return '';
+
+		$output = '<table>';
+		$output .= '<thead><tr>';
+		foreach ( $field['options'] as $label )
+		{
+			$output .= "<th>$label</th>";
+		}
+		$output .= '</tr></thead><tbody>';
+
+		foreach ( $value as $subvalue )
+		{
+			$output .= '<tr>';
+			foreach ( $subvalue as $value )
 			{
-				foreach ( $field['options'] as $k => $v )
-				{
-					$fid = $field['id'];
-					if ( is_array( $meta ) && !empty( $meta ) )
-						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, $meta[$v][$n] );
-					else
-						$html[] = sprintf( $tpl, $k, $fid, $v, $n, $k, '' );
-				}
-				$html[] = '<br>';
+				$output .= "<td>$value</td>";
 			}
-
-			$out = $before . implode( ' ', $html ) . $after;
-			return $out;
+			$output .= '</tr>';
 		}
+		$output .= '</tbody></table>';
 
-		/**
-		 * Get meta value
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'] );
-
-			if ( is_array( $meta ) && !empty( $meta ) )
-				$meta = $meta[0];
-
-			return $meta;
-		}
-
-		/**
-		 * Save meta value
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			update_post_meta( $post_id, $field['id'], $new, $old );
-		}
+		return $output;
 	}
 }
