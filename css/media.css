@@ -1,0 +1,81 @@
+.rwmb-media-list {
+	margin: 0 0 5px;
+	overflow: hidden;
+}
+.rwmb-media-item {
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+.rwmb-media-preview {
+	width: 60px;
+	float: left;
+	position: relative;
+}
+.rwmb-media-preview:before {
+	content: '';
+	display: block;
+	padding-top: 100%;
+}
+.rwmb-media-content {
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.rwmb-media-content .centered {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-transform: translate(50%, 50%);
+	-ms-transform: translate(50%, 50%);
+	transform: translate(50%, 50%);
+}
+.rwmb-media-content img {
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	max-height: 100%;
+	max-width: 100%;
+	border-radius: 3px;
+}
+.rwmb-media-info {
+	margin-left: 65px;
+}
+.rwmb-media-info a {
+	text-decoration: none;
+}
+.rwmb-media-info p,
+.rwmb-media-info h4 {
+	margin: 0 0 2px;
+}
+.rwmb-edit-media,
+.rwmb-remove-media {
+	font-size: 11px;
+	color: inherit;
+}
+.rwmb-edit-media .dashicons,
+.rwmb-remove-media .dashicons {
+	font-size: 12px;
+	width: 12px;
+	height: 12px;
+	vertical-align: middle;
+}
+
+/* Add more button */
+.rwmb-media-view .rwmb-add-media {
+	padding-left: 5px;
+	margin-right: 5px;
+}
+
+/* Status */
+.rwmb-media-status {
+	display: inline-block;
+	text-decoration: none;
+	font-size: 13px;
+	line-height: 26px;
+	height: 28px;
+}

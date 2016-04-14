@@ -1,42 +1,38 @@
-/**
- * Update color picker element
- * Used for static & dynamic added elements (when clone)
- */
-jQuery( document ).ready( function( $ )
-{	
-	$( ':input.rwmb-color' ).each( rwmb_update_color_picker );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-color', rwmb_update_color_picker )
-	.on( 'focus', '.rwmb-color', function()
-	{
-		$( this ).siblings( '.rwmb-color-picker' ).show();
-		return false;
-	} ).on( 'blur',  '.rwmb-color', function()
-	{
-		$( this ).siblings( '.rwmb-color-picker' ).hide();
-		return false;
-	} );
-	
-	function rwmb_update_color_picker()
+jQuery( function ( $ )
+{
+	'use strict';
+
+	/**
+	 * Update color picker element
+	 * Used for static & dynamic added elements (when clone)
+	 */
+	function update()
 	{
 		var $this = $( this ),
-			$clone_container = $this.closest('.rwmb-clone'),
-			$color_picker = $this.siblings( '.rwmb-color-picker' );
-		
-		// Make sure the value is displayed
-		if ( !$this.val() )
-			$this.val( '#' );
-			
-		if( typeof jQuery.wp === 'object' && typeof jQuery.wp.wpColorPicker === 'function' ){
-			if( $clone_container.length > 0 )
-			{
-				$this.appendTo( $clone_container ).siblings( 'div.wp-picker-container' ).remove();
-			}
-        	$this.wpColorPicker();
+			$container = $this.closest( '.rwmb-color-clone' ),
+			data = $.extend(
+				{
+					change: function()
+					{
+						$( this ).trigger( 'color:change' );
+					},
+					clear: function()
+					{
+						$( this ).trigger( 'color:clear' );
+					}
+				},
+				$this.data( 'options' ) );
+
+		// Clone doesn't have input for color picker, we have to add the input and remove the color picker container
+		if ( $container.length > 0 )
+		{
+			$this.appendTo( $container ).siblings( '.wp-picker-container' ).remove();
 		}
-		else {
-			//We use farbtastic if the WordPress color picker widget doesn't exist
-			$color_picker.farbtastic( $this );			
-		}			
+
+		// Show color picker
+		$this.wpColorPicker( data );
 	}
 
+	$( ':input.rwmb-color' ).each( update );
+	$( '.rwmb-input' ).on( 'clone', 'input.rwmb-color', update );
 } );

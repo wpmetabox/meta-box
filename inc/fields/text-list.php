@@ -1,102 +1,91 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
-if ( !class_exists( 'RWMB_Text_List_Field' ) )
+/**
+ * Text list field class.
+ */
+class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field
 {
-	class RWMB_Text_List_Field extends RWMB_Field
+	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	static function html( $meta, $field )
 	{
-		/**
-		 * Get field HTML
-		 *
-		 * @param mixed $meta
-		 * @param array $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
-		{
-			$html = array();
-			$tpl = '<label><input type="text" class="rwmb-text-list" name="%s" id="%s" value="%s" placeholder="%s"/> %s</label>';
+		$html  = array();
+		$input = '<label><input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"> %s</label>';
 
-			foreach ( $field['options'] as $value => $label )
+		$count = 0;
+		foreach ( $field['options'] as $placeholder => $label )
+		{
+			$html[] = sprintf(
+				$input,
+				$field['field_name'],
+				isset( $meta[$count] ) ? esc_attr( $meta[$count] ) : '',
+				$placeholder,
+				$label
+			);
+			$count ++;
+		}
+
+		return implode( ' ', $html );
+	}
+
+	/**
+	 * Output the field value
+	 * Display option name instead of option value
+	 *
+	 * @param  array    $field   Field parameters
+	 * @param  array    $args    Additional arguments. Not used for these fields.
+	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return mixed Field value
+	 */
+	static function the_value( $field, $args = array(), $post_id = null )
+	{
+		$value = self::get_value( $field, $args, $post_id );
+		if ( ! $value )
+			return '';
+
+		$output = '<ul>';
+		if ( $field['clone'] )
+		{
+			foreach ( $value as $subvalue )
 			{
-				$html[] = sprintf(
-					$tpl,
-					$field['field_name'],
-					$field['id'],
-					$value,
-					$field['placeholder'],
-					$label
+				$output .= '<li>';
+				$output .= '<ul>';
+
+				$i = 0;
+				foreach ( $field['options'] as $placeholder => $label )
+				{
+					$output .= sprintf(
+						'<li><label>%s</label>: %s</li>',
+						$label,
+						isset( $subvalue[$i] ) ? $subvalue[$i] : ''
+					);
+					$i ++;
+				}
+				$output .= '</ul>';
+				$output .= '</li>';
+			}
+		}
+		else
+		{
+			$i = 0;
+			foreach ( $field['options'] as $placeholder => $label )
+			{
+				$output .= sprintf(
+					'<li><label>%s</label>: %s</li>',
+					$label,
+					isset( $value[$i] ) ? $value[$i] : ''
 				);
+				$i ++;
 			}
-			return implode( ' ', $html );
 		}
+		$output .= '</ul>';
 
-		/**
-		 * Get meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * @see "save" method for better understanding
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $post_id
-		 * @param $saved
-		 * @param $field
-		 *
-		 * @return array
-		 */
-		static function meta( $post_id, $saved, $field )
-		{
-			$meta = get_post_meta( $post_id, $field['id'], $field['clone'] );
-			$meta = ( !$saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
-			$meta = array_map( 'esc_attr', (array) $meta );
-
-			return $meta;
-		}
-
-		/**
-		 * Save meta value
-		 * If field is cloneable, value is saved as a single entry in DB
-		 * Otherwise value is saved as multiple entries (for backward compatibility)
-		 *
-		 * TODO: A good way to ALWAYS save values in single entry in DB, while maintaining backward compatibility
-		 *
-		 * @param $new
-		 * @param $old
-		 * @param $post_id
-		 * @param $field
-		 */
-		static function save( $new, $old, $post_id, $field )
-		{
-			if ( !$field['clone'] )
-			{
-				parent::save( $new, $old, $post_id, $field );
-				return;
-			}
-
-			if ( empty( $new ) )
-				delete_post_meta( $post_id, $field['id'] );
-			else
-				update_post_meta( $post_id, $field['id'], $new );
-		}
-
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field['multiple'] = true;
-			$field['field_name'] = $field['id'];
-			if ( !$field['clone'] )
-				$field['field_name'] .= '[]';
-			return $field;
-		}
+		return $output;
 	}
 }

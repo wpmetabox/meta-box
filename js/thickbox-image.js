@@ -1,6 +1,8 @@
-jQuery( function( $ )
+jQuery( function ( $ )
 {
-	$( 'body' ).on( 'click', '.rwmb-thickbox-upload', function()
+	'use strict';
+
+	$( 'body' ).on( 'click', '.rwmb-thickbox-upload', function ()
 	{
 		var $this = $( this ),
 			$holder = $this.siblings( '.rwmb-images' ),
@@ -8,7 +10,7 @@ jQuery( function( $ )
 			field_id = $this.data( 'field_id' ),
 			backup = window.send_to_editor;
 
-		window.send_to_editor = function( html )
+		window.send_to_editor = function ( html )
 		{
 			var $img = $( '<div />' ).append( html ).find( 'img' ),
 				url = $img.attr( 'src' ),
@@ -27,7 +29,7 @@ jQuery( function( $ )
 
 			tb_remove();
 			window.send_to_editor = backup;
-		}
+		};
 		tb_show( '', 'media-upload.php?post_id=' + post_id + '&TB_iframe=true' );
 
 		return false;

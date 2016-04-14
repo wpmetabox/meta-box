@@ -1,46 +1,47 @@
 <?php
-// Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
-
-if ( !class_exists( 'RWMB_Number_Field' ) )
+/**
+ * Number field class.
+ */
+class RWMB_Number_Field extends RWMB_Input_Field
 {
-	class RWMB_Number_Field extends RWMB_Field
+	/**
+	 * Normalize parameters for field
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */
+	static function normalize( $field )
 	{
-		/**
-		 * Get field HTML
-		 *
-		 * @param mixed  $meta
-		 * @param array  $field
-		 *
-		 * @return string
-		 */
-		static function html( $meta, $field )
-		{
-			return sprintf(
-				'<input type="number" class="rwmb-number" name="%s" id="%s" value="%s" step="%s" min="%s" placeholder="%s"/>',
-				$field['field_name'],
-				empty( $field['clone'] ) ? $field['id'] : '',
-				$meta,
-				$field['step'],
-				$field['min'],
-				$field['placeholder']
-			);
-		}
+		$field = parent::normalize( $field );
 
-		/**
-		 * Normalize parameters for field
-		 *
-		 * @param array $field
-		 *
-		 * @return array
-		 */
-		static function normalize_field( $field )
-		{
-			$field = wp_parse_args( $field, array(
-				'step' => 1,
-				'min'  => 0,
-			) );
-			return $field;
-		}
+		$field = wp_parse_args( $field, array(
+			'step' => 1,
+			'min'  => 0,
+			'max'  => false,
+		) );
+
+		return $field;
+	}
+
+	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
+			'step' => $field['step'],
+			'max'  => $field['max'],
+			'min'  => $field['min'],
+		) );
+		$attributes['type'] = 'number';
+
+		return $attributes;
 	}
 }

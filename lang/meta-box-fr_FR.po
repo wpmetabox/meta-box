@@ -1,0 +1,456 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Meta Box\n"
+"POT-Creation-Date: 2015-02-27 16:16+0100\n"
+"PO-Revision-Date: 2015-02-28 09:09+0100\n"
+"Last-Translator: \n"
+"Language-Team: Frédéric Serva <fred.serva@gmail.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: demo/all-custom-post-types.php:15
+msgid "Personal Information"
+msgstr "Informations personnelles"
+
+#: demo/all-custom-post-types.php:20
+msgid "Full name"
+msgstr "Nom et prénom"
+
+#: demo/better-include.php:16 demo/include-by-ID-or-page-template.php:8
+msgid "Meta Box Title"
+msgstr "Titre de la Meta Box"
+
+#: demo/better-include.php:19 demo/include-by-ID-or-page-template.php:14
+msgid "Your images"
+msgstr "Vos images"
+
+#: demo/date-time-js-options.php:8
+msgid "Date Time Picker With JS Options"
+msgstr "Sélecteur Date et Heure avec Options JS"
+
+#: demo/date-time-js-options.php:12
+msgid "Date"
+msgstr "Date"
+
+#: demo/date-time-js-options.php:18 demo/demo.php:193
+msgid "(yyyy-mm-dd)"
+msgstr "(yyyy-mm-dd)"
+
+#: demo/date-time-js-options.php:20
+msgid "Select Date"
+msgstr "Sélectionnez la date"
+
+#: demo/date-time-js-options.php:21 demo/demo.php:194
+msgid "yy-mm-dd"
+msgstr "yy-mm-dd"
+
+#: demo/date-time-js-options.php:27
+msgid "Datetime"
+msgstr "Date & Heure combinées"
+
+#: demo/date-time-js-options.php:38
+msgid "Time"
+msgstr "Heure"
+
+#: demo/demo.php:42
+msgid "Standard Fields"
+msgstr "﻿Champs standards"
+
+#: demo/demo.php:61
+msgid "Text"
+msgstr "Texte"
+
+#: demo/demo.php:65
+msgid "Text description"
+msgstr "Description du texte"
+
+#: demo/demo.php:68
+msgid "Default text value"
+msgstr "Valeur texte par défaut"
+
+#: demo/demo.php:74
+msgid "Checkbox"
+msgstr "Case à cocher"
+
+#: demo/demo.php:82
+msgid "Radio"
+msgstr "Bouton Radio"
+
+#: demo/demo.php:88 demo/demo.php:99 demo/demo.php:242 demo/demo.php:253
+#: demo/demo.php:302
+msgid "Label1"
+msgstr "Étiquette1"
+
+#: demo/demo.php:89 demo/demo.php:100 demo/demo.php:243 demo/demo.php:254
+#: demo/demo.php:303
+msgid "Label2"
+msgstr "Étiquette2"
+
+#: demo/demo.php:94 demo/demo.php:297 inc/fields/file-input.php:40
+msgid "Select"
+msgstr "Choisissez"
+
+#: demo/demo.php:105 demo/demo.php:308 demo/demo.php:333
+msgid "Select an Item"
+msgstr "Choisissez un élément"
+
+#: demo/demo.php:112
+msgid "Hidden value"
+msgstr "Valeur cachée"
+
+#: demo/demo.php:116
+msgid "Password"
+msgstr "Mot de passe"
+
+#: demo/demo.php:122
+msgid "Textarea"
+msgstr "Zone de texte"
+
+#: demo/demo.php:123
+msgid "Textarea description"
+msgstr "Description de la zone de texte"
+
+#: demo/demo.php:140
+msgid "Password is required"
+msgstr "Mot de passe requis"
+
+#: demo/demo.php:141
+msgid "Password must be at least 7 characters"
+msgstr "Le mot de passe doit comporter au moins 7 caractères."
+
+#: demo/demo.php:149
+msgid "Advanced Fields"
+msgstr "﻿Champs spéciaux"
+
+#: demo/demo.php:155
+msgid "Heading"
+msgstr "Intertitre"
+
+#: demo/demo.php:157
+msgid "Optional description for this heading"
+msgstr "Description facultative pour cet intertitre"
+
+#: demo/demo.php:161 demo/slider.php:9
+msgid "Slider"
+msgstr "Slider"
+
+#: demo/demo.php:166 demo/slider.php:14
+msgid "$"
+msgstr "$"
+
+#: demo/demo.php:167 demo/slider.php:15
+msgid " USD"
+msgstr " USD"
+
+#: demo/demo.php:178
+msgid "Number"
+msgstr "Nombre"
+
+#: demo/demo.php:187
+msgid "Date picker"
+msgstr "Sélecteur de date"
+
+#: demo/demo.php:202
+msgid "Datetime picker"
+msgstr "Sélecteur de Date & Heure combinées"
+
+#: demo/demo.php:216
+msgid "Time picker"
+msgstr "Sélecteur d'heure"
+
+#: demo/demo.php:231
+msgid "Color picker"
+msgstr "Sélecteur de couleur"
+
+#: demo/demo.php:237
+msgid "Checkbox list"
+msgstr "liste de cases à cocher"
+
+#: demo/demo.php:248
+msgid "Autocomplete"
+msgstr "Complétion automatique"
+
+#: demo/demo.php:263
+msgid "Email"
+msgstr "Email"
+
+#: demo/demo.php:265
+msgid "Email description"
+msgstr "Description de l'email"
+
+#: demo/demo.php:271
+msgid "Range"
+msgstr "Fourchette"
+
+#: demo/demo.php:273
+msgid "Range description"
+msgstr "Description de la fourchette"
+
+#: demo/demo.php:282
+msgid "URL"
+msgstr "URL"
+
+#: demo/demo.php:284
+msgid "URL description"
+msgstr "Description de l'URL"
+
+#: demo/demo.php:290
+msgid "oEmbed"
+msgstr "oEmbed"
+
+#: demo/demo.php:292
+msgid "oEmbed description"
+msgstr "Description oEmbed"
+
+#: demo/demo.php:312
+msgid "Taxonomy"
+msgstr "Taxonomie"
+
+#: demo/demo.php:326
+msgid "Posts (Pages)"
+msgstr "Articles (Pages)"
+
+#: demo/demo.php:342
+msgid "WYSIWYG / Rich Text Editor"
+msgstr "Éditeur de texte (WYSIWYG)"
+
+#: demo/demo.php:347
+msgid "WYSIWYG default value"
+msgstr "Valeur par défaut WYSIWYG"
+
+#: demo/demo.php:363 demo/force-delete.php:12
+msgid "File Upload"
+msgstr "Mise en ligne d'un fichier"
+
+#: demo/demo.php:369
+msgid "File Advanced Upload"
+msgstr "Mise en ligne avancée d'un fichier"
+
+#: demo/demo.php:377 demo/force-delete.php:19
+msgid "Image Upload"
+msgstr "Mise en ligne d'une image"
+
+#: demo/demo.php:383 demo/force-delete.php:25
+msgid "Thickbox Image Upload"
+msgstr "Mise en ligne d'une image (Thickbox)"
+
+#: demo/demo.php:389 demo/force-delete.php:32
+msgid "Plupload Image Upload"
+msgstr "Mise en ligne d'une image (Plupload)"
+
+#: demo/demo.php:396
+msgid "Image Advanced Upload"
+msgstr "Mise en ligne avancée d'une image"
+
+#: demo/force-delete.php:8
+msgid "Test Meta Box"
+msgstr "Test de Meta Box"
+
+#: demo/image-select.php:6
+msgid "Image Select Demo"
+msgstr "Démo de Sélection d'image"
+
+#: demo/image-select.php:10
+msgid "Layout"
+msgstr "Disposition:"
+
+#: demo/map.php:6
+msgid "Google Map"
+msgstr "Google Map"
+
+#: demo/map.php:10
+msgid "Address"
+msgstr "Adresse"
+
+#: demo/map.php:12
+msgid "Hanoi, Vietnam"
+msgstr "Hanoi, Vietnam"
+
+#: demo/map.php:16
+msgid "Location"
+msgstr "Localisation"
+
+#: demo/oembed.php:6
+msgid "oEmbed Demo"
+msgstr "oEmbed Démo"
+
+#: demo/oembed.php:10
+msgid "oEmbed(s)"
+msgstr "oEmbed (s)"
+
+#: demo/slider.php:6
+msgid "Slider Demo"
+msgstr "Démo de Slider"
+
+#: demo/url.php:6
+msgid "URL Demo"
+msgstr "Démo d'URL"
+
+#: demo/url.php:10
+msgid "URL(s)"
+msgstr "URL(s)"
+
+#: inc/common.php:53
+msgid "Documentation"
+msgstr "Documentation"
+
+#: inc/common.php:54
+msgid "Extensions"
+msgstr "Extensions"
+
+#: inc/field.php:225
+msgid "+"
+msgstr "+"
+
+#: inc/field.php:235
+msgid "&#8211;"
+msgstr "&#8211;"
+
+#: inc/fields/autocomplete.php:18 inc/fields/autocomplete.php:72
+msgid "Delete"
+msgstr "﻿Supprimer"
+
+#: inc/fields/button.php:35
+msgid "Click me"
+msgstr "Cliquez-ici"
+
+#: inc/fields/file-advanced.php:23
+msgid "Select Files"
+msgstr "﻿Sélectionnez les fichiers"
+
+#: inc/fields/file-advanced.php:66
+msgctxt "file upload"
+msgid "Select or Upload Files"
+msgstr "Sélectionnez ou mettez en ligne des fichiers"
+
+#: inc/fields/file-advanced.php:103 inc/fields/file.php:168
+msgctxt "file upload"
+msgid "Delete"
+msgstr "﻿Supprimer"
+
+#: inc/fields/file-advanced.php:104 inc/fields/file.php:169
+msgctxt "file upload"
+msgid "Edit"
+msgstr "Modifier"
+
+#: inc/fields/file-input.php:17
+msgid "Select File"
+msgstr "Choisissez un fichier"
+
+#: inc/fields/file-input.php:42
+msgid "Remove"
+msgstr "Supprimer"
+
+#: inc/fields/file.php:19
+#, php-format
+msgid "You may only upload maximum %d file"
+msgstr "Vous ne pouvez mettre en ligne qu'un fichier de %d maximum"
+
+#: inc/fields/file.php:20
+#, php-format
+msgid "You may only upload maximum %d files"
+msgstr "Vous ne pouvez mettre en ligne que des fichiers de %d maximum"
+
+#: inc/fields/file.php:98
+msgid "Error: Cannot delete file"
+msgstr "﻿Erreur : Impossible de supprimer le fichier"
+
+#: inc/fields/file.php:111
+msgctxt "file upload"
+msgid "Upload Files"
+msgstr "Mettez en ligne des fichiers"
+
+#: inc/fields/file.php:112
+msgctxt "file upload"
+msgid "+ Add new file"
+msgstr "+ Ajouter un nouveau fichier"
+
+#: inc/fields/image-advanced.php:23
+msgid "Select Images"
+msgstr "Sélectionner des images"
+
+#: inc/fields/image-advanced.php:71
+msgctxt "image upload"
+msgid "Select or Upload Images"
+msgstr "Sélectionnez ou mettez en ligne des images"
+
+#: inc/fields/image-advanced.php:108 inc/fields/image.php:136
+msgctxt "image upload"
+msgid "Delete"
+msgstr "﻿Supprimer"
+
+#: inc/fields/image-advanced.php:109 inc/fields/image.php:137
+msgctxt "image upload"
+msgid "Edit"
+msgstr "Modifier"
+
+#: inc/fields/image.php:70 inc/fields/thickbox-image.php:34
+msgctxt "image upload"
+msgid "Upload Images"
+msgstr "Mettez en ligne des images"
+
+#: inc/fields/image.php:71
+msgctxt "image upload"
+msgid "+ Add new image"
+msgstr "+ Ajouter une nouvelle image"
+
+#: inc/fields/map.php:48
+msgid "Find Address"
+msgstr "﻿Trouver une adresse"
+
+#: inc/fields/oembed.php:55
+msgid "Embed HTML not available."
+msgstr "Intégration du code HTML non disponible."
+
+#: inc/fields/oembed.php:77
+msgid "Preview"
+msgstr "﻿Aperçu"
+
+#: inc/fields/plupload-image.php:105
+msgctxt "image upload"
+msgid "Drop images here"
+msgstr "﻿Déposez des images ici"
+
+#: inc/fields/plupload-image.php:106
+msgctxt "image upload"
+msgid "or"
+msgstr "ou"
+
+#: inc/fields/plupload-image.php:107
+msgctxt "image upload"
+msgid "Select Files"
+msgstr "﻿Sélectionnez des fichiers"
+
+#: inc/fields/plupload-image.php:182
+msgctxt "image upload"
+msgid "Allowed Image Files"
+msgstr "Types d'images autorisés"
+
+#: inc/fields/post.php:52
+msgid "Post"
+msgstr "Article"
+
+#: inc/fields/post.php:66 inc/fields/taxonomy.php:40 inc/fields/user.php:62
+#, php-format
+msgid "Select a %s"
+msgstr "Choisissez un %s"
+
+#: inc/fields/user.php:54
+msgid "User"
+msgstr "Utilisateur"
+
+#: inc/meta-box.php:245
+msgid "Please correct the errors highlighted below and try again."
+msgstr ""
+"Merci de corriger les erreurs mises en évidence ci-dessous et de réessayer."

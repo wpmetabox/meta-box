@@ -1,33 +1,46 @@
 <?php
-add_action( 'admin_init', 'YOUR_PREFIX_register_meta_boxes' );
+add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
 
-function YOUR_PREFIX_register_meta_boxes()
+function your_prefix_register_meta_boxes( $meta_boxes )
 {
-	if ( !class_exists( 'RW_Meta_Box' ) )
-		return;
-
-	$prefix = 'YOUR_PREFIX_';
-	$meta_box = array(
-		'title' => __( 'Date Time Picker With JS Options', 'rwmb' ),
+	$prefix = 'your_prefix_';
+	$meta_boxes[] = array(
+		'title' => __( 'Date Time Picker With JS Options', 'your-prefix' ),
 
 		'fields' => array(
 			array(
-				'name' => __( 'Date', 'rwmb' ),
+				'name' => __( 'Date', 'your-prefix' ),
 				'id'   => $prefix . 'date',
 				'type' => 'date',
 
 				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
 				'js_options' => array(
-					'appendText'      => __( '(yyyy-mm-dd)', 'rwmb' ),
+					'appendText'      => __( '(yyyy-mm-dd)', 'your-prefix' ),
 					'autoSize'        => true,
-					'buttonText'      => __( 'Select Date', 'rwmb' ),
-					'dateFormat'      => __( 'yy-mm-dd', 'rwmb' ),
+					'buttonText'      => __( 'Select Date', 'your-prefix' ),
+					'dateFormat'      => __( 'yy-mm-dd', 'your-prefix' ),
 					'numberOfMonths'  => 2,
 					'showButtonPanel' => true,
 				),
 			),
 			array(
-				'name' => __( 'Datetime', 'rwmb' ),
+				'name' => __( 'Inline Date', 'your-prefix' ),
+				'id'   => $prefix . 'inline-date',
+				'type' => 'date',
+
+				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
+				'js_options' => array(
+					'appendText'      => __( '(yyyy-mm-dd)', 'your-prefix' ),
+					'autoSize'        => true,
+					'buttonText'      => __( 'Select Date', 'your-prefix' ),
+					'dateFormat'      => __( 'yy-mm-dd', 'your-prefix' ),
+					'numberOfMonths'  => 2,
+					'showButtonPanel' => true,
+				),
+				'inline' => true,
+			),
+			array(
+				'name' => __( 'Datetime', 'your-prefix' ),
 				'id'   => $prefix . 'datetime',
 				'type' => 'datetime',
 
@@ -38,7 +51,7 @@ function YOUR_PREFIX_register_meta_boxes()
 				),
 			),
 			array(
-				'name' => __( 'Time', 'rwmb' ),
+				'name' => __( 'Time', 'your-prefix' ),
 				'id'   => $prefix . 'time',
 				'type' => 'time',
 
@@ -52,5 +65,5 @@ function YOUR_PREFIX_register_meta_boxes()
 		),
 	);
 
-	new RW_Meta_Box( $meta_box );
+	return $meta_boxes;
 }

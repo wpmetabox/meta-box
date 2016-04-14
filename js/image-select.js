@@ -1,6 +1,8 @@
-jQuery( function( $ )
+jQuery( function ( $ )
 {
-	$( 'body' ).on( 'change', '.rwmb-image-select input', function()
+	'use strict';
+
+	$( 'body' ).on( 'change', '.rwmb-image-select input', function ()
 	{
 		var $this = $( this ),
 			type = $this.attr( 'type' ),
@@ -10,7 +12,10 @@ jQuery( function( $ )
 		if ( selected )
 		{
 			$parent.addClass( 'rwmb-active' );
-			type == 'radio' && $others.removeClass( 'rwmb-active' );
+			if ( type === 'radio' )
+			{
+				$others.removeClass( 'rwmb-active' );
+			}
 		}
 		else
 		{
