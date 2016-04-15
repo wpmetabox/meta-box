@@ -152,6 +152,8 @@ jQuery( function ( $ )
 		initialize: function ( options )
 		{
 			this.props = options.props;
+			if( ! this.props.get( 'maxStatus' ) )
+				this.$el.hide();
 			this.listenTo( this.collection, 'add remove reset', this.render );
 			this.render();
 		},
