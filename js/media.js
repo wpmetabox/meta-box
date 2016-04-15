@@ -86,7 +86,7 @@ jQuery( function ( $ )
 				var maxFiles = this.props.get( 'maxFiles' );
 				if ( maxFiles > 0 && this.collection.length > maxFiles )
 				{
-					this.collection.pop();
+					this.collection.remove( item );
 				}
 			} );
 
@@ -190,7 +190,7 @@ jQuery( function ( $ )
 						type: this.props.get( 'mimeType' )
 					}
 				} );
-				
+
 				this._frame.on( 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
