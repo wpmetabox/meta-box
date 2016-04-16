@@ -52,6 +52,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	{
 		$meta = get_post_meta( $post_id, $field['id'], true );
 		$meta = wp_parse_id_list( $meta );
+		$meta = array_filter( $meta );
 		return $meta;
 	}
 
@@ -71,6 +72,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 			$post_id = get_the_ID();
 
 		$value = self::meta( $post_id, '', $field );
+		if( empty( $value ) )
+			return;
 
 		// Allow to pass more arguments to "get_terms"
 		$args  = wp_parse_args( array(
