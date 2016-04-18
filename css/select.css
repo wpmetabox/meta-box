@@ -1,3 +1,6 @@
+.rwmb-select option {
+    padding: 0.5rem 1rem;
+}
 .rwmb-select-all-none {
 	display: block;
 	margin-top: 5px;
