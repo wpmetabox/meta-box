@@ -228,7 +228,7 @@ class RWMB_Image_Field extends RWMB_File_Field
 			$info['srcset'] = wp_get_attachment_image_srcset( $file_id );
 		}
 
-		$info = wp_parse_args( $info, wp_get_attachment_metadata( $attachment ) );
+		$info = wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
 		return $info;
 	}
 }
