@@ -41,6 +41,7 @@ See more documentation [here](https://metabox.io/docs/).
 
 Name|Description
 ---|---
+[Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/)|Automatically and instantly populate location data with the power of Google Maps Geolocation API.
 [MB Admin Columns](https://metabox.io/plugins/mb-admin-columns/)|Display custom fields in table columns in admin screens for All Posts (types).
 [MB Term Meta](https://metabox.io/plugins/mb-term-meta/)|Add meta data to categories, tags or any custom taxonomy with simple syntax.
 [MB Settings Page](https://metabox.io/plugins/mb-settings-page/)|Create settings pages for themes, plugins or websites with beautiful syntax.

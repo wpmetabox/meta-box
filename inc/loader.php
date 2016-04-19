@@ -60,15 +60,13 @@ class RWMB_Loader
 		// Default URL
 		$url = plugins_url( '', $path . '/' . basename( $path ) . '.php' );
 
-		// Installed as a plugin?
-		if ( 0 === strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) ) || 0 === strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) ) )
-		{
-			// Do nothing
-		}
 		// Included into themes
-		elseif ( 0 === strpos( $path, $content_dir ) )
+		if (
+			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
+			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
+			&& 0 === strpos( $path, $content_dir )
+		)
 		{
-			// Get plugin base URL
 			$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
 			$url         = str_replace( $content_dir, $content_url, $path );
 		}
