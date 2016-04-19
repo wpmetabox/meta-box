@@ -24,6 +24,7 @@ function your_prefix_slider_demo( $meta_boxes )
 					'step'  => 5,
 				),
 
+				'std' => 150,
 				//'clone' => true,
 			),
 		),

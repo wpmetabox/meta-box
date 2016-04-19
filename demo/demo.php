@@ -171,6 +171,9 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 					'max'  => 255,
 					'step' => 5,
 				),
+
+				// Default value
+				'std' 		=> 155,
 			),
 			// NUMBER
 			array(
@@ -400,10 +403,21 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'type' => 'button',
 				'name' => ' ', // Empty name will "align" the button to all field inputs
 			),
-		),
+			// TEXT-LIST
+			array(
+				'name' => __( 'Text List', 'rwmb' ),
+				'id'   => "{$prefix}text_list",
+				'type' => 'text_list',
+				// Options of inputs, in format 'Placeholder' => 'Label'
+				'options' => array(
+					 __( 'Placehold1', 'rwmb' ) => __( 'Label1', 'rwmb' ),
+					 __( 'Placehold2', 'rwmb' ) => __( 'Label2', 'rwmb' ),
+					 __( 'Placehold3', 'rwmb' ) => __( 'Label3', 'rwmb' )
+				)
+			)
+
+		)
 	);
 
 	return $meta_boxes;
 }
-
-
