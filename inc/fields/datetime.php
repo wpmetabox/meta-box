@@ -149,12 +149,12 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		{
 			foreach ( $new as $key => $value )
 			{
-				$new[$key] = isset( $value['timestamp'] ) ? $value['timestamp'] : 0;
+				$new[$key] = isset( $value['timestamp'] ) ? $value['timestamp'] : null;
 			}
 			return $new;
 		}
 
-		return isset( $new['timestamp'] ) ? $new['timestamp'] : 0;
+		return isset( $new['timestamp'] ) ? $new['timestamp'] : null;
 	}
 
 	/**
