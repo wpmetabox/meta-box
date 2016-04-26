@@ -51,7 +51,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 			self::render_attributes( $attributes )
 		);
 
-		$output .= '<option></option>';
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</select>';
 		$output .= self::get_select_all_html( $field );
