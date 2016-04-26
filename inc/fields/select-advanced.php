@@ -15,7 +15,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 
 		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.2', true );
 
-		//Localize
+		// Localize
 		$deps  = array( 'rwmb-select2', 'rwmb-select' );
 		$dir   = RWMB_JS_URL . 'select2/i18n/';
 		$file  = str_replace( '_', '-', get_locale() );
@@ -30,7 +30,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $deps, RWMB_VER, true );
-
 	}
 
 	/**
@@ -69,7 +68,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	{
 		$field = wp_parse_args( $field, array(
 			'js_options'  => array(),
-			'placeholder' => 'Select an item',
+			'placeholder' => __( 'Select an item', 'meta-box' ),
 		) );
 
 		$field = parent::normalize( $field );
