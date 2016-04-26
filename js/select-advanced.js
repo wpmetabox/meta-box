@@ -13,7 +13,7 @@ jQuery( function ( $ )
 		var $this = $( this ),
 			options = $this.data( 'options' );
 		$this.siblings( '.select2-container' ).remove();
-		$this.val( '' ).show().select2( options );
+		$this.show().select2( options );
 
 		rwmbSelect.bindEvents( $this );
 	}
