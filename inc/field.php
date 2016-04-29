@@ -400,14 +400,18 @@ abstract class RWMB_Field
 	static function render_attributes( $attributes )
 	{
 		$output = '';
+		
 		foreach ( $attributes as $key => $value )
 		{
 			if ( false === $value || '' === $value )
-			{
 				continue;
-			}
+						
+			if ( is_array( $value ) )
+				$value = json_encode( $value );
+
 			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
 		}
+
 		return $output;
 	}
 
