@@ -20,14 +20,12 @@ if ( ! function_exists( 'rwmb_meta' ) )
 		 * If meta boxes is registered in the backend only, we can't get field's params
 		 * This is for backward compatibility with version < 4.8.0
 		 */
-		if ( false === RWMB_Helper::find_field( $key ) )
+		$field = RWMB_Helper::find_field( $key, $post_id );
+		if ( false === $field || isset( $args['type'] ) )
 		{
 			return apply_filters( 'rwmb_meta', RWMB_Helper::meta( $key, $args, $post_id ) );
 		}
-		$args = wp_parse_args( $args, array(
-			'type' => 'text',
-		) );
-		$meta = in_array( $args['type'], array( 'oembed', 'map' ) ) ?
+		$meta = in_array( $field['type'], array( 'oembed', 'map' ) ) ?
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
@@ -48,7 +46,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null )
 	{
-		$field = RWMB_Helper::find_field( $field_id );
+		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
 		// Get field value
 		$value = $field ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id ) : false;
@@ -62,7 +60,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 		 * @param array    $args    Additional arguments. Rarely used. See specific fields for details
 		 * @param int|null $post_id Post ID. null for current post. Optional.
 		 */
-		$value  = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
+		$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
 
 		return $value;
 	}
@@ -83,7 +81,7 @@ if ( ! function_exists( 'rwmb_the_value' ) )
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true )
 	{
 		// Find field
-		$field = RWMB_Helper::find_field( $field_id );
+		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
 		if ( ! $field )
 			return '';

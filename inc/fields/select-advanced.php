@@ -7,35 +7,54 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
+		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
-		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.1', true );
+		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.2', true );
+
+		// Localize
+		$deps  = array( 'rwmb-select2', 'rwmb-select' );
+		$dir   = RWMB_JS_URL . 'select2/i18n/';
+		$file  = str_replace( '_', '-', get_locale() );
+		$parts = explode( '-', $file );
+		$file  = file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) ? $file : $parts[0];
+
+		if ( file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) )
+		{
+			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.2', true );
+			$deps[] = 'rwmb-select2-i18n';
+		}
+
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', array( 'rwmb-select2', 'rwmb-select' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $deps, RWMB_VER, true );
 	}
 
 	/**
-	 * Get field HTML
+	 * Walk options
 	 *
 	 * @param mixed $meta
 	 * @param array $field
+	 * @param mixed $options
+	 * @param mixed $db_fields
+	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function walk( $options, $db_fields, $meta, $field )
 	{
-		$attributes = self::get_attributes( $field, $meta );
-		$html       = sprintf(
+		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$walker     = new RWMB_Select_Walker( $db_fields, $field, $meta );
+		$output     = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-		$html .= '<option></option>';
-		$html .= self::options_html( $field, $meta );
-		$html .= '</select>';
-		$html .= self::get_select_all_html( $field['multiple'] );
-		return $html;
+
+		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
+		$output .= '</select>';
+		$output .= self::get_select_all_html( $field );
+		return $output;
 	}
 
 	/**
@@ -44,11 +63,11 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = wp_parse_args( $field, array(
 			'js_options'  => array(),
-			'placeholder' => 'Select an item',
+			'placeholder' => __( 'Select an item', 'meta-box' ),
 		) );
 
 		$field = parent::normalize( $field );
@@ -69,7 +88,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * @param mixed $value
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(

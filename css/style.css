@@ -26,6 +26,7 @@
 .rwmb-label.required > span {
 	color: #c00;
 	font-weight: bold;
+	margin-left: 3px;
 }
 
 /* 75% if field has label, 100% if no label */
@@ -89,11 +90,6 @@
 }
 .rwmb-sort-clone {
 	padding-left: 15px;
-}
-
-/* Fix empty block below admin footer (issue #24) */
-#ui-datepicker-div {
-	display: none;
 }
 
 /* jQuery validation */

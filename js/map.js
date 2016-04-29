@@ -101,11 +101,26 @@
 			 */
 			$( window ).on( 'rwmb_map_refresh', function()
 			{
-				if ( that.map )
-				{
-					google.maps.event.trigger( that.map, 'resize' );
-				}
+				that.refreshMap();
 			} );
+
+			//Refresh on meta box hide and show
+			$( document ).on( 'postbox-toggled', function() {
+			  that.refreshMap();
+			} );
+		},
+
+		refreshMap: function()
+		{
+			var zoom = this.map.getZoom(),
+				center = this.map.getCenter();
+
+			if ( this.map )
+			{
+				google.maps.event.trigger( this.map, 'resize' );
+				this.map.setZoom( zoom );
+				this.map.setCenter( center );
+			}
 		},
 
 		// Autocomplete address

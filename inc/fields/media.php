@@ -81,6 +81,7 @@ class RWMB_Media_Field extends RWMB_Field
 			'mime_type'        => '',
 			'max_file_uploads' => 0,
 			'force_delete'     => false,
+			'max_status'       => true
 		) );
 
 		$field['multiple'] = true;

@@ -28,7 +28,7 @@ class RWMB_Loader
 	public function constants()
 	{
 		// Script version, used to add version for scripts and styles
-		define( 'RWMB_VER', '4.8.3' );
+		define( 'RWMB_VER', '4.8.5' );
 
 		list( $path, $url ) = self::get_path();
 
@@ -50,31 +50,26 @@ class RWMB_Loader
 	 * @param string $base Base folder path
 	 * @return array Path and URL.
 	 */
-	static public function get_path( $base = '' )
+	public static function get_path( $base = '' )
 	{
 		// Plugin base path
-		$path    = $base ? $base : dirname( dirname( __FILE__ ) );
-		$path    = untrailingslashit( $path );
-		$abspath = untrailingslashit( ABSPATH );
+		$path        = $base ? $base : dirname( dirname( __FILE__ ) );
+		$path        = wp_normalize_path( untrailingslashit( $path ) );
+		$content_dir = wp_normalize_path( untrailingslashit( WP_CONTENT_DIR ) );
 
-		// Check if plugin is a symbolic link (only when it's installed as a standalone plugin).
-		if ( false === strpos( $path, $abspath ) )
+		// Default URL
+		$url = plugins_url( '', $path . '/' . basename( $path ) . '.php' );
+
+		// Included into themes
+		if (
+			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
+			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
+			&& 0 === strpos( $path, $content_dir )
+		)
 		{
-			if ( ! function_exists( 'is_plugin_active' ) )
-			{
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-			$basename = basename( $path );
-			if ( is_plugin_active( "$basename/$basename.php" ) )
-			{
-				$path = trailingslashit( WP_PLUGIN_DIR ) . $basename;
-			}
+			$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
+			$url         = str_replace( $content_dir, $content_url, $path );
 		}
-
-		// Get plugin base URL
-		$content_url = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
-		$content_dir = untrailingslashit( WP_CONTENT_DIR );
-		$url         = str_replace( wp_normalize_path( $content_dir ), $content_url, wp_normalize_path( $path ) );
 
 		$path = trailingslashit( $path );
 		$url  = trailingslashit( $url );

@@ -109,10 +109,10 @@ jQuery( function ( $ )
 			}
 			else if ( $field.is( 'select' ) )
 			{
-				// Reset select to first
-				$field.prop( 'selectedIndex', 0 )
+				// Reset select
+				$field.prop( 'selectedIndex', -1 )
 			}
-			else
+			else if ( 'hidden' !== $field.attr( 'type' ) )
 			{
 				// Reset value
 				$field.val( '' );

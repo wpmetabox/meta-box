@@ -1,6 +1,6 @@
 jQuery( function( $ )
 {
-	'use strict';
+	'use strict';	
 
 	function rwmb_update_slider()
 	{
@@ -9,6 +9,7 @@ jQuery( function( $ )
 			$valueLabel = $slider.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
 			value = $input.val(),
 			options = $slider.data( 'options' );
+
 
 		$slider.html( '' );
 

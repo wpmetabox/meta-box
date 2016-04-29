@@ -9,10 +9,26 @@ jQuery( function ( $ )
 	function update()
 	{
 		var $this = $( this ),
-			options = $this.data( 'options' );
+			options = $this.data( 'options' ),
+			$inline = $this.siblings( '.rwmb-datetime-inline' ),
+			current = $this.val();
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
-		$this.removeClass( 'hasDatepicker' ).timepicker( options );
+
+		if( $inline.length )
+		{
+			options.altField = '#' + $this.attr( 'id' );
+			$inline
+				.removeClass( 'hasDatepicker' )
+				.empty()
+				.prop( 'id', '' )
+				.timepicker( options )
+				.timepicker( "setTime", current );
+		}
+		else
+		{
+			$this.removeClass( 'hasDatepicker' ).timepicker( options );
+		}
 	}
 
 	// Set language if available

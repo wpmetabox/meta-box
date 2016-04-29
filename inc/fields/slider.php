@@ -29,7 +29,7 @@ class RWMB_Slider_Field extends RWMB_Field
 	 * @return string
 	 */
 	static function html( $meta, $field )
-	{
+	{		
 		return sprintf(
 			'<div class="clearfix">
 				<div class="rwmb-slider" id="%s" data-options="%s"></div>
@@ -37,8 +37,8 @@ class RWMB_Slider_Field extends RWMB_Field
 				<input type="hidden" name="%s" value="%s" class="rwmb-slider-value">
 			</div>',
 			$field['id'], esc_attr( wp_json_encode( $field['js_options'] ) ),
-			$field['prefix'], $meta, $field['suffix'],
-			$field['field_name'], $meta
+			$field['prefix'], ( $meta >= 0 ) ? $meta : $field['std'], $field['suffix'],
+			$field['field_name'], ( $meta >= 0 ) ? $meta : $field['std']
 		);
 	}
 
@@ -55,10 +55,12 @@ class RWMB_Slider_Field extends RWMB_Field
 		$field               = wp_parse_args( $field, array(
 			'prefix'     => '',
 			'suffix'     => '',
+			'std'      	 => '',
 			'js_options' => array(),
 		) );
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
 			'range' => 'min', // range = 'min' will add a dark background to sliding part, better UI
+			'value' => $field['std'],
 		) );
 
 		return $field;

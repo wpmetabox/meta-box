@@ -26,11 +26,13 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 		if ( ! is_array( $meta ) )
 			$meta = array( $meta );
 
+		$field   = apply_filters( 'rwmb_autocomplete_field', $field, $meta );
 		$options = $field['options'];
+
 		if ( ! is_string( $field['options'] ) )
 		{
 			$options = array();
-			foreach ( $field['options'] as $value => $label )
+			foreach ( (array) $field['options'] as $value => $label )
 			{
 				$options[] = array(
 					'value' => $value,

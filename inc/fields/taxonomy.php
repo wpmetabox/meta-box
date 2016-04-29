@@ -10,7 +10,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 * @param $field
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		/**
 		 * Backwards compatibility with field args
@@ -25,10 +25,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set default field args
 		 */
+		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'taxonomy'   => 'category',
-			'field_type' => 'select',
-			'query_args' => array(),
 		) );
 
 		/**
@@ -58,7 +57,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		 */
 		$field['clone'] = false;
 
-		$field = parent::normalize( $field );
 		return $field;
 	}
 
@@ -67,7 +65,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_db_fields()
+	public static function get_db_fields()
 	{
 		return array(
 			'parent' => 'parent',
@@ -83,7 +81,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function get_options( $field )
+	public static function get_options( $field )
 	{
 		$options = get_terms( $field['taxonomy'], $field['query_args'] );
 		return $options;
@@ -99,7 +97,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	static function save( $new, $old, $post_id, $field )
+	public static function save( $new, $old, $post_id, $field )
 	{
 		$new = array_unique( array_map( 'intval', (array) $new ) );
 		$new = empty( $new ) ? null : $new;
@@ -115,7 +113,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		$meta = get_the_terms( $post_id, $field['taxonomy'] );
 		$meta = (array) $meta;
@@ -134,7 +132,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array List of post term objects
 	 */
-	static function get_value( $field, $args = array(), $post_id = null )
+	public static function get_value( $field, $args = array(), $post_id = null )
 	{
 		$value = get_the_terms( $post_id, $field['taxonomy'] );
 
@@ -147,32 +145,16 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display unordered list of option labels, not option values
+	 * Get option label
 	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string Link(s) to post
-	 */
-	static function the_value( $field, $args = array(), $post_id = null )
-	{
-		return RWMB_Select_Field::the_value( $field, $args, $post_id );
-	}
-
-	/**
-	 * Get post link to display in the frontend
-	 *
-	 * @param object $value Option value, e.g. term object
-	 * @param int    $index Array index
-	 * @param array  $field Field parameter
+	 * @param string   $value Option value
+	 * @param array    $field Field parameter
 	 *
 	 * @return string
 	 */
-	static function get_option_label( &$value, $index, $field )
+	public static function get_option_label( $value, $field )
 	{
-		$value = sprintf(
+		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_term_link( $value ) ),
 			esc_attr( $value->name ),

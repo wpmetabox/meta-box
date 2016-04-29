@@ -5,11 +5,26 @@
 class RWMB_Range_Field extends RWMB_Number_Field
 {
 	/**
+	 * Get field HTML
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 * @return string
+	 */
+	static function html( $meta, $field )
+	{
+		$output  = parent::html( $meta, $field );
+		$output .= sprintf( '<span class="rwmb-output">%s</span>', $meta );
+		return $output;
+	}
+
+	/**
 	 * Enqueue styles
 	 */
 	static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', array(), RWMB_VER );
+		wp_enqueue_script( 'rwmb-range', RWMB_JS_URL . 'range.js', array(), RWMB_VER, true );
 	}
 
 	/**

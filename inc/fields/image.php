@@ -217,8 +217,6 @@ class RWMB_Image_Field extends RWMB_File_Field
 			'name'        => basename( $path ),
 			'path'        => $path,
 			'url'         => $img_src[0],
-			'width'       => $img_src[1],
-			'height'      => $img_src[2],
 			'full_url'    => wp_get_attachment_url( $file_id ),
 			'title'       => $attachment->post_title,
 			'caption'     => $attachment->post_excerpt,
@@ -229,6 +227,8 @@ class RWMB_Image_Field extends RWMB_File_Field
 		{
 			$info['srcset'] = wp_get_attachment_image_srcset( $file_id );
 		}
+
+		$info = wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
 		return $info;
 	}
 }

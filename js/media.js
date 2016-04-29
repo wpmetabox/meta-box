@@ -49,9 +49,14 @@ jQuery( function ( $ )
 			} );
 
 			//Sort media using sortable
-			this.$el.sortable( { delay: 150 } );
+			this.initSort();
 
 			this.render();
+		},
+
+		initSort: function ()
+		{
+			this.$el.sortable( { delay: 150 } );
 		}
 	} );
 
@@ -81,7 +86,7 @@ jQuery( function ( $ )
 				var maxFiles = this.props.get( 'maxFiles' );
 				if ( maxFiles > 0 && this.collection.length > maxFiles )
 				{
-					this.collection.pop();
+					this.collection.remove( item );
 				}
 			} );
 
@@ -147,6 +152,8 @@ jQuery( function ( $ )
 		initialize: function ( options )
 		{
 			this.props = options.props;
+			if( ! this.props.get( 'maxStatus' ) )
+				this.$el.hide();
 			this.listenTo( this.collection, 'add remove reset', this.render );
 			this.render();
 		},
@@ -172,7 +179,7 @@ jQuery( function ( $ )
 				// Destroy the previous collection frame.
 				if ( this._frame )
 				{
-					this.stopListening( this._frame );
+					//this.stopListening( this._frame );
 					this._frame.dispose();
 				}
 
@@ -186,11 +193,11 @@ jQuery( function ( $ )
 					}
 				} );
 
-				this.listenTo( this._frame, 'select', function ()
+				this._frame.on( 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
 					this.collection.add( selection.models );
-				} );
+				}, this );
 
 				this._frame.open();
 			}

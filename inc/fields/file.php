@@ -138,7 +138,7 @@ class RWMB_File_Field extends RWMB_Field
 			$field['mime_type']
 		);
 
-		foreach ( $files as $attachment_id )
+		foreach ( (array) $files as $attachment_id )
 		{
 			$html .= self::file_html( $attachment_id );
 		}
@@ -356,12 +356,14 @@ class RWMB_File_Field extends RWMB_Field
 			return false;
 		}
 
-		return array(
+		$info = array(
 			'ID'    => $file_id,
 			'name'  => basename( $path ),
 			'path'  => $path,
 			'url'   => wp_get_attachment_url( $file_id ),
 			'title' => get_the_title( $file_id ),
 		);
+
+		return wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
 	}
 }

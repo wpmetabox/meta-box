@@ -40,8 +40,10 @@ class RW_Meta_Box
 		if ( ! is_admin() )
 			return;
 
-		// Assign meta box values to local variables and add it's missed values
-		$this->meta_box = self::normalize( $meta_box );
+		$meta_box           = self::normalize( $meta_box );
+		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
+
+		$this->meta_box = $meta_box;
 		$this->fields   = &$this->meta_box['fields'];
 
 		// Allow users to show/hide meta box
@@ -97,6 +99,8 @@ class RW_Meta_Box
 			return;
 
 		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
+		if( is_rtl() )
+			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 
 		// Load clone script conditionally
 		$fields = self::get_fields( $this->fields );
@@ -305,7 +309,6 @@ class RW_Meta_Box
 
 		/**
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions
-		 *
 		 * @since 4.4.1
 		 */
 		if ( ! empty( $meta_box['pages'] ) )
@@ -318,9 +321,6 @@ class RW_Meta_Box
 		{
 			$meta_box['post_types'] = array( $meta_box['post_types'] );
 		}
-
-		// Set default values for fields
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
 
 		// Allow to add default values for meta box
 		$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );

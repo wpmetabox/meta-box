@@ -16,9 +16,9 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	 *
 	 * @return string
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
-		return is_array( $new ) ? implode( ',', array_unique( $new ) ) : null;
+		return implode( ',', array_unique( (array) $new ) );
 	}
 
 	/**
@@ -31,7 +31,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	 *
 	 * @return string
 	 */
-	static function save( $new, $old, $post_id, $field )
+	public static function save( $new, $old, $post_id, $field )
 	{
 		if ( $new )
 			update_post_meta( $post_id, $field['id'], $new );
@@ -48,10 +48,11 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	 *
 	 * @return array
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		$meta = get_post_meta( $post_id, $field['id'], true );
 		$meta = wp_parse_id_list( $meta );
+		$meta = array_filter( $meta );
 		return $meta;
 	}
 
@@ -65,12 +66,14 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	 *
 	 * @return array List of post term objects
 	 */
-	static function get_value( $field, $args = array(), $post_id = null )
+	public static function get_value( $field, $args = array(), $post_id = null )
 	{
 		if ( ! $post_id )
 			$post_id = get_the_ID();
 
 		$value = self::meta( $post_id, '', $field );
+		if( empty( $value ) )
+			return;
 
 		// Allow to pass more arguments to "get_terms"
 		$args  = wp_parse_args( array(
