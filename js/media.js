@@ -5,53 +5,160 @@ jQuery( function ( $ )
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
-		MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
-		rwmb.test = 'spoon';
+		models = rwmb.models = rwmb.models || {},
+		Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
+	/***
+	 * Controller Model
+	 * Manages data of media field and media models.  Most of the media views will use this to manage the media
+	 */
+	Controller = models.Controller = Backbone.Model.extend( {
+		//Default options
+		defaults: {
+			maxFiles: 0,
+			ids: [],
+			mimeType: '',
+			forceDelete: false,
+			showStatus: true
+		},
 
+		//Initialize Controller model
+		initialize: function ( options )
+		{
+			var that = this;
+			//All numbers, no 0 ids
+			this.set( 'ids', _.without( _.map( this.get( 'ids' ), Number ), 0 ) );
+
+			//Create items collection
+			this.items = new wp.media.model.Attachments();
+
+			//Listen to when media is added to collection
+			this.listenTo( this.items, 'add', function ( item, items )
+			{
+				//Trigger addItem event for outside listeners
+				this.trigger( 'addItem', item );
+
+				//Limit max files
+				var maxFiles = this.get( 'maxFiles' );
+				if ( maxFiles > 0 && items.length > maxFiles )
+				{
+					items.remove( item );
+				}
+
+				//Update length
+				this.set( 'length', this.items.length );
+			} );
+
+			//Listen to when items are removed
+			this.listenTo( this.items, 'remove', function ( item, items )
+			{
+				//Trigger removeItem event
+				this.trigger( 'removeItem', item );
+				//Update length
+				thia.set( 'length', this.items.length );
+			} );
+
+			//Listen for destroy event on controller, delete all models when triggered
+			this.on( 'destroy', function ( e )
+			{
+				if( this.get( 'forceDelete' ) )
+				{
+					this.items.each( function ( item )
+					{
+						item.destroy();
+					} );
+				}
+			} );
+		},
+
+
+		// Method to load media
+		load: function ()
+		{
+			var that = this;
+			//Load initial media
+			if ( !_.isEmpty( this.get( 'ids' ) ) )
+			{
+				this.items.props.set( {
+					query  : true,
+					include: this.get( 'ids' ),
+					orderby: 'post__in',
+					order  : 'ASC',
+					type   : this.get( 'mimeType' ),
+					perPage: this.get( 'maxFiles' ) || -1
+				} );
+				//Get more then trigger ready
+				this.items.more().done( function() {
+					that.trigger( 'ready' );
+				} );
+			}
+			else
+			{
+				//No initial media so ready
+				that.trigger( 'ready' );
+			}
+		},
+
+		//Method to remove media items
+		removeItem: function( item )
+		{
+			this.items.remove( item );
+			if ( this.get( 'forceDelete' ) )
+			{
+				item.destroy();
+			}
+		},
+
+		//Method to add items
+		addItems: function ( items )
+		{
+			this.items.add( items );
+		}
+	} );
+
+	/***
+	 * Media List
+	 * lists media
+	 */
 	MediaList = views.MediaList = Backbone.View.extend( {
 		tagName       	: 'ul',
 		className     	: 'rwmb-media-list',
+
+		//Add item view
 		addItemView: function ( item )
 		{
 			if( ! this.itemViews[item.cid] )
 			{
 				this.itemViews[item.cid] = new this.itemView( {
 					model     : item,
-					collection: this.collection,
-					props     : this.props
+					controller: this.controller
 				} );
 			}
 			this.$el.append( this.itemViews[item.cid].el );
 		},
 
-		render: function ()
+		//Remove item view
+		removeItemView: function ( item )
 		{
-			this.$el.empty();
-			this.collection.each( this.addItemView );
+			if ( this.itemViews[item.cid] )
+			{
+				this.itemViews[item.cid].remove();
+				delete this.itemViews[item.cid];
+			}
 		},
 
 		initialize: function ( options )
 		{
 			var that = this;
 			this.itemViews = {};
-			this.props = options.props;
+			this.controller = options.controller;
 			this.itemView = options.itemView || MediaItem;
 
-			this.listenTo( this.collection, 'add', this.addItemView );
+			this.listenTo( this.controller, 'addItem', this.addItemView );
 
-			this.listenTo( this.collection, 'remove', function ( item, collection )
-			{
-				if ( this.itemViews[item.cid] )
-				{
-					this.itemViews[item.cid].remove();
-					delete this.itemViews[item.cid];
-				}
-			} );
+			this.listenTo( this.controller, 'removeItem', this.removeItemView );
 
 			//Sort media using sortable
 			this.initSort();
-
-			this.render();
 		},
 
 		initSort: function ()
@@ -60,17 +167,23 @@ jQuery( function ( $ )
 		}
 	} );
 
+	/***
+	 * MediaField
+	 * Sets up media field view and subviews
+	 */
 	MediaField = views.MediaField = Backbone.View.extend( {
 		initialize: function ( options )
 		{
 			var that = this;
 			this.$input = $( options.input );
-			this.values = this.$input.val().split( ',' );
-			this.props = new Backbone.Model( this.$el.data() );
-			this.props.set( 'fieldName', this.$input.attr( 'name' ) );
-
-			//Create collection
-			this.collection = new wp.media.model.Attachments();
+			this.controller = new Controller( _.extend(
+				{},
+				this.$el.data(),
+				{
+					fieldName: this.$input.attr( 'name' ) ,
+					ids: this.$input.val().split( ',' )
+				}
+			) );
 
 			//Create views
 			this.createList();
@@ -80,58 +193,35 @@ jQuery( function ( $ )
 			//Render
 			this.render();
 
-			//Limit max files
-			this.listenTo( this.collection, 'add', function ( item, collection )
-			{
-				var maxFiles = this.props.get( 'maxFiles' );
-				if ( maxFiles > 0 && this.collection.length > maxFiles )
-				{
-					this.collection.remove( item );
-				}
-			} );
-
-			//Load initial media
-			if ( !_.isEmpty( this.values ) )
-			{
-				this.collection.props.set( {
-					query  : true,
-					include: this.values,
-					orderby: 'post__in',
-					order  : 'ASC',
-					type   : this.props.get( 'mimeType' ),
-					perPage: this.props.get( 'maxFiles' ) || -1
-				} );
-				this.collection.more();
-			}
+			//Load media
+			this.controller.load();
 
 			//Listen for destroy event on input
 			this.$input
 				.on( 'remove', function(){
-					if ( that.props.get( 'forceDelete' ) )
-					{
-						_.each( _.clone( that.collection.models ), function ( model )
-						{
-							model.destroy();
-						} );
-					}
+					this.controller.destroy();
 				} )
 		},
 
+		//Creates media list
 		createList: function ()
 		{
-			this.list = new MediaList( { collection: this.collection, props: this.props } );
+			this.list = new MediaList( { controller: this.controller } );
 		},
 
+		//Creates button that adds media
 		createAddButton: function ()
 		{
-			this.addButton = new MediaButton( { collection: this.collection, props: this.props } );
+			this.addButton = new MediaButton( { controller: this.controller } );
 		},
 
+		//Creates status
 		createStatus: function ()
 		{
-			this.status = new MediaStatus( { collection: this.collection, props: this.props } );
+			this.status = new MediaStatus( { controller: this.controller } );
 		},
 
+		//Render field and adds sub fields
 		render: function ()
 		{
 			//Empty then add parts
@@ -145,37 +235,48 @@ jQuery( function ( $ )
 		}
 	} );
 
+	/***
+	 * MediaStatus
+	 * Tracks status of media field if maxStatus is greater than 0
+	 */
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
 		tagName   : 'span',
 		className : 'rwmb-media-status',
 		template  : wp.template( 'rwmb-media-status' ),
+
+		//Initialize
 		initialize: function ( options )
 		{
-			this.props = options.props;
-			if( ! this.props.get( 'maxStatus' ) )
+			this.controller = options.controller;
+
+			//Auto hide if showStatus is false
+			if( ! this.controller.get( 'showStatus' ) )
 				this.$el.hide();
-			this.listenTo( this.collection, 'add remove reset', this.render );
+
+			//Rerender if changes happen in controller
+			this.listenTo( this.controller, 'addItem removeItem', this.render );
+
+			//Render
 			this.render();
 		},
 
 		render: function ()
 		{
-			var data = {
-				items   : this.collection.length,
-				maxFiles: this.props.get( 'maxFiles' )
-			};
-			this.$el.html( this.template( data ) );
+			var attrs = _.clone( this.controller.attributes );
+			this.$el.html( this.template( attrs ) );
 		}
 	} );
 
+	/***
+	 * Media Button
+	 * Selects and adds ,edia to controller
+	 */
 	MediaButton = views.MediaButton = Backbone.View.extend( {
 		className: 'rwmb-add-media button',
 		tagName  : 'a',
 		events   : {
 			click: function ()
 			{
-				var models = this.collection.models;
-
 				// Destroy the previous collection frame.
 				if ( this._frame )
 				{
@@ -189,14 +290,14 @@ jQuery( function ( $ )
 					title    : 'Select Media',
 					editing  : true,
 					library  : {
-						type: this.props.get( 'mimeType' )
+						type: this.controller.get( 'mimeType' )
 					}
 				} );
 
 				this._frame.on( 'select', function ()
 				{
 					var selection = this._frame.state().get( 'selection' );
-					this.collection.add( selection.models );
+					this.controller.addItems( selection.models );
 				}, this );
 
 				this._frame.open();
@@ -210,14 +311,16 @@ jQuery( function ( $ )
 
 		initialize: function ( options )
 		{
-			this.props = options.props;
-			this.listenTo( this.collection, 'add remove reset', function ()
+			this.controller = options.controller;
+
+			//Auto hide if ypou reach the max number of media
+			this.listenTo( this.controller, 'change', function ()
 			{
-				var maxFiles = this.props.get( 'maxFiles' );
+				var maxFiles = this.controller.get( 'maxFiles' );
 
 				if ( maxFiles > 0 )
 				{
-					this.$el.toggle( this.collection.length < maxFiles );
+					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
 				}
 			} );
 
@@ -225,33 +328,29 @@ jQuery( function ( $ )
 		}
 	} );
 
+	/***
+	 * MediaItem
+	 * View for individual media items
+	 */
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName   : 'li',
 		className : 'rwmb-media-item',
 		template  : wp.template( 'rwmb-media-item' ),
 		initialize: function ( options )
 		{
-			this.props = options.props;
+			this.controller = options.controller;
 			this.render();
-			this.listenTo( this.model, 'destroy', function ( model )
-			{
-				this.collection.remove( this.model );
-			} )
-			.listenTo( this.model, 'change', function()
+			this.listenTo( this.model, 'change', function()
 			{
 				this.render();
 			});
 		},
 
 		events: {
+			//Event when remove button clicked
 			'click .rwmb-remove-media': function ( e )
 			{
-				this.collection.remove( this.model );
-				if ( this.props.get( 'forceDelete' ) )
-				{
-					this.model.destroy();
-				}
-
+				this.controller.removeItem( this.model );
 				return false;
 			}
 		},
@@ -259,7 +358,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.model.attributes );
-			attrs.fieldName = this.props.get( 'fieldName' );
+			attrs.fieldName = this.controller.get( 'fieldName' );
 			this.$el.html( this.template( attrs ) );
 			return this;
 		}

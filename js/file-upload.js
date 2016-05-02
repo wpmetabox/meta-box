@@ -11,7 +11,7 @@ jQuery( function ( $ )
 	FileUploadField = views.FileUploadField = MediaField.extend( {
 		createAddButton: function ()
 		{
-			this.addButton = new UploadButton( { collection: this.collection, props: this.props } );
+			this.addButton = new UploadButton( { controller: this.controller } );
 		}
 	} );
 
@@ -27,7 +27,7 @@ jQuery( function ( $ )
 
 		initialize: function ( options )
 		{
-			this.props = options.props;
+			this.controller = options.controller;
 			this.el.id = _.uniqueId( 'rwmb-upload-area-');
 			this.render();
 
@@ -45,13 +45,13 @@ jQuery( function ( $ )
 				this.initUploader();
 			}
 
-			this.listenTo( this.collection, 'add remove reset', function ()
+			this.listenTo( this.controller, 'change', function ()
 			{
-				var maxFiles = this.props.get( 'maxFiles' );
+				var maxFiles = this.controller.get( 'maxFiles' );
 
 				if ( maxFiles > 0 )
 				{
-					this.$el.toggle( this.collection.length < maxFiles );
+					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
 				}
 			} );
 		},
@@ -173,7 +173,7 @@ jQuery( function ( $ )
 
 		getExtensions: function ()
 		{
-			var mimeTypes = this.props.get( 'mimeType' ).split(','),
+			var mimeTypes = this.controller.get( 'mimeType' ).split(','),
 				exts = [];
 
 			_.each( mimeTypes, function( current, index )
