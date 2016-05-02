@@ -31,6 +31,12 @@ jQuery( function ( $ )
 			//Create items collection
 			this.items = new wp.media.model.Attachments();
 
+			//Update length
+			this.listenTo( this.items, 'add remove', function()
+			{
+				this.set( 'length', this.items.length );
+			} );
+
 			//Listen to when media is added to collection
 			this.listenTo( this.items, 'add', function ( item, items )
 			{
@@ -43,9 +49,6 @@ jQuery( function ( $ )
 				{
 					items.remove( item );
 				}
-
-				//Update length
-				this.set( 'length', this.items.length );
 			} );
 
 			//Listen to when items are removed
@@ -53,8 +56,6 @@ jQuery( function ( $ )
 			{
 				//Trigger removeItem event
 				this.trigger( 'removeItem', item );
-				//Update length
-				thia.set( 'length', this.items.length );
 			} );
 
 			//Listen for destroy event on controller, delete all models when triggered
