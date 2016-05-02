@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base field class which defines all necessary methods.
  * Fields must inherit this class and overwrite methods with its own.
@@ -106,7 +107,7 @@ abstract class RWMB_Field
 		$html = RWMB_Core::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended
-		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'] ;
+		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
 		if ( 'hidden' === $field['type'] )
 			$classes .= ' hidden';
 		if ( ! empty( $field['required'] ) )
@@ -304,13 +305,15 @@ abstract class RWMB_Field
 		// If field is cloneable, value is saved as a single entry in the database
 		if ( $field['clone'] )
 		{
-			// Reset indexes
-			$new = array_values( (array) $new );
+			// Remove empty values
+			$new = (array) $new;
 			foreach ( $new as $k => $v )
 			{
-				if ( '' === $v )
+				if ( '' === $v || array() === $v )
 					unset( $new[$k] );
 			}
+			// Reset indexes
+			$new = array_values( $new );
 			update_post_meta( $post_id, $name, $new );
 			return;
 		}
@@ -400,14 +403,18 @@ abstract class RWMB_Field
 	static function render_attributes( $attributes )
 	{
 		$output = '';
+		
 		foreach ( $attributes as $key => $value )
 		{
 			if ( false === $value || '' === $value )
-			{
 				continue;
-			}
+						
+			if ( is_array( $value ) )
+				$value = json_encode( $value );
+
 			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
 		}
+
 		return $output;
 	}
 
