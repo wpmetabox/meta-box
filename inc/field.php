@@ -52,46 +52,7 @@ abstract class RWMB_Field
 		// Cloneable fields
 		if ( $field['clone'] )
 		{
-			$field_html = '';
-
-			/**
-			 * Note: $meta must contain value so that the foreach loop runs!
-			 * @see meta()
-			 */
-			foreach ( $meta as $index => $sub_meta )
-			{
-				$sub_field               = $field;
-				$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
-				if ( $index > 0 )
-				{
-					if ( isset( $sub_field['address_field'] ) )
-						$sub_field['address_field'] = $field['address_field'] . "_{$index}";
-					$sub_field['id'] = $field['id'] . "_{$index}";
-				}
-				if ( $field['multiple'] )
-					$sub_field['field_name'] .= '[]';
-
-				// Wrap field HTML in a div with class="rwmb-clone" if needed
-				$class     = "rwmb-clone rwmb-{$field['type']}-clone";
-				$sort_icon = '';
-				if ( $field['sort_clone'] )
-				{
-					$class .= ' rwmb-sort-clone';
-					$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
-				}
-				$input_html = "<div class='$class'>" . $sort_icon;
-
-				// Call separated methods for displaying each type of field
-				$input_html .= call_user_func( array( $field_class, 'html' ), $sub_meta, $sub_field );
-				$input_html = RWMB_Core::filter( 'html', $input_html, $sub_field, $sub_meta );
-
-				// Remove clone button
-				$input_html .= call_user_func( array( $field_class, 'remove_clone_button' ), $sub_field );
-
-				$input_html .= '</div>';
-
-				$field_html .= $input_html;
-			}
+			$field_html =  RWMB_Clone::html( $meta, $field );
 		}
 		// Non-cloneable fields
 		else
@@ -403,12 +364,12 @@ abstract class RWMB_Field
 	static function render_attributes( $attributes )
 	{
 		$output = '';
-		
+
 		foreach ( $attributes as $key => $value )
 		{
 			if ( false === $value || '' === $value )
 				continue;
-						
+
 			if ( is_array( $value ) )
 				$value = json_encode( $value );
 

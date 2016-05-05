@@ -272,7 +272,7 @@ class RW_Meta_Box
 			$new    = isset( $_POST[$name] ) ? $_POST[$name] : ( $single ? '' : array() );
 
 			// Allow field class change the value
-			$new = call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );
+			$new = $field['clone'] ? RWMB_Clone::value( $new, $old, $post_id, $field ) :  call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );
 			$new = RWMB_Core::filter( 'value', $new, $field, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one
