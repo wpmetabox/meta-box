@@ -165,6 +165,12 @@ jQuery( function ( $ )
 		initSort: function ()
 		{
 			this.$el.sortable( { delay: 150 } );
+		},
+
+		render: function()
+		{
+			this.$el.empty();
+			return this;
 		}
 	} );
 
@@ -225,14 +231,10 @@ jQuery( function ( $ )
 		//Render field and adds sub fields
 		render: function ()
 		{
-			//Empty then add parts
-			this.$el
-				.empty()
-				.append(
-					this.list.el,
-					this.addButton.el,
-					this.status.el
-				);
+			this.list.setElement( this.$( '.rwmb-media-list' ) ).render();
+			this.status.setElement( this.$( '.rwmb-media-status' ) ).render();
+			this.$( '.rwmb-add-region' ).html( this.addButton.el );
+			this.addButton.render();
 		}
 	} );
 
@@ -324,8 +326,6 @@ jQuery( function ( $ )
 					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
 				}
 			} );
-
-			this.render();
 		}
 	} );
 

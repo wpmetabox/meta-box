@@ -51,27 +51,39 @@ class RWMB_Media_Field extends RWMB_Field
 	static function html( $meta, $field )
 	{
 		$meta       = (array) $meta;
-		$meta       = implode( ',', $meta );
-		$attributes = $load_test_attr = self::get_attributes( $field, $meta );
-		$load_test_attr['disabled'] = false;
-		$load_test_attr['class'] = 'rwmb-load-test';
-		$load_test_attr['value'] = -1;
-		$load_test_attr['name'] = $field['field_name'];
-
+		$attributes = self::get_attributes( $field, implode( ',', $meta ) );
 
 		$html = sprintf(
 			'<input %s>
-			<input %s>
-			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s" data-show-status="%s"></div>',
+			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s" data-show-status="%s">
+				<ul class="rwmb-media-list">%s</ul>
+				<div class="rwmb-add-region"></div>
+				<div class="rwmb-media-status"></div>
+			</div>',
 			self::render_attributes( $attributes ),
-			self::render_attributes( $load_test_attr ),
 			$field['mime_type'],
 			$field['max_file_uploads'],
 			$field['force_delete'] ? 'true' : 'false',
-			$field['max_status']
+			$field['max_status'],
+			self::preload_list( $meta, $field )
 		);
 
 		return $html;
+	}
+
+	static function preload_list( $meta, $field )
+	{
+		$output = '';
+		foreach( (array) $meta as $value )
+		{
+			$attributes = self::get_attributes( $field, $value );
+			$output .= sprintf( '<li><input %s></li>',
+				self::render_attributes( $attributes ),
+				$value
+			);
+		}
+
+		return $output;
 	}
 
 	/**
@@ -148,33 +160,6 @@ class RWMB_Media_Field extends RWMB_Field
 	{
 		delete_post_meta( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );
-	}
-
-	/**
-	 * Get meta values to save
-	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
-	 *
-	 * @return array|mixed
-	 */
-	static function value( $new, $old, $post_id, $field )
-	{
-		if( $field['clone'] )
-		{
-			foreach( (array) $new as $n )
-			{
-				if( -1 === intval( $n ) )
-					return $old;
-			}
-		}
-
-		if( -1 === intval( $new ) )
-			return $old;
-
-		return $new;
 	}
 
 	/**

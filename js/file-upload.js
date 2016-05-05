@@ -22,15 +22,6 @@ jQuery( function ( $ )
 		render   : function ()
 		{
 			this.$el.html( this.template( {} ) );
-			return this;
-		},
-
-		initialize: function ( options )
-		{
-			this.controller = options.controller;
-			this.el.id = _.uniqueId( 'rwmb-upload-area-');
-			this.render();
-
 			//Areas
 			this.dropzone = this.el;
 			this.browser  = this.$('.rwmb-browse-button')[0];
@@ -44,6 +35,13 @@ jQuery( function ( $ )
 			if ( this.supported ) {
 				this.initUploader();
 			}
+			return this;
+		},
+
+		initialize: function ( options )
+		{
+			this.controller = options.controller;
+			this.el.id = _.uniqueId( 'rwmb-upload-area-');
 
 			this.listenTo( this.controller, 'change', function ()
 			{
