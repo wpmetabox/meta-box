@@ -162,15 +162,6 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		if( $field['clone'] )
-		{
-			foreach( (array) $new as $n )
-			{
-				if( -1 === intval( $n ) )
-					return $old;
-			}
-		}
-
 		if( -1 === intval( $new ) )
 			return $old;
 

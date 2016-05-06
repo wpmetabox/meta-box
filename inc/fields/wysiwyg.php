@@ -31,20 +31,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		if ( $field['raw'] )
-		{
-			$meta = $new;
-		}
-		elseif ( $field['clone'] )
-		{
-			$meta = array_map( 'wpautop', $new );
-		}
-		else
-		{
-			$meta = wpautop( $new );
-		}
-
-		return $meta;
+		return  $field['raw'] ? $new : wpautop( $new );
 	}
 
 	/**

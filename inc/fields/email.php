@@ -45,6 +45,6 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		return $field['clone'] ? array_map( 'sanitize_email', (array) $new ) : sanitize_email( $new );
+		return sanitize_email( $new );
 	}
 }

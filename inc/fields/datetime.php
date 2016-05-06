@@ -145,15 +145,6 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		if ( ! $field['timestamp'] )
 			return $new;
 
-		if ( $field['clone'] )
-		{
-			foreach ( $new as $key => $value )
-			{
-				$new[$key] = isset( $value['timestamp'] ) ? $value['timestamp'] : null;
-			}
-			return $new;
-		}
-
 		return isset( $new['timestamp'] ) ? $new['timestamp'] : null;
 	}
 
