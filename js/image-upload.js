@@ -12,7 +12,7 @@ jQuery( function ( $ )
 	ImageUploadField = views.ImageUploadField = ImageField.extend( {
 		createAddButton: function ()
 		{
-			this.addButton = new UploadButton( { collection: this.collection, props: this.props } );
+			this.addButton = new UploadButton( { controller: this.controller } );
 		}
 	} );
 

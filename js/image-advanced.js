@@ -8,18 +8,19 @@ jQuery( function ( $ )
 		MediaField = views.MediaField,
 		MediaItem = views.MediaItem,
 		MediaList = views.MediaList,
-		ImageField, ImageList, ImageItem;
+		ImageField;
 
 	ImageField = views.ImageField = MediaField.extend( {
 		createList: function ()
 		{
-			this.list = new MediaList( { collection: this.collection, props: this.props, itemView: ImageItem } );
+			this.list = new MediaList( {
+				controller: this.controller,
+				itemView: MediaItem.extend( {
+					className: 'rwmb-image-item',
+					template : wp.template( 'rwmb-image-item' )
+				} )
+			} );
 		}
-	} );
-
-	ImageItem = views.ImageItem = MediaItem.extend( {
-		className: 'rwmb-image-item',
-		template : wp.template( 'rwmb-image-item' )
 	} );
 
 	/**
