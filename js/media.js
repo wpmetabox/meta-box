@@ -32,31 +32,15 @@ jQuery( function ( $ )
 			// Create items collection
 			this.items = new wp.media.model.Attachments();
 
-			// Update length
-			this.listenTo( this.items, 'add remove', function()
-			{
-				this.set( 'length', this.items.length );
-			} );
-
 			// Listen to when media is added to collection
-			this.listenTo( this.items, 'add', function ( item, items )
+			this.listenTo( this.items, 'add', function ( item )
 			{
-				// Trigger addItem event for outside listeners
-				this.trigger( 'addItem', item );
-
 				// Limit max files
 				var maxFiles = this.get( 'maxFiles' );
-				if ( maxFiles > 0 && items.length > maxFiles )
+				if ( maxFiles > 0 && this.items.length > maxFiles )
 				{
-					items.remove( item );
+					this.items.remove( item );
 				}
-			} );
-
-			// Listen to when items are removed
-			this.listenTo( this.items, 'remove', function ( item, items )
-			{
-				// Trigger removeItem event
-				this.trigger( 'removeItem', item );
 			} );
 
 			// Listen for destroy event on controller, delete all models when triggered
@@ -154,9 +138,9 @@ jQuery( function ( $ )
 			this.controller = options.controller;
 			this.itemView = options.itemView || MediaItem;
 
-			this.listenTo( this.controller, 'addItem', this.addItemView );
+			this.listenTo( this.controller.items, 'add', this.addItemView );
 
-			this.listenTo( this.controller, 'removeItem', this.removeItemView );
+			this.listenTo( this.controller.items, 'remove', this.removeItemView );
 
 			// Sort media using sortable
 			this.initSort();
@@ -253,7 +237,7 @@ jQuery( function ( $ )
 				this.$el.hide();
 
 			//Rerender if changes happen in controller
-			this.listenTo( this.controller, 'addItem removeItem', this.render );
+			this.listenTo( this.controller.items, 'add remove', this.render );
 
 			//Render
 			this.render();
@@ -262,6 +246,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.controller.attributes );
+			attrs.length = this.controller.items.length;
 			this.$el.html( this.template( attrs ) );
 		}
 	} );
@@ -312,14 +297,14 @@ jQuery( function ( $ )
 		{
 			this.controller = options.controller;
 
-			// Auto hide if ypou reach the max number of media
-			this.listenTo( this.controller, 'change', function ()
+			// Auto hide if you reach the max number of media
+			this.listenTo( this.controller.items, 'add remove', function ()
 			{
 				var maxFiles = this.controller.get( 'maxFiles' );
 
 				if ( maxFiles > 0 )
 				{
-					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
+					this.$el.toggle( this.controller.items.length < maxFiles );
 				}
 			} );
 

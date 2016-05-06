@@ -45,13 +45,13 @@ jQuery( function ( $ )
 				this.initUploader();
 			}
 
-			this.listenTo( this.controller, 'change', function ()
+			this.listenTo( this.controller.items, 'add remove', function ()
 			{
 				var maxFiles = this.controller.get( 'maxFiles' );
 
 				if ( maxFiles > 0 )
 				{
-					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
+					this.$el.toggle( this.controller.items.length < maxFiles );
 				}
 			} );
 		},
