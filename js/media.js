@@ -6,14 +6,13 @@ jQuery( function ( $ )
 
 	var views = rwmb.views = rwmb.views || {},
 		MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
-		rwmb.test = 'spoon';
 
 	MediaList = views.MediaList = Backbone.View.extend( {
-		tagName       	: 'ul',
-		className     	: 'rwmb-media-list',
+		tagName    : 'ul',
+		className  : 'rwmb-media-list',
 		addItemView: function ( item )
 		{
-			if( ! this.itemViews[item.cid] )
+			if ( !this.itemViews[item.cid] )
 			{
 				this.itemViews[item.cid] = new this.itemView( {
 					model     : item,
@@ -32,7 +31,6 @@ jQuery( function ( $ )
 
 		initialize: function ( options )
 		{
-			var that = this;
 			this.itemViews = {};
 			this.props = options.props;
 			this.itemView = options.itemView || MediaItem;
@@ -48,7 +46,7 @@ jQuery( function ( $ )
 				}
 			} );
 
-			//Sort media using sortable
+			// Sort media using sortable
 			this.initSort();
 
 			this.render();
@@ -69,18 +67,18 @@ jQuery( function ( $ )
 			this.props = new Backbone.Model( this.$el.data() );
 			this.props.set( 'fieldName', this.$input.attr( 'name' ) );
 
-			//Create collection
+			// Create collection
 			this.collection = new wp.media.model.Attachments();
 
-			//Create views
+			// Create views
 			this.createList();
-			this.createAddButton()
+			this.createAddButton();
 			this.createStatus();
 
-			//Render
+			// Render
 			this.render();
 
-			//Limit max files
+			// Limit max files
 			this.listenTo( this.collection, 'add', function ( item, collection )
 			{
 				var maxFiles = this.props.get( 'maxFiles' );
@@ -90,7 +88,7 @@ jQuery( function ( $ )
 				}
 			} );
 
-			//Load initial media
+			// Load initial media
 			if ( !_.isEmpty( this.values ) )
 			{
 				this.collection.props.set( {
@@ -104,17 +102,18 @@ jQuery( function ( $ )
 				this.collection.more();
 			}
 
-			//Listen for destroy event on input
-			this.$input
-				.on( 'remove', function(){
-					if ( that.props.get( 'forceDelete' ) )
-					{
-						_.each( _.clone( that.collection.models ), function ( model )
-						{
-							model.destroy();
-						} );
-					}
-				} )
+			// Listen for destroy event on input
+			this.$input.on( 'remove', function ()
+			{
+				if ( !that.props.get( 'forceDelete' ) )
+				{
+					return;
+				}
+				_.each( _.clone( that.collection.models ), function ( model )
+				{
+					model.destroy();
+				} );
+			} );
 		},
 
 		createList: function ()
@@ -134,7 +133,7 @@ jQuery( function ( $ )
 
 		render: function ()
 		{
-			//Empty then add parts
+			// Empty then add parts
 			this.$el
 				.empty()
 				.append(
@@ -152,7 +151,7 @@ jQuery( function ( $ )
 		initialize: function ( options )
 		{
 			this.props = options.props;
-			if( ! this.props.get( 'maxStatus' ) )
+			if ( !this.props.get( 'maxStatus' ) )
 				this.$el.hide();
 			this.listenTo( this.collection, 'add remove reset', this.render );
 			this.render();
@@ -169,17 +168,15 @@ jQuery( function ( $ )
 	} );
 
 	MediaButton = views.MediaButton = Backbone.View.extend( {
-		className: 'rwmb-add-media button',
-		tagName  : 'a',
-		events   : {
+		className : 'rwmb-add-media button',
+		tagName   : 'a',
+		events    : {
 			click: function ()
 			{
-				var models = this.collection.models;
-
 				// Destroy the previous collection frame.
 				if ( this._frame )
 				{
-					//this.stopListening( this._frame );
+					// this.stopListening( this._frame );
 					this._frame.dispose();
 				}
 
@@ -202,19 +199,17 @@ jQuery( function ( $ )
 				this._frame.open();
 			}
 		},
-		render   : function ()
+		render    : function ()
 		{
 			this.$el.text( i18nRwmbMedia.add );
 			return this;
 		},
-
 		initialize: function ( options )
 		{
 			this.props = options.props;
 			this.listenTo( this.collection, 'add remove reset', function ()
 			{
 				var maxFiles = this.props.get( 'maxFiles' );
-
 				if ( maxFiles > 0 )
 				{
 					this.$el.toggle( this.collection.length < maxFiles );
@@ -234,17 +229,17 @@ jQuery( function ( $ )
 			this.props = options.props;
 			this.render();
 			this.listenTo( this.model, 'destroy', function ( model )
-			{
-				this.collection.remove( this.model );
-			} )
-			.listenTo( this.model, 'change', function()
-			{
-				this.render();
-			});
+				{
+					this.collection.remove( this.model );
+				} )
+				.listenTo( this.model, 'change', function ()
+				{
+					this.render();
+				} );
 		},
 
 		events: {
-			'click .rwmb-remove-media': function ( e )
+			'click .rwmb-remove-media': function ()
 			{
 				this.collection.remove( this.model );
 				if ( this.props.get( 'forceDelete' ) )
