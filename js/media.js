@@ -170,6 +170,8 @@ jQuery( function ( $ )
 				}
 			) );
 
+			this.$input.val( '' );
+
 			// Create views
 			this.createList();
 			this.createAddButton()
