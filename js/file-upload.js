@@ -45,14 +45,10 @@ jQuery( function ( $ )
 				this.initUploader();
 			}
 
-			this.listenTo( this.controller.items, 'add remove', function ()
+			// Auto hide if you reach the max number of media
+			this.listenTo( this.controller, 'change', function ()
 			{
-				var maxFiles = this.controller.get( 'maxFiles' );
-
-				if ( maxFiles > 0 )
-				{
-					this.$el.toggle( this.controller.items.length < maxFiles );
-				}
+				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
 		},
 
