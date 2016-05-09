@@ -32,15 +32,9 @@ jQuery( function ( $ )
 			// Create items collection
 			this.items = new wp.media.model.Attachments();
 
-			// Listen to when media is added to collection
-			this.listenTo( this.items, 'add', function ( item )
+			this.listenTo( this.items, 'add remove', function()
 			{
-				// Limit max files
-				var maxFiles = this.get( 'maxFiles' );
-				if ( maxFiles > 0 && this.items.length > maxFiles )
-				{
-					this.items.remove( item );
-				}
+				this.set( 'length', this.items.length );
 			} );
 
 			// Listen for destroy event on controller, delete all models when triggered
@@ -73,9 +67,7 @@ jQuery( function ( $ )
 					perPage: this.get( 'maxFiles' ) || -1
 				} );
 				// Get more then trigger ready
-				this.items.more().done( function() {
-					that.trigger( 'ready' );
-				} );
+				this.items.more();
 			}
 			else
 			{
@@ -88,15 +80,22 @@ jQuery( function ( $ )
 		removeItem: function( item )
 		{
 			this.items.remove( item );
-			if ( this.get( 'forceDelete' ) )
-			{
+			if( this.get( 'forceDelete' ) )
 				item.destroy();
-			}
 		},
 
 		// Method to add items
 		addItems: function ( items )
 		{
+			if( this.get( 'maxFiles' ) )
+			{
+				var left = this.get( 'maxFiles' ) - this.items.length;
+				if( left <= 0 )
+					return;
+
+				items = _.difference( items, this.items.models );
+				items = _.first( items, left );
+			}
 			this.items.add( items );
 		}
 	} );
@@ -112,38 +111,42 @@ jQuery( function ( $ )
 		//Add item view
 		addItemView: function ( item )
 		{
-			if ( ! this.itemViews[item.cid] )
-			{
-				this.itemViews[item.cid] = new this.itemView( {
-					model     : item,
-					controller: this.controller
-				} );
-			}
-			this.$el.append( this.itemViews[item.cid].el );
+			var view = this._views[item.cid] = new this.itemView( {
+				model     : item,
+				controller: this.controller
+			} );
+
+			this.$el.append( this._views[item.cid].el );
 		},
 
 		//Remove item view
 		removeItemView: function ( item )
 		{
-			if ( this.itemViews[item.cid] )
+			var cid = item.cid,
+				view = this._views[cid];
+
+			if ( this._views[cid] )
 			{
-				this.itemViews[item.cid].remove();
-				delete this.itemViews[item.cid];
+				this._views[item.cid].remove();
 			}
 		},
 
 		initialize: function ( options )
 		{
-			this.itemViews = {};
+			this._views = {};
 			this.controller = options.controller;
 			this.itemView = options.itemView || MediaItem;
 
-			this.listenTo( this.controller.items, 'add', this.addItemView );
-
-			this.listenTo( this.controller.items, 'remove', this.removeItemView );
+			this.setEvents();
 
 			// Sort media using sortable
 			this.initSort();
+		},
+
+		setEvents: function()
+		{
+			this.listenTo( this.controller.items, 'add', this.addItemView );
+			this.listenTo( this.controller.items, 'remove', this.removeItemView );
 		},
 
 		initSort: function ()
@@ -248,7 +251,6 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.controller.attributes );
-			attrs.length = this.controller.items.length;
 			this.$el.html( this.template( attrs ) );
 		}
 	} );
@@ -330,6 +332,8 @@ jQuery( function ( $ )
 			{
 				this.render();
 			} );
+
+			this.$el.data( 'id', this.model.cid);
 		},
 
 		events: {
