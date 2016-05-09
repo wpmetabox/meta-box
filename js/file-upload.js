@@ -45,13 +45,13 @@ jQuery( function ( $ )
 				this.initUploader();
 			}
 
-			this.listenTo( this.controller, 'change', function ()
+			this.listenTo( this.controller.items, 'add remove', function ()
 			{
 				var maxFiles = this.controller.get( 'maxFiles' );
 
 				if ( maxFiles > 0 )
 				{
-					this.$el.toggle( this.controller.get( 'length' ) < maxFiles );
+					this.$el.toggle( this.controller.items.length < maxFiles );
 				}
 			} );
 		},
@@ -126,7 +126,7 @@ jQuery( function ( $ )
 					// so listeners to the upload queue can track and display upload progress.
 					file.attachment = wp.media.model.Attachment.create( attributes );
 					wp.Uploader.queue.add( file.attachment );
-					self.controller.addItems( file.attachment );
+					self.controller.addItems( [file.attachment] );
 				});
 
 				up.refresh();

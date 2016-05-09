@@ -61,10 +61,9 @@ class RWMB_Media_Field extends RWMB_Field
 
 		$html = sprintf(
 			'<input %s>
-			<input %s>
+
 			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s" data-show-status="%s"></div>',
 			self::render_attributes( $attributes ),
-			self::render_attributes( $load_test_attr ),
 			$field['mime_type'],
 			$field['max_file_uploads'],
 			$field['force_delete'] ? 'true' : 'false',
