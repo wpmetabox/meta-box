@@ -27,7 +27,7 @@ jQuery( function ( $ )
 		{
 			var that = this;
 			// All numbers, no 0 ids
-			this.set( 'ids', _.without( _.map( this.get( 'ids' ), Number ), 0 ) );
+			this.set( 'ids', _.without( _.map( this.get( 'ids' ), Number ), 0, -1 ) );
 
 			// Create items collection
 			this.items = new wp.media.model.Attachments();
@@ -91,7 +91,7 @@ jQuery( function ( $ )
 			{
 				var left = this.get( 'maxFiles' ) - this.items.length;
 				if( left <= 0 )
-					return;
+					return this;
 
 				items = _.difference( items, this.items.models );
 				items = _.first( items, left );
