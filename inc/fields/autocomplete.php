@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Autocomplete field class.
  */
@@ -11,7 +12,16 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 	{
 		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
+
+		/**
+		 * Prevent loading localized string twice.
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( 'rwmb-autocomplete', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
+		}
 	}
 
 	/**

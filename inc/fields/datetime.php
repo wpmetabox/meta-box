@@ -75,14 +75,26 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', $deps, RWMB_VER, true );
 		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', $deps, RWMB_VER, true );
 		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', array(
-			'locale'      => $locale,
-			'localeShort' => $locale_short,
-		) );
-		wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array(
-			'locale'      => $locale,
-			'localeShort' => $locale_short,
-		) );
+
+		/**
+		 * Prevent loading localized string twice.
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( 'rwmb-datetime', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', array(
+				'locale'      => $locale,
+				'localeShort' => $locale_short,
+			) );
+		}
+		if ( ! $wp_scripts->get_data( 'rwmb-time', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array(
+				'locale'      => $locale,
+				'localeShort' => $locale_short,
+			) );
+		}
 	}
 
 	/**
