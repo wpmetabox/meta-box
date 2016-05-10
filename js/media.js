@@ -254,7 +254,6 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.controller.attributes );
-			console.log(attrs);
 			this.$el.html( this.template( attrs ) );
 		}
 	} );

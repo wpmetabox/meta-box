@@ -46,7 +46,7 @@ jQuery( function ( $ )
 			}
 
 			// Auto hide if you reach the max number of media
-			this.listenTo( this.controller, 'change', function ()
+			this.listenTo( this.controller, 'change:full', function ()
 			{
 				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
