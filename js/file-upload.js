@@ -35,13 +35,7 @@ jQuery( function ( $ )
 			this.dropzone = this.el;
 			this.browser  = this.$('.rwmb-browse-button')[0];
 
-			this.supports = {
-				upload: wp.Uploader.browser.supported
-			};
-
-			this.supported = this.supports.upload;
-
-			if ( this.supported ) {
+			if ( wp.Uploader.browser.supported ) {
 				this.initUploader();
 			}
 
