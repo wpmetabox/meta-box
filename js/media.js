@@ -15,11 +15,12 @@ jQuery( function ( $ )
 	Controller = models.Controller = Backbone.Model.extend( {
 		//Default options
 		defaults: {
-			maxFiles: 0,
-			ids: [],
-			mimeType: '',
-			forceDelete: false,
-			showStatus: true
+			maxFiles:     0,
+			ids:          [],
+			mimeType:     '',
+			forceDelete:  false,
+			showStatus:   true,
+			length:       0
 		},
 
 		//Initialize Controller model
@@ -37,7 +38,8 @@ jQuery( function ( $ )
 				var items = this.get( 'items' ),
 					length = items.length,
 					max = this.get( 'maxFiles' );
-				this.set( 'length', items.length );
+
+				this.set( 'length', length );
 				this.set( 'full',  max > 0 && length >= max );
 			} );
 
@@ -243,7 +245,7 @@ jQuery( function ( $ )
 				this.$el.hide();
 
 			//Rerender if changes happen in controller
-			this.listenTo( this.controller, 'update', this.render );
+			this.listenTo( this.controller, 'change:length', this.render );
 
 			//Render
 			this.render();
@@ -252,6 +254,7 @@ jQuery( function ( $ )
 		render: function ()
 		{
 			var attrs = _.clone( this.controller.attributes );
+			console.log(attrs);
 			this.$el.html( this.template( attrs ) );
 		}
 	} );
@@ -303,7 +306,7 @@ jQuery( function ( $ )
 			this.controller = options.controller;
 
 			// Auto hide if you reach the max number of media
-			this.listenTo( this.controller, 'change', function ()
+			this.listenTo( this.controller, 'change:full', function ()
 			{
 				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
