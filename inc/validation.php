@@ -38,8 +38,16 @@ class RWMB_Validation
 	{
 		wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-validate', 'rwmbValidate', array(
-			'summaryMessage' => __( 'Please correct the errors highlighted below and try again.', 'meta-box' ),
-		) );
+		/**
+		 * Prevent loading localized string twice.
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( 'rwmb-validate', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-validate', 'rwmbValidate', array(
+				'summaryMessage' => __( 'Please correct the errors highlighted below and try again.', 'meta-box' ),
+			) );
+		}
 	}
 }
