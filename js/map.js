@@ -81,6 +81,12 @@
 				that.marker.setPosition( event.latLng );
 				that.updateCoordinate( event.latLng );
 			} );
+
+			google.maps.event.addListener( this.map, 'zoom_changed', function ( event )
+			{
+				that.updateCoordinate( that.marker.getPosition() );
+			} );
+
 			google.maps.event.addListener( this.marker, 'drag', function ( event )
 			{
 				that.updateCoordinate( event.latLng );
@@ -166,7 +172,8 @@
 		// Update coordinate to input field
 		updateCoordinate  : function ( latLng )
 		{
-			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() );
+			var zoom = this.map.getZoom();
+			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom );
 		},
 
 		// Find coordinates by address
