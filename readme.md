@@ -85,7 +85,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ***
 
-### [![phpstorm](https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png)](https://www.jetbrains.com/phpstorm/)
+**Proudly sponsored by PHPStorm - The best IDE for PHP (and WordPress)**
+
+### [![phpstorm](http://i.imgur.com/U4F8EGD.png)](https://www.jetbrains.com/phpstorm/)
 
 ***
 
