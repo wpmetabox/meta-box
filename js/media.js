@@ -117,7 +117,7 @@ jQuery( function ( $ )
 		//Add item view
 		addItemView: function ( item )
 		{
-			var view = this._views[item.cid] = this._views[item.cid] || new this.itemView( {
+			var view = this._views[item.cid] = new this.itemView( {
 				model     : item,
 				controller: this.controller
 			} );
@@ -128,11 +128,11 @@ jQuery( function ( $ )
 		//Remove item view
 		removeItemView: function ( item )
 		{
-			var cid = item.cid,
-				view = this._views[cid];
-
-			if ( view )
-				view.remove();
+			if ( this._views[item.cid] )
+			{
+				this._views[item.cid].remove();
+				delete this._views[item.cid];
+			}
 		},
 
 		initialize: function ( options )
