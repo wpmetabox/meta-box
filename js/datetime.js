@@ -18,7 +18,7 @@ jQuery( function ( $ )
 		if ( $timestamp.length )
 		{
 			var $picker = $inline.length ? $inline : $this;
-			options.onSelect = function ()
+			options.onClose = function ()
 			{
 				$timestamp.val( getTimestamp( $picker.datetimepicker( 'getDate' ) ) );
 			};
