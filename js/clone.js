@@ -18,7 +18,7 @@ jQuery( function ( $ )
 
 				// Name attribute
 				var name = $field.attr( 'name' );
-				if ( name && !$field.closest( '.rwmb-group-clone' ) )
+				if ( name && !$field.closest( '.rwmb-group-clone' ).length )
 				{
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
