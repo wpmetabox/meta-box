@@ -1,5 +1,4 @@
-/* global jQuery, rwmb_cloneable_editors */
-
+/* global jQuery */
 jQuery( function ( $ )
 {
 	'use strict';
@@ -19,7 +18,7 @@ jQuery( function ( $ )
 
 				// Name attribute
 				var name = $field.attr( 'name' );
-				if ( name )
+				if ( name && !$field.closest( '.rwmb-group-clone' ) )
 				{
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
@@ -121,6 +120,10 @@ jQuery( function ( $ )
 
 		// Insert Clone
 		$clone.insertAfter( $last );
+
+		// Trigger custom event for the clone instance. Required for Group extension to update sub fields.
+		$clone.trigger( 'clone_instance', nextIndex );
+
 		// Set fields index. Must run before trigger clone event.
 		cloneIndex.set( $clone, nextIndex );
 
