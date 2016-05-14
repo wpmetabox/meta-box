@@ -191,16 +191,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			foreach ( $meta as $key => $value )
 			{
 				$meta[$key] = array(
-					'timestamp' => $value,
-					'formatted' => date( call_user_func( $method, $field ), intval( $value ) ),
+					'timestamp' => ( $value != "" ) ? $value : null,
+					'formatted' => ( $value != "" ) ? date( call_user_func( $method, $field ), intval( $value ) ) : "",
 				);
 			}
 		}
 		else
 		{
 			$meta = array(
-				'timestamp' => $meta,
-				'formatted' => date( call_user_func( $method, $field ), intval( $meta ) ),
+				'timestamp' => ( $meta != "" ) ? $meta : null,
+				'formatted' => ( $meta != "" ) ? date( call_user_func( $method, $field ), intval( $meta ) ) : "",
 			);
 		}
 		return $meta;

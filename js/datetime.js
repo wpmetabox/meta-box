@@ -48,6 +48,8 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
+		if(date===null)
+			return "";
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
