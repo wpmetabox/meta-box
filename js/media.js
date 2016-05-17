@@ -144,7 +144,7 @@ jQuery( function ( $ )
 			this.setEvents();
 
 			// Sort media using sortable
-			this.initSort();
+			this.initSortable();
 		},
 
 		setEvents: function()
@@ -153,9 +153,37 @@ jQuery( function ( $ )
 			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
 		},
 
-		initSort: function ()
+		initSortable: function ()
 		{
-			this.$el.sortable( { delay: 150 } );
+			var collection = this.controller.get( 'items' );
+			this.$el.sortable( {
+				// Change the position of the attachment as soon as the
+				// mouse pointer overlaps a thumbnail.
+				tolerance: 'pointer',
+
+				// Record the initial `index` of the dragged model.
+				start: function( event, ui ) {
+					ui.item.data('sortableIndexStart', ui.item.index());
+				},
+
+				// Update the model's index in the collection.
+				// Do so silently, as the view is already accurate.
+				update: function( event, ui ) {
+					var model = collection.at( ui.item.data('sortableIndexStart') );
+
+					// Silently shift the model to its new index.
+					collection.remove( model, {
+						silent: true
+					});
+					collection.add( model, {
+						silent: true,
+						at:     ui.item.index()
+					});
+
+					// Fire the `reset` event to ensure other collections sync.
+					collection.trigger( 'reset', collection );
+				}
+			} );
 		}
 	} );
 
