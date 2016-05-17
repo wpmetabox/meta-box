@@ -334,11 +334,42 @@ jQuery( function ( $ )
 			this.$el.data( 'id', this.model.cid);
 		},
 
+
+
 		events: {
 			// Event when remove button clicked
 			'click .rwmb-remove-media': function ( e )
 			{
 				this.controller.removeItem( this.model );
+				return false;
+			},
+
+			'click .rwmb-edit-media': function( e )
+			{
+				// Destroy the previous collection frame.
+				if ( this._frame )
+				{
+					//this.stopListening( this._frame );
+					this._frame.dispose();
+				}
+
+				// Trigger the media frame to open the correct item
+				this._frame = wp.media( {
+					frame:       'edit-attachments',
+					controller:
+					{
+						// Needed to trick Edit modal to think there is a gridRouter
+						gridRouter: {
+							navigate: function( destination) {},
+							baseUrl:  function( url ) {}
+						}
+					},
+					library:     this.controller.get( 'items' ),
+					model:       this.model
+				} );
+
+				this._frame.open();
+
 				return false;
 			}
 		},
@@ -351,7 +382,6 @@ jQuery( function ( $ )
 			return this;
 		}
 	} );
-
 
 	/**
 	 * Initialize media fields
