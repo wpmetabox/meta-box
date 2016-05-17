@@ -7,7 +7,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	/**
 	 * Enqueue scripts and styles.
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-checkbox', RWMB_CSS_URL . 'checkbox.css', array(), RWMB_VER );
 	}
@@ -19,14 +19,37 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function html( $meta, $field )
 	{
 		$attributes = self::get_attributes( $field, 1 );
-		return sprintf(
+		$output     = sprintf(
 			'<input %s %s>',
 			self::render_attributes( $attributes ),
 			checked( ! empty( $meta ), 1, false )
 		);
+		if ( $field['desc'] )
+		{
+			$output = "<label id='{$field['id']}_description' class='description'>$output {$field['desc']}</label>";
+		}
+		return $output;
+	}
+
+	/**
+	 * Show end HTML markup for fields
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	public static function end_html( $meta, $field )
+	{
+		$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ), $field ) : '';
+
+		// Closes the container
+		$html = "{$button}</div>";
+
+		return $html;
 	}
 
 	/**
@@ -36,9 +59,9 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 * @param mixed $value
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes         = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'checkbox';
 		$attributes['list'] = false;
 
@@ -58,7 +81,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 *
 	 * @return int
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
 		return empty( $new ) ? 0 : 1;
 	}
@@ -79,7 +102,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 *
 	 * @return string HTML output of the field
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function the_value( $field, $args = array(), $post_id = null )
 	{
 		$value = self::get_value( $field, $args, $post_id );
 		return $value ? __( 'Yes', 'meta-box' ) : __( 'No', 'meta-box' );
