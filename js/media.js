@@ -204,8 +204,6 @@ jQuery( function ( $ )
 				this.$el.data()
 			) );
 
-			this.$input.val( '' );
-
 			// Create views
 			this.createList();
 			this.createAddButton()
