@@ -111,7 +111,7 @@ jQuery( function ( $ )
 				// Reset select
 				$field.prop( 'selectedIndex', -1 )
 			}
-			else if ( 'hidden' !== $field.attr( 'type' ) )
+			else if ( ! $field.hasClass( 'rwmb-hidden' ) )
 			{
 				// Reset value
 				$field.val( '' );
