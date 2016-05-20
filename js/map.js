@@ -146,6 +146,16 @@
 				return;
 			}
 
+            // If Meta Box Geo Location installed. Do not run auto complete.
+            if ( $('.rwmb-geo-binding').length )
+            {
+                $( '#' + this.addressField).on( 'selected_address', function() {
+                    that.$findButton.trigger('click');
+                });
+
+                return false;
+            }
+
 			$( '#' + this.addressField ).autocomplete( {
 				source: function ( request, response )
 				{
