@@ -75,11 +75,6 @@ jQuery( function ( $ )
 				// Get more then trigger ready
 				this.get( 'items' ).more();
 			}
-			else
-			{
-				// No initial media so ready
-				that.trigger( 'ready' );
-			}
 		},
 
 		// Method to remove media items
@@ -103,6 +98,71 @@ jQuery( function ( $ )
 				items = _.first( items, left );
 			}
 			this.get( 'items' ).add( items );
+		}
+	} );
+
+	/***
+	 * MediaField
+	 * Sets up media field view and subviews
+	 */
+	MediaField = views.MediaField = Backbone.View.extend( {
+		initialize: function ( options )
+		{
+			var that = this;
+			this.$input = $( options.input );
+			this.controller = new Controller( _.extend(
+				{
+					fieldName: this.$input.attr( 'name' ) ,
+					ids: this.$input.val().split( ',' )
+				},
+				this.$el.data()
+			) );
+
+			// Create views
+			this.createList();
+			this.createAddButton()
+			this.createStatus();
+
+			// Render
+			this.render();
+
+			// Load media
+			this.controller.load();
+
+			// Listen for destroy event on input
+			this.$input.on( 'remove', function()
+			{
+					this.controller.destroy();
+			} )
+		},
+
+		// Creates media list
+		createList: function ()
+		{
+			this.list = new MediaList( { controller: this.controller } );
+		},
+
+		// Creates button that adds media
+		createAddButton: function ()
+		{
+			this.addButton = new MediaButton( { controller: this.controller } );
+		},
+
+		// Creates status
+		createStatus: function ()
+		{
+			this.status = new MediaStatus( { controller: this.controller } );
+		},
+
+		// Render field and adds sub fields
+		render: function ()
+		{
+			// Empty then add parts
+			this.$el.empty().append(
+				this.list.el,
+				this.addButton.el,
+				this.status.el
+			);
 		}
 	} );
 
@@ -184,71 +244,6 @@ jQuery( function ( $ )
 					collection.trigger( 'reset', collection );
 				}
 			} );
-		}
-	} );
-
-	/***
-	 * MediaField
-	 * Sets up media field view and subviews
-	 */
-	MediaField = views.MediaField = Backbone.View.extend( {
-		initialize: function ( options )
-		{
-			var that = this;
-			this.$input = $( options.input );
-			this.controller = new Controller( _.extend(
-				{
-					fieldName: this.$input.attr( 'name' ) ,
-					ids: this.$input.val().split( ',' )
-				},
-				this.$el.data()
-			) );
-
-			// Create views
-			this.createList();
-			this.createAddButton()
-			this.createStatus();
-
-			// Render
-			this.render();
-
-			// Load media
-			this.controller.load();
-
-			// Listen for destroy event on input
-			this.$input.on( 'remove', function()
-			{
-					this.controller.destroy();
-			} )
-		},
-
-		// Creates media list
-		createList: function ()
-		{
-			this.list = new MediaList( { controller: this.controller } );
-		},
-
-		// Creates button that adds media
-		createAddButton: function ()
-		{
-			this.addButton = new MediaButton( { controller: this.controller } );
-		},
-
-		// Creates status
-		createStatus: function ()
-		{
-			this.status = new MediaStatus( { controller: this.controller } );
-		},
-
-		// Render field and adds sub fields
-		render: function ()
-		{
-			// Empty then add parts
-			this.$el.empty().append(
-				this.list.el,
-				this.addButton.el,
-				this.status.el
-			);
 		}
 	} );
 
