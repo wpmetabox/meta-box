@@ -86,62 +86,14 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display unordered list of option labels, not option values
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string Link(s) to post
-	 */
-	public static function the_value( $field, $args = array(), $post_id = null )
-	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$value       = call_user_func( array( $field_class, 'get_value' ), $field, $args, $post_id );
-
-		if ( ! $value )
-			return '';
-
-		if ( $field['clone'] && $field['multiple'] )
-		{
-			$output = '<ul>';
-			foreach ( $value as $subvalue )
-			{
-				$output .= '<li>';
-				$output .= call_user_func( array( $field_class, 'list_option_labels' ), $subvalue, $field );
-				$output .= '</li>';
-			}
-			$output .= '</ul>';
-		}
-		elseif ( $field['clone'] || $field['multiple'] )
-		{
-			$output = call_user_func( array( $field_class, 'list_option_labels' ), $value, $field );
-		}
-		else
-		{
-			$output = call_user_func( array( $field_class, 'get_option_label' ), $value, $field );
-		}
-		return $output;
-	}
-
-	/**
-	 * List option labels
-	 *
-	 * @param array $meta
-	 * @param array $field Field parameter
+	 * Format a single value for the helper functions.
+	 * @param array  $field Field parameter
+	 * @param string $value The value
 	 * @return string
 	 */
-	public static function list_option_labels( $meta, $field )
+	public static function format_single_value( $field, $value )
 	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$output      = '<ul>';
-		foreach ( $meta as $m )
-		{
-			$output .= sprintf( '<li>%s</li>', call_user_func( array( $field_class, 'get_option_label' ), $m, $field ) );
-		}
-
-		return $output . '</ul>';
+		return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' ), $value, $field );
 	}
 
 	/**
