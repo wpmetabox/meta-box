@@ -488,7 +488,7 @@ abstract class RWMB_Field
 	{
 		$class_name = RW_Meta_Box::get_class_name( $field );
 		$value      = call_user_func( array( $class_name, 'get_value' ), $field, $args, $post_id );
-		return self::format_value( $field, $value );
+		return call_user_func( array( $class_name, 'format_value' ), $field, $value );
 	}
 
 	/**

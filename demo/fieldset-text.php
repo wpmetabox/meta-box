@@ -16,9 +16,6 @@ function your_prefix_fieldset_text_demo( $meta_boxes )
 
 				'desc'    => __( 'Please enter following details:', 'your-prefix' ),
 
-				// Number of rows
-				'rows'    => 3,
-
 				// Options: array of Label => key for text boxes
 				// Note: key is used as key of array of values stored in the database
 				// Number of options are not limited
