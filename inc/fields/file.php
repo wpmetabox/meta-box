@@ -296,58 +296,40 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return mixed Full info of uploaded files
 	 */
-	static function get_value( $field, $args = array(), $post_id = null )
+	public static function get_value( $field, $args = array(), $post_id = null )
 	{
-		if ( ! $post_id )
-			$post_id = get_the_ID();
+		$value = parent::get_value( $field, $args, $post_id );
+		if ( ! $field['clone'] )
+		{
+			return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'files_info' ), $field, $value, $args );
+		}
 
-		/**
-		 * Get raw meta value in the database, no escape
-		 * Very similar to self::meta() function
-		 */
-		$file_ids = get_post_meta( $post_id, $field['id'], false );
+		$return = array();
+		foreach ( $value as $subvalue )
+		{
+			$return[] = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'files_info' ), $field, $subvalue, $args );
+		}
+		return $return;
+	}
 
-		// For each file, get full file info
-		$value = array();
+	/**
+	 * Get uploaded files information
+	 * @param array $field    Field parameter
+	 * @param array $file_ids Files IDs
+	 * @param array $args     Additional arguments (for image size)
+	 * @return array
+	 */
+	public static function files_info( $field, $file_ids, $args )
+	{
+		$info = array();
 		foreach ( (array) $file_ids as $file_id )
 		{
 			if ( $file_info = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'file_info' ), $file_id, $args ) )
 			{
-				$value[$file_id] = $file_info;
+				$info[$file_id] = $file_info;
 			}
 		}
-
-		return $value;
-	}
-
-	/**
-	 * Output the field value
-	 * Display unordered list of files
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
-	 */
-	static function the_value( $field, $args = array(), $post_id = null )
-	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! $value )
-			return '';
-
-		$output = '<ul>';
-		foreach ( $value as $file_id => $file_info )
-		{
-			$output .= sprintf(
-				'<li><a href="%s" target="_blank">%s</a></li>',
-				wp_get_attachment_url( $file_id ),
-				get_the_title( $file_id )
-			);
-		}
-		$output .= '</ul>';
-
-		return $output;
+		return $info;
 	}
 
 	/**
@@ -358,10 +340,9 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success
 	 */
-	static function file_info( $file_id, $args = array() )
+	public static function file_info( $file_id, $args = array() )
 	{
-		$path = get_attached_file( $file_id );
-		if ( ! $path )
+		if ( ! $path = get_attached_file( $file_id ) )
 		{
 			return false;
 		}
@@ -375,5 +356,44 @@ class RWMB_File_Field extends RWMB_Field
 		);
 
 		return wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
+	}
+
+	/**
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
+	 */
+	public static function format_value( $field, $value )
+	{
+		$class_name = RW_Meta_Box::get_class_name( $field );
+		if ( ! $field['clone'] )
+		{
+			return call_user_func( array( $class_name, 'format_single_value' ), $field, $value );
+		}
+		$output = '<ul>';
+		foreach ( $value as $subvalue )
+		{
+			$output .= '<li>' . call_user_func( array( $class_name, 'format_single_value' ), $field, $subvalue ) . '</li>';
+		}
+		$output .= '</ul>';
+		return $output;
+	}
+
+	/**
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		$output = '<ul>';
+		foreach ( $value as $file )
+		{
+			$output .= sprintf( '<li><a href="%s" target="_blank">%s</a></li>', $file['url'], $file['title'] );
+		}
+		$output .= '</ul>';
+		return $output;
 	}
 }

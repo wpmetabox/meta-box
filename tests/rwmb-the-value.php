@@ -214,6 +214,42 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 				),
 				'clone'   => true,
 			),
+
+			// File
+			array(
+				'id'   => 'file',
+				'name' => __( 'File', 'your-prefix' ),
+				'type' => 'file',
+			),
+			array(
+				'id'   => 'fileadv',
+				'name' => __( 'File Advanced', 'your-prefix' ),
+				'type' => 'file_advanced',
+			),
+			array(
+				'id'    => 'fileadv2',
+				'name'  => __( 'File Advanced Clone', 'your-prefix' ),
+				'type'  => 'file_advanced',
+				'clone' => true,
+			),
+
+			// Image
+			array(
+				'id'   => 'image',
+				'name' => __( 'Image', 'your-prefix' ),
+				'type' => 'image',
+			),
+			array(
+				'id'   => 'image_advanced',
+				'name' => __( 'Image Advanced', 'your-prefix' ),
+				'type' => 'image_advanced',
+			),
+			array(
+				'id'    => 'image_advanced2',
+				'name'  => __( 'Image Advanced Clone', 'your-prefix' ),
+				'type'  => 'image_advanced',
+				'clone' => true,
+			),
 		),
 	);
 	$meta_boxes[] = $test;

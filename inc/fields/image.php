@@ -147,46 +147,26 @@ class RWMB_Image_Field extends RWMB_File_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display unordered list of images with option for size and link to full size
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function format_single_value( $field, $value )
 	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! $value )
-			return '';
-
 		$output = '<ul>';
-		foreach ( $value as $file_info )
+		foreach ( $value as $file )
 		{
-			$img = sprintf(
-				'<img src="%s" alt="%s" title="%s">',
-				esc_url( $file_info['url'] ),
-				esc_attr( $file_info['alt'] ),
-				esc_attr( $file_info['title'] )
-			);
+			$img = sprintf( '<img src="%s" alt="%s">', esc_url( $file['url'] ), esc_attr( $file['alt'] ) );
 
 			// Link thumbnail to full size image?
 			if ( isset( $args['link'] ) && $args['link'] )
 			{
-				$img = sprintf(
-					'<a href="%s" title="%s">%s</a>',
-					esc_url( $file_info['full_url'] ),
-					esc_attr( $file_info['title'] ),
-					$img
-				);
+				$img = sprintf( '<a href="%s" title="%s">%s</a>', esc_url( $file['full_url'] ), esc_attr( $file['title'] ), $img );
 			}
-
 			$output .= "<li>$img</li>";
 		}
 		$output .= '</ul>';
-
 		return $output;
 	}
 

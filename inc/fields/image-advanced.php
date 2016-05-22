@@ -56,18 +56,6 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	}
 
 	/**
-	 * Output the field value.
-	 * @param array $field
-	 * @param array $args
-	 * @param null  $post_id
-	 * @return mixed
-	 */
-	static function the_value( $field, $args = array(), $post_id = null )
-	{
-		return RWMB_Image_Field::the_value( $field, $args, $post_id );
-	}
-
-	/**
 	 * Get uploaded file information.
 	 *
 	 * @param int   $file_id Attachment image ID (post ID). Required.
@@ -77,6 +65,28 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	static function file_info( $file_id, $args = array() )
 	{
 		return RWMB_Image_Field::file_info( $file_id, $args );
+	}
+
+	/**
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
+	 */
+	public static function format_value( $field, $value )
+	{
+		return RWMB_Image_Field::format_value( $field, $value );
+	}
+
+	/**
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		return RWMB_Image_Field::format_single_value( $field, $value );
 	}
 
 	/**
