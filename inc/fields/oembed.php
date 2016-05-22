@@ -84,36 +84,13 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display embed media
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
+	 * Format a single value for the helper functions.
+	 * @param array  $field Field parameter
+	 * @param string $value The value
+	 * @return string
 	 */
-	public static function the_value( $field, $args = array(), $post_id = null )
+	public static function format_single_value( $field, $value )
 	{
-		$value  = self::get_value( $field, $args, $post_id );
-		$output = '';
-		if ( empty( $value ) )
-		{
-			return $output;
-		}
-		if ( $field['clone'] )
-		{
-			$output = '<ul>';
-			foreach ( $value as $subvalue )
-			{
-				$output .= '<li>' . self::get_embed( $subvalue ) . '</li>';
-			}
-			$output .= '</ul>';
-		}
-		else
-		{
-			$output = self::get_embed( $value );
-		}
-		return $output;
+		return self::get_embed( $value );
 	}
 }

@@ -60,9 +60,9 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$meta                       = (array) $meta;
-		$meta                       = implode( ',', $meta );
-		$attributes                 = $load_test_attr = self::get_attributes( $field, $meta );
+		$meta       = (array) $meta;
+		$meta       = implode( ',', $meta );
+		$attributes = $load_test_attr = self::get_attributes( $field, $meta );
 
 		$html = sprintf(
 			'<input %s>
@@ -187,5 +187,63 @@ class RWMB_Media_Field extends RWMB_Field
 	static function print_templates()
 	{
 		require_once( RWMB_INC_DIR . 'templates/media.php' );
+	}
+
+	/**
+	 * Get the field value.
+	 * @param array $field
+	 * @param array $args
+	 * @param null  $post_id
+	 * @return mixed
+	 */
+	static function get_value( $field, $args = array(), $post_id = null )
+	{
+		return RWMB_File_Field::get_value( $field, $args, $post_id );
+	}
+
+	/**
+	 * Get uploaded files information
+	 * @param array $field    Field parameter
+	 * @param array $file_ids Files IDs
+	 * @param array $args     Additional arguments (for image size)
+	 * @return array
+	 */
+	public static function files_info( $field, $file_ids, $args )
+	{
+		return RWMB_File_Field::files_info( $field, $file_ids, $args );
+	}
+
+	/**
+	 * Get uploaded file information.
+	 *
+	 * @param int   $file_id Attachment image ID (post ID). Required.
+	 * @param array $args    Array of arguments (for size).
+	 * @return array|bool False if file not found. Array of image info on success
+	 */
+	static function file_info( $file_id, $args = array() )
+	{
+		return RWMB_File_Field::file_info( $file_id, $args );
+	}
+
+	/**
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
+	 */
+	public static function format_value( $field, $value )
+	{
+		return RWMB_File_Field::format_value( $field, $value );
+	}
+
+	/**
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		return RWMB_File_Field::format_single_value( $field, $value );
 	}
 }

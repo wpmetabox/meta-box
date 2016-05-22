@@ -403,12 +403,12 @@ abstract class RWMB_Field
 	static function render_attributes( $attributes )
 	{
 		$output = '';
-		
+
 		foreach ( $attributes as $key => $value )
 		{
 			if ( false === $value || '' === $value )
 				continue;
-						
+
 			if ( is_array( $value ) )
 				$value = json_encode( $value );
 
@@ -486,17 +486,41 @@ abstract class RWMB_Field
 	 */
 	static function the_value( $field, $args = array(), $post_id = null )
 	{
-		$value  = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_value' ), $field, $args, $post_id );
-		$output = $value;
-		if ( is_array( $value ) )
+		$class_name = RW_Meta_Box::get_class_name( $field );
+		$value      = call_user_func( array( $class_name, 'get_value' ), $field, $args, $post_id );
+		return call_user_func( array( $class_name, 'format_value' ), $field, $value );
+	}
+
+	/**
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
+	 */
+	public static function format_value( $field, $value )
+	{
+		$class_name = RW_Meta_Box::get_class_name( $field );
+		if ( ! is_array( $value ) )
 		{
-			$output = '<ul>';
-			foreach ( $value as $subvalue )
-			{
-				$output .= '<li>' . $subvalue . '</li>';
-			}
-			$output .= '</ul>';
+			return call_user_func( array( $class_name, 'format_single_value' ), $field, $value );
 		}
+		$output = '<ul>';
+		foreach ( $value as $subvalue )
+		{
+			$output .= '<li>' . call_user_func( array( $class_name, 'format_value' ), $field, $subvalue ) . '</li>';
+		}
+		$output .= '</ul>';
 		return $output;
+	}
+
+	/**
+	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
+	 * @param array  $field Field parameter
+	 * @param string $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		return $value;
 	}
 }

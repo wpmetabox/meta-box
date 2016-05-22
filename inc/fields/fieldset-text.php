@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fieldset text class.
  */
@@ -19,14 +20,29 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 
 		foreach ( $field['options'] as $key => $label )
 		{
-			$value  = isset( $meta[$key] ) ? $meta[$key] : '';
+			$value                       = isset( $meta[$key] ) ? $meta[$key] : '';
 			$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
-			$html[] = sprintf( $tpl, $label, parent::html( $value, $field ) );
+			$html[]                      = sprintf( $tpl, $label, parent::html( $value, $field ) );
 		}
 
 		$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
 		return $out;
+	}
+
+	/**
+	 * Show end HTML markup for fields
+	 * Do not show field description. Field description is shown before list of fields
+	 *
+	 * @param mixed $meta
+	 * @param array $field
+	 * @return string
+	 */
+	static function end_html( $meta, $field )
+	{
+		$button = $field['clone'] ? self::add_clone_button( $field ) : '';
+		$html   = "$button</div>";
+		return $html;
 	}
 
 	/**
@@ -38,47 +54,56 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 	 */
 	static function normalize( $field )
 	{
-		$field = parent::normalize( $field );
-		$field['multiple'] = false;
+		$field                     = parent::normalize( $field );
+		$field['multiple']         = false;
 		$field['attributes']['id'] = false;
 		return $field;
 	}
 
 	/**
-	 * Output the field value
-	 * Display options in format Label: value in unordered list
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function format_value( $field, $value )
 	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! $value )
-			return '';
-
-		$output = '<table>';
-		$output .= '<thead><tr>';
+		$output = '<table><thead><tr>';
 		foreach ( $field['options'] as $label )
 		{
 			$output .= "<th>$label</th>";
 		}
-		$output .= '</tr></thead><tbody>';
+		$output .= '<tr>';
 
-		foreach ( $value as $subvalue )
+		if ( ! $field['clone'] )
 		{
-			$output .= '<tr>';
-			foreach ( $subvalue as $value )
+			$output .= self::format_single_value( $field, $value );
+		}
+		else
+		{
+			foreach ( $value as $subvalue )
 			{
-				$output .= "<td>$value</td>";
+				$output .= self::format_single_value( $field, $subvalue );
 			}
-			$output .= '</tr>';
 		}
 		$output .= '</tbody></table>';
+		return $output;
+	}
 
+	/**
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		$output = '<tr>';
+		foreach ( $value as $subvalue )
+		{
+			$output .= "<td>$subvalue</td>";
+		}
+		$output .= '</tr>';
 		return $output;
 	}
 }

@@ -29,45 +29,13 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display option name instead of option value
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Not used for these fields.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
+	 * Format a single value for the helper functions.
+	 * @param array  $field Field parameter
+	 * @param string $value The value
+	 * @return string
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	static function format_single_value( $field, $value )
 	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! $value )
-			return '';
-
-		$output = '<ul>';
-		if ( $field['clone'] )
-		{
-			foreach ( $value as $subvalue )
-			{
-				$output .= '<li>';
-				$output .= '<ul>';
-				foreach ( $subvalue as $option )
-				{
-					$output .= '<li>' . $field['options'][$option] . '</li>';
-				}
-				$output .= '</ul>';
-				$output .= '</li>';
-			}
-		}
-		else
-		{
-			foreach ( $value as $option )
-			{
-				$output .= '<li>' . $field['options'][$option] . '</li>';
-			}
-		}
-		$output .= '</ul>';
-
-		return $output;
+		return $field['options'][$value];
 	}
 }
