@@ -25,7 +25,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field
 	 */
 	public static function walk( $options, $db_fields, $meta, $field )
 	{
-		$attributes = self::call( $field, 'get_attributes', $field, $meta );
+		$attributes = self::call( 'get_attributes', $field, $meta );
 		$walker     = new RWMB_Select_Walker( $db_fields, $field, $meta );
 		$output     = sprintf(
 			'<select %s>',

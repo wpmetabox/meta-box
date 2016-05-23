@@ -29,8 +29,8 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	public static function html( $meta, $field )
 	{
 		$meta      = (array) $meta;
-		$options   = self::call( $field, 'get_options', $field );
-		$db_fields = self::call( $field, 'get_db_fields', $field );
+		$options   = self::call( 'get_options', $field );
+		$db_fields = self::call( 'get_db_fields', $field );
 		return self::call( $field, 'walk', $options, $db_fields, $meta, $field );
 	}
 
@@ -105,7 +105,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function get_option_label( $value, $field )
 	{
-		$options = self::call( $field, 'get_options', $field );
+		$options = self::call( 'get_options', $field );
 		return $options[$value]->label;
 	}
 }

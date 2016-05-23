@@ -81,7 +81,7 @@ abstract class RWMB_Field
 				$input_html = self::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 				// Remove clone button
-				$input_html .= self::call( $field, 'remove_clone_button', $sub_field );
+				$input_html .= self::call( 'remove_clone_button', $sub_field );
 
 				$input_html .= '</div>';
 
@@ -171,7 +171,7 @@ abstract class RWMB_Field
 	 */
 	static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? self::call( $field, 'add_clone_button', $field ) : '';
+		$button = $field['clone'] ? self::call( 'add_clone_button', $field ) : '';
 		$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 		// Closes the container
@@ -481,8 +481,8 @@ abstract class RWMB_Field
 	 */
 	static function the_value( $field, $args = array(), $post_id = null )
 	{
-		$value = self::call( $field, 'get_value', $field, $args, $post_id );
-		return self::call( $field, 'format_value', $field, $value );
+		$value = self::call( 'get_value', $field, $args, $post_id );
+		return self::call( 'format_value', $field, $value );
 	}
 
 	/**
@@ -495,12 +495,12 @@ abstract class RWMB_Field
 	{
 		if ( ! is_array( $value ) )
 		{
-			return self::call( $field, 'format_single_value', $field, $value );
+			return self::call( 'format_single_value', $field, $value );
 		}
 		$output = '<ul>';
 		foreach ( $value as $subvalue )
 		{
-			$output .= '<li>' . self::call( $field, 'format_value', $field, $subvalue ) . '</li>';
+			$output .= '<li>' . self::call( 'format_value', $field, $subvalue ) . '</li>';
 		}
 		$output .= '</ul>';
 		return $output;
@@ -526,9 +526,20 @@ abstract class RWMB_Field
 	{
 		$args = func_get_args();
 
-		// 2 first params must be: field, method name. Other params will be used for method arguments.
-		$field  = array_shift( $args );
-		$method = array_shift( $args );
+		$check = reset( $args );
+
+		// Params: method name, field, other params.
+		if ( is_string( $check ) )
+		{
+			$method = array_shift( $args );
+			$field  = reset( $args );
+		}
+		// Params: field, method name, other params.
+		else
+		{
+			$field  = array_shift( $args );
+			$method = array_shift( $args );
+		}
 
 		return call_user_func_array( array( self::get_class_name( $field ), $method ), $args );
 	}

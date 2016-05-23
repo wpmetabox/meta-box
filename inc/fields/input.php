@@ -14,7 +14,7 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = self::call( $field, 'get_attributes', $field, $meta );
+		$attributes = self::call( 'get_attributes', $field, $meta );
 		return sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist_html( $field ) );
 	}
 

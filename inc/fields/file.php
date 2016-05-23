@@ -301,13 +301,13 @@ class RWMB_File_Field extends RWMB_Field
 		$value = parent::get_value( $field, $args, $post_id );
 		if ( ! $field['clone'] )
 		{
-			return self::call( $field, 'files_info', $field, $value, $args );
+			return self::call( 'files_info', $field, $value, $args );
 		}
 
 		$return = array();
 		foreach ( $value as $subvalue )
 		{
-			$return[] = self::call( $field, 'files_info', $field, $subvalue, $args );
+			$return[] = self::call( 'files_info', $field, $subvalue, $args );
 		}
 		return $return;
 	}
@@ -368,12 +368,12 @@ class RWMB_File_Field extends RWMB_Field
 	{
 		if ( ! $field['clone'] )
 		{
-			return self::call( $field, 'format_single_value', $field, $value );
+			return self::call( 'format_single_value', $field, $value );
 		}
 		$output = '<ul>';
 		foreach ( $value as $subvalue )
 		{
-			$output .= '<li>' . self::call( $field, 'format_single_value', $field, $subvalue ) . '</li>';
+			$output .= '<li>' . self::call( 'format_single_value', $field, $subvalue ) . '</li>';
 		}
 		$output .= '</ul>';
 		return $output;
