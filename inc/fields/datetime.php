@@ -185,7 +185,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		{
 			return $meta;
 		}
-		$method = array( RW_Meta_Box::get_class_name( $field ), 'translate_format' );
+		$method = array( self::get_class_name( $field ), 'translate_format' );
 		if ( is_array( $meta ) )
 		{
 			foreach ( $meta as $key => $value )

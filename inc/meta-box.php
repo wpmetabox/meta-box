@@ -62,7 +62,7 @@ class RW_Meta_Box
 		$fields = self::get_fields( $this->fields );
 		foreach ( $fields as $field )
 		{
-			call_user_func( array( self::get_class_name( $field ), 'add_actions' ) );
+			RWMB_Field::call( $field, 'add_actions' );
 		}
 
 		// Add meta box
@@ -99,7 +99,7 @@ class RW_Meta_Box
 			return;
 
 		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
-		if( is_rtl() )
+		if ( is_rtl() )
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 
 		// Load clone script conditionally
@@ -116,7 +116,7 @@ class RW_Meta_Box
 		// Enqueue scripts and styles for fields
 		foreach ( $fields as $field )
 		{
-			call_user_func( array( self::get_class_name( $field ), 'admin_enqueue_scripts' ) );
+			RWMB_Field::call( $field, 'admin_enqueue_scripts' );
 		}
 
 		// Auto save
@@ -218,7 +218,7 @@ class RW_Meta_Box
 
 		foreach ( $this->fields as $field )
 		{
-			call_user_func( array( self::get_class_name( $field ), 'show' ), $field, $saved );
+			RWMB_Field::call( $field, 'show', $field, $saved );
 		}
 
 		// Allow users to add custom code after meta box content
@@ -272,11 +272,11 @@ class RW_Meta_Box
 			$new    = isset( $_POST[$name] ) ? $_POST[$name] : ( $single ? '' : array() );
 
 			// Allow field class change the value
-			$new = call_user_func( array( self::get_class_name( $field ), 'value' ), $new, $old, $post_id, $field );
+			$new = RWMB_Field::call( $field, 'value', $new, $old, $post_id, $field );
 			$new = RWMB_Core::filter( 'value', $new, $field, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one
-			call_user_func( array( self::get_class_name( $field ), 'save' ), $new, $old, $post_id, $field );
+			RWMB_Field::call( $field, 'save', $new, $old, $post_id, $field );
 		}
 
 		// After save action
@@ -340,7 +340,7 @@ class RW_Meta_Box
 	{
 		foreach ( $fields as $k => $field )
 		{
-			$class = self::get_class_name( $field );
+			$class = RWMB_Field::get_class_name( $field );
 
 			// Make sure field has correct 'type', ignore warning error when users forget to set field type or set incorrect one
 			if ( false === $class )
@@ -350,7 +350,7 @@ class RW_Meta_Box
 			}
 
 			// Allow field class add/change default field values
-			$field = call_user_func( array( $class, 'normalize' ), $field );
+			$field = RWMB_Field::call( $field, 'normalize', $field );
 
 			if ( isset( $field['fields'] ) )
 				$field['fields'] = self::normalize_fields( $field['fields'] );
@@ -364,20 +364,6 @@ class RW_Meta_Box
 		}
 
 		return $fields;
-	}
-
-	/**
-	 * Get field class name
-	 *
-	 * @param array $field Field array
-	 * @return string Field class name
-	 */
-	static function get_class_name( $field )
-	{
-		$type  = str_replace( array( '-', '_' ), ' ', $field['type'] );
-		$class = 'RWMB_' . ucwords( $type ) . '_Field';
-		$class = str_replace( ' ', '_', $class );
-		return $class;
 	}
 
 	/**

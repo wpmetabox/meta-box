@@ -301,13 +301,13 @@ class RWMB_File_Field extends RWMB_Field
 		$value = parent::get_value( $field, $args, $post_id );
 		if ( ! $field['clone'] )
 		{
-			return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'files_info' ), $field, $value, $args );
+			return self::call( $field, 'files_info', $field, $value, $args );
 		}
 
 		$return = array();
 		foreach ( $value as $subvalue )
 		{
-			$return[] = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'files_info' ), $field, $subvalue, $args );
+			$return[] = self::call( $field, 'files_info', $field, $subvalue, $args );
 		}
 		return $return;
 	}
@@ -324,7 +324,7 @@ class RWMB_File_Field extends RWMB_Field
 		$info = array();
 		foreach ( (array) $file_ids as $file_id )
 		{
-			if ( $file_info = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'file_info' ), $file_id, $args ) )
+			if ( $file_info = self::call( $field, 'file_info', $file_id, $args ) )
 			{
 				$info[$file_id] = $file_info;
 			}
@@ -366,15 +366,14 @@ class RWMB_File_Field extends RWMB_Field
 	 */
 	public static function format_value( $field, $value )
 	{
-		$class_name = RW_Meta_Box::get_class_name( $field );
 		if ( ! $field['clone'] )
 		{
-			return call_user_func( array( $class_name, 'format_single_value' ), $field, $value );
+			return self::call( $field, 'format_single_value', $field, $value );
 		}
 		$output = '<ul>';
 		foreach ( $value as $subvalue )
 		{
-			$output .= '<li>' . call_user_func( array( $class_name, 'format_single_value' ), $field, $subvalue ) . '</li>';
+			$output .= '<li>' . self::call( $field, 'format_single_value', $field, $subvalue ) . '</li>';
 		}
 		$output .= '</ul>';
 		return $output;

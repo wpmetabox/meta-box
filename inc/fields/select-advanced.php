@@ -44,7 +44,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 */
 	public static function walk( $options, $db_fields, $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$attributes = self::call( $field, 'get_attributes', $field, $meta );
 		$walker     = new RWMB_Select_Walker( $db_fields, $field, $meta );
 		$output     = sprintf(
 			'<select %s>',

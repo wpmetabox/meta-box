@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract class for any kind of choice field.
  */
@@ -27,12 +28,10 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function html( $meta, $field )
 	{
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$meta        = (array) $meta;
-		$options     = call_user_func( array( $field_class, 'get_options' ), $field );
-		$db_fields   = call_user_func( array( $field_class, 'get_db_fields' ), $field );
-
-		return call_user_func( array( $field_class, 'walk' ), $options, $db_fields, $meta, $field );
+		$meta      = (array) $meta;
+		$options   = self::call( $field, 'get_options', $field );
+		$db_fields = self::call( $field, 'get_db_fields', $field );
+		return self::call( $field, 'walk', $options, $db_fields, $meta, $field );
 	}
 
 	/**
@@ -93,7 +92,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function format_single_value( $field, $value )
 	{
-		return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_option_label' ), $value, $field );
+		return self::call( $field, 'get_option_label', $value, $field );
 	}
 
 	/**
@@ -106,7 +105,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function get_option_label( $value, $field )
 	{
-		$options = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_options' ), $field );
+		$options = self::call( $field, 'get_options', $field );
 		return $options[$value]->label;
 	}
 }

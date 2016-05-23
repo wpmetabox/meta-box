@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract input field class which is used for all <input> fields.
  */
@@ -13,7 +14,7 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 */
 	static function html( $meta, $field )
 	{
-		$attributes = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'get_attributes' ), $field, $meta );
+		$attributes = self::call( $field, 'get_attributes', $field, $meta );
 		return sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist_html( $field ) );
 	}
 
