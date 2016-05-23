@@ -12,7 +12,7 @@ jQuery( function ( $ )
 				$form.siblings( '#message' ).remove();
 				$form.before( '<div id="message" class="error"><p>' + rwmbValidate.summaryMessage + '</p></div>' );
 			},
-			ignore: ''
+			ignore: ':not([class|="rwmb"])'
 		};
 
 	// Gather all validation rules

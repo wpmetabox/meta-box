@@ -11,7 +11,7 @@
 	// Use prototype for better performance
 	MapField.prototype = {
 		// Initialize everything
-		init              : function ()
+		init: function ()
 		{
 			this.initDomElements();
 			this.initMapElements();
@@ -22,7 +22,7 @@
 		},
 
 		// Initialize DOM elements
-		initDomElements   : function ()
+		initDomElements: function ()
 		{
 			this.canvas = this.$container.find( '.rwmb-map-canvas' )[0];
 			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
@@ -31,7 +31,7 @@
 		},
 
 		// Initialize map elements
-		initMapElements   : function ()
+		initMapElements: function ()
 		{
 			var defaultLoc = $( this.canvas ).data( 'default-loc' ),
 				latLng;
@@ -73,7 +73,7 @@
 		},
 
 		// Add event listeners for 'click' & 'drag'
-		addListeners      : function ()
+		addListeners: function ()
 		{
 			var that = this;
 			google.maps.event.addListener( this.map, 'click', function ( event )
@@ -81,6 +81,12 @@
 				that.marker.setPosition( event.latLng );
 				that.updateCoordinate( event.latLng );
 			} );
+
+			google.maps.event.addListener( this.map, 'zoom_changed', function ( event )
+			{
+				that.updateCoordinate( that.marker.getPosition() );
+			} );
+
 			google.maps.event.addListener( this.marker, 'drag', function ( event )
 			{
 				that.updateCoordinate( event.latLng );
@@ -99,18 +105,24 @@
 			 * @see https://developers.google.com/maps/documentation/javascript/reference
 			 *      ('resize' Event)
 			 */
-			$( window ).on( 'rwmb_map_refresh', function()
+			$( window ).on( 'rwmb_map_refresh', function ()
 			{
-				that.refreshMap();
+				that.refresh();
 			} );
 
-			//Refresh on meta box hide and show
-			$( document ).on( 'postbox-toggled', function() {
-			  that.refreshMap();
+			// Refresh on meta box hide and show
+			$( document ).on( 'postbox-toggled', function ()
+			{
+				that.refresh();
+			} );
+			// Refresh on sorting meta boxes
+			$( '.meta-box-sortables' ).on( 'sortstop', function ()
+			{
+				that.refresh();
 			} );
 		},
 
-		refreshMap: function()
+		refresh: function ()
 		{
 			var zoom = this.map.getZoom(),
 				center = this.map.getCenter();
@@ -124,7 +136,7 @@
 		},
 
 		// Autocomplete address
-		autocomplete      : function ()
+		autocomplete: function ()
 		{
 			var that = this;
 
@@ -133,6 +145,16 @@
 			{
 				return;
 			}
+
+            // If Meta Box Geo Location installed. Do not run auto complete.
+            if ( $('.rwmb-geo-binding').length )
+            {
+                $( '#' + this.addressField).on( 'selected_address', function() {
+                    that.$findButton.trigger('click');
+                });
+
+                return false;
+            }
 
 			$( '#' + this.addressField ).autocomplete( {
 				source: function ( request, response )
@@ -164,14 +186,14 @@
 		},
 
 		// Update coordinate to input field
-		updateCoordinate  : function ( latLng )
+		updateCoordinate: function ( latLng )
 		{
-			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() );
+			var zoom = this.map.getZoom();
+			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom );
 		},
 
 		// Find coordinates by address
-		// Find coordinates by address
-		geocodeAddress    : function ()
+		geocodeAddress: function ()
 		{
 			var address,
 				addressList = [],
@@ -209,7 +231,6 @@
 			field.init();
 
 			$( this ).data( 'mapController', field );
-
 		} );
 
 		$( '.rwmb-input' ).on( 'clone', function ()

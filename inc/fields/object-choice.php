@@ -13,23 +13,23 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 * @param array $field
 	 * @return string
 	 */
-	public static function walk( $options, $db_fields, $meta, $field )
+	public static function walk( $field, $options, $db_fields, $meta )
 	{
 		switch ( $field['field_type'] )
 		{
 			case 'checkbox_list':
 			case 'radio_list':
-				return RWMB_Input_List_Field::walk( $options, $db_fields, $meta, $field );
+				return RWMB_Input_List_Field::walk( $field, $options, $db_fields, $meta );
 				break;
 			case 'select_tree':
-				return RWMB_Select_Tree_Field::walk( $options, $db_fields, $meta, $field );
+				return RWMB_Select_Tree_Field::walk( $field, $options, $db_fields, $meta );
 				break;
 			case 'select_advanced':
-				return RWMB_Select_Advanced_Field::walk( $options, $db_fields, $meta, $field );
+				return RWMB_Select_Advanced_Field::walk( $field, $options, $db_fields, $meta );
 				break;
 			case 'select':
 			default:
-				return RWMB_Select_Field::walk( $options, $db_fields, $meta, $field );
+				return RWMB_Select_Field::walk( $field, $options, $db_fields, $meta );
 				break;
 		}
 	}

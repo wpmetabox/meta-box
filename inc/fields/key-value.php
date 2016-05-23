@@ -120,24 +120,13 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	}
 
 	/**
-	 * Output the field value
-	 * Display unordered list of key - value pairs
-	 *
-	 * @use self::get_value()
-	 * @see rwmb_the_value()
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string HTML output of the field
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function format_value( $field, $value )
 	{
-		$value = self::get_value( $field, $args, $post_id );
-		if ( ! is_array( $value ) )
-			return '';
-
 		$output = '<ul>';
 		foreach ( $value as $subvalue )
 		{

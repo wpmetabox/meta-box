@@ -23,7 +23,7 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	 *
 	 * @return string
 	 */
-	public static function walk( $options, $db_fields, $meta, $field )
+	public static function walk( $field, $options, $db_fields, $meta )
 	{
 		$walker = new RWMB_Input_List_Walker( $db_fields, $field, $meta );
 		$output = sprintf( '<ul class="rwmb-input-list %s %s">',
@@ -74,23 +74,5 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 		$attributes['value']  = $value;
 
 		return $attributes;
-	}
-
-	/**
-	 * Output the field value
-	 * Display option name instead of option value
-	 *
-	 * @use self::meta()
-	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
-	 */
-	public static function the_value( $field, $args = array(), $post_id = null )
-	{
-		$value = parent::get_value( $field, $args, $post_id );
-		return empty( $value ) ? '' : $field['options'][$value];
 	}
 }

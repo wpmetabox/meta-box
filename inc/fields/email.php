@@ -5,20 +5,6 @@
 class RWMB_Email_Field extends RWMB_Text_Field
 {
 	/**
-	 * Normalize parameters for field
-	 *
-	 * @param array $field
-	 *
-	 * @return array
-	 */
-	static function normalize( $field )
-	{
-		$field = parent::normalize( $field );
-
-		return $field;
-	}
-
-	/**
 	 * Get the attributes for a field
 	 *
 	 * @param array $field
@@ -26,7 +12,7 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'email';
@@ -43,7 +29,7 @@ class RWMB_Email_Field extends RWMB_Text_Field
 	 *
 	 * @return string
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
 		return sanitize_email( $new );
 	}

@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
-Tested up to: 4.5
-Stable tag: 4.8.5
+Tested up to: 4.5.2
+Stable tag: 4.8.6
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
@@ -78,6 +78,38 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.8.6 =
+* Improvement: Edit link on media items now opens edit modal
+* Improvement: Refresh map when sorting meta boxes.
+* Improvement: Wrap checkbox's description into a <label> to make it clickable to activate/deactivate the checkbox.
+* Improvement: Remove Spanish language (ES) as it's already translated on translate.wordpress.org
+* Improvement: Add support for saving zoom in map
+* Improvement: Prevent output localized strings twice.
+* Improvement: Add fallback for autoload in PHP 5.2 in case it's disabled.
+* Improvement: No need to json_encode for custom attributes. User can pass an array to custom attribute
+* Improvement: Add style for `select2` library to match WordPress admin style
+* Improvement: Adds min width to select. @prop ahmadawais
+* Improvement: Added `max_status` option for media type fields. `true` to show status, `false` to hide
+* Improvement: Add attachment meta data to file info
+* Fix: Validation for non-Meta Box fields
+* Fix: advanced_image field after reload page F5 in Firefox
+* Fix: Cannot read property 'getFullYear' of null
+* Fix: Empty date converting to 0
+* Fix: Add missing class for image_select field which prevents setting input's name when cloning.
+* Fix: Fix bug with blank maps on the front end
+* Fix: Fix bug with cloning media fields
+* Fix: Remove empty values in clones and reset index.
+* Fix: Reset of cloned select fields
+* Fix: select_advanced with multiple=true adds empty selected option
+* Fix: No empty option for simple select field
+* Fix: Empty datetime field with timestamp => true returns January 1, 1970
+* Fix: For color picker when using with Columns extension
+* Fix: Fix bug with taxonomy advanced returns all taxonomy items for posts with no meta saved
+* Fix: Fix bug with taxonomy advanced not saving value when field isn't multiple
+* Fix: Make radio inline again
+* Fix: Wrong meta value when using helper function outside the loop
+* Fix: Validation now works for hidden elements in tabs
 
 = 4.8.5 =
 * Improvement: Add localization for Select2 library

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Select Tree Walker for cascading select fields.
  * @uses RWMB_Select_Walker
@@ -43,12 +44,11 @@ class RWMB_Select_Tree_Walker
 
 	function display_level( $options, $parent_id = 0, $active = false )
 	{
-		$id          = $this->db_fields['id'];
-		$field       = $this->field;
-		$meta        = $this->meta;
-		$walker      = new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
-		$field_class = RW_Meta_Box::get_class_name( $field );
-		$attributes  = call_user_func( array( $field_class, 'get_attributes' ), $field, $meta );
+		$id         = $this->db_fields['id'];
+		$field      = $this->field;
+		$meta       = $this->meta;
+		$walker     = new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
+		$attributes = RWMB_Field::call( 'get_attributes', $field, $meta );
 
 		$children = $options[$parent_id];
 		$output   = sprintf(

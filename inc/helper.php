@@ -61,7 +61,7 @@ class RWMB_Helper
 			return false;
 		}
 		$field = $fields[$field_id];
-		return call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'normalize' ), $field );
+		return RWMB_Field::call( 'normalize', $field );
 	}
 
 	/**
@@ -93,7 +93,6 @@ class RWMB_Helper
 			'clone'    => $args['clone'],
 			'multiple' => $args['multiple'],
 		);
-		$class = RW_Meta_Box::get_class_name( $field );
 
 		switch ( $args['type'] )
 		{
@@ -127,8 +126,7 @@ class RWMB_Helper
 				$meta = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
 				break;
 			default:
-				$meta = call_user_func( array( $class, 'get_value' ), $field, $args, $post_id );
-				break;
+				$meta = RWMB_Field::call( 'get_value', $field, $args, $post_id );
 		}
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 	}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Media field class which users WordPress media popup to upload and select files.
  */
@@ -13,20 +14,29 @@ class RWMB_Media_Field extends RWMB_Field
 	{
 		wp_enqueue_media();
 		wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-media', 'i18nRwmbMedia', array(
-			'add'                => apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) ),
-			'single'             => apply_filters( 'rwmb_media_single_files_string', _x( ' file', 'media', 'meta-box' ) ),
-			'multiple'           => apply_filters( 'rwmb_media_multiple_files_string', _x( ' files', 'media', 'meta-box' ) ),
-			'remove'             => apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) ),
-			'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
-			'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
-			'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
-			'loadingUrl'         => RWMB_URL . 'img/loader.gif',
-			'extensions'         => self::get_mime_extensions(),
-			'select'             => _x( 'Select Files', 'media', 'meta-box' ),
-			'uploadInstructions' => _x( 'Drop files here to upload', 'media', 'meta-box' )
-		) );
+		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone', 'media-grid' ), RWMB_VER, true );
+
+		/**
+		 * Prevent loading localized string twice.
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( 'rwmb-media', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-media', 'i18nRwmbMedia', array(
+				'add'                => apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) ),
+				'single'             => apply_filters( 'rwmb_media_single_files_string', _x( ' file', 'media', 'meta-box' ) ),
+				'multiple'           => apply_filters( 'rwmb_media_multiple_files_string', _x( ' files', 'media', 'meta-box' ) ),
+				'remove'             => apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) ),
+				'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
+				'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
+				'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
+				'loadingUrl'         => RWMB_URL . 'img/loader.gif',
+				'extensions'         => self::get_mime_extensions(),
+				'select'             => _x( 'Select Files', 'media', 'meta-box' ),
+				'uploadInstructions' => _x( 'Drop files here to upload', 'media', 'meta-box' ),
+			) );
+		}
 	}
 
 	/**
@@ -53,15 +63,9 @@ class RWMB_Media_Field extends RWMB_Field
 		$meta       = (array) $meta;
 		$meta       = implode( ',', $meta );
 		$attributes = $load_test_attr = self::get_attributes( $field, $meta );
-		$load_test_attr['disabled'] = false;
-		$load_test_attr['class'] = 'rwmb-load-test';
-		$load_test_attr['value'] = -1;
-		$load_test_attr['name'] = $field['field_name'];
-
 
 		$html = sprintf(
 			'<input %s>
-
 			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s" data-show-status="%s"></div>',
 			self::render_attributes( $attributes ),
 			$field['mime_type'],
@@ -88,7 +92,7 @@ class RWMB_Media_Field extends RWMB_Field
 			'mime_type'        => '',
 			'max_file_uploads' => 0,
 			'force_delete'     => false,
-			'max_status'       => true
+			'max_status'       => true,
 		) );
 
 		$field['multiple'] = true;
@@ -106,9 +110,9 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function get_attributes( $field, $value = null )
 	{
-		$attributes             = parent::get_attributes( $field, $value );
-		$attributes['type']     = 'hidden';
-		$attributes['name']    .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
+		$attributes         = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'hidden';
+		$attributes['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
 		$attributes['disabled'] = true;
 		$attributes['id']       = false;
 		$attributes['value']    = $value;
@@ -120,15 +124,15 @@ class RWMB_Media_Field extends RWMB_Field
 	{
 		$mime_types = wp_get_mime_types();
 		$extensions = array();
-		foreach( $mime_types as $ext => $mime )
+		foreach ( $mime_types as $ext => $mime )
 		{
-			$ext = explode( '|', $ext );
-			$extensions[ $mime ] = $ext;
+			$ext               = explode( '|', $ext );
+			$extensions[$mime] = $ext;
 
 			$mime_parts = explode( '/', $mime );
-			if( empty( $extensions[ $mime_parts[0] ] ) )
-				$extensions[ $mime_parts[0] ] = array();
-			$extensions[ $mime_parts[0] ] = $extensions[ $mime_parts[0] . '/*' ] = array_merge( $extensions[ $mime_parts[0] ], $ext );
+			if ( empty( $extensions[$mime_parts[0]] ) )
+				$extensions[$mime_parts[0]] = array();
+			$extensions[$mime_parts[0]] = $extensions[$mime_parts[0] . '/*'] = array_merge( $extensions[$mime_parts[0]], $ext );
 
 		}
 
@@ -161,7 +165,7 @@ class RWMB_Media_Field extends RWMB_Field
 	 */
 	static function value( $new, $old, $post_id, $field )
 	{
-		if( -1 === intval( $new ) )
+		if ( - 1 === intval( $new ) )
 			return $old;
 
 		return $new;
@@ -174,5 +178,63 @@ class RWMB_Media_Field extends RWMB_Field
 	static function print_templates()
 	{
 		require_once( RWMB_INC_DIR . 'templates/media.php' );
+	}
+
+	/**
+	 * Get the field value.
+	 * @param array $field
+	 * @param array $args
+	 * @param null  $post_id
+	 * @return mixed
+	 */
+	static function get_value( $field, $args = array(), $post_id = null )
+	{
+		return RWMB_File_Field::get_value( $field, $args, $post_id );
+	}
+
+	/**
+	 * Get uploaded files information
+	 * @param array $field    Field parameter
+	 * @param array $file_ids Files IDs
+	 * @param array $args     Additional arguments (for image size)
+	 * @return array
+	 */
+	public static function files_info( $field, $file_ids, $args )
+	{
+		return RWMB_File_Field::files_info( $field, $file_ids, $args );
+	}
+
+	/**
+	 * Get uploaded file information.
+	 *
+	 * @param int   $file_id Attachment image ID (post ID). Required.
+	 * @param array $args    Array of arguments (for size).
+	 * @return array|bool False if file not found. Array of image info on success
+	 */
+	static function file_info( $file_id, $args = array() )
+	{
+		return RWMB_File_Field::file_info( $file_id, $args );
+	}
+
+	/**
+	 * Format value for the helper functions.
+	 * @param array        $field Field parameter
+	 * @param string|array $value The field meta value
+	 * @return string
+	 */
+	public static function format_value( $field, $value )
+	{
+		return RWMB_File_Field::format_value( $field, $value );
+	}
+
+	/**
+	 * Format a single value for the helper functions.
+	 * @param array $field Field parameter
+	 * @param array $value The value
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value )
+	{
+		return RWMB_File_Field::format_single_value( $field, $value );
 	}
 }

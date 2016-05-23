@@ -35,24 +35,14 @@ jQuery( function ( $ )
 			this.dropzone = this.el;
 			this.browser  = this.$('.rwmb-browse-button')[0];
 
-			this.supports = {
-				upload: wp.Uploader.browser.supported
-			};
-
-			this.supported = this.supports.upload;
-
-			if ( this.supported ) {
+			if ( wp.Uploader.browser.supported ) {
 				this.initUploader();
 			}
 
-			this.listenTo( this.controller.items, 'add remove', function ()
+			// Auto hide if you reach the max number of media
+			this.listenTo( this.controller, 'change:full', function ()
 			{
-				var maxFiles = this.controller.get( 'maxFiles' );
-
-				if ( maxFiles > 0 )
-				{
-					this.$el.toggle( this.controller.items.length < maxFiles );
-				}
+				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
 		},
 

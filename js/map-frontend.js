@@ -34,6 +34,9 @@ jQuery( function ( $ )
 				break;
 		}
 		mapOptions.center = center;
+		
+		// Typcast zoom to a number
+		mapOptions.zoom *= 1;
 		map = new google.maps.Map( this, mapOptions );
 
 		// Set marker

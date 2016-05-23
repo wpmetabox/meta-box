@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File input field class which uses an input for file URL.
  */
@@ -11,12 +12,19 @@ class RWMB_File_Input_Field extends RWMB_Field
 	 */
 	static function admin_enqueue_scripts()
 	{
-		// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 		wp_enqueue_media();
 		wp_enqueue_script( 'rwmb-file-input', RWMB_JS_URL . 'file-input.js', array( 'jquery' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-file-input', 'rwmbFileInput', array(
-			'frameTitle' => __( 'Select File', 'meta-box' ),
-		) );
+		/**
+		 * Prevent loading localized string twice.
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( 'rwmb-file-input', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-file-input', 'rwmbFileInput', array(
+				'frameTitle' => __( 'Select File', 'meta-box' ),
+			) );
+		}
 	}
 
 	/**
