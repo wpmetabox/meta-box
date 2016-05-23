@@ -61,7 +61,7 @@ class RWMB_Helper
 			return false;
 		}
 		$field = $fields[$field_id];
-		return RWMB_Field::call( $field, 'normalize', $field );
+		return RWMB_Field::call( 'normalize', $field );
 	}
 
 	/**
@@ -126,7 +126,7 @@ class RWMB_Helper
 				$meta = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
 				break;
 			default:
-				$meta = RWMB_Field::call( $field, 'get_value', $field, $args, $post_id );
+				$meta = RWMB_Field::call( 'get_value', $field, $args, $post_id );
 		}
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
 	}

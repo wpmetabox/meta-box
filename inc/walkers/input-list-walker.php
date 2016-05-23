@@ -45,7 +45,7 @@ class RWMB_Input_List_Walker extends RWMB_Walker
 		$id         = $this->db_fields['id'];
 		$meta       = $this->meta;
 		$field      = $this->field;
-		$attributes = RWMB_Field::call( $field, 'get_attributes', $field, $object->$id );
+		$attributes = RWMB_Field::call( 'get_attributes', $field, $object->$id );
 
 		$output .= sprintf(
 			'<li><label><input %s %s>%s</label>',

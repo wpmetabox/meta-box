@@ -48,7 +48,7 @@ class RWMB_Select_Tree_Walker
 		$field      = $this->field;
 		$meta       = $this->meta;
 		$walker     = new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
-		$attributes = RWMB_Field::call( $field, 'get_attributes', $field, $meta );
+		$attributes = RWMB_Field::call( 'get_attributes', $field, $meta );
 
 		$children = $options[$parent_id];
 		$output   = sprintf(

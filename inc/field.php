@@ -36,10 +36,10 @@ abstract class RWMB_Field
 		$post    = get_post();
 		$post_id = isset( $post->ID ) ? $post->ID : 0;
 
-		$meta = self::call( $field, 'meta', $post_id, $saved, $field );
+		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
-		$begin = self::call( $field, 'begin_html', $meta, $field );
+		$begin = self::call( $field, 'begin_html', $meta );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
 		// Separate code for cloneable and non-cloneable fields to make easy to maintain
@@ -77,7 +77,7 @@ abstract class RWMB_Field
 				$input_html = "<div class='$class'>" . $sort_icon;
 
 				// Call separated methods for displaying each type of field
-				$input_html .= self::call( $field, 'html', $sub_meta, $sub_field );
+				$input_html .= self::call( $sub_field, 'html', $sub_meta );
 				$input_html = self::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 				// Remove clone button
@@ -92,11 +92,11 @@ abstract class RWMB_Field
 		else
 		{
 			// Call separated methods for displaying each type of field
-			$field_html = self::call( $field, 'html', $meta, $field );
+			$field_html = self::call( $field, 'html', $meta );
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = self::call( $field, 'end_html', $meta, $field );
+		$end = self::call( $field, 'end_html', $meta );
 		$end = self::filter( 'end_html', $end, $field, $meta );
 
 		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
@@ -532,13 +532,14 @@ abstract class RWMB_Field
 		if ( is_string( $check ) )
 		{
 			$method = array_shift( $args );
-			$field  = reset( $args );
+			$field  = reset( $args ); // Keep field as 1st param
 		}
 		// Params: field, method name, other params.
 		else
 		{
 			$field  = array_shift( $args );
 			$method = array_shift( $args );
+			$args[] = $field; // Add field as last param
 		}
 
 		return call_user_func_array( array( self::get_class_name( $field ), $method ), $args );

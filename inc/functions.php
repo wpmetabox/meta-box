@@ -49,7 +49,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
 		// Get field value
-		$value = $field ? RWMB_Field::call( $field, 'get_value', $field, $args, $post_id ) : false;
+		$value = $field ? RWMB_Field::call( 'get_value', $field, $args, $post_id ) : false;
 
 		/**
 		 * Allow developers to change the returned value of field
@@ -86,7 +86,7 @@ if ( ! function_exists( 'rwmb_the_value' ) )
 		if ( ! $field )
 			return '';
 
-		$output = RWMB_Field::call( $field, 'the_value', $field, $args, $post_id );
+		$output = RWMB_Field::call( 'the_value', $field, $args, $post_id );
 
 		/**
 		 * Allow developers to change the returned value of field

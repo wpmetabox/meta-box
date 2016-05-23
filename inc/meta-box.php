@@ -218,7 +218,7 @@ class RW_Meta_Box
 
 		foreach ( $this->fields as $field )
 		{
-			RWMB_Field::call( $field, 'show', $field, $saved );
+			RWMB_Field::call( 'show', $field, $saved );
 		}
 
 		// Allow users to add custom code after meta box content
@@ -272,11 +272,11 @@ class RW_Meta_Box
 			$new    = isset( $_POST[$name] ) ? $_POST[$name] : ( $single ? '' : array() );
 
 			// Allow field class change the value
-			$new = RWMB_Field::call( $field, 'value', $new, $old, $post_id, $field );
+			$new = RWMB_Field::call( $field, 'value', $new, $old, $post_id );
 			$new = RWMB_Field::filter( 'value', $new, $field, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one
-			RWMB_Field::call( $field, 'save', $new, $old, $post_id, $field );
+			RWMB_Field::call( $field, 'save', $new, $old, $post_id );
 		}
 
 		// After save action
@@ -350,7 +350,7 @@ class RW_Meta_Box
 			}
 
 			// Allow field class add/change default field values
-			$field = RWMB_Field::call( $field, 'normalize', $field );
+			$field = RWMB_Field::call( 'normalize', $field );
 
 			if ( isset( $field['fields'] ) )
 				$field['fields'] = self::normalize_fields( $field['fields'] );
