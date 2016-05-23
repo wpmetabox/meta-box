@@ -273,7 +273,7 @@ class RW_Meta_Box
 
 			// Allow field class change the value
 			$new = RWMB_Field::call( $field, 'value', $new, $old, $post_id, $field );
-			$new = RWMB_Core::filter( 'value', $new, $field, $old );
+			$new = RWMB_Field::filter( 'value', $new, $field, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one
 			RWMB_Field::call( $field, 'save', $new, $old, $post_id, $field );

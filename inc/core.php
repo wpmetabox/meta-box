@@ -100,43 +100,4 @@ class RWMB_Core
 			delete_post_meta( $post->ID, '_wp_page_template' );
 		}
 	}
-
-	/**
-	 * Apply various filters based on field type, id.
-	 * Filters:
-	 * - rwmb_{$name}
-	 * - rwmb_{$field['type']}_{$name}
-	 * - rwmb_{$field['id']}_{$name}
-	 * @return mixed
-	 */
-	public static function filter()
-	{
-		$args = func_get_args();
-
-		// 3 first params must be: filter name, value, field. Other params will be used for filters.
-		$name  = array_shift( $args );
-		$value = array_shift( $args );
-		$field = array_shift( $args );
-
-		// List of filters
-		$filters = array(
-			'rwmb_' . $name,
-			'rwmb_' . $field['type'] . '_' . $name,
-		);
-		if ( isset( $field['id'] ) )
-		{
-			$filters[] = 'rwmb_' . $field['id'] . '_' . $name;
-		}
-
-		// Filter params: value, field, other params. Note: value is changed after each run.
-		array_unshift( $args, $field );
-		foreach ( $filters as $filter )
-		{
-			$filter_args = $args;
-			array_unshift( $filter_args, $value );
-			$value = apply_filters_ref_array( $filter, $filter_args );
-		}
-
-		return $value;
-	}
 }

@@ -37,10 +37,10 @@ abstract class RWMB_Field
 		$post_id = isset( $post->ID ) ? $post->ID : 0;
 
 		$meta = self::call( $field, 'meta', $post_id, $saved, $field );
-		$meta = RWMB_Core::filter( 'field_meta', $meta, $field, $saved );
+		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
 		$begin = self::call( $field, 'begin_html', $meta, $field );
-		$begin = RWMB_Core::filter( 'begin_html', $begin, $field, $meta );
+		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
 		// Separate code for cloneable and non-cloneable fields to make easy to maintain
 
@@ -78,7 +78,7 @@ abstract class RWMB_Field
 
 				// Call separated methods for displaying each type of field
 				$input_html .= self::call( $field, 'html', $sub_meta, $sub_field );
-				$input_html = RWMB_Core::filter( 'html', $input_html, $sub_field, $sub_meta );
+				$input_html = self::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 				// Remove clone button
 				$input_html .= self::call( $field, 'remove_clone_button', $sub_field );
@@ -93,13 +93,13 @@ abstract class RWMB_Field
 		{
 			// Call separated methods for displaying each type of field
 			$field_html = self::call( $field, 'html', $meta, $field );
-			$field_html = RWMB_Core::filter( 'html', $field_html, $field, $meta );
+			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
 		$end = self::call( $field, 'end_html', $meta, $field );
-		$end = RWMB_Core::filter( 'end_html', $end, $field, $meta );
+		$end = self::filter( 'end_html', $end, $field, $meta );
 
-		$html = RWMB_Core::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
+		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
@@ -113,7 +113,7 @@ abstract class RWMB_Field
 			trim( $classes ),
 			$html
 		);
-		$outer_html = RWMB_Core::filter( 'outer_html', $outer_html, $field, $meta );
+		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html;
 	}
@@ -545,5 +545,44 @@ abstract class RWMB_Field
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
 		return $class;
+	}
+
+	/**
+	 * Apply various filters based on field type, id.
+	 * Filters:
+	 * - rwmb_{$name}
+	 * - rwmb_{$field['type']}_{$name}
+	 * - rwmb_{$field['id']}_{$name}
+	 * @return mixed
+	 */
+	public static function filter()
+	{
+		$args = func_get_args();
+
+		// 3 first params must be: filter name, value, field. Other params will be used for filters.
+		$name  = array_shift( $args );
+		$value = array_shift( $args );
+		$field = array_shift( $args );
+
+		// List of filters
+		$filters = array(
+			'rwmb_' . $name,
+			'rwmb_' . $field['type'] . '_' . $name,
+		);
+		if ( isset( $field['id'] ) )
+		{
+			$filters[] = 'rwmb_' . $field['id'] . '_' . $name;
+		}
+
+		// Filter params: value, field, other params. Note: value is changed after each run.
+		array_unshift( $args, $field );
+		foreach ( $filters as $filter )
+		{
+			$filter_args = $args;
+			array_unshift( $filter_args, $value );
+			$value = apply_filters_ref_array( $filter, $filter_args );
+		}
+
+		return $value;
 	}
 }
