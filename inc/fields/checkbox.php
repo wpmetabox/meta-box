@@ -45,7 +45,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	 */
 	public static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'add_clone_button' ), $field ) : '';
+		$button = $field['clone'] ? self::add_clone_button( $field ) : '';
 
 		// Closes the container
 		$html = "{$button}</div>";
