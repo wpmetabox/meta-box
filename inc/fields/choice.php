@@ -14,7 +14,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 * @param mixed $db_fields
 	 * @return string
 	 */
-	public static function walk( $options, $db_fields, $meta, $field )
+	public static function walk( $field, $options, $db_fields, $meta )
 	{
 		return '';
 	}
@@ -31,7 +31,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 		$meta      = (array) $meta;
 		$options   = self::call( 'get_options', $field );
 		$db_fields = self::call( 'get_db_fields', $field );
-		return self::call( $field, 'walk', $options, $db_fields, $meta, $field );
+		return self::call( 'walk', $field, $options, $db_fields, $meta );
 	}
 
 	/**
@@ -92,7 +92,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 */
 	public static function format_single_value( $field, $value )
 	{
-		return self::call( $field, 'get_option_label', $value, $field );
+		return self::call( 'get_option_label', $field, $value );
 	}
 
 	/**
@@ -103,7 +103,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	 *
 	 * @return string
 	 */
-	public static function get_option_label( $value, $field )
+	public static function get_option_label( $field, $value )
 	{
 		$options = self::call( 'get_options', $field );
 		return $options[$value]->label;

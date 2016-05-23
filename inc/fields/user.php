@@ -81,7 +81,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	public static function get_option_label( $value, $field )
+	public static function get_option_label( $field, $value )
 	{
 		$user  = get_userdata( $value );
 		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';

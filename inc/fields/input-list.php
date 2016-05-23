@@ -23,7 +23,7 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	 *
 	 * @return string
 	 */
-	public static function walk( $options, $db_fields, $meta, $field )
+	public static function walk( $field, $options, $db_fields, $meta )
 	{
 		$walker = new RWMB_Input_List_Walker( $db_fields, $field, $meta );
 		$output = sprintf( '<ul class="rwmb-input-list %s %s">',
