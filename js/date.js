@@ -54,13 +54,13 @@ jQuery( function ( $ )
 		return Math.floor( milliseconds / 1000 );
 	}
 
-	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datepicker.locale ) )
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.locale ) )
 	{
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datepicker.locale] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.locale] );
 	}
-	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datepicker.localeShort ) )
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.localeShort ) )
 	{
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datepicker.localeShort] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.localeShort] );
 	}
 
 	$( ':input.rwmb-date' ).each( update );

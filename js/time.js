@@ -32,13 +32,13 @@ jQuery( function ( $ )
 	}
 
 	// Set language if available
-	if ( $.timepicker.regional.hasOwnProperty( RWMB_Timepicker.locale ) )
+	if ( $.timepicker.regional.hasOwnProperty( RWMB_Time.locale ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Timepicker.locale] );
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Time.locale] );
 	}
-	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Timepicker.localeShort ) )
+	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Time.localeShort ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Timepicker.localeShort] );
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Time.localeShort] );
 	}
 
 	$( '.rwmb-time' ).each( update );

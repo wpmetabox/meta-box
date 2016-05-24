@@ -49,29 +49,24 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker-i18n', 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
 		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
 
-		$locale       = str_replace( '_', '-', get_locale() );
-		$locale_short = substr( $locale, 0, 2 );
-		$script_data  = array(
-			'locale'      => $locale,
-			'localeShort' => $locale_short,
-		);
-
 		/**
 		 * Add data to scripts. Prevent loading localized string twice.
 		 * @link https://github.com/rilwis/meta-box/issues/850
 		 */
-		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( 'rwmb-datetime', 'data' ) )
+		$wp_scripts   = wp_scripts();
+		$handles      = array( 'datetime', 'date', 'time' );
+		$locale       = str_replace( '_', '-', get_locale() );
+		$locale_short = substr( $locale, 0, 2 );
+		$data         = array(
+			'locale'      => $locale,
+			'localeShort' => $locale_short,
+		);
+		foreach ( $handles as $handle )
 		{
-			wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', $script_data );
-		}
-		if ( ! $wp_scripts->get_data( 'rwmb-date', 'data' ) )
-		{
-			wp_localize_script( 'rwmb-date', 'RWMB_Datepicker', $script_data );
-		}
-		if ( ! $wp_scripts->get_data( 'rwmb-time', 'data' ) )
-		{
-			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', $script_data );
+			if ( ! $wp_scripts->get_data( "rwmb-$handle", 'data' ) )
+			{
+				wp_localize_script( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
+			}
 		}
 	}
 
@@ -132,18 +127,25 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	 */
 	public static function value( $new, $old, $post_id, $field )
 	{
-		if ( ! $field['timestamp'] )
-			return $new;
+		if ( $field['timestamp'] )
+		{
+			$new = self::prepare_value( $new, $field );
+		}
+		return $new;
+	}
 
+	/**
+	 * Prepare value before saving if set 'timestamp'
+	 * @param array|string $value The submitted value
+	 * @param array        $field Field parameter
+	 * @return array
+	 */
+	protected static function prepare_value( $value, $field )
+	{
 		if ( $field['clone'] )
 		{
-			foreach ( $new as $key => $value )
-			{
-				$new[$key] = isset( $value['timestamp'] ) ? $value['timestamp'] : null;
-			}
-			return $new;
+			return array_map( __METHOD__, $value );
 		}
-
 		return isset( $new['timestamp'] ) ? $new['timestamp'] : null;
 	}
 
@@ -159,29 +161,29 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	public static function meta( $post_id, $saved, $field )
 	{
 		$meta = parent::meta( $post_id, $saved, $field );
-		if ( ! $field['timestamp'] )
+		if ( $field['timestamp'] )
 		{
-			return $meta;
-		}
-		$method = array( self::get_class_name( $field ), 'translate_format' );
-		if ( is_array( $meta ) )
-		{
-			foreach ( $meta as $key => $value )
-			{
-				$meta[$key] = array(
-					'timestamp' => ( $value != "" ) ? $value : null,
-					'formatted' => ( $value != "" ) ? date( call_user_func( $method, $field ), intval( $value ) ) : "",
-				);
-			}
-		}
-		else
-		{
-			$meta = array(
-				'timestamp' => ( $meta != "" ) ? $meta : null,
-				'formatted' => ( $meta != "" ) ? date( call_user_func( $method, $field ), intval( $meta ) ) : "",
-			);
+			$meta = self::prepare_meta( $meta, $field );
 		}
 		return $meta;
+	}
+
+	/**
+	 * Format meta value if set 'timestamp'
+	 * @param array|string $meta  The meta value
+	 * @param array        $field Field parameter
+	 * @return array
+	 */
+	protected static function prepare_meta( $meta, $field )
+	{
+		if ( is_array( $meta ) )
+		{
+			return array_map( __METHOD__, $meta );
+		}
+		return array(
+			'timestamp' => $meta ? $meta : null,
+			'formatted' => $meta ? date( self::call( 'translate_format', $field ), intval( $meta ) ) : '',
+		);
 	}
 
 	/**

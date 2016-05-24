@@ -55,21 +55,21 @@ jQuery( function ( $ )
 	}
 
 	// Set language if available
-	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetimepicker.locale ) )
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) )
 	{
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetimepicker.locale] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.locale] );
 	}
-	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetimepicker.localeShort ) )
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) )
 	{
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetimepicker.localeShort] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.localeShort] );
 	}
-	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetimepicker.locale ) )
+	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.locale] );
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.locale] );
 	}
-	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetimepicker.localeShort ) )
+	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.localeShort] );
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.localeShort] );
 	}
 
 	$( ':input.rwmb-datetime' ).each( update );
