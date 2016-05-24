@@ -48,13 +48,21 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
-		if(date===null)
+		if ( date === null )
 			return "";
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
 
 	// Set language if available
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetimepicker.locale ) )
+	{
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetimepicker.locale] );
+	}
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetimepicker.localeShort ) )
+	{
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetimepicker.localeShort] );
+	}
 	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetimepicker.locale ) )
 	{
 		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.locale] );

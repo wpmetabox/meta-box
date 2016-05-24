@@ -33,67 +33,45 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 	public static function admin_register_scripts()
 	{
 		$url = RWMB_CSS_URL . 'jqueryui';
-		wp_register_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
-		wp_register_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
+		wp_register_style( 'jquery-ui-core', "$url/jquery.ui.core.css", array(), '1.8.17' );
+		wp_register_style( 'jquery-ui-theme', "$url/jquery.ui.theme.css", array(), '1.8.17' );
 		wp_register_style( 'wp-datepicker', RWMB_CSS_URL . 'datepicker.css', array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
-		wp_register_style( 'jquery-ui-datepicker', "{$url}/jquery.ui.datepicker.css", array( 'wp-datepicker' ), '1.8.17' );
-		wp_register_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
-		wp_register_style( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.min.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider', 'wp-datepicker' ), '1.5.0' );
+		wp_register_style( 'jquery-ui-datepicker', "$url/jquery.ui.datepicker.css", array( 'wp-datepicker' ), '1.8.17' );
+		wp_register_style( 'jquery-ui-slider', "$url/jquery.ui.slider.css", array( 'jquery-ui-core', 'jquery-ui-theme' ), '1.8.17' );
+		wp_register_style( 'jquery-ui-timepicker', "$url/jquery-ui-timepicker-addon.min.css", array( 'jquery-ui-datepicker', 'jquery-ui-slider', 'wp-datepicker' ), '1.5.0' );
 
 		$url = RWMB_JS_URL . 'jqueryui';
-		wp_register_script( 'jquery-ui-timepicker', "{$url}/jquery-ui-timepicker-addon.min.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '1.5.0', true );
-		wp_register_script( 'jquery-ui-timepicker-i18n', "{$url}/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
+		wp_register_script( 'jquery-ui-datepicker-i18n', "$url/jquery-ui-i18n.min.js", array( 'jquery-ui-datepicker' ), '1.11.4', true );
+		wp_register_script( 'jquery-ui-timepicker', "$url/jquery-ui-timepicker-addon.min.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '1.5.0', true );
+		wp_register_script( 'jquery-ui-timepicker-i18n', "$url/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
 
-		/**
-		 * Localization
-		 * Use 1 minified JS file for timepicker which contains all languages for simplicity (in version < 4.4.2 we use separated JS files).
-		 * The language is set in Javascript
-		 *
-		 * Note: we use full locale (de-DE) and fallback to short locale (de)
-		 */
-		$locale       = str_replace( '_', '-', get_locale() );
-		$locale_short = substr( $locale, 0, 2 );
-
-		$date_paths = array( 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . $locale . '.js' );
-		if ( strlen( $locale ) > 2 )
-		{
-			// Also check alternate i18n filenames
-			// (e.g. jquery.ui.datepicker-de.js instead of jquery.ui.datepicker-de-DE.js)
-			$date_paths[] = 'jqueryui/datepicker-i18n/jquery.ui.datepicker-' . substr( $locale, 0, 2 ) . '.js';
-		}
-		$deps = array( 'jquery-ui-timepicker-i18n' );
-		foreach ( $date_paths as $date_path )
-		{
-			if ( file_exists( RWMB_DIR . 'js/' . $date_path ) )
-			{
-				wp_register_script( 'jquery-ui-datepicker-i18n', RWMB_JS_URL . $date_path, array( 'jquery-ui-datepicker' ), '1.8.17', true );
-				$deps[] = 'jquery-ui-datepicker-i18n';
-				break;
-			}
-		}
-
-		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', $deps, RWMB_VER, true );
-		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', $deps, RWMB_VER, true );
+		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery-ui-datepicker-i18n', 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
+		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker-i18n', 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
 		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
 
+		$locale       = str_replace( '_', '-', get_locale() );
+		$locale_short = substr( $locale, 0, 2 );
+		$script_data  = array(
+			'locale'      => $locale,
+			'localeShort' => $locale_short,
+		);
+
 		/**
-		 * Prevent loading localized string twice.
+		 * Add data to scripts. Prevent loading localized string twice.
 		 * @link https://github.com/rilwis/meta-box/issues/850
 		 */
 		$wp_scripts = wp_scripts();
 		if ( ! $wp_scripts->get_data( 'rwmb-datetime', 'data' ) )
 		{
-			wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', array(
-				'locale'      => $locale,
-				'localeShort' => $locale_short,
-			) );
+			wp_localize_script( 'rwmb-datetime', 'RWMB_Datetimepicker', $script_data );
+		}
+		if ( ! $wp_scripts->get_data( 'rwmb-date', 'data' ) )
+		{
+			wp_localize_script( 'rwmb-date', 'RWMB_Datepicker', $script_data );
 		}
 		if ( ! $wp_scripts->get_data( 'rwmb-time', 'data' ) )
 		{
-			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', array(
-				'locale'      => $locale,
-				'localeShort' => $locale_short,
-			) );
+			wp_localize_script( 'rwmb-time', 'RWMB_Timepicker', $script_data );
 		}
 	}
 

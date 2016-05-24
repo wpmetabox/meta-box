@@ -48,10 +48,19 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
-		if(date===null)
+		if ( date === null )
 			return "";
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
+	}
+
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datepicker.locale ) )
+	{
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datepicker.locale] );
+	}
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datepicker.localeShort ) )
+	{
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datepicker.localeShort] );
 	}
 
 	$( ':input.rwmb-date' ).each( update );
