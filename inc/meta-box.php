@@ -367,6 +367,16 @@ class RW_Meta_Box
 	}
 
 	/**
+	 * Get field class name. Only for backward compatibility.
+	 * @param array $field Field array
+	 * @return string Field class name
+	 */
+	public static function get_class_name( $field )
+	{
+		return RWMB_Field::get_class_name( $field );
+	}
+
+	/**
 	 * Check if meta box is saved before.
 	 * This helps saving empty value in meta fields (for text box, check box, etc.) and set the correct default values.
 	 *
