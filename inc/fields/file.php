@@ -8,7 +8,7 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
@@ -30,22 +30,25 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Add custom actions
 	 */
-	static function add_actions()
+	public static function add_actions()
 	{
-		// Add data encoding type for file uploading
 		add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
-
-		// Delete file via Ajax
 		add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'wp_ajax_delete_file' ) );
-
-		// Allow reordering files
 		add_action( 'wp_ajax_rwmb_reorder_files', array( __CLASS__, 'wp_ajax_reorder_files' ) );
+	}
+
+	/**
+	 * Add data encoding type for file uploading
+	 */
+	public static function post_edit_form_tag()
+	{
+		echo ' enctype="multipart/form-data"';
 	}
 
 	/**
 	 * Ajax callback for reordering images
 	 */
-	static function wp_ajax_reorder_files()
+	public static function wp_ajax_reorder_files()
 	{
 		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
@@ -62,21 +65,11 @@ class RWMB_File_Field extends RWMB_Field
 	}
 
 	/**
-	 * Add data encoding type for file uploading
-	 *
-	 * @return void
-	 */
-	static function post_edit_form_tag()
-	{
-		echo ' enctype="multipart/form-data"';
-	}
-
-	/**
 	 * Ajax callback for deleting files.
 	 * Modified from a function used by "Verve Meta Boxes" plugin
 	 * @link http://goo.gl/LzYSq
 	 */
-	static function wp_ajax_delete_file()
+	public static function wp_ajax_delete_file()
 	{
 		$post_id       = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
@@ -89,8 +82,7 @@ class RWMB_File_Field extends RWMB_Field
 
 		if ( $success )
 			wp_send_json_success();
-		else
-			wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
+		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
 	}
 
 	/**
@@ -101,7 +93,7 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function html( $meta, $field )
 	{
 		$i18n_title = apply_filters( 'rwmb_file_upload_string', _x( 'Upload Files', 'file upload', 'meta-box' ), $field );
 		$i18n_more  = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
@@ -128,7 +120,7 @@ class RWMB_File_Field extends RWMB_Field
 		return $html;
 	}
 
-	static function get_uploaded_files( $files, $field )
+	protected static function get_uploaded_files( $files, $field )
 	{
 		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
@@ -158,7 +150,7 @@ class RWMB_File_Field extends RWMB_Field
 		return $html;
 	}
 
-	static function file_html( $attachment_id )
+	protected static function file_html( $attachment_id )
 	{
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
@@ -201,14 +193,13 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return array|mixed
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
-		$name = $field['id'];
-		if ( empty( $_FILES[$name] ) )
+		if ( empty( $_FILES[$field['id']] ) )
 			return $new;
 
 		$new   = array();
-		$files = self::fix_file_array( $_FILES[$name] );
+		$files = self::transform( $_FILES[$field['id']] );
 
 		foreach ( $files as $file_item )
 		{
@@ -241,16 +232,11 @@ class RWMB_File_Field extends RWMB_Field
 	}
 
 	/**
-	 * Fixes the odd indexing of multiple file uploads from the format:
-	 *     $_FILES['field']['key']['index']
-	 * To the more standard and appropriate:
-	 *     $_FILES['field']['index']['key']
-	 *
+	 * Transform $_FILES from $_FILES['field']['key']['index'] to $_FILES['field']['index']['key']
 	 * @param array $files
-	 *
 	 * @return array
 	 */
-	static function fix_file_array( $files )
+	protected static function transform( $files )
 	{
 		$output = array();
 		foreach ( $files as $key => $list )
@@ -266,12 +252,10 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Normalize parameters for field
-	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field             = parent::normalize( $field );
 		$field             = wp_parse_args( $field, array(
@@ -286,9 +270,7 @@ class RWMB_File_Field extends RWMB_Field
 	}
 
 	/**
-	 * Get the field value
-	 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
-	 * of the field saved in the database, while this function returns more meaningful value of the field
+	 * Get the field value. Return meaningful info of the files.
 	 *
 	 * @param  array    $field   Field parameters
 	 * @param  array    $args    Not used for this field
