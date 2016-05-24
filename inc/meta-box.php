@@ -136,10 +136,6 @@ class RW_Meta_Box
 		return $all_fields;
 	}
 
-	/**************************************************
-	 * SHOW META BOX
-	 **************************************************/
-
 	/**
 	 * Add meta box for multiple post types
 	 */
@@ -212,10 +208,6 @@ class RW_Meta_Box
 		echo '</div>';
 	}
 
-	/**************************************************
-	 * SAVE META BOX
-	 **************************************************/
-
 	/**
 	 * Save data from meta box
 	 * @param int $post_id Post ID
@@ -269,10 +261,6 @@ class RW_Meta_Box
 			&& wp_verify_nonce( $nonce, "rwmb-save-{$this->meta_box['id']}" );
 	}
 
-	/**************************************************
-	 * HELPER FUNCTIONS
-	 **************************************************/
-
 	/**
 	 * Normalize parameters for meta box
 	 * @param array $meta_box Meta box definition
@@ -321,10 +309,8 @@ class RW_Meta_Box
 	{
 		foreach ( $fields as $k => $field )
 		{
-			$class = RWMB_Field::get_class_name( $field );
-
 			// Make sure field has correct 'type', ignore warning error when users forget to set field type or set incorrect one
-			if ( false === $class )
+			if ( class_exists( RWMB_Field::get_class_name( $field ) ) )
 			{
 				unset( $fields[$k] );
 				continue;
