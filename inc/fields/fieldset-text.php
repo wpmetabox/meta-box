@@ -54,9 +54,10 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 	 */
 	static function normalize( $field )
 	{
-		$field                     = parent::normalize( $field );
-		$field['multiple']         = false;
-		$field['attributes']['id'] = false;
+		$field                       = parent::normalize( $field );
+		$field['multiple']           = false;
+		$field['attributes']['id']   = false;
+		$field['attributes']['type'] = 'text';
 		return $field;
 	}
 

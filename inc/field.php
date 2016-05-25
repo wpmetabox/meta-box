@@ -556,7 +556,7 @@ abstract class RWMB_Field
 		$type  = str_replace( array( '-', '_' ), ' ', $field['type'] );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
-		return $class;
+		return class_exists( $class ) ? $class : 'RWMB_Input_Field';
 	}
 
 	/**

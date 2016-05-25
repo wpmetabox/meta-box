@@ -53,6 +53,7 @@ class RWMB_Color_Field extends RWMB_Text_Field
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
+		$attributes['type'] = 'text';
 
 		return $attributes;
 	}
