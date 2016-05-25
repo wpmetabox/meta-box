@@ -309,14 +309,6 @@ class RW_Meta_Box
 	{
 		foreach ( $fields as $k => $field )
 		{
-			// Make sure field has correct 'type', ignore warning error when users forget to set field type or set incorrect one
-			if ( ! class_exists( RWMB_Field::get_class_name( $field ) ) )
-			{
-				unset( $fields[$k] );
-				continue;
-			}
-
-			// Allow field class add/change default field values
 			$field = RWMB_Field::call( 'normalize', $field );
 
 			if ( isset( $field['fields'] ) )
