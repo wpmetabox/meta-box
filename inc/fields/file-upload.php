@@ -2,7 +2,7 @@
 /**
  * File advanced field class which users WordPress media popup to upload and select files.
  */
-class RWMB_File_Upload_Field extends RWMB_File_Advanced_Field
+class RWMB_File_Upload_Field extends RWMB_Media_Field
 {
 	/**
 	 * Add actions

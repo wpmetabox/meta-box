@@ -553,7 +553,16 @@ abstract class RWMB_Field
 	 */
 	public static function get_class_name( $field )
 	{
-		$type  = str_replace( array( '-', '_' ), ' ', $field['type'] );
+		$type = $field['type'];
+		if ( 'file_advanced' == $field['type'] )
+		{
+			$type = 'media';
+		}
+		if ( 'plupload_image' == $field['type'] )
+		{
+			$type = 'image_upload';
+		}
+		$type  = str_replace( array( '-', '_' ), ' ', $type );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
 		return class_exists( $class ) ? $class : 'RWMB_Input_Field';
