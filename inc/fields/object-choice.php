@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract field to select an object: post, user, taxonomy, etc.
  */
@@ -15,23 +16,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 */
 	public static function walk( $field, $options, $db_fields, $meta )
 	{
-		switch ( $field['field_type'] )
-		{
-			case 'checkbox_list':
-			case 'radio_list':
-				return RWMB_Input_List_Field::walk( $field, $options, $db_fields, $meta );
-				break;
-			case 'select_tree':
-				return RWMB_Select_Tree_Field::walk( $field, $options, $db_fields, $meta );
-				break;
-			case 'select_advanced':
-				return RWMB_Select_Advanced_Field::walk( $field, $options, $db_fields, $meta );
-				break;
-			case 'select':
-			default:
-				return RWMB_Select_Field::walk( $field, $options, $db_fields, $meta );
-				break;
-		}
+		return call_user_func( array( self::get_type_class( $field ), 'walk' ), $field, $options, $db_fields, $meta );
 	}
 
 	/**
@@ -55,25 +40,15 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 			$field['field_type'] = 'checkbox_list';
 			$field['flatten']    = false;
 		}
-
-		switch ( $field['field_type'] )
+		if ( 'radio_list' == $field['field_type'] )
 		{
-			case 'checkbox_list':
-			case 'radio_list':
-				$field['multiple'] = 'radio_list' === $field['field_type'] ? false : true;
-				return RWMB_Input_List_Field::normalize( $field );
-				break;
-			case 'select_advanced':
-				return RWMB_Select_Advanced_Field::normalize( $field );
-				break;
-			case 'select_tree':
-				return RWMB_Select_Tree_Field::normalize( $field );
-				break;
-			case 'select':
-			default:
-				return RWMB_Select_Field::normalize( $field );
-				break;
+			$field['multiple'] = false;
 		}
+		if ( 'checkbox_list' == $field['field_type'] )
+		{
+			$field['multiple'] = true;
+		}
+		return call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
 	}
 
 	/**
@@ -86,25 +61,12 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 */
 	public static function get_attributes( $field, $value = null )
 	{
-		switch ( $field['field_type'] )
+		$attributes = call_user_func( array( self::get_type_class( $field ), 'get_attributes' ), $field, $value );
+		if ( 'select_advanced' == $field['field_type'] )
 		{
-			case 'checkbox_list':
-			case 'radio_list':
-				return RWMB_Input_List_Field::get_attributes( $field, $value );
-				break;
-			case 'select_advanced':
-				$attributes = RWMB_Select_Advanced_Field::get_attributes( $field, $value );
-				$attributes['class'] .= ' rwmb-select_advanced';
-				return $attributes;
-				break;
-			case 'select_tree':
-				return RWMB_Select_Tree_Field::get_attributes( $field, $value );
-				break;
-			case 'select':
-			default:
-				return RWMB_Select_Field::get_attributes( $field, $value );
-				break;
+			$attributes['class'] .= ' rwmb-select_advanced';
 		}
+		return $attributes;
 	}
 
 	/**
@@ -146,14 +108,16 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	}
 
 	/**
-	 * Get options for walker
-	 *
-	 * @param array $field
-	 *
-	 * @return array
+	 * Get correct rendering class for the field.
+	 * @param array $field Field parameter
+	 * @return string
 	 */
-	public static function get_options( $field )
+	protected function get_type_class( $field )
 	{
-		return array();
+		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ) ) )
+		{
+			return 'RWMB_Input_List_Field';
+		}
+		return self::get_class_name( array( 'type' => $field['field_type'] ) );
 	}
 }
