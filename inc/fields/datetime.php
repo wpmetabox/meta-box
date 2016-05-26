@@ -146,7 +146,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 		{
 			return array_map( __METHOD__, $value );
 		}
-		return isset( $new['timestamp'] ) ? $new['timestamp'] : null;
+		return isset( $value['timestamp'] ) ? $value['timestamp'] : null;
 	}
 
 	/**
