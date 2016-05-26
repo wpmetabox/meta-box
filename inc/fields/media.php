@@ -38,13 +38,11 @@ class RWMB_Media_Field extends RWMB_File_Field
 
 	/**
 	 * Add actions
-	 *
-	 * @return void
 	 */
 	public static function add_actions()
 	{
-		// Print attachment templates
-		add_action( 'print_media_templates', array( __CLASS__, 'print_templates' ) );
+		$field = reset( func_get_args() );
+		add_action( 'print_media_templates', array( self::get_class_name( $field ), 'print_templates' ) );
 	}
 
 	/**
@@ -186,6 +184,6 @@ class RWMB_Media_Field extends RWMB_File_Field
 	 */
 	public static function print_templates()
 	{
-		require_once( RWMB_INC_DIR . 'templates/media.php' );
+		require_once RWMB_INC_DIR . 'templates/media.php';
 	}
 }

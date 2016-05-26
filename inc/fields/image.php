@@ -22,21 +22,18 @@ class RWMB_Image_Field extends RWMB_File_Field
 	 */
 	public static function file_html( $image )
 	{
-		$i18n_edit = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'meta-box' ) );
 		list( $src ) = wp_get_attachment_image_src( $image, 'thumbnail' );
-
 		return sprintf(
 			'<li id="item_%s">
 				<img src="%s">
 				<div class="rwmb-image-bar">
-					<a href="%s" target="_blank">%s</a> |
+					<a href="%s" target="_blank"><span class="dashicons dashicons-edit"></span></a> |
 					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">&times;</a>
 				</div>
 			</li>',
 			$image,
 			$src,
 			get_edit_post_link( $image ),
-			$i18n_edit,
 			$image
 		);
 	}
