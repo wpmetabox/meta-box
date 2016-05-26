@@ -53,7 +53,7 @@ class RWMB_Thickbox_Image_Field extends RWMB_Image_Field
 		$i18n_title = apply_filters( 'rwmb_thickbox_image_upload_string', _x( 'Upload Images', 'image upload', 'meta-box' ), $field );
 
 		// Uploaded images
-		$html = parent::get_uploaded_images( $meta, $field );
+		$html = parent::get_uploaded_files( $meta, $field );
 
 		// Show form upload
 		$html .= "<a href='#' class='button rwmb-thickbox-upload' data-field_id='{$field['id']}'>{$i18n_title}</a>";

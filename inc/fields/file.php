@@ -131,13 +131,13 @@ class RWMB_File_Field extends RWMB_Field
 		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
-		$classes = 'rwmb-file rwmb-uploaded';
+		$classes = 'rwmb-uploaded';
 		if ( count( $files ) <= 0 )
 			$classes .= ' hidden';
 
 		foreach ( (array) $files as $k => $file )
 		{
-			$files[$k] = self::file_html( $file );
+			$files[$k] = self::call( $field, 'file_html', $file );
 		}
 		return sprintf(
 			'<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
@@ -154,14 +154,14 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Get HTML for uploaded file.
-	 * @param int $attachment_id Attachment (file) ID
+	 * @param int $file Attachment (file) ID
 	 * @return string
 	 */
-	protected static function file_html( $attachment_id )
+	protected static function file_html( $file )
 	{
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
-		$mime_type   = get_post_mime_type( $attachment_id );
+		$mime_type   = get_post_mime_type( $file );
 
 		return sprintf(
 			'<li id="item_%s">
@@ -173,14 +173,14 @@ class RWMB_File_Field extends RWMB_Field
 					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>
 				</div>
 			</li>',
-			$attachment_id,
-			wp_get_attachment_image( $attachment_id, array( 60, 60 ), true ),
-			wp_get_attachment_url( $attachment_id ),
-			get_the_title( $attachment_id ),
+			$file,
+			wp_get_attachment_image( $file, array( 60, 60 ), true ),
+			wp_get_attachment_url( $file ),
+			get_the_title( $file ),
 			$mime_type,
-			get_edit_post_link( $attachment_id ),
+			get_edit_post_link( $file ),
 			$i18n_edit,
-			$attachment_id,
+			$file,
 			$i18n_delete
 		);
 	}
