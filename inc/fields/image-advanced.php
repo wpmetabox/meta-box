@@ -43,13 +43,13 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	/**
 	 * Get uploaded file information.
 	 *
-	 * @param int   $file_id Attachment image ID (post ID). Required.
-	 * @param array $args    Array of arguments (for size).
+	 * @param int   $file Attachment image ID (post ID). Required.
+	 * @param array $args Array of arguments (for size).
 	 * @return array|bool False if file not found. Array of image info on success
 	 */
-	static function file_info( $file_id, $args = array() )
+	static function file_info( $file, $args = array() )
 	{
-		return RWMB_Image_Field::file_info( $file_id, $args );
+		return RWMB_Image_Field::file_info( $file, $args );
 	}
 
 	/**

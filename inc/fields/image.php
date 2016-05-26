@@ -65,42 +65,39 @@ class RWMB_Image_Field extends RWMB_File_Field
 	/**
 	 * Get uploaded file information
 	 *
-	 * @param int   $file_id Attachment image ID (post ID). Required.
-	 * @param array $args    Array of arguments (for size).
+	 * @param int   $file Attachment image ID (post ID). Required.
+	 * @param array $args Array of arguments (for size).
 	 *
 	 * @return array|bool False if file not found. Array of image info on success
 	 */
-	public static function file_info( $file_id, $args = array() )
+	public static function file_info( $file, $args = array() )
 	{
-		$args = wp_parse_args( $args, array(
-			'size' => 'thumbnail',
-		) );
-
-		$img_src = wp_get_attachment_image_src( $file_id, $args['size'] );
-		if ( ! $img_src )
+		if ( ! $path = get_attached_file( $file ) )
 		{
 			return false;
 		}
 
-		$attachment = get_post( $file_id );
-		$path       = get_attached_file( $file_id );
+		$args = wp_parse_args( $args, array(
+			'size' => 'thumbnail',
+		) );
+		list( $src ) = wp_get_attachment_image_src( $file, $args['size'] );
+		$attachment = get_post( $file );
 		$info       = array(
-			'ID'          => $file_id,
+			'ID'          => $file,
 			'name'        => basename( $path ),
 			'path'        => $path,
-			'url'         => $img_src[0],
-			'full_url'    => wp_get_attachment_url( $file_id ),
+			'url'         => $src,
+			'full_url'    => wp_get_attachment_url( $file ),
 			'title'       => $attachment->post_title,
 			'caption'     => $attachment->post_excerpt,
 			'description' => $attachment->post_content,
-			'alt'         => get_post_meta( $file_id, '_wp_attachment_image_alt', true ),
+			'alt'         => get_post_meta( $file, '_wp_attachment_image_alt', true ),
 		);
 		if ( function_exists( 'wp_get_attachment_image_srcset' ) )
 		{
-			$info['srcset'] = wp_get_attachment_image_srcset( $file_id );
+			$info['srcset'] = wp_get_attachment_image_srcset( $file );
 		}
 
-		$info = wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
-		return $info;
+		return wp_parse_args( $info, wp_get_attachment_metadata( $file ) );
 	}
 }

@@ -302,48 +302,46 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Get uploaded files information
-	 * @param array $field    Field parameter
-	 * @param array $file_ids Files IDs
-	 * @param array $args     Additional arguments (for image size)
+	 * @param array $field Field parameter
+	 * @param array $files Files IDs
+	 * @param array $args  Additional arguments (for image size)
 	 * @return array
 	 */
-	public static function files_info( $field, $file_ids, $args )
+	public static function files_info( $field, $files, $args )
 	{
-		$info = array();
-		foreach ( (array) $file_ids as $file_id )
+		$return = array();
+		foreach ( (array) $files as $file )
 		{
-			if ( $file_info = self::call( $field, 'file_info', $file_id, $args ) )
+			if ( $info = self::call( $field, 'file_info', $file, $args ) )
 			{
-				$info[$file_id] = $file_info;
+				$return[$file] = $info;
 			}
 		}
-		return $info;
+		return $return;
 	}
 
 	/**
 	 * Get uploaded file information
 	 *
-	 * @param int   $file_id Attachment file ID (post ID). Required.
-	 * @param array $args    Array of arguments (for size).
+	 * @param int   $file Attachment file ID (post ID). Required.
+	 * @param array $args Array of arguments (for size).
 	 *
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success
 	 */
-	public static function file_info( $file_id, $args = array() )
+	public static function file_info( $file, $args = array() )
 	{
-		if ( ! $path = get_attached_file( $file_id ) )
+		if ( ! $path = get_attached_file( $file ) )
 		{
 			return false;
 		}
 
-		$info = array(
-			'ID'    => $file_id,
+		return wp_parse_args( array(
+			'ID'    => $file,
 			'name'  => basename( $path ),
 			'path'  => $path,
-			'url'   => wp_get_attachment_url( $file_id ),
-			'title' => get_the_title( $file_id ),
-		);
-
-		return wp_parse_args( $info, wp_get_attachment_metadata( $file_id ) );
+			'url'   => wp_get_attachment_url( $file ),
+			'title' => get_the_title( $file ),
+		), wp_get_attachment_metadata( $file ) );
 	}
 
 	/**
