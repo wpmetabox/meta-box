@@ -30,6 +30,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	{
 		$meta      = (array) $meta;
 		$options   = self::call( 'get_options', $field );
+		$options   = self::call( 'filter_options', $field, $options );
 		$db_fields = self::call( 'get_db_fields', $field );
 		return self::call( 'walk', $field, $options, $db_fields, $meta );
 	}
@@ -80,6 +81,25 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 			$option = is_array( $label ) ? $label : array( 'label' => (string) $label, 'value' => (string) $value );
 			if ( isset( $option['label'] ) && isset( $option['value'] ) )
 				$options[$option['value']] = (object) $option;
+		}
+		return $options;
+	}
+
+	/**
+	 * Filter options for walker
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */
+	public static function filter_options( $field, $options )
+	{
+		$db_fields = self::call( 'get_db_fields', $field );
+		$label     = $db_fields['label'];
+		foreach ( (array) $options as &$option )
+		{
+			$option         = apply_filters( 'rwmb_option', $option, $field );
+			$option->$label = apply_filters( 'rwmb_option_label', $label, $option, $field );
 		}
 		return $options;
 	}
