@@ -34,9 +34,9 @@ class RWMB_Select_Tree_Walker
 		$parent   = $this->db_fields['parent'];
 		$children = array();
 
-		foreach ( $options as $o )
+		foreach ( $options as $option )
 		{
-			$children[$o->$parent][] = $o;
+			$children[$option->$parent][] = $option;
 		}
 		$top_level = isset( $children[0] ) ? 0 : $options[0]->$parent;
 		return $this->display_level( $children, $top_level, true );
@@ -46,9 +46,8 @@ class RWMB_Select_Tree_Walker
 	{
 		$id         = $this->db_fields['id'];
 		$field      = $this->field;
-		$meta       = $this->meta;
-		$walker     = new RWMB_Select_Walker( $this->db_fields, $this->field, $this->meta );
-		$attributes = RWMB_Field::call( 'get_attributes', $field, $meta );
+		$walker     = new RWMB_Select_Walker( $this->db_fields, $field, $this->meta );
+		$attributes = RWMB_Field::call( 'get_attributes', $field, $this->meta );
 
 		$children = $options[$parent_id];
 		$output   = sprintf(
@@ -65,7 +64,7 @@ class RWMB_Select_Tree_Walker
 		{
 			if ( isset( $options[$c->$id] ) )
 			{
-				$output .= $this->display_level( $options, $c->$id, in_array( $c->$id, $meta ) && $active );
+				$output .= $this->display_level( $options, $c->$id, in_array( $c->$id, $this->meta ) && $active );
 			}
 		}
 
