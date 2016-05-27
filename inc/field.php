@@ -430,35 +430,25 @@ abstract class RWMB_Field
 	 */
 	public static function get_value( $field, $args = array(), $post_id = null )
 	{
+		// Some fields does not have ID like heading, custom HTML, etc.
+		if ( empty( $field['id'] ) )
+		{
+			return '';
+		}
+
 		if ( ! $post_id )
 			$post_id = get_the_ID();
 
-		/**
-		 * Get raw meta value in the database, no escape
-		 * Very similar to self::meta() function
-		 */
+		// Get raw meta value in the database, no escape
+		$single = $field['clone'] || ! $field['multiple'];
+		$value  = get_post_meta( $post_id, $field['id'], $single );
 
-		/**
-		 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
-		 * to prevent notice error when display in fields
-		 */
-		$value = '';
-		if ( ! empty( $field['id'] ) )
+		// Make sure meta value is an array for cloneable and multiple fields
+		if ( $field['clone'] || $field['multiple'] )
 		{
-			$single = $field['clone'] || ! $field['multiple'];
-			$value  = get_post_meta( $post_id, $field['id'], $single );
-
-			// Make sure meta value is an array for clonable and multiple fields
-			if ( $field['clone'] || $field['multiple'] )
-			{
-				$value = is_array( $value ) && $value ? $value : array();
-			}
+			$value = is_array( $value ) && $value ? $value : array();
 		}
 
-		/**
-		 * Return the meta value by default.
-		 * For specific fields, the returned value might be different. See each field class for details
-		 */
 		return $value;
 	}
 

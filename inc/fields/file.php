@@ -292,6 +292,10 @@ class RWMB_File_Field extends RWMB_Field
 			return self::call( 'files_info', $field, $value, $args );
 		}
 
+		if ( isset( $args['limit'] ) )
+		{
+			$value = array_slice( $value, 0, intval( $args['limit'] ) );
+		}
 		$return = array();
 		foreach ( $value as $subvalue )
 		{
