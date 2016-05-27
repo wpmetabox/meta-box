@@ -25,13 +25,11 @@ jQuery( function ( $ )
 
 	/**
 	 * Initialize image fields
-	 * @return void
 	 */
 	function initImageField()
 	{
 		new ImageField( { input: this, el: $( this ).siblings( 'div.rwmb-media-view' ) } );
 	}
-	$( ':input.rwmb-image_advanced' ).each( initImageField );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-image_advanced', initImageField )
+	$( 'input.rwmb-image_advanced' ).each( initImageField );
+	$( '#wpbody' ).on( 'clone', 'input.rwmb-image_advanced', initImageField )
 } );

@@ -15,12 +15,12 @@ jQuery( function ( $ )
 	Controller = models.Controller = Backbone.Model.extend( {
 		//Default options
 		defaults: {
-			maxFiles:     0,
-			ids:          [],
-			mimeType:     '',
-			forceDelete:  false,
-			showStatus:   true,
-			length:       0
+			maxFiles   : 0,
+			ids        : [],
+			mimeType   : '',
+			forceDelete: false,
+			showStatus : true,
+			length     : 0
 		},
 
 		//Initialize Controller model
@@ -33,20 +33,20 @@ jQuery( function ( $ )
 			// Create items collection
 			this.set( 'items', new wp.media.model.Attachments() );
 
-			this.listenTo( this.get( 'items' ), 'add remove reset', function()
+			this.listenTo( this.get( 'items' ), 'add remove reset', function ()
 			{
 				var items = this.get( 'items' ),
 					length = items.length,
 					max = this.get( 'maxFiles' );
 
 				this.set( 'length', length );
-				this.set( 'full',  max > 0 && length >= max );
+				this.set( 'full', max > 0 && length >= max );
 			} );
 
 			// Listen for destroy event on controller, delete all models when triggered
 			this.on( 'destroy', function ( e )
 			{
-				if( this.get( 'forceDelete' ) )
+				if ( this.get( 'forceDelete' ) )
 				{
 					this.get( 'items' ).each( function ( item )
 					{
@@ -78,20 +78,20 @@ jQuery( function ( $ )
 		},
 
 		// Method to remove media items
-		removeItem: function( item )
+		removeItem: function ( item )
 		{
 			this.get( 'items' ).remove( item );
-			if( this.get( 'forceDelete' ) )
+			if ( this.get( 'forceDelete' ) )
 				item.destroy();
 		},
 
 		// Method to add items
 		addItems: function ( items )
 		{
-			if( this.get( 'maxFiles' ) )
+			if ( this.get( 'maxFiles' ) )
 			{
 				var left = this.get( 'maxFiles' ) - this.get( 'items' ).length;
-				if( left <= 0 )
+				if ( left <= 0 )
 					return this;
 
 				items = _.difference( items, this.get( 'items' ).models );
@@ -112,15 +112,15 @@ jQuery( function ( $ )
 			this.$input = $( options.input );
 			this.controller = new Controller( _.extend(
 				{
-					fieldName: this.$input.attr( 'name' ) ,
-					ids: this.$input.val().split( ',' )
+					fieldName: this.$input.attr( 'name' ),
+					ids      : this.$input.val().split( ',' )
 				},
 				this.$el.data()
 			) );
 
 			// Create views
 			this.createList();
-			this.createAddButton()
+			this.createAddButton();
 			this.createStatus();
 
 			// Render
@@ -130,9 +130,9 @@ jQuery( function ( $ )
 			this.controller.load();
 
 			// Listen for destroy event on input
-			this.$input.on( 'remove', function()
+			this.$input.on( 'remove', function ()
 			{
-					this.controller.destroy();
+				this.controller.destroy();
 			} )
 		},
 
@@ -171,8 +171,8 @@ jQuery( function ( $ )
 	 * lists media
 	 */
 	MediaList = views.MediaList = Backbone.View.extend( {
-		tagName    : 'ul',
-		className  : 'rwmb-media-list',
+		tagName  : 'ul',
+		className: 'rwmb-media-list',
 
 		//Add item view
 		addItemView: function ( item )
@@ -207,7 +207,7 @@ jQuery( function ( $ )
 			this.initSortable();
 		},
 
-		setEvents: function()
+		setEvents: function ()
 		{
 			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
 			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
@@ -222,23 +222,25 @@ jQuery( function ( $ )
 				tolerance: 'pointer',
 
 				// Record the initial `index` of the dragged model.
-				start: function( event, ui ) {
-					ui.item.data('sortableIndexStart', ui.item.index());
+				start: function ( event, ui )
+				{
+					ui.item.data( 'sortableIndexStart', ui.item.index() );
 				},
 
 				// Update the model's index in the collection.
 				// Do so silently, as the view is already accurate.
-				update: function( event, ui ) {
-					var model = collection.at( ui.item.data('sortableIndexStart') );
+				update: function ( event, ui )
+				{
+					var model = collection.at( ui.item.data( 'sortableIndexStart' ) );
 
 					// Silently shift the model to its new index.
 					collection.remove( model, {
 						silent: true
-					});
+					} );
 					collection.add( model, {
 						silent: true,
-						at:     ui.item.index()
-					});
+						at    : ui.item.index()
+					} );
 
 					// Fire the `reset` event to ensure other collections sync.
 					collection.trigger( 'reset', collection );
@@ -252,9 +254,9 @@ jQuery( function ( $ )
 	 * Tracks status of media field if maxStatus is greater than 0
 	 */
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
-		tagName   : 'span',
-		className : 'rwmb-media-status',
-		template  : wp.template( 'rwmb-media-status' ),
+		tagName  : 'span',
+		className: 'rwmb-media-status',
+		template : wp.template( 'rwmb-media-status' ),
 
 		//Initialize
 		initialize: function ( options )
@@ -262,7 +264,7 @@ jQuery( function ( $ )
 			this.controller = options.controller;
 
 			//Auto hide if showStatus is false
-			if( ! this.controller.get( 'showStatus' ) )
+			if ( !this.controller.get( 'showStatus' ) )
 				this.$el.hide();
 
 			//Rerender if changes happen in controller
@@ -315,7 +317,7 @@ jQuery( function ( $ )
 				this._frame.open();
 			}
 		},
-		render    : function ()
+		render   : function ()
 		{
 			this.$el.text( i18nRwmbMedia.add );
 			return this;
@@ -328,7 +330,7 @@ jQuery( function ( $ )
 			// Auto hide if you reach the max number of media
 			this.listenTo( this.controller, 'change:full', function ()
 			{
-				this.$el.toggle( ! this.controller.get( 'full' ) );
+				this.$el.toggle( !this.controller.get( 'full' ) );
 			} );
 
 			this.render();
@@ -347,14 +349,13 @@ jQuery( function ( $ )
 		{
 			this.controller = options.controller;
 			this.render();
-			this.listenTo( this.model, 'change', function()
+			this.listenTo( this.model, 'change', function ()
 			{
 				this.render();
 			} );
 
-			this.$el.data( 'id', this.model.cid);
+			this.$el.data( 'id', this.model.cid );
 		},
-
 
 
 		events: {
@@ -365,7 +366,7 @@ jQuery( function ( $ )
 				return false;
 			},
 
-			'click .rwmb-edit-media': function( e )
+			'click .rwmb-edit-media': function ( e )
 			{
 				// Destroy the previous collection frame.
 				if ( this._frame )
@@ -376,17 +377,20 @@ jQuery( function ( $ )
 
 				// Trigger the media frame to open the correct item
 				this._frame = wp.media( {
-					frame:       'edit-attachments',
-					controller:
-					{
+					frame     : 'edit-attachments',
+					controller: {
 						// Needed to trick Edit modal to think there is a gridRouter
 						gridRouter: {
-							navigate: function( destination) {},
-							baseUrl:  function( url ) {}
+							navigate: function ( destination )
+							{
+							},
+							baseUrl : function ( url )
+							{
+							}
 						}
 					},
-					library:     this.controller.get( 'items' ),
-					model:       this.model
+					library   : this.controller.get( 'items' ),
+					model     : this.model
 				} );
 
 				this._frame.open();
