@@ -99,7 +99,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 		foreach ( (array) $options as &$option )
 		{
 			$option         = apply_filters( 'rwmb_option', $option, $field );
-			$option->$label = apply_filters( 'rwmb_option_label', $label, $option, $field );
+			$option->$label = apply_filters( 'rwmb_option_label', $option->$label, $option, $field );
 		}
 		return $options;
 	}
