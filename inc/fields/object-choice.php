@@ -112,7 +112,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field
 	 * @param array $field Field parameter
 	 * @return string
 	 */
-	protected function get_type_class( $field )
+	protected static function get_type_class( $field )
 	{
 		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ) ) )
 		{
