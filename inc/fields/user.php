@@ -55,8 +55,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 */
 	public static function get_options( $field )
 	{
-		$options = get_users( $field['query_args'] );
-		return $options;
+		$query = new WP_User_Query( $field['query_args'] );
+		return $query->get_results();
 	}
 
 	/**
