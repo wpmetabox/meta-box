@@ -96,7 +96,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 	{
 		$db_fields = self::call( 'get_db_fields', $field );
 		$label     = $db_fields['label'];
-		foreach ( (array) $options as &$option )
+		foreach ( $options as &$option )
 		{
 			$option         = apply_filters( 'rwmb_option', $option, $field );
 			$option->$label = apply_filters( 'rwmb_option_label', $option->$label, $option, $field );
