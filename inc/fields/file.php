@@ -289,19 +289,22 @@ class RWMB_File_Field extends RWMB_Field
 		$value = parent::get_value( $field, $args, $post_id );
 		if ( ! $field['clone'] )
 		{
-			return self::call( 'files_info', $field, $value, $args );
+			$value = self::call( 'files_info', $field, $value, $args );
 		}
-
+		else
+		{
+			$return = array();
+			foreach ( $value as $subvalue )
+			{
+				$return[] = self::call( 'files_info', $field, $subvalue, $args );
+			}
+			$value = $return;
+		}
 		if ( isset( $args['limit'] ) )
 		{
 			$value = array_slice( $value, 0, intval( $args['limit'] ) );
 		}
-		$return = array();
-		foreach ( $value as $subvalue )
-		{
-			$return[] = self::call( 'files_info', $field, $subvalue, $args );
-		}
-		return $return;
+		return $value;
 	}
 
 	/**
