@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Media field class which users WordPress media popup to upload and select files.
  */
@@ -31,6 +32,7 @@ class RWMB_Media_Field extends RWMB_File_Field
 				'loadingUrl'         => RWMB_URL . 'img/loader.gif',
 				'extensions'         => self::get_mime_extensions(),
 				'select'             => _x( 'Select Files', 'media', 'meta-box' ),
+				'or'                 => _x( 'or', 'media', 'meta-box' ),
 				'uploadInstructions' => _x( 'Drop files here to upload', 'media', 'meta-box' ),
 			) );
 		}
@@ -41,7 +43,7 @@ class RWMB_Media_Field extends RWMB_File_Field
 	 */
 	public static function add_actions()
 	{
-		$args = func_get_args();
+		$args  = func_get_args();
 		$field = reset( $args );
 		add_action( 'print_media_templates', array( self::get_class_name( $field ), 'print_templates' ) );
 	}
