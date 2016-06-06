@@ -207,7 +207,7 @@ class RWMB_File_Field extends RWMB_Field
 			$new[] = self::upload( $file, $post_id );
 		}
 
-		return array_unique( array_merge( $old, array_filter( $new ) ) );
+		return array_filter( array_unique( array_merge( (array) $old, $new ) ) );
 	}
 
 	/**

@@ -74,6 +74,6 @@ class RWMB_Thickbox_Image_Field extends RWMB_Image_Field
 	 */
 	public static function value( $new, $old, $post_id, $field )
 	{
-		return array_unique( array_merge( $old, $new ) );
+		return array_filter( array_unique( array_merge( (array) $old, (array) $new ) ) );
 	}
 }
