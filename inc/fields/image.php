@@ -77,16 +77,16 @@ class RWMB_Image_Field extends RWMB_File_Field
 			return false;
 		}
 
-		$args = wp_parse_args( $args, array(
+		$args       = wp_parse_args( $args, array(
 			'size' => 'thumbnail',
 		) );
-		list( $src ) = wp_get_attachment_image_src( $file, $args['size'] );
+		$image      = wp_get_attachment_image_src( $file, $args['size'] );
 		$attachment = get_post( $file );
 		$info       = array(
 			'ID'          => $file,
 			'name'        => basename( $path ),
 			'path'        => $path,
-			'url'         => $src,
+			'url'         => $image[0],
 			'full_url'    => wp_get_attachment_url( $file ),
 			'title'       => $attachment->post_title,
 			'caption'     => $attachment->post_excerpt,
@@ -98,6 +98,12 @@ class RWMB_Image_Field extends RWMB_File_Field
 			$info['srcset'] = wp_get_attachment_image_srcset( $file );
 		}
 
-		return wp_parse_args( $info, wp_get_attachment_metadata( $file ) );
+		$info = wp_parse_args( $info, wp_get_attachment_metadata( $file ) );
+
+		// Do not overwrite width and height by returned value of image meta
+		$info['width']  = $image[1];
+		$info['height'] = $image[2];
+
+		return $info;
 	}
 }
