@@ -287,11 +287,8 @@ class RW_Meta_Box
 			$meta_box['post_types'] = $meta_box['pages'];
 		}
 
-		// Allow to set 'post_types' param by string
-		if ( is_string( $meta_box['post_types'] ) )
-		{
-			$meta_box['post_types'] = array( $meta_box['post_types'] );
-		}
+		// Make sure the post type is an array.
+		$meta_box['post_types'] = (array) $meta_box['post_types'];
 
 		// Allow to add default values for meta box
 		$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );
