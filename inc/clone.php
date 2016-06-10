@@ -50,7 +50,7 @@ class RWMB_Clone
 			$input_html = RWMB_Field::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 			// Remove clone button
-			$input_html .= RWMB_Field::call( 'remove_clone_button', $sub_field );
+			$input_html .= self::remove_clone_button( $sub_field );
 			$input_html .= '</div>';
 
 			$field_html .= $input_html;
@@ -77,5 +77,27 @@ class RWMB_Clone
 			$new[$key] = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
 		}
 		return $new;
+	}
+
+	/**
+	 * Add clone button
+	 * @param array $field Field parameter
+	 * @return string $html
+	 */
+	public static function add_clone_button( $field )
+	{
+		$text = RWMB_Field::filter( 'add_clone_button_text', __( '+ Add more', 'meta-box' ), $field );
+		return '<a href="#" class="rwmb-button button-primary add-clone">' . esc_html( $text ) . '</a>';
+	}
+
+	/**
+	 * Remove clone button
+	 * @param array $field Field parameter
+	 * @return string $html
+	 */
+	public static function remove_clone_button( $field )
+	{
+		$text = RWMB_Field::filter( 'remove_clone_button_text', '<i class="dashicons dashicons-minus"></i>', $field );
+		return '<a href="#" class="rwmb-button remove-clone">' . esc_html( $text ) . '</a>';
 	}
 }

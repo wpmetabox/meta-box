@@ -132,40 +132,13 @@ abstract class RWMB_Field
 	 */
 	public static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? self::call( 'add_clone_button', $field ) : '';
+		$button = $field['clone'] ? RWMB_Clone::add_clone_button( $field ) : '';
 		$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 		// Closes the container
 		$html = "{$button}{$desc}</div>";
 
 		return $html;
-	}
-
-	/**
-	 * Add clone button
-	 *
-	 * @param array $field Field parameter
-	 *
-	 * @return string $html
-	 */
-	public static function add_clone_button( $field )
-	{
-		$text = apply_filters( 'rwmb_add_clone_button_text', __( '+ Add more', 'meta-box' ), $field );
-		return "<a href='#' class='rwmb-button button-primary add-clone'>$text</a>";
-	}
-
-	/**
-	 * Remove clone button
-	 *
-	 * @param array $field Field parameter
-	 *
-	 * @return string $html
-	 */
-	public static function remove_clone_button( $field )
-	{
-		$icon = '<i class="dashicons dashicons-minus"></i>';
-		$text = apply_filters( 'rwmb_remove_clone_button_text', $icon, $field );
-		return "<a href='#' class='rwmb-button remove-clone'>$text</a>";
 	}
 
 	/**

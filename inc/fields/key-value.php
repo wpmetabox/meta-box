@@ -65,7 +65,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 */
 	static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? self::add_clone_button( $field ) : '';
+		$button = $field['clone'] ? RWMB_Clone::add_clone_button( $field ) : '';
 		$html   = "$button</div>";
 		return $html;
 	}
