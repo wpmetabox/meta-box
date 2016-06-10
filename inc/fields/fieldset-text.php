@@ -40,9 +40,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 	 */
 	static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? RWMB_Clone::add_clone_button( $field ) : '';
-		$html   = "$button</div>";
-		return $html;
+		return RWMB_Clone::add_clone_button( $field ) . '</div>';
 	}
 
 	/**

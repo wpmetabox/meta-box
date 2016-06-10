@@ -132,11 +132,10 @@ abstract class RWMB_Field
 	 */
 	public static function end_html( $meta, $field )
 	{
-		$button = $field['clone'] ? RWMB_Clone::add_clone_button( $field ) : '';
 		$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 		// Closes the container
-		$html = "{$button}{$desc}</div>";
+		$html = RWMB_Clone::add_clone_button( $field ) . "$desc</div>";
 
 		return $html;
 	}
