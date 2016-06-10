@@ -93,6 +93,22 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.8.7
+* Improvement: Refactor the code to reduce the complexity in the fields' inheritance
+* Improvement: All HTML 5 input types (week, month, etc.) are supported
+* Improvement: Optimize the_value function, use recursive call to reduce nested loop. Sub-fields need to define format_single_value only.
+* Improvement: Use 1 single localization file for jQuery date picker for simplicity
+* Improvement: Add support for custom marker for map field (param `marker_icon`) in rwmb_meta function
+* Improvement: Add `limit` option for media fields in `rwmb_meta` function when retrieving meta value.
+* Improvement: Add `rwmb_option_label` filter for choice fields (user, post, taxonomy) so users can choose which object field is used as label
+* Improvement: Use `WP_User_Query` for user field which supports more options for querying
+* Improvement: Optimize code for oembed, also use esc_html__ for better security
+* Improvement: Compatibility with Meta Box Geolocation
+* Fix: Fix first option is auto selected in select_advanced field.
+* Fix: Fix clone issue for color in Meta Box Group extension.
+* Fix: Fix clone issue for image advanced in Meta Box Group extension.
+* Fix: Fix not parsing $args to array in helper functions.
+
 #### 4.8.6
 * Improvement: Edit link on media items now opens edit modal
 * Improvement: Refresh map when sorting meta boxes.

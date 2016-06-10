@@ -11,9 +11,9 @@ class RWMB_Range_Field extends RWMB_Number_Field
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function html( $meta, $field )
 	{
-		$output  = parent::html( $meta, $field );
+		$output = parent::html( $meta, $field );
 		$output .= sprintf( '<span class="rwmb-output">%s</span>', $meta );
 		return $output;
 	}
@@ -21,7 +21,7 @@ class RWMB_Range_Field extends RWMB_Number_Field
 	/**
 	 * Enqueue styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-range', RWMB_JS_URL . 'range.js', array(), RWMB_VER, true );
@@ -29,38 +29,16 @@ class RWMB_Range_Field extends RWMB_Number_Field
 
 	/**
 	 * Normalize parameters for field.
-	 *
 	 * @param array $field
-	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = wp_parse_args( $field, array(
-			'min'  => 0,
-			'max'  => 10,
-			'step' => 1,
+			'max' => 10,
 		) );
-
 		$field = parent::normalize( $field );
-
 		return $field;
-	}
-
-	/**
-	 * Get the attributes for a field
-	 *
-	 * @param array $field
-	 * @param mixed $value
-	 *
-	 * @return array
-	 */
-	static function get_attributes( $field, $value = null )
-	{
-		$attributes = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'range';
-
-		return $attributes;
 	}
 
 	/**
@@ -73,7 +51,7 @@ class RWMB_Range_Field extends RWMB_Number_Field
 	 *
 	 * @return int
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
 		$new = intval( $new );
 		$min = intval( $field['min'] );
@@ -83,11 +61,10 @@ class RWMB_Range_Field extends RWMB_Number_Field
 		{
 			return $min;
 		}
-		elseif ( $new > $max )
+		if ( $new > $max )
 		{
 			return $max;
 		}
-
 		return $new;
 	}
 }

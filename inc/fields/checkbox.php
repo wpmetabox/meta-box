@@ -54,22 +54,6 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	}
 
 	/**
-	 * Get the attributes for a field.
-	 *
-	 * @param array $field
-	 * @param mixed $value
-	 * @return array
-	 */
-	public static function get_attributes( $field, $value = null )
-	{
-		$attributes         = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'checkbox';
-		$attributes['list'] = false;
-
-		return $attributes;
-	}
-
-	/**
 	 * Set the value of checkbox to 1 or 0 instead of 'checked' and empty string
 	 * This prevents using default value once the checkbox has been unchecked
 	 *

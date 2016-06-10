@@ -16,11 +16,11 @@ msgstr ""
 
 #: ../inc/core.php:40
 msgid "Documentation"
-msgstr "文档"
+msgstr "文檔"
 
 #: ../inc/core.php:41
 msgid "Extensions"
-msgstr "扩展"
+msgstr "擴展"
 
 #: ../inc/field.php:192
 msgid "+ Add more"
@@ -28,16 +28,16 @@ msgstr "+   新增"
 
 #: ../inc/validation.php:49
 msgid "Please correct the errors highlighted below and try again."
-msgstr "请修正高亮位置的错误，并重新尝试。"
+msgstr "請修正高亮位置的錯誤，並重新嘗試。"
 
 #: ../inc/fields/autocomplete.php:23 ../inc/fields/autocomplete.php:87
 #: ../inc/fields/autocomplete.php:104
 msgid "Delete"
-msgstr "删除"
+msgstr "刪除"
 
 #: ../inc/fields/button.php:29
 msgid "Click me"
-msgstr "点我"
+msgstr "點我"
 
 #: ../inc/fields/checkbox.php:82
 msgid "Yes"
@@ -49,11 +49,11 @@ msgstr "否"
 
 #: ../inc/fields/file-input.php:25
 msgid "Select File"
-msgstr "选择文件"
+msgstr "選擇檔"
 
 #: ../inc/fields/file-input.php:49 ../inc/fields/select.php:91
 msgid "Select"
-msgstr "选择"
+msgstr "選擇"
 
 #: ../inc/fields/file-input.php:51
 msgid "Remove"
@@ -62,21 +62,21 @@ msgstr "移除"
 #: ../inc/fields/file.php:24
 #, php-format
 msgid "You may only upload maximum %d file"
-msgstr "您允许上传的文件上限为 %d 个。"
+msgstr "您允許上傳的檔上限為 %d 個。"
 
 #: ../inc/fields/file.php:25
 #, php-format
 msgid "You may only upload maximum %d files"
-msgstr "您允许上传的文件上限为 %d 个。"
+msgstr "您允許上傳的檔上限為 %d 個。"
 
 #: ../inc/fields/file.php:85
 msgid "Error: Cannot delete file"
-msgstr "错误：无法删除文件。"
+msgstr "錯誤：無法刪除檔。"
 
 #: ../inc/fields/file.php:98
 msgctxt "file upload"
 msgid "Upload Files"
-msgstr "上传文件"
+msgstr "上傳文件"
 
 #: ../inc/fields/file.php:99
 msgctxt "file upload"
@@ -86,21 +86,21 @@ msgstr "+ 新增文件"
 #: ../inc/fields/file.php:162
 msgctxt "file upload"
 msgid "Delete"
-msgstr "删除"
+msgstr "刪除"
 
 #: ../inc/fields/file.php:163
 msgctxt "file upload"
 msgid "Edit"
-msgstr "编辑"
+msgstr "編輯"
 
 #: ../inc/fields/map.php:49
 msgid "Find Address"
-msgstr "查找地址"
+msgstr "查找位址"
 
 #: ../inc/fields/media.php:25
 msgctxt "media"
 msgid "+ Add Media"
-msgstr "从媒体库选择"
+msgstr "從媒體庫選擇"
 
 #: ../inc/fields/media.php:26
 msgctxt "media"
@@ -120,7 +120,7 @@ msgstr "移除"
 #: ../inc/fields/media.php:29
 msgctxt "media"
 msgid "Edit"
-msgstr "编辑"
+msgstr "編輯"
 
 #: ../inc/fields/media.php:30
 msgctxt "media"
@@ -130,12 +130,12 @@ msgstr "查看"
 #: ../inc/fields/media.php:31
 msgctxt "media"
 msgid "No Title"
-msgstr "无标题"
+msgstr "無標題"
 
 #: ../inc/fields/media.php:34
 msgctxt "media"
 msgid "Select Files"
-msgstr "选择图像"
+msgstr "選擇圖像"
 
 #: ../inc/fields/media.php:35
 msgctxt "media"
@@ -145,27 +145,27 @@ msgstr " 或"
 #: ../inc/fields/media.php:36
 msgctxt "media"
 msgid "Drop files here to upload"
-msgstr "请把文件拖动到该区域上传"
+msgstr "請把檔拖動到該區域上傳"
 
 #: ../inc/fields/oembed.php:65
 msgid "Embed HTML not available."
 msgstr ""
-"oEmbed 代码无效，请检查。 如需了解更多 oEmbed 信息和支持的网站，请访问 <a "
-"href=\"http://codex.wordpress.org/Embeds\" target=\"_blank\">WordPress 官网</"
+"oEmbed 代碼無效，請檢查。 如需瞭解更多 oEmbed 資訊和支援的網站，請訪問 <a "
+"href=\"http://codex.wordpress.org/Embeds\" target=\"_blank\">WordPress 官網</"
 "a>。"
 
 #: ../inc/fields/post.php:34
 msgid "Select a post"
-msgstr "选择文章"
+msgstr "選擇文章"
 
 #: ../inc/fields/post.php:38 ../inc/fields/taxonomy.php:51
 #, php-format
 msgid "Select a %s"
-msgstr "选择%s"
+msgstr "選擇%s"
 
 #: ../inc/fields/select-advanced.php:44
 msgid "Select an item"
-msgstr "选择项目"
+msgstr "選擇項目"
 
 #: ../inc/fields/select.php:91
 msgid "All"
@@ -173,17 +173,17 @@ msgstr "全部"
 
 #: ../inc/fields/select.php:91
 msgid "None"
-msgstr "无"
+msgstr "無"
 
 #: ../inc/fields/taxonomy.php:47
 msgid "Select a term"
-msgstr "选择分类"
+msgstr "選擇分類"
 
 #: ../inc/fields/thickbox-image.php:53
 msgctxt "image upload"
 msgid "Upload Images"
-msgstr "上传图像"
+msgstr "上傳圖像"
 
 #: ../inc/fields/user.php:34
 msgid "Select an user"
-msgstr "选择用户"
+msgstr "選擇用戶"

@@ -5,22 +5,6 @@
 class RWMB_URL_Field extends RWMB_Text_Field
 {
 	/**
-	 * Get the attributes for a field
-	 *
-	 * @param array $field
-	 * @param mixed $value
-	 *
-	 * @return array
-	 */
-	static function get_attributes( $field, $value = null )
-	{
-		$attributes = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'url';
-
-		return $attributes;
-	}
-
-	/**
 	 * Sanitize url
 	 *
 	 * @param mixed $new

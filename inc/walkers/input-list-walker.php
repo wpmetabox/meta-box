@@ -15,7 +15,7 @@ class RWMB_Input_List_Walker extends RWMB_Walker
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() )
 	{
-		$output .= "<ul class='rwmb-input-list'>";
+		$output .= '<ul class="rwmb-input-list">';
 	}
 
 	/**
@@ -27,7 +27,7 @@ class RWMB_Input_List_Walker extends RWMB_Walker
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() )
 	{
-		$output .= "</ul>";
+		$output .= '</ul>';
 	}
 
 	/**
@@ -43,14 +43,12 @@ class RWMB_Input_List_Walker extends RWMB_Walker
 	{
 		$label      = $this->db_fields['label'];
 		$id         = $this->db_fields['id'];
-		$meta       = $this->meta;
-		$field      = $this->field;
-		$attributes = RWMB_Field::call( 'get_attributes', $field, $object->$id );
+		$attributes = RWMB_Field::call( 'get_attributes', $this->field, $object->$id );
 
 		$output .= sprintf(
 			'<li><label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
-			checked( in_array( $object->$id, $meta ), 1, false ),
+			checked( in_array( $object->$id, $this->meta ), 1, false ),
 			$object->$label
 		);
 	}
@@ -65,6 +63,6 @@ class RWMB_Input_List_Walker extends RWMB_Walker
 	 */
 	public function end_el( &$output, $page, $depth = 0, $args = array() )
 	{
-		$output .= "</li>";
+		$output .= '</li>';
 	}
 }

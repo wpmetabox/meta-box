@@ -41,7 +41,7 @@ class RWMB_Loader
 	public function constants()
 	{
 		// Script version, used to add version for scripts and styles
-		define( 'RWMB_VER', '4.8.6' );
+		define( 'RWMB_VER', '4.8.7' );
 
 		list( $path, $url ) = self::get_path();
 
@@ -170,7 +170,6 @@ class RWMB_Loader
 			'fields/input',
 
 			'fields/checkbox',
-			'fields/hidden',
 			'fields/number',
 			'fields/range',
 
@@ -187,11 +186,9 @@ class RWMB_Loader
 			'fields/password',
 
 			'fields/media',
-			'fields/file-advanced',
 			'fields/file-upload',
 			'fields/image-advanced',
 			'fields/image-upload',
-			'fields/plupload-image',
 
 			'fields/file-input',
 			'fields/file',

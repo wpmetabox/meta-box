@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Key-value field class.
  */
@@ -113,9 +114,10 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 	 */
 	static function normalize( $field )
 	{
-		$field             = parent::normalize( $field );
-		$field['clone']    = true;
-		$field['multiple'] = true;
+		$field                       = parent::normalize( $field );
+		$field['clone']              = true;
+		$field['multiple']           = true;
+		$field['attributes']['type'] = 'text';
 		return $field;
 	}
 

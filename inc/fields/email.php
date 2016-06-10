@@ -5,21 +5,6 @@
 class RWMB_Email_Field extends RWMB_Text_Field
 {
 	/**
-	 * Get the attributes for a field
-	 *
-	 * @param array $field
-	 * @param mixed $value
-	 *
-	 * @return array
-	 */
-	public static function get_attributes( $field, $value = null )
-	{
-		$attributes = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'email';
-		return $attributes;
-	}
-
-	/**
 	 * Sanitize email
 	 *
 	 * @param mixed $new

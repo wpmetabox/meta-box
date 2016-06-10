@@ -1,8 +1,8 @@
 /* Uploaded image */
-.rwmb-images {
+.rwmb-image-wrapper .rwmb-uploaded {
 	overflow: hidden;
 }
-.rwmb-images li {
+.rwmb-image-wrapper .rwmb-uploaded li {
 	margin: 0 10px 10px 0;
 	float: left;
 	width: 150px;
@@ -10,10 +10,9 @@
 	text-align: center;
 	cursor: move;
 	position: relative;
-	-webkit-transition: width .25s, opacity .25s, -webkit-opacity .25s;
-	        transition: width .25s, opacity .25s;
+	transition: width .25s, opacity .25s;
 }
-.rwmb-images img {
+.rwmb-image-wrapper .rwmb-uploaded img {
 	width: 150px;
 	height: 150px;
 }
@@ -43,15 +42,12 @@ li:hover .rwmb-image-bar {
 	width: 18px;
 	font-weight: normal;
 }
-.rwmb-images li.removed {
+.rwmb-image-wrapper .rwmb-uploaded li.removed {
 	width: 0;
 	margin: 0;
-	        opacity: 0;
-	-webkit-opacity: 0;
-	   -moz-opacity: 0;
-	     -o-opacity: 0;
+	opacity: 0;
 }
-.rwmb-images li.removed:after {
+.rwmb-image-wrapper .rwmb-uploaded li.removed:after {
 	content: ' ';
 	position: absolute;
 	top: 0;
@@ -62,6 +58,6 @@ li:hover .rwmb-image-bar {
 	opacity: .4;
 	background-color: #f00;
 }
-.rwmb-images li.ui-state-highlight {
+.rwmb-image-wrapper .rwmb-uploaded li.ui-state-highlight {
 	background: #ddd;
 }

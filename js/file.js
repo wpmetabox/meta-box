@@ -2,6 +2,37 @@ jQuery( document ).ready( function ( $ )
 {
 	'use strict';
 
+	/**
+	 * Detecting CSS Animation Completion event
+	 * @link https://davidwalsh.name/css-animation-callback
+	 * @returns string
+	 */
+	function whichTransitionEvent()
+	{
+		var t,
+			el = document.createElement( 'fakeelement' ),
+			transitions = {
+				'transition'      : 'transitionend',
+				'OTransition'     : 'oTransitionEnd',
+				'MozTransition'   : 'transitionend',
+				'WebkitTransition': 'webkitTransitionEnd'
+			};
+
+		for ( t in transitions )
+		{
+			if ( el.style[t] !== undefined )
+			{
+				return transitions[t];
+			}
+		}
+		return '';
+	}
+
+
+	var $uploaded = $( '.rwmb-uploaded' ),
+		event = whichTransitionEvent();
+
+
 	// Add more file
 	$( '.rwmb-add-file' ).each( function ()
 	{
@@ -46,7 +77,7 @@ jQuery( document ).ready( function ( $ )
 	} );
 
 	// Delete file via Ajax
-	$( '.rwmb-uploaded' ).on( 'click', '.rwmb-delete-file', function ()
+	$uploaded.on( 'click', '.rwmb-delete-file', function ()
 	{
 		var $this = $( this ),
 			$parent = $this.parents( 'li' ),
@@ -70,18 +101,15 @@ jQuery( document ).ready( function ( $ )
 
 			$parent.addClass( 'removed' );
 
-			// If transition events not supported
-			var div = document.createElement( 'div' );
-			if (
-				!( 'ontransitionend' in window ) &&
-				( 'onwebkittransitionend' in window ) && !( 'onotransitionend' in div || navigator.appName === 'Opera' )
-			)
+			// If transition event is not supported
+			if ( !event )
 			{
 				$parent.remove();
 				$container.trigger( 'update.rwmbFile' );
 			}
 
-			$( '.rwmb-uploaded' ).on( 'transitionend webkitTransitionEnd otransitionend', 'li.removed', function ()
+			// If transition is supported
+			$( '.rwmb-uploaded' ).on( event, 'li.removed', function ()
 			{
 				$( this ).remove();
 				$container.trigger( 'update.rwmbFile' );
@@ -91,8 +119,8 @@ jQuery( document ).ready( function ( $ )
 		return false;
 	} );
 
-	//Remove deleted file
-	$( '.rwmb-uploaded' ).on( 'transitionend webkitTransitionEnd otransitionend', 'li.removed', function ()
+	// Remove deleted file
+	$uploaded.on( event, 'li.removed', function ()
 	{
 		$( this ).remove();
 	} );
@@ -132,8 +160,8 @@ jQuery( document ).ready( function ( $ )
 		return false;
 	} );
 
-	// Reorder images
-	$( '.rwmb-file' ).each( function ()
+	// Reorder files
+	$uploaded.each( function ()
 	{
 		var $this = $( this ),
 			data = {

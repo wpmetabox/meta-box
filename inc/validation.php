@@ -15,7 +15,7 @@ class RWMB_Validation
 	public function __construct()
 	{
 		add_action( 'rwmb_after', array( $this, 'rules' ) );
-		add_action( 'rwmb_enqueue_scripts', array( $this, 'scripts' ) );
+		add_action( 'rwmb_enqueue_scripts', array( $this, 'enqueue' ) );
 	}
 
 	/**
@@ -34,7 +34,7 @@ class RWMB_Validation
 	/**
 	 * Enqueue scripts for validation.
 	 */
-	public function scripts()
+	public function enqueue()
 	{
 		wp_enqueue_script( 'jquery-validate', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );

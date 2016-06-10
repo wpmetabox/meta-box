@@ -40,8 +40,6 @@ class RWMB_Number_Field extends RWMB_Input_Field
 			'max'  => $field['max'],
 			'min'  => $field['min'],
 		) );
-		$attributes['type'] = 'number';
-
 		return $attributes;
 	}
 }

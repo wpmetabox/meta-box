@@ -16,6 +16,7 @@ if ( ! function_exists( 'rwmb_meta' ) )
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null )
 	{
+		$args = wp_parse_args( $args );
 		/**
 		 * If meta boxes is registered in the backend only, we can't get field's params
 		 * This is for backward compatibility with version < 4.8.0
@@ -46,6 +47,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null )
 	{
+		$args  = wp_parse_args( $args );
 		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
 		// Get field value
@@ -80,7 +82,7 @@ if ( ! function_exists( 'rwmb_the_value' ) )
 	 */
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true )
 	{
-		// Find field
+		$args  = wp_parse_args( $args );
 		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
 		if ( ! $field )

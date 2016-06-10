@@ -2,27 +2,28 @@
 add_filter( 'rwmb_meta_boxes', 'your_prefix_choice_demo' );
 function your_prefix_choice_demo( $meta_boxes )
 {
-  $meta_boxes[] = array(
+	$prefix = '';
+	$meta_boxes[] = array(
 		'title'  => __( 'Hierarchical Options', 'your-prefix' ),
 		'fields' => array(
 			array(
-				'id'            => $prefix . 'checkbox_list',
-				'name'          => __( 'Flat Checkbox', 'your-prefix' ),
-				'type'          => 'checkbox_list',
-        //Old options syntax
-				'options' =>  array(
+				'id'      => $prefix . 'checkbox_list',
+				'name'    => __( 'Flat Checkbox', 'your-prefix' ),
+				'type'    => 'checkbox_list',
+				//Old options syntax
+				'options' => array(
 					'option1' => 'Option 1',
 					'option2' => 'Option 2',
 					'option3' => 'Option 3',
-				)
+				),
 			),
 
 			array(
-				'id'            => $prefix . 'checkbox_tree',
-				'name'          => __( 'Hierarchical Checkbox', 'your-prefix' ),
-				'type'          => 'checkbox_list',
-        //New options syntax.  Supports hierarchical options with addition of parent
-				'options' =>  array(
+				'id'       => $prefix . 'checkbox_tree',
+				'name'     => __( 'Hierarchical Checkbox', 'your-prefix' ),
+				'type'     => 'checkbox_list',
+				//New options syntax.  Supports hierarchical options with addition of parent
+				'options'  => array(
 					array( 'value' => 'option1', 'label' => 'Option 1' ),
 					array( 'value' => 'option2', 'label' => 'Option 2' ),
 					array( 'value' => 'option3', 'label' => 'Option 3' ),
@@ -31,14 +32,14 @@ function your_prefix_choice_demo( $meta_boxes )
 					array( 'value' => 'suboption13', 'label' => 'SubOption 3', 'parent' => 'option2' ),
 				),
 				'collapse' => false,
-				'flatten' => false,
+				'flatten'  => false,
 			),
 
 			array(
-				'id'            => $prefix . 'select',
-				'name'          => __( 'Hierarchical select', 'your-prefix' ),
-				'type'          => 'select',
-				'options' =>  array(
+				'id'      => $prefix . 'select',
+				'name'    => __( 'Hierarchical select', 'your-prefix' ),
+				'type'    => 'select',
+				'options' => array(
 					array( 'value' => 'option1', 'label' => 'Option 1' ),
 					array( 'value' => 'option2', 'label' => 'Option 2' ),
 					array( 'value' => 'option3', 'label' => 'Option 3' ),
@@ -50,4 +51,5 @@ function your_prefix_choice_demo( $meta_boxes )
 			),
 		),
 	);
+	return $meta_boxes;
 }

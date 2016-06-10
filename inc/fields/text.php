@@ -41,8 +41,6 @@ class RWMB_Text_Field extends RWMB_Input_Field
 			'placeholder' => $field['placeholder'],
 		) );
 
-		$attributes['type'] = 'text';
-
 		return $attributes;
 	}
 }

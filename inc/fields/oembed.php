@@ -84,6 +84,21 @@ class RWMB_OEmbed_Field extends RWMB_URL_Field
 	}
 
 	/**
+	 * Get the attributes for a field
+	 *
+	 * @param array $field
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	public static function get_attributes( $field, $value = null )
+	{
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'url';
+		return $attributes;
+	}
+
+	/**
 	 * Format a single value for the helper functions.
 	 * @param array  $field Field parameter
 	 * @param string $value The value

@@ -13,48 +13,22 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
 
-		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array(), '4.0.2', true );
+		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array( 'jquery' ), '4.0.2', true );
 
 		// Localize
-		$deps  = array( 'rwmb-select2', 'rwmb-select' );
-		$dir   = RWMB_JS_URL . 'select2/i18n/';
-		$file  = str_replace( '_', '-', get_locale() );
-		$parts = explode( '-', $file );
-		$file  = file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) ? $file : $parts[0];
+		$dependencies = array( 'rwmb-select2', 'rwmb-select' );
+		$locale       = str_replace( '_', '-', get_locale() );
+		$locale_short = substr( $locale, 0, 2 );
+		$locale       = file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) ? $locale : $locale_short;
 
-		if ( file_exists( RWMB_DIR . 'js/select2/i18n/' . $file . '.js' ) )
+		if ( file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) )
 		{
-			wp_register_script( 'rwmb-select2-i18n', $dir . $file . '.js', array( 'rwmb-select2' ), '4.0.2', true );
-			$deps[] = 'rwmb-select2-i18n';
+			wp_register_script( 'rwmb-select2-i18n', RWMB_JS_URL . "select2/i18n/$locale.js", array( 'rwmb-select2' ), '4.0.2', true );
+			$dependencies[] = 'rwmb-select2-i18n';
 		}
 
-		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $deps, RWMB_VER, true );
-	}
-
-	/**
-	 * Walk options
-	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 * @param mixed $options
-	 * @param mixed $db_fields
-	 *
-	 * @return string
-	 */
-	public static function walk( $field, $options, $db_fields, $meta )
-	{
-		$attributes = self::call( 'get_attributes', $field, $meta );
-		$walker     = new RWMB_Select_Walker( $db_fields, $field, $meta );
-		$output     = sprintf(
-			'<select %s>',
-			self::render_attributes( $attributes )
-		);
-
-		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
-		$output .= '</select>';
-		$output .= self::get_select_all_html( $field );
-		return $output;
+		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $dependencies, RWMB_VER, true );
 	}
 
 	/**

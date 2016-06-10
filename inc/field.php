@@ -9,14 +9,14 @@ abstract class RWMB_Field
 	/**
 	 * Add actions
 	 */
-	static function add_actions()
+	public static function add_actions()
 	{
 	}
 
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts()
+	public static function admin_enqueue_scripts()
 	{
 	}
 
@@ -31,7 +31,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function show( $field, $saved )
+	public static function show( $field, $saved )
 	{
 		$post    = get_post();
 		$post_id = isset( $post->ID ) ? $post->ID : 0;
@@ -87,7 +87,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	public static function html( $meta, $field )
 	{
 		return '';
 	}
@@ -100,7 +100,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function begin_html( $meta, $field )
+	public static function begin_html( $meta, $field )
 	{
 		$field_label = '';
 		if ( $field['name'] )
@@ -130,7 +130,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function end_html( $meta, $field )
+	public static function end_html( $meta, $field )
 	{
 		$button = $field['clone'] ? self::call( 'add_clone_button', $field ) : '';
 		$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
@@ -148,7 +148,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string $html
 	 */
-	static function add_clone_button( $field )
+	public static function add_clone_button( $field )
 	{
 		$text = apply_filters( 'rwmb_add_clone_button_text', __( '+ Add more', 'meta-box' ), $field );
 		return "<a href='#' class='rwmb-button button-primary add-clone'>$text</a>";
@@ -161,7 +161,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string $html
 	 */
-	static function remove_clone_button( $field )
+	public static function remove_clone_button( $field )
 	{
 		$icon = '<i class="dashicons dashicons-minus"></i>';
 		$text = apply_filters( 'rwmb_remove_clone_button_text', $icon, $field );
@@ -177,7 +177,7 @@ abstract class RWMB_Field
 	 *
 	 * @return mixed
 	 */
-	static function meta( $post_id, $saved, $field )
+	public static function meta( $post_id, $saved, $field )
 	{
 		/**
 		 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
@@ -219,7 +219,7 @@ abstract class RWMB_Field
 	 *
 	 * @return mixed
 	 */
-	static function esc_meta( $meta )
+	public static function esc_meta( $meta )
 	{
 		return is_array( $meta ) ? array_map( __METHOD__, $meta ) : esc_attr( $meta );
 	}
@@ -234,7 +234,7 @@ abstract class RWMB_Field
 	 *
 	 * @return int
 	 */
-	static function value( $new, $old, $post_id, $field )
+	public static function value( $new, $old, $post_id, $field )
 	{
 		return $new;
 	}
@@ -247,7 +247,7 @@ abstract class RWMB_Field
 	 * @param $post_id
 	 * @param $field
 	 */
-	static function save( $new, $old, $post_id, $field )
+	public static function save( $new, $old, $post_id, $field )
 	{
 		$name = $field['id'];
 
@@ -301,7 +301,7 @@ abstract class RWMB_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
+	public static function normalize( $field )
 	{
 		$field = wp_parse_args( $field, array(
 			'id'          => '',
@@ -336,7 +336,7 @@ abstract class RWMB_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	public static function get_attributes( $field, $value = null )
 	{
 		$attributes = wp_parse_args( $field['attributes'], array(
 			'disabled' => $field['disabled'],
@@ -356,7 +356,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function render_attributes( $attributes )
+	public static function render_attributes( $attributes )
 	{
 		$output = '';
 
@@ -389,37 +389,27 @@ abstract class RWMB_Field
 	 *
 	 * @return mixed Field value
 	 */
-	static function get_value( $field, $args = array(), $post_id = null )
+	public static function get_value( $field, $args = array(), $post_id = null )
 	{
+		// Some fields does not have ID like heading, custom HTML, etc.
+		if ( empty( $field['id'] ) )
+		{
+			return '';
+		}
+
 		if ( ! $post_id )
 			$post_id = get_the_ID();
 
-		/**
-		 * Get raw meta value in the database, no escape
-		 * Very similar to self::meta() function
-		 */
+		// Get raw meta value in the database, no escape
+		$single = $field['clone'] || ! $field['multiple'];
+		$value  = get_post_meta( $post_id, $field['id'], $single );
 
-		/**
-		 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
-		 * to prevent notice error when display in fields
-		 */
-		$value = '';
-		if ( ! empty( $field['id'] ) )
+		// Make sure meta value is an array for cloneable and multiple fields
+		if ( $field['clone'] || $field['multiple'] )
 		{
-			$single = $field['clone'] || ! $field['multiple'];
-			$value  = get_post_meta( $post_id, $field['id'], $single );
-
-			// Make sure meta value is an array for clonable and multiple fields
-			if ( $field['clone'] || $field['multiple'] )
-			{
-				$value = is_array( $value ) && $value ? $value : array();
-			}
+			$value = is_array( $value ) && $value ? $value : array();
 		}
 
-		/**
-		 * Return the meta value by default.
-		 * For specific fields, the returned value might be different. See each field class for details
-		 */
 		return $value;
 	}
 
@@ -440,7 +430,7 @@ abstract class RWMB_Field
 	 *
 	 * @return string HTML output of the field
 	 */
-	static function the_value( $field, $args = array(), $post_id = null )
+	public static function the_value( $field, $args = array(), $post_id = null )
 	{
 		$value = self::call( 'get_value', $field, $args, $post_id );
 		return self::call( 'format_value', $field, $value );
@@ -514,10 +504,19 @@ abstract class RWMB_Field
 	 */
 	public static function get_class_name( $field )
 	{
-		$type  = str_replace( array( '-', '_' ), ' ', $field['type'] );
+		$type = $field['type'];
+		if ( 'file_advanced' == $field['type'] )
+		{
+			$type = 'media';
+		}
+		if ( 'plupload_image' == $field['type'] )
+		{
+			$type = 'image_upload';
+		}
+		$type  = str_replace( array( '-', '_' ), ' ', $type );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
-		return $class;
+		return class_exists( $class ) ? $class : 'RWMB_Input_Field';
 	}
 
 	/**

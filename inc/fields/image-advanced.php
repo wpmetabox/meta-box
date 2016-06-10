@@ -6,26 +6,12 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 {
 	/**
 	 * Enqueue scripts and styles
-	 *
-	 * @return void
 	 */
 	static function admin_enqueue_scripts()
 	{
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-image-advanced', RWMB_CSS_URL . 'image-advanced.css', array( 'rwmb-media' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'rwmb-media' ), RWMB_VER, true );
-	}
-
-	/**
-	 * Add actions
-	 *
-	 * @return void
-	 */
-	static function add_actions()
-	{
-		parent::add_actions();
-		// Print attachment templates
-		add_action( 'print_media_templates', array( __CLASS__, 'print_templates' ) );
 	}
 
 	/**
@@ -39,7 +25,6 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	{
 		$field              = parent::normalize( $field );
 		$field['mime_type'] = 'image';
-
 		return $field;
 	}
 
@@ -58,13 +43,13 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	/**
 	 * Get uploaded file information.
 	 *
-	 * @param int   $file_id Attachment image ID (post ID). Required.
-	 * @param array $args    Array of arguments (for size).
+	 * @param int   $file Attachment image ID (post ID). Required.
+	 * @param array $args Array of arguments (for size).
 	 * @return array|bool False if file not found. Array of image info on success
 	 */
-	static function file_info( $file_id, $args = array() )
+	static function file_info( $file, $args = array() )
 	{
-		return RWMB_Image_Field::file_info( $file_id, $args );
+		return RWMB_Image_Field::file_info( $file, $args );
 	}
 
 	/**
@@ -93,8 +78,9 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field
 	 * Template for media item
 	 * @return void
 	 */
-	static function print_templates()
+	public static function print_templates()
 	{
-		require_once( RWMB_INC_DIR . 'templates/image-advanced.php' );
+		parent::print_templates();
+		require_once RWMB_INC_DIR . 'templates/image-advanced.php';
 	}
 }

@@ -48,20 +48,28 @@ jQuery( function ( $ )
 	 */
 	function getTimestamp( date )
 	{
-		if(date===null)
+		if ( date === null )
 			return "";
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
 
 	// Set language if available
-	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetimepicker.locale ) )
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.locale] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.locale] );
 	}
-	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetimepicker.localeShort ) )
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) )
 	{
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetimepicker.localeShort] );
+		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.localeShort] );
+	}
+	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) )
+	{
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.locale] );
+	}
+	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) )
+	{
+		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.localeShort] );
 	}
 
 	$( ':input.rwmb-datetime' ).each( update );
