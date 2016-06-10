@@ -49,7 +49,7 @@ class RW_Meta_Box
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		// Add additional actions for fields
-		$fields = self::get_fields( $this->fields );
+		$fields = $this->get_fields( $this->fields );
 		foreach ( $fields as $field )
 		{
 			RWMB_Field::call( $field, 'add_actions' );
@@ -91,7 +91,7 @@ class RW_Meta_Box
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 
 		// Load clone script conditionally
-		$fields = self::get_fields( $this->fields );
+		$fields = $this->get_fields( $this->fields );
 		foreach ( $fields as $field )
 		{
 			if ( $field['clone'] )
@@ -123,14 +123,14 @@ class RW_Meta_Box
 	 * @param array $fields
 	 * @return array
 	 */
-	public static function get_fields( $fields )
+	protected function get_fields( $fields )
 	{
 		$all_fields = array();
 		foreach ( $fields as $field )
 		{
 			$all_fields[] = $field;
 			if ( isset( $field['fields'] ) )
-				$all_fields = array_merge( $all_fields, self::get_fields( $field['fields'] ) );
+				$all_fields = array_merge( $all_fields, $this->get_fields( $field['fields'] ) );
 		}
 
 		return $all_fields;
@@ -366,7 +366,7 @@ class RW_Meta_Box
 	 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
 	 * @return bool
 	 */
-	public function is_edit_screen( $screen = null )
+	protected function is_edit_screen( $screen = null )
 	{
 		if ( ! ( $screen instanceof WP_Screen ) )
 		{
