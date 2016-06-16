@@ -3,7 +3,7 @@
 /**
  * oEmbed field class.
  */
-class RWMB_OEmbed_Field extends RWMB_URL_Field
+class RWMB_OEmbed_Field extends RWMB_Text_Field
 {
 	/**
 	 * Enqueue scripts and styles

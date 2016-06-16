@@ -223,6 +223,9 @@ class RWMB_Loader
 		{
 			// Validation module
 			new RWMB_Validation;
+
+			$sanitize = new RWMB_Sanitize;
+			$sanitize->init();
 		}
 
 		// Public functions

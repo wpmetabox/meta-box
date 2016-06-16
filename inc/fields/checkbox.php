@@ -49,24 +49,6 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	}
 
 	/**
-	 * Set the value of checkbox to 1 or 0 instead of 'checked' and empty string
-	 * This prevents using default value once the checkbox has been unchecked
-	 *
-	 * @link https://github.com/rilwis/meta-box/issues/6
-	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
-	 *
-	 * @return int
-	 */
-	public static function value( $new, $old, $post_id, $field )
-	{
-		return empty( $new ) ? 0 : 1;
-	}
-
-	/**
 	 * Format a single value for the helper functions.
 	 * @param array  $field Field parameter
 	 * @param string $value The value
