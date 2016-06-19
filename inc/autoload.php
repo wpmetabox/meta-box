@@ -169,7 +169,7 @@ class RWMB_Autoload
      * @param string $file The file to require.
      * @return bool True if the file exists, false if not.
      */
-	protected require_file( $file )
+	protected function require_file( $file )
 	{
 		if ( file_exists( $file ) )
 		{
