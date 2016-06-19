@@ -70,9 +70,8 @@ class RWMB_Autoload
 			}
 			$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
 			$file = $dir['dir'] . $file;
-			if ( file_exists( $file ) )
+			if ( $this->require_file( $file ) )
 			{
-				require $file;
 				return $file;
 			}
 		}
@@ -160,7 +159,23 @@ class RWMB_Autoload
 		);
 		foreach ( $files as $file )
 		{
-			require RWMB_INC_DIR . "$file.php";
+			$this->require_file( RWMB_INC_DIR . "$file.php" );
 		}
+	}
+
+	/**
+     * If a file exists, require it from the file system.
+     *
+     * @param string $file The file to require.
+     * @return bool True if the file exists, false if not.
+     */
+	protected require_file( $file )
+	{
+		if ( file_exists( $file ) )
+		{
+			require $file;
+			return true;
+		}
+		return false;
 	}
 }
