@@ -58,6 +58,10 @@ jQuery( function ( $ )
 		$clones.each( function ()
 		{
 			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
+			if ( /_\d+$/.test( currentId ) )
+			{
+				currentId = currentId.replace( /_\d+$/, '' );
+			}
 			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) )
 			{
 				id = currentId;
