@@ -132,12 +132,18 @@ abstract class RWMB_Field
 	 */
 	public static function end_html( $meta, $field )
 	{
-		$desc   = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
+		return RWMB_Clone::add_clone_button( $field ) . self::call( 'element_description', $field ) . '</div>';
+	}
 
-		// Closes the container
-		$html = RWMB_Clone::add_clone_button( $field ) . "$desc</div>";
-
-		return $html;
+	/**
+	 * Display field description.
+	 * @param array $field
+	 * @return string
+	 */
+	protected static function element_description( $field )
+	{
+		$id = $field['id'] ? " id='{$field['id']}-description'" : '';
+		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
 
 	/**
@@ -162,7 +168,7 @@ abstract class RWMB_Field
 		$meta   = get_post_meta( $post_id, $field['id'], $single );
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-		$meta = ( ! $saved && '' === $meta || array() === $meta ) ? $field['std'] : $meta;
+		$meta = ! $saved ? $field['std'] : $meta;
 
 		// Escape attributes
 		$meta = self::call( $field, 'esc_meta', $meta );

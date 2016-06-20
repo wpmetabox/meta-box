@@ -36,16 +36,13 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field
 	}
 
 	/**
-	 * Show end HTML markup for fields
-	 *
-	 * @param mixed $meta
+	 * Do not show field description.
 	 * @param array $field
-	 *
 	 * @return string
 	 */
-	public static function end_html( $meta, $field )
+	public static function element_description( $field )
 	{
-		return RWMB_Clone::add_clone_button( $field ) . '</div>';
+		return '';
 	}
 
 	/**

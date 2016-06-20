@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Heading field class.
  */
@@ -38,8 +39,6 @@ class RWMB_Heading_Field extends RWMB_Field
 	 */
 	static function end_html( $meta, $field )
 	{
-		$id = $field['id'] ? " id='{$field['id']}-description'" : '';
-
-		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
+		return self::element_description( $field );
 	}
 }
