@@ -49,8 +49,7 @@ class RW_Meta_Box
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		// Add additional actions for fields
-		$fields = $this->get_fields( $this->fields );
-		foreach ( $fields as $field )
+		foreach ( $this->fields as $field )
 		{
 			RWMB_Field::call( $field, 'add_actions' );
 		}
@@ -91,8 +90,7 @@ class RW_Meta_Box
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 
 		// Load clone script conditionally
-		$fields = $this->get_fields( $this->fields );
-		foreach ( $fields as $field )
+		foreach ( $this->fields as $field )
 		{
 			if ( $field['clone'] )
 			{
@@ -102,7 +100,7 @@ class RW_Meta_Box
 		}
 
 		// Enqueue scripts and styles for fields
-		foreach ( $fields as $field )
+		foreach ( $this->fields as $field )
 		{
 			RWMB_Field::call( $field, 'admin_enqueue_scripts' );
 		}
@@ -116,24 +114,6 @@ class RW_Meta_Box
 		 * @param RW_Meta_Box $object Meta Box object
 		 */
 		do_action( 'rwmb_enqueue_scripts', $this );
-	}
-
-	/**
-	 * Get all fields of a meta box, recursively
-	 * @param array $fields
-	 * @return array
-	 */
-	protected function get_fields( $fields )
-	{
-		$all_fields = array();
-		foreach ( $fields as $field )
-		{
-			$all_fields[] = $field;
-			if ( isset( $field['fields'] ) )
-				$all_fields = array_merge( $all_fields, $this->get_fields( $field['fields'] ) );
-		}
-
-		return $all_fields;
 	}
 
 	/**
