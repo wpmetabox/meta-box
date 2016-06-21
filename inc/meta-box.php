@@ -278,10 +278,6 @@ class RW_Meta_Box
 		// Make sure the post type is an array.
 		$meta_box['post_types'] = (array) $meta_box['post_types'];
 
-		// Allow to add default values for meta box
-		$meta_box = apply_filters( 'rwmb_normalize_meta_box', $meta_box );
-		$meta_box = apply_filters( "rwmb_normalize_{$meta_box['id']}_meta_box", $meta_box );
-
 		return $meta_box;
 	}
 
@@ -296,9 +292,6 @@ class RW_Meta_Box
 		{
 			$field = RWMB_Field::call( 'normalize', $field );
 
-			if ( isset( $field['fields'] ) )
-				$field['fields'] = self::normalize_fields( $field['fields'] );
-
 			// Allow to add default values for fields
 			$field = apply_filters( 'rwmb_normalize_field', $field );
 			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
@@ -308,16 +301,6 @@ class RW_Meta_Box
 		}
 
 		return $fields;
-	}
-
-	/**
-	 * Get field class name. Only for backward compatibility.
-	 * @param array $field Field array
-	 * @return string Field class name
-	 */
-	public static function get_class_name( $field )
-	{
-		return RWMB_Field::get_class_name( $field );
 	}
 
 	/**
