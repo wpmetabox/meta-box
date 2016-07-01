@@ -32,6 +32,7 @@ jQuery( function ( $ )
 	}
 
 	// Set language if available
+	$.timepicker.setDefaults( $.timepicker.regional[ "" ] );
 	if ( $.timepicker.regional.hasOwnProperty( RWMB_Time.locale ) )
 	{
 		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Time.locale] );

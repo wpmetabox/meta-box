@@ -54,6 +54,7 @@ jQuery( function ( $ )
 		return Math.floor( milliseconds / 1000 );
 	}
 
+	$.datepicker.setDefaults( $.datepicker.regional[ "" ] );
 	if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.locale ) )
 	{
 		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.locale] );
