@@ -11,11 +11,20 @@ class RWMB_Map_Field extends RWMB_Field
 	 */
 	static function admin_enqueue_scripts()
 	{
-		/**
+        /**
+         * Since June 2016, Google Maps requires a valid API key.
+         * @link http://googlegeodevelopers.blogspot.com/2016/06/building-for-scale-updates-to-google.html
+         * @link https://developers.google.com/maps/documentation/javascript/get-api-key
+         */
+        $args = func_get_args();
+        $field = $args[0];
+        $google_maps_url = add_query_arg( 'key', $field['api_key'], 'https://maps.google.com/maps/api/js' );
+
+        /**
 		 * Allows developers load more libraries via a filter.
 		 * @link https://developers.google.com/maps/documentation/javascript/libraries
 		 */
-		$google_maps_url = apply_filters( 'rwmb_google_maps_url', 'https://maps.google.com/maps/api/js?sensor=false' );
+		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
 		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), '', true );
 		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css' );
 		wp_enqueue_script( 'rwmb-map', RWMB_JS_URL . 'map.js', array( 'jquery-ui-autocomplete', 'google-maps' ), RWMB_VER, true );
@@ -66,8 +75,9 @@ class RWMB_Map_Field extends RWMB_Field
 	{
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'std'           => '',
-			'address_field' => '',
+            'std'           => '',
+            'address_field' => '',
+            'api_key'       => '',
 		) );
 
 		return $field;
