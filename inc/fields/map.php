@@ -77,7 +77,10 @@ class RWMB_Map_Field extends RWMB_Field
 		$field = wp_parse_args( $field, array(
             'std'           => '',
             'address_field' => '',
-            'api_key'       => '',
+
+			// Default API key, required by Google Maps since June 2016.
+			// Users should overwrite this key with their own key.
+            'api_key'       => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
 		) );
 
 		return $field;
