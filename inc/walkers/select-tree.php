@@ -2,9 +2,9 @@
 
 /**
  * Select Tree Walker for cascading select fields.
- * @uses RWMB_Select_Walker
+ * @uses RWMB_Walker_Select
  */
-class RWMB_Select_Tree_Walker
+class RWMB_Walker_Select_Tree
 {
 	/**
 	 * Field data.
@@ -46,7 +46,7 @@ class RWMB_Select_Tree_Walker
 	{
 		$id         = $this->db_fields['id'];
 		$field      = $this->field;
-		$walker     = new RWMB_Select_Walker( $this->db_fields, $field, $this->meta );
+		$walker     = new RWMB_Walker_Select( $this->db_fields, $field, $this->meta );
 		$attributes = RWMB_Field::call( 'get_attributes', $field, $this->meta );
 
 		$children = $options[$parent_id];

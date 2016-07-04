@@ -3,7 +3,7 @@
  * Base Walker
  * Walkers must inherit this class and overwrite methods with its own.
  */
-abstract class RWMB_Walker extends Walker
+abstract class RWMB_Walker_Base extends Walker
 {
 	/**
 	 * Field data.

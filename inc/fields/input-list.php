@@ -25,7 +25,7 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field
 	 */
 	public static function walk( $field, $options, $db_fields, $meta )
 	{
-		$walker = new RWMB_Input_List_Walker( $db_fields, $field, $meta );
+		$walker = new RWMB_Walker_Input_List( $db_fields, $field, $meta );
 		$output = sprintf( '<ul class="rwmb-input-list %s %s">',
 			$field['collapse'] ? 'collapse' : '',
 		 	$field['inline']   ? 'inline'   : ''

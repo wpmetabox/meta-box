@@ -4,7 +4,7 @@
  * Input List Walker
  * For checkbox and radio list fields
  */
-class RWMB_Input_List_Walker extends RWMB_Walker
+class RWMB_Walker_Input_List extends RWMB_Walker_Base
 {
 	/**
 	 * @see Walker::start_lvl()
