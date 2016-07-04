@@ -73,7 +73,7 @@ class RWMB_Loader
 		$this->constants();
 
 		// Register autoload for classes
-		require RWMB_INC_DIR . 'autoload.php';
+		require RWMB_INC_DIR . 'autoloader.php';
 		$autoloader = new RWMB_Autoloader;
 		$autoloader->add( RWMB_INC_DIR, 'RW_' );
 		$autoloader->add( RWMB_INC_DIR, 'RWMB_' );
