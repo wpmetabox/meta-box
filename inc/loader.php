@@ -74,12 +74,12 @@ class RWMB_Loader
 
 		// Register autoload for classes
 		require RWMB_INC_DIR . 'autoload.php';
-		$autoload = new RWMB_Autoload;
-		$autoload->add( RWMB_INC_DIR, 'RW_' );
-		$autoload->add( RWMB_INC_DIR, 'RWMB_' );
-		$autoload->add( RWMB_INC_DIR . 'fields', 'RWMB_', '_Field' );
-		$autoload->add( RWMB_INC_DIR . 'walkers', 'RWMB_', '_Walker' );
-		$autoload->register();
+		$autoloader = new RWMB_Autoloader;
+		$autoloader->add( RWMB_INC_DIR, 'RW_' );
+		$autoloader->add( RWMB_INC_DIR, 'RWMB_' );
+		$autoloader->add( RWMB_INC_DIR . 'fields', 'RWMB_', '_Field' );
+		$autoloader->add( RWMB_INC_DIR . 'walkers', 'RWMB_', '_Walker' );
+		$autoloader->register();
 
 		// Plugin core
 		new RWMB_Core;

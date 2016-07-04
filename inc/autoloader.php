@@ -7,7 +7,7 @@
 /**
  * Autoload class
  */
-class RWMB_Autoload
+class RWMB_Autoloader
 {
 	/**
 	 * List of directories to load classes.
