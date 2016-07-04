@@ -89,7 +89,7 @@ class RWMB_Loader
 			// Validation module
 			new RWMB_Validation;
 
-			$sanitize = new RWMB_Sanitize;
+			$sanitize = new RWMB_Sanitizer;
 			$sanitize->init();
 		}
 

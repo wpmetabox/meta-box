@@ -7,7 +7,7 @@
 /**
  * Sanitize class.
  */
-class RWMB_Sanitize
+class RWMB_Sanitizer
 {
 	/**
 	 * Built-in callbacks for some specific types.
