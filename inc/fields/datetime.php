@@ -197,7 +197,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field
 			) );
 		}
 
-		$field = RWMB_Text_Field::normalize( $field );
+		$field = parent::normalize( $field );
 
 		return $field;
 	}
