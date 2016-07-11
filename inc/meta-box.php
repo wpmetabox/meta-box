@@ -337,7 +337,7 @@ class RW_Meta_Box
 	 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
 	 * @return bool
 	 */
-	protected function is_edit_screen( $screen = null )
+	public function is_edit_screen( $screen = null )
 	{
 		if ( ! ( $screen instanceof WP_Screen ) )
 		{
