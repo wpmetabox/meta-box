@@ -173,7 +173,7 @@ class RWMB_Autoloader
 	{
 		if ( file_exists( $file ) )
 		{
-			require $file;
+			require_once $file;
 			return true;
 		}
 		return false;
