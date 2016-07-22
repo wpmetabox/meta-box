@@ -41,8 +41,8 @@ class RWMB_Validation
 		{
 			return;
 		}
-		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'jquery.validate.min.js', array( 'jquery' ), '1.15.0', true );
-		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'additional-methods.min.js', array( 'jquery-validation' ), '1.15.0', true );
+		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'jquery-validation/jquery.validate.min.js', array( 'jquery' ), '1.15.0', true );
+		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'jquery-validation/additional-methods.min.js', array( 'jquery-validation' ), '1.15.0', true );
 		wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validate' ), RWMB_VER, true );
 		/**
 		 * Prevent loading localized string twice.
