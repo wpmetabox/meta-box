@@ -18,7 +18,7 @@ jQuery( function ( $ )
 		if ( $timestamp.length )
 		{
 			var $picker = $inline.length ? $inline : $this;
-			options.onSelect = function ()
+			options.onClose = function ()
 			{
 				$timestamp.val( getTimestamp( $picker.datepicker( 'getDate' ) ) );
 			};
@@ -27,6 +27,7 @@ jQuery( function ( $ )
 		if ( $inline.length )
 		{
 			options.altField = '#' + $this.attr( 'id' );
+			options.onSelect = $timestamp.length ? options.onClose : '';
 			$inline
 				.removeClass( 'hasDatepicker' )
 				.empty()
