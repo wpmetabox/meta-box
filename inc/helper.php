@@ -125,18 +125,6 @@ class RWMB_Helper
 			case 'oembed':
 				$meta = RWMB_OEmbed_Field::the_value( $field, $args, $post_id );
 				break;
-			case 'file':
-			case 'file_advanced':
-			case 'file_upload':
-				$meta = RWMB_File_Field::the_value( $field, $args, $post_id );
-				break;
-			case 'image':
-			case 'image_advanced':
-			case 'plupload_image':
-			case 'thickbox_image':
-			case 'image_upload':
-				$meta = RWMB_Image_Field::the_value( $field, $args, $post_id );
-				break;
 			default:
 				$meta = RWMB_Field::call( 'get_value', $field, $args, $post_id );
 		}
