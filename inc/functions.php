@@ -22,7 +22,8 @@ if ( ! function_exists( 'rwmb_meta' ) )
 		 * This is for backward compatibility with version < 4.8.0
 		 */
 		$field = RWMB_Helper::find_field( $key, $post_id );
-		if ( false === $field || isset( $args['type'] ) )
+
+		if ( false === $field && isset( $args['type'] ) )
 		{
 			return apply_filters( 'rwmb_meta', RWMB_Helper::meta( $key, $args, $post_id ) );
 		}
