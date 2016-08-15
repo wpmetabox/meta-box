@@ -24,7 +24,8 @@ class RWMB_Core
 		$plugin = 'meta-box/meta-box.php';
 		add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_links' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'admin_init', array( $this, 'register_meta_boxes' ) );
+		add_action( 'init', array( $this, 'register_meta_boxes' ) );
+        add_action( 'init', array( $this, 'register_wpml_hooks' ) );
 		add_action( 'edit_page_form', array( $this, 'fix_page_template' ) );
 	}
 
@@ -81,6 +82,25 @@ class RWMB_Core
 		return self::$meta_boxes;
 	}
 
+    /**
+     * Get all registered fields.
+     *
+     * @return array
+     */
+    public static function get_fields() {
+        $fields = array();
+
+        foreach ( self::$meta_boxes as $meta_box ) {
+            foreach ( $meta_box['fields'] as $field ) {
+                if ( ! empty( $field['id'] ) ) {
+                    $fields[ $field['id'] ] = $field;
+                }
+            }
+        }
+
+        return $fields;
+    }
+
 	/**
 	 * WordPress will prevent post data saving if a page template has been selected that does not exist
 	 * This is especially a problem when switching to our theme, and old page templates are in the post data
@@ -99,5 +119,14 @@ class RWMB_Core
 		{
 			delete_post_meta( $post->ID, '_wp_page_template' );
 		}
+	}
+
+    /**
+     * Register wpml compatibility hooks
+     */
+    public function register_wpml_hooks() {
+        if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+            new RWMB_WPML;
+        }
 	}
 }
