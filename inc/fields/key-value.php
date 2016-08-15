@@ -17,13 +17,13 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 		// Key
 		$key                       = isset( $meta[0] ) ? $meta[0] : '';
 		$attributes                = self::get_attributes( $field, $key );
-		$attributes['placeholder'] = esc_attr__( 'Key', 'meta-box' );
+		$attributes['placeholder'] = $field['placeholder']['key'];
 		$html                      = sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		// Value
 		$val                       = isset( $meta[1] ) ? $meta[1] : '';
 		$attributes                = self::get_attributes( $field, $val );
-		$attributes['placeholder'] = esc_attr__( 'Value', 'meta-box' );
+		$attributes['placeholder'] = $field['placeholder']['value'];
 		$html .= sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		return $html;
@@ -113,6 +113,10 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field
 		$field['clone']              = true;
 		$field['multiple']           = true;
 		$field['attributes']['type'] = 'text';
+		$field['placeholder']        = wp_parse_args( (array) $field['placeholder'], array(
+			'key'   => 'Key',
+			'value' => 'Value',
+		) );
 		return $field;
 	}
 
