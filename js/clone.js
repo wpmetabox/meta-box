@@ -140,8 +140,14 @@ jQuery( function ( $ )
 	 */
 	function toggleRemoveButtons( $container )
 	{
-		var $button = $container.find( '.remove-clone' );
-		$button.toggle( $button.length > 1 );
+		var $clones = $container.children( '.rwmb-clone' );
+		$clones.children( '.remove-clone' ).toggle( $clones.length > 1 );
+
+		// Recursive for nested groups.
+		$container.find( '.rwmb-input' ).each( function ()
+		{
+			toggleRemoveButtons( $( this ) );
+		} );
 	}
 
 	/**
@@ -182,7 +188,7 @@ jQuery( function ( $ )
 				$container = $this.closest( '.rwmb-input' );
 
 			// Remove clone only if there are 2 or more of them
-			if ( $container.find( '.rwmb-clone' ).length < 2 )
+			if ( $container.children( '.rwmb-clone' ).length < 2 )
 			{
 				return;
 			}
