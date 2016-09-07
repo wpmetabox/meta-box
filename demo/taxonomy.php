@@ -12,15 +12,17 @@ function your_prefix_taxonomy_demo( $meta_boxes )
 				'name'    => __( 'Taxonomy', 'your-prefix' ),
 				'id'      => 'prefix_taxonomy',
 				'type'    => 'taxonomy',
+				'options' => array(
 
-				// Taxonomy name
-				'taxonomy' => 'category',
+					// Taxonomy name
+					'taxonomy' => 'category',
 
-				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
-				'field_type'     => 'select_tree',
+					// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
+					'field_type' => 'select_tree',
 
-				// Additional arguments for get_terms() function. Optional
-				'query_args'     => array()
+					// Additional arguments for get_terms() function. Optional
+					'query_args' => array()
+				),
 			),
 		),
 	);
