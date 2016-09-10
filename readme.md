@@ -94,6 +94,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.9.1
+* Fix: Quick fix for `rwmb_meta()` to be better backward compatible
+
 #### 4.9
 * Improvement: Update Chinese language. Add Chinese Taiwan.
 * Improvement: Add support for Google Maps API key. Default API key is added, however users should replace it with their own key.
