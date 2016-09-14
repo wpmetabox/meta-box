@@ -4,7 +4,7 @@ Donate link: http://www.deluxeblogtips.com/donate
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 4.9.1
+Stable tag: 4.9.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
@@ -33,8 +33,8 @@ See more documentation [here](https://metabox.io/docs/).
 
 ### Extensions
 
-- [MB User Meta](https://metabox.io/plugins/mb-user-meta/)|Add custom fields to user profile (user meta) quickly with simple syntax.
-- [Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/)|Automatically and instantly populate location data with the power of Google Maps Geolocation API.
+- [MB User Meta](https://metabox.io/plugins/mb-user-meta/): Add custom fields to user profile (user meta) quickly with simple syntax.
+- [Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/): Automatically and instantly populate location data with the power of Google Maps Geolocation API.
 - [MB Admin Columns](https://metabox.io/plugins/mb-admin-columns/): Display custom fields in table columns in admin screens for All Posts (types).
 - [MB Term Meta](https://metabox.io/plugins/mb-term-meta/): Add meta data to categories, tags or any custom taxonomy with simple syntax.
 - [MB Settings Page](https://metabox.io/plugins/mb-settings-page/): Create settings pages for themes, plugins or websites with beautiful syntax.
@@ -79,6 +79,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.9.2 =
+* Fix: Quick fix validation
 
 = 4.9.1 =
 * Fix: Quick fix for `rwmb_meta()` to be better backward compatible

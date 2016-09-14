@@ -94,6 +94,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.9.2
+* Fix: Quick fix validation
+
 #### 4.9.1
 * Fix: Quick fix for `rwmb_meta()` to be better backward compatible
 
