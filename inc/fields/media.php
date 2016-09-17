@@ -156,24 +156,6 @@ class RWMB_Media_Field extends RWMB_File_Field
 	}
 
 	/**
-	 * Get meta values to save
-	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
-	 *
-	 * @return array|mixed
-	 */
-	public static function value( $new, $old, $post_id, $field )
-	{
-		if ( - 1 === intval( $new ) )
-			return $old;
-
-		return $new;
-	}
-
-	/**
 	 * Template for media item
 	 */
 	public static function print_templates()
