@@ -142,6 +142,22 @@ class RWMB_Media_Field extends RWMB_File_Field
 	}
 
 	/**
+	 * Get meta values to save
+	 *
+	 * @param mixed $new
+	 * @param mixed $old
+	 * @param int   $post_id
+	 * @param array $field
+	 *
+	 * @return array|mixed
+	 */
+	public static function value( $new, $old, $post_id, $field )
+	{
+		array_walk( $new, 'absint' );
+		return array_filter(  array_unique( $new ) );
+	}
+
+	/**
 	 * Save meta value
 	 *
 	 * @param $new
