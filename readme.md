@@ -94,6 +94,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.9.3
+* Fix: Quick fix saving datetime field
+
 #### 4.9.2
 * Fix: Quick fix validation
 
