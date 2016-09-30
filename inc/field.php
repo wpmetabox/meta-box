@@ -28,8 +28,6 @@ abstract class RWMB_Field
 	 *
 	 * @param array $field
 	 * @param bool  $saved
-	 *
-	 * @return string
 	 */
 	public static function show( $field, $saved )
 	{
@@ -303,9 +301,6 @@ abstract class RWMB_Field
 			'attributes' => array(),
 		) );
 
-		$classes        = array_merge( array( "rwmb-{$field['type']}" ), (array) $field['class'] );
-		$field['class'] = trim( implode( ' ', $classes ) );
-
 		return $field;
 	}
 
@@ -322,7 +317,7 @@ abstract class RWMB_Field
 		$attributes = wp_parse_args( $field['attributes'], array(
 			'disabled' => $field['disabled'],
 			'required' => $field['required'],
-			'class'    => $field['class'],
+			'class'    => "rwmb-{$field['type']}",
 			'id'       => $field['id'],
 			'name'     => $field['field_name'],
 		) );

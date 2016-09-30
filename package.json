@@ -1,7 +1,7 @@
 {
   "name": "meta-box",
-  "version": "4.9.4",
-  "description": "Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.",
+  "version": "4.9.5",
+  "description": "MA powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
   "keywords": ["meta box", "meta boxes", "custom field", "custom fields", "wordpress", "wordpress plugin", "tool", "developer tool"],
   "homepage": "https://metabox.io",
   "bugs": {
