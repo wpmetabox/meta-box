@@ -99,6 +99,6 @@ jQuery( function ( $ )
 			.find( '.quicktags-toolbar' ).attr( 'id', 'qt_' + id + '_toolbar' ).html( '' );
 	}
 
-	$( ':input.rwmb-date' ).each( update );
+	$( ':input.rwmb-wysiwyg' ).each( update );
 	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-wysiwyg', update );
 } );
