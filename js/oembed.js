@@ -1,10 +1,12 @@
-jQuery( function( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
-	$( '.rwmb-oembed-wrapper .spinner' ).hide();
+	/**
+	 * Show preview of oembeded media.
+	 */
+	function showPreview( e ) {
+		e.preventDefault();
 
-	$( 'body' ).on( 'click', '.rwmb-oembed-wrapper .show-embed', function() {
 		var $this = $( this ),
 			$spinner = $this.siblings( '.spinner' ),
 			data = {
@@ -12,13 +14,23 @@ jQuery( function( $ )
 				url: $this.siblings( 'input' ).val()
 			};
 
-		$spinner.show();
-		$.post( ajaxurl, data, function( r )
-		{
-			$spinner.hide();
-			$this.siblings( '.embed-code' ).html( r.data );
+		$spinner.css( 'visibility', 'visible' );
+		$.post( ajaxurl, data, function ( r ) {
+			$spinner.css( 'visibility', 'hidden' );
+			$this.siblings( '.rwmb-embed-media' ).html( r.data );
 		}, 'json' );
+	}
 
-		return false;
-	} );
+	/**
+	 * Remove oembed preview when cloning.
+	 */
+	function removePreview() {
+		$( this ).siblings( '.rwmb-embed-media' ).html( '' );
+	}
+
+	// Show oembeded media when clicking "Preview" button
+	$( 'body' ).on( 'click', '.rwmb-embed-show', showPreview );
+
+	// Remove oembed preview when cloning
+	$( '.rwmb-input' ).on( 'clone', '.rwmb-oembed', removePreview );
 } );

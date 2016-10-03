@@ -3,9 +3,9 @@
 	vertical-align: top;
 	display: inline-block;
 }
-.rwmb-oembed-wrapper .embed-code {
+.rwmb-embed-media {
 	margin-top: 1em;
 }
-.rwmb-oembed-wrapper .embed-code iframe {
+.rwmb-embed-media iframe {
 	max-width: 100%;
 }

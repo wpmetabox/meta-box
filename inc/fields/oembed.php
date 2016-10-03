@@ -75,9 +75,9 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field
 	public static function html( $meta, $field )
 	{
 		return parent::html( $meta, $field ) . sprintf(
-			'<a href="#" class="show-embed button">%s</a>
+			'<a href="#" class="rwmb-embed-show button">%s</a>
 			<span class="spinner"></span>
-			<div class="embed-code">%s</div>',
+			<div class="rwmb-embed-media">%s</div>',
 			esc_html__( 'Preview', 'meta-box' ),
 			$meta ? self::get_embed( $meta ) : ''
 		);
