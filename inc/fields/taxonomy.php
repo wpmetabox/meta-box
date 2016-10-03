@@ -94,8 +94,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 	 * @param mixed $old
 	 * @param int   $post_id
 	 * @param array $field
-	 *
-	 * @return string
 	 */
 	public static function save( $new, $old, $post_id, $field )
 	{
@@ -118,6 +116,26 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field
 		$meta = get_the_terms( $post_id, $field['taxonomy'] );
 		$meta = (array) $meta;
 		$meta = wp_list_pluck( $meta, 'term_id' );
+
+		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
+		$meta = ! $saved ? $field['std'] : $meta;
+
+		// Escape attributes
+		$meta = self::call( $field, 'esc_meta', $meta );
+
+		// Make sure meta value is an array for clonable and multiple fields
+		if ( $field['clone'] || $field['multiple'] )
+		{
+			if ( empty( $meta ) || ! is_array( $meta ) )
+			{
+				/**
+				 * Note: if field is clonable, $meta must be an array with values
+				 * so that the foreach loop in self::show() runs properly
+				 * @see self::show()
+				 */
+				$meta = $field['clone'] ? array( '' ) : array();
+			}
+		}
 
 		return $meta;
 	}
