@@ -133,7 +133,12 @@ jQuery( function ( $ )
 			this.$input.on( 'remove', function ()
 			{
 				this.controller.destroy();
-			} )
+			} );
+
+			this.controller.on( 'change:length', function( e )
+			{
+				that.$input.trigger( 'change' );
+			} );
 		},
 
 		// Creates media list
