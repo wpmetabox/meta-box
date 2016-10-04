@@ -4,7 +4,7 @@ Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 4.9.5
+Stable tag: 4.9.6
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
@@ -79,6 +79,11 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.9.6 =
+* Fix: Wrong CSS selector when cloning wysiwyg field
+* Fix: Remove preview for oembed field when cloning
+* Fix: 'std' for taxonomy field now works
 
 = 4.9.5 =
 * Fix: Quick fix for wrong field wrapper class which causes color field to render incorrectly

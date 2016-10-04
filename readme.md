@@ -94,6 +94,11 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.9.6
+* Fix: Wrong CSS selector when cloning wysiwyg field
+* Fix: Remove preview for oembed field when cloning
+* Fix: 'std' for taxonomy field now works
+
 #### 4.9.5
 * Fix: Quick fix for wrong field wrapper class which causes color field to render incorrectly
 

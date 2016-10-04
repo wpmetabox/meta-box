@@ -1,4 +1,4 @@
 *.sublime-project
 *.sublime-workspace
-node_modules/*
 .svn
+.idea
