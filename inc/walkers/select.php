@@ -26,7 +26,7 @@ class RWMB_Walker_Select extends RWMB_Walker_Base
 			$object->$id,
 			selected( in_array( $object->$id, $meta ), 1, false ),
 			$indent,
-			RWMB_Field::filter( 'choice_label', $object->$label, $this->field, $object ); 
+			RWMB_Field::filter( 'choice_label', $object->$label, $this->field, $object )
 		);
 	}
 }
