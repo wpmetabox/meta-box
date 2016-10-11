@@ -318,7 +318,7 @@ class RW_Meta_Box
 			{
 				continue;
 			}
-			$value = get_post_meta( $post->ID, $field['id'], ! $field['multiple'] );
+			$value = RWMB_Field::call( $field, 'raw_meta', $post->ID );
 			if (
 				( ! $field['multiple'] && '' !== $value )
 				|| ( $field['multiple'] && array() !== $value )

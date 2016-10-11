@@ -38,41 +38,18 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field
 	}
 
 	/**
-	 * Standard meta retrieval
+	 * Get raw meta value
 	 *
 	 * @param int   $post_id
-	 * @param bool  $saved
 	 * @param array $field
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public static function meta( $post_id, $saved, $field )
+	public static function raw_meta( $post_id, $field )
 	{
 		$meta = get_post_meta( $post_id, $field['id'], true );
 		$meta = wp_parse_id_list( $meta );
-		$meta = array_filter( $meta );
-
-		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
-		$meta = ! $saved ? $field['std'] : $meta;
-
-		// Escape attributes
-		$meta = self::call( $field, 'esc_meta', $meta );
-
-		// Make sure meta value is an array for clonable and multiple fields
-		if ( $field['clone'] || $field['multiple'] )
-		{
-			if ( empty( $meta ) || ! is_array( $meta ) )
-			{
-				/**
-				 * Note: if field is clonable, $meta must be an array with values
-				 * so that the foreach loop in self::show() runs properly
-				 * @see self::show()
-				 */
-				$meta = $field['clone'] ? array( '' ) : array();
-			}
-		}
-
-		return $meta;
+		return array_filter( $meta );
 	}
 
 	/**
