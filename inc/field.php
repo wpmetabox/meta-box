@@ -145,6 +145,23 @@ abstract class RWMB_Field
 	}
 
 	/**
+	 * Get raw meta value
+	 *
+	 * @param int   $post_id
+	 * @param array $field
+	 *
+	 * @return mixed
+	 */
+	public static function raw_meta( $post_id, $field )
+	{
+		if ( empty( $field['id'] ) )
+			return '';
+
+		$single = $field['clone'] || ! $field['multiple'];
+		return get_post_meta( $post_id, $field['id'], $single );
+	}
+
+	/**
 	 * Get meta value
 	 *
 	 * @param int   $post_id
@@ -162,8 +179,8 @@ abstract class RWMB_Field
 		if ( empty( $field['id'] ) )
 			return '';
 
-		$single = $field['clone'] || ! $field['multiple'];
-		$meta   = get_post_meta( $post_id, $field['id'], $single );
+		// Get raw meta
+		$meta = self::call( $field, 'raw_meta', $post_id );
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
 		$meta = ! $saved ? $field['std'] : $meta;
