@@ -1,13 +1,11 @@
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
 	/**
 	 * Update date picker element
 	 * Used for static & dynamic added elements (when clone)
 	 */
-	function update()
-	{
+	function update() {
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
@@ -16,22 +14,19 @@ jQuery( function ( $ )
 			$picker = $inline.length ? $inline : $this;
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
-		if ( $timestamp.length )
-		{
-			options.onClose = options.onSelect = function ()
-			{
+		if ( $timestamp.length ) {
+			options.onClose = options.onSelect = function () {
 				$timestamp.val( getTimestamp( $picker.datepicker( 'getDate' ) ) );
 			};
 		}
 
-		if ( $inline.length )
-		{
+		if ( $inline.length ) {
 			options.altField = '#' + $this.attr( 'id' );
-			$this.on( 'keydown', _.debounce( function(){
+			$this.on( 'keydown', _.debounce( function () {
 				$picker
 					.datepicker( 'setDate', $this.val() )
-					.find(".ui-datepicker-current-day")
-					.trigger("click");
+					.find( ".ui-datepicker-current-day" )
+					.trigger( "click" );
 			}, 600 ) );
 
 			$inline
@@ -41,8 +36,7 @@ jQuery( function ( $ )
 				.datepicker( options )
 				.datepicker( 'setDate', current );
 		}
-		else
-		{
+		else {
 			$this.removeClass( 'hasDatepicker' ).datepicker( options );
 		}
 	}
@@ -53,21 +47,19 @@ jQuery( function ( $ )
 	 * @param date
 	 * @return number
 	 */
-	function getTimestamp( date )
-	{
-		if ( date === null )
+	function getTimestamp( date ) {
+		if ( date === null ) {
 			return "";
+		}
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
 
-	$.datepicker.setDefaults( $.datepicker.regional[ "" ] );
-	if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.locale ) )
-	{
+	$.datepicker.setDefaults( $.datepicker.regional[""] );
+	if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.locale ) ) {
 		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.locale] );
 	}
-	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.localeShort ) )
-	{
+	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.localeShort ) ) {
 		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.localeShort] );
 	}
 

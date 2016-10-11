@@ -1,5 +1,4 @@
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
 	/**
@@ -14,29 +13,23 @@ jQuery( function ( $ )
 		 *
 		 * @return void
 		 */
-		selectAllNone: function ( $input )
-		{
+		selectAllNone: function ( $input ) {
 			var $element = $input.find( 'select' );
 
-			$input.on( 'click', '.rwmb-select-all-none a', function ( e )
-			{
+			$input.on( 'click', '.rwmb-select-all-none a', function ( e ) {
 				e.preventDefault();
-				if ( 'all' == $( this ).data( 'type' ) )
-				{
+				if ( 'all' == $( this ).data( 'type' ) ) {
 					var selected = [];
-					$element.find( 'option' ).each( function ( i, e )
-					{
+					$element.find( 'option' ).each( function ( i, e ) {
 						var $value = $( e ).attr( 'value' );
 
-						if ( $value != '' )
-						{
+						if ( $value != '' ) {
 							selected.push( $value );
 						}
 					} );
 					$element.val( selected ).trigger( 'change' );
 				}
-				else
-				{
+				else {
 					$element.val( '' );
 				}
 			} );
@@ -49,20 +42,16 @@ jQuery( function ( $ )
 		 *
 		 * @return void
 		 */
-		bindEvents: function ( $el )
-		{
+		bindEvents: function ( $el ) {
 			var $input = $el.closest( '.rwmb-input' ),
 				$clone = $input.find( '.rwmb-clone' );
 
-			if ( $clone.length )
-			{
-				$clone.each( function ()
-				{
+			if ( $clone.length ) {
+				$clone.each( function () {
 					select.selectAllNone( $( this ) );
 				} );
 			}
-			else
-			{
+			else {
 				select.selectAllNone( $input );
 			}
 		}
@@ -73,8 +62,7 @@ jQuery( function ( $ )
 	 *
 	 * @return void
 	 */
-	function update()
-	{
+	function update() {
 		select.bindEvents( $( this ) );
 	}
 

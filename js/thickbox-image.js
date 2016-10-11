@@ -1,17 +1,14 @@
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
-	$( 'body' ).on( 'click', '.rwmb-thickbox-upload', function ()
-	{
+	$( 'body' ).on( 'click', '.rwmb-thickbox-upload', function () {
 		var $this = $( this ),
 			$holder = $this.siblings( '.rwmb-images' ),
 			post_id = $( '#post_ID' ).val(),
 			field_id = $this.data( 'field_id' ),
 			backup = window.send_to_editor;
 
-		window.send_to_editor = function ( html )
-		{
+		window.send_to_editor = function ( html ) {
 			var $img = $( '<div />' ).append( html ).find( 'img' ),
 				url = $img.attr( 'src' ),
 				img_class = $img.attr( 'class' ),

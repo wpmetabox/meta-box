@@ -1,32 +1,27 @@
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
 	/**
 	 * Update date picker element
 	 * Used for static & dynamic added elements (when clone)
 	 */
-	function updateAutocomplete( e )
-	{
+	function updateAutocomplete( e ) {
 		var $this = $( this ),
-			$search = $this.siblings( '.rwmb-autocomplete-search'),
+			$search = $this.siblings( '.rwmb-autocomplete-search' ),
 			$result = $this.siblings( '.rwmb-autocomplete-results' ),
 			name = $this.attr( 'name' );
 
 		// If the function is called on cloning, then change the field name and clear all results
 		// @see clone.js
-		if ( e.hasOwnProperty( 'type' ) && 'clone' == e.type )
-		{
+		if ( e.hasOwnProperty( 'type' ) && 'clone' == e.type ) {
 			// Clear all results
 			$result.html( '' );
 		}
 
-		$search.removeClass( 'ui-autocomplete-input' )
-			.autocomplete( {
+		$search.removeClass( 'ui-autocomplete-input' ).autocomplete( {
 			minLength: 0,
-			source   : $this.data( 'options' ),
-			select   : function ( event, ui )
-			{
+			source: $this.data( 'options' ),
+			select: function ( event, ui ) {
 				$result.append(
 					'<div class="rwmb-autocomplete-result">' +
 					'<div class="label">' + ( typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label ) + '</div>' +
@@ -47,8 +42,7 @@ jQuery( function ( $ )
 	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-autocomplete', updateAutocomplete );
 
 	// Handle remove action
-	$( document ).on( 'click', '.rwmb-autocomplete-result .actions', function ()
-	{
+	$( document ).on( 'click', '.rwmb-autocomplete-result .actions', function () {
 		// remove result
 		$( this ).parent().remove();
 	} );

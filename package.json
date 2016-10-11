@@ -1,23 +1,34 @@
 {
-  "name": "meta-box",
-  "version": "4.9.6",
-  "description": "MA powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
-  "keywords": ["meta box", "meta boxes", "custom field", "custom fields", "wordpress", "wordpress plugin", "tool", "developer tool"],
-  "homepage": "https://metabox.io",
-  "bugs": {
-    "url": "https://github.com/rilwis/meta-box/issues"
-  },
-  "license": "GPL 2.0+",
-  "author": {
-    "name": "Tran Ngoc Tuan Anh",
-    "email": "rilwis@gmail.com",
-    "url": "http://www.deluxeblogtips.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/rilwis/meta-box.git"
-  },
-  "scripts": {
-    "zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD"
-  }
+	"name": "meta-box",
+	"version": "4.9.6",
+	"description": "MA powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
+	"keywords": [
+		"meta box",
+		"meta boxes",
+		"custom field",
+		"custom fields",
+		"wordpress",
+		"wordpress plugin",
+		"tool",
+		"developer tool"
+	],
+	"homepage": "https://metabox.io",
+	"bugs": {
+		"url": "https://github.com/rilwis/meta-box/issues"
+	},
+	"license": "GPL 2.0+",
+	"author": {
+		"name": "Tran Ngoc Tuan Anh",
+		"email": "rilwis@gmail.com",
+		"url": "http://www.deluxeblogtips.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/rilwis/meta-box.git"
+	},
+	"scripts": {
+		"check": "phpcs --standard=WordPress --extensions=php . > check.txt",
+		"fix": "phpcbf --standard=WordPress --extensions=php .",
+		"zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD"
+	}
 }
