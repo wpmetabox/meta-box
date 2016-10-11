@@ -334,10 +334,12 @@ abstract class RWMB_Field
 		$attributes = wp_parse_args( $field['attributes'], array(
 			'disabled' => $field['disabled'],
 			'required' => $field['required'],
-			'class'    => "rwmb-{$field['type']}",
 			'id'       => $field['id'],
+			'class'    => '',
 			'name'     => $field['field_name'],
 		) );
+
+		$attributes['class'] = implode( ' ', array_merge(  array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) );
 
 		return $attributes;
 	}
