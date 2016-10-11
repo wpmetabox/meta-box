@@ -8,6 +8,7 @@
  * You also should read the changelog to know what has been changed before updating.
  *
  * For more information, please visit:
+ *
  * @link http://metabox.io/docs/registering-meta-boxes/
  */
 
@@ -23,8 +24,7 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
  *
  * @return array
  */
-function your_prefix_register_meta_boxes( $meta_boxes )
-{
+function your_prefix_register_meta_boxes( $meta_boxes ) {
 	/**
 	 * prefix of meta keys (optional)
 	 * Use underscore (_) at the beginning to make keys hidden
@@ -412,11 +412,11 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 				'options' => array(
 					 'Placehold1' => esc_html__( 'Label1', 'rwmb' ),
 					 'Placehold2' => esc_html__( 'Label2', 'rwmb' ),
-					 'Placehold3' => esc_html__( 'Label3', 'rwmb' )
-				)
-			)
+					 'Placehold3' => esc_html__( 'Label3', 'rwmb' ),
+				),
+			),
 
-		)
+		),
 	);
 
 	return $meta_boxes;

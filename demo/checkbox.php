@@ -4,8 +4,7 @@
  */
 
 add_filter( 'rwmb_meta_boxes', 'your_prefix_checkbox_demo' );
-function your_prefix_checkbox_demo( $meta_boxes )
-{
+function your_prefix_checkbox_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Checkbox Upload Demo', 'your-prefix' ),
 		'fields' => array(

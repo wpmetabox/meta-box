@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'range' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_range_demo' );
-function your_prefix_range_demo( $meta_boxes )
-{
+function your_prefix_range_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Range Field Demo', 'your-prefix' ),
 
@@ -22,7 +21,7 @@ function your_prefix_range_demo( $meta_boxes )
 				// Step
 				'step' => 5,
 			),
-		)
+		),
 	);
 
 	return $meta_boxes;

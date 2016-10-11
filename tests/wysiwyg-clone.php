@@ -1,6 +1,5 @@
 <?php
-add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
-{
+add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	$meta_boxes[] = [
 		'title'  => 'Clone WYSIWYG',
 		'fields' => [
@@ -33,8 +32,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 			],
 		],
 	];
-	if ( is_plugin_active( 'meta-box-group/meta-box-group.php' ) )
-	{
+	if ( is_plugin_active( 'meta-box-group/meta-box-group.php' ) ) {
 		$meta_boxes[] = [
 			'title'  => 'Clone WYSIWYG with Group extension',
 			'fields' => [
@@ -97,6 +95,6 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 				],
 			],
 		];
-	}
+	}// End if().
 	return $meta_boxes;
 } );

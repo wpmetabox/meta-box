@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'radio' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_radio_demo' );
-function your_prefix_radio_demo( $meta_boxes )
-{
+function your_prefix_radio_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Radio Field Demo', 'your-prefix' ),
 
@@ -21,7 +20,7 @@ function your_prefix_radio_demo( $meta_boxes )
 					'value2' => __( 'Label2', 'your-prefix' ),
 				),
 			),
-		)
+		),
 	);
 
 	return $meta_boxes;

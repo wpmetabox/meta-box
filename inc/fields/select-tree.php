@@ -2,8 +2,8 @@
 /**
  * Select tree field class.
  */
-class RWMB_Select_Tree_Field extends RWMB_Select_Field
-{
+class RWMB_Select_Tree_Field extends RWMB_Select_Field {
+
 	/**
 	 * Walk options
 	 *
@@ -14,8 +14,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field
 	 *
 	 * @return string
 	 */
-	public static function walk( $field, $options, $db_fields, $meta )
-	{
+	public static function walk( $field, $options, $db_fields, $meta ) {
 		$walker = new RWMB_Walker_Select_Tree( $db_fields, $field, $meta );
 		return $walker->walk( $options );
 	}
@@ -23,8 +22,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field
 	/**
 	 * Enqueue scripts and styles
 	 */
-	public static function admin_enqueue_scripts()
-	{
+	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-select-tree', RWMB_CSS_URL . 'select-tree.css', array( 'rwmb-select' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-select-tree', RWMB_JS_URL . 'select-tree.js', array( 'rwmb-select' ), RWMB_VER, true );
@@ -36,8 +34,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field
 	 * @param array $field
 	 * @return array
 	 */
-	public static function normalize( $field )
-	{
+	public static function normalize( $field ) {
 		$field['multiple'] = true;
 		$field['size']     = 0;
 		$field             = parent::normalize( $field );
@@ -53,8 +50,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field
 	 *
 	 * @return array
 	 */
-	public static function get_attributes( $field, $value = null )
-	{
+	public static function get_attributes( $field, $value = null ) {
 		$attributes             = parent::get_attributes( $field, $value );
 		$attributes['multiple'] = false;
 		$attributes['id']       = false;

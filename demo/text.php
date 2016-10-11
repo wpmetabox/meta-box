@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'text' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_text_demo' );
-function your_prefix_text_demo( $meta_boxes )
-{
+function your_prefix_text_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Text Demo', 'your-prefix' ),
 		'fields' => array(

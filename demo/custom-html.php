@@ -4,8 +4,7 @@
  */
 
 add_filter( 'rwmb_meta_boxes', 'your_prefix_custom_html_demo' );
-function your_prefix_custom_html_demo( $meta_boxes )
-{
+function your_prefix_custom_html_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Custom HTML Demo', 'your-prefix' ),
 		'fields' => array(
@@ -14,7 +13,6 @@ function your_prefix_custom_html_demo( $meta_boxes )
 
 				// Field name: usually not used
 				// 'name' => __( 'Custom HTML', 'your-prefix' ),
-
 				'type' => 'custom_html',
 
 				// HTML content

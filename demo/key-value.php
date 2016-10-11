@@ -4,8 +4,7 @@
  */
 
 add_filter( 'rwmb_meta_boxes', 'your_prefix_key_value_demo' );
-function your_prefix_key_value_demo( $meta_boxes )
-{
+function your_prefix_key_value_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Key Value Demo', 'your-prefix' ),
 		'fields' => array(

@@ -11,14 +11,13 @@ add_filter( 'rwmb_meta_boxes', 'YOURPREFIX_register_meta_boxes' );
 
 /**
  * Register meta boxes
+ *
  * @param $meta_boxes
  * @return array
  */
-function YOURPREFIX_register_meta_boxes( $meta_boxes )
-{
+function YOURPREFIX_register_meta_boxes( $meta_boxes ) {
 	// Check before register meta boxes
-	if ( ! rw_maybe_include() )
-	{
+	if ( ! rw_maybe_include() ) {
 		return $meta_boxes;
 	}
 
@@ -46,37 +45,40 @@ function YOURPREFIX_register_meta_boxes( $meta_boxes )
  *
  * @return bool
  */
-function rw_maybe_include()
-{
+function rw_maybe_include() {
 	// Always include in the frontend to make helper function work
-	if ( ! is_admin() )
+	if ( ! is_admin() ) {
 		return true;
+	}
 
 	// Always include for ajax
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		return true;
+	}
 
 	// Check for post IDs
 	$checked_post_IDs = array( 61, 63, 65, 67, 2 );
 
-	if ( isset( $_GET['post'] ) )
+	if ( isset( $_GET['post'] ) ) {
 		$post_id = intval( $_GET['post'] );
-	elseif ( isset( $_POST['post_ID'] ) )
+	} elseif ( isset( $_POST['post_ID'] ) ) {
 		$post_id = intval( $_POST['post_ID'] );
-	else
-		$post_id = false;
+	} else { $post_id = false;
+	}
 
 	$post_id = (int) $post_id;
 
-	if ( in_array( $post_id, $checked_post_IDs ) )
+	if ( in_array( $post_id, $checked_post_IDs ) ) {
 		return true;
+	}
 
 	// Check for page template
 	$checked_templates = array( 'full-width.php', 'sidebar-page.php' );
 
 	$template = get_post_meta( $post_id, '_wp_page_template', true );
-	if ( in_array( $template, $checked_templates ) )
+	if ( in_array( $template, $checked_templates ) ) {
 		return true;
+	}
 
 	// If no condition matched
 	return false;

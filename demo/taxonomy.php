@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'taxonomy' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_taxonomy_demo' );
-function your_prefix_taxonomy_demo( $meta_boxes )
-{
+function your_prefix_taxonomy_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title' => __( 'Taxonomy Demo', 'your-prefix' ),
 		'fields' => array(
@@ -20,7 +19,7 @@ function your_prefix_taxonomy_demo( $meta_boxes )
 				'field_type'     => 'select_tree',
 
 				// Additional arguments for get_terms() function. Optional
-				'query_args'     => array()
+				'query_args'     => array(),
 			),
 		),
 	);

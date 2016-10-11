@@ -2,16 +2,15 @@
 /**
  * Post field class.
  */
-class RWMB_Post_Field extends RWMB_Object_Choice_Field
-{
+class RWMB_Post_Field extends RWMB_Object_Choice_Field {
+
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
 	 * @return array
 	 */
-	public static function normalize( $field )
-	{
+	public static function normalize( $field ) {
 		/**
 		 * Set default field args
 		 */
@@ -21,19 +20,18 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 			'parent'    => false,
 		) );
 
-		if ( ! isset( $field['query_args']['post_type'] ) )
+		if ( ! isset( $field['query_args']['post_type'] ) ) {
 			$field['query_args']['post_type'] = $field['post_type'];
+		}
 
 		/**
 		 * Set default placeholder
 		 * - If multiple post types: show 'Select a post'
 		 * - If single post type: show 'Select a %post_type_name%'
 		 */
-		if ( empty( $field['placeholder'] ) )
-		{
+		if ( empty( $field['placeholder'] ) ) {
 			$field['placeholder'] = __( 'Select a post', 'meta-box' );
-			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists( $field['query_args']['post_type'] ) )
-			{
+			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists( $field['query_args']['post_type'] ) ) {
 				$post_type_object     = get_post_type_object( $field['query_args']['post_type'] );
 				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
 			}
@@ -42,8 +40,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 		/**
 		 * Set parent option, which will change field name to `parent_id` to save as post parent
 		 */
-		if ( $field['parent'] )
-		{
+		if ( $field['parent'] ) {
 			$field['multiple']   = false;
 			$field['field_name'] = 'parent_id';
 		}
@@ -64,8 +61,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	public static function get_db_fields()
-	{
+	public static function get_db_fields() {
 		return array(
 			'parent' => 'post_parent',
 			'id'     => 'ID',
@@ -86,10 +82,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	public static function meta( $post_id, $saved, $field )
-	{
-		if ( isset( $field['parent'] ) && $field['parent'] )
-		{
+	public static function meta( $post_id, $saved, $field ) {
+		if ( isset( $field['parent'] ) && $field['parent'] ) {
 			$post = get_post( $post_id );
 			return $post->post_parent;
 		}
@@ -103,8 +97,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 * @param array $field
 	 * @return array
 	 */
-	public static function get_options( $field )
-	{
+	public static function get_options( $field ) {
 		$query = new WP_Query( $field['query_args'] );
 		return $query->have_posts() ? $query->posts : array();
 	}
@@ -117,8 +110,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return string
 	 */
-	public static function get_option_label( $field, $value )
-	{
+	public static function get_option_label( $field, $value ) {
 		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_permalink( $value ) ),

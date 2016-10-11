@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'slider' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_slider_demo' );
-function your_prefix_slider_demo( $meta_boxes )
-{
+function your_prefix_slider_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title' => __( 'Slider Demo', 'your-prefix' ),
 		'fields' => array(
@@ -25,7 +24,7 @@ function your_prefix_slider_demo( $meta_boxes )
 				),
 
 				'std' => 150,
-				//'clone' => true,
+				// 'clone' => true,
 			),
 		),
 	);

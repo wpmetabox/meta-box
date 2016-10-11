@@ -4,8 +4,8 @@
  * Input List Walker
  * For checkbox and radio list fields
  */
-class RWMB_Walker_Input_List extends RWMB_Walker_Base
-{
+class RWMB_Walker_Input_List extends RWMB_Walker_Base {
+
 	/**
 	 * @see Walker::start_lvl()
 	 *
@@ -13,8 +13,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base
 	 * @param int    $depth  Depth of item.
 	 * @param array  $args
 	 */
-	public function start_lvl( &$output, $depth = 0, $args = array() )
-	{
+	public function start_lvl( &$output, $depth = 0, $args = array() ) {
 		$output .= '<ul class="rwmb-input-list">';
 	}
 
@@ -25,8 +24,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base
 	 * @param int    $depth  Depth of item.
 	 * @param array  $args
 	 */
-	public function end_lvl( &$output, $depth = 0, $args = array() )
-	{
+	public function end_lvl( &$output, $depth = 0, $args = array() ) {
 		$output .= '</ul>';
 	}
 
@@ -39,8 +37,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base
 	 * @param int    $current_object_id Item ID.
 	 * @param array  $args
 	 */
-	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 )
-	{
+	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
 		$label      = $this->db_fields['label'];
 		$id         = $this->db_fields['id'];
 		$attributes = RWMB_Field::call( 'get_attributes', $this->field, $object->$id );
@@ -61,8 +58,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base
 	 * @param int    $depth  Depth of page. Not Used.
 	 * @param array  $args
 	 */
-	public function end_el( &$output, $page, $depth = 0, $args = array() )
-	{
+	public function end_el( &$output, $page, $depth = 0, $args = array() ) {
 		$output .= '</li>';
 	}
 }

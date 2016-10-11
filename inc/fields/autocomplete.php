@@ -3,23 +3,22 @@
 /**
  * Autocomplete field class.
  */
-class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
-{
+class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
+
 	/**
 	 * Enqueue scripts and styles.
 	 */
-	static function admin_enqueue_scripts()
-	{
+	static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
 
 		/**
 		 * Prevent loading localized string twice.
+		 *
 		 * @link https://github.com/rilwis/meta-box/issues/850
 		 */
 		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( 'rwmb-autocomplete', 'data' ) )
-		{
+		if ( ! $wp_scripts->get_data( 'rwmb-autocomplete', 'data' ) ) {
 			wp_localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
 		}
 	}
@@ -31,19 +30,17 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field )
-	{
-		if ( ! is_array( $meta ) )
+	static function html( $meta, $field ) {
+		if ( ! is_array( $meta ) ) {
 			$meta = array( $meta );
+		}
 
 		$field   = apply_filters( 'rwmb_autocomplete_field', $field, $meta );
 		$options = $field['options'];
 
-		if ( ! is_string( $field['options'] ) )
-		{
+		if ( ! is_string( $field['options'] ) ) {
 			$options = array();
-			foreach ( (array) $field['options'] as $value => $label )
-			{
+			foreach ( (array) $field['options'] as $value => $label ) {
 				$options[] = array(
 					'value' => $value,
 					'label' => $label,
@@ -75,12 +72,9 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 			</div>
 		';
 
-		if ( is_array( $field['options'] ) )
-		{
-			foreach ( $field['options'] as $value => $label )
-			{
-				if ( in_array( $value, $meta ) )
-				{
+		if ( is_array( $field['options'] ) ) {
+			foreach ( $field['options'] as $value => $label ) {
+				if ( in_array( $value, $meta ) ) {
 					$html .= sprintf(
 						$tpl,
 						$label,
@@ -90,13 +84,11 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 					);
 				}
 			}
-		}
-		else
-		{
-			foreach ( $meta as $value )
-			{
-				if ( empty( $value ) )
+		} else {
+			foreach ( $meta as $value ) {
+				if ( empty( $value ) ) {
 					continue;
+				}
 				$label = apply_filters( 'rwmb_autocomplete_result_label', $value, $field );
 				$html .= sprintf(
 					$tpl,
@@ -119,8 +111,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field )
-	{
+	static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'size' => 30,

@@ -15,11 +15,11 @@ add_filter( 'rwmb_meta_boxes', 'YOURPREFIX_register_meta_boxes' );
 
 /**
  * Register meta boxes
+ *
  * @param $meta_boxes
  * @return array
  */
-function YOURPREFIX_register_meta_boxes( $meta_boxes )
-{
+function YOURPREFIX_register_meta_boxes( $meta_boxes ) {
 	$prefix       = 'rw_';
 	$meta_boxes[] = array(
 		'title'   => __( 'Meta Box Title', 'your-prefix' ),
@@ -38,11 +38,9 @@ function YOURPREFIX_register_meta_boxes( $meta_boxes )
 		),
 	);
 
-	foreach ( $meta_boxes as $k => $meta_box )
-	{
-		if ( isset( $meta_box['only_on'] ) && ! rw_maybe_include( $meta_box['only_on'] ) )
-		{
-			unset( $meta_boxes[$k] );
+	foreach ( $meta_boxes as $k => $meta_box ) {
+		if ( isset( $meta_box['only_on'] ) && ! rw_maybe_include( $meta_box['only_on'] ) ) {
+			unset( $meta_boxes[ $k ] );
 		}
 	}
 
@@ -54,87 +52,70 @@ function YOURPREFIX_register_meta_boxes( $meta_boxes )
  *
  * @return bool
  */
-function rw_maybe_include( $conditions )
-{
+function rw_maybe_include( $conditions ) {
 	// Always include in the frontend to make helper function work
-	if ( ! is_admin() )
-	{
+	if ( ! is_admin() ) {
 		return true;
 	}
 
 	// Always include for ajax
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
-	{
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		return true;
 	}
 
-	if ( isset( $_GET['post'] ) )
-	{
+	if ( isset( $_GET['post'] ) ) {
 		$post_id = intval( $_GET['post'] );
-	}
-	elseif ( isset( $_POST['post_ID'] ) )
-	{
+	} elseif ( isset( $_POST['post_ID'] ) ) {
 		$post_id = intval( $_POST['post_ID'] );
-	}
-	else
-	{
+	} else {
 		$post_id = false;
 	}
 
 	$post_id = (int) $post_id;
 	$post    = get_post( $post_id );
 
-	foreach ( $conditions as $cond => $v )
-	{
+	foreach ( $conditions as $cond => $v ) {
 		// Catch non-arrays too
-		if ( ! is_array( $v ) )
-		{
+		if ( ! is_array( $v ) ) {
 			$v = array( $v );
 		}
 
-		switch ( $cond )
-		{
+		switch ( $cond ) {
 			case 'id':
-				if ( in_array( $post_id, $v ) )
-				{
+				if ( in_array( $post_id, $v ) ) {
 					return true;
 				}
 				break;
 			case 'parent':
 				$post_parent = $post->post_parent;
-				if ( in_array( $post_parent, $v ) )
-				{
+				if ( in_array( $post_parent, $v ) ) {
 					return true;
 				}
 				break;
 			case 'slug':
 				$post_slug = $post->post_name;
-				if ( in_array( $post_slug, $v ) )
-				{
+				if ( in_array( $post_slug, $v ) ) {
 					return true;
 				}
 				break;
-			case 'category': //post must be saved or published first
+			case 'category': // post must be saved or published first
 				$categories = get_the_category( $post->ID );
 				$catslugs   = array();
-				foreach ( $categories as $category )
-				{
+				foreach ( $categories as $category ) {
 					array_push( $catslugs, $category->slug );
 				}
-				if ( array_intersect( $catslugs, $v ) )
-				{
+				if ( array_intersect( $catslugs, $v ) ) {
 					return true;
 				}
 				break;
 			case 'template':
 				$template = get_post_meta( $post_id, '_wp_page_template', true );
-				if ( in_array( $template, $v ) )
-				{
+				if ( in_array( $template, $v ) ) {
 					return true;
 				}
 				break;
-		}
-	}
+		}// End switch().
+	}// End foreach().
 
 	// If no condition matched
 	return false;

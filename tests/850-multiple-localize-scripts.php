@@ -1,6 +1,5 @@
 <?php
-add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
-{
+add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	$meta_boxes[] = [
 		'title'  => 'Test multiple localized scripts for image advanced',
 		'fields' => [

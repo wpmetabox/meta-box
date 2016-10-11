@@ -3,8 +3,7 @@
  * This file test the helper function rwmb_the_value with the optimization in "helper" branch since 4.8.7
  */
 global $test;
-add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
-{
+add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	global $test;
 	$prefix       = '';
 	$test         = array(
@@ -256,12 +255,10 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 	return $meta_boxes;
 } );
 
-add_filter( 'the_content', function ( $content )
-{
+add_filter( 'the_content', function ( $content ) {
 	global $test;
 	$output = '';
-	foreach ( $test['fields'] as $field )
-	{
+	foreach ( $test['fields'] as $field ) {
 		$output .= '<p><strong>Field ' . $field['name'] . ':</strong> ' . rwmb_the_value( $field['id'], '', null, false ) . '</p>';
 	}
 	return $output . $content;

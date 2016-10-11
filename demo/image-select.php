@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'image_select' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_image_select_demo' );
-function your_prefix_image_select_demo( $meta_boxes )
-{
+function your_prefix_image_select_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title' => __( 'Image Select Demo', 'your-prefix' ),
 		'fields' => array(

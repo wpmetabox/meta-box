@@ -3,23 +3,22 @@
 /**
  * File field class which uses HTML <input type="file"> to upload file.
  */
-class RWMB_File_Field extends RWMB_Field
-{
+class RWMB_File_Field extends RWMB_Field {
+
 	/**
 	 * Enqueue scripts and styles
 	 */
-	public static function admin_enqueue_scripts()
-	{
+	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
 
 		/**
 		 * Prevent loading localized string twice.
+		 *
 		 * @link https://github.com/rilwis/meta-box/issues/850
 		 */
 		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( 'rwmb-file', 'data' ) )
-		{
+		if ( ! $wp_scripts->get_data( 'rwmb-file', 'data' ) ) {
 			wp_localize_script( 'rwmb-file', 'rwmbFile', array(
 				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
 				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
@@ -30,8 +29,7 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Add custom actions
 	 */
-	public static function add_actions()
-	{
+	public static function add_actions() {
 		add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
 		add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'wp_ajax_delete_file' ) );
 		add_action( 'wp_ajax_rwmb_reorder_files', array( __CLASS__, 'wp_ajax_reorder_files' ) );
@@ -40,16 +38,14 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Add data encoding type for file uploading
 	 */
-	public static function post_edit_form_tag()
-	{
+	public static function post_edit_form_tag() {
 		echo ' enctype="multipart/form-data"';
 	}
 
 	/**
 	 * Ajax callback for reordering images
 	 */
-	public static function wp_ajax_reorder_files()
-	{
+	public static function wp_ajax_reorder_files() {
 		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
 		$order    = (string) filter_input( INPUT_POST, 'order' );
@@ -57,8 +53,7 @@ class RWMB_File_Field extends RWMB_Field
 		check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
 		parse_str( $order, $items );
 		delete_post_meta( $post_id, $field_id );
-		foreach ( $items['item'] as $item )
-		{
+		foreach ( $items['item'] as $item ) {
 			add_post_meta( $post_id, $field_id, $item, false );
 		}
 		wp_send_json_success();
@@ -67,10 +62,10 @@ class RWMB_File_Field extends RWMB_Field
 	/**
 	 * Ajax callback for deleting files.
 	 * Modified from a function used by "Verve Meta Boxes" plugin
+	 *
 	 * @link http://goo.gl/LzYSq
 	 */
-	public static function wp_ajax_delete_file()
-	{
+	public static function wp_ajax_delete_file() {
 		$post_id       = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
 		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
@@ -80,8 +75,9 @@ class RWMB_File_Field extends RWMB_Field
 		delete_post_meta( $post_id, $field_id, $attachment_id );
 		$success = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
-		if ( $success )
+		if ( $success ) {
 			wp_send_json_success();
+		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
 	}
 
@@ -93,16 +89,16 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return string
 	 */
-	public static function html( $meta, $field )
-	{
+	public static function html( $meta, $field ) {
 		$i18n_title = apply_filters( 'rwmb_file_upload_string', _x( 'Upload Files', 'file upload', 'meta-box' ), $field );
 		$i18n_more  = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
 
 		// Uploaded files
 		$html    = self::get_uploaded_files( $meta, $field );
 		$classes = 'new-files';
-		if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] )
+		if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] ) {
 			$classes .= ' hidden';
+		}
 
 		// Show form upload
 		$html .= sprintf(
@@ -122,22 +118,22 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Get HTML for uploaded files.
+	 *
 	 * @param array $files List of uploaded files
 	 * @param array $field Field parameters
 	 * @return string
 	 */
-	protected static function get_uploaded_files( $files, $field )
-	{
+	protected static function get_uploaded_files( $files, $field ) {
 		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
 		$classes = 'rwmb-uploaded';
-		if ( count( $files ) <= 0 )
+		if ( count( $files ) <= 0 ) {
 			$classes .= ' hidden';
+		}
 
-		foreach ( (array) $files as $k => $file )
-		{
-			$files[$k] = self::call( $field, 'file_html', $file );
+		foreach ( (array) $files as $k => $file ) {
+			$files[ $k ] = self::call( $field, 'file_html', $file );
 		}
 		return sprintf(
 			'<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
@@ -154,11 +150,11 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Get HTML for uploaded file.
+	 *
 	 * @param int $file Attachment (file) ID
 	 * @return string
 	 */
-	protected static function file_html( $file )
-	{
+	protected static function file_html( $file ) {
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
 		$mime_type   = get_post_mime_type( $file );
@@ -195,15 +191,14 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return array|mixed
 	 */
-	public static function value( $new, $old, $post_id, $field )
-	{
-		if ( empty( $_FILES[$field['id']] ) )
+	public static function value( $new, $old, $post_id, $field ) {
+		if ( empty( $_FILES[ $field['id'] ] ) ) {
 			return $new;
+		}
 
 		$new   = array();
-		$files = self::transform( $_FILES[$field['id']] );
-		foreach ( $files as $file )
-		{
+		$files = self::transform( $_FILES[ $field['id'] ] );
+		foreach ( $files as $file ) {
 			$new[] = self::upload( $file, $post_id );
 		}
 
@@ -212,15 +207,16 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Handle upload file.
+	 *
 	 * @param array $file
 	 * @param int   $post Post parent ID
 	 * @return int Attachment ID on success, false on failure.
 	 */
-	protected static function upload( $file, $post )
-	{
+	protected static function upload( $file, $post ) {
 		$file = wp_handle_upload( $file, array( 'test_form' => false ) );
-		if ( ! isset( $file['file'] ) )
+		if ( ! isset( $file['file'] ) ) {
 			return false;
+		}
 
 		$attachment = wp_insert_attachment( array(
 			'post_mime_type' => $file['type'],
@@ -229,8 +225,7 @@ class RWMB_File_Field extends RWMB_Field
 			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file['file'] ) ),
 			'post_content'   => '',
 		), $file['file'], $post );
-		if ( is_wp_error( $attachment ) || ! $attachment )
-		{
+		if ( is_wp_error( $attachment ) || ! $attachment ) {
 			return false;
 		}
 		wp_update_attachment_metadata( $attachment, wp_generate_attachment_metadata( $attachment, $file['file'] ) );
@@ -239,17 +234,15 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Transform $_FILES from $_FILES['field']['key']['index'] to $_FILES['field']['index']['key']
+	 *
 	 * @param array $files
 	 * @return array
 	 */
-	protected static function transform( $files )
-	{
+	protected static function transform( $files ) {
 		$output = array();
-		foreach ( $files as $key => $list )
-		{
-			foreach ( $list as $index => $value )
-			{
-				$output[$index][$key] = $value;
+		foreach ( $files as $key => $list ) {
+			foreach ( $list as $index => $value ) {
+				$output[ $index ][ $key ] = $value;
 			}
 		}
 
@@ -258,11 +251,11 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Normalize parameters for field
+	 *
 	 * @param array $field
 	 * @return array
 	 */
-	public static function normalize( $field )
-	{
+	public static function normalize( $field ) {
 		$field             = parent::normalize( $field );
 		$field             = wp_parse_args( $field, array(
 			'std'              => array(),
@@ -284,24 +277,18 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return mixed Full info of uploaded files
 	 */
-	public static function get_value( $field, $args = array(), $post_id = null )
-	{
+	public static function get_value( $field, $args = array(), $post_id = null ) {
 		$value = parent::get_value( $field, $args, $post_id );
-		if ( ! $field['clone'] )
-		{
+		if ( ! $field['clone'] ) {
 			$value = self::call( 'files_info', $field, $value, $args );
-		}
-		else
-		{
+		} else {
 			$return = array();
-			foreach ( $value as $subvalue )
-			{
+			foreach ( $value as $subvalue ) {
 				$return[] = self::call( 'files_info', $field, $subvalue, $args );
 			}
 			$value = $return;
 		}
-		if ( isset( $args['limit'] ) )
-		{
+		if ( isset( $args['limit'] ) ) {
 			$value = array_slice( $value, 0, intval( $args['limit'] ) );
 		}
 		return $value;
@@ -309,19 +296,17 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Get uploaded files information
+	 *
 	 * @param array $field Field parameter
 	 * @param array $files Files IDs
 	 * @param array $args  Additional arguments (for image size)
 	 * @return array
 	 */
-	public static function files_info( $field, $files, $args )
-	{
+	public static function files_info( $field, $files, $args ) {
 		$return = array();
-		foreach ( (array) $files as $file )
-		{
-			if ( $info = self::call( $field, 'file_info', $file, $args ) )
-			{
-				$return[$file] = $info;
+		foreach ( (array) $files as $file ) {
+			if ( $info = self::call( $field, 'file_info', $file, $args ) ) {
+				$return[ $file ] = $info;
 			}
 		}
 		return $return;
@@ -335,10 +320,8 @@ class RWMB_File_Field extends RWMB_Field
 	 *
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success
 	 */
-	public static function file_info( $file, $args = array() )
-	{
-		if ( ! $path = get_attached_file( $file ) )
-		{
+	public static function file_info( $file, $args = array() ) {
+		if ( ! $path = get_attached_file( $file ) ) {
 			return false;
 		}
 
@@ -353,19 +336,17 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Format value for the helper functions.
+	 *
 	 * @param array        $field Field parameter
 	 * @param string|array $value The field meta value
 	 * @return string
 	 */
-	public static function format_value( $field, $value )
-	{
-		if ( ! $field['clone'] )
-		{
+	public static function format_value( $field, $value ) {
+		if ( ! $field['clone'] ) {
 			return self::call( 'format_single_value', $field, $value );
 		}
 		$output = '<ul>';
-		foreach ( $value as $subvalue )
-		{
+		foreach ( $value as $subvalue ) {
 			$output .= '<li>' . self::call( 'format_single_value', $field, $subvalue ) . '</li>';
 		}
 		$output .= '</ul>';
@@ -374,15 +355,14 @@ class RWMB_File_Field extends RWMB_Field
 
 	/**
 	 * Format a single value for the helper functions.
+	 *
 	 * @param array $field Field parameter
 	 * @param array $value The value
 	 * @return string
 	 */
-	public static function format_single_value( $field, $value )
-	{
+	public static function format_single_value( $field, $value ) {
 		$output = '<ul>';
-		foreach ( $value as $file )
-		{
+		foreach ( $value as $file ) {
 			$output .= sprintf( '<li><a href="%s" target="_blank">%s</a></li>', $file['url'], $file['title'] );
 		}
 		$output .= '</ul>';

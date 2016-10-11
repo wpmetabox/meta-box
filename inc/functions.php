@@ -3,8 +3,7 @@
  * Plugin public functions.
  */
 
-if ( ! function_exists( 'rwmb_meta' ) )
-{
+if ( ! function_exists( 'rwmb_meta' ) ) {
 	/**
 	 * Get post meta
 	 *
@@ -14,8 +13,7 @@ if ( ! function_exists( 'rwmb_meta' ) )
 	 *
 	 * @return mixed
 	 */
-	function rwmb_meta( $key, $args = array(), $post_id = null )
-	{
+	function rwmb_meta( $key, $args = array(), $post_id = null ) {
 		$args = wp_parse_args( $args );
 		/*
 		 * If meta boxes is registered in the backend only, we can't get field's params
@@ -27,8 +25,7 @@ if ( ! function_exists( 'rwmb_meta' ) )
 		 * If field is not found, which can caused by registering meta boxes for the backend only or conditional registration
 		 * Then fallback to the old method to retrieve meta (which uses get_post_meta() as the latest fallback)
 		 */
-		if ( false === $field )
-		{
+		if ( false === $field ) {
 			return apply_filters( 'rwmb_meta', RWMB_Helper::meta( $key, $args, $post_id ) );
 		}
 		$meta = in_array( $field['type'], array( 'oembed', 'map' ) ) ?
@@ -38,8 +35,7 @@ if ( ! function_exists( 'rwmb_meta' ) )
 	}
 }
 
-if ( ! function_exists( 'rwmb_get_value' ) )
-{
+if ( ! function_exists( 'rwmb_get_value' ) ) {
 	/**
 	 * Get value of custom field.
 	 * This is used to replace old version of rwmb_meta key.
@@ -50,8 +46,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 	 *
 	 * @return mixed false if field doesn't exist. Field value otherwise.
 	 */
-	function rwmb_get_value( $field_id, $args = array(), $post_id = null )
-	{
+	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
 		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
@@ -73,8 +68,7 @@ if ( ! function_exists( 'rwmb_get_value' ) )
 	}
 }
 
-if ( ! function_exists( 'rwmb_the_value' ) )
-{
+if ( ! function_exists( 'rwmb_the_value' ) ) {
 	/**
 	 * Display the value of a field
 	 *
@@ -85,13 +79,13 @@ if ( ! function_exists( 'rwmb_the_value' ) )
 	 *
 	 * @return string
 	 */
-	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true )
-	{
+	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
 		$field = RWMB_Helper::find_field( $field_id, $post_id );
 
-		if ( ! $field )
+		if ( ! $field ) {
 			return '';
+		}
 
 		$output = RWMB_Field::call( 'the_value', $field, $args, $post_id );
 
@@ -106,15 +100,15 @@ if ( ! function_exists( 'rwmb_the_value' ) )
 		 */
 		$output = apply_filters( 'rwmb_the_value', $output, $field, $args, $post_id );
 
-		if ( $echo )
+		if ( $echo ) {
 			echo $output;
+		}
 
 		return $output;
 	}
-}
+}// End if().
 
-if ( ! function_exists( 'rwmb_meta_shortcode' ) )
-{
+if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 	/**
 	 * Shortcode to display meta value
 	 *
@@ -122,13 +116,13 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) )
 	 *
 	 * @return string
 	 */
-	function rwmb_meta_shortcode( $atts )
-	{
+	function rwmb_meta_shortcode( $atts ) {
 		$atts = wp_parse_args( $atts, array(
 			'post_id' => get_the_ID(),
 		) );
-		if ( empty( $atts['meta_key'] ) )
+		if ( empty( $atts['meta_key'] ) ) {
 			return '';
+		}
 
 		$field_id = $atts['meta_key'];
 		$post_id  = $atts['post_id'];

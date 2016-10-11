@@ -2,16 +2,15 @@
 /**
  * Text field class.
  */
-class RWMB_Text_Field extends RWMB_Input_Field
-{
+class RWMB_Text_Field extends RWMB_Input_Field {
+
 	/**
 	 * Normalize parameters for field
 	 *
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field )
-	{
+	static function normalize( $field ) {
 		$field = parent::normalize( $field );
 
 		$field = wp_parse_args( $field, array(
@@ -31,8 +30,7 @@ class RWMB_Text_Field extends RWMB_Input_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
-	{
+	static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'size'        => $field['size'],

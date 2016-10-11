@@ -2,13 +2,12 @@
 /**
  * Select advanced field which uses select2 library.
  */
-class RWMB_Select_Advanced_Field extends RWMB_Select_Field
-{
+class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
+
 	/**
 	 * Enqueue scripts and styles
 	 */
-	public static function admin_enqueue_scripts()
-	{
+	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', array(), '4.0.1' );
 		wp_enqueue_style( 'rwmb-select-advanced', RWMB_CSS_URL . 'select-advanced.css', array(), RWMB_VER );
@@ -21,8 +20,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 		$locale_short = substr( $locale, 0, 2 );
 		$locale       = file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) ? $locale : $locale_short;
 
-		if ( file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) )
-		{
+		if ( file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) ) {
 			wp_register_script( 'rwmb-select2-i18n', RWMB_JS_URL . "select2/i18n/$locale.js", array( 'rwmb-select2' ), '4.0.2', true );
 			$dependencies[] = 'rwmb-select2-i18n';
 		}
@@ -37,8 +35,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * @param array $field
 	 * @return array
 	 */
-	public static function normalize( $field )
-	{
+	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
 			'js_options'  => array(),
 			'placeholder' => __( 'Select an item', 'meta-box' ),
@@ -62,8 +59,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field
 	 * @param mixed $value
 	 * @return array
 	 */
-	public static function get_attributes( $field, $value = null )
-	{
+	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),

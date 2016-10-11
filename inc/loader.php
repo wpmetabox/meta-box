@@ -3,20 +3,21 @@
  * Load plugin's files with check for installing it as a standalone plugin or
  * a module of a theme / plugin. If standalone plugin is already installed, it
  * will take higher priority.
+ *
  * @package Meta Box
  */
 
 /**
  * Plugin loader class.
+ *
  * @package Meta Box
  */
-class RWMB_Loader
-{
+class RWMB_Loader {
+
 	/**
 	 * Define plugin constants.
 	 */
-	protected function constants()
-	{
+	protected function constants() {
 		// Script version, used to add version for scripts and styles
 		define( 'RWMB_VER', '4.9.6' );
 
@@ -35,12 +36,12 @@ class RWMB_Loader
 	/**
 	 * Get plugin base path and URL.
 	 * The method is static and can be used in extensions.
+	 *
 	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
 	 * @param string $path Base folder path
 	 * @return array Path and URL.
 	 */
-	public static function get_path( $path = '' )
-	{
+	public static function get_path( $path = '' ) {
 		// Plugin base path
 		$path       = wp_normalize_path( untrailingslashit( $path ) );
 		$themes_dir = wp_normalize_path( untrailingslashit( dirname( realpath( get_stylesheet_directory() ) ) ) );
@@ -53,8 +54,7 @@ class RWMB_Loader
 			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
 			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
 			&& 0 === strpos( $path, $themes_dir )
-		)
-		{
+		) {
 			$themes_url = untrailingslashit( dirname( get_stylesheet_directory_uri() ) );
 			$url        = str_replace( $themes_dir, $themes_url, $path );
 		}
@@ -68,8 +68,7 @@ class RWMB_Loader
 	/**
 	 * Bootstrap the plugin.
 	 */
-	public function init()
-	{
+	public function init() {
 		$this->constants();
 
 		// Register autoload for classes
@@ -84,8 +83,7 @@ class RWMB_Loader
 		// Plugin core
 		new RWMB_Core;
 
-		if ( is_admin() )
-		{
+		if ( is_admin() ) {
 			// Validation module
 			new RWMB_Validation;
 

@@ -2,8 +2,8 @@
 /**
  * User field class.
  */
-class RWMB_User_Field extends RWMB_Object_Choice_Field
-{
+class RWMB_User_Field extends RWMB_Object_Choice_Field {
+
 	/**
 	 * Normalize parameters for field
 	 *
@@ -11,8 +11,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	public static function normalize( $field )
-	{
+	public static function normalize( $field ) {
 		/**
 		 * Set default field args
 		 */
@@ -53,8 +52,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	public static function get_options( $field )
-	{
+	public static function get_options( $field ) {
 		$query = new WP_User_Query( $field['query_args'] );
 		return $query->get_results();
 	}
@@ -64,8 +62,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	 *
 	 * @return array
 	 */
-	public static function get_db_fields()
-	{
+	public static function get_db_fields() {
 		return array(
 			'parent' => 'parent',
 			'id'     => 'ID',
@@ -76,13 +73,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field
 	/**
 	 * Get option label
 	 *
-	 * @param string   $value Option value
-	 * @param array    $field Field parameter
+	 * @param string $value Option value
+	 * @param array  $field Field parameter
 	 *
 	 * @return string
 	 */
-	public static function get_option_label( $field, $value )
-	{
+	public static function get_option_label( $field, $value ) {
 		$user  = get_userdata( $value );
 		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';
 	}

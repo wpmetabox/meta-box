@@ -6,8 +6,7 @@
  */
 
 // Register 2 meta boxes with same field IDs but different field params
-add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
-{
+add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	$meta_boxes[] = [
 		'title'  => 'Meta Box for Post',
 		'fields' => [
@@ -38,8 +37,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes )
 } );
 
 // Output in the frontend
-add_filter( 'the_content', function ( $content )
-{
+add_filter( 'the_content', function ( $content ) {
 	$content .= '<h2>Test <code>rwmb_meta( \'name\' )</code></h2>' . rwmb_meta( 'name' );
 	return $content;
 } );

@@ -3,8 +3,7 @@
  * This file demonstrates how to use 'number' field
  */
 add_filter( 'rwmb_meta_boxes', 'your_prefix_number_demo' );
-function your_prefix_number_demo( $meta_boxes )
-{
+function your_prefix_number_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Number Field Demo', 'your-prefix' ),
 		'fields' => array(

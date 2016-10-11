@@ -2,8 +2,8 @@
 /**
  * Button field class.
  */
-class RWMB_Button_Field extends RWMB_Field
-{
+class RWMB_Button_Field extends RWMB_Field {
+
 	/**
 	 * Get field HTML
 	 *
@@ -11,8 +11,7 @@ class RWMB_Button_Field extends RWMB_Field
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field )
-	{
+	static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field );
 		return sprintf( '<a href="#" %s>%s</a>', self::render_attributes( $attributes ), $field['std'] );
 	}
@@ -23,8 +22,7 @@ class RWMB_Button_Field extends RWMB_Field
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field )
-	{
+	static function normalize( $field ) {
 		$field        = parent::normalize( $field );
 		$field['std'] = $field['std'] ? $field['std'] : __( 'Click me', 'meta-box' );
 		return $field;
@@ -37,8 +35,7 @@ class RWMB_Button_Field extends RWMB_Field
 	 * @param mixed $value
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
-	{
+	static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes['class'] .= ' button hide-if-no-js';
 

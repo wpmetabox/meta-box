@@ -1,7 +1,6 @@
 <?php
 add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
-function your_prefix_register_meta_boxes( $meta_boxes )
-{
+function your_prefix_register_meta_boxes( $meta_boxes ) {
 	$prefix = '';
 
 	$meta_boxes = array(

@@ -2,15 +2,14 @@
 /**
  * Date field class.
  */
-class RWMB_Date_Field extends RWMB_Datetime_Field
-{
+class RWMB_Date_Field extends RWMB_Datetime_Field {
+
 	/**
 	 * Enqueue scripts and styles
 	 *
 	 * @return void
 	 */
-	public static function admin_enqueue_scripts()
-	{
+	public static function admin_enqueue_scripts() {
 		parent::admin_register_scripts();
 		wp_enqueue_style( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'rwmb-date' );
@@ -24,8 +23,7 @@ class RWMB_Date_Field extends RWMB_Datetime_Field
 	 *
 	 * @return string
 	 */
-	public static function translate_format( $field )
-	{
+	public static function translate_format( $field ) {
 		return strtr( $field['js_options']['dateFormat'], self::$date_formats );
 	}
 }
