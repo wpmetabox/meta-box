@@ -200,7 +200,7 @@ class RW_Meta_Box {
 
 		foreach ( $this->fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
-			$old    = get_post_meta( $post_id, $field['id'], $single );
+			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );
 			$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
 
 			// Allow field class change the value
