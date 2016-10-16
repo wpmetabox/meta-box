@@ -13,28 +13,20 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone', 'media-grid' ), RWMB_VER, true );
 
-		/**
-		 * Prevent loading localized string twice.
-		 *
-		 * @link https://github.com/rilwis/meta-box/issues/850
-		 */
-		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( 'rwmb-media', 'data' ) ) {
-			wp_localize_script( 'rwmb-media', 'i18nRwmbMedia', array(
-				'add'                => apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) ),
-				'single'             => apply_filters( 'rwmb_media_single_files_string', _x( ' file', 'media', 'meta-box' ) ),
-				'multiple'           => apply_filters( 'rwmb_media_multiple_files_string', _x( ' files', 'media', 'meta-box' ) ),
-				'remove'             => apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) ),
-				'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
-				'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
-				'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
-				'loadingUrl'         => RWMB_URL . 'img/loader.gif',
-				'extensions'         => self::get_mime_extensions(),
-				'select'             => apply_filters( 'rwmb_media_select_string', _x( 'Select Files', 'media', 'meta-box' ) ),
-				'or'                 => apply_filters( 'rwmb_media_or_string', _x( 'or', 'media', 'meta-box' ) ),
-				'uploadInstructions' => apply_filters( 'rwmb_media_upload_instructions_string', _x( 'Drop files here to upload', 'media', 'meta-box' ) ),
-			) );
-		}
+		self::localize_script( 'rwmb-media', 'i18nRwmbMedia', array(
+			'add'                => apply_filters( 'rwmb_media_add_string', _x( '+ Add Media', 'media', 'meta-box' ) ),
+			'single'             => apply_filters( 'rwmb_media_single_files_string', _x( ' file', 'media', 'meta-box' ) ),
+			'multiple'           => apply_filters( 'rwmb_media_multiple_files_string', _x( ' files', 'media', 'meta-box' ) ),
+			'remove'             => apply_filters( 'rwmb_media_remove_string', _x( 'Remove', 'media', 'meta-box' ) ),
+			'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
+			'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
+			'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
+			'loadingUrl'         => RWMB_URL . 'img/loader.gif',
+			'extensions'         => self::get_mime_extensions(),
+			'select'             => apply_filters( 'rwmb_media_select_string', _x( 'Select Files', 'media', 'meta-box' ) ),
+			'or'                 => apply_filters( 'rwmb_media_or_string', _x( 'or', 'media', 'meta-box' ) ),
+			'uploadInstructions' => apply_filters( 'rwmb_media_upload_instructions_string', _x( 'Drop files here to upload', 'media', 'meta-box' ) ),
+		) );
 	}
 
 	/**

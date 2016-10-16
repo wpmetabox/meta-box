@@ -12,18 +12,10 @@ class RWMB_File_Field extends RWMB_Field {
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
 
-		/**
-		 * Prevent loading localized string twice.
-		 *
-		 * @link https://github.com/rilwis/meta-box/issues/850
-		 */
-		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( 'rwmb-file', 'data' ) ) {
-			wp_localize_script( 'rwmb-file', 'rwmbFile', array(
-				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
-				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
-			) );
-		}
+		self::localize_script( 'rwmb-file', 'rwmbFile', array(
+			'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
+			'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
+		) );
 	}
 
 	/**

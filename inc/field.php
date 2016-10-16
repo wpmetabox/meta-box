@@ -19,6 +19,21 @@ abstract class RWMB_Field {
 	}
 
 	/**
+	 * ELocalize scripts
+	 */
+	public static function localize_script( $handle, $name, $data ) {
+		/**
+		 * Prevent loading localized string twice.
+		 *
+		 * @link https://github.com/rilwis/meta-box/issues/850
+		 */
+		$wp_scripts = wp_scripts();
+		if ( ! $wp_scripts->get_data( $handle, 'data' ) ) {
+			wp_localize_script( $handle, $name, $data );
+		}
+	}
+
+	/**
 	 * Show field HTML
 	 * Filters are put inside this method, not inside methods such as "meta", "html", "begin_html", etc.
 	 * That ensures the returned value are always been applied filters

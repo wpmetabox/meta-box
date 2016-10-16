@@ -81,9 +81,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			'localeShort' => $locale_short,
 		);
 		foreach ( $handles as $handle ) {
-			if ( ! $wp_scripts->get_data( "rwmb-$handle", 'data' ) ) {
-				wp_localize_script( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
-			}
+			self::localize_script( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
 		}
 	}
 
