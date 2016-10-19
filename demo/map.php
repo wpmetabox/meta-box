@@ -24,6 +24,7 @@ function your_prefix_map_demo( $meta_boxes ) {
 
 				// Name of text field where address is entered. Can be list of text fields, separated by commas (for ex. city, state)
 				'address_field' => 'address',
+				'api_key'       => 'XXXXXXXXX', // https://metabox.io/docs/define-fields/#section-map
 			),
 		),
 	);
