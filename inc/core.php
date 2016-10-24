@@ -48,7 +48,7 @@ class RWMB_Core {
 	 * Load plugin translation.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/lang/' );
+		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/languages/' );
 	}
 
 	/**

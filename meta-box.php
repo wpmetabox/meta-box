@@ -8,7 +8,7 @@
  * Author URI: http://www.deluxeblogtips.com
  * License: GPL2+
  * Text Domain: meta-box
- * Domain Path: /lang/
+ * Domain Path: /languages/
  */
 
 if ( defined( 'ABSPATH' ) && ! defined( 'RWMB_VER' ) ) {
