@@ -11,7 +11,7 @@
     "custom-field"
   ],
   "description": "A powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
-  "homepage": "http://metabox.io",
+  "homepage": "https://metabox.io",
   "license": "GPL-2.0",
   "minimum-stability": "stable",
   "authors": [
