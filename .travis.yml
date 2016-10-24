@@ -1,9 +1,5 @@
 language: php
 
-# Ditch sudo and use containers.
-# http://docs.travis-ci.com/user/migrating-from-legacy/
-sudo: false
-
 php:
   - hhvm
   - 7.0
@@ -13,16 +9,7 @@ php:
   - 5.3
   - 5.2
 
-env:
-  - WP_VERSION=master
-  - WP_VERSION=4.6.1
-  - WP_VERSION=4.5
-  - WP_VERSION=4.4
-
 matrix:
-  allow_failures:
-    - php: 7.0
-    - php: hhvm
   fast_finish: true
 
 before_script:
