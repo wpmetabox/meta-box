@@ -94,6 +94,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.9.8
+* Fix: Quick fix for enqueueing validation script
+
 #### 4.9.7
 * Improvement: Re-add change event on media fields to make Conditional Logic extension works with media fields.
 * Improvement: Add `rwmb_choice_label`, `rwmv_{$field_type}_choice_label` and `rwmb_{field_id}_choice_label` filters for post, user, taxonomy fields, allowing users to customize the labels of choice fields.
