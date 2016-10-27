@@ -390,7 +390,7 @@ abstract class RWMB_Field {
 		}
 
 		// Get raw meta value in the database, no escape
-		$value  = RWMB_Field::call( $field, 'raw_meta', $post_id );
+		$value  = self::call( $field, 'raw_meta', $post_id );
 
 		// Make sure meta value is an array for cloneable and multiple fields
 		if ( $field['clone'] || $field['multiple'] ) {
