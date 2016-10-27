@@ -8,6 +8,10 @@ exclude_paths:
 - js/jqueryui/**/*
 - js/select2/**/*
 engines:
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: "WordPress"
   phpmd:
     enabled: true
     checks:
