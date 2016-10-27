@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A class to rapid develop meta boxes for custom & built in content types
  * Piggybacks on WordPress
@@ -8,8 +7,13 @@
  * @license GNU GPL2+
  * @package Meta Box
  */
-class RW_Meta_Box {
 
+/**
+ * The main meta box class.
+ *
+ * @package Meta Box
+ */
+class RW_Meta_Box {
 	/**
 	 * @var array Meta box information
 	 */
@@ -37,15 +41,30 @@ class RW_Meta_Box {
 		$this->meta_box = $meta_box;
 		$this->fields   = &$this->meta_box['fields'];
 
-		// Allow users to show/hide meta box
-		// 1st action applies to all meta boxes
-		// 2nd action applies to only current meta box
-		$show = apply_filters( 'rwmb_show', true, $this->meta_box );
-		$show = apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
-		if ( ! $show ) {
-			return;
+		if ( $this->is_shown() ) {
+			$this->global_hooks();
+			$this->object_hooks();
 		}
+	}
 
+	/**
+	 * Conditional check for whether initializing meta box.
+	 *
+	 * - 1st filter applies to all meta boxes
+	 * - 2nd filter applies to only current meta box
+	 *
+	 * @return bool
+	 */
+	protected function is_shown() {
+		$show = apply_filters( 'rwmb_show', true, $this->meta_box );
+
+		return apply_filters( "rwmb_show_{$this->meta_box['id']}", $show, $this->meta_box );
+	}
+
+	/**
+	 * Add global hooks.
+	 */
+	protected function global_hooks() {
 		// Enqueue common styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
@@ -53,7 +72,13 @@ class RW_Meta_Box {
 		foreach ( $this->fields as $field ) {
 			RWMB_Field::call( $field, 'add_actions' );
 		}
+	}
 
+	/**
+	 * Specific hooks for meta box object. Default is 'post'.
+	 * This should be extended in sub-classes to support meta fields for terms, user, settings pages, etc.
+	 */
+	protected function object_hooks() {
 		// Add meta box
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 
@@ -131,7 +156,7 @@ class RW_Meta_Box {
 	/**
 	 * Hide meta box if it's set 'default_hidden'
 	 *
-	 * @param array  $hidden Array of default hidden meta boxes
+	 * @param array $hidden Array of default hidden meta boxes
 	 * @param object $screen Current screen information
 	 *
 	 * @return array
@@ -231,6 +256,7 @@ class RW_Meta_Box {
 	 */
 	protected function validate() {
 		$nonce = (string) filter_input( INPUT_POST, "nonce_{$this->meta_box['id']}" );
+
 		return
 			true !== $this->saved
 			&& ( ! defined( 'DOING_AUTOSAVE' ) || $this->meta_box['autosave'] )
@@ -241,6 +267,7 @@ class RW_Meta_Box {
 	 * Normalize parameters for meta box
 	 *
 	 * @param array $meta_box Meta box definition
+	 *
 	 * @return array $meta_box Normalized meta box
 	 */
 	public static function normalize( $meta_box ) {
@@ -273,6 +300,7 @@ class RW_Meta_Box {
 	 * Normalize an array of fields
 	 *
 	 * @param array $fields Array of fields
+	 *
 	 * @return array $fields Normalized fields
 	 */
 	public static function normalize_fields( $fields ) {
@@ -319,12 +347,14 @@ class RW_Meta_Box {
 	 * Check if we're on the right edit screen.
 	 *
 	 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
+	 *
 	 * @return bool
 	 */
 	public function is_edit_screen( $screen = null ) {
 		if ( ! ( $screen instanceof WP_Screen ) ) {
 			$screen = get_current_screen();
 		}
+
 		return 'post' == $screen->base && in_array( $screen->post_type, $this->meta_box['post_types'] );
 	}
 }
