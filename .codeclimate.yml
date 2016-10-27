@@ -7,3 +7,9 @@ exclude_paths:
 - js/*.min.js
 - js/jqueryui/**/*
 - js/select2/**/*
+engines:
+  phpmd:
+    enabled: true
+    checks:
+      Controversial/CamelCaseClassName:
+        enabled: false
