@@ -19,16 +19,20 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * ELocalize scripts
+	 * Localize scripts with prevention of loading localized data twice.
+	 *
+	 * @link https://github.com/rilwis/meta-box/issues/850
+	 *
+	 * @param string $handle Script handle.
+	 * @param string $name Object name.
+	 * @param mixed $data Localized data.
 	 */
 	public static function localize_script( $handle, $name, $data ) {
-		/**
-		 * Prevent loading localized string twice.
-		 *
-		 * @link https://github.com/rilwis/meta-box/issues/850
+		/*
+		 * Check with function_exists to make it work in WordPress 4.1
+		 * @link https://github.com/rilwis/meta-box/issues/1009
 		 */
-		$wp_scripts = wp_scripts();
-		if ( ! $wp_scripts->get_data( $handle, 'data' ) ) {
+		if ( ! function_exists( 'wp_scripts' ) || ! wp_scripts()->get_data( $handle, 'data' ) ) {
 			wp_localize_script( $handle, $name, $data );
 		}
 	}
