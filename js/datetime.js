@@ -56,13 +56,6 @@ jQuery( function ( $ ) {
 	}
 
 	// Set language if available
-	$.datepicker.setDefaults( $.datepicker.regional[""] );
-	if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) ) {
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.locale] );
-	}
-	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) ) {
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Datetime.localeShort] );
-	}
 	$.timepicker.setDefaults( $.timepicker.regional[""] );
 	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) ) {
 		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.locale] );

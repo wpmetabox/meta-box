@@ -55,14 +55,6 @@ jQuery( function ( $ ) {
 		return Math.floor( milliseconds / 1000 );
 	}
 
-	$.datepicker.setDefaults( $.datepicker.regional[""] );
-	if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.locale ) ) {
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.locale] );
-	}
-	else if ( $.datepicker.regional.hasOwnProperty( RWMB_Date.localeShort ) ) {
-		$.datepicker.setDefaults( $.datepicker.regional[RWMB_Date.localeShort] );
-	}
-
 	$( ':input.rwmb-date' ).each( update );
 	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-date', update );
 } );
