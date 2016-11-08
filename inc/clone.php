@@ -70,6 +70,10 @@ class RWMB_Clone {
 	 * @return mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+		if ( ! is_array( $new ) ) {
+			return array();
+		}
+
 		foreach ( $new as $key => $value ) {
 			$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
 			$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
