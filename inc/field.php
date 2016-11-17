@@ -482,19 +482,32 @@ abstract class RWMB_Field {
 	}
 
 	/**
+	 * Map types
+	 *
+	 * @param array $field Field array
+	 * @return string Field mapped type
+	 */
+	public static function map_types( $field ) {
+		$type_map = apply_filters(
+			'rwmb_type_map',
+			array(
+				'file_advanced'  => 'media',
+				'plupload_image' => 'image_upload',
+				'url'            => 'text'
+			)
+		);
+
+		return isset( $type_map[ $field['type'] ] ) ? $type_map[ $field['type'] ] : $field['type'];
+	}
+
+	/**
 	 * Get field class name
 	 *
 	 * @param array $field Field array
 	 * @return string Field class name
 	 */
 	public static function get_class_name( $field ) {
-		$type = $field['type'];
-		if ( 'file_advanced' == $field['type'] ) {
-			$type = 'media';
-		}
-		if ( 'plupload_image' == $field['type'] ) {
-			$type = 'image_upload';
-		}
+		$type = self::map_types( $field );
 		$type  = str_replace( array( '-', '_' ), ' ', $type );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
