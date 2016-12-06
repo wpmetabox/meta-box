@@ -488,6 +488,7 @@ abstract class RWMB_Field {
 	 * @return string Field mapped type
 	 */
 	public static function map_types( $field ) {
+		$type = isset( $field['type'] ) ? $field['type'] : 'input';
 		$type_map = apply_filters(
 			'rwmb_type_map',
 			array(
@@ -497,7 +498,7 @@ abstract class RWMB_Field {
 			)
 		);
 
-		return isset( $type_map[ $field['type'] ] ) ? $type_map[ $field['type'] ] : $field['type'];
+		return isset( $type_map[ $type ] ) ? $type_map[ $type ] : $type;
 	}
 
 	/**
