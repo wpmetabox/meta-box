@@ -488,7 +488,6 @@ abstract class RWMB_Field {
 	 * @return string Field mapped type
 	 */
 	public static function map_types( $field ) {
-		$type = isset( $field['type'] ) ? $field['type'] : 'input';
 		$type_map = apply_filters(
 			'rwmb_type_map',
 			array(
@@ -498,7 +497,7 @@ abstract class RWMB_Field {
 			)
 		);
 
-		return isset( $type_map[ $type ] ) ? $type_map[ $type ] : $type;
+		return isset( $type_map[ $field['type'] ] ) ? $type_map[ $field['type'] ] : $field['type'];
 	}
 
 	/**
@@ -508,7 +507,7 @@ abstract class RWMB_Field {
 	 * @return string Field class name
 	 */
 	public static function get_class_name( $field ) {
-		$type  = self::map_types( $field );
+		$type = self::map_types( $field );
 		$type  = str_replace( array( '-', '_' ), ' ', $type );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );
