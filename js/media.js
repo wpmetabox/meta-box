@@ -5,7 +5,7 @@ jQuery( function ( $ ) {
 
 	var views = rwmb.views = rwmb.views || {},
 		models = rwmb.models = rwmb.models || {},
-		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
+		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia, MediaDetails;
 
 	MediaCollection = models.MediaCollection = wp.media.model.Attachments.extend( {
 		initialize: function( models, options ) {
@@ -363,19 +363,21 @@ jQuery( function ( $ ) {
 				}
 
 				// Trigger the media frame to open the correct item
-				this._frame = wp.media( {
-					frame: 'edit-attachments',
+				this._frame = new EditMedia( {
+					frame     : 'edit-attachments',
 					controller: {
 						// Needed to trick Edit modal to think there is a gridRouter
 						gridRouter: {
-							navigate: function ( destination ) {
+							navigate: function ( destination )
+							{
 							},
-							baseUrl: function ( url ) {
+							baseUrl : function ( url )
+							{
 							}
 						}
 					},
-					library: this.controller.get( 'items' ),
-					model: this.model
+					library   : this.controller.get( 'items' ),
+					model     : this.model
 				} );
 
 				this._frame.open();
@@ -391,6 +393,57 @@ jQuery( function ( $ ) {
 			return this;
 		}
 	} );
+
+	/**
+	 * Extend media frames to make things work right
+	 */
+
+	 /**
+	  * MediaDetails
+	  * Custom version of TwoColumn view to prevent all video and audio from being unset
+	  */
+	 MediaDetails = views.MediaDetails = wp.media.view.Attachment.Details.TwoColumn.extend( {
+		 render: function() {
+			 var that = this;
+			 wp.media.view.Attachment.Details.prototype.render.apply( this, arguments );
+			 this.players = this.players || [];
+
+			 wp.media.mixin.unsetPlayers.call( this );
+
+			 this.$( 'audio, video' ).each( function (i, elem) {
+				 var el = wp.media.view.MediaDetails.prepareSrc( elem );
+				 that.players.push( new window.MediaElementPlayer( el, wp.media.mixin.mejsSettings ) );
+			 } );
+		 }
+	 } );
+
+	 /***
+		* EditMedia
+		* Custom version of EditAttachments frame to prevent all video and audio from being unset
+		*/
+	 EditMedia = views.EditMedia = wp.media.view.MediaFrame.EditAttachments.extend( {
+		 /**
+			* Content region rendering callback for the `edit-metadata` mode.
+			*
+			* @param {Object} contentRegion Basic object with a `view` property, which
+			*                               should be set with the proper region view.
+			*/
+		 editMetadataMode: function( contentRegion ) {
+			 contentRegion.view = new MediaDetails({
+				 controller: this,
+				 model:      this.model
+			 });
+
+			 /**
+				* Attach a subview to display fields added via the
+				* `attachment_fields_to_edit` filter.
+				*/
+			 contentRegion.view.views.set( '.attachment-compat', new wp.media.view.AttachmentCompat({
+				 controller: this,
+				 model:      this.model
+			 }) );
+		 },
+	 } );
 
 	/**
 	 * Initialize media fields
