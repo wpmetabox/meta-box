@@ -5,7 +5,48 @@ jQuery( function ( $ ) {
 
 	var views = rwmb.views = rwmb.views || {},
 		models = rwmb.models = rwmb.models || {},
-		Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
+		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus;
+
+	MediaCollection = models.MediaCollection = wp.media.model.Attachments.extend( {
+		initialize: function( models, options ) {
+			this.controller = options.controller || new models.Controller;
+			this.on( 'add remove reset', function () {
+				var max = this.controller.get( 'maxFiles' );
+				this.controller.set( 'length', this.length );
+				this.controller.set( 'full', max > 0 && this.length >= max );
+			} );
+			wp.media.model.Attachments.prototype.initialize.call( this, models, options );
+		},
+
+		add: function( models, options ) {
+			var max = this.controller.get( 'maxFiles' ),
+				left = max - this.length;
+
+			if ( max > 0 && left <= 0 ) {
+				return this;
+			}
+
+			if( !models.hasOwnProperty( 'length' ) ){
+				models = [models];
+			}
+			else if( models instanceof wp.media.model.Attachments ) {
+				models = models.models;
+			}
+
+			if( left > 0 ) {
+				models = _.difference( models, this.models );
+				models = _.first( models, left );
+			}
+
+			return wp.media.model.Attachments.prototype.add.call( this, models, options );
+		},
+
+		destroyAll: function() {
+			_.each(_.clone( this.models), function( model ) {
+			  model.destroy();
+			});
+		}
+	} );
 
 	/***
 	 * Controller Model
@@ -29,23 +70,12 @@ jQuery( function ( $ ) {
 			this.set( 'ids', _.without( _.map( this.get( 'ids' ), Number ), 0, - 1 ) );
 
 			// Create items collection
-			this.set( 'items', new wp.media.model.Attachments() );
-
-			this.listenTo( this.get( 'items' ), 'add remove reset', function () {
-				var items = this.get( 'items' ),
-					length = items.length,
-					max = this.get( 'maxFiles' );
-
-				this.set( 'length', length );
-				this.set( 'full', max > 0 && length >= max );
-			} );
+			this.set( 'items', new MediaCollection( [], { controller: this } ) );
 
 			// Listen for destroy event on controller, delete all models when triggered
 			this.on( 'destroy', function ( e ) {
 				if ( this.get( 'forceDelete' ) ) {
-					this.get( 'items' ).each( function ( item ) {
-						item.destroy();
-					} );
+					this.get( 'items' ).destroyAll();
 				}
 			} );
 		},
@@ -76,20 +106,6 @@ jQuery( function ( $ ) {
 				item.destroy();
 			}
 		},
-
-		// Method to add items
-		addItems: function ( items ) {
-			if ( this.get( 'maxFiles' ) ) {
-				var left = this.get( 'maxFiles' ) - this.get( 'items' ).length;
-				if ( left <= 0 ) {
-					return this;
-				}
-
-				items = _.difference( items, this.get( 'items' ).models );
-				items = _.first( items, left );
-			}
-			this.get( 'items' ).add( items );
-		}
 	} );
 
 	/***
@@ -149,8 +165,8 @@ jQuery( function ( $ ) {
 			// Empty then add parts
 			this.$el.empty().append(
 				this.list.el,
-				this.addButton.el,
-				this.status.el
+				this.status.el,
+				this.addButton.el
 			);
 		}
 	} );
@@ -235,7 +251,7 @@ jQuery( function ( $ ) {
 	 * Tracks status of media field if maxStatus is greater than 0
 	 */
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
-		tagName: 'span',
+		tagName: 'div',
 		className: 'rwmb-media-status',
 		template: wp.template( 'rwmb-media-status' ),
 
@@ -249,7 +265,7 @@ jQuery( function ( $ ) {
 			}
 
 			//Rerender if changes happen in controller
-			this.listenTo( this.controller, 'change:length', this.render );
+			this.listenTo( this.controller.get( 'items' ), 'update', this.render );
 
 			//Render
 			this.render();
@@ -266,10 +282,11 @@ jQuery( function ( $ ) {
 	 * Selects and adds ,edia to controller
 	 */
 	MediaButton = views.MediaButton = Backbone.View.extend( {
-		className: 'rwmb-add-media button',
-		tagName: 'a',
+		tagName: 'div',
+		className: 'rwmb-media-add',
+		template: wp.template( 'rwmb-media-button' ),
 		events: {
-			click: function () {
+			'click .button': function () {
 				// Destroy the previous collection frame.
 				if ( this._frame ) {
 					//this.stopListening( this._frame );
@@ -288,14 +305,15 @@ jQuery( function ( $ ) {
 
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
-					this.controller.addItems( selection.models );
+					this.controller.get( 'items' ).add( selection.models );
 				}, this );
 
 				this._frame.open();
 			}
 		},
 		render: function () {
-			this.$el.text( i18nRwmbMedia.add );
+			var attrs = { text: i18nRwmbMedia.add }
+			this.$el.html( this.template( attrs ) );
 			return this;
 		},
 
