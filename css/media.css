@@ -70,12 +70,3 @@
 	padding-left: 5px;
 	margin-right: 5px;
 }
-
-/* Status */
-.rwmb-media-status {
-	display: inline-block;
-	text-decoration: none;
-	font-size: 13px;
-	line-height: 26px;
-	height: 28px;
-}

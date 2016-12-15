@@ -45,3 +45,7 @@
 		<# if ( 1 < data.maxFiles ) { #>  {{{ i18nRwmbMedia.multiple }}} <# } else {#> {{{ i18nRwmbMedia.single }}} <# } #>
 	<# } #>
 </script>
+
+<script id="tmpl-rwmb-media-button" type="text/html">
+	<a class="button">{{{ data.text }}}</a>
+</script>
