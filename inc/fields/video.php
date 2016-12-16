@@ -43,7 +43,60 @@ class RWMB_Video_Field extends RWMB_Media_Field
 	 */
 	static function file_info( $file_id, $args = array() )
 	{
-		return;
+		if ( ! $path = get_attached_file( $file_id ) ) {
+			return false;
+		}
+		$attachment = get_post( $file_id );
+		$url = wp_get_attachment_url( $attachment->ID );
+		$ftype = wp_check_filetype( $url, wp_get_mime_types() );
+		$track = array(
+			'ID'          => $file_id,
+			'src'         => $url,
+			'type'        => $ftype['type'],
+			'title'       => $attachment->post_title,
+			'caption'     => $attachment->post_excerpt,
+			'description' => $attachment->post_content
+		);
+
+		$track['meta'] = array();
+		$meta = wp_get_attachment_metadata( $attachment->ID );
+		if ( ! empty( $meta ) ) {
+
+			foreach ( wp_get_attachment_id3_keys( $attachment ) as $key => $label ) {
+				if ( ! empty( $meta[ $key ] ) ) {
+					$track['meta'][ $key ] = $meta[ $key ];
+				}
+			}
+
+			if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+				$track['dimensions'] = array(
+					'width' => $meta['width'],
+					'height'=> $meta['height']
+				);
+			} else {
+				$track['dimensions'] = array(
+					'width' => 640,
+					'height'=> 360
+				);
+			}
+		}
+
+		$thumb_id = get_post_thumbnail_id( $attachment->ID );
+		if ( ! empty( $thumb_id ) ) {
+			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'full' );
+			$track['image'] = compact( 'src', 'width', 'height' );
+			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'thumbnail' );
+			$track['thumb'] = compact( 'src', 'width', 'height' );
+		} else {
+			$src = wp_mime_type_icon( $attachment->ID );
+			$width = 48;
+			$height = 64;
+			$track['image'] = compact( 'src', 'width', 'height' );
+			$track['thumb'] = compact( 'src', 'width', 'height' );
+		}
+
+
+		return $track;
 	}
 
 	/**
@@ -54,8 +107,7 @@ class RWMB_Video_Field extends RWMB_Media_Field
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {
-		$ids = implode( ',', $value );
-		return $ids;
+		$ids = implode( ',', wp_list_pluck( $value, 'ID') );
 		return wp_playlist_shortcode( array(
 			'ids'  => $ids,
 			'type' => 'video',
