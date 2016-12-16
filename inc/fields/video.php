@@ -49,7 +49,7 @@ class RWMB_Video_Field extends RWMB_Media_Field
 		$attachment = get_post( $file_id );
 		$url = wp_get_attachment_url( $attachment->ID );
 		$ftype = wp_check_filetype( $url, wp_get_mime_types() );
-		$track = array(
+		$data = array(
 			'ID'          => $file_id,
 			'src'         => $url,
 			'type'        => $ftype['type'],
@@ -58,23 +58,23 @@ class RWMB_Video_Field extends RWMB_Media_Field
 			'description' => $attachment->post_content
 		);
 
-		$track['meta'] = array();
+		$data['meta'] = array();
 		$meta = wp_get_attachment_metadata( $attachment->ID );
 		if ( ! empty( $meta ) ) {
 
 			foreach ( wp_get_attachment_id3_keys( $attachment ) as $key => $label ) {
 				if ( ! empty( $meta[ $key ] ) ) {
-					$track['meta'][ $key ] = $meta[ $key ];
+					$data['meta'][ $key ] = $meta[ $key ];
 				}
 			}
 
 			if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
-				$track['dimensions'] = array(
+				$data['dimensions'] = array(
 					'width' => $meta['width'],
 					'height'=> $meta['height']
 				);
 			} else {
-				$track['dimensions'] = array(
+				$data['dimensions'] = array(
 					'width' => 640,
 					'height'=> 360
 				);
@@ -84,19 +84,18 @@ class RWMB_Video_Field extends RWMB_Media_Field
 		$thumb_id = get_post_thumbnail_id( $attachment->ID );
 		if ( ! empty( $thumb_id ) ) {
 			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'full' );
-			$track['image'] = compact( 'src', 'width', 'height' );
+			$data['image'] = compact( 'src', 'width', 'height' );
 			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'thumbnail' );
-			$track['thumb'] = compact( 'src', 'width', 'height' );
+			$data['thumb'] = compact( 'src', 'width', 'height' );
 		} else {
 			$src = wp_mime_type_icon( $attachment->ID );
 			$width = 48;
 			$height = 64;
-			$track['image'] = compact( 'src', 'width', 'height' );
-			$track['thumb'] = compact( 'src', 'width', 'height' );
+			$data['image'] = compact( 'src', 'width', 'height' );
+			$data['thumb'] = compact( 'src', 'width', 'height' );
 		}
 
-
-		return $track;
+		return $data;
 	}
 
 	/**
