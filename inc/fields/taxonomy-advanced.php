@@ -4,6 +4,20 @@
  */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 
+	public static function normalize( $field ) {
+		$field = wp_parse_args(
+			$field,
+			array(
+				'clone' => false
+			)
+		);
+
+		$clone = $field['clone'];
+		$field = parent::normalize( $field );
+		$field['clone'] = $clone;
+		return $field;
+	}
+
 	/**
 	 * Get meta values to save
 	 * Save terms in custom field, no more by setting post terms
