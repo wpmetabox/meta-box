@@ -1,0 +1,47 @@
+/* Video */
+.rwmb-video-item {
+	position: relative;
+	float: left;
+	padding: 0;
+	margin: 0 5px 5px 0;
+	box-sizing: border-box;
+	width: 300px;
+}
+
+.rwmb-video-item .rwmb-media-preview {
+	width: 100%;
+	float: none;
+	background: #EEE;
+}
+
+.rwmb-video-item  .rwmb-media-preview:before {
+	padding-top: 56.25%;
+}
+
+.rwmb-video-item video {
+	width: auto;
+	height: 100%;
+}
+
+.rwmb-media-content .rwmb-video-wrapper {
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	max-height: 100%;
+	max-width: 100%;
+	border-radius: 3px;
+}
+
+.rwmb-video-item .rwmb-media-info {
+	margin-left: 0;
+	float: none;
+	background: #FFF;
+	padding: 10px;
+}
+
+.rwmb-video-item .rwmb-media-info h4 {
+	white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+}

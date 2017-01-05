@@ -140,9 +140,9 @@ jQuery( function ( $ ) {
 				this.controller.destroy();
 			} );
 
-			this.controller.on( 'change:length', function ( e ) {
+			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function ( e ) {
 				that.$input.trigger( 'change' );
-			} );
+			}, 500 ) );
 		},
 
 		// Creates media list
