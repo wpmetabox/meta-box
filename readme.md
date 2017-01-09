@@ -17,16 +17,27 @@
 
 ## Description
 
-Meta Box plugin is a powerful, professional solution to create custom meta boxes and custom fields for WordPress websites.
+**Meta Box plugin is a powerful, professional toolkit for developers to create and handle everything related to custom meta boxes and custom fields for WordPress.**
+
+The plugin provides a **wide range of field types** and **a lot of options to for each field type**, which gives you unlimited possibility to control and customize the custom fields.
+
+With the extensions, you can easily build meta boxes not only for custom post types (default), but also for **settings page, user meta, term meta**. You can also display the fields the way you want with columns, tabs or groups.
+
+The plugin is built mostly for developers with a little coding, but if you prefer GUI for faster creating custom post types, meta boxes and custom fields, the plugin has extensions for that: [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/) and [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/).
 
 ### Features
 
-* Easily register multiple custom meta boxes for posts, pages or custom post types
-* Supports more than 35 [field types](https://metabox.io/docs/define-fields/): (text, textarea, wysiwyg, image, file, post, select, checkbox, radio buttons, date time picker, taxonomy, user, oembed and more to come!)
-* Uses the native WordPress meta data storage and functions for ease of use and fast processing
-* Has built-in hooks which allow you to change the appearance and behavior of meta boxes
-* Easily integrate with themes and plugins
-* Compatible with WPML multilingual plugin
+* Create custom meta boxes for posts, pages or any custom post type.
+* Create custom [settings pages or theme option page](https://metabox.io/plugins/mb-settings-page/).
+* Create custom meta boxes for [user profile pages](https://metabox.io/plugins/mb-user-meta/).
+* Create custom meta boxes for [taxonomy terms](https://metabox.io/plugins/mb-term-meta/).
+* Supports 40+ built-in [field types](https://metabox.io/docs/define-fields/) for all your needs (text, textarea, wysiwyg/editor, image, file, post, select, checkbox, radio buttons, date time picker, taxonomy, user, oembed and more to come!). You can also [create your own field type](https://metabox.io/docs/create-field-type/) easily.
+* Support cloning (repeatable) fields for most field types, including WYSIWYG/editor field. Also support [repeatable field groups](https://metabox.io/plugins/meta-box-group/).
+* Powerful [actions and filters](https://metabox.io/docs-category/reference/) that developers can build or change the appearance and behavior in the plugin.
+* Uses the [native WordPress meta data storage](https://metabox.io/docs/how-post-meta-is-saved-in-the-database/) and functions for ease of use and fast processing.
+* [Easily integrate with themes and plugins](https://metabox.io/docs/include-meta-box-plugin-themes/).
+* [Works with Composer](https://metabox.io/docs/using-meta-box-composer/) if you want to include the plugin in your project.
+* Compatible with WPML multilingual plugin (officially supported by WPML team).
 
 ### Documentation
 
@@ -93,6 +104,14 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 ***
 
 ## Changelog
+
+#### 4.10
+* Improvement: Add `video` field type which allows users to upload or select video from the Media Library. See [demo](https://github.com/rilwis/meta-box/blob/master/demo/video.php).
+* Improvement: Update Turkish. Prop Emre Tuna <tunaemre@windowslive.com>.
+* Improvement: Use WP 4.6 date picker localization instead of JS localized file to reduce plugin size.
+* Improvement: Refactor the media fields for better performance. Add `change` event for item list when add, remove or reset.
+* Fix: `taxonomy_advanced` field now can be cloned.
+* Fix: Make localize_script works with WP 4.1.
 
 #### 4.9.8
 * Fix: Quick fix for enqueueing validation script

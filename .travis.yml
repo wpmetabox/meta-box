@@ -19,8 +19,3 @@ before_script:
 
 script:
   - phpcs/scripts/phpcs --standard=WordPress --extensions=php --ignore=demo,tests,phpcs,wpcs .
-
-notifications:
-  email: false
-  slack:
-    secure: E8/2FJroC8dNUfStwCSYtQjJnF0yS91H/lAiviMzegQkail9xPTa3FbtI40NTvuLw20NwQAg9ijRWmYQOMyjpF2xkUBet5MAX7BbZfAIIj23SnRhe1ct4sNbfIwLpPTwC/jWLcJDPL+82KbuobgxHevUdgY8SdLOv1fT7gIJmhs=
