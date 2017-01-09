@@ -1,20 +1,23 @@
 <?php
 /**
- * Taxonomy advanced field class which saves terms' IDs in the post meta.
+ * Taxonomy advanced field which saves terms' IDs in the post meta in CSV format.
+ *
+ * @package Meta Box
+ */
+
+/**
+ * The taxonomy advanced field class.
  */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
-
 	public static function normalize( $field ) {
-		$field = wp_parse_args(
-			$field,
-			array(
-				'clone' => false
-			)
-		);
+		$field = wp_parse_args( $field, array(
+			'clone' => false,
+		) );
 
-		$clone = $field['clone'];
-		$field = parent::normalize( $field );
+		$clone          = $field['clone'];
+		$field          = parent::normalize( $field );
 		$field['clone'] = $clone;
+
 		return $field;
 	}
 
@@ -45,7 +48,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	public static function save( $new, $old, $post_id, $field ) {
 		if ( $new ) {
 			update_post_meta( $post_id, $field['id'], $new );
-		} else { delete_post_meta( $post_id, $field['id'] );
+		} else {
+			delete_post_meta( $post_id, $field['id'] );
 		}
 	}
 
@@ -60,6 +64,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	public static function raw_meta( $post_id, $field ) {
 		$meta = get_post_meta( $post_id, $field['id'], true );
 		$meta = wp_parse_id_list( $meta );
+
 		return array_filter( $meta );
 	}
 
@@ -94,6 +99,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		if ( ! $field['clone'] && ! $field['multiple'] ) {
 			$value = reset( $value );
 		}
+
 		return $value;
 	}
 }

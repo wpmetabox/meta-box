@@ -321,6 +321,24 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				// Additional arguments for get_terms() function. Optional
 				'query_args' => array(),
 			),
+			// TAXONOMY ADVANCED
+			array(
+				'name'       => esc_html__( 'Taxonomy Advanced', 'your-prefix' ),
+				'id'         => "{$prefix}taxonomy_advanced",
+				'type'       => 'taxonomy_advanced',
+
+				// Can this be cloned?
+				'clone'      => true,
+
+				// Taxonomy name
+				'taxonomy'   => 'category',
+
+				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
+				'field_type' => 'select_tree',
+
+				// Additional arguments for get_terms() function. Optional
+				'query_args' => array(),
+			),
 			// POST
 			array(
 				'name'        => esc_html__( 'Posts (Pages)', 'your-prefix' ),
