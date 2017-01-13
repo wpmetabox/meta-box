@@ -107,7 +107,7 @@ jQuery( function ( $ ) {
 					// so listeners to the upload queue can track and display upload progress.
 					file.attachment = wp.media.model.Attachment.create( attributes );
 					wp.Uploader.queue.add( file.attachment );
-					self.controller.addItems( [file.attachment] );
+					self.controller.get( 'items' ).add( [file.attachment] );
 				} );
 
 				up.refresh();
