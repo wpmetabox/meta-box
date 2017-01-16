@@ -91,6 +91,9 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 == Changelog ==
 
+#### 4.10.1
+* Fix: Fix `image_upload` and `plupload_image` field when select images to upload.
+
 #### 4.10
 * Improvement: Add `video` field type which allows users to upload or select video from the Media Library. See [demo](https://github.com/rilwis/meta-box/blob/master/demo/video.php).
 * Improvement: Update Turkish. Prop Emre Tuna <tunaemre@windowslive.com>.
