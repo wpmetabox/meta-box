@@ -109,8 +109,8 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 		$field['multiple']           = true;
 		$field['attributes']['type'] = 'text';
 		$field['placeholder']        = wp_parse_args( (array) $field['placeholder'], array(
-			'key'   => 'Key',
-			'value' => 'Value',
+			'key'   => __( 'Key', 'meta-box' ),
+			'value' => __( 'Value', 'meta-box' ),
 		) );
 		return $field;
 	}
