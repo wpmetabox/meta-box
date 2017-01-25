@@ -53,12 +53,9 @@ class RWMB_Media_Field extends RWMB_File_Field {
 
 		$html = sprintf(
 			'<input %s>
-			<div class="rwmb-media-view" data-mime-type="%s" data-max-files="%s" data-force-delete="%s" data-show-status="%s"></div>',
+			<div class="rwmb-media-view" data-options="%s"></div>',
 			self::render_attributes( $attributes ),
-			$field['mime_type'],
-			$field['max_file_uploads'],
-			$field['force_delete'] ? 'true' : 'false',
-			$field['max_status']
+			esc_attr( wp_json_encode( $field['js_options'] ) )
 		);
 
 		return $html;
@@ -79,6 +76,14 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			'max_file_uploads' => 0,
 			'force_delete'     => false,
 			'max_status'       => true,
+			'js_options'       => array(),
+		) );
+
+		$field['js_options'] = wp_parse_args( $field['js_options'], array(
+			'mimeType'       => $field['mime_type'],
+			'maxFileUploads' => $field['max_file_uploads'],
+			'forceDelete'    => $field['force_delete'] ? 'true' : 'false',
+			'maxStatus'      => $field['max_status'],
 		) );
 
 		$field['multiple'] = true;

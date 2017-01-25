@@ -31,8 +31,8 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field              = parent::normalize( $field );
 		$field['mime_type'] = 'video';
+		$field              = parent::normalize( $field );
 
 		return $field;
 	}

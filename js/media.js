@@ -121,7 +121,7 @@ jQuery( function ( $ ) {
 					fieldName: this.$input.attr( 'name' ),
 					ids: this.$input.val().split( ',' )
 				},
-				this.$el.data()
+				this.$el.data( 'options' )
 			) );
 
 			// Create views
