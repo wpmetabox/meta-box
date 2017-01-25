@@ -173,7 +173,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				),
 
 				// Default value
-				'std' 		=> 155,
+				'std'        => 155,
 			),
 			// NUMBER
 			array(
@@ -321,6 +321,24 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				// Additional arguments for get_terms() function. Optional
 				'query_args' => array(),
 			),
+			// TAXONOMY ADVANCED
+			array(
+				'name'       => esc_html__( 'Taxonomy Advanced', 'your-prefix' ),
+				'id'         => "{$prefix}taxonomy_advanced",
+				'type'       => 'taxonomy_advanced',
+
+				// Can this be cloned?
+				'clone'      => true,
+
+				// Taxonomy name
+				'taxonomy'   => 'category',
+
+				// How to show taxonomy: 'checkbox_list' (default) or 'checkbox_tree', 'select_tree', select_advanced or 'select'. Optional
+				'field_type' => 'select_tree',
+
+				// Additional arguments for get_terms() function. Optional
+				'query_args' => array(),
+			),
 			// POST
 			array(
 				'name'        => esc_html__( 'Posts (Pages)', 'your-prefix' ),
@@ -371,31 +389,93 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				'max_file_uploads' => 4,
 				'mime_type'        => 'application,audio,video', // Leave blank for all file types
 			),
+			// IMAGE ADVANCED - RECOMMENDED
+			array(
+				'name'             => esc_html__( 'Image Advanced Upload (Recommended)', 'your-prefix' ),
+				'id'               => "{$prefix}imgadv",
+				'type'             => 'image_advanced',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Maximum image uploads
+				'max_file_uploads' => 2,
+
+				// Display the "Uploaded 1/2 files" status
+				'max_status'       => true,
+			),
 			// IMAGE UPLOAD
 			array(
-				'name' => esc_html__( 'Image Upload', 'your-prefix' ),
-				'id'   => "{$prefix}image",
-				'type' => 'image',
+				'id'               => 'image_upload',
+				'name'             => esc_html__( 'Image Upload', 'your-prefix' ),
+				'type'             => 'image_upload',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Maximum image uploads
+				'max_file_uploads' => 2,
+
+				// Display the "Uploaded 1/2 files" status
+				'max_status'       => true,
+			),
+			// PLUPLOAD IMAGE UPLOAD (ALIAS OF IMAGE UPLOAD)
+			array(
+				'name'             => esc_html__( 'Plupload Image (Alias of Image Upload)', 'your-prefix' ),
+				'id'               => "{$prefix}plupload",
+				'type'             => 'plupload_image',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Maximum image uploads
+				'max_file_uploads' => 2,
+
+				// Display the "Uploaded 1/2 files" status
+				'max_status'       => true,
 			),
 			// THICKBOX IMAGE UPLOAD (WP 3.3+)
 			array(
-				'name' => esc_html__( 'Thickbox Image Upload', 'your-prefix' ),
-				'id'   => "{$prefix}thickbox",
-				'type' => 'thickbox_image',
+				'name'         => esc_html__( 'Thickbox Image Upload', 'your-prefix' ),
+				'id'           => "{$prefix}thickbox",
+				'type'         => 'thickbox_image',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete' => false,
 			),
-			// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
+			// IMAGE
 			array(
-				'name'             => esc_html__( 'Plupload Image Upload', 'your-prefix' ),
-				'id'               => "{$prefix}plupload",
-				'type'             => 'plupload_image',
-				'max_file_uploads' => 4,
+				'name'             => esc_html__( 'Image Upload', 'your-prefix' ),
+				'id'               => "{$prefix}image",
+				'type'             => 'image',
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Maximum image uploads
+				'max_file_uploads' => 2,
 			),
-			// IMAGE ADVANCED (WP 3.5+)
+			// VIDEO
 			array(
-				'name'             => esc_html__( 'Image Advanced Upload', 'your-prefix' ),
-				'id'               => "{$prefix}imgadv",
-				'type'             => 'image_advanced',
-				'max_file_uploads' => 4,
+				'name'             => __( 'Video', 'your-prefix' ),
+				'id'               => 'video',
+				'type'             => 'video',
+
+				// Maximum video uploads. 0 = unlimited.
+				'max_file_uploads' => 3,
+
+
+				// Delete image from Media Library when remove it from post meta?
+				// Note: it might affect other posts if you use same image for multiple posts
+				'force_delete'     => false,
+
+				// Display the "Uploaded 1/3 files" status
+				'max_status'       => true,
 			),
 			// BUTTON
 			array(
@@ -405,14 +485,14 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 			),
 			// TEXT-LIST
 			array(
-				'name' => esc_html__( 'Text List', 'rwmb' ),
-				'id'   => "{$prefix}text_list",
-				'type' => 'text_list',
+				'name'    => esc_html__( 'Text List', 'rwmb' ),
+				'id'      => "{$prefix}text_list",
+				'type'    => 'text_list',
 				// Options of inputs, in format 'Placeholder' => 'Label'
 				'options' => array(
-					 'Placehold1' => esc_html__( 'Label1', 'rwmb' ),
-					 'Placehold2' => esc_html__( 'Label2', 'rwmb' ),
-					 'Placehold3' => esc_html__( 'Label3', 'rwmb' ),
+					'Placehold1' => esc_html__( 'Label1', 'rwmb' ),
+					'Placehold2' => esc_html__( 'Label2', 'rwmb' ),
+					'Placehold3' => esc_html__( 'Label3', 'rwmb' ),
 				),
 			),
 
