@@ -26,6 +26,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
+			'size'        => 30,
 			'datalist' => false,
 			'readonly' => false,
 		) );
@@ -53,6 +54,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 			'value'       => $value,
 			'placeholder' => $field['placeholder'],
 			'type'        => $field['type'],
+			'size'        => $field['size'],
 		) );
 
 		return $attributes;
