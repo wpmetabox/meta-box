@@ -14,6 +14,18 @@ class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 	}
 
 	/**
+	 * Normalize parameters for field
+	 *
+	 * @param array $field
+	 *
+	 * @return array
+	 */
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
+		return RWMB_File_Upload_Field::normalize( $field );
+	}
+
+	/**
 	 * Template for media item
 	 */
 	public static function print_templates() {

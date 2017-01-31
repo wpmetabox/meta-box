@@ -21,8 +21,9 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 * @return array
 	 */
 	static function normalize( $field ) {
-		$field              = parent::normalize( $field );
 		$field['mime_type'] = 'image';
+		$field              = parent::normalize( $field );
+
 		return $field;
 	}
 
