@@ -1,9 +1,12 @@
 <?php
-
 /**
- * The Meta Box Clone class.
+ * The clone module, allowing users to clone (duplicate) fields.
  *
  * @package Meta Box
+ */
+
+/**
+ * The clone class.
  */
 class RWMB_Clone {
 

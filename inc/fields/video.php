@@ -3,6 +3,7 @@
  * Video field which uses WordPress media popup to upload and select video.
  *
  * @package Meta Box
+ * @since 4.10
  */
 
 /**

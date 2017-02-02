@@ -1,14 +1,18 @@
 <?php
+/**
+ * The color field which uses WordPress color picker to select a color.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Color field class.
  */
 class RWMB_Color_Field extends RWMB_Text_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'wp-color-picker' ), RWMB_VER, true );
 	}
@@ -19,7 +23,7 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
 			'size'       => 7,
 			'maxlength'  => 7,
@@ -45,7 +49,7 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 * @param mixed $value
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null ) {
+	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $field['js_options'] ),
@@ -62,7 +66,7 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 * @param string $value The value
 	 * @return string
 	 */
-	static function format_single_value( $field, $value ) {
+	public static function format_single_value( $field, $value ) {
 		return sprintf( "<span style='display:inline-block;width:20px;height:20px;border-radius:50%%;background:%s;'></span>", $value );
 	}
 }

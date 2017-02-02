@@ -1,9 +1,14 @@
 <?php
 /**
+ * The taxonomy field which aims to replace the built-in WordPress taxonomy UI with more options.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Taxonomy field class which set post terms when saving.
  */
 class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
-
 	/**
 	 * Add default value for 'taxonomy' field
 	 *

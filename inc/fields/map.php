@@ -1,15 +1,18 @@
 <?php
 /**
+ * The Google Maps field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Map field class.
  */
 class RWMB_Map_Field extends RWMB_Field {
-
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		/**
 		 * Since June 2016, Google Maps requires a valid API key.
 		 *
@@ -39,7 +42,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		$html = '<div class="rwmb-map-field">';
 
 		$html .= sprintf(
@@ -70,7 +73,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'std'           => '',
@@ -95,7 +98,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return mixed Array(latitude, longitude, zoom)
 	 */
-	static function get_value( $field, $args = array(), $post_id = null ) {
+	public static function get_value( $field, $args = array(), $post_id = null ) {
 		$value = parent::get_value( $field, $args, $post_id );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 		return compact( 'latitude', 'longitude', 'zoom' );
@@ -111,7 +114,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return mixed Field value
 	 */
-	static function the_value( $field, $args = array(), $post_id = null ) {
+	public static function the_value( $field, $args = array(), $post_id = null ) {
 		$value = self::get_value( $field, $args, $post_id );
 		if ( ! $value['latitude'] || ! $value['longitude'] ) {
 			return '';

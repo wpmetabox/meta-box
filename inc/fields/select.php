@@ -1,9 +1,14 @@
 <?php
 /**
+ * The select field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Select field class.
  */
 class RWMB_Select_Field extends RWMB_Choice_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

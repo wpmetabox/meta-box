@@ -1,11 +1,14 @@
 <?php
+/**
+ * The input list walker for checkbox and radio list fields.
+ *
+ * @package Meta Box
+ */
 
 /**
- * Input List Walker
- * For checkbox and radio list fields
+ * The input list walker class.
  */
 class RWMB_Walker_Input_List extends RWMB_Walker_Base {
-
 	/**
 	 * @see Walker::start_lvl()
 	 *

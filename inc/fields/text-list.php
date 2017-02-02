@@ -1,10 +1,14 @@
 <?php
+/**
+ * The text list field which allows users to enter multiple texts.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Text list field class.
  */
 class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
-
 	/**
 	 * Get field HTML
 	 *
@@ -13,7 +17,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		$html  = array();
 		$input = '<label><input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"> %s</label>';
 

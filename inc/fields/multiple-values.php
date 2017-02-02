@@ -8,8 +8,11 @@
  * - If field is cloneable, value is saved as a single entry in the database
  * - Otherwise value is saved as multiple entries
  */
-abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 
+/**
+ * Multiple values field class.
+ */
+abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	/**
 	 * Normalize parameters for field
 	 *
@@ -17,7 +20,7 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field               = parent::normalize( $field );
 		$field['multiple']   = true;
 		$field['field_name'] = $field['id'];
@@ -35,7 +38,7 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	 * @param string $value The value
 	 * @return string
 	 */
-	static function format_single_value( $field, $value ) {
+	public static function format_single_value( $field, $value ) {
 		return $field['options'][ $value ];
 	}
 }

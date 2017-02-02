@@ -1,10 +1,14 @@
 <?php
+/**
+ * The key-value field which allows users to add pairs of keys and values.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Key-value field class.
  */
-abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
-
+class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
 	 * Get field HTML
 	 *
@@ -12,7 +16,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		// Key
 		$key                       = isset( $meta[0] ) ? $meta[0] : '';
 		$attributes                = self::get_attributes( $field, $key );
@@ -35,7 +39,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * @param array $field
 	 * @return string
 	 */
-	static function begin_html( $meta, $field ) {
+	public static function begin_html( $meta, $field ) {
 		$desc = $field['desc'] ? "<p id='{$field['id']}_description' class='description'>{$field['desc']}</p>" : '';
 
 		if ( empty( $field['name'] ) ) {
@@ -70,7 +74,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * @param mixed $meta
 	 * @return mixed
 	 */
-	static function esc_meta( $meta ) {
+	public static function esc_meta( $meta ) {
 		foreach ( (array) $meta as $k => $pairs ) {
 			$meta[ $k ] = array_map( 'esc_attr', (array) $pairs );
 		}
@@ -87,7 +91,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 *
 	 * @return string
 	 */
-	static function value( $new, $old, $post_id, $field ) {
+	public static function value( $new, $old, $post_id, $field ) {
 		foreach ( $new as &$arr ) {
 			if ( empty( $arr[0] ) && empty( $arr[1] ) ) {
 				$arr = false;
@@ -103,7 +107,7 @@ abstract class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field                       = parent::normalize( $field );
 		$field['clone']              = true;
 		$field['multiple']           = true;

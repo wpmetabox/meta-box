@@ -1,13 +1,16 @@
 <?php
 /**
- * Image advanced field class which users WordPress media popup to upload and select images.
+ * The advanced image upload field which uses WordPress media popup to upload and select images.
+ */
+
+/**
+ * Image advanced field class.
  */
 class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-image-advanced', RWMB_CSS_URL . 'image-advanced.css', array( 'rwmb-media' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'rwmb-media' ), RWMB_VER, true );
@@ -20,7 +23,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field['mime_type'] = 'image';
 		$field              = parent::normalize( $field );
 
@@ -35,7 +38,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 * @param null  $post_id
 	 * @return mixed
 	 */
-	static function get_value( $field, $args = array(), $post_id = null ) {
+	public static function get_value( $field, $args = array(), $post_id = null ) {
 		return RWMB_Image_Field::get_value( $field, $args, $post_id );
 	}
 
@@ -46,7 +49,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 * @param array $args Array of arguments (for size).
 	 * @return array|bool False if file not found. Array of image info on success
 	 */
-	static function file_info( $file, $args = array() ) {
+	public static function file_info( $file, $args = array() ) {
 		return RWMB_Image_Field::file_info( $file, $args );
 	}
 

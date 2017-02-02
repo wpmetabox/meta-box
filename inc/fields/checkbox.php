@@ -1,10 +1,14 @@
 <?php
+/**
+ * The checkbox field.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Checkbox field class.
  */
 class RWMB_Checkbox_Field extends RWMB_Input_Field {
-
 	/**
 	 * Enqueue scripts and styles.
 	 */

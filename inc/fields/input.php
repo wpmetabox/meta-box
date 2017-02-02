@@ -1,10 +1,14 @@
 <?php
+/**
+ * The abstract input field which is used for all <input> fields.
+ *
+ * @package Meta Box
+ */
 
 /**
- * Abstract input field class which is used for all <input> fields.
+ * Abstract input field class.
  */
 abstract class RWMB_Input_Field extends RWMB_Field {
-
 	/**
 	 * Get field HTML
 	 *
