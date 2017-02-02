@@ -5,7 +5,6 @@
  * Fields must inherit this class and overwrite methods with its own.
  */
 abstract class RWMB_Field {
-
 	/**
 	 * Add actions
 	 */

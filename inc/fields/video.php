@@ -46,7 +46,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 * @return array|bool False if file not found. Array of image info on success
 	 */
 	public static function file_info( $file_id, $args = array() ) {
-		if ( ! $path = get_attached_file( $file_id ) ) {
+		if ( ! get_attached_file( $file_id ) ) {
 			return false;
 		}
 		$attachment = get_post( $file_id );
