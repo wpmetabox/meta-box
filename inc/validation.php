@@ -24,7 +24,7 @@ class RWMB_Validation {
 	 *
 	 * @param RW_Meta_Box $object Meta Box object
 	 */
-	public function rules( $object ) {
+	public function rules( RW_Meta_Box $object ) {
 		if ( ! empty( $object->meta_box['validation'] ) ) {
 			echo '<script type="text/html" class="rwmb-validation-rules" data-rules="' . esc_attr( json_encode( $object->meta_box['validation'] ) ) . '"></script>';
 		}
@@ -35,7 +35,7 @@ class RWMB_Validation {
 	 *
 	 * @param RW_Meta_Box $object Meta Box object
 	 */
-	public function enqueue( $object ) {
+	public function enqueue( RW_Meta_Box $object ) {
 		if ( empty( $object->meta_box['validation'] ) ) {
 			return;
 		}
