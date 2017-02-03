@@ -41,7 +41,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	/**
 	 * Get uploaded file information.
 	 *
-	 * @param int $file_id Attachment image ID (post ID). Required.
+	 * @param int   $file_id Attachment image ID (post ID). Required.
 	 * @param array $args Array of arguments (for size).
 	 *
 	 * @return array|bool False if file not found. Array of image info on success
@@ -120,6 +120,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 
 	/**
 	 * Template for media item
+	 *
 	 * @return void
 	 */
 	public static function print_templates() {

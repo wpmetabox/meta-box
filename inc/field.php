@@ -30,7 +30,7 @@ abstract class RWMB_Field {
 	 *
 	 * @param string $handle Script handle.
 	 * @param string $name Object name.
-	 * @param mixed $data Localized data.
+	 * @param mixed  $data Localized data.
 	 */
 	public static function localize_script( $handle, $name, $data ) {
 		/*
@@ -61,13 +61,11 @@ abstract class RWMB_Field {
 		$begin = self::call( $field, 'begin_html', $meta );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
-		// Separate code for cloneable and non-cloneable fields to make easy to maintain
-		// Cloneable fields
+		// Separate code for cloneable and non-cloneable fields to make easy to maintain.
 		if ( $field['clone'] ) {
 			$field_html = RWMB_Clone::html( $meta, $field );
-		} // End if().
-		else {
-			// Call separated methods for displaying each type of field
+		} else {
+			// Call separated methods for displaying each type of field.
 			$field_html = self::call( $field, 'html', $meta );
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
@@ -499,7 +497,7 @@ abstract class RWMB_Field {
 			array(
 				'file_advanced'  => 'media',
 				'plupload_image' => 'image_upload',
-				'url'            => 'text'
+				'url'            => 'text',
 			)
 		);
 

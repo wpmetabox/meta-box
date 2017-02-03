@@ -16,7 +16,6 @@ function your_prefix_video_demo( $meta_boxes ) {
 				// Maximum video uploads. 0 = unlimited.
 				'max_file_uploads' => 3,
 
-
 				// Delete image from Media Library when remove it from post meta?
 				// Note: it might affect other posts if you use same image for multiple posts
 				'force_delete'     => false,

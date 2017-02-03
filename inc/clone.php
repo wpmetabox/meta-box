@@ -9,7 +9,6 @@
  * The clone class.
  */
 class RWMB_Clone {
-
 	/**
 	 * Get clone field HTML
 	 *

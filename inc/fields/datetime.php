@@ -126,10 +126,10 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * Calculates the timestamp from the datetime string and returns it
 	 * if $field['timestamp'] is set or the datetime string if not
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return string|int
 	 */
@@ -140,9 +140,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Get meta value
 	 *
-	 * @param int   $post_id
-	 * @param bool  $saved
-	 * @param array $field
+	 * @param int   $post_id The post ID.
+	 * @param bool  $saved   Whether the meta box is saved at least once?
+	 * @param array $field   The field parameters.
 	 *
 	 * @return mixed
 	 */
@@ -157,8 +157,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Format meta value if set 'timestamp'
 	 *
-	 * @param array|string $meta  The meta value
-	 * @param array        $field Field parameter
+	 * @param array|string $meta  The meta value.
+	 * @param array        $field Field parameters.
 	 * @return array
 	 */
 	protected static function prepare_meta( $meta, $field ) {
@@ -177,7 +177,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Normalize parameters for field
 	 *
-	 * @param array $field
+	 * @param array $field The field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -187,8 +187,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			'js_options' => array(),
 		) );
 
-		// Deprecate 'format', but keep it for backward compatible
-		// Use 'js_options' instead
+		// Deprecate 'format', but keep it for backward compatible.
+		// Use 'js_options' instead.
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
 			'timeFormat'      => 'HH:mm',
 			'separator'       => ' ',
@@ -210,8 +210,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Get the attributes for a field
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field The field parameters.
+	 * @param mixed $value The meta value.
 	 *
 	 * @return array
 	 */
@@ -229,7 +229,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * Returns a date() compatible format string from the JavaScript format
 	 *
 	 * @link http://www.php.net/manual/en/function.date.php
-	 * @param array $field
+	 * @param array $field The field parameters.
 	 *
 	 * @return string
 	 */
