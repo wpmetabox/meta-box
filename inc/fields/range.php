@@ -1,9 +1,14 @@
 <?php
 /**
+ * The HTML5 range field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * HTML5 range field class.
  */
 class RWMB_Range_Field extends RWMB_Number_Field {
-
 	/**
 	 * Get field HTML
 	 *

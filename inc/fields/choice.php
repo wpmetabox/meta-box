@@ -1,10 +1,14 @@
 <?php
+/**
+ * The abstract choice field.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Abstract class for any kind of choice field.
  */
 abstract class RWMB_Choice_Field extends RWMB_Field {
-
 	/**
 	 * Walk options
 	 *

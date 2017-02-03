@@ -1,9 +1,14 @@
 <?php
 /**
+ * The number field which uses HTML <input type="number">.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Number field class.
  */
 class RWMB_Number_Field extends RWMB_Input_Field {
-
 	/**
 	 * Normalize parameters for field
 	 *
@@ -11,7 +16,7 @@ class RWMB_Number_Field extends RWMB_Input_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 
 		$field = wp_parse_args( $field, array(
@@ -31,7 +36,7 @@ class RWMB_Number_Field extends RWMB_Input_Field {
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null ) {
+	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'step' => $field['step'],

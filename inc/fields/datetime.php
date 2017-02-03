@@ -1,10 +1,14 @@
 <?php
+/**
+ * The date and time picker field which allows users to select both date and time via jQueryUI datetime picker.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Datetime field class.
  */
 class RWMB_Datetime_Field extends RWMB_Text_Field {
-
 	/**
 	 * Translate date format from jQuery UI date picker to PHP date()
 	 * It's used to store timestamp value of the field

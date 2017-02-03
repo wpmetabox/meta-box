@@ -1,12 +1,14 @@
 <?php
-
 /**
- * Select Tree Walker for cascading select fields.
+ * Select tree walker for cascading select fields.
  *
  * @uses RWMB_Walker_Select
  */
-class RWMB_Walker_Select_Tree {
 
+/**
+ * The select tree walker class.
+ */
+class RWMB_Walker_Select_Tree {
 	/**
 	 * Field data.
 	 *
@@ -21,7 +23,7 @@ class RWMB_Walker_Select_Tree {
 	 */
 	public $meta = array();
 
-	function __construct( $db_fields, $field, $meta ) {
+	public function __construct( $db_fields, $field, $meta ) {
 		$this->db_fields = wp_parse_args( (array) $db_fields, array(
 			'parent' => '',
 			'id'     => '',
@@ -31,7 +33,7 @@ class RWMB_Walker_Select_Tree {
 		$this->meta      = (array) $meta;
 	}
 
-	function walk( $options ) {
+	public function walk( $options ) {
 		$parent   = $this->db_fields['parent'];
 		$children = array();
 
@@ -42,7 +44,7 @@ class RWMB_Walker_Select_Tree {
 		return $this->display_level( $children, $top_level, true );
 	}
 
-	function display_level( $options, $parent_id = 0, $active = false ) {
+	public function display_level( $options, $parent_id = 0, $active = false ) {
 		$id         = $this->db_fields['id'];
 		$field      = $this->field;
 		$walker     = new RWMB_Walker_Select( $this->db_fields, $field, $this->meta );

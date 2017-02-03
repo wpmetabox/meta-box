@@ -1,9 +1,14 @@
 <?php
 /**
+ * The select tree field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Select tree field class.
  */
 class RWMB_Select_Tree_Field extends RWMB_Select_Field {
-
 	/**
 	 * Walk options
 	 *

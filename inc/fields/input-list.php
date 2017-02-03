@@ -1,9 +1,14 @@
 <?php
 /**
- * Input list field.
+ * The input list field which displays choices in a list of inputs.
+ *
+ * @package Meta Box
+ */
+
+/**
+ * Input list field class.
  */
 class RWMB_Input_List_Field extends RWMB_Choice_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

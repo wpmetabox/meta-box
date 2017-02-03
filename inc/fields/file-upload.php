@@ -1,9 +1,14 @@
 <?php
 /**
- * File advanced field class which users WordPress media popup to upload and select files.
+ * The file upload field which allows users to drag and drop files to upload.
+ *
+ * @package Meta Box
+ */
+
+/**
+ * The file upload field class.
  */
 class RWMB_File_Upload_Field extends RWMB_Media_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

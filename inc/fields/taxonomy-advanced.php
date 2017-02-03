@@ -9,6 +9,13 @@
  * The taxonomy advanced field class.
  */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
+	/**
+	 * Normalize the field parameters.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
 			'clone' => false,

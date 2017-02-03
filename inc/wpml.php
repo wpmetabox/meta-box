@@ -1,4 +1,9 @@
 <?php
+/**
+ * The WPML compatibility module, allowing all fields are translatable by WPML plugin.
+ *
+ * @package Meta Box
+ */
 
 /**
  * WPML compatibility class

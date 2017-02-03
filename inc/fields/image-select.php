@@ -1,14 +1,18 @@
 <?php
+/**
+ * The image select field which behaves similar to the radio field but uses images as options.
+ *
+ * @package Meta Box
+ */
 
 /**
- * Image select field class which uses images as radio options.
+ * The image select field class.
  */
 class RWMB_Image_Select_Field extends RWMB_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-image-select', RWMB_CSS_URL . 'image-select.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-image-select', RWMB_JS_URL . 'image-select.js', array( 'jquery' ), RWMB_VER, true );
 	}
@@ -20,7 +24,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		$html = array();
 		$tpl  = '<label class="rwmb-image-select"><img src="%s"><input type="%s" class="rwmb-image_select hidden" name="%s" value="%s"%s></label>';
 
@@ -45,7 +49,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field['field_name'] .= $field['multiple'] ? '[]' : '';
 
@@ -59,7 +63,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @param string $value The value
 	 * @return string
 	 */
-	static function format_single_value( $field, $value ) {
+	public static function format_single_value( $field, $value ) {
 		return sprintf( '<img src="%s">', esc_url( $field['options'][ $value ] ) );
 	}
 }

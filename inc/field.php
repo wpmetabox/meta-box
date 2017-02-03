@@ -1,11 +1,16 @@
 <?php
+/**
+ * The field base class.
+ * This is the parent class of all custom fields defined by the plugin, which defines all the common methods.
+ * Fields must inherit this class and overwrite methods with its own.
+ *
+ * @package Meta Box
+ */
 
 /**
- * Base field class which defines all necessary methods.
- * Fields must inherit this class and overwrite methods with its own.
+ * The field base class.
  */
 abstract class RWMB_Field {
-
 	/**
 	 * Add actions
 	 */

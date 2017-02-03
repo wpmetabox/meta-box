@@ -1,9 +1,14 @@
 <?php
 /**
+ * The post field which allows users to select existing posts.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Post field class.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
-
 	/**
 	 * Normalize parameters for field
 	 *

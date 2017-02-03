@@ -1,10 +1,14 @@
 <?php
+/**
+ * The text fieldset field, which allows users to enter content for a list of text fields.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Fieldset text class.
  */
 class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
-
 	/**
 	 * Get field HTML
 	 *
@@ -13,7 +17,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		$html = array();
 		$tpl  = '<label>%s %s</label>';
 
@@ -45,7 +49,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field                       = parent::normalize( $field );
 		$field['multiple']           = false;
 		$field['attributes']['id']   = false;

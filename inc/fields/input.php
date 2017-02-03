@@ -1,10 +1,14 @@
 <?php
+/**
+ * The abstract input field which is used for all <input> fields.
+ *
+ * @package Meta Box
+ */
 
 /**
- * Abstract input field class which is used for all <input> fields.
+ * Abstract input field class.
  */
 abstract class RWMB_Input_Field extends RWMB_Field {
-
 	/**
 	 * Get field HTML
 	 *
@@ -26,6 +30,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
+			'size'        => 30,
 			'datalist' => false,
 			'readonly' => false,
 		) );
@@ -53,6 +58,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 			'value'       => $value,
 			'placeholder' => $field['placeholder'],
 			'type'        => $field['type'],
+			'size'        => $field['size'],
 		) );
 
 		return $attributes;

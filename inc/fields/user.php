@@ -1,9 +1,14 @@
 <?php
 /**
+ * The user select field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * User field class.
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
-
 	/**
 	 * Normalize parameters for field
 	 *

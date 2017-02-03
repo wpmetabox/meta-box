@@ -1,9 +1,14 @@
 <?php
 /**
+ * The time picker field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Time field class.
  */
 class RWMB_Time_Field extends RWMB_Datetime_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 *

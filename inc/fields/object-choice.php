@@ -1,10 +1,14 @@
 <?php
+/**
+ * The object choice class which allows users to select specific objects in WordPress.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Abstract field to select an object: post, user, taxonomy, etc.
  */
 abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
-
 	/**
 	 * Get field HTML
 	 *
@@ -74,7 +78,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			'label'  => '',
 		);
 	}
-
 
 	/**
 	 * Enqueue scripts and styles

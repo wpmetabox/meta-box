@@ -1,10 +1,14 @@
 <?php
+/**
+ * The oEmbed field which allows users to enter oEmbed URLs.
+ *
+ * @package Meta Box
+ */
 
 /**
  * oEmbed field class.
  */
 class RWMB_OEmbed_Field extends RWMB_Text_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

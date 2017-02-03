@@ -1,9 +1,14 @@
 <?php
 /**
+ * The date picker field, which uses built-in jQueryUI date picker widget.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Date field class.
  */
 class RWMB_Date_Field extends RWMB_Datetime_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 *

@@ -1,9 +1,14 @@
 <?php
 /**
+ * The beautiful select field which uses select2 library.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Select advanced field which uses select2 library.
  */
 class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

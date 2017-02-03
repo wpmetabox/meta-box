@@ -1,10 +1,14 @@
 <?php
+/**
+ * The image field which uploads images via HTML <input type="file">.
+ *
+ * @package Meta Box
+ */
 
 /**
  * Image field class which uses <input type="file"> to upload.
  */
 class RWMB_Image_Field extends RWMB_File_Field {
-
 	/**
 	 * Enqueue scripts and styles.
 	 */

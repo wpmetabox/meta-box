@@ -1,9 +1,14 @@
 <?php
 /**
+ * The textarea field.
+ *
+ * @package Meta Box
+ */
+
+/**
  * Textarea field class.
  */
 class RWMB_Textarea_Field extends RWMB_Field {
-
 	/**
 	 * Get field HTML
 	 *
@@ -12,7 +17,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field, $meta );
 		return sprintf(
 			'<textarea %s>%s</textarea>',
@@ -27,7 +32,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	 * @param mixed $meta
 	 * @return mixed
 	 */
-	static function esc_meta( $meta ) {
+	public static function esc_meta( $meta ) {
 		return is_array( $meta ) ? array_map( 'esc_textarea', $meta ) : esc_textarea( $meta );
 	}
 
@@ -37,7 +42,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'cols'      => 60,
@@ -58,7 +63,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null ) {
+	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'cols'        => $field['cols'],

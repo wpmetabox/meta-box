@@ -1,10 +1,14 @@
 <?php
+/**
+ * The file upload file which allows users to upload files via the default HTML <input type="file">.
+ *
+ * @package Meta Box
+ */
 
 /**
  * File field class which uses HTML <input type="file"> to upload file.
  */
 class RWMB_File_Field extends RWMB_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */

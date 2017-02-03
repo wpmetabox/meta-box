@@ -2,10 +2,14 @@
 /**
  * Image upload field which uses thickbox library to upload.
  *
+ * @package Meta Box
  * @deprecated Use image_advanced instead
  */
-class RWMB_Thickbox_Image_Field extends RWMB_Image_Field {
 
+/**
+ * The thickbox image field class.
+ */
+class RWMB_Thickbox_Image_Field extends RWMB_Image_Field {
 	/**
 	 * Add custom actions for the field.
 	 */

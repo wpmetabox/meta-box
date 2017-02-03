@@ -1,15 +1,20 @@
 <?php
 /**
+ * The slider field which users jQueryUI slider widget.
+ *
+ * @package Meta Box
+ */
+
+/**
  * jQueryUI slider field class.
  */
 class RWMB_Slider_Field extends RWMB_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 *
 	 * @return void
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		$url = RWMB_CSS_URL . 'jqueryui';
 		wp_enqueue_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
 		wp_enqueue_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
@@ -27,7 +32,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		return sprintf(
 			'<div class="clearfix">
 				<div class="rwmb-slider" id="%s" data-options="%s"></div>
@@ -47,7 +52,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 *
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field               = parent::normalize( $field );
 		$field               = wp_parse_args( $field, array(
 			'prefix'     => '',

@@ -1,10 +1,14 @@
 <?php
-
 /**
  * Media field class which users WordPress media popup to upload and select files.
+ *
+ * @package Meta Box
+ */
+
+/**
+ * The media field class.
  */
 class RWMB_Media_Field extends RWMB_File_Field {
-
 	/**
 	 * Enqueue scripts and styles
 	 */
@@ -49,7 +53,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	public static function html( $meta, $field ) {
 		$meta       = (array) $meta;
 		$meta       = implode( ',', $meta );
-		$attributes = $load_test_attr = self::get_attributes( $field, $meta );
+		$attributes = self::get_attributes( $field, $meta );
 
 		$html = sprintf(
 			'<input %s>
@@ -127,7 +131,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 				$extensions[ $mime_parts[0] ] = array();
 			}
 			$extensions[ $mime_parts[0] ] = $extensions[ $mime_parts[0] . '/*' ] = array_merge( $extensions[ $mime_parts[0] ], $ext );
-
 		}
 
 		return $extensions;

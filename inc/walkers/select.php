@@ -1,10 +1,14 @@
 <?php
 /**
- * Select Walker
- * For generating Select fields
+ * Select walker select fields.
+ *
+ * @package Meta Box
+ */
+
+/**
+ * The select walker class.
  */
 class RWMB_Walker_Select extends RWMB_Walker_Base {
-
 	/**
 	 * @see Walker::start_el()
 	 *

@@ -1,21 +1,25 @@
 <?php
+/**
+ * The WYSIWYG (editor) field.
+ *
+ * @package Meta Box
+ */
 
 /**
  * WYSIWYG (editor) field class.
  */
 class RWMB_Wysiwyg_Field extends RWMB_Field {
-
 	/**
 	 * Array of cloneable editors.
 	 *
 	 * @var array
 	 */
-	static $cloneable_editors = array();
+	protected static $cloneable_editors = array();
 
 	/**
 	 * Enqueue scripts and styles.
 	 */
-	static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', array( 'jquery' ), RWMB_VER, true );
 	}
@@ -29,7 +33,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return string
 	 */
-	static function value( $new, $old, $post_id, $field ) {
+	public static function value( $new, $old, $post_id, $field ) {
 		return  $field['raw'] ? $new : wpautop( $new );
 	}
 
@@ -40,7 +44,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return string
 	 */
-	static function html( $meta, $field ) {
+	public static function html( $meta, $field ) {
 		// Using output buffering because wp_editor() echos directly
 		ob_start();
 
@@ -59,7 +63,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 * @param mixed $meta
 	 * @return mixed
 	 */
-	static function esc_meta( $meta ) {
+	public static function esc_meta( $meta ) {
 		return $meta;
 	}
 
@@ -69,7 +73,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 * @param array $field
 	 * @return array
 	 */
-	static function normalize( $field ) {
+	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'raw'     => false,
