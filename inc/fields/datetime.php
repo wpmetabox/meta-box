@@ -94,8 +94,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Get field HTML
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  The field meta value.
+	 * @param array $field The field parameters.
 	 *
 	 * @return string
 	 */
@@ -134,7 +134,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @return string|int
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		return  $field['timestamp'] ? $new['timestamp'] : $new;
+		return $field['timestamp'] ? $new['timestamp'] : $new;
 	}
 
 	/**
@@ -163,7 +163,10 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 */
 	protected static function prepare_meta( $meta, $field ) {
 		if ( is_array( $meta ) ) {
-			return array_map( __METHOD__, $meta );
+			foreach ( $meta as $key => $value ) {
+				$meta[ $key ] = self::prepare_meta( $value, $field );
+			}
+			return $meta;
 		}
 		return array(
 			'timestamp' => $meta ? $meta : null,
