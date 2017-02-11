@@ -307,7 +307,8 @@ class RWMB_File_Field extends RWMB_Field {
 	public static function files_info( $field, $files, $args ) {
 		$return = array();
 		foreach ( (array) $files as $file ) {
-			if ( $info = self::call( $field, 'file_info', $file, $args ) ) {
+			$info = self::call( $field, 'file_info', $file, $args );
+			if ( $info ) {
 				$return[ $file ] = $info;
 			}
 		}
@@ -323,7 +324,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success.
 	 */
 	public static function file_info( $file, $args = array() ) {
-		if ( ! $path = get_attached_file( $file ) ) {
+		$path = get_attached_file( $file );
+		if ( ! $path ) {
 			return false;
 		}
 

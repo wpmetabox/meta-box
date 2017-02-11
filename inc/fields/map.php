@@ -53,7 +53,8 @@ class RWMB_Map_Field extends RWMB_Field {
 			esc_attr( $meta )
 		);
 
-		if ( $address = $field['address_field'] ) {
+		$address = $field['address_field'];
+		if ( $address ) {
 			$html .= sprintf(
 				'<button class="button rwmb-map-goto-address-button" value="%s">%s</button>',
 				is_array( $address ) ? implode( ',', $address ) : $address,

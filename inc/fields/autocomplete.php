@@ -16,8 +16,9 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
 
-		self::localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
-
+		self::localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array(
+			'delete' => __( 'Delete', 'meta-box' ),
+		) );
 	}
 
 	/**

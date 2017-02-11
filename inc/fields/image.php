@@ -71,7 +71,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
 	public static function file_info( $file, $args = array() ) {
-		if ( ! $path = get_attached_file( $file ) ) {
+		$path = get_attached_file( $file );
+		if ( ! $path ) {
 			return false;
 		}
 
