@@ -13,22 +13,21 @@
  * @package Meta Box
  */
 class RWMB_Loader {
-
 	/**
 	 * Define plugin constants.
 	 */
 	protected function constants() {
-		// Script version, used to add version for scripts and styles
+		// Script version, used to add version for scripts and styles.
 		define( 'RWMB_VER', '4.10.1' );
 
 		list( $path, $url ) = self::get_path( dirname( dirname( __FILE__ ) ) );
 
-		// Plugin URLs, for fast enqueuing scripts and styles
+		// Plugin URLs, for fast enqueuing scripts and styles.
 		define( 'RWMB_URL', $url );
 		define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
 		define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
-		// Plugin paths, for including files
+		// Plugin paths, for including files.
 		define( 'RWMB_DIR', $path );
 		define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
 	}
@@ -38,18 +37,18 @@ class RWMB_Loader {
 	 * The method is static and can be used in extensions.
 	 *
 	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
-	 * @param string $path Base folder path
+	 * @param string $path Base folder path.
 	 * @return array Path and URL.
 	 */
 	public static function get_path( $path = '' ) {
-		// Plugin base path
+		// Plugin base path.
 		$path       = wp_normalize_path( untrailingslashit( $path ) );
 		$themes_dir = wp_normalize_path( untrailingslashit( dirname( realpath( get_stylesheet_directory() ) ) ) );
 
-		// Default URL
+		// Default URL.
 		$url = plugins_url( '', $path . '/' . basename( $path ) . '.php' );
 
-		// Included into themes
+		// Included into themes.
 		if (
 			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
 			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
@@ -71,7 +70,7 @@ class RWMB_Loader {
 	public function init() {
 		$this->constants();
 
-		// Register autoload for classes
+		// Register autoload for classes.
 		require_once RWMB_INC_DIR . 'autoloader.php';
 		$autoloader = new RWMB_Autoloader;
 		$autoloader->add( RWMB_INC_DIR, 'RW_' );
@@ -80,18 +79,18 @@ class RWMB_Loader {
 		$autoloader->add( RWMB_INC_DIR . 'walkers', 'RWMB_Walker_' );
 		$autoloader->register();
 
-		// Plugin core
+		// Plugin core.
 		new RWMB_Core;
 
 		if ( is_admin() ) {
-			// Validation module
+			// Validation module.
 			new RWMB_Validation;
 
 			$sanitize = new RWMB_Sanitizer;
 			$sanitize->init();
 		}
 
-		// Public functions
+		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';
 	}
 }

@@ -10,7 +10,7 @@
  */
 class RWMB_Color_Field extends RWMB_Text_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
@@ -20,7 +20,7 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	/**
 	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -43,10 +43,10 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
@@ -62,8 +62,8 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array  $field Field parameter
-	 * @param string $value The value
+	 * @param array  $field Field parameters.
+	 * @param string $value The value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {

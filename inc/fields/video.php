@@ -11,9 +11,7 @@
  */
 class RWMB_Video_Field extends RWMB_Media_Field {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -25,9 +23,9 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 *
 	 * @return array
 	 */
@@ -44,7 +42,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 * @param int   $file_id Attachment image ID (post ID). Required.
 	 * @param array $args Array of arguments (for size).
 	 *
-	 * @return array|bool False if file not found. Array of image info on success
+	 * @return array|bool False if file not found. Array of image info on success.
 	 */
 	public static function file_info( $file_id, $args = array() ) {
 		if ( ! get_attached_file( $file_id ) ) {
@@ -104,8 +102,8 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array $field Field parameter
-	 * @param array $value The value
+	 * @param array $field Field parameters.
+	 * @param array $value The value.
 	 *
 	 * @return string
 	 */
@@ -119,9 +117,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	}
 
 	/**
-	 * Template for media item
-	 *
-	 * @return void
+	 * Template for media item.
 	 */
 	public static function print_templates() {
 		parent::print_templates();

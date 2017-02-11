@@ -10,7 +10,7 @@
  */
 class RWMB_Image_Select_Field extends RWMB_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-image-select', RWMB_CSS_URL . 'image-select.css', array(), RWMB_VER );
@@ -18,10 +18,10 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
@@ -44,9 +44,9 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -59,8 +59,8 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array  $field Field parameter
-	 * @param string $value The value
+	 * @param array  $field Field parameters.
+	 * @param string $value The meta value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {

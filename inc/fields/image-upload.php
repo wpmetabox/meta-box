@@ -10,7 +10,7 @@
  */
 class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -19,9 +19,9 @@ class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 *
 	 * @return array
 	 */
@@ -31,7 +31,7 @@ class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 	}
 
 	/**
-	 * Template for media item
+	 * Template for media item.
 	 */
 	public static function print_templates() {
 		parent::print_templates();

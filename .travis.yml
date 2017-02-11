@@ -18,4 +18,4 @@ before_script:
   - phpcs/scripts/phpcs --config-set installed_paths wpcs
 
 script:
-  - phpcs/scripts/phpcs --standard=WordPress --extensions=php --ignore=demo,tests,phpcs,wpcs .
+  - phpcs/scripts/phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests,phpcs,wpcs .

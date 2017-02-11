@@ -27,7 +27,7 @@
 		"url": "git://github.com/rilwis/meta-box.git"
 	},
 	"scripts": {
-		"check": "phpcs --standard=WordPress --extensions=php --ignore=demo,tests . > check.txt",
+		"check": "phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests . > check.txt",
 		"fix": "phpcbf --standard=WordPress --extensions=php .",
 		"zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD"
 	}

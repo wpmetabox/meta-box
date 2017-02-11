@@ -10,9 +10,9 @@
  */
 class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
-	 * Translate date format from jQuery UI date picker to PHP date()
-	 * It's used to store timestamp value of the field
-	 * Missing:  '!' => '', 'oo' => '', '@' => '', "''" => "'"
+	 * Translate date format from jQuery UI date picker to PHP date().
+	 * It's used to store timestamp value of the field.
+	 * Missing:  '!' => '', 'oo' => '', '@' => '', "''" => "'".
 	 *
 	 * @var array
 	 */
@@ -32,9 +32,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	);
 
 	/**
-	 * Translate time format from jQuery UI time picker to PHP date()
-	 * It's used to store timestamp value of the field
-	 * Missing: 't' => '', T' => '', 'm' => '', 's' => ''
+	 * Translate time format from jQuery UI time picker to PHP date().
+	 * It's used to store timestamp value of the field.
+	 * Missing: 't' => '', T' => '', 'm' => '', 's' => ''.
 	 *
 	 * @var array
 	 */
@@ -83,7 +83,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		self::admin_register_scripts();
@@ -92,7 +92,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
 	 * @param mixed $meta  The field meta value.
 	 * @param array $field The field parameters.
@@ -104,7 +104,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 
 		if ( $field['timestamp'] ) {
 			$name  = $field['field_name'];
-			$field = wp_parse_args( array( 'field_name' => $name . '[formatted]' ), $field );
+			$field = wp_parse_args( array(
+				'field_name' => $name . '[formatted]',
+			), $field );
 			$output .= sprintf(
 				'<input type="hidden" name="%s" class="rwmb-datetime-timestamp" value="%s">',
 				esc_attr( $name . '[timestamp]' ),
@@ -123,8 +125,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Calculates the timestamp from the datetime string and returns it
-	 * if $field['timestamp'] is set or the datetime string if not
+	 * Calculates the timestamp from the datetime string and returns it if $field['timestamp'] is set or the datetime string if not.
 	 *
 	 * @param mixed $new     The submitted meta value.
 	 * @param mixed $old     The existing meta value.
@@ -138,10 +139,10 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get meta value
+	 * Get meta value.
 	 *
 	 * @param int   $post_id The post ID.
-	 * @param bool  $saved   Whether the meta box is saved at least once?
+	 * @param bool  $saved   Whether the meta box is saved at least once.
 	 * @param array $field   The field parameters.
 	 *
 	 * @return mixed
@@ -155,7 +156,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Format meta value if set 'timestamp'
+	 * Format meta value if set 'timestamp'.
 	 *
 	 * @param array|string $meta  The meta value.
 	 * @param array        $field Field parameters.
@@ -175,7 +176,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
 	 * @param array $field The field parameters.
 	 * @return array
@@ -208,7 +209,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
 	 * @param array $field The field parameters.
 	 * @param mixed $value The meta value.
@@ -226,7 +227,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Returns a date() compatible format string from the JavaScript format
+	 * Returns a date() compatible format string from the JavaScript format.
 	 *
 	 * @link http://www.php.net/manual/en/function.date.php
 	 * @param array $field The field parameters.

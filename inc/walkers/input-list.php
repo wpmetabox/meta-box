@@ -10,35 +10,35 @@
  */
 class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	/**
-	 * @see Walker::start_lvl()
+	 * Starts the list before the elements are added.
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of item.
-	 * @param array  $args
+	 * @param int    $depth  Depth of the item.
+	 * @param array  $args   An array of additional arguments.
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
 		$output .= '<ul class="rwmb-input-list">';
 	}
 
 	/**
-	 * @see Walker::end_lvl()
+	 * Ends the list of after the elements are added.
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of item.
-	 * @param array  $args
+	 * @param int    $depth  Depth of the item.
+	 * @param array  $args   An array of additional arguments.
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() ) {
 		$output .= '</ul>';
 	}
 
 	/**
-	 * @see Walker::start_el()
+	 * Start the element output.
 	 *
 	 * @param string $output            Passed by reference. Used to append additional content.
-	 * @param object $object            Item data object.
-	 * @param int    $depth             Depth of item.
-	 * @param int    $current_object_id Item ID.
-	 * @param array  $args
+	 * @param object $object            The data object.
+	 * @param int    $depth             Depth of the item.
+	 * @param array  $args              An array of additional arguments.
+	 * @param int    $current_object_id ID of the current item.
 	 */
 	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
 		$label      = $this->db_fields['label'];
@@ -54,14 +54,14 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	}
 
 	/**
-	 * @see Walker::end_el()
+	 * Ends the element output, if needed.
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param object $page   Page data object. Not used.
-	 * @param int    $depth  Depth of page. Not Used.
-	 * @param array  $args
+	 * @param object $object The data object.
+	 * @param int    $depth  Depth of the item.
+	 * @param array  $args   An array of additional arguments.
 	 */
-	public function end_el( &$output, $page, $depth = 0, $args = array() ) {
+	public function end_el( &$output, $object, $depth = 0, $args = array() ) {
 		$output .= '</li>';
 	}
 }

@@ -10,10 +10,10 @@
  */
 abstract class RWMB_Input_Field extends RWMB_Field {
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
@@ -22,9 +22,9 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -44,10 +44,10 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
@@ -67,8 +67,8 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	/**
 	 * Create datalist, if any.
 	 *
-	 * @param array $field
-	 * @return array
+	 * @param array $field Field parameters.
+	 * @return string
 	 */
 	protected static function datalist( $field ) {
 		if ( empty( $field['datalist'] ) ) {

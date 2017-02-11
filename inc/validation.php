@@ -22,18 +22,18 @@ class RWMB_Validation {
 	 * Output validation rules of each meta box.
 	 * The rules are outputted in [data-rules] attribute of an hidden <script> and will be converted into JSON by JS.
 	 *
-	 * @param RW_Meta_Box $object Meta Box object
+	 * @param RW_Meta_Box $object Meta Box object.
 	 */
 	public function rules( RW_Meta_Box $object ) {
 		if ( ! empty( $object->meta_box['validation'] ) ) {
-			echo '<script type="text/html" class="rwmb-validation-rules" data-rules="' . esc_attr( json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+			echo '<script type="text/html" class="rwmb-validation-rules" data-rules="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
 		}
 	}
 
 	/**
 	 * Enqueue scripts for validation.
 	 *
-	 * @param RW_Meta_Box $object Meta Box object
+	 * @param RW_Meta_Box $object Meta Box object.
 	 */
 	public function enqueue( RW_Meta_Box $object ) {
 		if ( empty( $object->meta_box['validation'] ) ) {

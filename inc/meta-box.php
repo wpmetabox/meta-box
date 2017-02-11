@@ -16,12 +16,14 @@
 class RW_Meta_Box {
 	/**
 	 * Meta box parameters.
+	 *
 	 * @var array
 	 */
 	public $meta_box;
 
 	/**
 	 * Fields parameters.
+	 *
 	 * @var array
 	 */
 	public $fields;
@@ -29,12 +31,13 @@ class RW_Meta_Box {
 	/**
 	 * Detect whether the meta box is saved at least once.
 	 * Used to prevent duplicated calls like revisions, manual hook to wp_insert_post, etc.
+	 *
 	 * @var bool
 	 */
 	public $saved = false;
 
 	/**
-	 * Create meta box based on given data
+	 * Create meta box based on given data.
 	 *
 	 * @param array $meta_box Meta box definition.
 	 */
@@ -230,6 +233,7 @@ class RW_Meta_Box {
 		foreach ( $this->fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
 			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );
+			// @codingStandardsIgnoreLine
 			$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
 
 			// Allow field class change the value.
@@ -311,7 +315,7 @@ class RW_Meta_Box {
 		foreach ( $fields as $k => $field ) {
 			$field = RWMB_Field::call( 'normalize', $field );
 
-			// Allow to add default values for fields
+			// Allow to add default values for fields.
 			$field = apply_filters( 'rwmb_normalize_field', $field );
 			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
 			$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );

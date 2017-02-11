@@ -10,9 +10,7 @@
  */
 class RWMB_Time_Field extends RWMB_Datetime_Field {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_register_scripts();
@@ -21,9 +19,9 @@ class RWMB_Time_Field extends RWMB_Datetime_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {

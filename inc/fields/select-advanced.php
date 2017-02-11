@@ -10,7 +10,7 @@
  */
 class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -19,7 +19,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 
 		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', array( 'jquery' ), '4.0.2', true );
 
-		// Localize
+		// Localize.
 		$dependencies = array( 'rwmb-select2', 'rwmb-select' );
 		$locale       = str_replace( '_', '-', get_locale() );
 		$locale_short = substr( $locale, 0, 2 );
@@ -35,9 +35,9 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -58,10 +58,10 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {

@@ -48,7 +48,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			if ( is_string( $field['taxonomy'] ) && taxonomy_exists( $field['taxonomy'] ) ) {
 				$taxonomy_object = get_taxonomy( $field['taxonomy'] );
 
-				// Translator: %s is the taxonomy singular label.
+				// Translators: %s is the taxonomy singular label.
 				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $taxonomy_object->labels->singular_name );
 			}
 		}
@@ -153,6 +153,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function get_option_label( $field, $value ) {
 		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
+			// @codingStandardsIgnoreLine
 			esc_url( get_term_link( $value ) ),
 			esc_attr( $value->name ),
 			$value->name

@@ -13,7 +13,7 @@
 class RWMB_Core {
 
 	/**
-	 * Stores all registered meta boxes
+	 * Stores all registered meta boxes.
 	 *
 	 * @var array
 	 */
@@ -35,7 +35,7 @@ class RWMB_Core {
 	 * Add links to Documentation and Extensions in plugin's list of action links.
 	 *
 	 * @since 4.3.11
-	 * @param array $links Array of action links
+	 * @param array $links Array of plugin links.
 	 * @return array
 	 */
 	public function plugin_links( $links ) {
@@ -98,25 +98,25 @@ class RWMB_Core {
 	}
 
 	/**
-	 * WordPress will prevent post data saving if a page template has been selected that does not exist
-	 * This is especially a problem when switching to our theme, and old page templates are in the post data
-	 * Unset the page template if the page does not exist to allow the post to save
+	 * WordPress will prevent post data saving if a page template has been selected that does not exist.
+	 * This is especially a problem when switching to our theme, and old page templates are in the post data.
+	 * Unset the page template if the page does not exist to allow the post to save.
 	 *
-	 * @param WP_Post $post
+	 * @param WP_Post $post Post object.
 	 * @since 4.3.10
 	 */
 	public function fix_page_template( WP_Post $post ) {
 		$template       = get_post_meta( $post->ID, '_wp_page_template', true );
 		$page_templates = wp_get_theme()->get_page_templates();
 
-		// If the template doesn't exists, remove the data to allow WordPress to save
+		// If the template doesn't exists, remove the data to allow WordPress to save.
 		if ( ! isset( $page_templates[ $template ] ) ) {
 			delete_post_meta( $post->ID, '_wp_page_template' );
 		}
 	}
 
 	/**
-	 * Register wpml compatibility hooks
+	 * Register wpml compatibility hooks.
 	 */
 	public function register_wpml_hooks() {
 		if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {

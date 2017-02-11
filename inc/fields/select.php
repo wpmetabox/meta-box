@@ -10,7 +10,7 @@
  */
 class RWMB_Select_Field extends RWMB_Choice_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
@@ -18,12 +18,12 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Walk options
+	 * Walk options.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 * @param mixed $options
-	 * @param mixed $db_fields
+	 * @param array $field     Field parameters.
+	 * @param mixed $options   Select options.
+	 * @param mixed $db_fields Database fields to use in the output.
+	 * @param mixed $meta      Meta value.
 	 *
 	 * @return string
 	 */
@@ -44,9 +44,9 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -61,10 +61,10 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 *
 	 * @return array
 	 */
@@ -79,9 +79,9 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Get html for select all|none for multiple select
+	 * Get html for select all|none for multiple select.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function get_select_all_html( $field ) {

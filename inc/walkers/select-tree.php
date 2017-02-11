@@ -2,7 +2,7 @@
 /**
  * Select tree walker for cascading select fields.
  *
- * @uses RWMB_Walker_Select
+ * @package Meta Box
  */
 
 /**
@@ -23,6 +23,13 @@ class RWMB_Walker_Select_Tree {
 	 */
 	public $meta = array();
 
+	/**
+	 * Constructor.
+	 *
+	 * @param array $db_fields Database fields.
+	 * @param array $field     Field parameters.
+	 * @param mixed $meta      Meta value.
+	 */
 	public function __construct( $db_fields, $field, $meta ) {
 		$this->db_fields = wp_parse_args( (array) $db_fields, array(
 			'parent' => '',
@@ -33,6 +40,13 @@ class RWMB_Walker_Select_Tree {
 		$this->meta      = (array) $meta;
 	}
 
+	/**
+	 * Display array of elements hierarchically.
+	 *
+	 * @param array $options An array of options.
+	 *
+	 * @return string
+	 */
 	public function walk( $options ) {
 		$parent   = $this->db_fields['parent'];
 		$children = array();
@@ -44,6 +58,15 @@ class RWMB_Walker_Select_Tree {
 		return $this->display_level( $children, $top_level, true );
 	}
 
+	/**
+	 * Display a hierarchy level.
+	 *
+	 * @param array $options   An array of options.
+	 * @param int   $parent_id Parent item ID.
+	 * @param bool  $active    Whether to show or hide.
+	 *
+	 * @return string
+	 */
 	public function display_level( $options, $parent_id = 0, $active = false ) {
 		$id         = $this->db_fields['id'];
 		$field      = $this->field;
