@@ -104,6 +104,17 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.10.2
+* Improvement: Add `max_file_size` to upload fields (`File_Upload`, `Image_Upload`, `Plupload_Image`).
+* Improvement: Add support for attributes for file input.
+* Improvement: Update Polish translation.
+* Improvement: Add translation support for Key and Value strings (@prop saqibsarwar).
+* Fix: Shorter width of email field vs. other fields (@prop saqibsarwar).
+* Fix: Fix cloneable datetime field with timestamp=true.
+* Fix: Remove margin bottom in select_advanced options.
+* Fix: Showing the correct selected value for select_advanced field when the option value contains '&' character.
+* Fix: Fix default values not working with taxonomy and taxonomy_advanced fields.
+
 #### 4.10.1
 * Fix: Fix `image_upload` and `plupload_image` field when select images to upload.
 
