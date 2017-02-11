@@ -4,13 +4,14 @@
 # Ignore files when export
 demo export-ignore
 tests export-ignore
-.DS_Store
-Thumbs.db
+.DS_Store export-ignore
+Thumbs.db export-ignore
 *.yml export-ignore
+*.xml export-ignore
 *.json export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 readme.md export-ignore
 lang/*.po export-ignore
 lang/*.pot export-ignore
-lang/*.md
+lang/*.md export-ignore
