@@ -50,7 +50,7 @@ class RWMB_Autoloader {
 	/**
 	 * Autoload fields' classes.
 	 *
-	 * @param string $class Class name
+	 * @param string $class Class name.
 	 * @return mixed Boolean false if no mapped file can be loaded, or the name of the mapped file that was loaded.
 	 */
 	public function autoload( $class ) {
@@ -79,7 +79,7 @@ class RWMB_Autoloader {
 	 */
 	protected function fallback() {
 		$files = array(
-			// Core
+			// Core.
 			'core',
 			'clone',
 			'helper',
@@ -87,13 +87,13 @@ class RWMB_Autoloader {
 			'validation',
 			'sanitize',
 
-			// Walkers
+			// Walkers.
 			'walkers/walker',
 			'walkers/select',
 			'walkers/select-tree',
 			'walkers/input-list',
 
-			// Fields
+			// Fields.
 			'field',
 
 			'fields/multiple-values',

@@ -8,58 +8,50 @@
 /**
  * File input field class which uses an input for file URL.
  */
-class RWMB_File_Input_Field extends RWMB_Field {
+class RWMB_File_Input_Field extends RWMB_Input_Field {
 	/**
-	 * Enqueue scripts and styles
-	 *
-	 * @return void
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_media();
 		wp_enqueue_script( 'rwmb-file-input', RWMB_JS_URL . 'file-input.js', array( 'jquery' ), RWMB_VER, true );
 		self::localize_script('rwmb-file-input', 'rwmbFileInput', array(
-			'frameTitle' => __( 'Select File', 'meta-box' ),
+			'frameTitle' => esc_html__( 'Select File', 'meta-box' ),
 		) );
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
+		$attributes = self::get_attributes( $field, $meta );
 		return sprintf(
-			'<input type="text" class="rwmb-file-input" name="%s" id="%s" value="%s" placeholder="%s" size="%s">
+			'<input %s>
 			<a href="#" class="rwmb-file-input-select button-primary">%s</a>
 			<a href="#" class="rwmb-file-input-remove button %s">%s</a>',
-			$field['field_name'],
-			$field['id'],
-			$meta,
-			$field['placeholder'],
-			$field['size'],
-			__( 'Select', 'meta-box' ),
+			self::render_attributes( $attributes ),
+			esc_html__( 'Select', 'meta-box' ),
 			$meta ? '' : 'hidden',
-			__( 'Remove', 'meta-box' )
+			esc_html__( 'Remove', 'meta-box' )
 		);
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 *
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 * @return array
 	 */
-	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'size'        => 30,
-			'placeholder' => '',
-		) );
+	public static function get_attributes( $field, $value = null ) {
+		$attributes = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'text';
 
-		return $field;
+		return $attributes;
 	}
 }

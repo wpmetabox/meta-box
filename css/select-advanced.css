@@ -11,3 +11,6 @@
 .select2-dropdown {
 	border-color: #ddd;
 }
+.select2-results__option {
+	margin-bottom: 0;
+}

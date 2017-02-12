@@ -16,15 +16,16 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
 
-		self::localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array( 'delete' => __( 'Delete', 'meta-box' ) ) );
-
+		self::localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array(
+			'delete' => __( 'Delete', 'meta-box' ),
+		) );
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
@@ -59,8 +60,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 
 		$html .= '<div class="rwmb-autocomplete-results">';
 
-		// Each value is displayed with label and 'Delete' option
-		// The hidden input has to have ".rwmb-*" class to make clone work
+		// Each value is displayed with label and 'Delete' option.
+		// The hidden input has to have ".rwmb-*" class to make clone work.
 		$tpl = '
 			<div class="rwmb-autocomplete-result">
 				<div class="label">%s</div>
@@ -97,15 +98,15 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 			}
 		}
 
-		$html .= '</div>'; // .rwmb-autocomplete-results
+		$html .= '</div>'; // .rwmb-autocomplete-results.
 
 		return $html;
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {

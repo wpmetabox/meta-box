@@ -10,20 +10,20 @@
  */
 class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		// Key
+		// Key.
 		$key                       = isset( $meta[0] ) ? $meta[0] : '';
 		$attributes                = self::get_attributes( $field, $key );
 		$attributes['placeholder'] = $field['placeholder']['key'];
 		$html                      = sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
-		// Value
+		// Value.
 		$val                       = isset( $meta[1] ) ? $meta[1] : '';
 		$attributes                = self::get_attributes( $field, $val );
 		$attributes['placeholder'] = $field['placeholder']['value'];
@@ -33,10 +33,10 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Show begin HTML markup for fields
+	 * Show begin HTML markup for fields.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function begin_html( $meta, $field ) {
@@ -61,7 +61,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
 	 * Do not show field description.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function element_description( $field ) {
@@ -69,9 +69,9 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Escape meta for field output
+	 * Escape meta for field output.
 	 *
-	 * @param mixed $meta
+	 * @param mixed $meta Meta value.
 	 * @return mixed
 	 */
 	public static function esc_meta( $meta ) {
@@ -84,10 +84,10 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
 	 * Sanitize field value.
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return string
 	 */
@@ -102,9 +102,9 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -122,8 +122,8 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
 	 * Format value for the helper functions.
 	 *
-	 * @param array        $field Field parameter
-	 * @param string|array $value The field meta value
+	 * @param array        $field Field parameters.
+	 * @param string|array $value The field meta value.
 	 * @return string
 	 */
 	public static function format_value( $field, $value ) {

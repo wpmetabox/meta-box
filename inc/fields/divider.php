@@ -19,8 +19,8 @@ class RWMB_Divider_Field extends RWMB_Field {
 	/**
 	 * Show begin HTML markup for fields.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -30,10 +30,10 @@ class RWMB_Divider_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Show end HTML markup for fields
+	 * Show end HTML markup for fields.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */

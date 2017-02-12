@@ -29,14 +29,13 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	}
 
 	/**
-	 * Get meta values to save
-	 * Save terms in custom field, no more by setting post terms
-	 * Save in form of comma-separated IDs
+	 * Get meta values to save.
+	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return string
 	 */
@@ -45,12 +44,12 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	}
 
 	/**
-	 * Save meta value
+	 * Save meta value.
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
 		if ( $new ) {
@@ -61,29 +60,32 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	}
 
 	/**
-	 * Get raw meta value
+	 * Get raw meta value.
 	 *
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return mixed
 	 */
 	public static function raw_meta( $post_id, $field ) {
 		$meta = get_post_meta( $post_id, $field['id'], true );
-		$meta = wp_parse_id_list( $meta );
+		if ( empty( $meta ) ) {
+			return $field['multiple'] ? array() : '';
+		}
+		$meta = array_filter( wp_parse_id_list( $meta ) );
 
-		return array_filter( $meta );
+		return $field['multiple'] ? $meta : reset( $meta );
 	}
 
 	/**
-	 * Get the field value
-	 * Return list of post term objects
+	 * Get the field value.
+	 * Return list of post term objects.
 	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+	 * @param  array    $field   Field parameters.
+	 * @param  array    $args    Additional arguments.
 	 * @param  int|null $post_id Post ID. null for current post. Optional.
 	 *
-	 * @return array List of post term objects
+	 * @return array List of post term objects.
 	 */
 	public static function get_value( $field, $args = array(), $post_id = null ) {
 		if ( ! $post_id ) {
@@ -95,14 +97,14 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return null;
 		}
 
-		// Allow to pass more arguments to "get_terms"
+		// Allow to pass more arguments to "get_terms".
 		$args  = wp_parse_args( array(
 			'include'    => $value,
 			'hide_empty' => false,
 		), $args );
 		$value = get_terms( $field['taxonomy'], $args );
 
-		// Get single value if necessary
+		// Get single value if necessary.
 		if ( ! $field['clone'] && ! $field['multiple'] ) {
 			$value = reset( $value );
 		}

@@ -1,7 +1,6 @@
 # Meta Box WordPress Plugin
 
 [![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
-[![Code Climate](https://codeclimate.com/github/rilwis/meta-box/badges/gpa.svg)](https://codeclimate.com/github/rilwis/meta-box)
 [![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
 [![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
 [![License](https://img.shields.io/packagist/l/rilwis/meta-box.svg)](https://metabox.io)
@@ -104,6 +103,17 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 ***
 
 ## Changelog
+
+#### 4.10.2
+* Improvement: Add `max_file_size` to upload fields (`File_Upload`, `Image_Upload`, `Plupload_Image`).
+* Improvement: Add support for attributes for file input.
+* Improvement: Update Polish translation.
+* Improvement: Add translation support for Key and Value strings (@prop saqibsarwar).
+* Fix: Shorter width of email field vs. other fields (@prop saqibsarwar).
+* Fix: Fix cloneable datetime field with timestamp=true.
+* Fix: Remove margin bottom in select_advanced options.
+* Fix: Showing the correct selected value for select_advanced field when the option value contains '&' character.
+* Fix: Fix default values not working with taxonomy and taxonomy_advanced fields.
 
 #### 4.10.1
 * Fix: Fix `image_upload` and `plupload_image` field when select images to upload.

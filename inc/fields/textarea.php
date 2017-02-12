@@ -10,10 +10,10 @@
  */
 class RWMB_Textarea_Field extends RWMB_Field {
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -27,9 +27,9 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Escape meta for field output
+	 * Escape meta for field output.
 	 *
-	 * @param mixed $meta
+	 * @param mixed $meta Meta value.
 	 * @return mixed
 	 */
 	public static function esc_meta( $meta ) {
@@ -37,9 +37,9 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -56,10 +56,10 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 *
 	 * @return array
 	 */

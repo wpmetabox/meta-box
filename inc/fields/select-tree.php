@@ -10,12 +10,12 @@
  */
 class RWMB_Select_Tree_Field extends RWMB_Select_Field {
 	/**
-	 * Walk options
+	 * Walk options.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
-	 * @param mixed $options
-	 * @param mixed $db_fields
+	 * @param array $field     Field parameters.
+	 * @param mixed $options   Select options.
+	 * @param mixed $db_fields Database fields to use in the output.
+	 * @param mixed $meta      Meta value.
 	 *
 	 * @return string
 	 */
@@ -25,7 +25,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field {
 	}
 
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -34,9 +34,9 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -48,10 +48,10 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 *
 	 * @return array
 	 */

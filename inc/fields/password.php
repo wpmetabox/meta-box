@@ -12,14 +12,14 @@ class RWMB_Password_Field extends RWMB_Text_Field {
 	/**
 	 * Store secured password in the database.
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 * @return string
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$new = $new != $old ? wp_hash_password( $new ) : $new;
+		$new = $new !== $old ? wp_hash_password( $new ) : $new;
 		return $new;
 	}
 }

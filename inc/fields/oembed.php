@@ -6,11 +6,11 @@
  */
 
 /**
- * oEmbed field class.
+ * OEmbed field class.
  */
 class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css' );
@@ -18,14 +18,14 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Add actions
+	 * Add actions.
 	 */
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_embed', array( __CLASS__, 'wp_ajax_get_embed' ) );
 	}
 
 	/**
-	 * Ajax callback for returning oEmbed HTML
+	 * Ajax callback for returning oEmbed HTML.
 	 */
 	public static function wp_ajax_get_embed() {
 		$url = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
@@ -33,15 +33,15 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get embed html from url
+	 * Get embed html from url.
 	 *
-	 * @param string $url
+	 * @param string $url URL.
 	 * @return string
 	 */
 	public static function get_embed( $url ) {
 		/**
 		 * Set arguments for getting embeded HTML.
-		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin
+		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin.
 		 *
 		 * @link https://github.com/rilwis/meta-box/issues/801
 		 * @see  WP_oEmbed::fetch()
@@ -53,10 +53,10 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 			$args['width'] = 360;
 		}
 
-		// Try oembed first
+		// Try oembed first.
 		$embed = wp_oembed_get( $url, $args );
 
-		// If no oembed provides found, try WordPress auto embed
+		// If no oembed provides found, try WordPress auto embed.
 		if ( ! $embed ) {
 			$embed = $GLOBALS['wp_embed']->shortcode( $args, $url );
 		}
@@ -65,10 +65,10 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
@@ -82,10 +82,10 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 *
 	 * @return array
 	 */
@@ -98,8 +98,8 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array  $field Field parameter
-	 * @param string $value The value
+	 * @param array  $field Field parameters.
+	 * @param string $value Meta value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {

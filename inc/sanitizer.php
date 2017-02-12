@@ -26,12 +26,12 @@ class RWMB_Sanitizer {
 	 * Register hook to sanitize field value.
 	 */
 	public function init() {
-		// Built-in callback
+		// Built-in callback.
 		foreach ( $this->callbacks as $type => $callback ) {
 			add_filter( "rwmb_{$type}_sanitize", $callback );
 		}
 
-		// Custom callback
+		// Custom callback.
 		$types = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
 		foreach ( $types as $type ) {
 			add_filter( "rwmb_{$type}_sanitize", array( $this, $type ) );
@@ -43,7 +43,7 @@ class RWMB_Sanitizer {
 	 * This prevents using default value once the checkbox has been unchecked.
 	 *
 	 * @link https://github.com/rilwis/meta-box/issues/6
-	 * @param string $value
+	 * @param string $value Checkbox value.
 	 * @return int
 	 */
 	public function checkbox( $value ) {

@@ -7,6 +7,8 @@
  * meta value. Briefly:
  * - If field is cloneable, value is saved as a single entry in the database
  * - Otherwise value is saved as multiple entries
+ *
+ * @package Meta Box
  */
 
 /**
@@ -14,9 +16,9 @@
  */
 abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 *
 	 * @return array
 	 */
@@ -34,8 +36,8 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array  $field Field parameter
-	 * @param string $value The value
+	 * @param array  $field Field parameters.
+	 * @param string $value The value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {

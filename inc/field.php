@@ -12,13 +12,13 @@
  */
 abstract class RWMB_Field {
 	/**
-	 * Add actions
+	 * Add actions.
 	 */
 	public static function add_actions() {
 	}
 
 	/**
-	 * Enqueue scripts and styles
+	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 	}
@@ -30,11 +30,11 @@ abstract class RWMB_Field {
 	 *
 	 * @param string $handle Script handle.
 	 * @param string $name Object name.
-	 * @param mixed $data Localized data.
+	 * @param mixed  $data Localized data.
 	 */
 	public static function localize_script( $handle, $name, $data ) {
 		/*
-		 * Check with function_exists to make it work in WordPress 4.1
+		 * Check with function_exists to make it work in WordPress 4.1.
 		 * @link https://github.com/rilwis/meta-box/issues/1009
 		 */
 		if ( ! function_exists( 'wp_scripts' ) || ! wp_scripts()->get_data( $handle, 'data' ) ) {
@@ -45,11 +45,11 @@ abstract class RWMB_Field {
 	/**
 	 * Show field HTML
 	 * Filters are put inside this method, not inside methods such as "meta", "html", "begin_html", etc.
-	 * That ensures the returned value are always been applied filters
-	 * This method is not meant to be overwritten in specific fields
+	 * That ensures the returned value are always been applied filters.
+	 * This method is not meant to be overwritten in specific fields.
 	 *
-	 * @param array $field
-	 * @param bool  $saved
+	 * @param array $field Field parameters.
+	 * @param bool  $saved Whether the meta box is saved at least once.
 	 */
 	public static function show( $field, $saved ) {
 		$post    = get_post();
@@ -61,13 +61,11 @@ abstract class RWMB_Field {
 		$begin = self::call( $field, 'begin_html', $meta );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
-		// Separate code for cloneable and non-cloneable fields to make easy to maintain
-		// Cloneable fields
+		// Separate code for cloneable and non-cloneable fields to make easy to maintain.
 		if ( $field['clone'] ) {
 			$field_html = RWMB_Clone::html( $meta, $field );
-		} // End if().
-		else {
-			// Call separated methods for displaying each type of field
+		} else {
+			// Call separated methods for displaying each type of field.
 			$field_html = self::call( $field, 'html', $meta );
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
@@ -77,7 +75,7 @@ abstract class RWMB_Field {
 
 		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
 
-		// Display label and input in DIV and allow user-defined classes to be appended
+		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
 		if ( 'hidden' === $field['type'] ) {
 			$classes .= ' hidden';
@@ -93,14 +91,14 @@ abstract class RWMB_Field {
 		);
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
-		echo $outer_html;
+		echo $outer_html; // WPCS: XSS OK.
 	}
 
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -109,10 +107,10 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Show begin HTML markup for fields
+	 * Show begin HTML markup for fields.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -137,10 +135,10 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Show end HTML markup for fields
+	 * Show end HTML markup for fields.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -151,7 +149,7 @@ abstract class RWMB_Field {
 	/**
 	 * Display field description.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	protected static function element_description( $field ) {
@@ -160,10 +158,10 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get raw meta value
+	 * Get raw meta value.
 	 *
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param int   $post_id Post ID.
+	 * @param array $field   Field parameters.
 	 *
 	 * @return mixed
 	 */
@@ -177,38 +175,37 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get meta value
+	 * Get meta value.
 	 *
-	 * @param int   $post_id
-	 * @param bool  $saved
-	 * @param array $field
+	 * @param int   $post_id Post ID.
+	 * @param bool  $saved   Whether the meta box is saved at least once.
+	 * @param array $field   Field parameters.
 	 *
 	 * @return mixed
 	 */
 	public static function meta( $post_id, $saved, $field ) {
 		/**
 		 * For special fields like 'divider', 'heading' which don't have ID, just return empty string
-		 * to prevent notice error when displaying fields
+		 * to prevent notice error when displaying fields.
 		 */
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
 
-		// Get raw meta
+		// Get raw meta.
 		$meta = self::call( $field, 'raw_meta', $post_id );
 
-		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run)
+		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved ? $field['std'] : $meta;
 
-		// Escape attributes
+		// Escape attributes.
 		$meta = self::call( $field, 'esc_meta', $meta );
 
-		// Make sure meta value is an array for clonable and multiple fields
+		// Make sure meta value is an array for clonable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
 			if ( empty( $meta ) || ! is_array( $meta ) ) {
 				/**
-				 * Note: if field is clonable, $meta must be an array with values
-				 * so that the foreach loop in self::show() runs properly
+				 * If field is clonable, $meta must be an array with values so that the foreach loop in self::show() runs properly.
 				 *
 				 * @see self::show()
 				 */
@@ -220,9 +217,9 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Escape meta for field output
+	 * Escape meta for field output.
 	 *
-	 * @param mixed $meta
+	 * @param mixed $meta Meta value.
 	 *
 	 * @return mixed
 	 */
@@ -231,12 +228,12 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Set value of meta before saving into database
+	 * Set value of meta before saving into database.
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return int
 	 */
@@ -245,38 +242,38 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Save meta value
+	 * Save meta value.
 	 *
-	 * @param $new
-	 * @param $old
-	 * @param $post_id
-	 * @param $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
 		$name = $field['id'];
 
-		// Remove post meta if it's empty
+		// Remove post meta if it's empty.
 		if ( '' === $new || array() === $new ) {
 			delete_post_meta( $post_id, $name );
 			return;
 		}
 
-		// If field is cloneable, value is saved as a single entry in the database
+		// If field is cloneable, value is saved as a single entry in the database.
 		if ( $field['clone'] ) {
-			// Remove empty values
+			// Remove empty values.
 			$new = (array) $new;
 			foreach ( $new as $k => $v ) {
 				if ( '' === $v || array() === $v ) {
 					unset( $new[ $k ] );
 				}
 			}
-			// Reset indexes
+			// Reset indexes.
 			$new = array_values( $new );
 			update_post_meta( $post_id, $name, $new );
 			return;
 		}
 
-		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour)
+		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour).
 		if ( $field['multiple'] ) {
 			$new_values = array_diff( $new, $old );
 			foreach ( $new_values as $new_value ) {
@@ -289,14 +286,14 @@ abstract class RWMB_Field {
 			return;
 		}
 
-		// Default: just update post meta
+		// Default: just update post meta.
 		update_post_meta( $post_id, $name, $new );
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 *
 	 * @return array
 	 */
@@ -327,10 +324,10 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get the attributes for a field
+	 * Get the attributes for a field.
 	 *
-	 * @param array $field
-	 * @param mixed $value
+	 * @param array $field Field parameters.
+	 * @param mixed $value Meta value.
 	 *
 	 * @return array
 	 */
@@ -349,9 +346,9 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Renders an attribute array into an html attributes string
+	 * Renders an attribute array into an html attributes string.
 	 *
-	 * @param array $attributes
+	 * @param array $attributes HTML attributes.
 	 *
 	 * @return string
 	 */
@@ -364,7 +361,7 @@ abstract class RWMB_Field {
 			}
 
 			if ( is_array( $value ) ) {
-				$value = json_encode( $value );
+				$value = wp_json_encode( $value );
 			}
 
 			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
@@ -374,16 +371,16 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get the field value
+	 * Get the field value.
 	 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
 	 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
-	 * for file/image: return array of file/image information instead of file/image IDs
+	 * for file/image: return array of file/image information instead of file/image IDs.
 	 *
 	 * Each field can extend this function and add more data to the returned value.
 	 * See specific field classes for details.
 	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+	 * @param  array    $field   Field parameters.
+	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param  int|null $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return mixed Field value
@@ -398,10 +395,10 @@ abstract class RWMB_Field {
 			$post_id = get_the_ID();
 		}
 
-		// Get raw meta value in the database, no escape
+		// Get raw meta value in the database, no escape.
 		$value  = self::call( $field, 'raw_meta', $post_id );
 
-		// Make sure meta value is an array for cloneable and multiple fields
+		// Make sure meta value is an array for cloneable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
 			$value = is_array( $value ) && $value ? $value : array();
 		}
@@ -410,7 +407,7 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Output the field value
+	 * Output the field value.
 	 * Depends on field value and field types, each field can extend this method to output its value in its own way
 	 * See specific field classes for details.
 	 *
@@ -420,8 +417,8 @@ abstract class RWMB_Field {
 	 * @use self::get_value()
 	 * @see rwmb_the_value()
 	 *
-	 * @param  array    $field   Field parameters
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details
+	 * @param  array    $field   Field parameters.
+	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param  int|null $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string HTML output of the field
@@ -434,8 +431,8 @@ abstract class RWMB_Field {
 	/**
 	 * Format value for the helper functions.
 	 *
-	 * @param array        $field Field parameter
-	 * @param string|array $value The field meta value
+	 * @param array        $field Field parameters.
+	 * @param string|array $value The field meta value.
 	 * @return string
 	 */
 	public static function format_value( $field, $value ) {
@@ -453,8 +450,8 @@ abstract class RWMB_Field {
 	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
-	 * @param array  $field Field parameter
-	 * @param string $value The value
+	 * @param array  $field Field parameters.
+	 * @param string $value The value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {
@@ -475,22 +472,21 @@ abstract class RWMB_Field {
 		// Params: method name, field, other params.
 		if ( is_string( $check ) ) {
 			$method = array_shift( $args );
-			$field  = reset( $args ); // Keep field as 1st param
-		} // End if().
-		else {
+			$field  = reset( $args ); // Keep field as 1st param.
+		} else {
 			$field  = array_shift( $args );
 			$method = array_shift( $args );
-			$args[] = $field; // Add field as last param
+			$args[] = $field; // Add field as last param.
 		}
 
 		return call_user_func_array( array( self::get_class_name( $field ), $method ), $args );
 	}
 
 	/**
-	 * Map types
+	 * Map field types.
 	 *
-	 * @param array $field Field array
-	 * @return string Field mapped type
+	 * @param array $field Field parameters.
+	 * @return string Field mapped type.
 	 */
 	public static function map_types( $field ) {
 		$type = isset( $field['type'] ) ? $field['type'] : 'input';
@@ -499,7 +495,7 @@ abstract class RWMB_Field {
 			array(
 				'file_advanced'  => 'media',
 				'plupload_image' => 'image_upload',
-				'url'            => 'text'
+				'url'            => 'text',
 			)
 		);
 
@@ -507,10 +503,10 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get field class name
+	 * Get field class name.
 	 *
-	 * @param array $field Field array
-	 * @return string Field class name
+	 * @param array $field Field parameters.
+	 * @return string Field class name.
 	 */
 	public static function get_class_name( $field ) {
 		$type = self::map_types( $field );
@@ -537,7 +533,7 @@ abstract class RWMB_Field {
 		$value = array_shift( $args );
 		$field = array_shift( $args );
 
-		// List of filters
+		// List of filters.
 		$filters = array(
 			'rwmb_' . $name,
 			'rwmb_' . $field['type'] . '_' . $name,

@@ -10,9 +10,9 @@
  */
 class RWMB_Checkbox_List_Field extends RWMB_Input_List_Field {
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {

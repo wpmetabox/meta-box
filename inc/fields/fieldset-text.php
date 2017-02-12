@@ -10,10 +10,10 @@
  */
 class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	/**
-	 * Get field HTML
+	 * Get field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 *
 	 * @return string
 	 */
@@ -35,7 +35,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	/**
 	 * Do not show field description.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
 	public static function element_description( $field ) {
@@ -43,9 +43,9 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field
+	 * @param array $field Field parameters.
 	 *
 	 * @return array
 	 */
@@ -60,8 +60,8 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	/**
 	 * Format value for the helper functions.
 	 *
-	 * @param array        $field Field parameter
-	 * @param string|array $value The field meta value
+	 * @param array        $field Field parameters.
+	 * @param string|array $value Meta value.
 	 * @return string
 	 */
 	public static function format_value( $field, $value ) {
@@ -85,8 +85,8 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	/**
 	 * Format a single value for the helper functions.
 	 *
-	 * @param array $field Field parameter
-	 * @param array $value The value
+	 * @param array $field Field parameters.
+	 * @param array $value The value.
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value ) {
