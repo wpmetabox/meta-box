@@ -189,7 +189,7 @@ jQuery( function ( $ ) {
 			},
 			function( item ) {
 				return item.cid;
-			}	),
+			} ),
 
 		//Add item view
 		addItemView: function ( item ) {
@@ -206,17 +206,13 @@ jQuery( function ( $ ) {
 
 		initialize: function ( options ) {
 			this.controller = options.controller;
-			this.itemView = options.itemView || MediaItem;
+			this.itemView   = options.itemView || MediaItem;
 
-			this.setEvents();
+			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
+			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
 
 			// Sort media using sortable
 			this.initSortable();
-		},
-
-		setEvents: function () {
-			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
-			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
 		},
 
 		initSortable: function () {
