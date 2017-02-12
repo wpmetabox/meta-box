@@ -15,6 +15,7 @@ jQuery( function ( $ ) {
 				this.controller.set( 'length', this.length );
 				this.controller.set( 'full', max > 0 && this.length >= max );
 			} );
+
 			wp.media.model.Attachments.prototype.initialize.call( this, models, options );
 		},
 
@@ -102,7 +103,7 @@ jQuery( function ( $ ) {
 		// Method to remove media items
 		removeItem: function ( item ) {
 			this.get( 'items' ).remove( item );
-			if ( this.get( 'forceDelete' ) ) {
+			if ( this.get( 'forceDelete' ) === true ) {
 				item.destroy();
 			}
 		},
@@ -179,26 +180,31 @@ jQuery( function ( $ ) {
 		tagName: 'ul',
 		className: 'rwmb-media-list',
 
+		getItemView: _.memoize(
+			function( item ) {
+				return new this.itemView( {
+					model: item,
+					controller: this.controller
+				} );
+			},
+			function( item ) {
+				return item.cid;
+			}	),
+
 		//Add item view
 		addItemView: function ( item ) {
-			var view = this._views[item.cid] = new this.itemView( {
-				model: item,
-				controller: this.controller
-			} );
-
-			this.$el.append( view.el );
+			this.$el.append( this.getItemView( item ).el );
 		},
 
 		//Remove item view
 		removeItemView: function ( item ) {
-			if ( this._views[item.cid] ) {
-				this._views[item.cid].remove();
-				delete this._views[item.cid];
+			var itemView = this.getItemView( item );
+			if ( itemView ) {
+				itemView.remove();
 			}
 		},
 
 		initialize: function ( options ) {
-			this._views = {};
 			this.controller = options.controller;
 			this.itemView = options.itemView || MediaItem;
 
