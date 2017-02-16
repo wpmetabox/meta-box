@@ -59,6 +59,8 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 			array(
 				// Field name - Will be used as label
 				'name'  => esc_html__( 'Text', 'your-prefix' ),
+				// Label description, display below field name (optional).
+				'label_description' => esc_html__( 'Some description', 'your-prefix' ),
 				// Field ID, i.e. the meta key
 				'id'    => "{$prefix}text",
 				// Field description (optional)

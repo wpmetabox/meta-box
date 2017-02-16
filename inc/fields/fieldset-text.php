@@ -38,7 +38,17 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 * @param array $field Field parameters.
 	 * @return string
 	 */
-	public static function element_description( $field ) {
+	public static function input_description( $field ) {
+		return '';
+	}
+
+	/**
+	 * Do not show field description.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	public static function label_description( $field ) {
 		return '';
 	}
 

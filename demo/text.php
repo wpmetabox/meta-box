@@ -9,6 +9,7 @@ function your_prefix_text_demo( $meta_boxes ) {
 		'fields' => array(
 			array(
 				'name'        => __( 'Text', 'your-prefix' ),
+				'label_description' => __( 'Label description', 'your' ),
 				'id'          => 'text',
 				'desc'        => __( 'Text description', 'your-prefix' ),
 				'type'        => 'text',

@@ -42,7 +42,17 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	 * @param array $field Field parameters.
 	 * @return string
 	 */
-	public static function element_description( $field ) {
+	public static function input_description( $field ) {
+		return '';
+	}
+
+	/**
+	 * Do not show field label description.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	public static function label_description( $field ) {
 		return '';
 	}
 

@@ -38,6 +38,6 @@ class RWMB_Heading_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function end_html( $meta, $field ) {
-		return self::element_description( $field );
+		return self::input_description( $field );
 	}
 }

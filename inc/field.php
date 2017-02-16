@@ -118,9 +118,13 @@ abstract class RWMB_Field {
 		$field_label = '';
 		if ( $field['name'] ) {
 			$field_label = sprintf(
-				'<div class="rwmb-label"><label for="%s">%s</label></div>',
-				$field['id'],
-				$field['name']
+				'<div class="rwmb-label">
+					<label for="%s">%s</label>
+					%s
+				</div>',
+				esc_attr( $field['id'] ),
+				$field['name'],
+				self::label_description( $field )
 			);
 		}
 
@@ -143,7 +147,18 @@ abstract class RWMB_Field {
 	 * @return string
 	 */
 	public static function end_html( $meta, $field ) {
-		return RWMB_Clone::add_clone_button( $field ) . self::call( 'element_description', $field ) . '</div>';
+		return RWMB_Clone::add_clone_button( $field ) . self::call( 'input_description', $field ) . '</div>';
+	}
+
+	/**
+	 * Display field label description.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	protected static function label_description( $field ) {
+		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
+		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
 	/**
@@ -152,8 +167,8 @@ abstract class RWMB_Field {
 	 * @param array $field Field parameters.
 	 * @return string
 	 */
-	protected static function element_description( $field ) {
-		$id = $field['id'] ? " id='{$field['id']}-description'" : '';
+	protected static function input_description( $field ) {
+		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
 
