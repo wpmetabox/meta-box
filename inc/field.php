@@ -314,16 +314,17 @@ abstract class RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
-			'id'          => '',
-			'name'        => '',
-			'multiple'    => false,
-			'std'         => '',
-			'desc'        => '',
-			'format'      => '',
-			'before'      => '',
-			'after'       => '',
-			'field_name'  => isset( $field['id'] ) ? $field['id'] : '',
-			'placeholder' => '',
+			'id'                => '',
+			'name'              => '',
+			'label_description' => '',
+			'multiple'          => false,
+			'std'               => '',
+			'desc'              => '',
+			'format'            => '',
+			'before'            => '',
+			'after'             => '',
+			'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
+			'placeholder'       => '',
 
 			'clone'      => false,
 			'max_clone'  => 0,
