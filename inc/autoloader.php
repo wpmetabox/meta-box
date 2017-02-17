@@ -86,6 +86,7 @@ class RWMB_Autoloader {
 			'meta-box',
 			'validation',
 			'sanitize',
+			'media-modal',
 
 			// Walkers.
 			'walkers/walker',

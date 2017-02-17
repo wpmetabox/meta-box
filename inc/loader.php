@@ -88,6 +88,9 @@ class RWMB_Loader {
 
 			$sanitize = new RWMB_Sanitizer;
 			$sanitize->init();
+
+			$media_modal = new RWMB_Media_Modal;
+			$media_modal->init();
 		}
 
 		// Public functions.
