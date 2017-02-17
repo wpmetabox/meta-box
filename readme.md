@@ -104,6 +104,10 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 
 ## Changelog
 
+#### 4.10.3
+* Fix: `force_delete` causes files to be deleted even when set to `false`.
+* Fix: `max_file_uploads` not working.
+
 #### 4.10.2
 * Improvement: Add `max_file_size` to upload fields (`File_Upload`, `Image_Upload`, `Plupload_Image`).
 * Improvement: Add support for attributes for file input.

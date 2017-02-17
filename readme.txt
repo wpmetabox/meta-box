@@ -4,7 +4,7 @@ Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
 Tested up to: 4.7.2
-Stable tag: 4.10.2
+Stable tag: 4.10.3
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -90,6 +90,10 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.10.3 =
+* Fix: `force_delete` causes files to be deleted even when set to `false`.
+* Fix: `max_file_uploads` not working.
 
 = 4.10.2 =
 * Improvement: Add `max_file_size` to upload fields (`File_Upload`, `Image_Upload`, `Plupload_Image`).
