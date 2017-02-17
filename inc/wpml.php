@@ -9,12 +9,24 @@
  * WPML compatibility class
  */
 class RWMB_WPML {
+	/**
+	 * Initialize.
+	 */
+	public function init() {
+		/**
+		 * Run before meta boxes are registered so it can modify fields.
+		 *
+		 * @see modify_field()
+		 */
+		add_action( 'init', array( $this, 'register_hooks' ), 9 );
+	}
 
 	/**
 	 * Register hooks.
 	 */
-	public function __construct() {
+	public function register_hooks() {
 		add_filter( 'wpml_duplicate_generic_string', array( $this, 'wpml_translate_values' ), 10, 3 );
+		add_filter( 'rwmb_normalize_field', array( $this, 'modify_field' ) );
 	}
 
 	/**
@@ -29,7 +41,7 @@ class RWMB_WPML {
 		$fields = RWMB_Core::get_fields();
 
 		foreach ( $fields as $field ) {
-			if ( ! in_array( $field['type'], array( 'post', 'taxonomy_advanced' ) ) || $field['id'] !== $meta_data['key'] ) {
+			if ( ! in_array( $field['type'], array( 'post', 'taxonomy_advanced' ), true ) || $field['id'] !== $meta_data['key'] ) {
 				continue;
 			}
 
@@ -55,5 +67,50 @@ class RWMB_WPML {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Modified field depends on its translation status.
+	 * If the post is a translated version of another post and the field is set to:
+	 * - Do not translate: hide the field.
+	 * - Copy: make it disabled so users cannot edit.
+	 * - Translate: do nothing.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return mixed
+	 */
+	public function modify_field( $field ) {
+		global $wpml_post_translations;
+
+		if ( empty( $field['id'] ) ) {
+			return $field;
+		}
+
+		// Get post ID.
+		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! $post_id ) {
+			$post_id = filter_input( INPUT_POST, 'post_ID', FILTER_SANITIZE_NUMBER_INT );
+		}
+
+		// If the post is the original one: do nothing.
+		if ( ! $wpml_post_translations->get_source_lang_code( $post_id ) ) {
+			return $field;
+		}
+
+		// Get setting for the custom field translation.
+		$custom_fields_translation = apply_filters( 'wpml_sub_setting', false, 'translation-management', 'custom_fields_translation' );
+		if ( ! isset( $custom_fields_translation[ $field['id'] ] ) ) {
+			return $field;
+		}
+
+		$setting = intval( $custom_fields_translation[ $field['id'] ] );
+		if ( 0 === $setting ) {           // Do not translate: hide it.
+			$field['class'] .= ' hidden';
+		} elseif ( 1 === $setting ) {     // Copy: disable editing.
+			$field['disabled'] = true;
+		}
+
+		return $field;
 	}
 }

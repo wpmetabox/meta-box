@@ -27,7 +27,6 @@ class RWMB_Core {
 		add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_links' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init', array( $this, 'register_meta_boxes' ) );
-		add_action( 'init', array( $this, 'register_wpml_hooks' ) );
 		add_action( 'edit_page_form', array( $this, 'fix_page_template' ) );
 	}
 
@@ -112,15 +111,6 @@ class RWMB_Core {
 		// If the template doesn't exists, remove the data to allow WordPress to save.
 		if ( ! isset( $page_templates[ $template ] ) ) {
 			delete_post_meta( $post->ID, '_wp_page_template' );
-		}
-	}
-
-	/**
-	 * Register wpml compatibility hooks.
-	 */
-	public function register_wpml_hooks() {
-		if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-			new RWMB_WPML;
 		}
 	}
 }
