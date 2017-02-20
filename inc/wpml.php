@@ -25,6 +25,9 @@ class RWMB_WPML {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
+		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
+			return;
+		}
 		add_filter( 'wpml_duplicate_generic_string', array( $this, 'wpml_translate_values' ), 10, 3 );
 		add_filter( 'rwmb_normalize_field', array( $this, 'modify_field' ) );
 	}
