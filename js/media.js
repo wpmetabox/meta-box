@@ -182,18 +182,6 @@ jQuery( function ( $ ) {
 		tagName: 'ul',
 		className: 'rwmb-media-list',
 
-		getItemView: function( item ) {
-				var cid = item.cid;
-				if( ! this.itemViews[cid] ) {
-					this.itemViews[cid] = new this.itemView( {
-						model: item,
-						controller: this.controller
-					} );
-				}
-
-				return this.itemViews[cid];
-		},
-
 		//Add item view
 		addItemView: function ( item ) {
 			var index = this.controller.get( 'items' ).indexOf( item ),
@@ -212,16 +200,22 @@ jQuery( function ( $ ) {
 
 		//Remove item view
 		removeItemView: function ( item ) {
-			if ( this.itemViews[item.cid] ) {
-				this.itemViews[item.cid].remove();
-				delete this.itemViews[item.cid];
-			}
+			this.getItemView(item).$el.detach();
 		},
 
 		initialize: function ( options ) {
 			this.controller = options.controller;
 			this.itemView   = options.itemView || MediaItem;
-			this.itemViews  = {} ;
+			this.getItemView  = _.memoize(
+	 			function( item ) {
+	 				return new this.itemView( {
+	 					model: item,
+	 					controller: this.controller
+	 				} );
+	 			},
+	 			function( item ) {
+	 				return item.cid;
+	 			} );
 
 			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
 			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
