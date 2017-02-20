@@ -42,8 +42,18 @@ jQuery( function ( $ ) {
 			return wp.media.model.Attachments.prototype.add.call( this, models, options );
 		},
 
+		remove: function( models, options ) {
+			var models = wp.media.model.Attachments.prototype.remove.call( this, models, options );
+			if ( this.controller.get( 'forceDelete' ) === true ) {
+				models = !_.isArray( models ) ? [models] : models;
+				_.each( models, function( model ) {
+				  model.destroy();
+				});
+			}
+		},
+
 		destroyAll: function() {
-			_.each(_.clone( this.models), function( model ) {
+			_.each( _.clone( this.models), function( model ) {
 			  model.destroy();
 			});
 		}
@@ -98,15 +108,7 @@ jQuery( function ( $ ) {
 				// Get more then trigger ready
 				this.get( 'items' ).more();
 			}
-		},
-
-		// Method to remove media items
-		removeItem: function ( item ) {
-			this.get( 'items' ).remove( item );
-			if ( this.get( 'forceDelete' ) === true ) {
-				item.destroy();
-			}
-		},
+		}
 	} );
 
 	/***
@@ -180,33 +182,46 @@ jQuery( function ( $ ) {
 		tagName: 'ul',
 		className: 'rwmb-media-list',
 
-		getItemView: _.memoize(
-			function( item ) {
-				return new this.itemView( {
-					model: item,
-					controller: this.controller
-				} );
-			},
-			function( item ) {
-				return item.cid;
-			} ),
+		getItemView: function( item ) {
+				var cid = item.cid;
+				if( ! this.itemViews[cid] ) {
+					this.itemViews[cid] = new this.itemView( {
+						model: item,
+						controller: this.controller
+					} );
+				}
+
+				return this.itemViews[cid];
+		},
 
 		//Add item view
 		addItemView: function ( item ) {
-			this.$el.append( this.getItemView( item ).el );
+			var index = this.controller.get( 'items' ).indexOf( item ),
+				itemEl = this.getItemView( item ).el;
+
+			if( 0 >= index ) {
+				this.$el.prepend( itemEl );
+			}
+			else if( this.$el.children().length <= index ) {
+				this.$el.append( itemEl )
+			}
+			else {
+				this.$el.children().eq( index - 1 ).after( itemEl );
+			}
 		},
 
 		//Remove item view
 		removeItemView: function ( item ) {
-			var itemView = this.getItemView( item );
-			if ( itemView ) {
-				itemView.remove();
+			if ( this.itemViews[item.cid] ) {
+				this.itemViews[item.cid].remove();
+				delete this.itemViews[item.cid];
 			}
 		},
 
 		initialize: function ( options ) {
 			this.controller = options.controller;
 			this.itemView   = options.itemView || MediaItem;
+			this.itemViews  = {} ;
 
 			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
 			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
@@ -351,9 +366,37 @@ jQuery( function ( $ ) {
 
 
 		events: {
+			'click .rwmb-switch': function( e ) {
+				if ( this._frame ) {
+					//this.stopListening( this._frame );
+					this._frame.dispose();
+				}
+				this._frame = wp.media( {
+					className: 'media-frame rwmb-media-frame',
+					multiple: false,
+					title: i18nRwmbMedia.select,
+					editing: true,
+					library: {
+						type: this.controller.get( 'mimeType' )
+					}
+				} );
+
+				this._frame.on( 'select', function () {
+					var selection = this._frame.state().get( 'selection' ),
+						collection = this.controller.get( 'items' ),
+						index = collection.indexOf( this.model );
+					if( !_.isEmpty( selection ) ) {
+						collection.remove( this.model );
+						collection.add( selection, { at: index } );
+					}
+				}, this );
+
+				this._frame.open();
+				return false;
+			},
 			// Event when remove button clicked
 			'click .rwmb-remove-media': function ( e ) {
-				this.controller.removeItem( this.model );
+				this.controller.get( 'items' ).remove( this.model );
 				return false;
 			},
 
