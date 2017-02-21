@@ -204,8 +204,8 @@ jQuery( function ( $ ) {
 		},
 
 		initialize: function ( options ) {
-			this.controller = options.controller;
-			this.itemView   = options.itemView || MediaItem;
+			this.controller   = options.controller;
+			this.itemView     = options.itemView || MediaItem;
 			this.getItemView  = _.memoize(
 	 			function( item ) {
 	 				return new this.itemView( {
@@ -388,6 +388,7 @@ jQuery( function ( $ ) {
 				this._frame.open();
 				return false;
 			},
+			
 			// Event when remove button clicked
 			'click .rwmb-remove-media': function ( e ) {
 				this.controller.get( 'items' ).remove( this.model );
