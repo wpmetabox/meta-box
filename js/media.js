@@ -70,7 +70,7 @@ jQuery( function ( $ ) {
 			ids: [],
 			mimeType: '',
 			forceDelete: false,
-			showStatus: true,
+			maxStatus: true,
 			length: 0
 		},
 
@@ -258,33 +258,33 @@ jQuery( function ( $ ) {
 	} );
 
 	/***
-	 * MediaStatus
-	 * Tracks status of media field if maxStatus is greater than 0
+	 * MediaStatus view.
+	 * Show number of selected/uploaded files and number of files remain if "maxStatus" parameter is true.
 	 */
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
 		tagName: 'div',
 		className: 'rwmb-media-status',
 		template: wp.template( 'rwmb-media-status' ),
 
-		//Initialize
 		initialize: function ( options ) {
 			this.controller = options.controller;
 
-			//Auto hide if showStatus is false
-			if ( ! this.controller.get( 'showStatus' ) ) {
+			// Auto hide if maxStatus is false
+			if ( ! this.controller.get( 'maxStatus' ) ) {
 				this.$el.hide();
+				return;
 			}
 
-			//Rerender if changes happen in controller
+			// Re-render if changes happen in controller
 			this.listenTo( this.controller.get( 'items' ), 'update', this.render );
 
-			//Render
+			// Render
 			this.render();
 		},
 
 		render: function () {
-			var attrs = _.clone( this.controller.attributes );
-			this.$el.html( this.template( attrs ) );
+			var attributes = _.clone( this.controller.attributes );
+			this.$el.html( this.template( attributes ) );
 		}
 	} );
 
@@ -388,7 +388,7 @@ jQuery( function ( $ ) {
 				this._frame.open();
 				return false;
 			},
-			
+
 			// Event when remove button clicked
 			'click .rwmb-remove-media': function ( e ) {
 				this.controller.get( 'items' ).remove( this.model );

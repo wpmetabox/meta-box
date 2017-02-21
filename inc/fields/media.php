@@ -84,10 +84,10 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		) );
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'mimeType'       => $field['mime_type'],
-			'maxFiles'       => $field['max_file_uploads'],
-			'forceDelete'    => $field['force_delete'] ? true : false,
-			'showStatus'     => $field['max_status'],
+			'mimeType'    => $field['mime_type'],
+			'maxFiles'    => $field['max_file_uploads'],
+			'forceDelete' => $field['force_delete'] ? true : false,
+			'maxStatus'   => $field['max_status'],
 		) );
 
 		$field['multiple'] = true;
