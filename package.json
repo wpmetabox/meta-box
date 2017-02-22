@@ -29,6 +29,7 @@
 	"scripts": {
 		"check": "phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests . > check.txt",
 		"fix": "phpcbf --standard=WordPress --extensions=php .",
-		"zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD"
+		"zip": "git archive -o meta-box.zip --prefix=meta-box/ HEAD",
+		"deploy": "sh scripts/wporg-deploy.sh"
 	}
 }
