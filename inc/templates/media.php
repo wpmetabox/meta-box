@@ -1,5 +1,5 @@
 <script id="tmpl-rwmb-media-item" type="text/html">
-	<input type="hidden" name="{{{ data.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
+	<input type="hidden" name="{{{ data.controller.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
 	<div class="rwmb-media-preview">
 		<div class="rwmb-media-content">
 			<div class="centered">

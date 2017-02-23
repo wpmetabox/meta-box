@@ -428,7 +428,7 @@ jQuery( function ( $ ) {
 
 		render: function () {
 			var attrs = _.clone( this.model.attributes );
-			attrs.fieldName = this.controller.get( 'fieldName' );
+			attrs.controller = _.clone( this.controller.attributes );
 			this.$el.html( this.template( attrs ) );
 			return this;
 		}

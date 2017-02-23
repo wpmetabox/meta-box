@@ -5,11 +5,20 @@
 	padding: 0;
 	margin: 0 5px 5px 0;
 	box-sizing: border-box;
+}
+.rwmb-image-item.thumbnail .rwmb-media-preview,
+.rwmb-image-item.thumbnail{
 	width: 150px;
 }
-.rwmb-image-item .rwmb-media-preview {
-	width: 150px;
+.rwmb-image-item.medium .rwmb-media-preview,
+.rwmb-image-item.medium {
+	width: 300px;
 }
+.rwmb-image-item.large .rwmb-media-preview,
+.rwmb-image-item.large {
+	width: 1024px;
+}
+
 .rwmb-image-item .dashicons {
 	font-size: 20px;
 	width: 20px;
