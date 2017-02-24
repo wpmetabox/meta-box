@@ -10,10 +10,10 @@
 .rwmb-field:after {
 	clear: both;
 }
-.rwmb-field {
+.rwmb-field:not(:last-of-type) {
 	*zoom: 1;
 
-	margin: 0 0 10px;
+	margin: 0 0 12px;
 }
 .rwmb-label,
 .rwmb-input {
@@ -58,12 +58,16 @@
 .rwmb-button.remove-clone {
 	text-decoration: none;
 	color: #fff;
-	background: #c00;
+	background: #e74c3c;
 	border-radius: 50%;
 	display: inline-block;
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+.rwmb-button.remove-clone .dashicons {
+	font-size: 14px;
+	line-height: 20px;
 }
 .remove-clone:focus {
 	outline: 0;
