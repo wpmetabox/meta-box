@@ -189,7 +189,7 @@ jQuery( function ( $ ) {
 				items: '.rwmb-clone',
 				start: function ( event, ui ) {
 					// Make the placeholder has the same height as dragged item
-					ui.placeholder.height( ui.item.height() );
+					ui.placeholder.height( ui.item.outerHeight() );
 				}
 			} );
 	} );
