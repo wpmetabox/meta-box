@@ -20,7 +20,8 @@
 
 		// Initialize DOM elements
 		initDomElements: function () {
-			this.canvas = this.$container.find( '.rwmb-map-canvas' )[0];
+			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
+			this.canvas = this.$canvas[0];
 			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
 			this.$findButton = this.$container.find( '.rwmb-map-goto-address-button' );
 			this.addressField = this.$findButton.val();
@@ -28,7 +29,7 @@
 
 		// Initialize map elements
 		initMapElements: function () {
-			var defaultLoc = $( this.canvas ).data( 'default-loc' ),
+			var defaultLoc = this.$canvas.data( 'default-loc' ),
 				latLng;
 
 			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, - 6.258860];
@@ -126,20 +127,24 @@
 				return;
 			}
 
+			var $address = $( '#' + this.addressField );
+
 			// If Meta Box Geo Location installed. Do not run auto complete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
-				$( '#' + this.addressField ).on( 'selected_address', function () {
+				$address.on( 'selected_address', function () {
 					that.$findButton.trigger( 'click' );
 				} );
 
 				return false;
 			}
 
-			$( '#' + this.addressField ).autocomplete( {
+			$address.autocomplete( {
 				source: function ( request, response ) {
-					that.geocoder.geocode( {
-						'address': request.term
-					}, function ( results ) {
+					var options = {
+						'address': request.term,
+						'region': that.$canvas.data( 'region' )
+					};
+					that.geocoder.geocode( options, function ( results ) {
 						response( $.map( results, function ( item ) {
 							return {
 								label: item.formatted_address,

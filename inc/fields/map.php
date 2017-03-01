@@ -46,9 +46,10 @@ class RWMB_Map_Field extends RWMB_Field {
 		$html = '<div class="rwmb-map-field">';
 
 		$html .= sprintf(
-			'<div class="rwmb-map-canvas" data-default-loc="%s"></div>
+			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"></div>
 			<input type="hidden" name="%s" class="rwmb-map-coordinate" value="%s">',
 			esc_attr( $field['std'] ),
+			esc_attr( $field['region'] ),
 			esc_attr( $field['field_name'] ),
 			esc_attr( $meta )
 		);
@@ -58,7 +59,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			$html .= sprintf(
 				'<button class="button rwmb-map-goto-address-button" value="%s">%s</button>',
 				is_array( $address ) ? implode( ',', $address ) : $address,
-				__( 'Find Address', 'meta-box' )
+				esc_html__( 'Find Address', 'meta-box' )
 			);
 		}
 
@@ -79,6 +80,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		$field = wp_parse_args( $field, array(
 			'std'           => '',
 			'address_field' => '',
+			'region'        => '',
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
