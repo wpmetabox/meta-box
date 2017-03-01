@@ -182,9 +182,40 @@ jQuery( function ( $ ) {
 		tagName: 'ul',
 		className: 'rwmb-media-list',
 
+		initialize: function ( options ) {
+			this.controller   = options.controller;
+			this.collection        = this.controller.get( 'items' );
+			this.itemView     = options.itemView || MediaItem;
+			this.getItemView  = _.memoize( function( item ) {
+ 				var itemView = new this.itemView( {
+ 					model: item,
+ 					controller: this.controller
+ 				} );
+
+				this.listenToItemView( itemView );
+
+				return itemView;
+ 			},
+ 			function( item ) {
+ 				return item.cid;
+ 			} );
+
+			this.listenTo( this.collection, 'add', this.addItemView );
+			this.listenTo( this.collection, 'remove', this.removeItemView );
+
+			// Sort media using sortable
+			this.initSortable();
+		},
+
+		listenToItemView: function( itemView ) {
+			this.listenTo( itemView, 'click:remove', this.removeItem );
+			this.listenTo( itemView, 'click:switch', this.switchItem );
+			this.listenTo( itemView, 'click:edit', this.editItem );
+		},
+
 		//Add item view
 		addItemView: function ( item ) {
-			var index = this.controller.get( 'items' ).indexOf( item ),
+			var index = this.collection.indexOf( item ),
 				itemEl = this.getItemView( item ).el;
 
 			if( 0 >= index ) {
@@ -203,25 +234,65 @@ jQuery( function ( $ ) {
 			this.getItemView(item).$el.detach();
 		},
 
-		initialize: function ( options ) {
-			this.controller   = options.controller;
-			this.itemView     = options.itemView || MediaItem;
-			this.getItemView  = _.memoize(
-	 			function( item ) {
-	 				return new this.itemView( {
-	 					model: item,
-	 					controller: this.controller
-	 				} );
-	 			},
-	 			function( item ) {
-	 				return item.cid;
-	 			} );
+		removeItem: function( item ) {
+			this.collection.remove( item );
+		},
 
-			this.listenTo( this.controller.get( 'items' ), 'add', this.addItemView );
-			this.listenTo( this.controller.get( 'items' ), 'remove', this.removeItemView );
+		switchItem: function( item ) {
+			if ( this._switchFrame ) {
+				//this.stopListening( this._frame );
+				this._switchFrame.dispose();
+			}
+			this._switchFrame = wp.media( {
+				className: 'media-frame rwmb-media-frame',
+				multiple: false,
+				title: i18nRwmbMedia.select,
+				editing: true,
+				library: {
+					type: this.controller.get( 'mimeType' )
+				}
+			} );
 
-			// Sort media using sortable
-			this.initSortable();
+			this._switchFrame.on( 'select', function () {
+				var selection = this._switchFrame.state().get( 'selection' ),
+					collection  = this.collection,
+					index = collection.indexOf( this.model );
+				if( !_.isEmpty( selection ) ) {
+					collection.remove( this.model );
+					collection.add( selection, { at: index } );
+				}
+			}, this );
+
+			this._switchFrame.open();
+			return false;
+		},
+
+		editItem: function( item ) {
+			// Destroy the previous collection frame.
+			if ( this._editFrame ) {
+				//this.stopListening( this._frame );
+				this._editFrame.dispose();
+			}
+
+			// Trigger the media frame to open the correct item
+			this._editFrame = new EditMedia( {
+				frame     : 'edit-attachments',
+				controller: {
+					// Needed to trick Edit modal to think there is a gridRouter
+					gridRouter: {
+						navigate: function ( destination )
+						{
+						},
+						baseUrl : function ( url )
+						{
+						}
+					}
+				},
+				library   : this.collection,
+				model     : item
+			} );
+
+			this._editFrame.open();
 		},
 
 		initSortable: function () {
@@ -330,6 +401,7 @@ jQuery( function ( $ ) {
 
 		initialize: function ( options ) {
 			this.controller = options.controller;
+			this.collection      = this.controller.get( 'items' );
 
 			// Auto hide if you reach the max number of media
 			this.listenTo( this.controller, 'change:full', function () {
@@ -361,67 +433,18 @@ jQuery( function ( $ ) {
 
 		events: {
 			'click .rwmb-switch': function( e ) {
-				if ( this._frame ) {
-					//this.stopListening( this._frame );
-					this._frame.dispose();
-				}
-				this._frame = wp.media( {
-					className: 'media-frame rwmb-media-frame',
-					multiple: false,
-					title: i18nRwmbMedia.select,
-					editing: true,
-					library: {
-						type: this.controller.get( 'mimeType' )
-					}
-				} );
-
-				this._frame.on( 'select', function () {
-					var selection = this._frame.state().get( 'selection' ),
-						collection = this.controller.get( 'items' ),
-						index = collection.indexOf( this.model );
-					if( !_.isEmpty( selection ) ) {
-						collection.remove( this.model );
-						collection.add( selection, { at: index } );
-					}
-				}, this );
-
-				this._frame.open();
+				this.trigger( 'click:switch', this.model );
 				return false;
 			},
 
 			// Event when remove button clicked
 			'click .rwmb-remove-media': function ( e ) {
-				this.controller.get( 'items' ).remove( this.model );
+				this.trigger( 'click:remove', this.model );
 				return false;
 			},
 
 			'click .rwmb-edit-media': function ( e ) {
-				// Destroy the previous collection frame.
-				if ( this._frame ) {
-					//this.stopListening( this._frame );
-					this._frame.dispose();
-				}
-
-				// Trigger the media frame to open the correct item
-				this._frame = new EditMedia( {
-					frame     : 'edit-attachments',
-					controller: {
-						// Needed to trick Edit modal to think there is a gridRouter
-						gridRouter: {
-							navigate: function ( destination )
-							{
-							},
-							baseUrl : function ( url )
-							{
-							}
-						}
-					},
-					library   : this.controller.get( 'items' ),
-					model     : this.model
-				} );
-
-				this._frame.open();
-
+				this.trigger( 'click:edit', this.model );
 				return false;
 			}
 		},
