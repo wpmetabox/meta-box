@@ -14,7 +14,7 @@ class RWMB_Date_Field extends RWMB_Datetime_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_register_scripts();
-		wp_enqueue_style( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'rwmb-date' );
 		wp_enqueue_script( 'rwmb-date' );
 	}
 
