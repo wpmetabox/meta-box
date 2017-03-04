@@ -5,3 +5,7 @@ label.error{
     padding-left: auto;
     padding-right: 3px;
 }
+.rwmb-button.remove-clone {
+    right: auto;
+    left: 0;
+}
