@@ -109,7 +109,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 
 		return $output;
 	}
-}// End if().
+}
 
 if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 	/**
