@@ -32,13 +32,10 @@ class RWMB_Media_Modal {
 	 * Get list of custom fields and store in the current object for future use.
 	 */
 	public function get_fields() {
-		$meta_boxes = RWMB_Core::get_meta_boxes();
+		$meta_boxes = RWMB_Meta_Boxes::get_all();
 		foreach ( $meta_boxes as $meta_box ) {
-			$meta_box           = RW_Meta_Box::normalize( $meta_box );
-			$meta_box['fields'] = RW_Meta_Box::normalize_fields( $meta_box['fields'] );
-
-			if ( $this->is_in_modal( $meta_box ) ) {
-				$this->fields = array_merge( $this->fields, array_values( $meta_box['fields'] ) );
+			if ( $this->is_in_modal( $meta_box->meta_box ) ) {
+				$this->fields = array_merge( $this->fields, array_values( $meta_box->fields ) );
 			}
 		}
 	}

@@ -366,4 +366,15 @@ class RW_Meta_Box {
 
 		return 'post' === $screen->base && in_array( $screen->post_type, $this->meta_box['post_types'], true );
 	}
+
+	/**
+	 * Magic function to get meta box property.
+	 *
+	 * @param string $key Meta box property name.
+	 *
+	 * @return mixed
+	 */
+	public function __get( $key ) {
+		return isset( $this->meta_box[ $key ] ) ? $this->meta_box[ $key ] : false;
+	}
 }

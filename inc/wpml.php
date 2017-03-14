@@ -28,7 +28,7 @@ class RWMB_WPML {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
 			return;
 		}
-		add_filter( 'wpml_duplicate_generic_string', array( $this, 'wpml_translate_values' ), 10, 3 );
+		add_filter( 'wpml_duplicate_generic_string', array( $this, 'translate_values' ), 10, 3 );
 		add_filter( 'rwmb_normalize_field', array( $this, 'modify_field' ) );
 	}
 
@@ -40,35 +40,31 @@ class RWMB_WPML {
 	 * @param array  $meta_data       Meta arguments.
 	 * @return mixed
 	 */
-	public function wpml_translate_values( $value, $target_language, $meta_data ) {
-		$fields = RWMB_Core::get_fields();
-
-		foreach ( $fields as $field ) {
-			if ( ! in_array( $field['type'], array( 'post', 'taxonomy_advanced' ), true ) || $field['id'] !== $meta_data['key'] ) {
-				continue;
-			}
-
-			// Post type needed for WPML filter differs between fields.
-			$post_type = 'taxonomy_advanced' === $field['type'] ? $field['taxonomy'] : $field['post_type'];
-
-			// Translating values, whether are stored as comma separated strings or not.
-			if ( false === strpos( $value, ',' ) ) {
-				$value = apply_filters( 'wpml_object_id', $value, $post_type, true, $target_language );
-				return $value;
-			}
-
-			// Dealing with IDs stored as comma separated strings.
-			$translated_values = array();
-			$values            = explode( ',', $value );
-
-			foreach ( $values as $v ) {
-				$translated_values[] = apply_filters( 'wpml_object_id', $v, $post_type, true, $target_language );
-			}
-
-			$value = implode( ',', $translated_values );
+	public function translate_values( $value, $target_language, $meta_data ) {
+		$field = $this->find_field( $meta_data['key'] );
+		error_log( print_r( $field, true ) );
+		if ( false !== $field ) {
 			return $value;
 		}
 
+		// Object type needed for WPML filter differs between fields.
+		$object_type = 'taxonomy_advanced' === $field['type'] ? $field['taxonomy'] : $field['post_type'];
+
+		// Translating values, whether are stored as comma separated strings or not.
+		if ( false === strpos( $value, ',' ) ) {
+			$value = apply_filters( 'wpml_object_id', $value, $object_type, true, $target_language );
+			return $value;
+		}
+
+		// Dealing with IDs stored as comma separated strings.
+		$translated_values = array();
+		$values            = explode( ',', $value );
+
+		foreach ( $values as $v ) {
+			$translated_values[] = apply_filters( 'wpml_object_id', $v, $object_type, true, $target_language );
+		}
+
+		$value = implode( ',', $translated_values );
 		return $value;
 	}
 
@@ -115,5 +111,25 @@ class RWMB_WPML {
 		}
 
 		return $field;
+	}
+
+	/**
+	 * Find a field that need to translate meta value.
+	 *
+	 * @param string $id Field ID.
+	 *
+	 * @return array|bool False or field parameters.
+	 */
+	protected function find_field( $id ) {
+		$meta_boxes = RWMB_Meta_Boxes::get_all();
+		foreach ( $meta_boxes as $meta_box ) {
+			foreach ( $meta_box->fields as $field ) {
+				if ( isset( $field['id'] ) && $field['id'] === $id && in_array( $field['type'], array( 'post', 'taxonomy_advanced' ), true ) ) {
+					return $field;
+				}
+			}
+		}
+
+		return false;
 	}
 }

@@ -25,13 +25,12 @@ class RWMB_Helper {
 	public static function hash_fields( $post_type ) {
 		self::$fields[ $post_type ] = array();
 
-		$meta_boxes = RWMB_Core::get_meta_boxes();
+		$meta_boxes = RWMB_Meta_Boxes::get_all();
 		foreach ( $meta_boxes as $meta_box ) {
-			$meta_box = RW_Meta_Box::normalize( $meta_box );
-			if ( ! in_array( $post_type, $meta_box['post_types'], true ) ) {
+			if ( ! in_array( $post_type, $meta_box->post_types, true ) ) {
 				continue;
 			}
-			foreach ( $meta_box['fields'] as $field ) {
+			foreach ( $meta_box->fields as $field ) {
 				if ( ! empty( $field['id'] ) ) {
 					self::$fields[ $post_type ][ $field['id'] ] = $field;
 				}
@@ -53,11 +52,7 @@ class RWMB_Helper {
 			self::hash_fields( $post_type );
 		}
 		$fields = self::$fields[ $post_type ];
-		if ( ! isset( $fields[ $field_id ] ) ) {
-			return false;
-		}
-		$field = $fields[ $field_id ];
-		return RWMB_Field::call( 'normalize', $field );
+		return isset( $fields[ $field_id ] ) ? $fields[ $field_id ] : false;
 	}
 
 	/**

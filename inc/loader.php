@@ -80,7 +80,8 @@ class RWMB_Loader {
 		$autoloader->register();
 
 		// Plugin core.
-		new RWMB_Core;
+		$core = new RWMB_Core;
+		$core->init();
 
 		if ( is_admin() ) {
 			// Validation module.
