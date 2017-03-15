@@ -43,8 +43,9 @@ class RWMB_Core {
 	 */
 	public function register_meta_boxes() {
 		$configs = apply_filters( 'rwmb_meta_boxes', array() );
+		$registry = rwmb_get_meta_box_registry();
 		foreach ( $configs as $config ) {
-			RWMB_Meta_Boxes::add( new RW_Meta_Box( $config ) );
+			$registry->add( new RW_Meta_Box( $config ) );
 		}
 	}
 

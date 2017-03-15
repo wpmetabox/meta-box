@@ -256,10 +256,10 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	protected function validate() {
-		$nonce = (string) filter_input( INPUT_POST, "nonce_{$this->id}" );
+		$nonce = filter_input( INPUT_POST, "nonce_{$this->id}", FILTER_SANITIZE_STRING );
 
 		return
-			true !== $this->saved
+			! $this->saved
 			&& ( ! defined( 'DOING_AUTOSAVE' ) || $this->autosave )
 			&& wp_verify_nonce( $nonce, "rwmb-save-{$this->id}" );
 	}

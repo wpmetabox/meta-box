@@ -25,7 +25,7 @@ class RWMB_Helper {
 	public static function hash_fields( $post_type ) {
 		self::$fields[ $post_type ] = array();
 
-		$meta_boxes = RWMB_Meta_Boxes::get_all();
+		$meta_boxes = rwmb_get_meta_box_registry()->all();
 		foreach ( $meta_boxes as $meta_box ) {
 			if ( ! in_array( $post_type, $meta_box->post_types, true ) ) {
 				continue;

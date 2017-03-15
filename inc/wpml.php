@@ -121,7 +121,7 @@ class RWMB_WPML {
 	 * @return array|bool False or field parameters.
 	 */
 	protected function find_field( $id ) {
-		$meta_boxes = RWMB_Meta_Boxes::get_all();
+		$meta_boxes = rwmb_get_meta_box_registry()->all();
 		foreach ( $meta_boxes as $meta_box ) {
 			foreach ( $meta_box->fields as $field ) {
 				if ( isset( $field['id'] ) && $field['id'] === $id && in_array( $field['type'], array( 'post', 'taxonomy_advanced' ), true ) ) {

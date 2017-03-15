@@ -32,7 +32,7 @@ class RWMB_Media_Modal {
 	 * Get list of custom fields and store in the current object for future use.
 	 */
 	public function get_fields() {
-		$meta_boxes = RWMB_Meta_Boxes::get_all();
+		$meta_boxes = rwmb_get_meta_box_registry()->all();
 		foreach ( $meta_boxes as $meta_box ) {
 			if ( $this->is_in_modal( $meta_box->meta_box ) ) {
 				$this->fields = array_merge( $this->fields, array_values( $meta_box->fields ) );

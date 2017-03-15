@@ -136,3 +136,17 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 
 	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
 }
+
+/**
+ * Get the meta box registry.
+ * Always return the same instance of the registry.
+ *
+ * @return RWMB_Meta_Box_Registry
+ */
+function rwmb_get_meta_box_registry() {
+	static $registry = null;
+	if ( null === $registry ) {
+		$registry = new RWMB_Meta_Box_Registry;
+	}
+	return $registry;
+}
