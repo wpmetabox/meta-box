@@ -93,7 +93,7 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 
 		return RWMB_Field::call( $method, $field, $args, $post_id );
 	}
-}
+} // End if().
 
 if ( ! function_exists( 'rwmb_get_value' ) ) {
 	/**
