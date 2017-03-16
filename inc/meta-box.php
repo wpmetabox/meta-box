@@ -369,4 +369,15 @@ class RW_Meta_Box {
 	public function __get( $key ) {
 		return isset( $this->meta_box[ $key ] ) ? $this->meta_box[ $key ] : false;
 	}
+
+	/**
+	 * Magic function to check if meta box property is set.
+	 *
+	 * @param string $key Meta box property name.
+	 *
+	 * @return bool
+	 */
+	public function __isset( $key ) {
+		return isset( $this->meta_box[ $key ] );
+	}
 }
