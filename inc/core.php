@@ -42,10 +42,13 @@ class RWMB_Core {
 	 * - no need to check for class existences.
 	 */
 	public function register_meta_boxes() {
-		$configs = apply_filters( 'rwmb_meta_boxes', array() );
-		$registry = rwmb_get_meta_box_registry();
+		$configs    = apply_filters( 'rwmb_meta_boxes', array() );
+		$meta_boxes = rwmb_get_registry( 'meta_box' );
+		$fields     = rwmb_get_registry( 'field' );
 		foreach ( $configs as $config ) {
-			$registry->add( new RW_Meta_Box( $config ) );
+			$meta_box = new RW_Meta_Box( $config );
+			$meta_boxes->add( $meta_box );
+			$fields->add_from_meta_box( $meta_box );
 		}
 	}
 

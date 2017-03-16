@@ -10,6 +10,13 @@
  */
 class RWMB_WPML {
 	/**
+	 * List of fields that need to translate values (because they're saved as IDs).
+	 *
+	 * @var array
+	 */
+	protected $field_types = array( 'post', 'taxonomy_advanced' );
+
+	/**
 	 * Initialize.
 	 */
 	public function init() {
@@ -28,7 +35,7 @@ class RWMB_WPML {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
 			return;
 		}
-		add_filter( 'wpml_duplicate_generic_string', array( $this, 'translate_values' ), 10, 3 );
+		add_filter( 'wpml_duplicate_generic_string', array( $this, 'translate_ids' ), 10, 3 );
 		add_filter( 'rwmb_normalize_field', array( $this, 'modify_field' ) );
 	}
 
@@ -40,10 +47,13 @@ class RWMB_WPML {
 	 * @param array  $meta_data       Meta arguments.
 	 * @return mixed
 	 */
-	public function translate_values( $value, $target_language, $meta_data ) {
-		$field = $this->find_field( $meta_data['key'] );
-		error_log( print_r( $field, true ) );
-		if ( false !== $field ) {
+	public function translate_ids( $value, $target_language, $meta_data ) {
+		if ( 'custom_field' !== $meta_data['context'] ) {
+			return $value;
+		}
+
+		$field = rwmb_get_registry( 'field' )->get( $meta_data['key'], get_post_type( $meta_data['master_post_id'] ) );
+		if ( false !== $field || ! in_array( $field['type'], $this->field_types, true ) ) {
 			return $value;
 		}
 
@@ -111,25 +121,5 @@ class RWMB_WPML {
 		}
 
 		return $field;
-	}
-
-	/**
-	 * Find a field that need to translate meta value.
-	 *
-	 * @param string $id Field ID.
-	 *
-	 * @return array|bool False or field parameters.
-	 */
-	protected function find_field( $id ) {
-		$meta_boxes = rwmb_get_meta_box_registry()->all();
-		foreach ( $meta_boxes as $meta_box ) {
-			foreach ( $meta_box->fields as $field ) {
-				if ( isset( $field['id'] ) && $field['id'] === $id && in_array( $field['type'], array( 'post', 'taxonomy_advanced' ), true ) ) {
-					return $field;
-				}
-			}
-		}
-
-		return false;
 	}
 }

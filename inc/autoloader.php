@@ -84,9 +84,11 @@ class RWMB_Autoloader {
 			'clone',
 			'helper',
 			'meta-box',
+			'meta-box-registry',
 			'validation',
-			'sanitize',
+			'sanitizer',
 			'media-modal',
+			'wpml',
 
 			// Walkers.
 			'walkers/walker',
@@ -96,6 +98,7 @@ class RWMB_Autoloader {
 
 			// Fields.
 			'field',
+			'field-registry',
 
 			'fields/multiple-values',
 			'fields/autocomplete',

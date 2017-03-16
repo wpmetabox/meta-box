@@ -16,13 +16,8 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	 * @return mixed
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null ) {
-		$args = wp_parse_args( $args );
-
-		/*
-		 * If meta boxes is registered in the backend only, we can't get field's params.
-		 * This is for backward compatibility with version < 4.8.0.
-		 */
-		$field = RWMB_Helper::find_field( $key, $post_id );
+		$args  = wp_parse_args( $args );
+		$field = rwmb_get_registry( 'field' )->get( $key, get_post_type( $post_id ) );
 
 		/*
 		 * If field is not found, which can caused by registering meta boxes for the backend only or conditional registration.
@@ -51,7 +46,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = RWMB_Helper::find_field( $field_id, $post_id );
+		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
 
 		// Get field value.
 		$value = $field ? RWMB_Field::call( 'get_value', $field, $args, $post_id ) : false;
@@ -84,7 +79,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 */
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
-		$field = RWMB_Helper::find_field( $field_id, $post_id );
+		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
 
 		if ( ! $field ) {
 			return '';
@@ -137,16 +132,25 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
 }
 
-/**
- * Get the meta box registry.
- * Always return the same instance of the registry.
- *
- * @return RWMB_Meta_Box_Registry
- */
-function rwmb_get_meta_box_registry() {
-	static $registry = null;
-	if ( null === $registry ) {
-		$registry = new RWMB_Meta_Box_Registry;
+if ( ! function_exists( 'rwmb_get_registry' ) ) {
+	/**
+	 * Get the registry by type.
+	 * Always return the same instance of the registry.
+	 *
+	 * @param string $type Registry type.
+	 *
+	 * @return object
+	 */
+	function rwmb_get_registry( $type ) {
+		static $data = array();
+
+		$type  = str_replace( array( '-', '_' ), ' ', $type );
+		$class = 'RWMB_' . ucwords( $type ) . '_Registry';
+		$class = str_replace( ' ', '_', $class );
+		if ( ! isset( $data[ $type ] ) ) {
+			$data[ $type ] = new $class;
+		}
+
+		return $data[ $type ];
 	}
-	return $registry;
 }

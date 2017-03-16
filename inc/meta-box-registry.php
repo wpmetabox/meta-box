@@ -1,6 +1,6 @@
 <?php
 /**
- * A registry for storing all instantiated meta boxes.
+ * A registry for storing all meta boxes.
  *
  * @link    https://designpatternsphp.readthedocs.io/en/latest/Structural/Registry/README.html
  * @package Meta Box
@@ -11,38 +11,38 @@
  */
 class RWMB_Meta_Box_Registry {
 	/**
-	 * All meta box objects.
+	 * Internal data storage.
 	 *
 	 * @var array
 	 */
-	protected $instances = array();
+	private $data = array();
 
 	/**
-	 * Add a meta box object to the pool.
+	 * Add a meta box to the registry.
 	 *
 	 * @param RW_Meta_Box $meta_box Meta box instance.
 	 */
 	public function add( RW_Meta_Box $meta_box ) {
-		$this->instances[ $meta_box->id ] = $meta_box;
+		$this->data[ $meta_box->id ] = $meta_box;
 	}
 
 	/**
-	 * Retrieve a meta box instance by id.
+	 * Retrieve a meta box by id.
 	 *
-	 * @param string $id A meta box instance id.
+	 * @param string $id Meta box id.
 	 *
-	 * @return RW_Meta_Box|bool False or meta box object instance.
+	 * @return RW_Meta_Box|bool False or meta box object.
 	 */
 	public function get( $id ) {
-		return isset( $this->instances[ $id ] ) ? $this->instances[ $id ] : false;
+		return isset( $this->data[ $id ] ) ? $this->data[ $id ] : false;
 	}
 
 	/**
-	 * Retrieve all meta box instances.
+	 * Retrieve all meta boxes.
 	 *
 	 * @return array
 	 */
 	public function all() {
-		return $this->instances;
+		return $this->data;
 	}
 }

@@ -9,52 +9,6 @@
  * Wrapper class for helper functions.
  */
 class RWMB_Helper {
-
-	/**
-	 * Stores all registered fields.
-	 *
-	 * @var array
-	 */
-	private static $fields = array();
-
-	/**
-	 * Hash all fields into an indexed array for search.
-	 *
-	 * @param string $post_type Post type.
-	 */
-	public static function hash_fields( $post_type ) {
-		self::$fields[ $post_type ] = array();
-
-		$meta_boxes = rwmb_get_meta_box_registry()->all();
-		foreach ( $meta_boxes as $meta_box ) {
-			if ( ! in_array( $post_type, $meta_box->post_types, true ) ) {
-				continue;
-			}
-			foreach ( $meta_box->fields as $field ) {
-				if ( ! empty( $field['id'] ) ) {
-					self::$fields[ $post_type ][ $field['id'] ] = $field;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Find field by field ID.
-	 * This function finds field in meta boxes registered by 'rwmb_meta_boxes' filter.
-	 *
-	 * @param string $field_id Field ID.
-	 * @param int    $post_id  Post ID.
-	 * @return array|false Field params (array) if success. False otherwise.
-	 */
-	public static function find_field( $field_id, $post_id = null ) {
-		$post_type = get_post_type( $post_id );
-		if ( empty( self::$fields[ $post_type ] ) ) {
-			self::hash_fields( $post_type );
-		}
-		$fields = self::$fields[ $post_type ];
-		return isset( $fields[ $field_id ] ) ? $fields[ $field_id ] : false;
-	}
-
 	/**
 	 * Get post meta.
 	 *
