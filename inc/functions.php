@@ -24,12 +24,74 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 		 * Then fallback to the old method to retrieve meta (which uses get_post_meta() as the latest fallback).
 		 */
 		if ( false === $field ) {
-			return apply_filters( 'rwmb_meta', RWMB_Helper::meta( $key, $args, $post_id ) );
+			return apply_filters( 'rwmb_meta', rwmb_meta_legacy( $key, $args, $post_id ) );
 		}
 		$meta = in_array( $field['type'], array( 'oembed', 'map' ), true ) ?
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
+	}
+}
+
+if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
+	/**
+	 * Get post meta.
+	 *
+	 * @param string   $key     Meta key. Required.
+	 * @param array    $args    Array of arguments. Optional.
+	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return mixed
+	 */
+	function rwmb_meta_legacy( $key, $args = array(), $post_id = null ) {
+		$args = wp_parse_args( $args, array(
+			'type'     => 'text',
+			'multiple' => false,
+			'clone'    => false,
+		) );
+		// Always set 'multiple' true for following field types.
+		if ( in_array( $args['type'], array(
+			'checkbox_list',
+			'autocomplete',
+			'file',
+			'file_advanced',
+			'file_upload',
+			'image',
+			'image_advanced',
+			'image_upload',
+			'plupload_image',
+			'thickbox_image',
+		), true ) ) {
+			$args['multiple'] = true;
+		}
+
+		$field = array(
+			'id'       => $key,
+			'type'     => $args['type'],
+			'clone'    => $args['clone'],
+			'multiple' => $args['multiple'],
+		);
+
+		$method = 'get_value';
+		switch ( $args['type'] ) {
+			case 'taxonomy':
+			case 'taxonomy_advanced':
+				$field['taxonomy'] = $args['taxonomy'];
+				break;
+			case 'map':
+				$field  = array(
+					'id'       => $key,
+					'multiple' => false,
+					'clone'    => false,
+				);
+				$method = 'the_value';
+				break;
+			case 'oembed':
+				$method = 'the_value';
+				break;
+		}
+
+		return RWMB_Field::call( $method, $field, $args, $post_id );
 	}
 }
 

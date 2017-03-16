@@ -82,7 +82,6 @@ class RWMB_Autoloader {
 			// Core.
 			'core',
 			'clone',
-			'helper',
 			'meta-box',
 			'meta-box-registry',
 			'validation',
