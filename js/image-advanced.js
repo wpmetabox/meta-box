@@ -33,5 +33,5 @@ jQuery( function ( $ ) {
 	}
 
 	$( 'input.rwmb-image_advanced' ).each( initImageField );
-	$( '#wpbody' ).on( 'clone', 'input.rwmb-image_advanced', initImageField )
+	$( document ).on( 'clone', 'input.rwmb-image_advanced', initImageField )
 } );

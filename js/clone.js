@@ -148,7 +148,7 @@ jQuery( function ( $ ) {
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
 	}
 
-	$( '#wpbody-content' )
+	$( document )
 		// Add clones
 		.on( 'click', '.add-clone', function ( e ) {
 			e.preventDefault();

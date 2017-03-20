@@ -101,7 +101,7 @@ class RW_Meta_Box {
 	 * Enqueue common scripts and styles.
 	 */
 	public function enqueue() {
-		if ( ! $this->is_edit_screen() ) {
+		if ( is_admin() && ! $this->is_edit_screen() ) {
 			return;
 		}
 
@@ -255,7 +255,7 @@ class RW_Meta_Box {
 	 *
 	 * @return bool
 	 */
-	protected function validate() {
+	public function validate() {
 		$nonce = filter_input( INPUT_POST, "nonce_{$this->id}", FILTER_SANITIZE_STRING );
 
 		return

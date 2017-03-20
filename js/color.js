@@ -31,5 +31,5 @@ jQuery( function ( $ ) {
 	}
 
 	$( '.rwmb-color' ).each( update );
-	$( '#wpbody' ).on( 'clone', '.rwmb-color', update );
+	$( document ).on( 'clone', '.rwmb-color', update );
 } );
