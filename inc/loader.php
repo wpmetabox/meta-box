@@ -43,7 +43,7 @@ class RWMB_Loader {
 	public static function get_path( $path = '' ) {
 		// Plugin base path.
 		$path       = wp_normalize_path( untrailingslashit( $path ) );
-		$themes_dir = wp_normalize_path( untrailingslashit( dirname( realpath( get_stylesheet_directory() ) ) ) );
+		$themes_dir = wp_normalize_path( untrailingslashit( dirname( get_stylesheet_directory() ) ) );
 
 		// Default URL.
 		$url = plugins_url( '', $path . '/' . basename( $path ) . '.php' );
