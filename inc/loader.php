@@ -50,9 +50,9 @@ class RWMB_Loader {
 
 		// Included into themes.
 		if (
-			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
-			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
-			&& 0 === strpos( $path, $themes_dir )
+			false !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
+			&& false !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
+			&& false === strpos( $path, $themes_dir )
 		) {
 			$themes_url = untrailingslashit( dirname( get_stylesheet_directory_uri() ) );
 			$url        = str_replace( $themes_dir, $themes_url, $path );
