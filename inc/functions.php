@@ -44,27 +44,11 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 	 * @return mixed
 	 */
 	function rwmb_meta_legacy( $key, $args = array(), $post_id = null ) {
-		$args = wp_parse_args( $args, array(
+		$args  = wp_parse_args( $args, array(
 			'type'     => 'text',
 			'multiple' => false,
 			'clone'    => false,
 		) );
-		// Always set 'multiple' true for following field types.
-		if ( in_array( $args['type'], array(
-			'checkbox_list',
-			'autocomplete',
-			'file',
-			'file_advanced',
-			'file_upload',
-			'image',
-			'image_advanced',
-			'image_upload',
-			'plupload_image',
-			'thickbox_image',
-		), true ) ) {
-			$args['multiple'] = true;
-		}
-
 		$field = array(
 			'id'       => $key,
 			'type'     => $args['type'],
@@ -79,17 +63,11 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 				$field['taxonomy'] = $args['taxonomy'];
 				break;
 			case 'map':
-				$field  = array(
-					'id'       => $key,
-					'multiple' => false,
-					'clone'    => false,
-				);
-				$method = 'the_value';
-				break;
 			case 'oembed':
 				$method = 'the_value';
 				break;
 		}
+		$field = RWMB_Field::call( 'normalize', $field );
 
 		return RWMB_Field::call( $method, $field, $args, $post_id );
 	}
