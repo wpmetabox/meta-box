@@ -69,4 +69,15 @@ class RWMB_Core {
 			delete_post_meta( $post->ID, '_wp_page_template' );
 		}
 	}
+
+	/**
+	 * Get registered meta boxes via a filter.
+	 *
+	 * @deprecated No longer used. Keep for backward-compatibility with extensions.
+	 *
+	 * @return array
+	 */
+	public static function get_meta_boxes() {
+		return apply_filters( 'rwmb_meta_boxes', array() );
+	}
 }
