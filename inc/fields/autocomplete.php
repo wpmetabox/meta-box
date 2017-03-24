@@ -13,7 +13,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', array( 'wp-admin' ), RWMB_VER );
+		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', '', RWMB_VER );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
 
 		self::localize_script( 'rwmb-autocomplete', 'RWMB_Autocomplete', array(
@@ -36,9 +36,9 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		$field   = apply_filters( 'rwmb_autocomplete_field', $field, $meta );
 		$options = $field['options'];
 
-		if ( ! is_string( $field['options'] ) ) {
+		if ( is_array( $field['options'] ) ) {
 			$options = array();
-			foreach ( (array) $field['options'] as $value => $label ) {
+			foreach ( $field['options'] as $value => $label ) {
 				$options[] = array(
 					'value' => $value,
 					'label' => $label,
@@ -53,8 +53,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		$html = sprintf(
 			'<input type="text" class="rwmb-autocomplete-search" size="%s">
 			<input type="hidden" name="%s" class="rwmb-autocomplete" data-options="%s" disabled>',
-			$field['size'],
-			$field['field_name'],
+			esc_attr( $field['size'] ),
+			esc_attr( $field['field_name'] ),
 			esc_attr( $options )
 		);
 
@@ -72,28 +72,27 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 
 		if ( is_array( $field['options'] ) ) {
 			foreach ( $field['options'] as $value => $label ) {
-				if ( in_array( $value, $meta ) ) {
-					$html .= sprintf(
-						$tpl,
-						$label,
-						__( 'Delete', 'meta-box' ),
-						$field['field_name'],
-						$value
-					);
-				}
-			}
-		} else {
-			foreach ( $meta as $value ) {
-				if ( empty( $value ) ) {
+				if ( ! in_array( $value, $meta ) ) {
 					continue;
 				}
+				$html .= sprintf(
+					$tpl,
+					esc_html( $label ),
+					esc_html__( 'Delete', 'meta-box' ),
+					esc_attr( $field['field_name'] ),
+					esc_attr( $value )
+				);
+			}
+		} else {
+			$meta = array_filter( $meta );
+			foreach ( $meta as $value ) {
 				$label = apply_filters( 'rwmb_autocomplete_result_label', $value, $field );
 				$html .= sprintf(
 					$tpl,
-					$label,
-					__( 'Delete', 'meta-box' ),
-					$field['field_name'],
-					$value
+					esc_html( $label ),
+					esc_html__( 'Delete', 'meta-box' ),
+					esc_attr( $field['field_name'] ),
+					esc_attr( $value )
 				);
 			}
 		}
