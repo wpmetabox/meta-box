@@ -121,7 +121,7 @@ jQuery( function ( $ ) {
 			this.$input = $( options.input );
 			this.controller = new Controller( _.extend(
 				{
-					fieldName: this.$input.attr( 'name' ),
+					fieldName: this.$input.attr( 'name' ) + '[]',
 					ids: this.$input.val().split( ',' )
 				},
 				this.$el.data( 'options' )
@@ -145,6 +145,7 @@ jQuery( function ( $ ) {
 
 			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function () {
 				that.$input.trigger( 'change' );
+				that.$input.val( '' );
 			}, 500 ) );
 		},
 

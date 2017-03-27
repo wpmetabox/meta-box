@@ -104,12 +104,11 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes         = parent::get_attributes( $field, $value );
-		$attributes['type'] = 'hidden';
-		$attributes['name'] .= ! $field['clone'] && $field['multiple'] ? '[]' : '';
-		$attributes['disabled'] = true;
-		$attributes['id']       = false;
-		$attributes['value']    = $value;
+		$attributes          = parent::get_attributes( $field, $value );
+		$attributes['type']  = 'hidden';
+		$attributes['name']  = $field['clone'] ? str_replace( '[]', '', $attributes['name'] ) : $attributes['name'];
+		$attributes['id']    = false;
+		$attributes['value'] = $value;
 
 		return $attributes;
 	}
@@ -148,6 +147,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+		$new = ! is_array( $new ) && is_string( $new ) ? explode( ',', $new ) : $new;
 		array_walk( $new, 'absint' );
 		return array_filter( array_unique( $new ) );
 	}
