@@ -145,6 +145,9 @@ jQuery( function ( $ ) {
 
 			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function () {
 				that.$input.trigger( 'change' );
+			}, 500 ) );
+
+			this.controller.get( 'items' ).on( 'remove', _.debounce( function () {
 				that.$input.val( '' );
 			}, 500 ) );
 		},
