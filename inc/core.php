@@ -78,6 +78,7 @@ class RWMB_Core {
 	 * @return array
 	 */
 	public static function get_meta_boxes() {
-		return apply_filters( 'rwmb_meta_boxes', array() );
+		$meta_boxes = rwmb_get_registry( 'meta_box' )->all();
+		return wp_list_pluck( $meta_boxes, 'meta_box' );
 	}
 }
