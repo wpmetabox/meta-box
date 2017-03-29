@@ -88,25 +88,18 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$i18n_title = apply_filters( 'rwmb_file_upload_string', _x( 'Upload Files', 'file upload', 'meta-box' ), $field );
+		$meta = (array) $meta;
+		$meta = array_filter( $meta );
 		$i18n_more  = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
 
-		// Uploaded files.
-		$html    = self::get_uploaded_files( $meta, $field );
-		$classes = 'new-files';
-		if ( ! empty( $field['max_file_uploads'] ) && count( $meta ) >= (int) $field['max_file_uploads'] ) {
-			$classes .= ' hidden';
-		}
+		$html = self::get_uploaded_files( $meta, $field );
 
 		// Show form upload.
 		$html .= sprintf(
-			'<div class="%s">
-				<h4>%s</h4>
-				<div class="file-input"><input type="file" name="%s[]" /></div>
+			'<div class="rwmb-new-files">
+				<div class="rwmb-file-input"><input type="file" name="%s[]" /></div>
 				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 			</div>',
-			$classes,
-			$i18n_title,
 			$field['id'],
 			$i18n_more
 		);
@@ -125,17 +118,11 @@ class RWMB_File_Field extends RWMB_Field {
 		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
-		$classes = 'rwmb-uploaded';
-		if ( count( $files ) <= 0 ) {
-			$classes .= ' hidden';
-		}
-
 		foreach ( (array) $files as $k => $file ) {
 			$files[ $k ] = self::call( $field, 'file_html', $file );
 		}
 		return sprintf(
-			'<ul class="%s" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
-			$classes,
+			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
 			$delete_nonce,
 			$reorder_nonce,

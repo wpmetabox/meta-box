@@ -34,19 +34,3 @@
 .rwmb-file-wrapper .rwmb-uploaded .rwmb-info {
 	margin: 0 0 2px 2px;
 }
-.rwmb-file-wrapper .rwmb-uploaded li.removed {
-	width: 0;
-	margin: 0;
-	opacity: 0;
-}
-.rwmb-file-wrapper .rwmb-uploaded li.removed:after {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 2;
-	opacity: .4;
-	background-color: #f00;
-}
