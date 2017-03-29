@@ -290,6 +290,8 @@ abstract class RWMB_Field {
 
 		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour).
 		if ( $field['multiple'] ) {
+			$old = (array) $old;
+			$new = (array) $new;
 			$new_values = array_diff( $new, $old );
 			foreach ( $new_values as $new_value ) {
 				add_post_meta( $post_id, $name, $new_value, false );
