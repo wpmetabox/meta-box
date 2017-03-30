@@ -48,13 +48,11 @@ abstract class RWMB_Field {
 	 * That ensures the returned value are always been applied filters.
 	 * This method is not meant to be overwritten in specific fields.
 	 *
-	 * @param array $field Field parameters.
-	 * @param bool  $saved Whether the meta box is saved at least once.
+	 * @param array $field   Field parameters.
+	 * @param bool  $saved   Whether the meta box is saved at least once.
+	 * @param int   $post_id Post ID.
 	 */
-	public static function show( $field, $saved ) {
-		$post    = get_post();
-		$post_id = isset( $post->ID ) ? $post->ID : 0;
-
+	public static function show( $field, $saved, $post_id = 0 ) {
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 

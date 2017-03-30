@@ -30,6 +30,13 @@ class RW_Meta_Box {
 	public $saved = false;
 
 	/**
+	 * The object ID.
+	 *
+	 * @var int
+	 */
+	private $object_id = null;
+
+	/**
 	 * Create meta box based on given data.
 	 *
 	 * @param array $meta_box Meta box definition.
@@ -172,6 +179,7 @@ class RW_Meta_Box {
 	 * Callback function to show fields in meta box
 	 */
 	public function show() {
+		$this->set_object_id();
 		$saved = $this->is_saved();
 
 		// Container.
@@ -189,7 +197,7 @@ class RW_Meta_Box {
 		do_action( "rwmb_before_{$this->id}", $this );
 
 		foreach ( $this->fields as $field ) {
-			RWMB_Field::call( 'show', $field, $saved );
+			RWMB_Field::call( 'show', $field, $saved, $this->object_id );
 		}
 
 		// Allow users to add custom code after meta box content.
@@ -326,13 +334,11 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	public function is_saved() {
-		$post = get_post();
-
 		foreach ( $this->fields as $field ) {
 			if ( empty( $field['id'] ) ) {
 				continue;
 			}
-			$value = RWMB_Field::call( $field, 'raw_meta', $post->ID );
+			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 			if (
 				( ! $field['multiple'] && '' !== $value )
 				|| ( $field['multiple'] && array() !== $value )
@@ -371,13 +377,13 @@ class RW_Meta_Box {
 	}
 
 	/**
-	 * Magic function to check if meta box property is set.
+	 * Set the object ID.
 	 *
-	 * @param string $key Meta box property name.
-	 *
-	 * @return bool
+	 * @param null|int $id Object ID. null means the current object ID.
 	 */
-	public function __isset( $key ) {
-		return isset( $this->meta_box[ $key ] );
+	public function set_object_id( $id = null ) {
+		if ( null === $this->object_id ) {
+			$this->object_id = null === $id ? get_the_ID() : $id;
+		}
 	}
 }
