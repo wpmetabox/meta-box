@@ -23,6 +23,9 @@
 .rwmb-label {
 	width: 25%;
 }
+.rwmb-label > label {
+	font-weight: bold;
+}
 .rwmb-label.required > span {
 	color: #c00;
 	font-weight: bold;
