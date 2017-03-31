@@ -14,8 +14,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_media();
-		if( ! is_admin() ) {
-			wp_register_script(  'media-grid', includes_url(  "js/media-grid.min.js" ), array( 'media-editor' ), false, 1 );
+		if ( ! is_admin() ) {
+			wp_register_script( 'media-grid', includes_url( 'js/media-grid.min.js' ), array( 'media-editor' ), '', true );
 		}
 		wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone', 'media-grid' ), RWMB_VER, true );
@@ -125,7 +125,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$mime_types = wp_get_mime_types();
 		$extensions = array();
 		foreach ( $mime_types as $ext => $mime ) {
-			$ext               = explode( '|', $ext );
+			$ext                 = explode( '|', $ext );
 			$extensions[ $mime ] = $ext;
 
 			$mime_parts = explode( '/', $mime );
