@@ -53,7 +53,6 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 		$field = parent::normalize( $field );
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = wp_parse_args( $field, array(
-			'size'            => $field['multiple'] ? 5 : 0,
 			'select_all_none' => false,
 		) );
 
@@ -72,7 +71,6 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'multiple' => $field['multiple'],
-			'size'     => $field['size'],
 		) );
 
 		return $attributes;

@@ -10,13 +10,6 @@
  */
 class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	/**
-	 * Enqueue scripts and styles.
-	 */
-	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-checkbox', RWMB_CSS_URL . 'checkbox.css', array(), RWMB_VER );
-	}
-
-	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
@@ -43,16 +36,6 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	 * @return string
 	 */
 	public static function input_description( $field ) {
-		return '';
-	}
-
-	/**
-	 * Do not show field label description.
-	 *
-	 * @param array $field Field parameters.
-	 * @return string
-	 */
-	public static function label_description( $field ) {
 		return '';
 	}
 

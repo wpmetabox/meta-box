@@ -2,7 +2,7 @@
 	min-width: 160px;
 }
 .rwmb-select option {
-    padding: .5rem 1rem;
+    padding: .5em 1em;;
 }
 .rwmb-select-all-none {
 	display: block;
