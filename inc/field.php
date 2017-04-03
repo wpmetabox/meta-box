@@ -211,12 +211,12 @@ abstract class RWMB_Field {
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved ? $field['std'] : $meta;
 
-		//Ensue multiple fields are arrays
+		// Ensue multiple fields are arrays.
 		if ( $field['multiple'] ) {
 			if ( $field['clone'] ) {
 				$meta = (array) $meta;
 				foreach ( $meta as $key => $m ) {
-					$meta[$key] = (array) $m;
+					$meta[ $key ] = (array) $m;
 				}
 			} else {
 				$meta = (array) $meta;

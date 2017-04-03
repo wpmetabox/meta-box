@@ -24,7 +24,7 @@
 	width: 25%;
 }
 .rwmb-label > label {
-	font-weight: bold;
+	font-weight: 600;
 }
 .rwmb-label.required > span {
 	color: #c00;
