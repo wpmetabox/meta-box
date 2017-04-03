@@ -29,7 +29,12 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	 */
 	public static function walk( $field, $options, $db_fields, $meta ) {
 		$walker = new RWMB_Walker_Input_List( $db_fields, $field, $meta );
-		$output = sprintf( '<ul class="rwmb-input-list %s %s">',
+		$check_uncheck = '';
+		if($field['type'] === 'checkbox_list'){
+			$check_uncheck = sprintf( '<p><button class="check-uncheck-rwmb-input-list" data-name="%s">%s</button></p>', $field['id'], __('Check / Uncheck all','meta-box') );
+		}
+		$output = sprintf( '%s<ul class="rwmb-input-list %s %s">',
+			$check_uncheck,
 			$field['collapse'] ? 'collapse' : '',
 		 	$field['inline']   ? 'inline'   : ''
 		);
