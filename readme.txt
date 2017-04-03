@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
-Tested up to: 4.7.2
-Stable tag: 4.10.4
+Tested up to: 4.7.3
+Stable tag: 4.11
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -90,6 +90,40 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 4.11 =
+
+* Code architecture update:
+    * Add `object_id` property to the meta box object. Used to connect the meta box to the post object. Not heavily used yet.
+    * Add RWMB_Meta_Box_Registry and RWMB_Field_Registry to store all registered meta boxes and fields. Used to future access these objects. Use internally only. 3rd-party code should not use it as it's still experimental and can change in the future.
+    * Deprecated RWMB_Core::get_meta_boxes() due to the meta box registry above. This function was made for internally use only. 3rd-party code should not rely on it.
+    * Add magic method __get to the meta box object to quick access to meta box configuration.
+* UI update:
+    * Make the field label bold (similar to WordPress settings page).
+    * Increase margin between fields and change color for remove clone button (also reduce minus size)
+    * Remove style for checkbox (default is good).
+    * Improve styles for checkbox/radio list
+    * A little smaller padding for select box. Also remove default size for select[multiple]
+    * Add a little space between the map canvas and the "Find Address" button
+* Media fields:
+    * Media field update: Hidden field for media fields now no longer disabled. If media field js not loaded properly, code will default to hidden field and process
+      accordingly. Issue #1088.
+    * Better and simpler way to handle HTML file upload using `media_handle_upload` function.
+    * Rewrite JS for "file", simpler and modular. Also fix bug when add/remove items that doesn't toggle the Add more link correctly.
+    * Improve JS code for media field, using MediaList instead of item views (Backbone JS code).
+    * Add support for image sizes in image_advanced and image_upload. Default is thumbnail. Fixes #425.
+* Clone:
+    * Add new parameter `add_button` for the add new clone button text. Better than use filter.
+    * Fix position for remove clone button in RTL languages
+    * Update margin between clones and set clone placeholder = outer height of the cloned element.
+* Scripts and styles:
+    * Check condition for enqueueing scripts & styles only in the admin.
+    * Update the time picker library to the latest version (1.6.3) to supports "select" control for time picker. [See demo](http://trentrichardson.com/examples/timepicker/#slider_examples).
+    * Better dependencies for date picker CSS, autocomplete field.
+* Other improvements:
+    * Remove the static helper class because of a bad OOP code.
+    * Fix get plugin URL symlink when plugin is put in a theme and symlinked. Props @tutv95.
+    * Add support for "region" in the map field to limit autocomplete from wrong entries (to help preventing from entering wrong address or country). See https://developers.google.com/maps/documentation/geocoding/intro#RegionCodes
 
 = 4.10.4 =
 * Improvement: Add support for validate user edit and term edit forms (requires MB Term Meta or MB User Meta extension).
