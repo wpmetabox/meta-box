@@ -18,12 +18,12 @@ jQuery( function ( $ ) {
 		.on( 'clone', '.rwmb-input-list.collapse :checkbox', update );
 	$( '.rwmb-input-list.collapse :checkbox' ).each( update );
 
-	$( '.check-uncheck-rwmb-input-list' ).toggle(
-    function(){
-      $('input.rwmb-checkbox_list[name="' + $(this).data('name') + '[]"]').prop('checked', true);
-    },
-    function(){
-      $('input.rwmb-checkbox_list[name="' + $(this).data('name') + '[]"]').prop('checked', false);
-    }
-  );
+	$( '.rwmb-input-list-select-all-none' ).toggle(
+		function () {
+			$('input.rwmb-checkbox_list[name="' + $(this).data('name') + '[]"]').prop('checked', true);
+		},
+		function () {
+			$('input.rwmb-checkbox_list[name="' + $(this).data('name') + '[]"]').prop('checked', false);
+		}
+	);
 } );

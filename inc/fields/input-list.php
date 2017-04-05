@@ -29,14 +29,10 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	 */
 	public static function walk( $field, $options, $db_fields, $meta ) {
 		$walker = new RWMB_Walker_Input_List( $db_fields, $field, $meta );
-		$check_uncheck = '';
-		if($field['type'] === 'checkbox_list'){
-			$check_uncheck = sprintf( '<p><button class="check-uncheck-rwmb-input-list" data-name="%s">%s</button></p>', $field['id'], __('Check / Uncheck all','meta-box') );
-		}
-		$output = sprintf( '%s<ul class="rwmb-input-list %s %s">',
-			$check_uncheck,
+		$output = self::get_select_all_html( $field );
+		$output .= sprintf( '<ul class="rwmb-input-list %s %s">',
 			$field['collapse'] ? 'collapse' : '',
-		 	$field['inline']   ? 'inline'   : ''
+			$field['inline']   ? 'inline'   : ''
 		);
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</ul>';
@@ -80,5 +76,18 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 		$attributes['value']  = $value;
 
 		return $attributes;
+	}
+	
+	/**
+	 * Get html for select all|none for multiple checkbox.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	public static function get_select_all_html( $field ) {
+		if($field['multiple'] && $field['select_all_none']){
+			return sprintf( '<p><button class="rwmb-input-list-select-all-none" data-name="%s">%s</button></p>', $field['id'], __('Select All / None','meta-box') );
+		}
+		return '';
 	}
 }
