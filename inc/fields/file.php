@@ -14,7 +14,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
 
 		self::localize_script( 'rwmb-file', 'rwmbFile', array(
 			// Translators: %d is the number of files in singular form.

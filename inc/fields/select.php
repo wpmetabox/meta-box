@@ -14,7 +14,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array(), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array( 'jquery' ), RWMB_VER, true );
 	}
 
 	/**

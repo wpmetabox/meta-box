@@ -30,7 +30,6 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 			$dependencies[] = 'rwmb-select2-i18n';
 		}
 
-		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', array( 'jquery' ), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $dependencies, RWMB_VER, true );
 	}
 

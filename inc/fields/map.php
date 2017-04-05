@@ -30,7 +30,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 */
 		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
 		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), '', true );
-		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css' );
+		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-map', RWMB_JS_URL . 'map.js', array( 'jquery-ui-autocomplete', 'google-maps' ), RWMB_VER, true );
 	}
 
