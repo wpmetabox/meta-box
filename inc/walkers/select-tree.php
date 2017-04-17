@@ -52,7 +52,11 @@ class RWMB_Walker_Select_Tree {
 		$children = array();
 
 		foreach ( $options as $option ) {
-			$children[ $option->$parent ][] = $option;
+			if( isset( $option->$parent ) ) {
+				$children[ $option->$parent ][] = $option;
+			} else {
+				$children[ 0 ][] = $option;
+			}
 		}
 		$top_level = isset( $children[0] ) ? 0 : $options[0]->$parent;
 		return $this->display_level( $children, $top_level, true );
