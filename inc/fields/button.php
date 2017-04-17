@@ -18,7 +18,7 @@ class RWMB_Button_Field extends RWMB_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field );
-		return sprintf( '<a href="#" %s>%s</a>', self::render_attributes( $attributes ), $field['std'] );
+		return sprintf( '<button %s>%s</button>', self::render_attributes( $attributes ), $field['std'] );
 	}
 
 	/**
@@ -28,8 +28,10 @@ class RWMB_Button_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field        = parent::normalize( $field );
-		$field['std'] = $field['std'] ? $field['std'] : __( 'Click me', 'meta-box' );
+		$field = wp_parse_args( $field, array(
+			'std'      => __( 'Click me', 'meta-box' ),
+		) );
+		$field = parent::normalize( $field );
 		return $field;
 	}
 
@@ -41,7 +43,10 @@ class RWMB_Button_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes           = parent::get_attributes( $field, $value );
+		$attributes = wp_parse_args( $attributes, array(
+			'type'        => $field['type'],
+		) );
 		$attributes['class'] .= ' button hide-if-no-js';
 
 		return $attributes;

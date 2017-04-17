@@ -30,7 +30,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'size'        => 30,
+			'size'     => 30,
 			'datalist' => false,
 			'readonly' => false,
 		) );

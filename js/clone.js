@@ -173,7 +173,7 @@ jQuery( function ( $ ) {
 
 			$this.parent().trigger( 'remove' ).remove();
 			toggleRemoveButtons( $container );
-			toggleAddButton( $container )
+			toggleAddButton( $container );
 		} );
 
 	$( '.rwmb-input' ).each( function () {
