@@ -126,6 +126,6 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 */
 	public static function get_option_label( $field, $value ) {
 		$options = self::call( 'get_options', $field );
-		return $options[ $value ]->label;
+		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
 }
