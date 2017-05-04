@@ -299,8 +299,8 @@ class RW_Meta_Box {
 			$meta_box['post_types'] = $meta_box['pages'];
 		}
 
-		// Make sure the post type is an array.
-		$meta_box['post_types'] = (array) $meta_box['post_types'];
+		// Make sure the post type is an array and is sanitized.
+		$meta_box['post_types'] = array_map( 'sanitize_key', (array) $meta_box['post_types'] );
 
 		return $meta_box;
 	}
