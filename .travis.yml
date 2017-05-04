@@ -14,11 +14,11 @@ matrix:
 before_script:
   - git clone -q https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
   - git clone -q https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs
-  - phpcs/scripts/phpcs --config-set installed_paths wpcs
+  - phpcs/bin/phpcs --config-set installed_paths wpcs
 
 # Run PHP Code Sniffer to check WordPress coding standards
 script:
-  - phpcs/scripts/phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests,phpcs,wpcs .
+  - phpcs/bin/phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests,phpcs,wpcs .
 
 # Automatic deploy to wordpress.org when a new tag is created
 deploy:
