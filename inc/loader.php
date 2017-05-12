@@ -83,16 +83,14 @@ class RWMB_Loader {
 		$core = new RWMB_Core;
 		$core->init();
 
-		if ( is_admin() ) {
-			// Validation module.
-			new RWMB_Validation;
+		// Validation module.
+		new RWMB_Validation;
 
-			$sanitize = new RWMB_Sanitizer;
-			$sanitize->init();
+		$sanitize = new RWMB_Sanitizer;
+		$sanitize->init();
 
-			$media_modal = new RWMB_Media_Modal;
-			$media_modal->init();
-		}
+		$media_modal = new RWMB_Media_Modal;
+		$media_modal->init();
 
 		// WPML Compatibility.
 		$wpml = new RWMB_WPML;

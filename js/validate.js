@@ -13,7 +13,7 @@ jQuery( function ( $ ) {
 	};
 
 	// Edit post form.
-	var $form = $( '#post' );
+	var $form = $( '#post, .rwmb-form' );
 
 	// Edit user form.
 	if ( ! $form.length ) {
