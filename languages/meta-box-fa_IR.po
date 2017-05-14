@@ -1,232 +1,180 @@
+# <!=Copyright (C) 2014 Rilwis
+# This file is distributed under the GPL2+.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Meta Box\n"
-"POT-Creation-Date: 2016-03-27 19:26+0430\n"
-"PO-Revision-Date: 2016-03-27 19:34+0430\n"
-"Last-Translator: \n"
-"Language-Team: Sam Najian <samnajian@gmail.com>\n"
-"Language: fa\n"
+"Project-Id-Version: Meta Box 4.8.7\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
+"POT-Creation-Date: 2017-05-13 22:34+0430\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-05-13 22:51+0430\n"
+"Language-Team: Meta Box <admin@metabox.io>\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
+"X-Poedit-Basepath: ..\n"
+"Last-Translator: Morteza Gholami <Morteza.Gholami@Yahoo.Com>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.7\n"
-"X-Poedit-Basepath: ../../meta-box-builder\n"
-"X-Poedit-WPHeader: meta-box.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Language: fa_IR\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPath-1: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-0: js\n"
+"X-Poedit-SearchPathExcluded-1: demo\n"
+"X-Poedit-SearchPathExcluded-2: tests\n"
+"X-Poedit-SearchPathExcluded-3: css\n"
+"X-Poedit-SearchPathExcluded-4: lang\n"
 
-#: inc/core.php:40
-msgid "Documentation"
-msgstr ""
-
-#: inc/core.php:41
-msgid "Extensions"
-msgstr "افزونه ها"
-
-#: inc/field.php:196
+#: inc/clone.php:98
 msgid "+ Add more"
-msgstr "افزودن +"
+msgstr "+ افزودن بیشتر"
 
-#: inc/fields/autocomplete.php:14 inc/fields/autocomplete.php:75
-#: inc/fields/autocomplete.php:92
+#: inc/core.php:42
+msgid "Documentation"
+msgstr "مستندات"
+
+#: inc/core.php:43
+msgid "Extensions"
+msgstr "افزونه‌ها"
+
+#: inc/fields/autocomplete.php:19 inc/fields/autocomplete.php:78
+#: inc/fields/autocomplete.php:93 inc/fields/file.php:154
 msgid "Delete"
 msgstr "حذف"
 
-#: inc/fields/button.php:29
+#: inc/fields/button.php:32
 msgid "Click me"
-msgstr "کلیک"
+msgstr "کلیک کنید"
 
-#: inc/fields/checkbox.php:85
+#: inc/fields/checkbox.php:57
 msgid "Yes"
 msgstr "بله"
 
-#: inc/fields/checkbox.php:85
+#: inc/fields/checkbox.php:57
 msgid "No"
 msgstr "خیر"
 
-#: inc/fields/file-input.php:18
+#: inc/fields/file-input.php:21
 msgid "Select File"
 msgstr "انتخاب فایل"
 
-#: inc/fields/file-input.php:41 inc/fields/select.php:91
+#: inc/fields/file-input.php:43 inc/fields/select.php:89
 msgid "Select"
 msgstr "انتخاب"
 
-#: inc/fields/file-input.php:43
+#: inc/fields/file-input.php:45 inc/fields/media.php:24
 msgid "Remove"
 msgstr "حذف"
 
-#: inc/fields/file.php:15
+#: inc/fields/file.php:20
 #, php-format
 msgid "You may only upload maximum %d file"
-msgstr "شما فقط می توانید تعداد %d فایل آپلود نمایید"
+msgstr "شما تنها می‌بایست نهایتا %d فایل بارگذاری کنید"
 
-#: inc/fields/file.php:16
+#: inc/fields/file.php:21
 #, php-format
 msgid "You may only upload maximum %d files"
-msgstr "شما فقط می توانید تعداد %d فایل آپلود نمایید"
+msgstr "شما تنها می‌بایست نهایتا %d فایل بارگذاری کنید"
 
-#: inc/fields/file.php:83
+#: inc/fields/file.php:77
 msgid "Error: Cannot delete file"
-msgstr "خطا در حذف فایل"
+msgstr "خطا: عدم توانایی حذف فایل"
 
-#: inc/fields/file.php:96
-msgctxt "file upload"
+#: inc/fields/file.php:89
 msgid "Upload Files"
-msgstr "آپلود فایل"
+msgstr "بارگذاری فایل‌ها"
 
-#: inc/fields/file.php:97
-msgctxt "file upload"
+#: inc/fields/file.php:90
 msgid "+ Add new file"
-msgstr "افزودن فایل جدید"
+msgstr "+ افزودن فایل جدید"
 
-#: inc/fields/file.php:153
-msgctxt "file upload"
-msgid "Delete"
-msgstr "حذف"
-
-#: inc/fields/file.php:154
-msgctxt "file upload"
+#: inc/fields/file.php:155 inc/fields/media.php:25
 msgid "Edit"
 msgstr "ویرایش"
 
-#: inc/fields/image.php:61 inc/fields/thickbox-image.php:53
-msgctxt "image upload"
-msgid "Upload Images"
-msgstr "آپلود تصویر"
-
-#: inc/fields/image.php:62
-msgctxt "image upload"
-msgid "+ Add new image"
-msgstr "افزودن تصویر جدید + "
-
-#: inc/fields/image.php:124
-msgctxt "image upload"
-msgid "Delete"
-msgstr "حذف"
-
-#: inc/fields/image.php:125
-msgctxt "image upload"
-msgid "Edit"
-msgstr "ویرایش"
-
-#: inc/fields/key-value.php:19
+#: inc/fields/key-value.php:116
 msgid "Key"
 msgstr "کلید"
 
-#: inc/fields/key-value.php:25
+#: inc/fields/key-value.php:117
 msgid "Value"
 msgstr "مقدار"
 
-#: inc/fields/map.php:49
+#: inc/fields/map.php:60
 msgid "Find Address"
-msgstr "یافتن آدرس"
-
-#: inc/fields/media.php:18
-msgctxt "media"
-msgid "+ Add Media"
-msgstr "افزودن فایل"
-
-#: inc/fields/media.php:19
-msgctxt "media"
-msgid " file"
-msgstr "فایل"
-
-#: inc/fields/media.php:20
-msgctxt "media"
-msgid " files"
-msgstr "فایل"
+msgstr "پیدا کردن آدرس"
 
 #: inc/fields/media.php:21
-msgctxt "media"
-msgid "Remove"
-msgstr "حذف"
+msgid "+ Add Media"
+msgstr "+ افزودن رسانه"
 
 #: inc/fields/media.php:22
-msgctxt "media"
-msgid "Edit"
-msgstr "ویرایش"
+msgid " file"
+msgstr " فایل"
 
 #: inc/fields/media.php:23
-msgctxt "media"
+msgid " files"
+msgstr " فایل‌ها"
+
+#: inc/fields/media.php:26
 msgid "View"
 msgstr "نمایش"
 
-#: inc/fields/media.php:24
-msgctxt "media"
+#: inc/fields/media.php:27
 msgid "No Title"
 msgstr "بدون عنوان"
 
-#: inc/fields/media.php:27
-msgctxt "media"
+#: inc/fields/media.php:30
 msgid "Select Files"
-msgstr "انتخاب فایل ها"
+msgstr "انتخاب فایل‌ها"
 
-#: inc/fields/media.php:28
-msgctxt "media"
+#: inc/fields/media.php:31
+msgid "or"
+msgstr "یا"
+
+#: inc/fields/media.php:32
 msgid "Drop files here to upload"
-msgstr "برای آپلود فایل آن را به اینجا بکشید"
+msgstr "فایل‌ها را برای بارگذاری اینجا بیاندازید"
 
-#: inc/fields/oembed.php:65
+#: inc/fields/oembed.php:64
 msgid "Embed HTML not available."
-msgstr "‏HTML امبد شده در دسترس نیست"
+msgstr "قراردادن HTML امکان‌پذیر نیست"
 
-#: inc/fields/oembed.php:84
+#: inc/fields/oembed.php:79
 msgid "Preview"
-msgstr "پیش نمایش"
+msgstr "پیشنمایش"
 
-#: inc/fields/post.php:35
+#: inc/fields/post.php:38
 msgid "Select a post"
 msgstr "انتخاب یک پست"
 
-#: inc/fields/post.php:39 inc/fields/taxonomy.php:51
+#: inc/fields/post.php:41 inc/fields/taxonomy.php:56
 #, php-format
 msgid "Select a %s"
 msgstr "انتخاب یک %s"
 
-#: inc/fields/select.php:91
+#: inc/fields/select-advanced.php:46
+msgid "Select an item"
+msgstr "انتخاب یک آیتم"
+
+#: inc/fields/select.php:89
 msgid "All"
 msgstr "همه"
 
-#: inc/fields/select.php:91
+#: inc/fields/select.php:89
 msgid "None"
-msgstr "هیچ کدام"
+msgstr "هیچکدام"
 
-#: inc/fields/taxonomy.php:47
+#: inc/fields/taxonomy.php:53
 msgid "Select a term"
-msgstr "انتخاب ترم"
+msgstr "انتخاب یک دسته"
 
-#: inc/fields/user.php:34
+#: inc/fields/thickbox-image.php:55
+msgid "Upload Images"
+msgstr "بارگذاری تصاویر"
+
+#: inc/fields/user.php:38
 msgid "Select an user"
-msgstr "انتخاب کاربر"
+msgstr "انتخاب یک کاربر"
 
-#: inc/validation.php:42
+#: inc/validation.php:47
 msgid "Please correct the errors highlighted below and try again."
-msgstr "لطفا خطاهای زیر را تصحیح نمایید و دوباره تلاش کنید"
-
-#. Plugin Name of the plugin/theme
-msgid "Meta Box"
-msgstr "جعبه متا"
-
-#. Plugin URI of the plugin/theme
-msgid "https://metabox.io"
-msgstr "‏http‪://‬samnajian‪.‬com"
-
-#. Description of the plugin/theme
-msgid ""
-"Create custom meta boxes and custom fields for any post type in WordPress."
-msgstr "ایجاد متاباکس و فیلد دلخواه برای هر نوع پست "
-
-#. Author of the plugin/theme
-msgid "Rilwis"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://www.deluxeblogtips.com"
-msgstr ""
+msgstr "لطفا خطاهای پررنگ شده زیر را تصحیح و مجددا تلاش نمایید."
