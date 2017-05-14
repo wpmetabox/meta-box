@@ -376,10 +376,10 @@ jQuery( function ( $ ) {
 					//this.stopListening( this._frame );
 					this._frame.dispose();
 				}
-
+				var maxFiles = this.controller.get( 'maxFiles');
 				this._frame = wp.media( {
 					className: 'media-frame rwmb-media-frame',
-					multiple: this.controller.get( 'maxFiles') > 1 ? 'add' : false,
+					multiple: maxFiles > 1 || maxFiles <= 0 ? 'add' : false,
 					title: i18nRwmbMedia.select,
 					editing: true,
 					library: {
