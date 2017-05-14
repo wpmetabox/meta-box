@@ -379,7 +379,7 @@ jQuery( function ( $ ) {
 
 				this._frame = wp.media( {
 					className: 'media-frame rwmb-media-frame',
-					multiple: true,
+					multiple: this.controller.get( 'maxFiles') > 1 ? 'add' : false,
 					title: i18nRwmbMedia.select,
 					editing: true,
 					library: {
