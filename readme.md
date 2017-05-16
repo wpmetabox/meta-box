@@ -44,10 +44,11 @@ The plugin requires a little coding, but if you're not familiar with coding or p
 
 The plugin is built mostly for developers with a little coding, but if you prefer GUI for faster creating custom post types, meta boxes and custom fields, the plugin has extensions for that:
 
+- [Online Generator](https://metabox.io/online-generator/)
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/)
 - [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)
 
-<blockquote>To make it easy for all users to create custom meta boxes and custom fields, we have created an [Online Generator](https://metabox.io/online-generator/) tool. It has an user-friendly interface with drag and drop features. No custom code anymore! </blockquote>
+<blockquote>To make it easy for all users to create custom meta boxes and custom fields, we have created an <a href="https://metabox.io/online-generator/">Online Generator</a> tool. It has an user-friendly interface with drag and drop features. No custom code anymore!</blockquote>
 
 #### Developer-friendly
 
