@@ -3,9 +3,9 @@
  * Plugin Name: Meta Box
  * Plugin URI: https://metabox.io
  * Description: Create custom meta boxes and custom fields in WordPress.
- * Version: 4.11
- * Author: Anh Tran
- * Author URI: http://www.deluxeblogtips.com
+ * Version: 4.11.1
+ * Author: MetaBox.io
+ * Author URI: https://metabox.io
  * License: GPL2+
  * Text Domain: meta-box
  * Domain Path: /languages/
