@@ -72,6 +72,14 @@ jQuery( function ( $ ) {
 				this.plupload.required_features.send_binary_string = true;
 			}
 
+			if ( $('#post_ID').length && $('#post_ID').val() ) {
+				if ( -1 === this.plupload.url.indexOf('?') ) {
+					this.plupload.url += "?post_id=" + $('#post_ID').val();
+				} else {
+					this.plupload.url += "&post_id=" + $('#post_ID').val();
+				}
+			}
+
 			// Initialize the plupload instance.
 			this.uploader = new plupload.Uploader( this.plupload );
 			this.uploader.init();
