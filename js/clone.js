@@ -13,16 +13,20 @@ jQuery( function ( $ ) {
 			$clone.find( ':input[class|="rwmb"]' ).each( function () {
 				var $field = $( this );
 
-				// Name attribute
+				// Name attribute.
 				var name = $field.attr( 'name' );
 				if ( name && ! $field.closest( '.rwmb-group-clone' ).length ) {
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
 
-				// ID attribute
+				// ID attribute. Trailing -{index} after id.
 				var id = this.id;
 				if ( id ) {
-					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
+					if ( index <= 1 ) {
+						$field.attr( 'id', $field.attr( 'id' ) + '-' + index );
+					} else {
+						$field.attr( 'id', cloneIndex.replace( index, id, '-' ) );
+					}
 				}
 			} );
 

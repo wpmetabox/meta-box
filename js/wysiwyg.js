@@ -49,16 +49,18 @@ jQuery( function ( $ ) {
 	function getOriginalId( $el ) {
 		var $clones = $el.closest( '.rwmb-clone' ).siblings( '.rwmb-clone' ),
 			id = '';
+
 		$clones.each( function () {
 			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
 			if ( /_\d+$/.test( currentId ) ) {
-				currentId = currentId.replace( /_\d+$/, '' );
+				currentId = currentId.replace( /-\d+$/, '' );
 			}
 			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) ) {
 				id = currentId;
 				return false; // Immediately stop the .each() loop
 			}
 		} );
+
 		return id;
 	}
 
