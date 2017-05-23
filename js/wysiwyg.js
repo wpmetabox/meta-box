@@ -27,7 +27,7 @@ jQuery( function ( $ ) {
 		$this.show();
 		updateDom( $wrapper, id );
 
-		// TinyMCE. Check if wysiwyg field use tinymce.
+		// TinyMCE
 		if ( tinyMCEPreInit.mceInit.hasOwnProperty( originalId ) ) {
 			var settings = tinyMCEPreInit.mceInit[originalId];
 			settings.selector = '#' + id;
@@ -51,18 +51,16 @@ jQuery( function ( $ ) {
 	function getOriginalId( $el ) {
 		var $clones = $el.closest( '.rwmb-clone' ).siblings( '.rwmb-clone' ),
 			id = '';
-
 		$clones.each( function () {
 			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
-
-			currentId = currentId.replace( /--\d+$/, '' );
-
+			if ( /_\d+$/.test( currentId ) ) {
+				currentId = currentId.replace( /_\d+$/, '' );
+			}
 			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
 				id = currentId;
 				return false; // Immediately stop the .each() loop
 			}
 		} );
-
 		return id;
 	}
 
