@@ -4,18 +4,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meta Box 4.8.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
-"POT-Creation-Date: 2017-05-13 22:34+0430\n"
+"POT-Creation-Date: 2017-05-20 18:41+0430\n"
+"PO-Revision-Date: 2017-05-20 18:46+0430\n"
+"Last-Translator: Morteza Gholami <Morteza.Gholami@Yahoo.Com>\n"
+"Language-Team: Meta Box <admin@metabox.io>\n"
+"Language: fa_IR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-05-13 22:51+0430\n"
-"Language-Team: Meta Box <admin@metabox.io>\n"
 "X-Generator: Poedit 1.8.6\n"
-"X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
+"X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;"
+"esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
 "X-Poedit-Basepath: ..\n"
-"Last-Translator: Morteza Gholami <Morteza.Gholami@Yahoo.Com>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: fa_IR\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: js\n"
 "X-Poedit-SearchPathExcluded-1: demo\n"
@@ -23,20 +24,20 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: css\n"
 "X-Poedit-SearchPathExcluded-4: lang\n"
 
-#: inc/clone.php:98
-msgid "+ Add more"
-msgstr "+ افزودن بیشتر"
-
-#: inc/core.php:42
+#: inc/core.php:33
 msgid "Documentation"
 msgstr "مستندات"
 
-#: inc/core.php:43
+#: inc/core.php:34
 msgid "Extensions"
 msgstr "افزونه‌ها"
 
-#: inc/fields/autocomplete.php:19 inc/fields/autocomplete.php:78
-#: inc/fields/autocomplete.php:93 inc/fields/file.php:154
+#: inc/field.php:343
+msgid "+ Add more"
+msgstr "+ افزودن بیشتر"
+
+#: inc/fields/autocomplete.php:20 inc/fields/autocomplete.php:81
+#: inc/fields/autocomplete.php:93 inc/fields/file.php:143
 msgid "Delete"
 msgstr "حذف"
 
@@ -44,93 +45,93 @@ msgstr "حذف"
 msgid "Click me"
 msgstr "کلیک کنید"
 
-#: inc/fields/checkbox.php:57
+#: inc/fields/checkbox.php:50
 msgid "Yes"
 msgstr "بله"
 
-#: inc/fields/checkbox.php:57
+#: inc/fields/checkbox.php:50
 msgid "No"
 msgstr "خیر"
 
-#: inc/fields/file-input.php:21
+#: inc/fields/file-input.php:19
 msgid "Select File"
 msgstr "انتخاب فایل"
 
-#: inc/fields/file-input.php:43 inc/fields/select.php:89
+#: inc/fields/file-input.php:38 inc/fields/select.php:87
 msgid "Select"
 msgstr "انتخاب"
 
-#: inc/fields/file-input.php:45 inc/fields/media.php:24
+#: inc/fields/file-input.php:40 inc/fields/media.php:27
 msgid "Remove"
 msgstr "حذف"
 
-#: inc/fields/file.php:20
+#: inc/fields/file.php:21
 #, php-format
 msgid "You may only upload maximum %d file"
 msgstr "شما تنها می‌بایست نهایتا %d فایل بارگذاری کنید"
 
-#: inc/fields/file.php:21
+#: inc/fields/file.php:23
 #, php-format
 msgid "You may only upload maximum %d files"
 msgstr "شما تنها می‌بایست نهایتا %d فایل بارگذاری کنید"
 
-#: inc/fields/file.php:77
+#: inc/fields/file.php:79
 msgid "Error: Cannot delete file"
 msgstr "خطا: عدم توانایی حذف فایل"
 
-#: inc/fields/file.php:89
-msgid "Upload Files"
-msgstr "بارگذاری فایل‌ها"
-
-#: inc/fields/file.php:90
+#: inc/fields/file.php:93
 msgid "+ Add new file"
 msgstr "+ افزودن فایل جدید"
 
-#: inc/fields/file.php:155 inc/fields/media.php:25
+#: inc/fields/file.php:144 inc/fields/media.php:28
 msgid "Edit"
 msgstr "ویرایش"
 
-#: inc/fields/key-value.php:116
+#: inc/fields/input-list.php:90
+msgid "Select All / None"
+msgstr "انتخاب همه / هیچ‌کدام"
+
+#: inc/fields/key-value.php:126
 msgid "Key"
 msgstr "کلید"
 
-#: inc/fields/key-value.php:117
+#: inc/fields/key-value.php:127
 msgid "Value"
 msgstr "مقدار"
 
-#: inc/fields/map.php:60
+#: inc/fields/map.php:62
 msgid "Find Address"
 msgstr "پیدا کردن آدرس"
 
-#: inc/fields/media.php:21
+#: inc/fields/media.php:24
 msgid "+ Add Media"
 msgstr "+ افزودن رسانه"
 
-#: inc/fields/media.php:22
+#: inc/fields/media.php:25
 msgid " file"
 msgstr " فایل"
 
-#: inc/fields/media.php:23
+#: inc/fields/media.php:26
 msgid " files"
 msgstr " فایل‌ها"
 
-#: inc/fields/media.php:26
+#: inc/fields/media.php:29
 msgid "View"
 msgstr "نمایش"
 
-#: inc/fields/media.php:27
+#: inc/fields/media.php:30
 msgid "No Title"
 msgstr "بدون عنوان"
 
-#: inc/fields/media.php:30
+#: inc/fields/media.php:33
 msgid "Select Files"
 msgstr "انتخاب فایل‌ها"
 
-#: inc/fields/media.php:31
+#: inc/fields/media.php:34
 msgid "or"
 msgstr "یا"
 
-#: inc/fields/media.php:32
+#: inc/fields/media.php:35
 msgid "Drop files here to upload"
 msgstr "فایل‌ها را برای بارگذاری اینجا بیاندازید"
 
@@ -142,28 +143,28 @@ msgstr "قراردادن HTML امکان‌پذیر نیست"
 msgid "Preview"
 msgstr "پیشنمایش"
 
-#: inc/fields/post.php:38
+#: inc/fields/post.php:36
 msgid "Select a post"
 msgstr "انتخاب یک پست"
 
-#: inc/fields/post.php:41 inc/fields/taxonomy.php:56
+#: inc/fields/post.php:41 inc/fields/taxonomy.php:52
 #, php-format
 msgid "Select a %s"
 msgstr "انتخاب یک %s"
 
-#: inc/fields/select-advanced.php:46
+#: inc/fields/select-advanced.php:45
 msgid "Select an item"
 msgstr "انتخاب یک آیتم"
 
-#: inc/fields/select.php:89
+#: inc/fields/select.php:87
 msgid "All"
 msgstr "همه"
 
-#: inc/fields/select.php:89
+#: inc/fields/select.php:87
 msgid "None"
 msgstr "هیچکدام"
 
-#: inc/fields/taxonomy.php:53
+#: inc/fields/taxonomy.php:47
 msgid "Select a term"
 msgstr "انتخاب یک دسته"
 
@@ -171,10 +172,13 @@ msgstr "انتخاب یک دسته"
 msgid "Upload Images"
 msgstr "بارگذاری تصاویر"
 
-#: inc/fields/user.php:38
+#: inc/fields/user.php:30
 msgid "Select an user"
 msgstr "انتخاب یک کاربر"
 
 #: inc/validation.php:47
 msgid "Please correct the errors highlighted below and try again."
 msgstr "لطفا خطاهای پررنگ شده زیر را تصحیح و مجددا تلاش نمایید."
+
+#~ msgid "Upload Files"
+#~ msgstr "بارگذاری فایل‌ها"
