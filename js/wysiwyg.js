@@ -27,10 +27,12 @@ jQuery( function ( $ ) {
 		$this.show();
 		updateDom( $wrapper, id );
 
-		// TinyMCE
-		var settings = tinyMCEPreInit.mceInit[originalId];
-		settings.selector = '#' + id;
-		tinymce.init( settings );
+		// TinyMCE. Check if wysiwyg field use tinymce.
+		if ( tinyMCEPreInit.mceInit.hasOwnProperty( originalId ) ) {
+			var settings = tinyMCEPreInit.mceInit[originalId];
+			settings.selector = '#' + id;
+			tinymce.init( settings );
+		}
 
 		// Quick tags
 		if ( typeof quicktags === 'function' && tinyMCEPreInit.qtInit.hasOwnProperty( originalId ) ) {
@@ -52,10 +54,10 @@ jQuery( function ( $ ) {
 
 		$clones.each( function () {
 			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
-			if ( /_\d+$/.test( currentId ) ) {
-				currentId = currentId.replace( /-\d+$/, '' );
-			}
-			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) ) {
+
+			currentId = currentId.replace( /--\d+$/, '' );
+
+			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
 				id = currentId;
 				return false; // Immediately stop the .each() loop
 			}

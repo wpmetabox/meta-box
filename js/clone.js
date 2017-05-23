@@ -23,9 +23,9 @@ jQuery( function ( $ ) {
 				var id = this.id;
 				if ( id ) {
 					if ( index <= 1 ) {
-						$field.attr( 'id', $field.attr( 'id' ) + '-' + index );
+						$field.attr( 'id', $field.attr( 'id' ) + '--' + index );
 					} else {
-						$field.attr( 'id', cloneIndex.replace( index, id, '-' ) );
+						$field.attr( 'id', cloneIndex.replace( index, id, '--' ) );
 					}
 				}
 			} );
@@ -52,7 +52,7 @@ jQuery( function ( $ ) {
 			after = after || '';
 			alternative = alternative || true;
 
-			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) ),
+			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) + '$' ),
 				newValue = before + index + after;
 
 			return regex.test( value ) ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
