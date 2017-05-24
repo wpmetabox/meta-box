@@ -28,9 +28,11 @@ jQuery( function ( $ ) {
 		updateDom( $wrapper, id );
 
 		// TinyMCE
-		var settings = tinyMCEPreInit.mceInit[originalId];
-		settings.selector = '#' + id;
-		tinymce.init( settings );
+		if ( tinyMCEPreInit.mceInit.hasOwnProperty( originalId ) ) {
+			var settings = tinyMCEPreInit.mceInit[originalId];
+			settings.selector = '#' + id;
+			tinymce.init( settings );
+		}
 
 		// Quick tags
 		if ( typeof quicktags === 'function' && tinyMCEPreInit.qtInit.hasOwnProperty( originalId ) ) {
@@ -54,7 +56,7 @@ jQuery( function ( $ ) {
 			if ( /_\d+$/.test( currentId ) ) {
 				currentId = currentId.replace( /_\d+$/, '' );
 			}
-			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) ) {
+			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
 				id = currentId;
 				return false; // Immediately stop the .each() loop
 			}

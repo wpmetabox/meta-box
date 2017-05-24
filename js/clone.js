@@ -48,7 +48,7 @@ jQuery( function ( $ ) {
 			after = after || '';
 			alternative = alternative || true;
 
-			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) ),
+			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) + '$' ),
 				newValue = before + index + after;
 
 			return regex.test( value ) ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
