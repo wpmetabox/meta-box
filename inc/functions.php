@@ -194,3 +194,48 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 		return $data[ $type ];
 	}
 }
+
+/**
+ * Get storage registry.
+ *
+ * @return RWMB_Storage_Registry
+ */
+function rwmb_get_storage_registry() {
+	static $registry = null;
+
+	if ( is_null( $registry ) ) {
+		$registry = new RWMB_Storage_Registry();
+	}
+
+	return $registry;
+}
+
+/**
+ * Get storage class name.
+ *
+ * @param string $object_type Object type. Use post or term.
+ * @return string
+ */
+function rwmb_get_storage_class_name( $object_type ) {
+	$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
+	$object_type = ucwords( $object_type );
+	$object_type = str_replace( ' ', '_', $object_type );
+	$class_name = 'RWMB_' . $object_type . '_Storage';
+
+	if ( ! class_exists( $class_name ) ) {
+		$class_name = 'RWMB_Post_Storage';
+	}
+
+	return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
+}
+
+/**
+ * Get storage instance.
+ *
+ * @param string $object_type Object type. Use post or term.
+ * @return RWMB_Storage_Interface
+ */
+function rwmb_get_storage( $object_type ) {
+	$class_name = rwmb_get_storage_class_name( $object_type );
+	return rwmb_get_storage_registry()->get( $class_name );
+}

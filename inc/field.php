@@ -173,18 +173,25 @@ abstract class RWMB_Field {
 	/**
 	 * Get raw meta value.
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param array $field   Field parameters.
+	 * @param int   $object_id Object ID.
+	 * @param array $field     Field parameters.
+	 * @param array $args      Arguments of {@see rwmb_meta()} helper.
 	 *
 	 * @return mixed
 	 */
-	public static function raw_meta( $post_id, $field ) {
+	public static function raw_meta( $object_id, $field, $args = array() ) {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
 
-		$single = $field['clone'] || ! $field['multiple'];
-		return get_post_meta( $post_id, $field['id'], $single );
+		$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
+		$storage = rwmb_get_storage( $object_type );
+
+		if ( ! isset( $args['single'] ) ) {
+			$args['single'] = $field['clone'] || ! $field['multiple'];
+		}
+
+		return $storage->get( $object_id, $field['id'], $args );
 	}
 
 	/**
@@ -211,7 +218,7 @@ abstract class RWMB_Field {
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved ? $field['std'] : $meta;
 
-		// Ensue multiple fields are arrays.
+		// Ensure multiple fields are arrays.
 		if ( $field['multiple'] ) {
 			if ( $field['clone'] ) {
 				$meta = (array) $meta;
@@ -424,7 +431,7 @@ abstract class RWMB_Field {
 		}
 
 		// Get raw meta value in the database, no escape.
-		$value  = self::call( $field, 'raw_meta', $post_id );
+		$value  = self::call( $field, 'raw_meta', $post_id, $args );
 
 		// Make sure meta value is an array for cloneable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
@@ -504,7 +511,13 @@ abstract class RWMB_Field {
 		} else {
 			$field  = array_shift( $args );
 			$method = array_shift( $args );
-			$args[] = $field; // Add field as last param.
+
+			if ( 'raw_meta' === $method ) {
+				// Add field param after object id.
+				array_splice( $args, 1, 0, array( $field ) );
+			} else {
+				$args[] = $field; // Add field as last param.
+			}
 		}
 
 		return call_user_func_array( array( self::get_class_name( $field ), $method ), $args );
