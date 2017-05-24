@@ -31,10 +31,11 @@
  	public static function html( $meta, $field ) {
  		$attributes = self::get_attributes( $field, $meta );
  		return sprintf(
- 			'<textarea %s data-tinymce="%s" data-quicktags="%s">%s</textarea>',
+ 			'<textarea %s data-tinymce="%s" data-quicktags="%s" data-media="%s">%s</textarea>',
  			self::render_attributes( $attributes ),
 			esc_attr( wp_json_encode( $field['tinymce'] ) ),
 			esc_attr( wp_json_encode( $field['quicktags'] ) ),
+			esc_attr( wp_json_encode( $field['media'] ) ),
  			$meta
  		);
  	}
@@ -48,9 +49,10 @@
  	public static function normalize( $field ) {
  		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'raw'     => false,
-			'tinymce' => true,
-			'quicktags' => true
+			'raw'       => false,
+			'tinymce'   => true,
+			'quicktags' => true,
+			'media'     => true
 		) );
 
  		return $field;
