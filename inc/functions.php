@@ -196,21 +196,6 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 }
 
 /**
- * Get storage registry.
- *
- * @return RWMB_Storage_Registry
- */
-function rwmb_get_storage_registry() {
-	static $registry = null;
-
-	if ( is_null( $registry ) ) {
-		$registry = new RWMB_Storage_Registry();
-	}
-
-	return $registry;
-}
-
-/**
  * Get storage class name.
  *
  * @param string $object_type Object type. Use post or term.
@@ -237,5 +222,5 @@ function rwmb_get_storage_class_name( $object_type ) {
  */
 function rwmb_get_storage( $object_type ) {
 	$class_name = rwmb_get_storage_class_name( $object_type );
-	return rwmb_get_storage_registry()->get( $class_name );
+	return rwmb_get_registry( 'storage' )->get( $class_name );
 }
