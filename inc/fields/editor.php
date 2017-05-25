@@ -50,10 +50,15 @@
  		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'raw'       => false,
-			'tinymce'   => true,
+			'tinymce'   => array(),
 			'quicktags' => true,
 			'media'     => true
 		) );
+
+		$field['tinymce'] = wp_parse_args( $field['tinymce'], array(
+			'toolbar1' => 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv',
+			'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+		));
 
  		return $field;
  	}
