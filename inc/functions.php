@@ -17,7 +17,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $key, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $key, $args, $post_id );
 
 		/*
 		 * If field is not found, which can caused by registering meta boxes for the backend only or conditional registration.
@@ -30,6 +30,40 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
+	}
+}
+
+if ( ! function_exists( 'rwmb_get_field_data' ) ) {
+	/**
+	 * Get field data.
+	 *
+	 * @param string   $key     Meta key. Required.
+	 * @param array    $args    Array of arguments. Optional.
+	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return array
+	 */
+	function rwmb_get_field_data( $key, $args = array(), $post_id = null ) {
+		$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
+
+		if ( ! $post_id ) {
+			$type = get_post_type();
+		}
+
+		// Get type from object id and object type.
+		switch ( $object_type ) {
+			case 'term':
+				$term = get_term( $post_id );
+
+				$type = ! empty( $term->taxonomy ) ? $term->taxonomy : null;
+
+				break;
+
+			default:
+				$type = get_post_type( $post_id );
+		}
+
+		return rwmb_get_registry( 'field' )->get( $key, $type, $object_type );
 	}
 }
 
@@ -86,7 +120,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $field_id, $args, $post_id );
 
 		// Get field value.
 		$value = $field ? RWMB_Field::call( 'get_value', $field, $args, $post_id ) : false;
@@ -119,7 +153,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 */
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $field_id, $args, $post_id );
 
 		if ( ! $field ) {
 			return '';
