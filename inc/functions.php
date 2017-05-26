@@ -37,33 +37,28 @@ if ( ! function_exists( 'rwmb_get_field_data' ) ) {
 	/**
 	 * Get field data.
 	 *
-	 * @param string   $key     Meta key. Required.
-	 * @param array    $args    Array of arguments. Optional.
-	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 * @param string   $key       Meta key. Required.
+	 * @param array    $args      Array of arguments. Optional.
+	 * @param int|null $object_id Object ID. null for current post. Optional.
 	 *
 	 * @return array
 	 */
-	function rwmb_get_field_data( $key, $args = array(), $post_id = null ) {
-		$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
-
-		if ( ! $post_id ) {
-			$type = get_post_type();
-		}
+	function rwmb_get_field_data( $key, $args = array(), $object_id = null ) {
+		$args = wp_parse_args( $args, array(
+			'object_type' => 'post',
+		) );
 
 		// Get type from object id and object type.
-		switch ( $object_type ) {
+		switch ( $args['object_type'] ) {
 			case 'term':
-				$term = get_term( $post_id );
-
+				$term = get_term( $object_id );
 				$type = ! empty( $term->taxonomy ) ? $term->taxonomy : null;
-
 				break;
-
 			default:
-				$type = get_post_type( $post_id );
+				$type = get_post_type( $object_id );
 		}
 
-		return rwmb_get_registry( 'field' )->get( $key, $type, $object_type );
+		return rwmb_get_registry( 'field' )->get( $key, $type, $args['object_type'] );
 	}
 }
 
