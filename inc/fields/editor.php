@@ -51,13 +51,18 @@
 		$field = wp_parse_args( $field, array(
 			'raw'       => false,
 			'tinymce'   => array(),
-			'quicktags' => true,
-			'media'     => true
+			'quicktags' => array(),
+			'media'     => true,
+			'dfw'       => true,
 		) );
 
 		$field['tinymce'] = wp_parse_args( $field['tinymce'], array(
 			'toolbar1' => 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv',
 			'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+		));
+
+		$field['quicktags'] = wp_parse_args( $field['quicktags'], array(
+			'buttons' => 'strong,em,link,block,del,ins,img,ul,ol,li,code,more,close',
 		));
 
  		return $field;
