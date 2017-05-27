@@ -43,20 +43,19 @@ if ( ! function_exists( 'rwmb_get_field_data' ) ) {
 	 *
 	 * @return array
 	 */
-	function rwmb_get_field_data( $key, $args = array(), $object_id = null ) {
-		$args = wp_parse_args( $args, array(
-			'object_type' => 'post',
-		) );
+	function rwmb_get_field_data( $key, $args = array(), $post_id = null ) {
+		$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
 
-		// Get type from object id and object type.
-		switch ( $args['object_type'] ) {
-			case 'term':
-				$term = get_term( $object_id );
-				$type = ! empty( $term->taxonomy ) ? $term->taxonomy : null;
-				break;
-			default:
-				$type = get_post_type( $object_id );
-		}
+		$type = get_post_type( $post_id );
+
+		/**
+		 * Filter meta type from object type and object id.
+		 *
+		 * @var string     Meta type, default is post type name.
+		 * @var string     Object type.
+		 * @var string|int Object id.
+		 */
+		$type = apply_filters( 'rwmb_meta_type', $type, $object_type, $post_id );
 
 		return rwmb_get_registry( 'field' )->get( $key, $type, $args['object_type'] );
 	}
@@ -224,32 +223,37 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 	}
 }
 
-/**
- * Get storage class name.
- *
- * @param string $object_type Object type. Use post or term.
- * @return string
- */
-function rwmb_get_storage_class_name( $object_type ) {
-	$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
-	$object_type = ucwords( $object_type );
-	$object_type = str_replace( ' ', '_', $object_type );
-	$class_name = 'RWMB_' . $object_type . '_Storage';
+if ( ! function_exists( 'rwmb_get_storage_class_name' ) ) {
+	/**
+	 * Get storage class name.
+	 *
+	 * @param string $object_type Object type. Use post or term.
+	 * @return string
+	 */
+	function rwmb_get_storage_class_name( $object_type ) {
+		$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
+		$object_type = ucwords( $object_type );
+		$object_type = str_replace( ' ', '_', $object_type );
+		$class_name = 'RWMB_' . $object_type . '_Storage';
 
-	if ( ! class_exists( $class_name ) ) {
-		$class_name = 'RWMB_Post_Storage';
+		if ( ! class_exists( $class_name ) ) {
+			$class_name = 'RWMB_Post_Storage';
+		}
+
+		return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
 	}
-
-	return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
 }
 
-/**
- * Get storage instance.
- *
- * @param string $object_type Object type. Use post or term.
- * @return RWMB_Storage_Interface
- */
-function rwmb_get_storage( $object_type ) {
-	$class_name = rwmb_get_storage_class_name( $object_type );
-	return rwmb_get_registry( 'storage' )->get( $class_name );
+if ( ! function_exists( 'rwmb_get_storage' ) ) {
+	/**
+	 * Get storage instance.
+	 *
+	 * @param string $object_type Object type. Use post or term.
+	 * @return RWMB_Storage_Interface
+	 */
+	function rwmb_get_storage( $object_type ) {
+		$class_name = rwmb_get_storage_class_name( $object_type );
+
+		return rwmb_get_registry( 'storage' )->get( $class_name );
+	}
 }
