@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - hhvm
   - 7.0
   - 5.6
   - 5.5
@@ -12,7 +11,7 @@ matrix:
   fast_finish: true
 
 before_script:
-  - git clone -q https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
+  - composer global require squizlabs/php_codesniffer:2.*
   - git clone -q https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs
   - phpcs/bin/phpcs --config-set installed_paths wpcs
 

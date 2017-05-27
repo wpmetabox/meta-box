@@ -128,6 +128,13 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
+= 4.11.2 =
+
+* Introducing storage interface, which now can be extended for term/user/settings page under the same codebase. With this improvement, helper functions now works for term/user/settings page (require premium extensions).
+* Fixed cloning wysiwyg field when tinyMCE mode is turned off (only show quick tags).
+* Fixed image_upload & file_upload field doesn't add attachment to post
+* Fixed text_list fields not saving correctly when edit not last field.
+
 = 4.11.1 =
 
 * Added button for "Check/Uncheck all options" in input list field when type is `checkbox_list`. Props @mrbrazzi.
