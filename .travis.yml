@@ -24,3 +24,5 @@ deploy:
     tags: true
   provider: script
   script: ./scripts/wporg-deploy.sh
+notifications:
+  slack: elightup:dJunN1jYND443P6WizwZY8Kr
