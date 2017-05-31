@@ -22,7 +22,7 @@ jQuery( function ( $ ) {
 				// ID attribute
 				var id = this.id;
 				if ( id ) {
-					$field.attr( 'id', cloneIndex.replace( index, id, '_' ) );
+					$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
 				}
 			} );
 
@@ -43,12 +43,17 @@ jQuery( function ( $ ) {
 		 * @param alternative Check if attribute does not contain any integer, will reset the attribute?
 		 * @return string
 		 */
-		replace: function ( index, value, before, after, alternative ) {
+		replace: function ( index, value, before, after, alternative, isEnd ) {
 			before = before || '';
 			after = after || '';
-			alternative = alternative || true;
 
-			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) + '$' ),
+			if ( typeof alternative === 'undefined' ) {
+				alternative = true;
+			}
+
+			var end = isEnd ? '$' : '';
+
+			var regex = new RegExp( cloneIndex.escapeRegex( before ) + '(\\d+)' + cloneIndex.escapeRegex( after ) + end ),
 				newValue = before + index + after;
 
 			return regex.test( value ) ? value.replace( regex, newValue ) : (alternative ? value + newValue : value );
