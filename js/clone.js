@@ -24,6 +24,8 @@ jQuery( function ( $ ) {
 				if ( id ) {
 					$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
 				}
+
+				$field.trigger( 'update_index', index );
 			} );
 
 			// Address button's value attribute

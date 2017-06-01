@@ -49,8 +49,9 @@ jQuery( function ( $ ) {
 	 * @param $el Current cloned textarea
 	 */
 	function getOriginalId( $el ) {
-		var $clones = $el.closest( '.rwmb-clone' ).siblings( '.rwmb-clone' ),
+		var $clones = $el.closest( '.rwmb-clone' ),
 			id = '';
+
 		$clones.each( function () {
 			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
 			if ( /_\d+$/.test( currentId ) ) {
