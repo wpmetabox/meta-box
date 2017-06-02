@@ -33,7 +33,12 @@ class RWMB_Clone {
 					$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 				}
 				$sub_field['id'] = $field['id'] . "_{$index}";
+
+				if ( ! empty( $sub_field['attributes']['id'] ) ) {
+					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+				}
 			}
+
 			if ( $field['multiple'] ) {
 				$sub_field['field_name'] .= '[]';
 			}
