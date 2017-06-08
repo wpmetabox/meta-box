@@ -118,20 +118,29 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 - ruanmer
 - PerWiklander
 - funkedgeek
+- [truongwp](https://github.com/truongwp)
 
 [See full list of angels!](https://github.com/rilwis/meta-box/contributors)
 
 ***
 
-**Proudly sponsored by PHPStorm - The best IDE for PHP (and WordPress)**
-
-### [![phpstorm](http://i.imgur.com/U4F8EGD.png)](https://www.jetbrains.com/phpstorm/)
-
-***
-
 ## Changelog
 
-= 4.11.1 =
+#### 4.11.3
+
+* Make sure all cloned fields have unique ID, even inside multi-level groups. Now WYSIWYG editor works better with cloned groups.
+* Fixed wrong name attributes when clone key-value field.
+* Add missing $field parameter for "add_clone_button_text" filter.
+
+
+#### 4.11.2
+
+* Introducing storage interface, which now can be extended for term/user/settings page under the same codebase. With this improvement, helper functions now works for term/user/settings page (require premium extensions).
+* Fixed cloning wysiwyg field when tinyMCE mode is turned off (only show quick tags).
+* Fixed image_upload & file_upload field doesn't add attachment to post
+* Fixed text_list fields not saving correctly when edit not last field.
+
+#### 4.11.1
 
 * Added button for "Check/Uncheck all options" in input list field when type is `checkbox_list`. Props @mrbrazzi.
 * Select multiple images now does not require to press "Shift".
@@ -143,7 +152,7 @@ To getting started with the plugin API, please read [this tutorial](https://meta
 * Make compatible with MB Admin Columns and MB Frontend Submission extensions
 * Update Persian translation. Credit Morteza Gholami
 
-= 4.11 =
+#### 4.11
 
 * Code architecture update:
     * Add `object_id` property to the meta box object. Used to connect the meta box to the post object. Not heavily used yet.

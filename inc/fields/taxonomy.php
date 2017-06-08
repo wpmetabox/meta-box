@@ -101,17 +101,18 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Get raw meta value.
 	 *
-	 * @param int   $post_id The post ID.
-	 * @param array $field   The field parameters.
+	 * @param int   $object_id Object ID.
+	 * @param array $field     Field parameters.
+	 * @param array $args      Arguments of {@see rwmb_meta()} helper.
 	 *
 	 * @return mixed
 	 */
-	public static function raw_meta( $post_id, $field ) {
+	public static function raw_meta( $object_id, $field, $args = array() ) {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
 
-		$meta = get_the_terms( $post_id, $field['taxonomy'] );
+		$meta = get_the_terms( $object_id, $field['taxonomy'] );
 
 		if ( ! is_array( $meta ) || empty( $meta ) ) {
 			return $field['multiple'] ? array() : '';

@@ -17,7 +17,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $key, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $key, $args, $post_id );
 
 		/*
 		 * If field is not found, which can caused by registering meta boxes for the backend only or conditional registration.
@@ -30,6 +30,35 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
+	}
+}
+
+if ( ! function_exists( 'rwmb_get_field_data' ) ) {
+	/**
+	 * Get field data.
+	 *
+	 * @param string   $key       Meta key. Required.
+	 * @param array    $args      Array of arguments. Optional.
+	 * @param int|null $object_id Object ID. null for current post. Optional.
+	 *
+	 * @return array
+	 */
+	function rwmb_get_field_data( $key, $args = array(), $object_id = null ) {
+		$args = wp_parse_args( $args, array(
+			'object_type' => 'post',
+		) );
+		$type = get_post_type( $object_id );
+
+		/**
+		 * Filter meta type from object type and object id.
+		 *
+		 * @var string     Meta type, default is post type name.
+		 * @var string     Object type.
+		 * @var string|int Object id.
+		 */
+		$type = apply_filters( 'rwmb_meta_type', $type, $args['object_type'], $object_id );
+
+		return rwmb_get_registry( 'field' )->get( $key, $type, $args['object_type'] );
 	}
 }
 
@@ -86,7 +115,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $field_id, $args, $post_id );
 
 		// Get field value.
 		$value = $field ? RWMB_Field::call( 'get_value', $field, $args, $post_id ) : false;
@@ -119,7 +148,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 */
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_registry( 'field' )->get( $field_id, get_post_type( $post_id ) );
+		$field = rwmb_get_field_data( $field_id, $args, $post_id );
 
 		if ( ! $field ) {
 			return '';
@@ -192,5 +221,40 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 		}
 
 		return $data[ $type ];
+	}
+}
+
+if ( ! function_exists( 'rwmb_get_storage_class_name' ) ) {
+	/**
+	 * Get storage class name.
+	 *
+	 * @param string $object_type Object type. Use post or term.
+	 * @return string
+	 */
+	function rwmb_get_storage_class_name( $object_type ) {
+		$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
+		$object_type = ucwords( $object_type );
+		$object_type = str_replace( ' ', '_', $object_type );
+		$class_name = 'RWMB_' . $object_type . '_Storage';
+
+		if ( ! class_exists( $class_name ) ) {
+			$class_name = 'RWMB_Post_Storage';
+		}
+
+		return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
+	}
+}
+
+if ( ! function_exists( 'rwmb_get_storage' ) ) {
+	/**
+	 * Get storage instance.
+	 *
+	 * @param string $object_type Object type. Use post or term.
+	 * @return RWMB_Storage_Interface
+	 */
+	function rwmb_get_storage( $object_type ) {
+		$class_name = rwmb_get_storage_class_name( $object_type );
+
+		return rwmb_get_registry( 'storage' )->get( $class_name );
 	}
 }

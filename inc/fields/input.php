@@ -30,9 +30,10 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'size'     => 30,
-			'datalist' => false,
-			'readonly' => false,
+			'autocomplete' => false,
+			'size'         => 30,
+			'datalist'     => false,
+			'readonly'     => false,
 		) );
 		if ( $field['datalist'] ) {
 			$field['datalist'] = wp_parse_args( $field['datalist'], array(
@@ -53,12 +54,13 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
-			'list'        => $field['datalist'] ? $field['datalist']['id'] : false,
-			'readonly'    => $field['readonly'],
-			'value'       => $value,
-			'placeholder' => $field['placeholder'],
-			'type'        => $field['type'],
-			'size'        => $field['size'],
+			'autocomplete' => $field['autocomplete'],
+			'list'         => $field['datalist'] ? $field['datalist']['id'] : false,
+			'readonly'     => $field['readonly'],
+			'value'        => $value,
+			'placeholder'  => $field['placeholder'],
+			'type'         => $field['type'],
+			'size'         => $field['size'],
 		) );
 
 		return $attributes;

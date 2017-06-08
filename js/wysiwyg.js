@@ -49,19 +49,17 @@ jQuery( function ( $ ) {
 	 * @param $el Current cloned textarea
 	 */
 	function getOriginalId( $el ) {
-		var $clones = $el.closest( '.rwmb-clone' ).siblings( '.rwmb-clone' ),
-			id = '';
-		$clones.each( function () {
-			var currentId = $( this ).find( '.rwmb-wysiwyg' ).attr( 'id' );
-			if ( /_\d+$/.test( currentId ) ) {
-				currentId = currentId.replace( /_\d+$/, '' );
-			}
-			if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
-				id = currentId;
-				return false; // Immediately stop the .each() loop
-			}
-		} );
-		return id;
+		var $clone = $el.closest( '.rwmb-clone' ),
+			currentId = $clone.find( '.rwmb-wysiwyg' ).attr( 'id' );
+
+		if ( /_\d+$/.test( currentId ) ) {
+			currentId = currentId.replace( /_\d+$/, '' );
+		}
+		if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
+			return currentId;
+		}
+
+		return '';
 	}
 
 	/**

@@ -33,7 +33,12 @@ class RWMB_Clone {
 					$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 				}
 				$sub_field['id'] = $field['id'] . "_{$index}";
+
+				if ( ! empty( $sub_field['attributes']['id'] ) ) {
+					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+				}
 			}
+
 			if ( $field['multiple'] ) {
 				$sub_field['field_name'] .= '[]';
 			}
@@ -56,7 +61,7 @@ class RWMB_Clone {
 			$input_html .= '</div>';
 
 			$field_html .= $input_html;
-		}
+		} // End foreach().
 
 		return $field_html;
 	}
@@ -94,7 +99,7 @@ class RWMB_Clone {
 		if ( ! $field['clone'] ) {
 			return '';
 		}
-		$text = RWMB_Field::filter( 'add_clone_button_text', $field['add_button'] );
+		$text = RWMB_Field::filter( 'add_clone_button_text', $field['add_button'], $field );
 		return '<a href="#" class="rwmb-button button-primary add-clone">' . esc_html( $text ) . '</a>';
 	}
 
