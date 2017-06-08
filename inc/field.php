@@ -352,6 +352,7 @@ abstract class RWMB_Field {
 			'class'      => '',
 			'disabled'   => false,
 			'required'   => false,
+			'autofocus'  => false,
 			'attributes' => array(),
 		) );
 
@@ -368,11 +369,12 @@ abstract class RWMB_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = wp_parse_args( $field['attributes'], array(
-			'disabled' => $field['disabled'],
-			'required' => $field['required'],
-			'id'       => $field['id'],
-			'class'    => '',
-			'name'     => $field['field_name'],
+			'disabled'  => $field['disabled'],
+			'autofocus' => $field['autofocus'],
+			'required'  => $field['required'],
+			'id'        => $field['id'],
+			'class'     => '',
+			'name'      => $field['field_name'],
 		) );
 
 		$attributes['class'] = implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) );
