@@ -23,7 +23,9 @@ class RWMB_Loader {
 		list( $path, $url ) = self::get_path( dirname( dirname( __FILE__ ) ) );
 
 		// Plugin URLs, for fast enqueuing scripts and styles.
-		define( 'RWMB_URL', $url );
+		if ( !defined( 'RWMB_URL' ) )
+			define( 'RWMB_URL', $url );
+
 		define( 'RWMB_JS_URL', trailingslashit( RWMB_URL . 'js' ) );
 		define( 'RWMB_CSS_URL', trailingslashit( RWMB_URL . 'css' ) );
 
