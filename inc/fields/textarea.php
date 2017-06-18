@@ -67,7 +67,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
-			'autocomplete' => $field['autocomplete']
+			'autocomplete' => $field['autocomplete'],
 			'cols'         => $field['cols'],
 			'rows'         => $field['rows'],
 			'maxlength'    => $field['maxlength'],

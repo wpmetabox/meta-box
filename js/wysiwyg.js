@@ -29,9 +29,9 @@ jQuery( function ( $ ) {
 
 		// TinyMCE
 		if ( tinyMCEPreInit.mceInit.hasOwnProperty( originalId ) ) {
-			var settings = tinyMCEPreInit.mceInit[originalId];
-			settings.selector = '#' + id;
-			tinymce.init( settings );
+			var settings = tinyMCEPreInit.mceInit[originalId],
+				editor = new tinymce.Editor(id, settings, tinymce.EditorManager);
+			editor.render();
 		}
 
 		// Quick tags

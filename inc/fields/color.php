@@ -14,7 +14,8 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
-		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'wp-color-picker' ), RWMB_VER, true );
+		wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'wp-color-picker', 'wp-color-picker-alpha' ), RWMB_VER, true );
 	}
 
 	/**
@@ -27,7 +28,8 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 		$field = wp_parse_args( $field, array(
 			'size'       => 7,
 			'maxlength'  => 7,
-			'pattern'    => '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
+			'alpha_channel' => false,
+			// 'pattern'    => '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
 			'js_options' => array(),
 		) );
 
@@ -55,6 +57,10 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		) );
 		$attributes['type'] = 'text';
+
+		if ( $field['alpha_channel'] ) {
+			$attributes['data-alpha'] = 'true';
+		}
 
 		return $attributes;
 	}
