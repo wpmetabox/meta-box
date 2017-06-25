@@ -144,7 +144,7 @@ jQuery( function ( $ ) {
 			} );
 
 			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function () {
-				that.$input.trigger( 'change' );
+				that.$input.trigger( 'change', [that.$( '.rwmb-media-input' )] );
 			}, 500 ) );
 
 			this.controller.get( 'items' ).on( 'remove', _.debounce( function () {
