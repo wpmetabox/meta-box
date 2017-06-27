@@ -134,6 +134,6 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 * Fixed wrong name attributes when clone key-value field.
 * Add missing $field parameter for "add_clone_button_text" filter.
 
-[See changelog for all versions](https://github.com/rilwis/meta-box/changelog.md).
+[See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/changelog.md).
 
 == Upgrade Notice ==
