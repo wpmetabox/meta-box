@@ -1,7 +1,7 @@
 <script id="tmpl-rwmb-image-item" type="text/html">
 	<input type="hidden" name="{{{ data.controller.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
-	<div class="rwmb-media-preview">
-		<div class="rwmb-media-content">
+	<div class="rwmb-media-preview attachment-preview">
+		<div class="rwmb-media-content thumbnail">
 			<div class="centered">
 				<# if ( 'image' === data.type && data.sizes ) { #>
 					<# if ( data.sizes[data.controller.imageSize] ) { #>

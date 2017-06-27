@@ -14,7 +14,7 @@ jQuery( function ( $ ) {
 			this.list = new MediaList( {
 				controller: this.controller,
 				itemView: MediaItem.extend( {
-					className: 'rwmb-image-item',
+					className: 'rwmb-image-item attachment',
 					template: wp.template( 'rwmb-image-item' ),
 					initialize: function( models, options ) {
 						MediaItem.prototype.initialize.call( this, models, options );
