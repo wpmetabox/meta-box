@@ -242,7 +242,7 @@ jQuery( function ( $ ) {
 			this.collection.remove( item );
 		},
 
-		switchItem: function () {
+		switchItem: function ( item ) {
 			if ( this._switchFrame ) {
 				//this.stopListening( this._frame );
 				this._switchFrame.dispose();
@@ -260,9 +260,10 @@ jQuery( function ( $ ) {
 			this._switchFrame.on( 'select', function () {
 				var selection = this._switchFrame.state().get( 'selection' ),
 					collection = this.collection,
-					index = collection.indexOf( this.model );
+					index = collection.indexOf( item );
+
 				if ( ! _.isEmpty( selection ) ) {
-					collection.remove( this.model );
+					collection.remove( item );
 					collection.add( selection, {at: index} );
 				}
 			}, this );
@@ -307,6 +308,13 @@ jQuery( function ( $ ) {
 				// Record the initial `index` of the dragged model.
 				start: function ( event, ui ) {
 					ui.item.data( 'sortableIndexStart', ui.item.index() );
+				},
+
+				// Stop trigger 'click' on item. 'click' means reselect.
+				stop: function ( event ) {
+					$( event.originalEvent.target ).one( 'click', function ( e ) {
+						e.stopImmediatePropagation();
+					} );
 				},
 
 				// Update the model's index in the collection.
@@ -376,7 +384,7 @@ jQuery( function ( $ ) {
 					//this.stopListening( this._frame );
 					this._frame.dispose();
 				}
-				var maxFiles = this.controller.get( 'maxFiles');
+				var maxFiles = this.controller.get( 'maxFiles' );
 				this._frame = wp.media( {
 					className: 'media-frame rwmb-media-frame',
 					multiple: maxFiles > 1 || maxFiles <= 0 ? 'add' : false,
@@ -433,7 +441,7 @@ jQuery( function ( $ ) {
 
 
 		events: {
-			'click .rwmb-switch': function () {
+			'click .rwmb-overlay': function () {
 				this.trigger( 'click:switch', this.model );
 				return false;
 			},
@@ -517,7 +525,6 @@ jQuery( function ( $ ) {
 		new MediaField( {input: this, el: $( this ).siblings( 'div.rwmb-media-view' )} );
 	}
 
-	$( ':input.rwmb-file_advanced' ).each( initMediaField );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-file_advanced', initMediaField );
+	$( '.rwmb-file_advanced' ).each( initMediaField );
+	$( document ).on( 'clone', '.rwmb-file_advanced', initMediaField );
 } );
