@@ -11,13 +11,13 @@ jQuery( function ( $ ) {
 			$spinner = $this.siblings( '.spinner' ),
 			data = {
 				action: 'rwmb_get_embed',
-				url: $this.siblings( 'input' ).val()
+				url: $this.val()
 			};
 
 		$spinner.css( 'visibility', 'visible' );
-		$.post( ajaxurl, data, function ( r ) {
+		$.post( ajaxurl, data, function ( response ) {
 			$spinner.css( 'visibility', 'hidden' );
-			$this.siblings( '.rwmb-embed-media' ).html( r.data );
+			$this.siblings( '.rwmb-embed-media' ).html( response.data );
 		}, 'json' );
 	}
 
@@ -28,9 +28,7 @@ jQuery( function ( $ ) {
 		$( this ).siblings( '.rwmb-embed-media' ).html( '' );
 	}
 
-	// Show oembeded media when clicking "Preview" button
-	$( 'body' ).on( 'click', '.rwmb-embed-show', showPreview );
-
-	// Remove oembed preview when cloning
-	$( '.rwmb-input' ).on( 'clone', '.rwmb-oembed', removePreview );
+	$( document )
+		.on( 'change', '.rwmb-oembed', _.debounce( showPreview, 250 ) )
+	    .on( 'clone', '.rwmb-oembed', removePreview );
 } );
