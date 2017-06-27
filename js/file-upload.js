@@ -49,7 +49,9 @@ jQuery( function ( $ ) {
 				extensions = this.getExtensions().join( ',' ),
 				max_file_size;
 			this.plupload = $.extend( true, {
-				multipart_params: {},
+				multipart_params: {
+					post_id : $( '#post_ID' ).val()
+				},
 				multipart: true,
 				urlstream_upload: true,
 				drop_element: this.dropzone,
@@ -70,14 +72,6 @@ jQuery( function ( $ ) {
 			     ( ! this.plupload.required_features || ! this.plupload.required_features.hasOwnProperty( 'send_binary_string' ) ) ) {
 				this.plupload.required_features = this.plupload.required_features || {};
 				this.plupload.required_features.send_binary_string = true;
-			}
-
-			if ( $('#post_ID').length && $('#post_ID').val() ) {
-				if ( -1 === this.plupload.url.indexOf('?') ) {
-					this.plupload.url += "?post_id=" + $('#post_ID').val();
-				} else {
-					this.plupload.url += "&post_id=" + $('#post_ID').val();
-				}
 			}
 
 			// Initialize the plupload instance.
