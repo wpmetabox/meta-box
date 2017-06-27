@@ -7,7 +7,8 @@ jQuery( function ( $ ) {
 
 	var views = rwmb.views = rwmb.views || {},
 		models = rwmb.models = rwmb.models || {},
-		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia, MediaDetails;
+		media = wp.media,
+		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia, MediaDetails, MediaLibrary, MediaSelect;
 
 	MediaCollection = models.MediaCollection = wp.media.model.Attachments.extend( {
 		initialize: function ( models, options ) {
@@ -247,14 +248,15 @@ jQuery( function ( $ ) {
 				//this.stopListening( this._frame );
 				this._switchFrame.dispose();
 			}
-			this._switchFrame = wp.media( {
+			this._switchFrame = new MediaSelect( {
 				className: 'media-frame rwmb-media-frame',
 				multiple: false,
 				title: i18nRwmbMedia.select,
 				editing: true,
 				library: {
 					type: this.controller.get( 'mimeType' )
-				}
+				},
+				edit: this.controller.get( 'items' )
 			} );
 
 			this._switchFrame.on( 'select', function () {
@@ -385,14 +387,15 @@ jQuery( function ( $ ) {
 					this._frame.dispose();
 				}
 				var maxFiles = this.controller.get( 'maxFiles' );
-				this._frame = wp.media( {
+				this._frame = new MediaSelect( {
 					className: 'media-frame rwmb-media-frame',
 					multiple: maxFiles > 1 || maxFiles <= 0 ? 'add' : false,
 					title: i18nRwmbMedia.select,
 					editing: true,
 					library: {
 						type: this.controller.get( 'mimeType' )
-					}
+					},
+					edit: this.controller.get( 'items' )
 				} );
 
 				this._frame.on( 'select', function () {
@@ -488,6 +491,67 @@ jQuery( function ( $ ) {
 			} );
 		}
 	} );
+
+	/**
+	 * MediaLibrary
+	 * Custom version of Library to exclude already selected media in a media frame
+	 */
+	MediaLibrary = media.controller.Library.extend( {
+		defaults: _.defaults({
+			multiple:      'add',
+			filterable:    'uploaded',
+			priority:      100,
+			syncSelection: false
+		},  wp.media.controller.Library.prototype.defaults ),
+
+		activate: function() {
+			var library = this.get('library'),
+				edit    = this.frame.options.edit;
+
+			if ( this.editLibrary && this.editLibrary !== edit ) {
+				library.unobserve( this.editLibrary );
+			}
+
+			// Accepts attachments that exist in the original library and
+			// that do not exist in gallery's library.
+			library.validator = function( attachment ) {
+				return !! this.mirroring.get( attachment.cid ) && ! edit.get( attachment.cid ) && media.model.Selection.prototype.validator.apply( this, arguments );
+			};
+
+			// Reset the library to ensure that all attachments are re-added
+			// to the collection. Do so silently, as calling `observe` will
+			// trigger the `reset` event.
+			library.reset( library.mirroring.models, { silent: true });
+			library.observe( edit );
+			this.editLibrary = edit;
+
+			media.controller.Library.prototype.activate.apply( this, arguments );
+		}
+	} );
+
+	MediaSelect = views.MediaSelect = wp.media.view.MediaFrame.Select.extend({
+		/**
+		 * Create the default states on the frame.
+		 */
+		createStates: function() {
+			var options = this.options;
+
+			if ( this.options.states ) {
+				return;
+			}
+
+			// Add the default states.
+			this.states.add([
+				// Main states.
+				new MediaLibrary({
+					library:   wp.media.query( options.library ),
+					multiple:  options.multiple,
+					title:     options.title,
+					priority:  20
+				})
+			]);
+		},
+	});
 
 	/***
 	 * EditMedia

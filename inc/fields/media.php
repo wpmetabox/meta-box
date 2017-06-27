@@ -28,7 +28,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
 			'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
 			'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
-			'loadingUrl'         => admin_url( 'images/spinner.gif' ),
 			'extensions'         => self::get_mime_extensions(),
 			'select'             => apply_filters( 'rwmb_media_select_string', _x( 'Select Files', 'media', 'meta-box' ) ),
 			'or'                 => apply_filters( 'rwmb_media_or_string', _x( 'or', 'media', 'meta-box' ) ),
