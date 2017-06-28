@@ -37,6 +37,7 @@
 				_ajax_nonce: $uploaded.data( 'delete_nonce' ),
 				post_id: $( '#post_ID' ).val(),
 				field_id: $uploaded.data( 'field_id' ),
+				object_type: $this.closest('.rwmb-meta-box').attr('data-object-type'),
 				attachment_id: $this.data( 'attachment_id' ),
 				force_delete: $uploaded.data( 'force_delete' )
 			};
@@ -61,7 +62,8 @@
 				action: 'rwmb_reorder_files',
 				_ajax_nonce: $this.data( 'reorder_nonce' ),
 				post_id: $( '#post_ID' ).val(),
-				field_id: $this.data( 'field_id' )
+				field_id: $this.data( 'field_id' ),
+				object_type: $this.closest('.rwmb-meta-box').attr('data-object-type')
 			};
 		$this.sortable( {
 			placeholder: 'ui-state-highlight',
