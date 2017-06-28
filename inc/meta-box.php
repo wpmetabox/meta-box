@@ -34,7 +34,14 @@ class RW_Meta_Box {
 	 *
 	 * @var int
 	 */
-	private $object_id = null;
+	protected $object_id = null;
+
+	/**
+	 * The object type.
+	 *
+	 * @var string
+	 */
+	protected $object_type = 'post';
 
 	/**
 	 * Create meta box based on given data.
@@ -43,7 +50,7 @@ class RW_Meta_Box {
 	 */
 	public function __construct( $meta_box ) {
 		$meta_box           = self::normalize( $meta_box );
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
+		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
 		$this->meta_box = $meta_box;
 
@@ -308,11 +315,12 @@ class RW_Meta_Box {
 	/**
 	 * Normalize an array of fields
 	 *
-	 * @param array $fields Array of fields.
+	 * @param array                  $fields Array of fields.
+	 * @param RWMB_Storage_Interface $storage Storage object. Optional.
 	 *
 	 * @return array $fields Normalized fields.
 	 */
-	public static function normalize_fields( $fields ) {
+	public static function normalize_fields( $fields, $storage = null ) {
 		foreach ( $fields as $k => $field ) {
 			$field = RWMB_Field::call( 'normalize', $field );
 
@@ -320,6 +328,11 @@ class RW_Meta_Box {
 			$field = apply_filters( 'rwmb_normalize_field', $field );
 			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
 			$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
+
+			// Add storage object to field.
+			if ( $storage ) {
+				$field['storage'] = $storage;
+			}
 
 			$fields[ $k ] = $field;
 		}
@@ -385,5 +398,9 @@ class RW_Meta_Box {
 		if ( null === $this->object_id ) {
 			$this->object_id = null === $id ? get_the_ID() : $id;
 		}
+	}
+
+	protected function get_storage() {
+		return rwmb_get_storage( $this->object_type );
 	}
 }
