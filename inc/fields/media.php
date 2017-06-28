@@ -165,7 +165,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
 		$storage = $field['storage'];
-		$storage->delete_metadata( $post_id, $field['id'] );
+		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );
 	}
 

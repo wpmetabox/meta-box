@@ -18,32 +18,26 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	protected $object_type;
 
 	/**
-	 * Get value from storage.
-	 *
-	 * @param  int    $object_id Object id.
-	 * @param  string $name      Field name.
-	 * @param  array  $args      Custom arguments.
-	 * @return mixed
-	 */
-	public function get( $object_id, $name, $args = array() ) {
-		$single = ! empty( $args['single'] );
-		return $this->get_metadata( $object_id, $name, $single );
-	}
-
-	/**
 	 * Retrieve metadata for the specified object.
 	 *
-	 * @param int    $object_id ID of the object metadata is for.
-	 * @param string $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
-	 * 		                    the specified object.
-	 * @param bool   $single    Optional, default is false.
-	 *                          If true, return only the first value of the specified meta_key.
-	 *                          This parameter has no effect if meta_key is not specified.
+	 * @param int        $object_id ID of the object metadata is for.
+	 * @param string     $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
+	 * 		                        the specified object.
+	 * @param bool|array $args      Optional, default is false.
+	 *                              If true, return only the first value of the specified meta_key.
+	 *                              If is array, use the `single` element.
+	 *                              This parameter has no effect if meta_key is not specified.
 	 * @return mixed Single metadata value, or array of values.
 	 *
 	 * @see get_metadata()
 	 */
-	public function get_metadata( $object_id, $meta_key = '', $single = false ) {
+	public function get( $object_id, $meta_key, $args = false ) {
+		if ( is_array( $args ) ) {
+			$single = ! empty( $args['single'] );
+		} else {
+			$single = (bool) $args;
+		}
+
 		return get_metadata( $this->object_type, $object_id, $meta_key, $single );
 	}
 
@@ -61,7 +55,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	 *
 	 * @see add_metadata()
 	 */
-	public function add_metadata( $object_id, $meta_key, $meta_value, $unique = false ) {
+	public function add( $object_id, $meta_key, $meta_value, $unique = false ) {
 		return add_metadata( $this->object_type, $object_id, $meta_key, $meta_value, $unique );
 	}
 
@@ -77,7 +71,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	 *
 	 * @see update_metadata()
 	 */
-	public function update_metadata( $object_id, $meta_key, $meta_value, $prev_value = '' ) {
+	public function update( $object_id, $meta_key, $meta_value, $prev_value = '' ) {
 		return update_metadata( $this->object_type, $object_id, $meta_key, $meta_value, $prev_value );
 	}
 
@@ -98,7 +92,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	 *
 	 * @see delete_metadata()
 	 */
-	public function delete_metadata( $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
+	public function delete( $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
 		return delete_metadata( $this->object_type, $object_id, $meta_key, $meta_value, $delete_all );
 	}
 }

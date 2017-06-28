@@ -55,9 +55,9 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		$storage = $field['storage'];
 
 		if ( $new ) {
-			$storage->update_metadata( $post_id, $field['id'], $new );
+			$storage->update( $post_id, $field['id'], $new );
 		} else {
-			$storage->delete_metadata( $post_id, $field['id'] );
+			$storage->delete( $post_id, $field['id'] );
 		}
 	}
 

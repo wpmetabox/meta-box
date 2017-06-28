@@ -87,7 +87,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
 		$storage = $field['storage'];
-		$storage->delete_metadata( $post_id, $field['id'] );
+		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );
 	}
 }

@@ -52,9 +52,9 @@ class RWMB_File_Field extends RWMB_Field {
 
 		check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
 		parse_str( $order, $items );
-		$storage->delete_metadata( $post_id, $field_id );
+		$storage->delete( $post_id, $field_id );
 		foreach ( $items['item'] as $item ) {
-			$storage->add_metadata( $post_id, $field_id, $item, false );
+			$storage->add( $post_id, $field_id, $item, false );
 		}
 		wp_send_json_success();
 	}
@@ -74,7 +74,7 @@ class RWMB_File_Field extends RWMB_Field {
 		$storage = rwmb_get_storage( $object_type );
 
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-		$storage->delete_metadata( $post_id, $field_id, $attachment_id );
+		$storage->delete( $post_id, $field_id, $attachment_id );
 		$success = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
 		if ( $success ) {

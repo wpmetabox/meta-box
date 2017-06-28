@@ -285,7 +285,7 @@ abstract class RWMB_Field {
 
 		// Remove post meta if it's empty.
 		if ( '' === $new || array() === $new ) {
-			$storage->delete_metadata( $post_id, $name );
+			$storage->delete( $post_id, $name );
 			return;
 		}
 
@@ -300,7 +300,7 @@ abstract class RWMB_Field {
 			}
 			// Reset indexes.
 			$new = array_values( $new );
-			$storage->update_metadata( $post_id, $name, $new );
+			$storage->update( $post_id, $name, $new );
 			return;
 		}
 
@@ -310,17 +310,17 @@ abstract class RWMB_Field {
 			$new = (array) $new;
 			$new_values = array_diff( $new, $old );
 			foreach ( $new_values as $new_value ) {
-				$storage->add_metadata( $post_id, $name, $new_value, false );
+				$storage->add( $post_id, $name, $new_value, false );
 			}
 			$old_values = array_diff( $old, $new );
 			foreach ( $old_values as $old_value ) {
-				$storage->delete_metadata( $post_id, $name, $old_value );
+				$storage->delete( $post_id, $name, $old_value );
 			}
 			return;
 		}
 
 		// Default: just update post meta.
-		$storage->update_metadata( $post_id, $name, $new );
+		$storage->update( $post_id, $name, $new );
 	}
 
 	/**
