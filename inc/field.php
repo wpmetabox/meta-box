@@ -184,7 +184,12 @@ abstract class RWMB_Field {
 			return '';
 		}
 
-		$storage = $field['storage'];
+		if ( ! empty( $field['storage'] ) ) {
+			$storage = $field['storage'];
+		} else {
+			$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
+			$storage = rwmb_get_storage( $object_type );
+		}
 
 		if ( ! isset( $args['single'] ) ) {
 			$args['single'] = $field['clone'] || ! $field['multiple'];
