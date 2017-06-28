@@ -244,7 +244,21 @@ class RW_Meta_Box {
 		do_action( 'rwmb_before_save_post', $post_id );
 		do_action( "rwmb_{$this->id}_before_save_post", $post_id );
 
-		foreach ( $this->fields as $field ) {
+		$this->save_fields( $post_id, $this->fields );
+
+		// After save action.
+		do_action( 'rwmb_after_save_post', $post_id );
+		do_action( "rwmb_{$this->id}_after_save_post", $post_id );
+	}
+
+	/**
+	 * Save fields data.
+	 *
+	 * @param int   $post_id Post id.
+	 * @param array $fields  Fields data.
+	 */
+	public function save_fields( $post_id, $fields ) {
+		foreach ( $fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
 			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );
 			// @codingStandardsIgnoreLine
@@ -262,10 +276,6 @@ class RW_Meta_Box {
 			// Call defined method to save meta value, if there's no methods, call common one.
 			RWMB_Field::call( $field, 'save', $new, $old, $post_id );
 		}
-
-		// After save action.
-		do_action( 'rwmb_after_save_post', $post_id );
-		do_action( "rwmb_{$this->id}_after_save_post", $post_id );
 	}
 
 	/**
