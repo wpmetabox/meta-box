@@ -49,8 +49,13 @@ class RW_Meta_Box {
 	 * @param array $meta_box Meta box definition.
 	 */
 	public function __construct( $meta_box ) {
+		$storage = $this->get_storage();
+		if ( ! $storage ) {
+			return;
+		}
+
 		$meta_box           = self::normalize( $meta_box );
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $this->get_storage() );
+		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $storage );
 
 		$this->meta_box = $meta_box;
 
