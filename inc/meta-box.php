@@ -197,7 +197,7 @@ class RW_Meta_Box {
 		// Container.
 		printf(
 			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s">',
-			$this->autosave ? 'true' : 'false',
+			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type )
 		);
 
@@ -406,6 +406,11 @@ class RW_Meta_Box {
 		}
 	}
 
+	/**
+	 * Get storage object.
+	 *
+	 * @return RWMB_Storage_Interface
+	 */
 	protected function get_storage() {
 		return rwmb_get_storage( $this->object_type );
 	}

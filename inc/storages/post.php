@@ -10,5 +10,10 @@
  */
 class RWMB_Post_Storage extends RWMB_Base_Storage {
 
+	/**
+	 * Object type.
+	 *
+	 * @var string
+	 */
 	protected $object_type = 'post';
 }

@@ -33,7 +33,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	/**
 	 * Retrieve metadata for the specified object.
 	 *
-	 * @param int    $object_id ID of the object metadata is for
+	 * @param int    $object_id ID of the object metadata is for.
 	 * @param string $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
 	 * 		                    the specified object.
 	 * @param bool   $single    Optional, default is false.
@@ -50,8 +50,8 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	/**
 	 * Add metadata
 	 *
-	 * @param int    $object_id  ID of the object metadata is for
-	 * @param string $meta_key   Metadata key
+	 * @param int    $object_id  ID of the object metadata is for.
+	 * @param string $meta_key   Metadata key.
 	 * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
 	 * @param bool   $unique     Optional, default is false.
 	 *                           Whether the specified metadata key should be unique for the object.
@@ -68,8 +68,8 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	/**
 	 * Update metadata.
 	 *
-	 * @param int    $object_id  ID of the object metadata is for
-	 * @param string $meta_key   Metadata key
+	 * @param int    $object_id  ID of the object metadata is for.
+	 * @param string $meta_key   Metadata key.
 	 * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
 	 * @param mixed  $prev_value Optional. If specified, only update existing metadata entries with
 	 * 		                     the specified value. Otherwise, update all entries.
@@ -84,13 +84,13 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	/**
 	 * Delete metadata.
 	 *
-	 * @param int    $object_id  ID of the object metadata is for
-	 * @param string $meta_key   Metadata key
+	 * @param int    $object_id  ID of the object metadata is for.
+	 * @param string $meta_key   Metadata key.
 	 * @param mixed  $meta_value Optional. Metadata value. Must be serializable if non-scalar. If specified, only delete
 	 *                           metadata entries with this value. Otherwise, delete all entries with the specified meta_key.
 	 *                           Pass `null, `false`, or an empty string to skip this check. (For backward compatibility,
 	 *                           it is not possible to pass an empty string to delete those entries with an empty string
-	 *                           for a value.)
+	 *                           for a value).
 	 * @param bool   $delete_all Optional, default is false. If true, delete matching metadata entries for all objects,
 	 *                           ignoring the specified object_id. Otherwise, only delete matching metadata entries for
 	 *                           the specified object_id.
