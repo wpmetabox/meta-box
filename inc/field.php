@@ -184,7 +184,13 @@ abstract class RWMB_Field {
 			return '';
 		}
 
-		$storage = isset( $args['object_type'] ) ? rwmb_get_storage( $args['object_type'] ) : $field['storage'];
+		if ( isset( $args['object_type'] ) ) {
+			$storage = rwmb_get_storage( $args['object_type'] );
+		} elseif ( isset( $field['storage'] ) ) {
+			$storage = $field['storage'];
+		} else {
+			return false;
+		}
 
 		if ( ! isset( $args['single'] ) ) {
 			$args['single'] = $field['clone'] || ! $field['multiple'];
