@@ -8,6 +8,7 @@ jQuery( function ( $ ) {
 	var views = rwmb.views = rwmb.views || {},
 		models = rwmb.models = rwmb.models || {},
 		media = wp.media,
+		MediaFrame = media.view.MediaFrame,
 		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia,
 		MediaDetails, MediaLibrary, MediaSelect;
 
@@ -529,7 +530,11 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	MediaSelect = views.MediaSelect = media.view.MediaFrame.Select.extend( {
+	/**
+	 * MediaSelect
+	 * Custom version of Select media frame that uses  MediaLibrary
+	 */
+	MediaSelect = views.MediaSelect = MediaFrame.Select.extend( {
 		/**
 		 * Create the default states on the frame.
 		 */
@@ -557,7 +562,7 @@ jQuery( function ( $ ) {
 	 * EditMedia
 	 * Custom version of EditAttachments frame to prevent all video and audio from being unset
 	 */
-	EditMedia = views.EditMedia = media.view.MediaFrame.EditAttachments.extend( {
+	EditMedia = views.EditMedia = MediaFrame.EditAttachments.extend( {
 		/**
 		 * Content region rendering callback for the `edit-metadata` mode.
 		 *
