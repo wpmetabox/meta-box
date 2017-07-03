@@ -417,6 +417,15 @@ class RW_Meta_Box {
 	}
 
 	/**
+	 * Get object type.
+	 *
+	 * @return string
+	 */
+	public function get_object_type() {
+		return $this->object_type;
+	}
+
+	/**
 	 * Get storage object.
 	 *
 	 * @return RWMB_Storage_Interface
