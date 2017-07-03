@@ -34,6 +34,11 @@ jQuery( function ( $ ) {
 
 		// Typcast zoom to a number
 		mapOptions.zoom *= 1;
+
+		if ( typeof mapOptions.styles === 'string' ) {
+			mapOptions.styles = JSON.parse(mapOptions.styles);
+		}
+
 		map = new google.maps.Map( this, mapOptions );
 
 		// Set marker
