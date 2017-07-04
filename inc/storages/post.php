@@ -8,18 +8,12 @@
 /**
  * Class RWMB_Post_Storage
  */
-class RWMB_Post_Storage implements RWMB_Storage_Interface {
+class RWMB_Post_Storage extends RWMB_Base_Storage {
 
 	/**
-	 * Get value from storage.
+	 * Object type.
 	 *
-	 * @param  int    $object_id Object id.
-	 * @param  string $name      Field name.
-	 * @param  array  $args      Custom arguments.
-	 * @return mixed
+	 * @var string
 	 */
-	public function get( $object_id, $name, $args = array() ) {
-		$single = ! empty( $args['single'] );
-		return get_post_meta( $object_id, $name, $single );
-	}
+	protected $object_type = 'post';
 }

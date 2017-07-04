@@ -184,8 +184,13 @@ abstract class RWMB_Field {
 			return '';
 		}
 
-		$object_type = ! empty( $args['object_type'] ) ? $args['object_type'] : 'post';
-		$storage = rwmb_get_storage( $object_type );
+		if ( isset( $args['object_type'] ) ) {
+			$storage = rwmb_get_storage( $args['object_type'] );
+		} elseif ( isset( $field['storage'] ) ) {
+			$storage = $field['storage'];
+		} else {
+			return false;
+		}
 
 		if ( ! isset( $args['single'] ) ) {
 			$args['single'] = $field['clone'] || ! $field['multiple'];
@@ -282,10 +287,11 @@ abstract class RWMB_Field {
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
 		$name = $field['id'];
+		$storage = $field['storage'];
 
 		// Remove post meta if it's empty.
 		if ( '' === $new || array() === $new ) {
-			delete_post_meta( $post_id, $name );
+			$storage->delete( $post_id, $name );
 			return;
 		}
 
@@ -300,7 +306,7 @@ abstract class RWMB_Field {
 			}
 			// Reset indexes.
 			$new = array_values( $new );
-			update_post_meta( $post_id, $name, $new );
+			$storage->update( $post_id, $name, $new );
 			return;
 		}
 
@@ -310,17 +316,17 @@ abstract class RWMB_Field {
 			$new = (array) $new;
 			$new_values = array_diff( $new, $old );
 			foreach ( $new_values as $new_value ) {
-				add_post_meta( $post_id, $name, $new_value, false );
+				$storage->add( $post_id, $name, $new_value, false );
 			}
 			$old_values = array_diff( $old, $new );
 			foreach ( $old_values as $old_value ) {
-				delete_post_meta( $post_id, $name, $old_value );
+				$storage->delete( $post_id, $name, $old_value );
 			}
 			return;
 		}
 
 		// Default: just update post meta.
-		update_post_meta( $post_id, $name, $new );
+		$storage->update( $post_id, $name, $new );
 	}
 
 	/**

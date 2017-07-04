@@ -47,12 +47,14 @@ class RWMB_File_Field extends RWMB_Field {
 		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
 		$order    = (string) filter_input( INPUT_POST, 'order' );
+		$object_type = (string) filter_input( INPUT_POST, 'object_type' );
+		$storage = rwmb_get_storage( $object_type );
 
 		check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
 		parse_str( $order, $items );
-		delete_post_meta( $post_id, $field_id );
+		$storage->delete( $post_id, $field_id );
 		foreach ( $items['item'] as $item ) {
-			add_post_meta( $post_id, $field_id, $item, false );
+			$storage->add( $post_id, $field_id, $item, false );
 		}
 		wp_send_json_success();
 	}
@@ -68,9 +70,11 @@ class RWMB_File_Field extends RWMB_Field {
 		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
 		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
 		$force_delete  = (int) filter_input( INPUT_POST, 'force_delete', FILTER_SANITIZE_NUMBER_INT );
+		$object_type = (string) filter_input( INPUT_POST, 'object_type' );
+		$storage = rwmb_get_storage( $object_type );
 
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-		delete_post_meta( $post_id, $field_id, $attachment_id );
+		$storage->delete( $post_id, $field_id, $attachment_id );
 		$success = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
 
 		if ( $success ) {
