@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
-Tested up to: 4.7.5
-Stable tag: 4.11.3
+Tested up to: 4.8
+Stable tag: 4.12
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -128,12 +128,22 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
-= 4.11.3 =
+= 4.12 - 2017-04-07 =
+#### Added
+- Completed the storage abstraction. All the actions add/get/update/delete post meta now use the storage methods. Make it easy to extend for other extensions for term/user meta and settings pages.
+- Added `autofocus`, `autocomplete` HTML5 attribute to inputs.
+- Added `alpha_channel` to `color` field. Set it to `true` to allow picking colors with opacity.
+- Click on the image will open a popup for re-select image. Works for `image_advanced` and `image_upload` (`plupload_image`) fields.
 
-* Make sure all cloned fields have unique ID, even inside multi-level groups. Now WYSIWYG editor works better with cloned groups.
-* Fixed wrong name attributes when clone key-value field.
-* Add missing $field parameter for "add_clone_button_text" filter.
+#### Changed
+- Auto display oembed media when pasting the URL, without click "Preview" button (and it's removed).
+- Better styles for media fields. Use the loading icon from WordPress.
 
-[See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/changelog.md).
+#### Fixed
+- Fix cloning an editor inside a group in WordPress 4.8. Caused by updated version of TinyMCE using Promise.
+- Modals created by media fields now exclude already selected media. This was a previous feature, but it had caused problems with uploading.
+- Fixed Google map doesn't use custom style
+
+[See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
 
 == Upgrade Notice ==
