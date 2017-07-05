@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-## [4.12] - 2017-04-07
+## [4.12.1] - 2017-07-05
+### Fixed
+- Helper function doesn't work. #1144.
+
+## [4.12] - 2017-07-04
 ### Added
 - Completed the storage abstraction. All the actions add/get/update/delete post meta now use the storage methods. Make it easy to extend for other extensions for term/user meta and settings pages.
 - Added `autofocus`, `autocomplete` HTML5 attribute to inputs.
@@ -680,7 +684,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.1...HEAD
+[4.12.1]: https://github.com/rilwis/meta-box/compare/4.12...4.12.1
 [4.12]: https://github.com/rilwis/meta-box/compare/4.11.3...4.12
 [4.11.3]: https://github.com/rilwis/meta-box/compare/4.11.2...4.11.3
 [4.11.2]: https://github.com/rilwis/meta-box/compare/4.11.1...4.11.2

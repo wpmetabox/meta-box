@@ -128,7 +128,11 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
-= 4.12 - 2017-04-07 =
+= 4.12.1 - 2017-07-05 =
+#### Fixed
+- Helper function doesn't work. #1144.
+
+= 4.12 - 2017-07-04 =
 #### Added
 - Completed the storage abstraction. All the actions add/get/update/delete post meta now use the storage methods. Make it easy to extend for other extensions for term/user meta and settings pages.
 - Added `autofocus`, `autocomplete` HTML5 attribute to inputs.
