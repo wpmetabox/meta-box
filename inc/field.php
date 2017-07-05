@@ -189,7 +189,7 @@ abstract class RWMB_Field {
 		} elseif ( isset( $field['storage'] ) ) {
 			$storage = $field['storage'];
 		} else {
-			return false;
+			$storage = rwmb_get_storage( 'post' );
 		}
 
 		if ( ! isset( $args['single'] ) ) {
