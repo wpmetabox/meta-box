@@ -59,8 +59,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$attributes = self::get_attributes( $field, $meta );
 
 		$html = sprintf(
-			'<input %s>
-			<div class="rwmb-media-view" data-options="%s"></div>',
+			'<input %s data-options="%s">',
 			self::render_attributes( $attributes ),
 			esc_attr( wp_json_encode( $field['js_options'] ) )
 		);

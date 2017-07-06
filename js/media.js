@@ -118,6 +118,7 @@ jQuery( function ( $ ) {
 	 * Sets up media field view and subviews
 	 */
 	MediaField = views.MediaField = Backbone.View.extend( {
+		className: 'rwmb-media-view',
 		initialize: function ( options ) {
 			var that = this;
 			this.$input = $( options.input );
@@ -126,7 +127,7 @@ jQuery( function ( $ ) {
 					fieldName: this.$input.attr( 'name' ) + '[]',
 					ids: this.$input.val().split( ',' )
 				},
-				this.$el.data( 'options' )
+				this.$input.data( 'options' )
 			) );
 
 			// Create views
@@ -591,7 +592,10 @@ jQuery( function ( $ ) {
 	 * @return void
 	 */
 	function initMediaField() {
-		new MediaField( {input: this, el: $( this ).siblings( 'div.rwmb-media-view' )} );
+		var view = new MediaField( { input: this } );
+		//Remove old then add new
+		$( this ).siblings( 'div.rwmb-media-view' ).remove();
+		$( this ).after( view.el );
 	}
 
 	$( '.rwmb-file_advanced' ).each( initMediaField );

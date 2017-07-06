@@ -19,7 +19,10 @@ jQuery( function ( $ ) {
 	 * @return void
 	 */
 	function init() {
-		new ImageUploadField( {input: this, el: $( this ).siblings( 'div.rwmb-media-view' )} );
+		var view = new ImageUpluadField( { input: this } );
+		//Remove old then add new
+		$( this ).siblings( 'div.rwmb-media-view' ).remove();
+		$( this ).after( view.el );
 	}
 
 	$( ':input.rwmb-image_upload, :input.rwmb-plupload_image' ).each( init );
