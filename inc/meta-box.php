@@ -191,7 +191,7 @@ class RW_Meta_Box {
 	 * Callback function to show fields in meta box
 	 */
 	public function show() {
-		$this->set_object_id();
+		$this->set_object_id( $this->get_current_object_id() );
 		$saved = $this->is_saved();
 
 		// Container.
@@ -412,7 +412,7 @@ class RW_Meta_Box {
 	 */
 	public function set_object_id( $id = null ) {
 		if ( null === $this->object_id ) {
-			$this->object_id = null === $id ? get_the_ID() : $id;
+			$this->object_id = $id;
 		}
 	}
 
@@ -432,5 +432,14 @@ class RW_Meta_Box {
 	 */
 	protected function get_storage() {
 		return rwmb_get_storage( $this->object_type );
+	}
+
+	/**
+	 * Get current object id.
+	 *
+	 * @return int|string
+	 */
+	protected function get_current_object_id() {
+		return get_the_ID();
 	}
 }
