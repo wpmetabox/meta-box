@@ -31,13 +31,13 @@ jQuery( function ( $ ) {
 			if ( max > 0 && left <= 0 ) {
 				return this;
 			}
-
-			if ( ! models.hasOwnProperty( 'length' ) ) {
-				models = [models];
-			} else if ( models instanceof media.model.Attachments ) {
-				models = models.models;
+			if( models) {
+				if ( ! models.hasOwnProperty( 'length' ) ) {
+					models = [models];
+				} else if ( models instanceof media.model.Attachments ) {
+					models = models.models;
+				}
 			}
-
 			if ( left > 0 ) {
 				models = _.difference( models, this.models );
 				models = _.first( models, left );
@@ -143,7 +143,11 @@ jQuery( function ( $ ) {
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
-				this.controller.destroy();
+				that.controller.destroy();
+			} );
+
+			this.$input.on( 'media:reset', function() {
+				that.controller.get( 'items' ).reset();
 			} );
 
 			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function () {
@@ -209,6 +213,7 @@ jQuery( function ( $ ) {
 
 			this.listenTo( this.collection, 'add', this.addItemView );
 			this.listenTo( this.collection, 'remove', this.removeItemView );
+			this.listenTo( this.collection, 'reset', this.resetItemViews );
 
 			// Sort media using sortable
 			this.initSortable();
@@ -243,6 +248,16 @@ jQuery( function ( $ ) {
 
 		removeItem: function ( item ) {
 			this.collection.remove( item );
+		},
+
+		resetItemViews: function( items, options ){
+			var that = this;
+			_.each( options.previousModels, function( item ){
+				 that.removeItemView( item );
+			 } );
+			items.each( function( item ) {
+				that.addItemView( item );
+			} );
 		},
 
 		switchItem: function ( item ) {
