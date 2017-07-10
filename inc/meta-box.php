@@ -66,6 +66,19 @@ class RW_Meta_Box {
 	}
 
 	/**
+	 * Add fields to field registry.
+	 */
+	public function register_fields() {
+		$field_registry = rwmb_get_registry( 'field' );
+
+		foreach ( $this->post_types as $post_type ) {
+			foreach ( $this->fields as $field ) {
+				$field_registry->add( $field, $post_type );
+			}
+		}
+	}
+
+	/**
 	 * Conditional check for whether initializing meta box.
 	 *
 	 * - 1st filter applies to all meta boxes.
