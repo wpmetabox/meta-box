@@ -46,7 +46,7 @@ class RWMB_Core {
 		$meta_boxes = rwmb_get_registry( 'meta_box' );
 		$fields     = rwmb_get_registry( 'field' );
 		foreach ( $configs as $config ) {
-			$meta_box = new RW_Meta_Box( $config );
+			$meta_box = rwmb_get_meta_box( $config );
 			$meta_boxes->add( $meta_box );
 			$fields->add_from_meta_box( $meta_box );
 		}
