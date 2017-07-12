@@ -4,7 +4,7 @@ Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
 Tested up to: 4.8
-Stable tag: 4.12.1
+Stable tag: 4.12.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -132,16 +132,12 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 #### Fixed
 - Helper function doesn't work. #1144.
 
-= 4.12 - 2017-07-04 =
+= 4.12.2 - 2017-07-12 =
 #### Added
-- Completed the storage abstraction. All the actions add/get/update/delete post meta now use the storage methods. Make it easy to extend for other extensions for term/user meta and settings pages.
-- Added `autofocus`, `autocomplete` HTML5 attribute to inputs.
-- Added `alpha_channel` to `color` field. Set it to `true` to allow picking colors with opacity.
-- Click on the image will open a popup for re-select image. Works for `image_advanced` and `image_upload` (`plupload_image`) fields.
-
+- Added new `media:reset` event for media fields to clear the selection.
 #### Changed
-- Auto display oembed media when pasting the URL, without click "Preview" button (and it's removed).
-- Better styles for media fields. Use the loading icon from WordPress.
+- Improve meta box registry that can handle various types of meta boxes. Used for term meta, user meta, settings pages.
+- Improve the way set current object id for meta box and add fields to the registry.
 
 #### Fixed
 - Fix cloning an editor inside a group in WordPress 4.8. Caused by updated version of TinyMCE using Promise.

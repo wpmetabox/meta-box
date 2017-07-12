@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.12.2] - 2017-07-12
+### Added
+- Added new `media:reset` event for media fields to clear the selection.
+### Changed
+- Improve meta box registry that can handle various types of meta boxes. Used for term meta, user meta, settings pages.
+- Improve the way set current object id for meta box and add fields to the registry.
+
 ## [4.12.1] - 2017-07-05
 ### Fixed
 - Helper function doesn't work. #1144.
@@ -684,7 +691,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.1...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.2...HEAD
+[4.12.2]: https://github.com/rilwis/meta-box/compare/4.12.1...4.12.2
 [4.12.1]: https://github.com/rilwis/meta-box/compare/4.12...4.12.1
 [4.12]: https://github.com/rilwis/meta-box/compare/4.11.3...4.12
 [4.11.3]: https://github.com/rilwis/meta-box/compare/4.11.2...4.11.3
