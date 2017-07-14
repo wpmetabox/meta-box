@@ -1,7 +1,7 @@
 /* Fix empty block below admin footer (issue #24) */
 #ui-datepicker-div {
 	display: none;
-	z-index: 9999 !important;
+	z-index: 99999 !important;
 }
 
 /* Style for multiple months */
