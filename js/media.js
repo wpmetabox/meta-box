@@ -377,6 +377,7 @@ jQuery( function ( $ ) {
 
 			// Re-render if changes happen in controller
 			this.listenTo( this.controller.get( 'items' ), 'update', this.render );
+			this.listenTo( this.controller.get( 'items' ), 'reset', this.render );
 
 			// Render
 			this.render();
