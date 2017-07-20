@@ -2,6 +2,8 @@
 jQuery( function ( $ ) {
 	'use strict';
 
+	var inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]';
+
 	// Object holds all methods related to fields' index when clone
 	var cloneIndex = {
 		/**
@@ -10,7 +12,7 @@ jQuery( function ( $ ) {
 		 * @param index Index value
 		 */
 		set: function ( $clone, index ) {
-			$clone.find( ':input[class|="rwmb"]' ).each( function () {
+			$clone.find( inputSelectors ).each( function () {
 				var $field = $( this );
 
 				// Name attribute
@@ -91,7 +93,7 @@ jQuery( function ( $ ) {
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
-			$input = $clone.find( ':input[class|="rwmb"]' ),
+			$input = $clone.find( inputSelectors ),
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Reset value for fields

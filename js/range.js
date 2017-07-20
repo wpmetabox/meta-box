@@ -15,6 +15,6 @@ jQuery( function ( $ ) {
 
 	}
 
-	$( ':input.rwmb-range' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', 'input.rwmb-range', update );
+	$( '.rwmb-range' ).each( update );
+	$( document ).on( 'clone', '.rwmb-range', update );
 } );

@@ -67,6 +67,6 @@ jQuery( function ( $ ) {
 	}
 
 	// Run for select field
-	$( ':input.rwmb-select' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select', update );
+	$( '.rwmb-select' ).each( update );
+	$( document ).on( 'clone', '.rwmb-select', update );
 } );

@@ -16,6 +16,6 @@ jQuery( function ( $ ) {
 		rwmbSelect.bindEvents( $this );
 	}
 
-	$( ':input.rwmb-select_advanced' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-select_advanced', update );
+	$( '.rwmb-select_advanced' ).each( update );
+	$( document ).on( 'clone', '.rwmb-select_advanced', update );
 } );

@@ -40,7 +40,7 @@ jQuery( function ( $ )
 		$( this ).siblings( 'div.rwmb-media-view' ).remove();
 		$( this ).after( view.el );
 	}
-	$( ':input.rwmb-video' ).each( initVideoField );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-video', initVideoField )
+	$( '.rwmb-video' ).each( initVideoField );
+	$( document )
+		.on( 'clone', '.rwmb-video', initVideoField )
 } );

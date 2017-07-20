@@ -185,7 +185,6 @@ jQuery( function ( $ ) {
 		$( this ).after( view.el );
 	}
 
-	$( ':input.rwmb-file_upload' ).each( init );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-file_upload', init )
+	$( '.rwmb-file_upload' ).each( init );
+	$( document ).on( 'clone', '.rwmb-file_upload', init )
 } );
