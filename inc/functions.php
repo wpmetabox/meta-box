@@ -217,7 +217,7 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 		$class = 'RWMB_' . ucwords( $type ) . '_Registry';
 		$class = str_replace( ' ', '_', $class );
 		if ( ! isset( $data[ $type ] ) ) {
-			$data[ $type ] = new $class;
+			$data[ $type ] = new $class();
 		}
 
 		return $data[ $type ];

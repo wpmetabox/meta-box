@@ -55,7 +55,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 		$field               = wp_parse_args( $field, array(
 			'prefix'     => '',
 			'suffix'     => '',
-			'std'      	 => '',
+			'std'        => '',
 			'js_options' => array(),
 		) );
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(

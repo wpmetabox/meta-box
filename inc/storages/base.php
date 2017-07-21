@@ -22,7 +22,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	 *
 	 * @param int        $object_id ID of the object metadata is for.
 	 * @param string     $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
-	 * 		                        the specified object.
+	 *                              the specified object.
 	 * @param bool|array $args      Optional, default is false.
 	 *                              If true, return only the first value of the specified meta_key.
 	 *                              If is array, use the `single` element.
@@ -66,7 +66,7 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	 * @param string $meta_key   Metadata key.
 	 * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
 	 * @param mixed  $prev_value Optional. If specified, only update existing metadata entries with
-	 * 		                     the specified value. Otherwise, update all entries.
+	 *                           the specified value. Otherwise, update all entries.
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
 	 *
 	 * @see update_metadata()
