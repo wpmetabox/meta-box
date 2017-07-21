@@ -1,4 +1,8 @@
-.rwmb-media-list {
+.rwmb-media-list:empty {
+	display: none;
+}
+.rwmb-media-list:not(:empty) {
+	display: block;
 	margin: -8px 0 0 -8px;
 	overflow: hidden;
 }
