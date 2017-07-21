@@ -320,20 +320,12 @@ jQuery( function ( $ ) {
 		initSortable: function () {
 			var collection = this.controller.get( 'items' );
 			this.$el.sortable( {
-				// Change the position of the attachment as soon as the
-				// mouse pointer overlaps a thumbnail.
-				tolerance: 'pointer',
+				// Clone the element and the clone will be dragged. Prevent trigger click on the image, which means reselect.
+				helper : 'clone',
 
 				// Record the initial `index` of the dragged model.
 				start: function ( event, ui ) {
 					ui.item.data( 'sortableIndexStart', ui.item.index() );
-				},
-
-				// Stop trigger 'click' on item. 'click' means reselect.
-				stop: function ( event ) {
-					$( event.originalEvent.target ).one( 'click', function ( e ) {
-						e.stopImmediatePropagation();
-					} );
 				},
 
 				// Update the model's index in the collection.
