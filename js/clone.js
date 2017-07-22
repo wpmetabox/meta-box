@@ -2,17 +2,15 @@
 jQuery( function ( $ ) {
 	'use strict';
 
-	var inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]';
-
 	// Object holds all methods related to fields' index when clone
 	var cloneIndex = {
 		/**
 		 * Set index for fields in a .rwmb-clone
-		 * @param $clone .rwmb-clone element
+		 * @param $inputs .rwmb-clone element
 		 * @param index Index value
 		 */
-		set: function ( $clone, index ) {
-			$clone.find( inputSelectors ).each( function () {
+		set: function ( $inputs, index ) {
+			$inputs.each( function () {
 				var $field = $( this );
 
 				// Name attribute
@@ -31,7 +29,7 @@ jQuery( function ( $ ) {
 			} );
 
 			// Address button's value attribute
-			var $address = $clone.find( '.rwmb-map-goto-address-button' );
+			var $address = $inputs.filter( '.rwmb-map-goto-address-button' );
 			if ( $address.length ) {
 				var value = $address.attr( 'value' );
 				$address.attr( 'value', cloneIndex.replace( index, value, '_' ) );
@@ -93,11 +91,12 @@ jQuery( function ( $ ) {
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone:last' ),
 			$clone = $last.clone(),
-			$input = $clone.find( inputSelectors ),
+			inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]',
+			$inputs = $clone.find( inputSelectors ),
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Reset value for fields
-		$input.each( function () {
+		$inputs.each( function () {
 			var $field = $( this );
 			if ( $field.is( ':radio' ) || $field.is( ':checkbox' ) ) {
 				// Reset 'checked' attribute
@@ -118,10 +117,10 @@ jQuery( function ( $ ) {
 		$clone.trigger( 'clone_instance', nextIndex );
 
 		// Set fields index. Must run before trigger clone event.
-		cloneIndex.set( $clone, nextIndex );
+		cloneIndex.set( $inputs, nextIndex );
 
 		// Trigger custom clone event
-		$input.trigger( 'clone', nextIndex );
+		$inputs.trigger( 'clone', nextIndex );
 	}
 
 	/**
