@@ -350,10 +350,11 @@ abstract class RWMB_Field {
 			'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
 			'placeholder'       => '',
 
-			'clone'      => false,
-			'max_clone'  => 0,
-			'sort_clone' => false,
-			'add_button' => __( '+ Add more', 'meta-box' ),
+			'clone'         => false,
+			'max_clone'     => 0,
+			'sort_clone'    => false,
+			'add_button'    => __( '+ Add more', 'meta-box' ),
+			'clone_default' => false,
 
 			'class'      => '',
 			'disabled'   => false,
@@ -361,6 +362,13 @@ abstract class RWMB_Field {
 			'autofocus'  => false,
 			'attributes' => array(),
 		) );
+
+		if ( $field['clone_default'] ) {
+			$field['attributes'] = wp_parse_args( $field['attributes'], array(
+				'data-default'       => $field['std'],
+				'data-clone-default' => 'true',
+			) );
+		}
 
 		return $field;
 	}

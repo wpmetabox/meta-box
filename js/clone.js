@@ -43,6 +43,7 @@ jQuery( function ( $ ) {
 		 * @param before String before returned value
 		 * @param after String after returned value
 		 * @param alternative Check if attribute does not contain any integer, will reset the attribute?
+		 * @param isEnd Check if we find string at the end?
 		 * @return string
 		 */
 		replace: function ( index, value, before, after, alternative, isEnd ) {
@@ -83,32 +84,63 @@ jQuery( function ( $ ) {
 		}
 	};
 
+	// Object holds all method related to fields' value when clone.
+	var cloneValue = {
+		/**
+		 * Reset field value when clone. Expect this = current input.
+		 */
+		reset: function() {
+			cloneValue.$field = $( this );
+			cloneValue.type = cloneValue.$field.attr( 'type' );
+
+			if ( true === cloneValue.$field.data( 'clone-default' ) ) {
+				cloneValue.resetToDefault();
+			} else {
+				cloneValue.clear();
+			}
+		},
+		/**
+		 * Reset field value to its default.
+		 */
+		resetToDefault: function() {
+			var defaultValue = cloneValue.$field.data( 'default' );
+			if ( 'radio' === cloneValue.type ) {
+				cloneValue.$field.prop( 'checked', cloneValue.$field.val() === defaultValue );
+			} else if ( 'checkbox' === cloneValue.type ) {
+				cloneValue.$field.prop( 'checked', !!defaultValue );
+			} else if ( 'select' === cloneValue.type ) {
+				cloneValue.$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
+			} else if ( 'hidden' !== cloneValue.type ) {
+				cloneValue.$field.val( defaultValue );
+			}
+		},
+		/**
+		 * Clear field value.
+		 */
+		clear: function() {
+			if ( 'radio' === cloneValue.type || 'checkbox' === cloneValue.type ) {
+				cloneValue.$field.prop( 'checked', false );
+			} else if ( 'select' === cloneValue.type ) {
+				cloneValue.$field.prop( 'selectedIndex', - 1 );
+			} else if ( 'hidden' !== cloneValue.type ) {
+				cloneValue.$field.val( '' );
+			}
+		}
+	};
+
 	/**
 	 * Clone fields
 	 * @param $container A div container which has all fields
-	 * @return void
 	 */
 	function clone( $container ) {
-		var $last = $container.children( '.rwmb-clone:last' ),
+		var $last = $container.children( '.rwmb-clone' ).last(),
 			$clone = $last.clone(),
 			inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]',
 			$inputs = $clone.find( inputSelectors ),
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Reset value for fields
-		$inputs.each( function () {
-			var $field = $( this );
-			if ( $field.is( ':radio' ) || $field.is( ':checkbox' ) ) {
-				// Reset 'checked' attribute
-				$field.prop( 'checked', false );
-			} else if ( $field.is( 'select' ) ) {
-				// Reset select
-				$field.prop( 'selectedIndex', - 1 )
-			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
-				// Reset value
-				$field.val( '' );
-			}
-		} );
+		$inputs.each( cloneValue.reset );
 
 		// Insert Clone
 		$clone.insertAfter( $last );
@@ -127,8 +159,6 @@ jQuery( function ( $ ) {
 	 * Hide remove buttons when there's only 1 of them
 	 *
 	 * @param $container .rwmb-input container
-	 *
-	 * @return void
 	 */
 	function toggleRemoveButtons( $container ) {
 		var $clones = $container.children( '.rwmb-clone' );
@@ -145,8 +175,6 @@ jQuery( function ( $ ) {
 	 * Used with [data-max-clone] attribute. When max clone is reached, the add button is hid and vice versa
 	 *
 	 * @param $container .rwmb-input container
-	 *
-	 * @return void
 	 */
 	function toggleAddButton( $container ) {
 		var $button = $container.find( '.add-clone' ),
