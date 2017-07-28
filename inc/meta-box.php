@@ -49,16 +49,15 @@ class RW_Meta_Box {
 	 * @param array $meta_box Meta box definition.
 	 */
 	public function __construct( $meta_box ) {
+		$meta_box = self::normalize( $meta_box );
+		$this->meta_box = $meta_box;
+
 		$storage = $this->get_storage();
 		if ( ! $storage ) {
 			return;
 		}
 
-		$meta_box           = self::normalize( $meta_box );
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $storage );
-
-		$this->meta_box = $meta_box;
-
+		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $storage );
 		if ( $this->is_shown() ) {
 			$this->global_hooks();
 			$this->object_hooks();
@@ -444,7 +443,7 @@ class RW_Meta_Box {
 	 * @return RWMB_Storage_Interface
 	 */
 	protected function get_storage() {
-		return rwmb_get_storage( $this->object_type );
+		return rwmb_get_storage( $this->object_type, $this );
 	}
 
 	/**
