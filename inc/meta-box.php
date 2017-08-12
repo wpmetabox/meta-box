@@ -442,7 +442,7 @@ class RW_Meta_Box {
 	 *
 	 * @return RWMB_Storage_Interface
 	 */
-	protected function get_storage() {
+	public function get_storage() {
 		return rwmb_get_storage( $this->object_type, $this );
 	}
 
