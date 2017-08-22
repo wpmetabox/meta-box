@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.12.3] - 2017-08-22
+### Added
+- Reset media status when reset media field.
+- Added support for clone default value. Requires 'clone_default' => true.
+### Changed
+- Optimized JS performance when cloning.
+- Updated French translation
+### Fixed
+- Brought date picker in front of admin bar.
+- Fixed margin of media list when no images are selected.
+- Fixed trigger reselect image popup when reorder images.
+- Fixed autosave not working.
+
 ## [4.12.2] - 2017-07-12
 ### Added
 - Added new `media:reset` event for media fields to clear the selection.
@@ -691,7 +704,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.2...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.3...HEAD
+[4.12.3]: https://github.com/rilwis/meta-box/compare/4.12.2...4.12.3
 [4.12.2]: https://github.com/rilwis/meta-box/compare/4.12.1...4.12.2
 [4.12.1]: https://github.com/rilwis/meta-box/compare/4.12...4.12.1
 [4.12]: https://github.com/rilwis/meta-box/compare/4.11.3...4.12

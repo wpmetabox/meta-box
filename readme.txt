@@ -66,6 +66,7 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Free Extensions
 
+- [MB Comment Meta](https://wordpress.org/plugins/mb-comment-meta/): Add custom fields to comments in WordPress. Support all field types and options.
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
 - [MB Custom Taxonomy](https://metabox.io/plugins/custom-taxonomy/): Create and manage custom taxonomies with an easy-to-use interface in WordPress.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
@@ -74,6 +75,8 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Premium Extensions
 
+- [MB Custom Table](https://metabox.io/plugins/mb-custom-table/): Save custom fields data to custom table instead of the default meta tables. Reduce database size and increase performance.
+- [MB Revision](https://metabox.io/plugins/mb-revision/): Track changes of custom fields with WordPress revision. Save, compare, restore the changes easily.
 - [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/): Create frontend forms for users to submit custom content. Embed everywhere with shortcode.
 - [MB User Meta](https://metabox.io/plugins/mb-user-meta/): Add custom fields to user profile (user meta) quickly with simple syntax.
 - [Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/): Automatically and instantly populate location data with the power of Google Maps Geolocation API.
@@ -128,21 +131,21 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
-= 4.12.1 - 2017-07-05 =
-#### Fixed
-- Helper function doesn't work. #1144.
+= 4.12.3 - 2017-08-22 =
 
-= 4.12.2 - 2017-07-12 =
 #### Added
-- Added new `media:reset` event for media fields to clear the selection.
+- Reset media status when reset media field.
+- Added support for clone default value. Requires 'clone_default' => true.
+
 #### Changed
-- Improve meta box registry that can handle various types of meta boxes. Used for term meta, user meta, settings pages.
-- Improve the way set current object id for meta box and add fields to the registry.
+- Optimized JS performance when cloning.
+- Updated French translation
 
 #### Fixed
-- Fix cloning an editor inside a group in WordPress 4.8. Caused by updated version of TinyMCE using Promise.
-- Modals created by media fields now exclude already selected media. This was a previous feature, but it had caused problems with uploading.
-- Fixed Google map doesn't use custom style
+- Brought date picker in front of admin bar.
+- Fixed margin of media list when no images are selected.
+- Fixed trigger reselect image popup when reorder images.
+- Fixed autosave not working.
 
 [See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
 

@@ -72,6 +72,7 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Free Extensions
 
+- [MB Comment Meta](https://wordpress.org/plugins/mb-comment-meta/): Add custom fields to comments in WordPress. Support all field types and options.
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
 - [MB Custom Taxonomy](https://metabox.io/plugins/custom-taxonomy/): Create and manage custom taxonomies with an easy-to-use interface in WordPress.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
@@ -80,6 +81,8 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Premium Extensions
 
+- [MB Custom Table](https://metabox.io/plugins/mb-custom-table/): Save custom fields data to custom table instead of the default meta tables. Reduce database size and increase performance.
+- [MB Revision](https://metabox.io/plugins/mb-revision/): Track changes of custom fields with WordPress revision. Save, compare, restore the changes easily.
 - [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/): Create frontend forms for users to submit custom content. Embed everywhere with shortcode.
 - [MB User Meta](https://metabox.io/plugins/mb-user-meta/): Add custom fields to user profile (user meta) quickly with simple syntax.
 - [Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/): Automatically and instantly populate location data with the power of Google Maps Geolocation API.
