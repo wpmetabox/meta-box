@@ -104,7 +104,8 @@ class RWMB_File_Field extends RWMB_Field {
 				<div class="rwmb-file-input"><input type="file" name="%s[]" /></div>
 				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 			</div>',
-			$field['id'],
+			// $field['id'],
+			$field['file_input_name'],
 			$i18n_more
 		);
 
@@ -123,7 +124,8 @@ class RWMB_File_Field extends RWMB_Field {
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
 		foreach ( (array) $files as $k => $file ) {
-			$files[ $k ] = self::call( $field, 'file_html', $file );
+			// $files[ $k ] = self::call( $field, 'file_html', $file );
+			$files[ $k ] = self::file_html( $file, $k, $field );
 		}
 		return sprintf(
 			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
@@ -140,13 +142,16 @@ class RWMB_File_Field extends RWMB_Field {
 	/**
 	 * Get HTML for uploaded file.
 	 *
-	 * @param int $file Attachment (file) ID.
+	 * @param int   $file  Attachment (file) ID.
+	 * @param int   $index File index.
+	 * @param array $field Field data.
 	 * @return string
 	 */
-	protected static function file_html( $file ) {
+	protected static function file_html( $file, $index, $field ) {
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
 		$mime_type   = get_post_mime_type( $file );
+		$attributes = self::get_attributes( $field, $file );
 
 		return sprintf(
 			'<li id="item_%s">
@@ -157,6 +162,7 @@ class RWMB_File_Field extends RWMB_Field {
 					<a href="%s" target="_blank">%s</a> |
 					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>
 				</div>
+				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
 			$file,
 			wp_get_attachment_image( $file, array( 60, 60 ), true ),
@@ -166,7 +172,10 @@ class RWMB_File_Field extends RWMB_Field {
 			get_edit_post_link( $file ),
 			$i18n_edit,
 			$file,
-			$i18n_delete
+			$i18n_delete,
+			$attributes['name'],
+			$index,
+			$file
 		);
 	}
 
@@ -181,15 +190,17 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+		$file_input_name = $field['file_input_name'];
+
 		// @codingStandardsIgnoreLine
-		if ( empty( $_FILES[ $field['id'] ] ) ) {
+		if ( empty( $_FILES[ $file_input_name ] ) ) {
 			return $new;
 		}
 
 		$new   = array();
-		$count = self::transform( $field['id'] );
+		$count = self::transform( $file_input_name );
 		for ( $i = 0; $i <= $count; $i ++ ) {
-			$attachment = media_handle_upload( "{$field['id']}_{$i}", $post_id );
+			$attachment = media_handle_upload( "{$file_input_name}_{$i}", $post_id );
 			if ( ! is_wp_error( $attachment ) ) {
 				$new[] = $attachment;
 			}
@@ -236,6 +247,8 @@ class RWMB_File_Field extends RWMB_Field {
 			'mime_type'        => '',
 		) );
 		$field['multiple'] = true;
+
+		$field['file_input_name'] = '_file_' . $field['id'];
 
 		return $field;
 	}
