@@ -77,7 +77,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		if ( empty( $meta ) ) {
 			return $field['multiple'] ? array() : '';
 		}
-		$meta = array_filter( wp_parse_id_list( $meta ) );
+		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
+		$meta = array_filter( $meta );
 
 		return $field['multiple'] ? $meta : reset( $meta );
 	}
