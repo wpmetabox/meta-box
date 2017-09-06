@@ -476,6 +476,11 @@ abstract class RWMB_Field {
 	 */
 	public static function the_value( $field, $args = array(), $post_id = null ) {
 		$value = self::call( 'get_value', $field, $args, $post_id );
+
+		if ( false === $value ) {
+			return '';
+		}
+
 		return self::call( 'format_value', $field, $value );
 	}
 
