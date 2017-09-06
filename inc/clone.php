@@ -43,6 +43,12 @@ class RWMB_Clone {
 				$sub_field['field_name'] .= '[]';
 			}
 
+
+			if ( in_array( $sub_field['type'], array( 'file', 'image' ) ) ) {
+				$sub_field['file_input_name'] = $field['file_input_name'] . "[{$index}]";
+			}
+
+
 			// Wrap field HTML in a div with class="rwmb-clone" if needed.
 			$class     = "rwmb-clone rwmb-{$field['type']}-clone";
 			$sort_icon = '';
@@ -77,7 +83,7 @@ class RWMB_Clone {
 	 * @return mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		if ( ! is_array( $new ) ) {
+		if ( ! in_array( $field['type'], array( 'file', 'image' ) ) && ! is_array( $new ) ) {
 			return array();
 		}
 

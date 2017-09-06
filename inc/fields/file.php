@@ -101,7 +101,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Show form upload.
 		$html .= sprintf(
 			'<div class="rwmb-new-files">
-				<div class="rwmb-file-input"><input type="file" name="%s[]" /></div>
+				<div class="rwmb-file-input"><input type="file" name="%s[]" class="rwmb-input" /></div>
 				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 			</div>',
 			// $field['id'],
@@ -124,8 +124,8 @@ class RWMB_File_Field extends RWMB_Field {
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 
 		foreach ( (array) $files as $k => $file ) {
-			// $files[ $k ] = self::call( $field, 'file_html', $file );
-			$files[ $k ] = self::file_html( $file, $k, $field );
+			$files[ $k ] = self::call( $field, 'file_html', $file, $k );
+			// $files[ $k ] = self::file_html( $file, $k, $field );
 		}
 		return sprintf(
 			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
