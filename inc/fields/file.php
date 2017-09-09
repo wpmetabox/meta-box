@@ -198,15 +198,34 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		$new   = array();
-		$count = self::transform( $file_input_name );
-		for ( $i = 0; $i <= $count; $i ++ ) {
-			$attachment = media_handle_upload( "{$file_input_name}_{$i}", $post_id );
-			if ( ! is_wp_error( $attachment ) ) {
-				$new[] = $attachment;
+		$structure = self::transform( $file_input_name );
+
+		// echo '<pre>'; print_r( $structure ); print_r( $_FILES ); echo '</pre>'; die();
+
+		if ( ! is_array( $structure ) ) {
+			for ( $i = 0; $i <= $structure; $i ++ ) {
+				$attachment = media_handle_upload( "{$file_input_name}_{$i}", $post_id );
+				if ( ! is_wp_error( $attachment ) ) {
+					$new[] = $attachment;
+				}
+			}
+		} else {
+			foreach ( $structure as $key => $value ) {
+				if ( empty( $new[ $key ] ) ) {
+					$new[ $key ] = array();
+				}
+				for ( $i = 0; $i <= $value; $i ++ ) {
+					$attachment = media_handle_upload( "{$file_input_name}_{$key}_{$i}", $post_id );
+					if ( ! is_wp_error( $attachment ) ) {
+						$new[ $key ][] = $attachment;
+					}
+				}
 			}
 		}
 
-		return array_filter( array_unique( array_merge( (array) $old, $new ) ) );
+		// var_dump($old, $new, self::combine_old_new_value( $old, $new )); die();
+
+		return self::combine_old_new_value( $old, $new );
 	}
 
 	/**
@@ -220,16 +239,69 @@ class RWMB_File_Field extends RWMB_Field {
 		// @codingStandardsIgnoreLine
 		foreach ( $_FILES[ $field_id ] as $key => $list ) {
 			foreach ( $list as $index => $value ) {
-				// @codingStandardsIgnoreLine
-				if ( ! isset( $_FILES[ "{$field_id}_{$index}" ] ) ) {
-					$_FILES[ "{$field_id}_{$index}" ] = array();
+				if ( ! is_array( $value ) ) {
+					$file_key = "{$field_id}_{$index}";
+
+					// @codingStandardsIgnoreLine
+					if ( ! isset( $_FILES[ $file_key ] ) ) {
+						$_FILES[ $file_key ] = array();
+					}
+					$_FILES[ $file_key ][ $key ] = $value;
+				} else {
+					// This is clonable field.
+					foreach ( $value as $child_index => $child_value ) {
+						$file_key = "{$field_id}_{$index}_{$child_index}";
+						if ( ! isset( $_FILES[ $file_key ] ) ) {
+							$_FILES[ $file_key ] = array();
+						}
+						$_FILES[ $file_key ][ $key ] = $child_value;
+					}
 				}
-				$_FILES[ "{$field_id}_{$index}" ][ $key ] = $value;
 			}
 		}
 
-		// @codingStandardsIgnoreLine
-		return count( $_FILES[ $field_id ]['name'] );
+		if ( ! is_array( $_FILES[ $field_id ]['name'][0] ) ) {
+			$structure = count( $_FILES[ $field_id ]['name'] );
+		} else {
+			// TODO.
+			$structure = array();
+			foreach ( $_FILES[ $field_id ]['name'] as $key => $value ) {
+				$structure[ $key ] = count( $value );
+			}
+		}
+		return $structure;
+	}
+
+	/**
+	 * Combine old and new value.
+	 *
+	 * @param array $old Old value.
+	 * @param array $new New value.
+	 *
+	 * @return array
+	 */
+	protected static function combine_old_new_value( $old, $new ) {
+		if ( is_array( $new[0] ) || is_array( $old[0] ) ) {
+			if ( empty( $old ) ) {
+				return $new;
+			}
+
+			$result = $old;
+			foreach ( $old as $index => $value ) {
+				if ( empty( $new[ $index ] ) ) {
+					continue;
+				}
+
+				$result[ $index ] = array_filter( array_unique( array_merge( (array) $old[ $index ], $new[ $index ] ) ) );
+				unset( $new[ $index ] );
+			}
+
+			$result = array_merge( $result, $new );
+
+			return $result;
+		}
+
+		return array_values( array_filter( array_unique( array_merge( (array) $old, $new ) ) ) );
 	}
 
 	/**

@@ -39,13 +39,10 @@ class RWMB_Clone {
 				}
 			}
 
-			if ( $field['multiple'] ) {
-				$sub_field['field_name'] .= '[]';
-			}
-
-
 			if ( in_array( $sub_field['type'], array( 'file', 'image' ) ) ) {
 				$sub_field['file_input_name'] = $field['file_input_name'] . "[{$index}]";
+			} elseif ( $field['multiple'] ) {
+				$sub_field['field_name'] .= '[]';
 			}
 
 
@@ -83,15 +80,21 @@ class RWMB_Clone {
 	 * @return mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		if ( ! in_array( $field['type'], array( 'file', 'image' ) ) && ! is_array( $new ) ) {
-			return array();
+		if ( ! is_array( $new ) ) {
+			$new = array();
 		}
 
-		foreach ( $new as $key => $value ) {
-			$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
-			$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
-			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
+
+		if ( in_array( $field['type'], array( 'file', 'image' ) ) ) {
+			$new = RWMB_Field::call( $field, 'value', '', $new, $post_id );
+		} else {
+			foreach ( $new as $key => $value ) {
+				$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
+				$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+				$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
+			}
 		}
+
 		return $new;
 	}
 
