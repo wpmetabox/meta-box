@@ -98,7 +98,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			$post_id = get_the_ID();
 		}
 
-		$value = self::meta( $post_id, '', $field );
+		// Get raw meta value in the database, no escape.
+		$value = self::call( $field, 'raw_meta', $post_id, $args );
 		if ( empty( $value ) ) {
 			return null;
 		}
