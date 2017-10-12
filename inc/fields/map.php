@@ -43,7 +43,11 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html = '<div class="rwmb-map-field">';
+		$address = is_array( $field['address_field'] ) ? implode( ',', $field['address_field'] ) : $field['address_field'];
+		$html = sprintf(
+			'<div class="rwmb-map-field" data-address-field="%s">',
+			esc_attr( $address )
+		);
 
 		$html .= sprintf(
 			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"></div>
@@ -54,11 +58,9 @@ class RWMB_Map_Field extends RWMB_Field {
 			esc_attr( $meta )
 		);
 
-		$address = $field['address_field'];
-		if ( $address ) {
+		if ( $field['address_field'] ) {
 			$html .= sprintf(
-				'<button class="button rwmb-map-goto-address-button" value="%s">%s</button>',
-				is_array( $address ) ? implode( ',', $address ) : $address,
+				'<button class="button rwmb-map-goto-address-button">%s</button>',
 				esc_html__( 'Find Address', 'meta-box' )
 			);
 		}
