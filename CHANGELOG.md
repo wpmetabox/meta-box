@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.12.4] - 2017-10-18
+### Fixed
+- Fixed taxonomy advanced select tree doesn't work.
+- Fixed error when value of taxonomy field is empty.
+- Fixed helper functions don't work with taxonomy_advanced field
+- Increased priority for registering meta boxes to 20 to support custom port types registered using the default priority.
+- Fixed condition so that the fields based on posts/taxonomies are correctly translated.
+
 ## [4.12.3] - 2017-08-22
 ### Added
 - Reset media status when reset media field.
@@ -704,7 +712,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.3...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.4...HEAD
+[4.12.4]: https://github.com/rilwis/meta-box/compare/4.12.3...4.12.4
 [4.12.3]: https://github.com/rilwis/meta-box/compare/4.12.2...4.12.3
 [4.12.2]: https://github.com/rilwis/meta-box/compare/4.12.1...4.12.2
 [4.12.1]: https://github.com/rilwis/meta-box/compare/4.12...4.12.1

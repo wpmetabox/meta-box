@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
-Tested up to: 4.8
-Stable tag: 4.12.2
+Tested up to: 4.8.2
+Stable tag: 4.12.4
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -131,22 +131,6 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
-= 4.12.3 - 2017-08-22 =
-
-#### Added
-- Reset media status when reset media field.
-- Added support for clone default value. Requires 'clone_default' => true.
-
-#### Changed
-- Optimized JS performance when cloning.
-- Updated French translation
-
-#### Fixed
-- Brought date picker in front of admin bar.
-- Fixed margin of media list when no images are selected.
-- Fixed trigger reselect image popup when reorder images.
-- Fixed autosave not working.
-
-[See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
+[See full changelog here](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
 
 == Upgrade Notice ==
