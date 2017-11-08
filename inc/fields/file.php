@@ -104,7 +104,6 @@ class RWMB_File_Field extends RWMB_Field {
 				<div class="rwmb-file-input"><input type="file" name="%s[]" class="rwmb-input" /></div>
 				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 			</div>',
-			// $field['id'],
 			$field['file_input_name'],
 			$i18n_more
 		);
@@ -125,7 +124,6 @@ class RWMB_File_Field extends RWMB_Field {
 
 		foreach ( (array) $files as $k => $file ) {
 			$files[ $k ] = self::call( $field, 'file_html', $file, $k );
-			// $files[ $k ] = self::file_html( $file, $k, $field );
 		}
 		return sprintf(
 			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
@@ -150,7 +148,6 @@ class RWMB_File_Field extends RWMB_Field {
 	protected static function file_html( $file, $index, $field ) {
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
-		$mime_type   = get_post_mime_type( $file );
 		$attributes = self::get_attributes( $field, $file );
 
 		return sprintf(
@@ -168,7 +165,7 @@ class RWMB_File_Field extends RWMB_Field {
 			wp_get_attachment_image( $file, array( 60, 60 ), true ),
 			wp_get_attachment_url( $file ),
 			get_the_title( $file ),
-			$mime_type,
+			get_post_mime_type( $file ),
 			get_edit_post_link( $file ),
 			$i18n_edit,
 			$file,
@@ -200,8 +197,6 @@ class RWMB_File_Field extends RWMB_Field {
 		$new   = array();
 		$structure = self::transform( $file_input_name );
 
-		// echo '<pre>'; print_r( $structure ); print_r( $_FILES ); echo '</pre>'; die();
-
 		if ( ! is_array( $structure ) ) {
 			for ( $i = 0; $i <= $structure; $i ++ ) {
 				$attachment = media_handle_upload( "{$file_input_name}_{$i}", $post_id );
@@ -222,8 +217,6 @@ class RWMB_File_Field extends RWMB_Field {
 				}
 			}
 		}
-
-		// var_dump($old, $new, self::combine_old_new_value( $old, $new )); die();
 
 		return self::combine_old_new_value( $old, $new );
 	}

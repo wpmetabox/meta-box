@@ -39,12 +39,11 @@ class RWMB_Clone {
 				}
 			}
 
-			if ( in_array( $sub_field['type'], array( 'file', 'image' ) ) ) {
+			if ( in_array( $sub_field['type'], array( 'file', 'image' ), true ) ) {
 				$sub_field['file_input_name'] = $field['file_input_name'] . "[{$index}]";
 			} elseif ( $field['multiple'] ) {
 				$sub_field['field_name'] .= '[]';
 			}
-
 
 			// Wrap field HTML in a div with class="rwmb-clone" if needed.
 			$class     = "rwmb-clone rwmb-{$field['type']}-clone";
@@ -84,15 +83,14 @@ class RWMB_Clone {
 			$new = array();
 		}
 
+		if ( in_array( $field['type'], array( 'file', 'image' ), true ) ) {
+			return RWMB_Field::call( $field, 'value', '', $new, $post_id );
+		}
 
-		if ( in_array( $field['type'], array( 'file', 'image' ) ) ) {
-			$new = RWMB_Field::call( $field, 'value', '', $new, $post_id );
-		} else {
-			foreach ( $new as $key => $value ) {
-				$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
-				$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
-				$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
-			}
+		foreach ( $new as $key => $value ) {
+			$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
+			$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
 		}
 
 		return $new;
