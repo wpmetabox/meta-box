@@ -92,6 +92,7 @@ jQuery( function ( $ ) {
 		reset: function() {
 			cloneValue.$field = $( this );
 			cloneValue.type = cloneValue.$field.attr( 'type' );
+			cloneValue.isHiddenField = cloneValue.$field.hasClass( 'rwmb-hidden' );
 
 			if ( true === cloneValue.$field.data( 'clone-default' ) ) {
 				cloneValue.resetToDefault();
@@ -110,7 +111,7 @@ jQuery( function ( $ ) {
 				cloneValue.$field.prop( 'checked', !!defaultValue );
 			} else if ( 'select' === cloneValue.type ) {
 				cloneValue.$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
-			} else if ( 'hidden' !== cloneValue.type ) {
+			} else if ( ! cloneValue.isHiddenField ) {
 				cloneValue.$field.val( defaultValue );
 			}
 		},
@@ -122,7 +123,7 @@ jQuery( function ( $ ) {
 				cloneValue.$field.prop( 'checked', false );
 			} else if ( 'select' === cloneValue.type ) {
 				cloneValue.$field.prop( 'selectedIndex', - 1 );
-			} else if ( 'hidden' !== cloneValue.type ) {
+			} else if ( ! cloneValue.isHiddenField ) {
 				cloneValue.$field.val( '' );
 			}
 		}
