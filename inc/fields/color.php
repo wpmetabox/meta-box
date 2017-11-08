@@ -26,11 +26,8 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
-			'size'       => 7,
-			'maxlength'  => 7,
 			'alpha_channel' => false,
-			// 'pattern'    => '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
-			'js_options' => array(),
+			'js_options'    => array(),
 		) );
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], array(

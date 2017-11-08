@@ -139,7 +139,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	public static function format_value( $field, $value ) {
 		$output = '<ul>';
 		foreach ( $value as $subvalue ) {
-			$output .= sprintf( '<li><label>%s</label>: %s</li>', $subvalue[0], $subvalue[1] );
+			$output .= sprintf( '<li><label>%s:</label> %s</li>', $subvalue[0], $subvalue[1] );
 		}
 		$output .= '</ul>';
 		return $output;

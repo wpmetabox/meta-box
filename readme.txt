@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.1
-Tested up to: 4.8
-Stable tag: 4.12.2
+Tested up to: 4.8.2
+Stable tag: 4.12.4
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -66,6 +66,7 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Free Extensions
 
+- [MB Comment Meta](https://wordpress.org/plugins/mb-comment-meta/): Add custom fields to comments in WordPress. Support all field types and options.
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
 - [MB Custom Taxonomy](https://metabox.io/plugins/custom-taxonomy/): Create and manage custom taxonomies with an easy-to-use interface in WordPress.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
@@ -74,6 +75,8 @@ See more documentation [here](https://metabox.io/docs/).
 
 #### Premium Extensions
 
+- [MB Custom Table](https://metabox.io/plugins/mb-custom-table/): Save custom fields data to custom table instead of the default meta tables. Reduce database size and increase performance.
+- [MB Revision](https://metabox.io/plugins/mb-revision/): Track changes of custom fields with WordPress revision. Save, compare, restore the changes easily.
 - [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/): Create frontend forms for users to submit custom content. Embed everywhere with shortcode.
 - [MB User Meta](https://metabox.io/plugins/mb-user-meta/): Add custom fields to user profile (user meta) quickly with simple syntax.
 - [Meta Box Geolocation](https://metabox.io/plugins/meta-box-geolocation/): Automatically and instantly populate location data with the power of Google Maps Geolocation API.
@@ -128,22 +131,6 @@ To getting started with the plugin, please read [this tutorial](https://metabox.
 
 == Changelog ==
 
-= 4.12.1 - 2017-07-05 =
-#### Fixed
-- Helper function doesn't work. #1144.
-
-= 4.12.2 - 2017-07-12 =
-#### Added
-- Added new `media:reset` event for media fields to clear the selection.
-#### Changed
-- Improve meta box registry that can handle various types of meta boxes. Used for term meta, user meta, settings pages.
-- Improve the way set current object id for meta box and add fields to the registry.
-
-#### Fixed
-- Fix cloning an editor inside a group in WordPress 4.8. Caused by updated version of TinyMCE using Promise.
-- Modals created by media fields now exclude already selected media. This was a previous feature, but it had caused problems with uploading.
-- Fixed Google map doesn't use custom style
-
-[See changelog for all versions](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
+[See full changelog here](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
 
 == Upgrade Notice ==
