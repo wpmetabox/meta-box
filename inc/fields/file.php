@@ -29,8 +29,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function add_actions() {
 		add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
-		add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'wp_ajax_delete_file' ) );
-		add_action( 'wp_ajax_rwmb_reorder_files', array( __CLASS__, 'wp_ajax_reorder_files' ) );
+		add_action( 'wp_ajax_rwmb_delete_file', array( __CLASS__, 'ajax_delete_file' ) );
 	}
 
 	/**
@@ -41,43 +40,15 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Ajax callback for reordering images
-	 */
-	public static function wp_ajax_reorder_files() {
-		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
-		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
-		$order    = (string) filter_input( INPUT_POST, 'order' );
-		$object_type = (string) filter_input( INPUT_POST, 'object_type' );
-		$storage = rwmb_get_storage( $object_type );
-
-		check_ajax_referer( "rwmb-reorder-files_{$field_id}" );
-		parse_str( $order, $items );
-		$storage->delete( $post_id, $field_id );
-		foreach ( $items['item'] as $item ) {
-			$storage->add( $post_id, $field_id, $item, false );
-		}
-		wp_send_json_success();
-	}
-
-	/**
 	 * Ajax callback for deleting files.
-	 * Modified from a function used by "Verve Meta Boxes" plugin.
-	 *
-	 * @link http://goo.gl/LzYSq
 	 */
-	public static function wp_ajax_delete_file() {
-		$post_id       = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+	public static function ajax_delete_file() {
 		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
 		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
 		$force_delete  = (int) filter_input( INPUT_POST, 'force_delete', FILTER_SANITIZE_NUMBER_INT );
-		$object_type = (string) filter_input( INPUT_POST, 'object_type' );
-		$storage = rwmb_get_storage( $object_type );
 
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-		$storage->delete( $post_id, $field_id, $attachment_id );
-		$success = $force_delete ? wp_delete_attachment( $attachment_id ) : true;
-
-		if ( $success ) {
+		if ( $force_delete && wp_delete_attachment( $attachment_id ) ) {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
@@ -187,114 +158,96 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$file_input_name = $field['file_input_name'];
+		$input = $field['file_input_name'];
 
 		// @codingStandardsIgnoreLine
-		if ( empty( $_FILES[ $file_input_name ] ) ) {
+		if ( empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
 
-		$new   = array();
-		$structure = self::transform( $file_input_name );
+		$new = (array) $new;
 
-		if ( ! is_array( $structure ) ) {
-			for ( $i = 0; $i <= $structure; $i ++ ) {
-				$attachment = media_handle_upload( "{$file_input_name}_{$i}", $post_id );
+		// Non-cloneable field.
+		if ( ! $field['clone'] ) {
+			$count = self::transform( $input );
+			for ( $i = 0; $i <= $count; $i ++ ) {
+				$attachment = media_handle_upload( "{$input}_{$i}", $post_id );
 				if ( ! is_wp_error( $attachment ) ) {
 					$new[] = $attachment;
 				}
 			}
-		} else {
-			foreach ( $structure as $key => $value ) {
-				if ( empty( $new[ $key ] ) ) {
-					$new[ $key ] = array();
-				}
-				for ( $i = 0; $i <= $value; $i ++ ) {
-					$attachment = media_handle_upload( "{$file_input_name}_{$key}_{$i}", $post_id );
-					if ( ! is_wp_error( $attachment ) ) {
-						$new[ $key ][] = $attachment;
-					}
+			return $new;
+		}
+
+
+		// Cloneable field.
+		$counts = self::transform_cloneable( $input );
+		foreach ( $counts as $clone_index => $count ) {
+			if ( empty( $new[ $clone_index ] ) ) {
+				$new[ $clone_index ] = array();
+			}
+			for ( $i = 0; $i <= $count; $i ++ ) {
+				$attachment = media_handle_upload( "{$input}_{$clone_index}_{$i}", $post_id );
+				if ( ! is_wp_error( $attachment ) ) {
+					$new[ $clone_index ][] = $attachment;
 				}
 			}
 		}
 
-		return self::combine_old_new_value( $old, $new );
+		return $new;
 	}
 
 	/**
 	 * Transform $_FILES from $_FILES['field']['key']['index'] to $_FILES['field_index']['key'].
 	 *
-	 * @param string $field_id The field ID.
+	 * @param string $input_name The field input name.
 	 *
 	 * @return int The number of uploaded files.
 	 */
-	protected static function transform( $field_id ) {
-		// @codingStandardsIgnoreLine
-		foreach ( $_FILES[ $field_id ] as $key => $list ) {
+	protected static function transform( $input_name ) {
+		// @codingStandardsIgnoreStart
+		foreach ( $_FILES[ $input_name ] as $key => $list ) {
 			foreach ( $list as $index => $value ) {
-				if ( ! is_array( $value ) ) {
-					$file_key = "{$field_id}_{$index}";
+				$file_key = "{$input_name}_{$index}";
+				if ( ! isset( $_FILES[ $file_key ] ) ) {
+					$_FILES[ $file_key ] = array();
+				}
+				$_FILES[ $file_key ][ $key ] = $value;
+			}
+		}
 
-					// @codingStandardsIgnoreLine
+		return count( $_FILES[ $input_name ]['name'] );
+		// @codingStandardsIgnoreEnd
+	}
+
+	/**
+	 * Transform $_FILES from $_FILES['field']['key']['cloneIndex']['index'] to $_FILES['field_cloneIndex_index']['key'].
+	 *
+	 * @param string $input_name The field input name.
+	 *
+	 * @return array
+	 */
+	protected static function transform_cloneable( $input_name ) {
+		// @codingStandardsIgnoreStart
+		foreach ( $_FILES[ $input_name ] as $key => $list ) {
+			foreach ( $list as $clone_index => $clone_values ) {
+				foreach ( $clone_values as $index => $value ) {
+					$file_key = "{$input_name}_{$clone_index}_{$index}";
+
 					if ( ! isset( $_FILES[ $file_key ] ) ) {
 						$_FILES[ $file_key ] = array();
 					}
 					$_FILES[ $file_key ][ $key ] = $value;
-				} else {
-					// This is clonable field.
-					foreach ( $value as $child_index => $child_value ) {
-						$file_key = "{$field_id}_{$index}_{$child_index}";
-						if ( ! isset( $_FILES[ $file_key ] ) ) {
-							$_FILES[ $file_key ] = array();
-						}
-						$_FILES[ $file_key ][ $key ] = $child_value;
-					}
 				}
 			}
 		}
 
-		if ( ! is_array( $_FILES[ $field_id ]['name'][0] ) ) {
-			$structure = count( $_FILES[ $field_id ]['name'] );
-		} else {
-			// TODO.
-			$structure = array();
-			foreach ( $_FILES[ $field_id ]['name'] as $key => $value ) {
-				$structure[ $key ] = count( $value );
-			}
+		$counts = array();
+		foreach ( $_FILES[ $input_name ]['name'] as $clone_index => $clone_values ) {
+			$counts[ $clone_index ] = count( $clone_values );
 		}
-		return $structure;
-	}
-
-	/**
-	 * Combine old and new value.
-	 *
-	 * @param array $old Old value.
-	 * @param array $new New value.
-	 *
-	 * @return array
-	 */
-	protected static function combine_old_new_value( $old, $new ) {
-		if ( is_array( $new[0] ) || is_array( $old[0] ) ) {
-			if ( empty( $old ) ) {
-				return $new;
-			}
-
-			$result = $old;
-			foreach ( $old as $index => $value ) {
-				if ( empty( $new[ $index ] ) ) {
-					continue;
-				}
-
-				$result[ $index ] = array_filter( array_unique( array_merge( (array) $old[ $index ], $new[ $index ] ) ) );
-				unset( $new[ $index ] );
-			}
-
-			$result = array_merge( $result, $new );
-
-			return $result;
-		}
-
-		return array_values( array_filter( array_unique( array_merge( (array) $old, $new ) ) ) );
+		return $counts;
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
