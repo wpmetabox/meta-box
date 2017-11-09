@@ -280,3 +280,41 @@ if ( ! function_exists( 'rwmb_get_meta_box' ) ) {
 		return new $class_name( $meta_box );
 	}
 }
+
+if ( ! function_exists( 'rwmb_get_meta_boxes_from_type' ) ) {
+	/**
+	 * Get meta boxes from given type.
+	 *
+	 * @param array $args {
+	 *     Query args. Accepts meta box params and below params.
+	 *
+	 *     @type string $object_type Object type.
+	 * }
+	 * @return array
+	 */
+	function rwmb_get_meta_boxes( $args = array() ) {
+		$meta_boxes = rwmb_get_registry( 'meta_box' )->all();
+		if ( empty( $args ) ) {
+			return $meta_boxes;
+		}
+
+		foreach ( $meta_boxes as $index => $meta_box ) {
+			if ( ! empty( $args['object_type'] ) ) {
+				if ( $meta_box->get_object_type() !== $args['object_type'] ) {
+					unset( $meta_boxes[ $index ] );
+					continue;
+				}
+				unset( $args['object_type'] );
+			}
+
+			foreach ( $args as $key => $value ) {
+				if ( $meta_box->$key != $value ) {
+					unset( $meta_boxes[ $index ] );
+					continue;
+				}
+			}
+		}
+
+		return $meta_boxes;
+	}
+}
