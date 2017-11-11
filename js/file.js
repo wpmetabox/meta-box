@@ -31,21 +31,21 @@
 
 		var $this = $( this ),
 			$item = $this.closest( 'li' ),
-			$uploaded = $this.closest( '.rwmb-uploaded' ),
-			data = {
-				action: 'rwmb_delete_file',
-				_ajax_nonce: $uploaded.data( 'delete_nonce' ),
-				post_id: $( '#post_ID' ).val(),
-				field_id: $uploaded.data( 'field_id' ),
-				object_type: $this.closest('.rwmb-meta-box').attr('data-object-type'),
-				attachment_id: $this.data( 'attachment_id' ),
-				force_delete: $uploaded.data( 'force_delete' )
-			};
+			$uploaded = $this.closest( '.rwmb-uploaded' );
 
 		$item.remove();
 		file.updateVisibility.call( $uploaded );
 
-		$.post( ajaxurl, data, function ( response ) {
+		if ( 1 > $uploaded.data( 'force_delete' ) ) {
+			return;
+		}
+
+		$.post( ajaxurl, {
+			action: 'rwmb_delete_file',
+			_ajax_nonce: $uploaded.data( 'delete_nonce' ),
+			field_id: $uploaded.data( 'field_id' ),
+			attachment_id: $this.data( 'attachment_id' )
+		}, function ( response ) {
 			if ( ! response.success ) {
 				alert( response.data );
 			}
@@ -57,21 +57,9 @@
 	 * Expects `this` to equal the uploaded file list.
 	 */
 	file.sort = function () {
-		var $this = $( this ),
-			data = {
-				action: 'rwmb_reorder_files',
-				_ajax_nonce: $this.data( 'reorder_nonce' ),
-				post_id: $( '#post_ID' ).val(),
-				field_id: $this.data( 'field_id' ),
-				object_type: $this.closest('.rwmb-meta-box').attr('data-object-type')
-			};
-		$this.sortable( {
+		$( this ).sortable( {
 			placeholder: 'ui-state-highlight',
-			items: 'li',
-			update: function () {
-				data.order = $this.sortable( 'serialize' );
-				$.post( ajaxurl, data );
-			}
+			items: 'li'
 		} );
 	};
 

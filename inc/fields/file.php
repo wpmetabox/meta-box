@@ -45,10 +45,9 @@ class RWMB_File_Field extends RWMB_Field {
 	public static function ajax_delete_file() {
 		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
 		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
-		$force_delete  = (int) filter_input( INPUT_POST, 'force_delete', FILTER_SANITIZE_NUMBER_INT );
 
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-		if ( $force_delete && wp_delete_attachment( $attachment_id ) ) {
+		if ( wp_delete_attachment( $attachment_id ) ) {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
@@ -122,7 +121,7 @@ class RWMB_File_Field extends RWMB_Field {
 		$attributes = self::get_attributes( $field, $file );
 
 		return sprintf(
-			'<li id="item_%s">
+			'<li>
 				<div class="rwmb-icon">%s</div>
 				<div class="rwmb-info">
 					<a href="%s" target="_blank">%s</a>
@@ -132,7 +131,6 @@ class RWMB_File_Field extends RWMB_Field {
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			$file,
 			wp_get_attachment_image( $file, array( 60, 60 ), true ),
 			wp_get_attachment_url( $file ),
 			get_the_title( $file ),
@@ -165,7 +163,7 @@ class RWMB_File_Field extends RWMB_Field {
 			return $new;
 		}
 
-		$new = (array) $new;
+		$new = array_filter( (array) $new );
 
 		// Non-cloneable field.
 		if ( ! $field['clone'] ) {
