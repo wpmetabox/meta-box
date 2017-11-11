@@ -14,9 +14,10 @@
 		event.preventDefault();
 
 		var $this = $( this ),
-			$clone = $this.siblings( '.rwmb-file-input:last' ).clone();
+			$clone = $this.prev().clone();
 
-		$clone.insertBefore( this );
+		$clone.insertBefore( this ).find( 'input' ).val( '' );
+
 		file.updateVisibility.call( $this.closest( '.rwmb-input' ).find( '.rwmb-uploaded' )[0] );
 	};
 
@@ -83,11 +84,20 @@
 		$addMore.toggle( numFiles + numInputs < max );
 	};
 
+	// Reset field when cloning.
+	file.resetClone = function() {
+		var $this = $( this ),
+			$clone = $this.closest( '.rwmb-clone' );
+		$clone.find( '.rwmb-uploaded' ).remove();
+		$clone.find( '.rwmb-file-input' ).not( ':first' ).remove();
+	};
+
 	// Initialize when document ready.
 	$( function ( $ ) {
 		$( document )
 			.on( 'click', '.rwmb-add-file', file.addHandler )
-			.on( 'click', '.rwmb-delete-file', file.deleteHandler );
+			.on( 'click', '.rwmb-delete-file', file.deleteHandler )
+			.on( 'clone', '.rwmb-file-input input', file.resetClone );
 
 		var $uploaded = $( '.rwmb-uploaded' );
 		$uploaded.each( file.sort );
