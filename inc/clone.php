@@ -84,7 +84,7 @@ class RWMB_Clone {
 		}
 
 		if ( in_array( $field['type'], array( 'file', 'image' ), true ) ) {
-			return RWMB_Field::call( $field, 'value', '', $new, $post_id );
+			return RWMB_Field::call( $field, 'value', $new, '', $post_id );
 		}
 
 		foreach ( $new as $key => $value ) {
