@@ -62,16 +62,14 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$meta = (array) $meta;
-		$meta = array_filter( $meta );
-		$i18n_more  = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
-
-		$html = self::get_uploaded_files( $meta, $field );
+		$meta      = array_filter( (array) $meta );
+		$i18n_more = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
+		$html      = self::get_uploaded_files( $meta, $field );
 
 		// Show form upload.
 		$html .= sprintf(
 			'<div class="rwmb-new-files">
-				<div class="rwmb-file-input"><input type="file" name="%s[]" class="rwmb-input" /></div>
+				<div class="rwmb-file-input"><input type="file" name="%s[]" class="rwmb-input"></div>
 				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
 			</div>',
 			$field['file_input_name'],
@@ -91,9 +89,13 @@ class RWMB_File_Field extends RWMB_Field {
 	protected static function get_uploaded_files( $files, $field ) {
 		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
+		$output        = '';
 
 		foreach ( (array) $files as $k => $file ) {
-			$files[ $k ] = self::call( $field, 'file_html', $file, $k );
+			// Ignore deleted files (if users accidentally deleted files or uses `force_delete` without saving post).
+			if ( get_attached_file( $file ) ) {
+				$output .= self::call( $field, 'file_html', $file, $k );
+			}
 		}
 		return sprintf(
 			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
@@ -103,7 +105,7 @@ class RWMB_File_Field extends RWMB_Field {
 			$field['force_delete'] ? 1 : 0,
 			$field['max_file_uploads'],
 			$field['mime_type'],
-			implode( '', $files )
+			$output
 		);
 	}
 
