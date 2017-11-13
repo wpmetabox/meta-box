@@ -222,7 +222,7 @@ jQuery( function ( $ ) {
 			.data( 'next-index', $container.children( '.rwmb-clone' ).length )
 			.sortable( {
 				handle: '.rwmb-clone-icon',
-				placeholder: ' rwmb-clone rwmb-clone-placeholder',
+				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
 				items: '.rwmb-clone',
 				start: function ( event, ui ) {
 					// Make the placeholder has the same height as dragged item

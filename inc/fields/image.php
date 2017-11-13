@@ -32,7 +32,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 				<img src="%s">
 				<div class="rwmb-image-bar">
 					<a href="%s" target="_blank"><span class="dashicons dashicons-edit"></span></a> |
-					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">&times;</a>
+					<a href="#" class="rwmb-file-delete" data-attachment_id="%s">&times;</a>
 				</div>
 			</li>',
 			$file,

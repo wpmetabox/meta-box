@@ -68,9 +68,9 @@ class RWMB_File_Field extends RWMB_Field {
 
 		// Show form upload.
 		$html .= sprintf(
-			'<div class="rwmb-new-files">
-				<div class="rwmb-file-input"><input type="file" name="%s[]" class="rwmb-input"></div>
-				<a class="rwmb-add-file" href="#"><strong>%s</strong></a>
+			'<div class="rwmb-file-new">
+				<input type="file" name="%s[]" class="rwmb-file-input">
+				<a class="rwmb-file-add" href="#"><strong>%s</strong></a>
 			</div>',
 			$field['file_input_name'],
 			$i18n_more
@@ -120,30 +120,29 @@ class RWMB_File_Field extends RWMB_Field {
 	protected static function file_html( $file, $index, $field ) {
 		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
 		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
-		$attributes = self::get_attributes( $field, $file );
+		$attributes  = self::get_attributes( $field, $file );
+		$path        = get_attached_file( $file );
+		$icon        = wp_get_attachment_image( $file, array( 60, 60 ), true );
 
 		return sprintf(
-			'<li>
-				<div class="rwmb-icon">%s</div>
-				<div class="rwmb-info">
-					<a href="%s" target="_blank">%s</a>
-					<p>%s</p>
-					<a href="%s" target="_blank">%s</a> |
-					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">%s</a>
+			'<li class="rwmb-file">
+				<div class="rwmb-file-icon"><a href="%s" target="_blank" class="rwmb-file-title">%s</a></div>
+				<div class="rwmb-file-info">
+					<a href="%s" target="_blank" class="rwmb-file-title">%s</a>
+					<p class="rwmb-file-name">%s</p>
+					<p class="rwmb-file-actions">
+						<a href="%s" class="rwmb-file-edit" target="_blank"><span class="dashicons dashicons-edit"></span>%s</a>
+						<a href="#" class="rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span>%s</a>
+					</p>
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			wp_get_attachment_image( $file, array( 60, 60 ), true ),
-			wp_get_attachment_url( $file ),
-			get_the_title( $file ),
-			get_post_mime_type( $file ),
-			get_edit_post_link( $file ),
-			$i18n_edit,
-			$file,
-			$i18n_delete,
-			$attributes['name'],
-			$index,
-			$file
+			wp_get_attachment_url( $file ), $icon,
+			wp_get_attachment_url( $file ), get_the_title( $file ),
+			basename( $path ),
+			get_edit_post_link( $file ), $i18n_edit,
+			$file, $i18n_delete,
+			$attributes['name'], $index, $file
 		);
 	}
 
