@@ -126,7 +126,7 @@ class RWMB_File_Field extends RWMB_Field {
 
 		return sprintf(
 			'<li class="rwmb-file">
-				<div class="rwmb-file-icon"><a href="%s" target="_blank" class="rwmb-file-title">%s</a></div>
+				<div class="rwmb-file-icon"><a href="%s" target="_blank">%s</a></div>
 				<div class="rwmb-file-info">
 					<a href="%s" target="_blank" class="rwmb-file-title">%s</a>
 					<p class="rwmb-file-name">%s</p>

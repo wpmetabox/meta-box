@@ -4,15 +4,14 @@
 }
 .rwmb-file {
 	display: flex;
-	margin: 0 40px 10px 0;
-	float: left;
+	margin-bottom: 10px;
 	background: #fff;
 	cursor: move;
 }
 .rwmb-file-icon {
-	min-width: 0;
+	min-width: 60px;
 	flex-basis: 60px;
-	margin-right: 9px;
+	margin-right: 5px;
 }
 .rwmb-file-icon img {
 	max-height: 60px;
@@ -26,7 +25,7 @@
 	text-decoration: none;
 }
 .rwmb-file-name {
-	margin: 4px 0;
+	margin: 0 0 4px;
 	white-space: nowrap;
 }
 .rwmb-file-actions {
