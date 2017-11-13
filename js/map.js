@@ -130,7 +130,12 @@
 				return;
 			}
 
-			var $address = $( '#' + this.addressField );
+			var $address = $( 'input[name="' + this.addressField + '"]');
+
+			// If map and address is inside a group, the input name of address field is changed.
+			if ( 0 === $address.length ) {
+				$address = this.$container.closest( '.rwmb-group-wrapper' ).find( 'input[name*="[' + this.addressField + ']"]' );
+			}
 
 			// If Meta Box Geo Location installed. Do not run auto complete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
@@ -205,10 +210,15 @@
 
 	function update() {
 		$( '.rwmb-map-field' ).each( function () {
-			var field = new MapField( $( this ) );
-			field.init();
+			var $this = $( this ),
+				controller = $this.data( 'mapController' );
+			if ( controller ) {
+				return;
+			}
 
-			$( this ).data( 'mapController', field );
+			controller = new MapField( $( this ) );
+			controller.init();
+			$this.data( 'mapController', controller );
 		} );
 	}
 
