@@ -14,9 +14,9 @@
 		event.preventDefault();
 
 		var $this = $( this ),
-			$clone = $this.siblings( '.rwmb-file-input:last' ).clone();
+			$clone = $this.prev().clone();
 
-		$clone.insertBefore( this );
+		$clone.insertBefore( this ).val( '' );
 		file.updateVisibility.call( $this.closest( '.rwmb-input' ).find( '.rwmb-uploaded' )[0] );
 	};
 
@@ -31,20 +31,21 @@
 
 		var $this = $( this ),
 			$item = $this.closest( 'li' ),
-			$uploaded = $this.closest( '.rwmb-uploaded' ),
-			data = {
-				action: 'rwmb_delete_file',
-				_ajax_nonce: $uploaded.data( 'delete_nonce' ),
-				post_id: $( '#post_ID' ).val(),
-				field_id: $uploaded.data( 'field_id' ),
-				attachment_id: $this.data( 'attachment_id' ),
-				force_delete: $uploaded.data( 'force_delete' )
-			};
+			$uploaded = $this.closest( '.rwmb-uploaded' );
 
 		$item.remove();
 		file.updateVisibility.call( $uploaded );
 
-		$.post( ajaxurl, data, function ( response ) {
+		if ( 1 > $uploaded.data( 'force_delete' ) ) {
+			return;
+		}
+
+		$.post( ajaxurl, {
+			action: 'rwmb_delete_file',
+			_ajax_nonce: $uploaded.data( 'delete_nonce' ),
+			field_id: $uploaded.data( 'field_id' ),
+			attachment_id: $this.data( 'attachment_id' )
+		}, function ( response ) {
 			if ( ! response.success ) {
 				alert( response.data );
 			}
@@ -56,19 +57,12 @@
 	 * Expects `this` to equal the uploaded file list.
 	 */
 	file.sort = function () {
-		var $this = $( this ),
-			data = {
-				action: 'rwmb_reorder_files',
-				_ajax_nonce: $this.data( 'reorder_nonce' ),
-				post_id: $( '#post_ID' ).val(),
-				field_id: $this.data( 'field_id' )
-			};
-		$this.sortable( {
-			placeholder: 'ui-state-highlight',
+		$( this ).sortable( {
+			placeholder: 'rwmb-file rwmb-sortable-placeholder',
 			items: 'li',
-			update: function () {
-				data.order = $this.sortable( 'serialize' );
-				$.post( ajaxurl, data );
+			start: function ( e, ui ) {
+				ui.placeholder.height( ui.helper.outerHeight() );
+				ui.placeholder.width( ui.helper.outerWidth() );
 			}
 		} );
 	};
@@ -80,24 +74,33 @@
 	file.updateVisibility = function () {
 		var $uploaded = $( this ),
 			max = parseInt( $uploaded.data( 'max_file_uploads' ), 10 ),
-			$uploader = $uploaded.siblings( '.rwmb-new-files' ),
-			$addMore = $uploader.find( '.rwmb-add-file' ),
+			$new = $uploaded.siblings( '.rwmb-file-new' ),
+			$add = $new.find( '.rwmb-file-add' ),
 			numFiles = $uploaded.children().length,
-			numInputs = $uploader.find( '.rwmb-file-input' ).length;
+			numInputs = $new.find( '.rwmb-file-input' ).length;
 
 		$uploaded.toggle( 0 < numFiles );
 		if ( 0 === max ) {
 			return;
 		}
-		$uploader.toggle( numFiles < max );
-		$addMore.toggle( numFiles + numInputs < max );
+		$new.toggle( numFiles < max );
+		$add.toggle( numFiles + numInputs < max );
+	};
+
+	// Reset field when cloning.
+	file.resetClone = function() {
+		var $this = $( this ),
+			$clone = $this.closest( '.rwmb-clone' );
+		$clone.find( '.rwmb-uploaded' ).remove();
+		$clone.find( '.rwmb-file-input' ).not( ':first' ).remove();
 	};
 
 	// Initialize when document ready.
 	$( function ( $ ) {
 		$( document )
-			.on( 'click', '.rwmb-add-file', file.addHandler )
-			.on( 'click', '.rwmb-delete-file', file.deleteHandler );
+			.on( 'click', '.rwmb-file-add', file.addHandler )
+			.on( 'click', '.rwmb-file-delete', file.deleteHandler )
+			.on( 'clone', '.rwmb-file-input', file.resetClone );
 
 		var $uploaded = $( '.rwmb-uploaded' );
 		$uploaded.each( file.sort );

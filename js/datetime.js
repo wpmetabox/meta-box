@@ -64,6 +64,6 @@ jQuery( function ( $ ) {
 		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.localeShort] );
 	}
 
-	$( ':input.rwmb-datetime' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-datetime', update );
+	$( '.rwmb-datetime' ).each( update );
+	$( document ).on( 'clone', '.rwmb-datetime', update );
 } );

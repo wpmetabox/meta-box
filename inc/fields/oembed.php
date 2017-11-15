@@ -14,7 +14,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css' );
-		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array(), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 	}
 
 	/**
@@ -73,10 +73,8 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 */
 	public static function html( $meta, $field ) {
 		return parent::html( $meta, $field ) . sprintf(
-			'<a href="#" class="rwmb-embed-show button">%s</a>
-			<span class="spinner"></span>
+			'<span class="spinner"></span>
 			<div class="rwmb-embed-media">%s</div>',
-			esc_html__( 'Preview', 'meta-box' ),
 			$meta ? self::get_embed( $meta ) : ''
 		);
 	}

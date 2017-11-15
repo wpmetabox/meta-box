@@ -1,15 +1,21 @@
-=== Meta Box ===
-Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
-Donate link: http://paypal.me/anhtnt
-Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
-Requires at least: 4.1
-Tested up to: 4.8.2
-Stable tag: 4.12.4
-License: GPLv2 or later
+# Meta Box WordPress Plugin
 
-Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
+[![Build Status](https://travis-ci.org/rilwis/meta-box.svg?branch=master)](https://travis-ci.org/rilwis/meta-box)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rilwis/meta-box/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rilwis/meta-box/?branch=master)
+[![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+[![License](https://img.shields.io/packagist/l/rilwis/meta-box.svg)](https://metabox.io)
 
-== Description ==
+**Plugin Links**
+
+- [Project Page](https://metabox.io)
+- [Documentation](https://metabox.io/docs/)
+- [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
+- [Premium Extensions](https://metabox.io)
+
+***
+
+## Description
 
 **Meta Box plugin is a powerful, professional toolkit for developers to create and handle everything related to custom meta boxes and custom fields for WordPress.**
 
@@ -95,42 +101,26 @@ See more documentation [here](https://metabox.io/docs/).
 
 See all extensions [here](https://metabox.io/plugins/).
 
-### Plugin Links
+***
 
-- [Project Page](https://metabox.io)
-- [Documentation](https://metabox.io/docs/)
-- [Report Bugs/Issues](https://github.com/rilwis/meta-box/issues)
-- [Premium Extensions](https://metabox.io)
-
-== Installation ==
-
-From within WordPress
-
-1. Visit **Plugins > Add New**
-1. Search for **Meta Box**
-1. Click the **Install Now** button to install the plugin
-1. Click the **Activate** button to activate the plugin
-
-Manually
+## Installation
 
 1. Unzip the download package
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin, please read [this tutorial](https://metabox.io/docs/getting-started/).
+To getting started with the plugin API, please read [this tutorial](https://metabox.io/docs/getting-started/).
 
-== Frequently Asked Questions ==
+***
 
-== Screenshots ==
-1. Text Fields
-1. Basic Fields
-1. Advanced Fields
-1. File Image Upload Fields
-1. Media Fields
-1. Post Taxonomy Fields
+## Contributors
 
-== Changelog ==
+- [Tran Ngoc Tuan Anh a.k.a Rilwis](http://www.deluxeblogtips.com/) - Initial & lead developer
+- [Franz Josef Kaiser](http://profiles.wordpress.org/f-j-kaiser)
+- Omnicia
+- ruanmer
+- PerWiklander
+- funkedgeek
+- [truongwp](https://github.com/truongwp)
 
-[See full changelog here](https://github.com/rilwis/meta-box/blob/master/CHANGELOG.md).
-
-== Upgrade Notice ==
+[See full list of angels!](https://github.com/rilwis/meta-box/contributors)

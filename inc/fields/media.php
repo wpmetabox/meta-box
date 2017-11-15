@@ -28,7 +28,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			'edit'               => apply_filters( 'rwmb_media_edit_string', _x( 'Edit', 'media', 'meta-box' ) ),
 			'view'               => apply_filters( 'rwmb_media_view_string', _x( 'View', 'media', 'meta-box' ) ),
 			'noTitle'            => _x( 'No Title', 'media', 'meta-box' ),
-			'loadingUrl'         => RWMB_URL . 'img/loader.gif',
+			'loadingUrl'         => admin_url( 'images/spinner.gif' ),
 			'extensions'         => self::get_mime_extensions(),
 			'select'             => apply_filters( 'rwmb_media_select_string', _x( 'Select Files', 'media', 'meta-box' ) ),
 			'or'                 => apply_filters( 'rwmb_media_or_string', _x( 'or', 'media', 'meta-box' ) ),
@@ -59,8 +59,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$attributes = self::get_attributes( $field, $meta );
 
 		$html = sprintf(
-			'<input %s>
-			<div class="rwmb-media-view" data-options="%s"></div>',
+			'<input %s data-options="%s">',
 			self::render_attributes( $attributes ),
 			esc_attr( wp_json_encode( $field['js_options'] ) )
 		);
@@ -164,7 +163,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
-		delete_post_meta( $post_id, $field['id'] );
+		$storage = $field['storage'];
+		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );
 	}
 

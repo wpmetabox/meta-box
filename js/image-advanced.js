@@ -14,7 +14,7 @@ jQuery( function ( $ ) {
 			this.list = new MediaList( {
 				controller: this.controller,
 				itemView: MediaItem.extend( {
-					className: 'rwmb-image-item',
+					className: 'rwmb-image-item attachment',
 					template: wp.template( 'rwmb-image-item' ),
 					initialize: function( models, options ) {
 						MediaItem.prototype.initialize.call( this, models, options );
@@ -29,7 +29,10 @@ jQuery( function ( $ ) {
 	 * Initialize image fields
 	 */
 	function initImageField() {
-		new ImageField( {input: this, el: $( this ).siblings( 'div.rwmb-media-view' )} );
+		var view = new ImageField( { input: this } );
+		//Remove old then add new
+		$( this ).siblings( 'div.rwmb-media-view' ).remove();
+		$( this ).after( view.el );
 	}
 
 	$( 'input.rwmb-image_advanced' ).each( initImageField );

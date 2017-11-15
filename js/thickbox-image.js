@@ -17,7 +17,7 @@ jQuery( function ( $ ) {
 			html = '<li id="item_' + id + '">';
 			html += '<img src="' + url + '">';
 			html += '<div class="rwmb-image-bar">';
-			html += '<a class="rwmb-delete-file" href="#" data-attachment_id="' + id + '">×</a>';
+			html += '<a class="rwmb-file-delete" href="#" data-attachment_id="' + id + '">×</a>';
 			html += '</div>';
 			html += '<input type="hidden" name="' + field_id + '[]" value="' + id + '">';
 			html += '</li>';

@@ -55,6 +55,6 @@ jQuery( function ( $ ) {
 		return Math.floor( milliseconds / 1000 );
 	}
 
-	$( ':input.rwmb-date' ).each( update );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-date', update );
+	$( '.rwmb-date' ).each( update );
+	$( document ).on( 'clone', '.rwmb-date', update );
 } );

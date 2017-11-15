@@ -53,7 +53,7 @@ class RWMB_WPML {
 		}
 
 		$field = rwmb_get_registry( 'field' )->get( $meta_data['key'], get_post_type( $meta_data['master_post_id'] ) );
-		if ( false !== $field || ! in_array( $field['type'], $this->field_types, true ) ) {
+		if ( false === $field || ! in_array( $field['type'], $this->field_types, true ) ) {
 			return $value;
 		}
 

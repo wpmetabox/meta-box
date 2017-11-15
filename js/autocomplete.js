@@ -39,11 +39,11 @@ jQuery( function ( $ ) {
 	}
 
 	$( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( updateAutocomplete );
-	$( '.rwmb-input' ).on( 'clone', ':input.rwmb-autocomplete', updateAutocomplete );
-
-	// Handle remove action
-	$( document ).on( 'click', '.rwmb-autocomplete-result .actions', function () {
-		// remove result
-		$( this ).parent().remove();
-	} );
+	$( document )
+		.on( 'clone', '.rwmb-autocomplete', updateAutocomplete )
+		// Handle remove action
+		.on( 'click', '.rwmb-autocomplete-result .actions', function () {
+			// remove result
+			$( this ).parent().remove();
+		} );
 } );

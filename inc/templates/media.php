@@ -1,7 +1,7 @@
 <script id="tmpl-rwmb-media-item" type="text/html">
 	<input type="hidden" name="{{{ data.controller.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
-	<div class="rwmb-media-preview">
-		<div class="rwmb-media-content">
+	<div class="rwmb-media-preview attachment-preview">
+		<div class="rwmb-media-content thumbnail">
 			<div class="centered">
 				<# if ( 'image' === data.type && data.sizes ) { #>
 					<# if ( data.sizes.thumbnail ) { #>
@@ -20,15 +20,15 @@
 		</div>
 	</div>
 	<div class="rwmb-media-info">
-		<h4>
-			<a href="{{{ data.url }}}" target="_blank" title="{{{ i18nRwmbMedia.view }}}">
-				<# if( data.title ) { #> {{{ data.title }}}
-					<# } else { #> {{{ i18nRwmbMedia.noTitle }}}
-				<# } #>
-			</a>
-		</h4>
-		<p>{{{ data.mime }}}</p>
-		<p>
+		<a href="{{{ data.url }}}" class="rwmb-media-title" target="_blank">
+			<# if( data.title ) { #>
+				{{{ data.title }}}
+			<# } else { #>
+				{{{ i18nRwmbMedia.noTitle }}}
+			<# } #>
+		</a>
+		<p class="rwmb-media-name">{{{ data.filename }}}</p>
+		<p class="rwmb-media-actions">
 			<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
 				<span class="dashicons dashicons-edit"></span>{{{ i18nRwmbMedia.edit }}}
 			</a>

@@ -19,10 +19,13 @@ jQuery( function ( $ ) {
 	 * @return void
 	 */
 	function init() {
-		new ImageUploadField( {input: this, el: $( this ).siblings( 'div.rwmb-media-view' )} );
+		var view = new ImageUploadField( { input: this } );
+		//Remove old then add new
+		$( this ).siblings( 'div.rwmb-media-view' ).remove();
+		$( this ).after( view.el );
 	}
 
-	$( ':input.rwmb-image_upload, :input.rwmb-plupload_image' ).each( init );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-image_upload, :input.rwmb-plupload_image', init )
+	$( '.rwmb-image_upload, .rwmb-plupload_image' ).each( init );
+	$( document )
+		.on( 'clone', '.rwmb-image_upload, .rwmb-plupload_image', init )
 } );

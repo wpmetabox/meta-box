@@ -18,25 +18,27 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	}
 
 	/**
-	 * Get HTML markup for ONE uploaded image.
+	 * Get HTML for uploaded file.
 	 *
-	 * @param int $image Image ID.
+	 * @param int   $file  Attachment (file) ID.
+	 * @param int   $index File index.
+	 * @param array $field Field data.
 	 * @return string
 	 */
-	public static function file_html( $image ) {
-		list( $src ) = wp_get_attachment_image_src( $image, 'thumbnail' );
+	protected static function file_html( $file, $index, $field ) {
+		list( $src ) = wp_get_attachment_image_src( $file, 'thumbnail' );
 		return sprintf(
 			'<li id="item_%s">
 				<img src="%s">
 				<div class="rwmb-image-bar">
 					<a href="%s" target="_blank"><span class="dashicons dashicons-edit"></span></a> |
-					<a class="rwmb-delete-file" href="#" data-attachment_id="%s">&times;</a>
+					<a href="#" class="rwmb-file-delete" data-attachment_id="%s">&times;</a>
 				</div>
 			</li>',
-			$image,
+			$file,
 			$src,
-			get_edit_post_link( $image ),
-			$image
+			get_edit_post_link( $file ),
+			$file
 		);
 	}
 

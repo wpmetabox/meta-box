@@ -34,7 +34,14 @@ class RW_Meta_Box {
 	 *
 	 * @var int
 	 */
-	private $object_id = null;
+	protected $object_id = null;
+
+	/**
+	 * The object type.
+	 *
+	 * @var string
+	 */
+	protected $object_type = 'post';
 
 	/**
 	 * Create meta box based on given data.
@@ -42,14 +49,31 @@ class RW_Meta_Box {
 	 * @param array $meta_box Meta box definition.
 	 */
 	public function __construct( $meta_box ) {
-		$meta_box           = self::normalize( $meta_box );
-		$meta_box['fields'] = self::normalize_fields( $meta_box['fields'] );
-
+		$meta_box = self::normalize( $meta_box );
 		$this->meta_box = $meta_box;
 
+		$storage = $this->get_storage();
+		if ( ! $storage ) {
+			return;
+		}
+
+		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $storage );
 		if ( $this->is_shown() ) {
 			$this->global_hooks();
 			$this->object_hooks();
+		}
+	}
+
+	/**
+	 * Add fields to field registry.
+	 */
+	public function register_fields() {
+		$field_registry = rwmb_get_registry( 'field' );
+
+		foreach ( $this->post_types as $post_type ) {
+			foreach ( $this->fields as $field ) {
+				$field_registry->add( $field, $post_type );
+			}
 		}
 	}
 
@@ -179,13 +203,14 @@ class RW_Meta_Box {
 	 * Callback function to show fields in meta box
 	 */
 	public function show() {
-		$this->set_object_id();
+		$this->set_object_id( $this->get_current_object_id() );
 		$saved = $this->is_saved();
 
 		// Container.
 		printf(
-			'<div class="rwmb-meta-box" data-autosave="%s">',
-			$this->autosave ? 'true' : 'false'
+			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s">',
+			esc_attr( $this->autosave ? 'true' : 'false' ),
+			esc_attr( $this->object_type )
 		);
 
 		wp_nonce_field( "rwmb-save-{$this->id}", "nonce_{$this->id}" );
@@ -222,16 +247,32 @@ class RW_Meta_Box {
 		$this->saved = true;
 
 		// Make sure meta is added to the post, not a revision.
-		$the_post = wp_is_post_revision( $post_id );
-		if ( $the_post ) {
-			$post_id = $the_post;
+		if ( 'post' === $this->object_type ) {
+			$the_post = wp_is_post_revision( $post_id );
+			if ( $the_post ) {
+				$post_id = $the_post;
+			}
 		}
 
 		// Before save action.
 		do_action( 'rwmb_before_save_post', $post_id );
 		do_action( "rwmb_{$this->id}_before_save_post", $post_id );
 
-		foreach ( $this->fields as $field ) {
+		$this->save_fields( $post_id, $this->fields );
+
+		// After save action.
+		do_action( 'rwmb_after_save_post', $post_id );
+		do_action( "rwmb_{$this->id}_after_save_post", $post_id );
+	}
+
+	/**
+	 * Save fields data.
+	 *
+	 * @param int   $post_id Post id.
+	 * @param array $fields  Fields data.
+	 */
+	public function save_fields( $post_id, $fields ) {
+		foreach ( $fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
 			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );
 			// @codingStandardsIgnoreLine
@@ -249,10 +290,6 @@ class RW_Meta_Box {
 			// Call defined method to save meta value, if there's no methods, call common one.
 			RWMB_Field::call( $field, 'save', $new, $old, $post_id );
 		}
-
-		// After save action.
-		do_action( 'rwmb_after_save_post', $post_id );
-		do_action( "rwmb_{$this->id}_after_save_post", $post_id );
 	}
 
 	/**
@@ -308,11 +345,12 @@ class RW_Meta_Box {
 	/**
 	 * Normalize an array of fields
 	 *
-	 * @param array $fields Array of fields.
+	 * @param array                  $fields Array of fields.
+	 * @param RWMB_Storage_Interface $storage Storage object. Optional.
 	 *
 	 * @return array $fields Normalized fields.
 	 */
-	public static function normalize_fields( $fields ) {
+	public static function normalize_fields( $fields, $storage = null ) {
 		foreach ( $fields as $k => $field ) {
 			$field = RWMB_Field::call( 'normalize', $field );
 
@@ -320,6 +358,11 @@ class RW_Meta_Box {
 			$field = apply_filters( 'rwmb_normalize_field', $field );
 			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
 			$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
+
+			// Add storage object to field.
+			if ( $storage ) {
+				$field['storage'] = $storage;
+			}
 
 			$fields[ $k ] = $field;
 		}
@@ -383,7 +426,34 @@ class RW_Meta_Box {
 	 */
 	public function set_object_id( $id = null ) {
 		if ( null === $this->object_id ) {
-			$this->object_id = null === $id ? get_the_ID() : $id;
+			$this->object_id = $id;
 		}
+	}
+
+	/**
+	 * Get object type.
+	 *
+	 * @return string
+	 */
+	public function get_object_type() {
+		return $this->object_type;
+	}
+
+	/**
+	 * Get storage object.
+	 *
+	 * @return RWMB_Storage_Interface
+	 */
+	public function get_storage() {
+		return rwmb_get_storage( $this->object_type, $this );
+	}
+
+	/**
+	 * Get current object id.
+	 *
+	 * @return int|string
+	 */
+	protected function get_current_object_id() {
+		return get_the_ID();
 	}
 }

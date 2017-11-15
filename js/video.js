@@ -35,9 +35,12 @@ jQuery( function ( $ )
 	 */
 	function initVideoField()
 	{
-		new VideoField( { input: this, el: $( this ).siblings( 'div.rwmb-media-view' ) } );
+		var view = new VideoField( { input: this } );
+		//Remove old then add new
+		$( this ).siblings( 'div.rwmb-media-view' ).remove();
+		$( this ).after( view.el );
 	}
-	$( ':input.rwmb-video' ).each( initVideoField );
-	$( '.rwmb-input' )
-		.on( 'clone', ':input.rwmb-video', initVideoField )
+	$( '.rwmb-video' ).each( initVideoField );
+	$( document )
+		.on( 'clone', '.rwmb-video', initVideoField )
 } );

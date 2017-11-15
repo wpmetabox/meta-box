@@ -52,10 +52,12 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		$storage = $field['storage'];
+
 		if ( $new ) {
-			update_post_meta( $post_id, $field['id'], $new );
+			$storage->update( $post_id, $field['id'], $new );
 		} else {
-			delete_post_meta( $post_id, $field['id'] );
+			$storage->delete( $post_id, $field['id'] );
 		}
 	}
 
@@ -75,7 +77,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		if ( empty( $meta ) ) {
 			return $field['multiple'] ? array() : '';
 		}
-		$meta = array_filter( wp_parse_id_list( $meta ) );
+		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
+		$meta = array_filter( $meta );
 
 		return $field['multiple'] ? $meta : reset( $meta );
 	}
@@ -95,7 +98,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			$post_id = get_the_ID();
 		}
 
-		$value = self::meta( $post_id, '', $field );
+		// Get raw meta value in the database, no escape.
+		$value = self::call( $field, 'raw_meta', $post_id, $args );
 		if ( empty( $value ) ) {
 			return null;
 		}
