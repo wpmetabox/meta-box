@@ -50,4 +50,15 @@ class RWMB_Field_Registry {
 	public function get( $id, $type, $object_type = 'post' ) {
 		return isset( $this->data[ $object_type ][ $type ][ $id ] ) ? $this->data[ $object_type ][ $type ][ $id ] : false;
 	}
+
+	/**
+	 * Retrieve fields by object type.
+	 *
+	 * @param string $object_type Object type which the field belongs to.
+	 *
+	 * @return array List of fields.
+	 */
+	public function get_by_object_type( $object_type = 'post' ) {
+		return isset( $this->data[ $object_type ] ) ? $this->data[ $object_type ] : array();
+	}
 }
