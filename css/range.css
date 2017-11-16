@@ -1,13 +1,6 @@
-input[type='range'] {
+.rwmb-range {
 	vertical-align: middle;
-	border-radius: 2px;
-	border: 1px solid #dfdfdf;
 }
-
 .rwmb-output {
-
-	display: inline-block;
-  position: relative;
-	padding: 5px 10px;
-	line-height: 20px;
+	margin-left: 8px;
 }

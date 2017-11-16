@@ -13,9 +13,15 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
+		$args = func_get_args();
+		$field = $args[0];
+		$js_dependency = array( 'wp-color-picker' );
 		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
-		wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', array( 'wp-color-picker', 'wp-color-picker-alpha' ), RWMB_VER, true );
+		if ( $field['alpha_channel'] ) {
+			wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), RWMB_VER, true );
+			$js_dependency = array( 'wp-color-picker-alpha' );
+		}
+		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', $js_dependency, RWMB_VER, true );
 	}
 
 	/**
