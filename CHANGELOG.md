@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.12.5] - 2017-11-17
+### Fixed
+- Fixed "Select All/None" doesn't work with post field (checkbox_list type).
+- Fixed color picker field for WordPress 4.9.
+- Fixed map field doesn't work inside groups.
+- Fixed media fields don't reset value when cloning the container groups.
+### Changed
+- File field now uses hidden input to handle field values. Remove ajax action for reordering files and simply file action for deleting files. Also make it works with post thumbnail removal in the frontend.
+
 ## [4.12.4] - 2017-10-18
 ### Fixed
 - Fixed taxonomy advanced select tree doesn't work.
