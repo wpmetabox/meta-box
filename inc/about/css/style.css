@@ -1,0 +1,57 @@
+.about-wrap .wp-badge {
+	background-image: url(../images/meta-box.png);
+	background-color: #fff;
+	color: #222;
+	text-transform: uppercase;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.wp-badge:hover {
+	text-decoration: none;
+}
+
+.feature-section.two-col {
+	align-items: flex-start;
+}
+
+.feature-section.two-col h3:not(:first-child) {
+	margin-top: 3em;
+}
+
+.feature-section img {
+	display: block;
+	box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+}
+
+.nav-tab-active:focus {
+	box-shadow: none;
+}
+
+.gt-tab-pane {
+	display: none;
+}
+
+.gt-is-active {
+	display: block;
+}
+
+.screenshot {
+	display: block;
+	margin: 3em auto;
+}
+.col ul {
+	font-size: 14px;
+	margin: 2em 0;
+}
+
+.col li a {
+	text-decoration: none;
+}
+
+.col .dashicons {
+	color: #82878c;
+	padding-right: 5px;
+	font-size: 16px;
+	vertical-align: middle;
+}

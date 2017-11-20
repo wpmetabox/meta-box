@@ -75,6 +75,7 @@ class RWMB_Loader {
 		$autoloader = new RWMB_Autoloader();
 		$autoloader->add( RWMB_INC_DIR, 'RW_' );
 		$autoloader->add( RWMB_INC_DIR, 'RWMB_' );
+		$autoloader->add( RWMB_INC_DIR . 'about', 'RWMB_' );
 		$autoloader->add( RWMB_INC_DIR . 'fields', 'RWMB_', '_Field' );
 		$autoloader->add( RWMB_INC_DIR . 'walkers', 'RWMB_Walker_' );
 		$autoloader->add( RWMB_INC_DIR . 'interfaces', 'RWMB_', '_Interface' );
@@ -84,6 +85,9 @@ class RWMB_Loader {
 		// Plugin core.
 		$core = new RWMB_Core();
 		$core->init();
+
+		$about = new RWMB_About();
+		$about->init();
 
 		// Validation module.
 		new RWMB_Validation();

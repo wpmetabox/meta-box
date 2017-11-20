@@ -92,6 +92,7 @@ class RWMB_Autoloader {
 			'sanitizer',
 			'media-modal',
 			'wpml',
+			'about/about.php',
 
 			// Walkers.
 			'walkers/walker',

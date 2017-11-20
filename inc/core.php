@@ -32,7 +32,7 @@ class RWMB_Core {
 	 * @return array
 	 */
 	public function plugin_links( $links ) {
-		$links[] = '<a href="https://metabox.io/docs/">' . esc_html__( 'Documentation', 'meta-box' ) . '</a>';
+		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Documentation', 'meta-box' ) . '</a>';
 		$links[] = '<a href="https://metabox.io/plugins/">' . esc_html__( 'Extensions', 'meta-box' ) . '</a>';
 		return $links;
 	}
