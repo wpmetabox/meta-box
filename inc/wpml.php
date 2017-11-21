@@ -103,7 +103,7 @@ class RWMB_WPML {
 		}
 
 		// If the post is the original one: do nothing.
-		if ( ! $wpml_post_translations->get_source_lang_code( $post_id ) ) {
+		if ( ! method_exists( $wpml_post_translations, 'get_source_lang_code' ) || ! $wpml_post_translations->get_source_lang_code( $post_id ) ) {
 			return $field;
 		}
 
