@@ -6,6 +6,13 @@ add_filter( 'rwmb_meta_boxes', 'your_prefix_text_demo' );
 function your_prefix_text_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
 		'title'  => __( 'Text Demo', 'your-prefix' ),
+
+		//'pages' => array('page'),
+		//Restrict metaboxes in a specific Page Template
+		//'show_on' => array('key' => 'page-template', 'value' => array('pageTemplate1.php','pageTemplate2.php')),
+    //Restrict metaboxes in Pages without Template
+		//'contentpage' => true,
+
 		'fields' => array(
 			array(
 				'name'        => __( 'Text', 'your-prefix' ),

@@ -168,6 +168,48 @@ class RW_Meta_Box {
 	}
 
 	/**
+	 * Extra conditions // Restrict metaboxes in a specific Page Template OR pages without Template
+	 */
+	 public function extrachecks() {
+ 		if( 'page-template' !== $this->meta_box['show_on']['key'] && $this->meta_box['contentpage'] != true ) {
+ 			return true;
+ 		}
+
+ 		if( isset( $_GET['post'] ) ) $post_id = $_GET['post'];
+    elseif( isset( $_POST['post_ID'] ) ) $post_id = $_POST['post_ID'];
+    if( !( isset( $post_id ) || is_page() ) ) return false;
+ 		$current_template = get_post_meta( $post_id, '_wp_page_template', true );
+ 		$this->meta_box['show_on'] = empty( $this->meta_box['show_on'] ) ? array('key' => false, 'value' => false) : $this->meta_box['show_on'];
+ 		$page_template_slug = get_page_template_slug( $post_id );
+
+		if ($this->meta_box['contentpage'] == true) {
+			if ( empty($page_template_slug) && basename( get_page_template() ) === 'page.php' ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+ 		if ( !empty($this->meta_box['show_on']['key']) ) {
+			if (is_string($this->meta_box['show_on']['value'])) {
+				$ar[] = $this->meta_box['show_on']['value'];
+			} elseif (is_array($this->meta_box['show_on']['value'])) {
+				foreach($this->meta_box['show_on']['value'] as $v) {
+						$ar[] = $v;
+				}
+			}
+
+			if( in_array( $current_template, $ar ) ) {
+ 				return true;
+ 			} else {
+				return false;
+			}
+ 		}
+
+ 		return true;
+ 	}
+
+	/**
 	 * Add meta box for multiple post types
 	 */
 	public function add_meta_boxes() {
