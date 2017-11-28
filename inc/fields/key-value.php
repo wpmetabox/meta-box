@@ -132,11 +132,14 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	/**
 	 * Format value for the helper functions.
 	 *
-	 * @param array        $field Field parameters.
-	 * @param string|array $value The field meta value.
+	 * @param array        $field   Field parameters.
+	 * @param string|array $value   The field meta value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null     $post_id Post ID. null for current post. Optional.
+	 *
 	 * @return string
 	 */
-	public static function format_value( $field, $value ) {
+	public static function format_value( $field, $value, $args, $post_id ) {
 		$output = '<ul>';
 		foreach ( $value as $subvalue ) {
 			$output .= sprintf( '<li><label>%s:</label> %s</li>', $subvalue[0], $subvalue[1] );
