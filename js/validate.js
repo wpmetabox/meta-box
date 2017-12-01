@@ -9,7 +9,12 @@ jQuery( function ( $ ) {
 			$form.siblings( '#message' ).remove();
 			$form.before( '<div id="message" class="error"><p>' + rwmbValidate.summaryMessage + '</p></div>' );
 		},
-		ignore: ':not([class|="rwmb"])'
+		ignore: ':not([class|="rwmb"])',
+		errorPlacement: function(error, element) {
+			error.appendTo( element.closest( '.rwmb-input' ) );
+		},
+		errorClass: 'rwmb-error',
+		errorElement: 'p'
 	};
 
 	// Edit post form.
@@ -33,7 +38,7 @@ jQuery( function ( $ ) {
 		// Required field styling
 		$.each( subRules.rules, function ( k, v ) {
 			if ( v['required'] ) {
-				$( '#' + k ).parent().siblings( '.rwmb-label' ).addClass( 'required' ).append( '<span>*</span>' );
+				$( '#' + k ).parent().siblings( '.rwmb-label' ).append( '<span class="rwmb-required">*</span>' );
 			}
 		} );
 	} );

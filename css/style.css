@@ -26,8 +26,8 @@
 .rwmb-label > label {
 	font-weight: 600;
 }
-.rwmb-label.required > span {
-	color: #c00;
+.rwmb-required {
+	color: #dc3232;
 	font-weight: bold;
 	margin-left: 3px;
 }
@@ -95,15 +95,15 @@
 }
 
 /* jQuery validation */
-label.error {
-	padding-left: 3px;
-	color: red;
+p.rwmb-error {
+	color: #dc3232;
+	margin: 2px 0 5px;
 }
-input.error,
-textarea.error,
-select.error {
-	border-color: #c00 !important;
-	background: #ffebe8 !important;
+input.rwmb-error.rwmb-error,
+textarea.rwmb-error,
+select.rwmb-error {
+	border-color: #dc3232;
+	background: #ffebe8;
 }
 
 /* Utilities
