@@ -14,7 +14,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-image-advanced', RWMB_CSS_URL . 'image-advanced.css', array( 'rwmb-media' ), RWMB_VER );
+		RWMB_Image_Field::admin_enqueue_scripts();
 		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'rwmb-media' ), RWMB_VER, true );
 	}
 

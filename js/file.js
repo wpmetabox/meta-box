@@ -58,7 +58,6 @@
 	 */
 	file.sort = function () {
 		$( this ).sortable( {
-			placeholder: 'rwmb-file rwmb-sortable-placeholder',
 			items: 'li',
 			start: function ( e, ui ) {
 				ui.placeholder.height( ui.helper.outerHeight() );

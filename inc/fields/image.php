@@ -14,6 +14,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
+		wp_enqueue_media();
 		wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array(), RWMB_VER );
 	}
 
@@ -26,17 +27,26 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @return string
 	 */
 	protected static function file_html( $file, $index, $field ) {
-		list( $src ) = wp_get_attachment_image_src( $file, 'thumbnail' );
+		$attributes  = self::get_attributes( $field, $file );
+
 		return sprintf(
-			'<li id="item_%s">
-				<img src="%s">
-				<div class="rwmb-image-bar">
-					<a href="%s" target="_blank"><span class="dashicons dashicons-edit"></span></a> |
-					<a href="#" class="rwmb-file-delete" data-attachment_id="%s">&times;</a>
+			'<li class="rwmb-image-item attachment thumbnail">
+				<input type="hidden" name="%s[%s]" value="%s">
+				<div class="attachment-preview">
+					<div class="thumbnail">
+						<div class="centered">
+							%s
+						</div>
+					</div>
+				</div>
+				<div class="rwmb-image-overlay"></div>
+				<div class="rwmb-image-actions">
+					<a href="%s" class="rwmb-image-edit" target="_blank"><span class="dashicons dashicons-edit"></span></a>
+					<a href="#" class="rwmb-image-delete rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span></a>
 				</div>
 			</li>',
-			$file,
-			$src,
+			$attributes['name'], $index, $file,
+			wp_get_attachment_image( $file, 'thumbnail' ),
 			get_edit_post_link( $file ),
 			$file
 		);
