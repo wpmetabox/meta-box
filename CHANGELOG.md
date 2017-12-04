@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.12.6] - 2017-12-04
+### Added
+- Added welcome page. Displayed only once when first install the plugin. Won't display if included via TGM or directly in themes/plugins.
+- Added "sidebar" field type. [See here](https://docs.metabox.io/fields/sidebar/).
+- Added "format" option for shortcode and `rwmb_the_value` for datetime field.
+### Fixed
+- Fixed compatibility with old versions of WPML.
+- Fixed image field not saving values after updating posts.
+- Fixed validation message overlapping text for radio field.
+
 ## [4.12.5] - 2017-11-17
 ### Fixed
 - Fixed "Select All/None" doesn't work with post field (checkbox_list type).
@@ -721,7 +731,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.4...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.6...HEAD
+[4.12.6]: https://github.com/rilwis/meta-box/compare/4.12.5...4.12.6
+[4.12.5]: https://github.com/rilwis/meta-box/compare/4.12.4...4.12.5
 [4.12.4]: https://github.com/rilwis/meta-box/compare/4.12.3...4.12.4
 [4.12.3]: https://github.com/rilwis/meta-box/compare/4.12.2...4.12.3
 [4.12.2]: https://github.com/rilwis/meta-box/compare/4.12.1...4.12.2
