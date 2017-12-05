@@ -24,7 +24,7 @@
 			<p><a href="<?php echo esc_url( 'https://docs.metabox.io/quick-start/?utm_source=plugin_about_page&utm_medium=button_docs&utm_campaign=meta_box_about_page' ); ?>" class="button button-primary"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a></p>
 
 			<h3><?php esc_html_e( 'Extensions', 'meta-box' ); ?></h3>
-			<p><?php esc_html_e( 'Wanna more features that transform your WordPress website into a powerful CMS? Check out some extensions below:', 'meta-box' ); ?><p>
+			<p><?php esc_html_e( 'Wanna see more features that transform your WordPress website into a powerful CMS? Check out some extensions below:', 'meta-box' ); ?><p>
 			<ul>
 				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-group/?utm_source=plugin_about_page&utm_medium=link_group&utm_campaign=meta_box_about_page"><span class="dashicons dashicons-welcome-widgets-menus"></span> <?php esc_html_e( 'Meta Box Group', 'meta-box' ); ?></a></li>
 				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-conditional-logic/?utm_source=plugin_about_page&utm_medium=link_conditional&utm_campaign=meta_box_about_page"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Meta Box Conditional Logic', 'meta-box' ); ?></a></li>
