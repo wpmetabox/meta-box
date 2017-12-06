@@ -141,6 +141,10 @@ class RW_Meta_Box {
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 		}
 
+		if ( 'seamless' === $this->style ) {
+			wp_enqueue_script( 'rwmb', RWMB_JS_URL . 'script.js', array( 'jquery' ), RWMB_VER, true );
+		}
+
 		// Load clone script conditionally.
 		foreach ( $this->fields as $field ) {
 			if ( $field['clone'] ) {
@@ -208,7 +212,8 @@ class RW_Meta_Box {
 
 		// Container.
 		printf(
-			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s">',
+			'<div class="rwmb-meta-box%s" data-autosave="%s" data-object-type="%s">',
+			esc_attr( 'seamless' === $this->style ? ' rwmb-meta-box--seamless' : '' ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type )
 		);
@@ -325,16 +330,8 @@ class RW_Meta_Box {
 			'post_types'     => 'post',
 			'autosave'       => false,
 			'default_hidden' => false,
-			'seamless'       => false,
+			'style'          => 'default',
 		) );
-
-		/**
-		 * Add sufix for seamless meta boxes in extended areas
-		 */
-
-		 if( true === $meta_box['seamless']  && in_array( $meta_box['context'], array( 'form_top', 'after_title', 'after_editor',	'before_permalink', 'before_title'	) ) ) {
-			 $meta_box['context'] .= '-seamless';
-		 }
 
 		/**
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions.
