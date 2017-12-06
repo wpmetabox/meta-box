@@ -38,6 +38,28 @@ class RWMB_Meta_Box_Registry {
 	}
 
 	/**
+	 * Get meta boxes under some conditions.
+	 *
+	 * @param array $args Custom argument to get meta boxes by.
+	 *
+	 * @return array
+	 */
+	public function get_by( $args ) {
+		$meta_boxes = $this->data;
+		foreach ( $meta_boxes as $index => $meta_box ) {
+			foreach ( $args as $key => $value ) {
+				$meta_box_key = 'object_type' === $key ? $meta_box->get_object_type() : $meta_box->$key;
+				if ( $meta_box_key !== $value ) {
+					unset( $meta_boxes[ $index ] );
+					continue 2; // Skip the meta box loop.
+				}
+			}
+		}
+
+		return $meta_boxes;
+	}
+
+	/**
 	 * Retrieve all meta boxes.
 	 *
 	 * @return array
