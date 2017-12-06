@@ -54,6 +54,9 @@
 	clear: both;
 	background: #fff;
 }
+.rwmb-seamlessbox .rwmb-field .rwmb-clone {
+	background: none;
+}
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
 	margin: 6px 0 0 4px;
@@ -121,4 +124,10 @@ select.rwmb-error {
 #side-sortables .rwmb-label,
 #side-sortables .rwmb-input {
 	width: 100%;
+}
+
+/* Style title 
+--------------------------------------------------------------*/
+#poststuff .rwmb-seamlessbox h2 {
+	padding-left: 0;
 }

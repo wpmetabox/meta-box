@@ -22,6 +22,7 @@ class RWMB_Core {
 		// Uses priority 20 to support custom port types registered using the default priority.
 		add_action( 'init', array( $this, 'register_meta_boxes' ), 20 );
 		add_action( 'edit_page_form', array( $this, 'fix_page_template' ) );
+		$this->add_context_hooks();
 	}
 
 	/**
@@ -82,5 +83,68 @@ class RWMB_Core {
 	public static function get_meta_boxes() {
 		$meta_boxes = rwmb_get_registry( 'meta_box' )->all();
 		return wp_list_pluck( $meta_boxes, 'meta_box' );
+	}
+
+	/**
+	 * Add hooks for extra contexts.
+	 */
+	public function add_context_hooks() {
+		$hooks = array(
+			'edit_form_top',
+			'edit_form_after_title',
+			'edit_form_after_editor',
+			'edit_form_before_permalink',
+		);
+
+		foreach ( $hooks as $hook ) {
+			add_action( $hook, array( $this, 'add_context' ) );
+		}
+	}
+
+	public function do_seamless_meta_boxes( $screen, $context, $object ) {
+		$context .= '-seamless';
+		global $wp_meta_boxes;
+		static $already_sorted = false;
+
+		if ( empty( $screen ) )
+			$screen = get_current_screen();
+		elseif ( is_string( $screen ) )
+			$screen = convert_to_screen( $screen );
+
+		$page = $screen->id;
+
+		$hidden = get_hidden_meta_boxes( $screen );
+		echo '<div id="'. $context . '-area" >';
+
+		if ( isset( $wp_meta_boxes[ $page ][ $context ] ) ) {
+			foreach ( array( 'high', 'core', 'default', 'low' ) as $priority ) {
+				if ( isset( $wp_meta_boxes[ $page ][ $context ][ $priority ] ) ) {
+					foreach ( $wp_meta_boxes[ $page ][ $context ][ $priority ] as $box ) {
+						if ( false == $box || ! $box['title'] )
+							continue;
+						echo '<div id="' . $box['id'] . '" class="rwmb-seamlessbox ' . postbox_classes($box['id'], $page) . $hidden_class . '" ' . '>';
+						echo '<h2 class="hndle"><span>' . $box['title'] . '</span></h2>';
+						echo '<div class="inside">';
+						call_user_func( $box['callback'], $object, $box );
+						echo '</div>';
+						echo '</div>';
+
+					}
+				}
+			}
+		}
+		echo '</div> <!-- {$context}-area end -->';
+	}
+
+	/**
+	 * Add new meta box context.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	public function add_context( WP_Post $post ) {
+		$hook = current_filter();
+		$context = 'edit_form_top' === $hook ? 'form_top' : substr( $hook, 10 );
+		$this->do_seamless_meta_boxes(  null, $context, $post );
+		do_meta_boxes( null, $context, $post );
 	}
 }

@@ -325,7 +325,16 @@ class RW_Meta_Box {
 			'post_types'     => 'post',
 			'autosave'       => false,
 			'default_hidden' => false,
+			'seamless'       => false,
 		) );
+
+		/**
+		 * Add sufix for seamless meta boxes in extended areas
+		 */
+
+		 if( true === $meta_box['seamless']  && in_array( $meta_box['context'], array( 'form_top', 'after_title', 'after_editor',	'before_permalink', 'before_title'	) ) ) {
+			 $meta_box['context'] .= '-seamless';
+		 }
 
 		/**
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions.
