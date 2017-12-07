@@ -54,9 +54,6 @@
 	clear: both;
 	background: #fff;
 }
-.rwmb-seamlessbox .rwmb-field .rwmb-clone {
-	background: none;
-}
 .rwmb-clone > input[type='radio'],
 .rwmb-clone > input[type='checkbox'] {
 	margin: 6px 0 0 4px;
@@ -126,8 +123,21 @@ select.rwmb-error {
 	width: 100%;
 }
 
-/* Style title 
+/* Seamless style
 --------------------------------------------------------------*/
-#poststuff .rwmb-seamlessbox h2 {
+.rwmb-seamless {
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.rwmb-seamless .inside {
 	padding-left: 0;
+	padding-right: 0;
+}
+.postbox.rwmb-seamless .hndle,
+.postbox.rwmb-seamless .handlediv {
+	display: none;
+}
+.rwmb-seamless .rwmb-clone {
+	background: none;
 }

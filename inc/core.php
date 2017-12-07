@@ -29,7 +29,9 @@ class RWMB_Core {
 	 * Add links to Documentation and Extensions in plugin's list of action links.
 	 *
 	 * @since 4.3.11
+	 *
 	 * @param array $links Array of plugin links.
+	 *
 	 * @return array
 	 */
 	public function plugin_links( $links ) {
@@ -61,6 +63,7 @@ class RWMB_Core {
 	 * Unset the page template if the page does not exist to allow the post to save.
 	 *
 	 * @param WP_Post $post Post object.
+	 *
 	 * @since 4.3.10
 	 */
 	public function fix_page_template( WP_Post $post ) {
@@ -101,50 +104,14 @@ class RWMB_Core {
 		}
 	}
 
-	public function do_seamless_meta_boxes( $screen, $context, $object ) {
-		$context .= '-seamless';
-		global $wp_meta_boxes;
-		static $already_sorted = false;
-
-		if ( empty( $screen ) )
-			$screen = get_current_screen();
-		elseif ( is_string( $screen ) )
-			$screen = convert_to_screen( $screen );
-
-		$page = $screen->id;
-
-		$hidden = get_hidden_meta_boxes( $screen );
-		echo '<div id="'. $context . '-area" >';
-
-		if ( isset( $wp_meta_boxes[ $page ][ $context ] ) ) {
-			foreach ( array( 'high', 'core', 'default', 'low' ) as $priority ) {
-				if ( isset( $wp_meta_boxes[ $page ][ $context ][ $priority ] ) ) {
-					foreach ( $wp_meta_boxes[ $page ][ $context ][ $priority ] as $box ) {
-						if ( false == $box || ! $box['title'] )
-							continue;
-						echo '<div id="' . $box['id'] . '" class="rwmb-seamlessbox ' . postbox_classes($box['id'], $page) . $hidden_class . '" ' . '>';
-						echo '<h2 class="hndle"><span>' . $box['title'] . '</span></h2>';
-						echo '<div class="inside">';
-						call_user_func( $box['callback'], $object, $box );
-						echo '</div>';
-						echo '</div>';
-
-					}
-				}
-			}
-		}
-		echo '</div> <!-- {$context}-area end -->';
-	}
-
 	/**
 	 * Add new meta box context.
 	 *
 	 * @param WP_Post $post The current post object.
 	 */
 	public function add_context( WP_Post $post ) {
-		$hook = current_filter();
+		$hook    = current_filter();
 		$context = 'edit_form_top' === $hook ? 'form_top' : substr( $hook, 10 );
-		$this->do_seamless_meta_boxes(  null, $context, $post );
 		do_meta_boxes( null, $context, $post );
 	}
 }
