@@ -1,0 +1,78 @@
+/* style switch 
+-----------------------------*/
+.rwmb-switch-input {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+.rwmb-switch-input .rwmb-switch {
+    position: relative;
+    display: inline-block;
+    background-color: #ccc;
+    padding: 4px 2px;
+    border-radius: 3px;
+}
+.rwmb-switch-input .rwmb-switch input {
+	display: none;
+}
+.rwmb-switch-input .rwmb-switch input:checked + .slider {
+	background-color: #0073aa;
+	box-shadow: 0 0 1px #0073aa;
+	z-index: 8;
+	border-radius: 3px;
+}
+
+.rwmb-switch-input .rwmb-switch input:checked + .slider:before {
+	left:calc( 100% - 24px );
+}
+.rwmb-switch-input .rwmb-switch .slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+.rwmb-switch-input .rwmb-switch .slider:before {
+	position: absolute;
+	content: attr(title-before) "";
+	height: 20px;
+	width: 20px;
+	left: 3px;
+	bottom: 3px;
+	z-index: 99;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+	border-radius: 2px;
+}
+.rwmb-switch-input .rwmb-switch.rounded,
+.rwmb-switch-input .rwmb-switch.rounded .slider {
+	border-radius: 34px;
+}
+.rwmb-switch-input .rwmb-switch.rounded .slider:before {
+	border-radius: 50%;
+}
+.rwmb-switch-input .rwmb-switch label {
+	color: #fff;
+	padding: 8px;
+	position: relative;
+	display: inline-block;
+	z-index: 9;
+}
+.title-before, 
+.title-after {
+	display: inline-block;
+	float: left;
+	margin: 0 4px;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+.title-before {
+	position: relative;
+	z-index: 9;
+}
