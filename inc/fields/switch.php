@@ -1,12 +1,12 @@
 <?php
 /**
- * The switch checkbox field.
+ * The Switch field.
  *
  * @package Meta Box
  */
 
 /**
- * Button field class.
+ * Switch field class.
  */
 class RWMB_Switch_Field extends RWMB_Input_Field {
 	/**
@@ -16,8 +16,7 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 		wp_enqueue_style( 'rwmb-switch', RWMB_CSS_URL . 'switch.css', '', RWMB_VER );
 	}
 
-	/**
-	 * Get field HTML.
+	/**	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
 	 * @param array $field Field parameters.
@@ -25,35 +24,18 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field, 1 );
-		$title_before	= '';
-		$title_after	= '';
-		$class			= '';
-
-		// Title before after switch
-		if ( $field['on_label'] ) {
-			$title_before  = $field['on_label'];
-		}
-		if ( $field['off_label'] ) {
-			$title_after  = $field['off_label'];
-		}
-		// style switch
-		switch ($field['style']) {
-			case 'square':
-				$class = $field['style'];
-				break;
-			default:
-				$class = "rounded";
-				break;
-		}
+		$on  		= $field['on_label'];
+		$off  		= $field['off_label'];
+		$class 		= $field['style'];
 
 		$output = sprintf(
-			"<div class='rwmb-switch-input'><label class='rwmb-switch ". $class ."'>
+			'<label class="rwmb-switch_label rwmb-switch--'. esc_attr( $class ) . '">
 				<input %s %s>
-				<span class='slider'></span>
-				<span class='title-before'>" . $title_before . " </span>
-				<span class='title-after'>" . $title_after . " </span>
-				</label></div>
-			",
+				<span class="rwmb-switch_slider"></span>
+				<span class="rwmb-switch_on">' . $on . '</span>
+				<span class="rwmb-switch_off">' . $off . '</span>
+				</label>
+			',
 			self::render_attributes( $attributes ),
 			checked( ! empty( $meta ), 1, false )
 		);
@@ -62,18 +44,18 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	}
 
 	/**
-	 * Get the attributes for a field.
+	 * Normalize parameters for field.
 	 *
-	 * @param array $field The field parameters.
-	 * @param mixed $value The attribute value.
+	 * @param array $field Field parameters.
 	 * @return array
 	 */
+	
 	public static function normalize( $field, $value = null ) {
 
 		$field = wp_parse_args( $field, array(
 			'style' 	=> 'rounded',
-			'on_label' 	=> __( 'On', 'meta-box' ),
-			'off_label' => __( 'Off', 'meta-box' ),
+			'on_label' 	=> '',
+			'off_label' => '',
 		) );
 
 		$field = parent::normalize( $field );
