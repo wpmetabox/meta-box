@@ -23,6 +23,10 @@ jQuery( function ( $ ) {
 		if ( $inline.length ) {
 			options.altField = '#' + $this.attr( 'id' );
 			$this.on( 'keydown', _.debounce( function () {
+				// if val is empty, return to allow empty datepicker input.
+				if ( !$this.val() ) {
+					return;
+				}
 				$picker
 					.datepicker( 'setDate', $this.val() )
 					.find( ".ui-datepicker-current-day" )
