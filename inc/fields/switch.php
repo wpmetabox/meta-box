@@ -33,7 +33,7 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 				<input %s %s>
 				<div class="rwmb-switch_status">
 					<span class="rwmb-switch_slider"></span>
-					<span class="rwmb-switch_on ' . $selected . '">' . $on . '</span>
+					<span class="rwmb-switch_on">' . $on . '</span>
 					<span class="rwmb-switch_off">' . $off . '</span>
 				</div>
 				</label>
