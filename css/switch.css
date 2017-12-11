@@ -4,9 +4,9 @@
     position: relative;
     display: inline-block;
     background-color: #ccc;
-    padding: 4px 2px;
+    padding: 2px;
     border-radius: 3px;
-    min-width: 50px;
+    min-width: 36px;
     min-height: 18px;
 }
 input.rwmb-switch {
@@ -18,13 +18,15 @@ input.rwmb-switch {
 }
 
 .rwmb-switch:checked + .rwmb-switch_status .rwmb-switch_slider:before {
-	left:calc( 100% - 24px );
+	left:calc( 100% - 20px );
 }
 .rwmb-switch:checked + .rwmb-switch_status .rwmb-switch_off {
 	visibility: hidden;
+	display: none;
 }
 .rwmb-switch:not(:checked) + .rwmb-switch_status .rwmb-switch_on {
 	visibility: hidden;
+	display: none;
 }
 .rwmb-switch_slider {
 	position: absolute;
@@ -40,10 +42,10 @@ input.rwmb-switch {
 .rwmb-switch_slider:before {
 	position: absolute;
 	content: attr(title-before) "";
-	height: 20px;
-	width: 20px;
-	left: 3px;
-	bottom: 3px;
+	height: 18px;
+	width: 18px;
+	left: 2px;
+	bottom: 2px;
 	z-index: 99;
 	background-color: white;
 	-webkit-transition: .4s;
@@ -70,4 +72,10 @@ input.rwmb-switch {
 	font-size: 11px;
 	position: relative;
 	z-index: 20;
+}
+.rwmb-switch_on {
+	padding-right: 20px;
+}
+.rwmb-switch_off {
+	padding-left: 20px;
 }
