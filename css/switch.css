@@ -1,34 +1,39 @@
-/* style switch 
+/* style switch
 -----------------------------*/
-.rwmb-switch_label {
-    position: relative;
-    display: inline-block;
-    background-color: #ccc;
-    padding: 2px;
-    border-radius: 3px;
-    min-width: 36px;
-    min-height: 18px;
+.rwmb-switch-label {
+	position: relative;
+	display: inline-block;
+	background-color: #ccc;
+	padding: 2px;
+	border-radius: 3px;
+	min-width: 36px;
+	min-height: 18px;
 }
+
 input.rwmb-switch {
 	display: none;
 }
-.rwmb-switch:checked + .rwmb-switch_status .rwmb-switch_slider {
+
+.rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
 	background-color: #0073aa;
 	box-shadow: 0 0 1px #0073aa;
 }
 
-.rwmb-switch:checked + .rwmb-switch_status .rwmb-switch_slider:before {
-	left:calc( 100% - 20px );
+.rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider:before {
+	left: calc(100% - 20px);
 }
-.rwmb-switch:checked + .rwmb-switch_status .rwmb-switch_off {
+
+.rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-off {
 	visibility: hidden;
 	display: none;
 }
-.rwmb-switch:not(:checked) + .rwmb-switch_status .rwmb-switch_on {
+
+.rwmb-switch:not(:checked) + .rwmb-switch-status .rwmb-switch-on {
 	visibility: hidden;
 	display: none;
 }
-.rwmb-switch_slider {
+
+.rwmb-switch-slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -39,7 +44,8 @@ input.rwmb-switch {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-.rwmb-switch_slider:before {
+
+.rwmb-switch-slider:before {
 	position: absolute;
 	content: attr(title-before) "";
 	height: 18px;
@@ -52,18 +58,22 @@ input.rwmb-switch {
 	transition: .4s;
 	border-radius: 2px;
 }
-.rwmb-switch--square .rwmb-switch_slider {
+
+.rwmb-switch-label--square .rwmb-switch-slider {
 	border-radius: 3px;
 }
-.rwmb-switch--rounded,
-.rwmb-switch--rounded .rwmb-switch_slider {
+
+.rwmb-switch-label--rounded,
+.rwmb-switch-label--rounded .rwmb-switch-slider {
 	border-radius: 34px;
 }
-.rwmb-switch--rounded .rwmb-switch_slider:before {
+
+.rwmb-switch-label--rounded .rwmb-switch-slider:before {
 	border-radius: 50%;
 }
-.rwmb-switch_on, 
-.rwmb-switch_off {
+
+.rwmb-switch-on,
+.rwmb-switch-off {
 	display: inline-block;
 	float: left;
 	margin: 0 4px;
@@ -73,9 +83,11 @@ input.rwmb-switch {
 	position: relative;
 	z-index: 20;
 }
-.rwmb-switch_on {
+
+.rwmb-switch-on {
 	padding-right: 20px;
 }
-.rwmb-switch_off {
+
+.rwmb-switch-off {
 	padding-left: 20px;
 }

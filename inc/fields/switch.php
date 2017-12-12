@@ -16,25 +16,23 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 		wp_enqueue_style( 'rwmb-switch', RWMB_CSS_URL . 'switch.css', '', RWMB_VER );
 	}
 
-	/**	 * Get field HTML.
+	/**
+	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field, 1 );
-		$on  		= $field['on_label'];
-		$off  		= $field['off_label'];
-		$style 		= $field['style'];
-
-		$output = sprintf(
-			'<label class="rwmb-switch_label rwmb-switch--'. esc_attr( $style ) . '">
+		$output     = sprintf(
+			'<label class="rwmb-switch-label rwmb-switch-label--' . esc_attr( $field['style'] ) . '">
 				<input %s %s>
-				<div class="rwmb-switch_status">
-					<span class="rwmb-switch_slider"></span>
-					<span class="rwmb-switch_on">' . $on . '</span>
-					<span class="rwmb-switch_off">' . $off . '</span>
+				<div class="rwmb-switch-status">
+					<span class="rwmb-switch-slider"></span>
+					<span class="rwmb-switch-on">' . $field['on_label'] . '</span>
+					<span class="rwmb-switch-off">' . $field['off_label'] . '</span>
 				</div>
 				</label>
 			',
@@ -49,18 +47,17 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return array
 	 */
-	
-	public static function normalize( $field, $value = null ) {
-
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
-			'style' 	=> 'rounded',
-			'on_label' 	=> '',
+			'style'     => 'rounded',
+			'on_label'  => '',
 			'off_label' => '',
 		) );
 
-		$field = parent::normalize( $field );
 		return $field;
 	}
 
@@ -69,14 +66,16 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 *
 	 * @param array $field The field parameters.
 	 * @param mixed $value The attribute value.
+	 *
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes           	= parent::get_attributes( $field, $value );
-		$attributes['type'] 	= 'checkbox';
+		$attributes         = parent::get_attributes( $field, $value );
+		$attributes['type'] = 'checkbox';
 
 		return $attributes;
 	}
+
 	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
@@ -88,6 +87,8 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		return $value ? __( 'Yes', 'meta-box' ) : __( 'No', 'meta-box' );
+		$on  = $field['on_label'] ? $field['on_label'] : __( 'On', 'meta-box' );
+		$off = $field['off_label'] ? $field['on_label'] : __( 'Off', 'meta-box' );
+		return $value ? $on : $off;
 	}
 }
