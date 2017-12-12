@@ -29,7 +29,8 @@ class RWMB_Button_Group_Field extends RWMB_Choice_Field {
 	 */
 	public static function walk( $field, $options, $db_fields, $meta ) {
 		$walker = new RWMB_Walker_Input_List( $db_fields, $field, $meta );
-		$output .= sprintf( '<ul class="rwmb-button-input-list %s">',
+
+		$output = sprintf( '<ul class="rwmb-button-input-list %s">',
 			$field['inline'] ? 'inline' : ''
 		);
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
@@ -45,10 +46,10 @@ class RWMB_Button_Group_Field extends RWMB_Choice_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = RWMB_Input_Field::normalize( $field );
 		$field = parent::normalize( $field );
+		
 		$field = wp_parse_args( $field, array(
 			'inline'          => null,
 		) );

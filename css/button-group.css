@@ -1,7 +1,7 @@
 .rwmb-button-input-list li {
     margin-bottom: 0;
 }
-.rwmb-button-input-list li label.label-input input {
+.rwmb-button-input-list li label input.button {
     display: none;
 }
 .rwmb-button-input-list li label {
