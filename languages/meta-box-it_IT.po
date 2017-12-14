@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Meta Box 4.8.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
 "POT-Creation-Date: 2017-12-14 12:13+0100\n"
-"PO-Revision-Date: 2017-12-14 12:25+0100\n"
+"PO-Revision-Date: 2017-12-14 12:36+0100\n"
 "Last-Translator: Giacomo Antolini <giacomo.antolini@gmail.com>\n"
 "Language-Team: Meta Box <admin@metabox.io>\n"
 "Language: it_IT\n"
@@ -135,6 +135,7 @@ msgstr "+ Aggiungine altre"
 
 #: inc/fields/autocomplete.php:20 inc/fields/autocomplete.php:81
 #: inc/fields/autocomplete.php:93 inc/fields/file.php:121
+msgctxt "file upload"
 msgid "Delete"
 msgstr "Elimina"
 
@@ -177,10 +178,12 @@ msgid "Error: Cannot delete file"
 msgstr "Errore: Non posso cancellare il file"
 
 #: inc/fields/file.php:66
+msgctxt "file upload"
 msgid "+ Add new file"
 msgstr "+ Aggiungi un nuovo file"
 
 #: inc/fields/file.php:122 inc/fields/media.php:28
+msgctxt "file upload"
 msgid "Edit"
 msgstr "Modifica"
 
@@ -201,34 +204,42 @@ msgid "Find Address"
 msgstr "Trova l'Indirizzo"
 
 #: inc/fields/media.php:24
+msgctxt "media"
 msgid "+ Add Media"
 msgstr "+ Aggiungi Media"
 
 #: inc/fields/media.php:25
+msgctxt "media"
 msgid " file"
 msgstr " file"
 
 #: inc/fields/media.php:26
+msgctxt "media"
 msgid " files"
 msgstr " file"
 
 #: inc/fields/media.php:29
+msgctxt "media"
 msgid "View"
 msgstr "Mostra"
 
 #: inc/fields/media.php:30
+msgctxt "media"
 msgid "No Title"
 msgstr "Nessun Titolo"
 
 #: inc/fields/media.php:33
+msgctxt "media"
 msgid "Select Files"
 msgstr "Seleziona File"
 
 #: inc/fields/media.php:34
+msgctxt "media"
 msgid "or"
 msgstr "o"
 
 #: inc/fields/media.php:35
+msgctxt "media"
 msgid "Drop files here to upload"
 msgstr "Trascina i file qui per caricarli"
 
@@ -274,6 +285,7 @@ msgid "Select a term"
 msgstr "Seleziona un termine"
 
 #: inc/fields/thickbox-image.php:55
+msgctxt "image upload"
 msgid "Upload Images"
 msgstr "Carica Immagini"
 
