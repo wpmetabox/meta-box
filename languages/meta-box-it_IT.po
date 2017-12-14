@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Meta Box 4.8.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
 "POT-Creation-Date: 2017-12-14 12:13+0100\n"
-"PO-Revision-Date: 2017-12-14 12:36+0100\n"
+"PO-Revision-Date: 2017-12-14 13:06+0100\n"
 "Last-Translator: Giacomo Antolini <giacomo.antolini@gmail.com>\n"
 "Language-Team: Meta Box <admin@metabox.io>\n"
 "Language: it_IT\n"
@@ -134,7 +134,11 @@ msgid "+ Add more"
 msgstr "+ Aggiungine altre"
 
 #: inc/fields/autocomplete.php:20 inc/fields/autocomplete.php:81
-#: inc/fields/autocomplete.php:93 inc/fields/file.php:121
+#: inc/fields/autocomplete.php:93
+msgid "Delete"
+msgstr "Elimina"
+
+#: inc/fields/file.php:121
 msgctxt "file upload"
 msgid "Delete"
 msgstr "Elimina"
@@ -159,7 +163,12 @@ msgstr "Seleziona File"
 msgid "Select"
 msgstr "Seleziona"
 
-#: inc/fields/file-input.php:40 inc/fields/media.php:27
+#: inc/fields/file-input.php:40
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: inc/fields/media.php:27
+msgctxt "media"
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -182,8 +191,13 @@ msgctxt "file upload"
 msgid "+ Add new file"
 msgstr "+ Aggiungi un nuovo file"
 
-#: inc/fields/file.php:122 inc/fields/media.php:28
+#: inc/fields/file.php:122
 msgctxt "file upload"
+msgid "Edit"
+msgstr "Modifica"
+
+#: inc/fields/media.php:28
+msgctxt "media"
 msgid "Edit"
 msgstr "Modifica"
 
