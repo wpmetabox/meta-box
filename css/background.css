@@ -1,0 +1,16 @@
+.rwmb-background-color label {
+    display: inline-block;
+    float: left;
+    line-height: 24px;
+    margin-right: 30px;
+}
+.rwmb-background .select_background {
+    width: calc( 25% - 10px );
+    float: left;
+    padding: 2px;
+    margin: 5px 5px 12px;
+    box-shadow: 0 0 0 0;
+}
+.select_background.select_background_repeat {
+	margin-left: 0;
+}
