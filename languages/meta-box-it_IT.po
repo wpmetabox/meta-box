@@ -1,126 +1,318 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Meta Box Script For WordPress\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-02 14:08+0700\n"
-"PO-Revision-Date: 2012-03-02 14:08+0700\n"
-"Last-Translator: name <email@domain.com>\n"
-"Language-Team: Rilwis <rilwis@gmail.com>\n"
+"Project-Id-Version: Meta Box 4.8.7\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
+"POT-Creation-Date: 2017-12-14 12:13+0100\n"
+"PO-Revision-Date: 2017-12-14 13:06+0100\n"
+"Last-Translator: Giacomo Antolini <giacomo.antolini@gmail.com>\n"
+"Language-Team: Meta Box <admin@metabox.io>\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2;_x:2c,1\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ../inc/fields\n"
+"X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;"
+"esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.0.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: js\n"
+"X-Poedit-SearchPathExcluded-1: demo\n"
+"X-Poedit-SearchPathExcluded-2: tests\n"
+"X-Poedit-SearchPathExcluded-3: css\n"
+"X-Poedit-SearchPathExcluded-4: lang\n"
 
-#: ../meta-box.php:334
-msgid "+"
+#: inc/about/about.php:50
+msgid "About"
+msgstr "Informazioni"
+
+#: inc/about/about.php:59 inc/about/about.php:60
+msgid "Welcome to Meta Box"
+msgstr "Benvenuto su Meta Box"
+
+#: inc/about/sections/getting-started.php:13
+msgid "Getting Started With Online Generator"
+msgstr "Inizia Con Il Generatore Online"
+
+#: inc/about/sections/getting-started.php:14
+msgid ""
+"The fastest way to getting started with Meta Box is use our online generator "
+"to generate meta boxes with custom fields. It provides a friendly UI for you "
+"to create meta boxes and custom fields just by drag and drop fields."
+msgstr ""
+"Il modo più facile per iniziare con Meta Box è utilizzando il nostro "
+"generatore online. Fornisce una semplice interfaccia grafica che permette di "
+"creare le meta box e i campi personalizzati tramite il drag-and-drop."
+
+#: inc/about/sections/getting-started.php:16
+msgid "online generator"
+msgstr "generatore online"
+
+#: inc/about/sections/getting-started.php:18
+msgid "Go to Online Generator"
+msgstr "Vai al Generatore Online"
+
+#: inc/about/sections/getting-started.php:22
+msgid "Understand The Basics"
+msgstr "Capire Le Basi"
+
+#: inc/about/sections/getting-started.php:23
+msgid ""
+"Meta Box doesn't have any admin page for configuration or settings. Instead "
+"of that, it provides a very powerful API to speed up the process of creating "
+"meta boxes and custom fields. It might take you a little time at first, but "
+"then you'll love the way it work because it helps you do and customize "
+"almost everything."
+msgstr ""
+"Meta Box non ha una pagina di gestione per la configurazione e le "
+"impostazioni. Al suo posto, fornisce delle potenti API per velocizzare il "
+"processo di creazione delle meta box e dei campi personalizzati. Può "
+"richiedere un po’ di tempo all’inizio, ma poi amerai il modo in cui funziona "
+"perché ti dà la possibilità di personalizzare quasi tutto."
+
+#: inc/about/sections/getting-started.php:24
+msgid "Learn More"
+msgstr "Scopri di Più"
+
+#: inc/about/sections/getting-started.php:26 inc/core.php:39
+msgid "Extensions"
+msgstr "Estensioni"
+
+#: inc/about/sections/getting-started.php:27
+msgid ""
+"Wanna see more features that transform your WordPress website into a "
+"powerful CMS? Check out some extensions below:"
 msgstr ""
 
-#: ../meta-box.php:358
-msgid "&#8211;"
+#: inc/about/sections/getting-started.php:29
+msgid "Meta Box Group"
 msgstr ""
 
-#: ../meta-box.php:691
-msgid "RW_Meta_Box Debug:"
+#: inc/about/sections/getting-started.php:30
+msgid "Meta Box Conditional Logic"
 msgstr ""
 
-#: ../inc/fields/color.php:45
-msgid "Select a color"
-msgstr "Seleziona un colore"
+#: inc/about/sections/getting-started.php:31
+msgid "MB Settings Page"
+msgstr ""
 
-#: ../inc/fields/file.php:69
-msgid "Error: Cannot delete file"
-msgstr "Errore: impossibile cancellare il file"
+#: inc/about/sections/getting-started.php:32
+msgid "MB Term Meta"
+msgstr ""
 
-#: ../inc/fields/file.php:83
-msgctxt "file upload"
-msgid "Uploaded files"
-msgstr "Carica i files"
+#: inc/about/sections/getting-started.php:34
+msgid "More Extensions"
+msgstr "Altre Estensioni"
 
-#: ../inc/fields/file.php:84
-msgctxt "file upload"
-msgid "Delete this file"
-msgstr "Elimina file"
+#: inc/about/sections/getting-started.php:39
+msgid "Go to MetaBox.IO &rarr;"
+msgstr "Vai su MetaBox.IO &rarr;"
 
-#: ../inc/fields/file.php:85
+#: inc/about/sections/tabs.php:11
+msgid "Getting Started"
+msgstr "Inizia"
+
+#: inc/about/sections/welcome.php:13
+#, php-format
+msgid "Welcome to %1$s %2$s"
+msgstr "Benvenuto su %1$s %2$s"
+
+#: inc/about/sections/welcome.php:16
+msgid ""
+"This plugin is a lightweight and powerful toolkit that helps you to create "
+"custom meta boxes and custom fields in WordPress fast and easy. Follow the "
+"instruction below to get started."
+msgstr ""
+
+#: inc/core.php:38
+msgid "Documentation"
+msgstr "Documentazione"
+
+#: inc/field.php:356
+msgid "+ Add more"
+msgstr "+ Aggiungine altre"
+
+#: inc/fields/autocomplete.php:20 inc/fields/autocomplete.php:81
+#: inc/fields/autocomplete.php:93
+msgid "Delete"
+msgstr "Elimina"
+
+#: inc/fields/file.php:121
 msgctxt "file upload"
 msgid "Delete"
 msgstr "Elimina"
 
-#: ../inc/fields/file.php:86
+#: inc/fields/button.php:32
+msgid "Click me"
+msgstr "Cliccami"
+
+#: inc/fields/checkbox.php:53
+msgid "Yes"
+msgstr "Sì"
+
+#: inc/fields/checkbox.php:53
+msgid "No"
+msgstr "No"
+
+#: inc/fields/file-input.php:19
+msgid "Select File"
+msgstr "Seleziona File"
+
+#: inc/fields/file-input.php:38 inc/fields/select.php:87
+msgid "Select"
+msgstr "Seleziona"
+
+#: inc/fields/file-input.php:40
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: inc/fields/media.php:27
+msgctxt "media"
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: inc/fields/file.php:21
+#, php-format
+msgid "You may only upload maximum %d file"
+msgstr "Puoi caricare al massimo %d file"
+
+#: inc/fields/file.php:23
+#, php-format
+msgid "You may only upload maximum %d files"
+msgstr "Puoi caricare al massimo %d file"
+
+#: inc/fields/file.php:53
+msgid "Error: Cannot delete file"
+msgstr "Errore: Non posso cancellare il file"
+
+#: inc/fields/file.php:66
 msgctxt "file upload"
-msgid "Upload files"
-msgstr "Carica files"
+msgid "+ Add new file"
+msgstr "+ Aggiungi un nuovo file"
 
-#: ../inc/fields/file.php:87
+#: inc/fields/file.php:122
 msgctxt "file upload"
-msgid "Add another file"
-msgstr "Aggiungi altro file"
-
-#: ../inc/fields/image.php:68
-msgid "Order saved"
-msgstr "Ordine salvato"
-
-#: ../inc/fields/image.php:84
-#: ../inc/fields/plupload-image.php:178
-msgctxt "image upload"
-msgid "Uploaded files"
-msgstr "Files caricati"
-
-#: ../inc/fields/image.php:85
-#: ../inc/fields/plupload-image.php:140
-msgctxt "image upload"
-msgid "Delete this file"
-msgstr "Elimina file"
-
-#: ../inc/fields/image.php:86
-#: ../inc/fields/plupload-image.php:141
-msgctxt "image upload"
-msgid "Delete"
-msgstr "Cancella"
-
-#: ../inc/fields/image.php:87
-#: ../inc/fields/plupload-image.php:142
-msgctxt "image upload"
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
-#: ../inc/fields/image.php:88
-#: ../inc/fields/plupload-image.php:179
-msgctxt "image upload"
-msgid "Upload files"
-msgstr "Carica files"
+#: inc/fields/media.php:28
+msgctxt "media"
+msgid "Edit"
+msgstr "Modifica"
 
-#: ../inc/fields/image.php:89
-#: ../inc/fields/plupload-image.php:180
-msgctxt "image upload"
-msgid "Add another file"
-msgstr "Aggiungi altro file"
+#: inc/fields/input-list.php:90
+msgid "Select All / None"
+msgstr "Seleziona Tutti / Nessuno"
 
-#: ../inc/fields/plupload-image.php:112
-msgctxt "image upload"
-msgid "Allowed Image Files"
-msgstr ""
+#: inc/fields/key-value.php:126
+msgid "Key"
+msgstr "Chiave"
 
-#: ../inc/fields/plupload-image.php:183
-msgctxt "image upload"
-msgid "Drop images here"
-msgstr ""
+#: inc/fields/key-value.php:127
+msgid "Value"
+msgstr "Valore"
 
-#: ../inc/fields/plupload-image.php:184
-msgctxt "image upload"
-msgid "or"
-msgstr ""
+#: inc/fields/map.php:64
+msgid "Find Address"
+msgstr "Trova l'Indirizzo"
 
-#: ../inc/fields/plupload-image.php:185
-#, fuzzy
-msgctxt "image upload"
+#: inc/fields/media.php:24
+msgctxt "media"
+msgid "+ Add Media"
+msgstr "+ Aggiungi Media"
+
+#: inc/fields/media.php:25
+msgctxt "media"
+msgid " file"
+msgstr " file"
+
+#: inc/fields/media.php:26
+msgctxt "media"
+msgid " files"
+msgstr " file"
+
+#: inc/fields/media.php:29
+msgctxt "media"
+msgid "View"
+msgstr "Mostra"
+
+#: inc/fields/media.php:30
+msgctxt "media"
+msgid "No Title"
+msgstr "Nessun Titolo"
+
+#: inc/fields/media.php:33
+msgctxt "media"
 msgid "Select Files"
-msgstr "Seleziona un colore"
+msgstr "Seleziona File"
 
+#: inc/fields/media.php:34
+msgctxt "media"
+msgid "or"
+msgstr "o"
+
+#: inc/fields/media.php:35
+msgctxt "media"
+msgid "Drop files here to upload"
+msgstr "Trascina i file qui per caricarli"
+
+#: inc/fields/oembed.php:64
+msgid "Embed HTML not available."
+msgstr "Incorporazione dell'HTML non disponibile."
+
+#: inc/fields/post.php:36
+msgid "Select a post"
+msgstr "Seleziona un post"
+
+#: inc/fields/post.php:41 inc/fields/taxonomy.php:52
+#, php-format
+msgid "Select a %s"
+msgstr "Seleziona un %s"
+
+#: inc/fields/select-advanced.php:45
+msgid "Select an item"
+msgstr "Seleziona un oggetto"
+
+#: inc/fields/select.php:87
+msgid "All"
+msgstr "Tutto"
+
+#: inc/fields/select.php:87
+msgid "None"
+msgstr "Nessuno"
+
+#: inc/fields/sidebar.php:30
+msgid "Select a sidebar"
+msgstr "Seleziona una sidecar"
+
+#: inc/fields/switch.php:90
+msgid "On"
+msgstr "Acceso"
+
+#: inc/fields/switch.php:91
+msgid "Off"
+msgstr "Spento"
+
+#: inc/fields/taxonomy.php:47
+msgid "Select a term"
+msgstr "Seleziona un termine"
+
+#: inc/fields/thickbox-image.php:55
+msgctxt "image upload"
+msgid "Upload Images"
+msgstr "Carica Immagini"
+
+#: inc/fields/user.php:30
+msgid "Select an user"
+msgstr "Seleziona un utente"
+
+#: inc/validation.php:47
+msgid "Please correct the errors highlighted below and try again."
+msgstr "Correggere gli errori evidenziati qui sotto e riprovare."
+
+#~ msgid "Upload Files"
+#~ msgstr "Carica i File"
+
+#~ msgid "Preview"
+#~ msgstr "Anteprima"
