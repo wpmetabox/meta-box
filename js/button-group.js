@@ -1,19 +1,27 @@
 jQuery( function ( $ ) {
 	'use strict';
 
-	function ButtonClick() {
-		var $this = $( this ),
-			$input = $this.find( 'input' ),
-			$label = $input.parent(),
-			type = $input.attr( 'type' );
+	// Check initial status.
+	function CheckInput() {
+		var $this 	= $( this ),
+			$input 	= $this.find( 'input' ),
+			$label 	= $input.parent(),
+			type 	= $input.attr( 'type' );
 
-		// Check initial status.
 		if ( $input.prop( 'checked' ) ) {
 			$label.addClass( 'selected' );
 		}
+	}
+	$( '.rwmb-button-input-list li' ).each( CheckInput );
 
-		// Toggle status when click.
-		$input.on( 'click', function () {
+	// Toggle status when click.
+	function InputClick() {
+		var $this 			= $( this ),
+			$input 			= $this.find( 'input' ),
+			$label 			= $input.parent(),
+			type 			= $input.attr( 'type' ),
+			parent_label 	= $( this ).parent().find( 'label' );
+
 			if ( ! $input.prop( 'checked' ) ) {
 				$label.removeClass( 'selected' );
 				return;
@@ -22,11 +30,10 @@ jQuery( function ( $ ) {
 			$label.addClass( 'selected' );
 
 			if ( 'radio' === type ) {
-				$( '.rwmb-button-input-list li label' ).removeClass( 'selected' );
+				parent_label.removeClass( 'selected' );
 				$label.addClass( 'selected' );
 			}
-		} );
 	}
-
-	$( '.rwmb-button-input-list li' ).each( ButtonClick );
+	$( document ).on( 'click', '.rwmb-button-input-list li', InputClick );
+	$( document ).on( 'clone', '.rwmb-button-input-list', CheckInput );
 } );

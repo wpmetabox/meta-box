@@ -15,20 +15,12 @@ class RWMB_Background_Field extends RWMB_Select_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-background', RWMB_CSS_URL . 'background.css', '', RWMB_VER );
 
-		// style + js color 
-		$args = func_get_args();
-		$field = $args[0];
-		$js_dependency = array( 'wp-color-picker' );
-		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
-		if ( $field['alpha_channel'] ) {
-			wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), RWMB_VER, true );
-			$js_dependency = array( 'wp-color-picker-alpha' );
-		}
-		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', $js_dependency, RWMB_VER, true );
+		// js color 
+		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', '', RWMB_VER, true );
 
 		// js image
 		wp_enqueue_media();
-		wp_enqueue_script( 'rwmb-background-image', RWMB_JS_URL . 'bg-image.js', '', RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-background-image', RWMB_JS_URL . 'background.js', '', RWMB_VER, true );
 	}
 
 
@@ -43,139 +35,157 @@ class RWMB_Background_Field extends RWMB_Select_Field {
 	 * @return string
 	 */
 	public static function walk( $field, $options, $db_fields, $meta ) {
-		$attributes = self::call( 'get_attributes', $field, $meta );
-		$walker     = new RWMB_Walker_Background( $db_fields, $field, $meta );
-		$output		= '<div class="rwmb-background">';
+		$attributes 	= self::call( 'get_attributes', $field, $meta );
+		$output			= '<div class="rwmb-background">';
+		$select_options = array();
 
-		if ( $field['background']['background_color'] == True ){
-			$attributes['class'] .= ' color';
+		/* background color field
+		--------------------------------------- */
+		$output .= sprintf(
+            '<input size="30"  type="text" id="'. esc_attr( $attributes['id'] ) .'_color" class="'. esc_attr( $attributes['id'] ) .'_color rwmb-color" name="' . esc_attr( $attributes['id'] ) . '[color]" value="%s" />',
+            isset( $meta['color'] ) ? esc_attr( $meta['color'] ) : ''
+        );
 
-			$output .= sprintf(
-	            '<input size="30"  type="text" id="'. $attributes['id'] .'_color" class="'. $attributes['id'] .'_color rwmb-color" name="' . $attributes['id'] . '[color]" value="%s" />',
-	            isset( $meta['color'] ) ? esc_attr( $meta['color'] ) : ''
-	        );
-		}
+		/* background repeat field
+		--------------------------------------- */
+		$options_repeat = array(
+            'no-repeat' => esc_html__( 'No Repeat', 'meta-box' ),
+            'repeat'    => esc_html__( 'Repeat All', 'meta-box' ),
+            'repeat-x'  => esc_html__( 'Repeat Horizontally', 'meta-box' ),
+            'repeat-y'  => esc_html__( 'Repeat Vertically', 'meta-box' ),
+            'inherit'   => esc_html__( 'Inherit', 'meta-box' ),
+        );
 
-		if ( $field['background']['background_repeat'] == True ){
- 			$options_repeat = array(
-                'no-repeat' => 'No Repeat',
-                'repeat'    => 'Repeat All',
-                'repeat-x'  => 'Repeat Horizontally',
-                'repeat-y'  => 'Repeat Vertically',
-                'inherit'   => 'Inherit',
-            );
-
-            // change data option
-		 	$select_options = $options_repeat;
-			if ( is_array( $options_repeat ) ) {
-				$select_options = array();
-				foreach ( $options_repeat as $value => $label ) {
-					$select_options[$value] = (object) array(
-						'value' => $value,
-						'label' => $label,
-					);
-				}
+        // change data option
+		if ( is_array( $options_repeat ) ) {
+			$select_options = $options_repeat;
+			foreach ( $options_repeat as $value => $label ) {
+				$select_options[$value] = (object) array(
+					'value' => $value,
+					'label' => $label,
+				);
 			}
-			// get data select
-			$attributes['class'] .= ' repeat';
-
-			$output .= '<select id="'. $attributes['id'] .'_repeat" name="' . $attributes['id'] . '[repeat]" class="select_background '. $attributes['id'] .'_repeat">';
-			$output .= $walker->walk( $select_options, $field['flatten'] ? - 1 : 0 );
-			$output .= '</select>';
 		}
+
+		$output .= '<select id="'. esc_attr( $attributes['id'] ) .'_repeat" name="' . esc_attr( $attributes['id'] ) . '[repeat]" class="select_background '. esc_attr( $attributes['id'] ) .'_repeat">';
+
+			foreach ($select_options as $key => $value) {
+				$output .= sprintf(
+					'<option value="%s" %s>%s</option>',
+					$value->value,
+					selected( in_array( esc_attr( $value->value ), $meta, true ), true, false ),
+					esc_html( $value->label )
+				);
+			}
+		
+		$output .= '</select>';
 			
-		if ( $field['background']['background_size'] == True ){
- 			$options_size = array(
-				'inherit' => 'Inherit',
-				'cover'   => 'Cover',
-				'contain' => 'Contain',
-            );
+		/* background size field
+		--------------------------------------- */
+		$options_size = array(
+			'inherit' => esc_html__( 'Inherit', 'meta-box' ),
+			'cover'   => esc_html__( 'Cover', 'meta-box' ),
+			'contain' => esc_html__( 'Contain', 'meta-box' ),
+        );
 
-            // change data option
-		 	$select_options = $options_size;
-			if ( is_array( $options_size ) ) {
-				$select_options = array();
-				foreach ( $options_size as $value => $label ) {
-					$select_options[$value] = (object) array(
-						'value' => $value,
-						'label' => $label,
-					);
-				}
+        // change data option
+		if ( is_array( $options_size ) ) {
+			$select_options = $options_size;
+			foreach ( $options_size as $value => $label ) {
+				$select_options[$value] = (object) array(
+					'value' => $value,
+					'label' => $label,
+				);
 			}
-			// get data select
-			$attributes['class'] .= ' size';
-
-			$output .= '<select id="'. $attributes['id'] .'_size" name="' . $attributes['id'] . '[size]" class="select_background '. $attributes['id'] .'_size">';
-
-			$output .= $walker->walk( $select_options, $field['flatten'] ? - 1 : 0 );
-			$output .= '</select>';
 		}
 
-		if ( $field['background']['background_attachment'] == True ){
- 			$options_attachment = array(
-				'fixed'   => 'Fixed',
-				'scroll'  => 'Scroll',
-				'inherit' => 'Inherit',
-            );
+		// get data select
+		$output .= '<select id="'. esc_attr( $attributes['id'] ) .'_size" name="' . esc_attr( $attributes['id'] ) . '[size]" class="select_background '. esc_attr( $attributes['id'] ) .'_size">';
 
-            // change data option
-		 	$select_options = $options_attachment;
-			if ( is_array( $options_attachment ) ) {
-				$select_options = array();
-				foreach ( $options_attachment as $value => $label ) {
-					$select_options[$value] = (object) array(
-						'value' => $value,
-						'label' => $label,
-					);
-				}
-			}
-			// get data select
-			$attributes['class'] .= ' attachment';
-
-			$output .= '<select id="'. $attributes['id'] .'_attachment" name="'. $attributes['id'] .'[attachment]" class="select_background '. $attributes['id'] .'_attachment">';
-			$output .= $walker->walk( $select_options, $field['flatten'] ? - 1 : 0 );
-			$output .= '</select>';
-		}
-
-		if ( $field['background']['background_position'] == True ){
- 			$options_position = array(
-				'left_top'      => 'Left Top',
-				'left_center'   => 'Left center',
-				'left_bottom'   => 'Left Bottom',
-				'center_top'    => 'Center Top',
-				'center_center' => 'Center Center',
-				'center_bottom' => 'Center Bottom',
-				'right_top'     => 'Right Top',
-				'right_center'  => 'Right center',
-				'right_bottom'  => 'Right Bottom',
-            );
-
-            // change data option
-		 	$select_options = $options_position;
-			if ( is_array( $options_position ) ) {
-				$select_options = array();
-				foreach ( $options_position as $value => $label ) {
-					$select_options[$value] = (object) array(
-						'value' => $value,
-						'label' => $label,
-					);
-				}
-			}
-			// get data select
-			$attributes['class'] .= ' position';
-
-			$output .= '<select id="'. $attributes['id'] .'_position" name="' . $attributes['id'] . '[position]" class="select_background '. $attributes['id'] .'_position">';
-			$output .= $walker->walk( $select_options, $field['flatten'] ? - 1 : 0 );
-			$output .= '</select>';
-		}
-
-		if ( $field['background']['background_image'] == True ){
-			$attributes['class'] .= ' image';
-
-			$output .= sprintf( '<div class="rwmb-background-image"><input id="'. $attributes['id'] .'_image" class="'. $attributes['id'] .'_image  rwmb-upload-background" type="text"  name="' . $attributes['id'] . '[image]" value="%s" /><button class="rwmb-upload-image button">'. esc_attr( 'Upload', 'textdomain' ) .'</button></div>',
-				isset( $meta['image'] ) ? esc_attr( $meta['image'] ) : ''
+		foreach ($select_options as $key => $value) {
+			$output .= sprintf(
+				'<option value="%s" %s>%s</option>',
+				$value->value,
+				selected( in_array( esc_attr( $value->value ), $meta, true ), true, false ),
+				esc_html( $value->label )
 			);
 		}
+		$output .= '</select>';
+
+		/* background attachment field
+		--------------------------------------- */
+		$options_attachment = array(
+			'fixed'   => esc_html__( 'Fixed', 'meta-box' ),
+			'scroll'  => esc_html__( 'Scroll', 'meta-box' ),
+			'inherit' => esc_html__( 'Inherit', 'meta-box' ),
+        );
+
+        // change data option
+		if ( is_array( $options_attachment ) ) {
+			$select_options = $options_attachment;
+			foreach ( $options_attachment as $value => $label ) {
+				$select_options[$value] = (object) array(
+					'value' => $value,
+					'label' => $label,
+				);
+			}
+		}
+
+		// get data select
+		$output .= '<select id="'. esc_attr( $attributes['id'] ) .'_attachment" name="'. esc_attr( $attributes['id'] ) .'[attachment]" class="select_background '. esc_attr( $attributes['id'] ) .'_attachment">';
+			foreach ($select_options as $key => $value) {
+				$output .= sprintf(
+					'<option value="%s" %s>%s</option>',
+					$value->value,
+					selected( in_array( esc_attr( $value->value ), $meta, true ), true, false ),
+					esc_html( $value->label )
+				);
+			}
+		$output .= '</select>';
+
+		/* background position field
+		--------------------------------------- */
+		$options_position = array(
+			'left_top'      => esc_html__( 'Left Top', 'meta-box' ),
+			'left_center'   => esc_html__( 'Left center', 'meta-box' ),
+			'left_bottom'   => esc_html__( 'Left Bottom', 'meta-box' ),
+			'center_top'    => esc_html__( 'Center Top', 'meta-box' ),
+			'center_center' => esc_html__( 'Center Center', 'meta-box' ),
+			'center_bottom' => esc_html__( 'Center Bottom', 'meta-box' ),
+			'right_top'     => esc_html__( 'Right Top', 'meta-box' ),
+			'right_center'  => esc_html__( 'Right center', 'meta-box' ),
+			'right_bottom'  => esc_html__( 'Right Bottom', 'meta-box' ),
+        );
+
+        // change data option
+		if ( is_array( $options_position ) ) {
+			// $select_options = array();
+			$select_options = $options_position;
+			foreach ( $options_position as $value => $label ) {
+				$select_options[$value] = (object) array(
+					'value' => $value,
+					'label' => $label,
+				);
+			}
+		}
+
+		// get data select
+		$output .= '<select id="'. esc_attr( esc_attr( $attributes['id'] ) ) .'_position" name="' . esc_attr( $attributes['id'] ) . '[position]" class="select_background '. esc_attr( $attributes['id'] ) .'_position">';
+			foreach ($select_options as $key => $value) {
+				$output .= sprintf(
+					'<option value="%s" %s>%s</option>',
+					$value->value,
+					selected( in_array( esc_attr( $value->value ), $meta, true ), true, false ),
+					esc_html( $value->label )
+				);
+			}
+		$output .= '</select>';
+
+		/* background image field
+		--------------------------------------- */
+		$output .= sprintf( '<div class="rwmb-background-image"><input id="'. esc_attr( $attributes['id'] ) .'_image" class="'. esc_attr( $attributes['id'] ) .'_image  rwmb-upload-background" type="text"  name="' . esc_attr( $attributes['id'] ) . '[image]" value="%s" /><button class="rwmb-upload-image button">'. esc_attr( 'Upload', 'textdomain' ) .'</button></div>',
+				isset( $meta['image'] ) ? esc_attr( $meta['image'] ) : ''
+			);
 
 		$output .= '</div>';
 		return $output;
@@ -190,9 +200,6 @@ class RWMB_Background_Field extends RWMB_Select_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
-			'alpha_channel' => false,
-			'js_options'  => array(),
-			'placeholder' => __( 'Select an item', 'meta-box' ),
 			'background'	=> array(),	
 			'options'		=> true,
 			
@@ -200,15 +207,6 @@ class RWMB_Background_Field extends RWMB_Select_Field {
 
 		$field = parent::normalize( $field );
 
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'allowClear'  => true,
-			'width'       => 'none',
-			'placeholder' => $field['placeholder'],
-			// color
-			'defaultColor' => false,
-			'hide'         => true,
-			'palettes'     => true,
-		) );
 		$field['background'] = wp_parse_args( $field['background'], array(
 			'background_repeat'		=> true,
 			'background_size'		=> true,
@@ -231,14 +229,8 @@ class RWMB_Background_Field extends RWMB_Select_Field {
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
-			'data-options' => wp_json_encode( $field['js_options'] ),
-			'data-background' => wp_json_encode( $field['background'] ),
 			'type'        => $field['type'],
 		) );
-
-		if ( $field['alpha_channel'] ) {
-			$attributes['data-alpha'] = 'true';
-		}
 
 		return $attributes;
 	}
