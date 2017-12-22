@@ -34,7 +34,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		return  $field['raw'] ? $new : wpautop( $new );
+		return $field['raw'] ? $new : wpautop( $new );
 	}
 
 	/**

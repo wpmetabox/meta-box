@@ -54,14 +54,15 @@ class RWMB_Single_Image_Field extends RWMB_Image_Advanced_Field {
 	public static function normalize( $field ) {
 		$field   = wp_parse_args( $field, array(
 			'max_file_uploads' => 1,
-			'max_status'       => false,
-			'clone'				=>false,
+			'max_status' => false,
+			'clone' => false,
 		) );
 		$field = parent::normalize( $field );
 		$field['multiple'] = false;
 		return $field;
 	}
-		/**
+
+	/**
 	 * Get meta values to save.
 	 *
 	 * @param mixed $new     The submitted meta value.
