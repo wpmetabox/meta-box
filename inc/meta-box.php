@@ -308,8 +308,7 @@ class RW_Meta_Box {
 	public function validate() {
 		$nonce = filter_input( INPUT_POST, "nonce_{$this->id}", FILTER_SANITIZE_STRING );
 
-		return
-			! $this->saved
+		return ! $this->saved
 			&& ( ! defined( 'DOING_AUTOSAVE' ) || $this->autosave )
 			&& wp_verify_nonce( $nonce, "rwmb-save-{$this->id}" );
 	}
