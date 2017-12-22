@@ -84,12 +84,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return mixed
 	 */
 	public static function meta( $post_id, $saved, $field ) {
-		if ( isset( $field['parent'] ) && $field['parent'] ) {
-			$post = get_post( $post_id );
-			return $post->post_parent;
-		}
-
-		return parent::meta( $post_id, $saved, $field );
+		return $field['parent'] ? wp_get_post_parent_id( $post_id ) : parent::meta( $post_id, $saved, $field );
 	}
 
 	/**
