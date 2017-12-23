@@ -32,7 +32,7 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 		$attributes = self::get_attributes( $field, $meta );
 		return sprintf(
 			'<input %s>
-			<a href="#" class="rwmb-file-input-select button-primary">%s</a>
+			<a href="#" class="rwmb-file-input-select button">%s</a>
 			<a href="#" class="rwmb-file-input-remove button %s">%s</a>',
 			self::render_attributes( $attributes ),
 			esc_html__( 'Select', 'meta-box' ),
