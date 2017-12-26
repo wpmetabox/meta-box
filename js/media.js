@@ -124,15 +124,14 @@ jQuery( function ( $ ) {
 				filedName;
 			this.$input = $( options.input );
 
-			if ( this.$input.attr('data-single-image') == 1  ) {
-				filedName = this.$input.attr( 'name' );
-			}else{
-				filedName = this.$input.attr( 'name' ) + '[]' ;
+			filedName = this.$input.attr( 'name' );
+			if ( 1 != this.$input.attr( 'data-single-image' ) ) {
+				filedName += '[]';
 			}
-			
+
 			this.controller = new Controller( _.extend(
 				{
-					fieldName: filedName ,
+					fieldName: filedName,
 					ids: this.$input.val().split( ',' )
 				},
 				this.$input.data( 'options' )
