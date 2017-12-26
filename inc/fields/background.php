@@ -43,15 +43,15 @@ class RWMB_Background_Field extends RWMB_Field {
 		$color  = RWMB_Color_Field::normalize( array(
 			'type'       => 'color',
 			'id'         => "{$field['id']}_color",
-			'field_name' => "{$field['id']}[color]",
+			'field_name' => "{$field['field_name']}[color]",
 		) );
 		$output .= RWMB_Color_Field::html( $meta['color'], $color );
 
 		// Image.
 		$image  = RWMB_File_Input_Field::normalize( array(
 			'type'        => 'file_input',
-			'id'          => "{$field['id']}_color",
-			'field_name'  => "{$field['id']}[image]",
+			'id'          => "{$field['id']}_image",
+			'field_name'  => "{$field['field_name']}[image]",
 			'placeholder' => __( 'Background Image', 'meta-box' ),
 		) );
 		$output .= '<div class="rwmb-background-image">';
@@ -65,7 +65,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$repeat = RWMB_Select_Field::normalize( array(
 			'type'        => 'select',
 			'id'          => "{$field['id']}_repeat",
-			'field_name'  => "{$field['id']}[repeat]",
+			'field_name'  => "{$field['field_name']}[repeat]",
 			'placeholder' => esc_html__( '-- Background Repeat --', 'meta-box' ),
 			'options'     => array(
 				'no-repeat' => esc_html__( 'No Repeat', 'meta-box' ),
@@ -81,7 +81,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$position = RWMB_Select_Field::normalize( array(
 			'type'        => 'select',
 			'id'          => "{$field['id']}_position",
-			'field_name'  => "{$field['id']}[position]",
+			'field_name'  => "{$field['field_name']}[position]",
 			'placeholder' => esc_html__( '-- Background Position --', 'meta-box' ),
 			'options'     => array(
 				'top_left'      => esc_html__( 'Top Left', 'meta-box' ),
@@ -101,7 +101,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$attachment = RWMB_Select_Field::normalize( array(
 			'type'        => 'select',
 			'id'          => "{$field['id']}_attachment",
-			'field_name'  => "{$field['id']}[attachment]",
+			'field_name'  => "{$field['field_name']}[attachment]",
 			'placeholder' => esc_html__( '-- Background Attachment --', 'meta-box' ),
 			'options'     => array(
 				'fixed'   => esc_html__( 'Fixed', 'meta-box' ),
@@ -115,7 +115,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$size   = RWMB_Select_Field::normalize( array(
 			'type'        => 'select',
 			'id'          => "{$field['id']}_size",
-			'field_name'  => "{$field['id']}[size]",
+			'field_name'  => "{$field['field_name']}[size]",
 			'placeholder' => esc_html__( '-- Background Size --', 'meta-box' ),
 			'options'     => array(
 				'inherit' => esc_html__( 'Inherit', 'meta-box' ),
@@ -124,7 +124,6 @@ class RWMB_Background_Field extends RWMB_Field {
 			),
 		) );
 		$output .= RWMB_Select_Field::html( $meta['size'], $size );
-
 		$output .= '</div><!-- .rwmb-background-row -->';
 
 		return $output;
