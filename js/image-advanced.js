@@ -30,11 +30,18 @@ jQuery( function ( $ ) {
 	 */
 	function initImageField() {
 		var view = new ImageField( { input: this } );
-		//Remove old then add new
-		$( this ).siblings( 'div.rwmb-media-view' ).remove();
 		$( this ).after( view.el );
 	}
 
-	$( 'input.rwmb-image_advanced' ).each( initImageField );
-	$( document ).on( 'clone', 'input.rwmb-image_advanced', initImageField )
+	/**
+	 * Remove views for uploaded images.
+	 */
+	function removeView() {
+		$( this ).find( '.rwmb-media-view' ).remove();
+	}
+
+	$( '.rwmb-image_advanced' ).each( initImageField );
+	$( document )
+		.on( 'clone_instance', '.rwmb-image_advanced-clone, .rwmb-single_image-clone', removeView )
+		.on( 'after_clone', '.rwmb-image_advanced', initImageField );
 } );

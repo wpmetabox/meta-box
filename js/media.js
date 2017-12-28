@@ -121,22 +121,20 @@ jQuery( function ( $ ) {
 		className: 'rwmb-media-view',
 		initialize: function ( options ) {
 			var that = this,
-				filedName;
+				fieldName = options.input.name;
 			this.$input = $( options.input );
 
-			filedName = this.$input.attr( 'name' );
 			if ( 1 != this.$input.attr( 'data-single-image' ) ) {
-				filedName += '[]';
+				fieldName += '[]';
 			}
 
 			this.controller = new Controller( _.extend(
 				{
-					fieldName: filedName,
+					fieldName: fieldName,
 					ids: this.$input.val().split( ',' )
 				},
 				this.$input.data( 'options' )
 			) );
-
 
 			// Create views
 			this.createList();
