@@ -16,12 +16,5 @@ before_script:
 script:
   - wpcs/vendor/bin/phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests,wpcs .
 
-# Automatic deploy to wordpress.org when a new tag is created
-deploy:
-  on:
-    branch: master
-    tags: true
-  provider: script
-  script: ./scripts/wporg-deploy.sh
 notifications:
   slack: elightup:dJunN1jYND443P6WizwZY8Kr

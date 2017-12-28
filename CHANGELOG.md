@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.13.0] - 2017-12-28
+### Added
+- Added settings `'style' => 'seamless'` to meta boxes which removes the wrapper for meta boxes, makes fields displayed seamlessly.
+- Added new field type `switch` with iOS / square styles. See [demo](https://github.com/wpmetabox/library/blob/master/fields/switch.php).
+- Added new field type `background` that lets you define all background attributes easier. See [demo](https://github.com/wpmetabox/library/blob/master/fields/background.php).
+- Added new field type `button_group` that lets you define group of buttons, similar to a toolbar. See [demo](https://github.com/wpmetabox/library/blob/master/fields/button-group.php).
+- Added new field type `single_image` that lets you select only a single image. See [demo](https://github.com/wpmetabox/library/blob/master/fields/single-image.php).
+- Added Italian translation. Props @flocca.
+
+### Fixed
+- Fixed post parent value is not selected after saving (`post` field).
+
 ## [4.12.6] - 2017-12-04
 ### Added
 - Added welcome page. Displayed only once when first install the plugin. Won't display if included via TGM or directly in themes/plugins.
@@ -731,7 +743,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.12.6...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.0...HEAD
+[4.13.0]: https://github.com/rilwis/meta-box/compare/4.12.6...4.13.0
 [4.12.6]: https://github.com/rilwis/meta-box/compare/4.12.5...4.12.6
 [4.12.5]: https://github.com/rilwis/meta-box/compare/4.12.4...4.12.5
 [4.12.4]: https://github.com/rilwis/meta-box/compare/4.12.3...4.12.4
