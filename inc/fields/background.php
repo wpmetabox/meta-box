@@ -128,4 +128,47 @@ class RWMB_Background_Field extends RWMB_Field {
 
 		return $output;
 	}
+
+	/**
+	 * Format value for the helper functions.
+	 *
+	 * @param array        $field   Field parameters.
+	 * @param string|array $value   The field meta value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null     $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return string
+	 */
+	public static function format_value( $field, $value, $args, $post_id ) {
+		if ( ! $field['clone'] ) {
+			return self::call( 'format_single_value', $field, $value, $args, $post_id );
+		}
+		$output = '<ul>';
+		foreach ( $value as $subvalue ) {
+			$output .= '<li>' . self::call( 'format_single_value', $field, $subvalue, $args, $post_id ) . '</li>';
+		}
+		$output .= '</ul>';
+		return $output;
+	}
+
+
+	/**
+	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
+	 *
+	 * @param array    $field   Field parameters.
+	 * @param string   $value   The value.
+	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value, $args, $post_id ) {
+		$output = '';
+		$value = array_filter( $value );
+		foreach ( $value as $key => $subvalue ) {
+			$subvalue  = 'image' === $key ? 'url( "' . esc_url( $subvalue ) . '")' : $subvalue;
+			$output   .= 'background-' . $key . ': ' . $subvalue . ';';
+		}
+		return $output;
+	}
 }
