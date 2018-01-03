@@ -37,11 +37,11 @@ jQuery( function ( $ ) {
 	 * Remove views for uploaded images.
 	 */
 	function removeView() {
-		$( this ).find( '.rwmb-media-view' ).remove();
+		$( this ).siblings( '.rwmb-media-view' ).remove();
 	}
 
 	$( '.rwmb-image_advanced' ).each( initImageField );
 	$( document )
-		.on( 'clone_instance', '.rwmb-image_advanced-clone, .rwmb-single_image-clone', removeView )
+		.on( 'clone', '.rwmb-image_advanced', removeView )
 		.on( 'after_clone', '.rwmb-image_advanced', initImageField );
 } );
