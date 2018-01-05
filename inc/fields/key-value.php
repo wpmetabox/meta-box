@@ -14,6 +14,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 *
 	 * @param mixed $meta  Meta value.
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
@@ -27,7 +28,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 		$val                       = isset( $meta[1] ) ? $meta[1] : '';
 		$attributes                = self::get_attributes( $field, $val );
 		$attributes['placeholder'] = $field['placeholder']['value'];
-		$html .= sprintf( '<input %s>', self::render_attributes( $attributes ) );
+		$html                      .= sprintf( '<input %s>', self::render_attributes( $attributes ) );
 
 		return $html;
 	}
@@ -37,6 +38,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 *
 	 * @param mixed $meta  Meta value.
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function begin_html( $meta, $field ) {
@@ -62,6 +64,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * Do not show field description.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function input_description( $field ) {
@@ -72,6 +75,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * Do not show field description.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function label_description( $field ) {
@@ -82,6 +86,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * Escape meta for field output.
 	 *
 	 * @param mixed $meta Meta value.
+	 *
 	 * @return mixed
 	 */
 	public static function esc_meta( $meta ) {
@@ -99,7 +104,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * @param int   $post_id The post ID.
 	 * @param array $field   The field parameters.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		foreach ( $new as &$arr ) {
@@ -115,6 +120,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return array
 	 */
 	public static function normalize( $field ) {
@@ -139,12 +145,7 @@ class RWMB_Key_Value_Field extends RWMB_Text_Field {
 	 *
 	 * @return string
 	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
-		$output = '<ul>';
-		foreach ( $value as $subvalue ) {
-			$output .= sprintf( '<li><label>%s:</label> %s</li>', $subvalue[0], $subvalue[1] );
-		}
-		$output .= '</ul>';
-		return $output;
+	public static function format_clone_value( $field, $value, $args, $post_id ) {
+		return sprintf( '<label>%s:</label> %s', $value[0], $value[1] );
 	}
 }

@@ -495,12 +495,34 @@ abstract class RWMB_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		if ( ! is_array( $value ) ) {
+		if ( ! $field['clone'] ) {
+			return self::call( 'format_clone_value', $field, $value, $args, $post_id );
+		}
+		$output = '<ul>';
+		foreach ( $value as $clone ) {
+			$output .= '<li>' . self::call( 'format_clone_value', $field, $clone, $args, $post_id ) . '</li>';
+		}
+		$output .= '</ul>';
+		return $output;
+	}
+
+	/**
+	 * Format value for a clone.
+	 *
+	 * @param array        $field   Field parameters.
+	 * @param string|array $value   The field meta value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null     $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return string
+	 */
+	public static function format_clone_value( $field, $value, $args, $post_id ) {
+		if ( ! $field['multiple'] ) {
 			return self::call( 'format_single_value', $field, $value, $args, $post_id );
 		}
 		$output = '<ul>';
-		foreach ( $value as $subvalue ) {
-			$output .= '<li>' . self::call( 'format_value', $field, $subvalue, $args, $post_id ) . '</li>';
+		foreach ( $value as $single ) {
+			$output .= '<li>' . self::call( 'format_single_value', $field, $single, $args, $post_id ) . '</li>';
 		}
 		$output .= '</ul>';
 		return $output;

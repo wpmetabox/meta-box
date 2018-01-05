@@ -36,6 +36,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 * Do not show field description.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function input_description( $field ) {
@@ -46,6 +47,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 * Do not show field description.
 	 *
 	 * @param array $field Field parameters.
+	 *
 	 * @return string
 	 */
 	public static function label_description( $field ) {
@@ -82,13 +84,13 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 		foreach ( $field['options'] as $label ) {
 			$output .= "<th>$label</th>";
 		}
-		$output .= '<tr>';
+		$output .= '</tr></thead></tbody>';
 
 		if ( ! $field['clone'] ) {
-			$output .= self::format_single_value( $field, $value );
+			$output .= self::format_single_value( $field, $value, $args, $post_id );
 		} else {
 			foreach ( $value as $subvalue ) {
-				$output .= self::format_single_value( $field, $subvalue );
+				$output .= self::format_single_value( $field, $subvalue, $args, $post_id );
 			}
 		}
 		$output .= '</tbody></table>';
@@ -99,7 +101,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
+	 * @param array    $value   The value.
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 *

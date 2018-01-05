@@ -84,15 +84,15 @@ class RWMB_Background_Field extends RWMB_Field {
 			'field_name'  => "{$field['field_name']}[position]",
 			'placeholder' => esc_html__( '-- Background Position --', 'meta-box' ),
 			'options'     => array(
-				'top_left'      => esc_html__( 'Top Left', 'meta-box' ),
-				'top_center'    => esc_html__( 'Top Center', 'meta-box' ),
-				'top_right'     => esc_html__( 'Top Right', 'meta-box' ),
-				'center_left'   => esc_html__( 'Center Left', 'meta-box' ),
-				'center_center' => esc_html__( 'Center Center', 'meta-box' ),
-				'center_right'  => esc_html__( 'Center Right', 'meta-box' ),
-				'bottom_left'   => esc_html__( 'Bottom Left', 'meta-box' ),
-				'bottom_center' => esc_html__( 'Bottom Center', 'meta-box' ),
-				'bottom_right'  => esc_html__( 'Bottom Right', 'meta-box' ),
+				'top left'      => esc_html__( 'Top Left', 'meta-box' ),
+				'top center'    => esc_html__( 'Top Center', 'meta-box' ),
+				'top right'     => esc_html__( 'Top Right', 'meta-box' ),
+				'center left'   => esc_html__( 'Center Left', 'meta-box' ),
+				'center center' => esc_html__( 'Center Center', 'meta-box' ),
+				'center right'  => esc_html__( 'Center Right', 'meta-box' ),
+				'bottom left'   => esc_html__( 'Bottom Left', 'meta-box' ),
+				'bottom center' => esc_html__( 'Bottom Center', 'meta-box' ),
+				'bottom right'  => esc_html__( 'Bottom Right', 'meta-box' ),
 			),
 		) );
 		$output   .= RWMB_Select_Field::html( $meta['position'], $position );
@@ -130,33 +130,10 @@ class RWMB_Background_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Format value for the helper functions.
-	 *
-	 * @param array        $field   Field parameters.
-	 * @param string|array $value   The field meta value.
-	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null     $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string
-	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
-		if ( ! $field['clone'] ) {
-			return self::call( 'format_single_value', $field, $value, $args, $post_id );
-		}
-		$output = '<ul>';
-		foreach ( $value as $subvalue ) {
-			$output .= '<li>' . self::call( 'format_single_value', $field, $subvalue, $args, $post_id ) . '</li>';
-		}
-		$output .= '</ul>';
-		return $output;
-	}
-
-
-	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
+	 * @param array    $value   The value.
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 *
@@ -164,9 +141,9 @@ class RWMB_Background_Field extends RWMB_Field {
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		$output = '';
-		$value = array_filter( $value );
+		$value  = array_filter( $value );
 		foreach ( $value as $key => $subvalue ) {
-			$subvalue  = 'image' === $key ? 'url( "' . esc_url( $subvalue ) . '")' : $subvalue;
+			$subvalue = 'image' === $key ? 'url( "' . esc_url( $subvalue ) . '")' : $subvalue;
 			$output   .= 'background-' . $key . ': ' . $subvalue . ';';
 		}
 		return $output;

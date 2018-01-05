@@ -64,20 +64,6 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	}
 
 	/**
-	 * Format value for the helper functions.
-	 *
-	 * @param array        $field   Field parameters.
-	 * @param string|array $value   The field meta value.
-	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null     $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string
-	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
-		return RWMB_Image_Field::format_value( $field, $value, $args, $post_id );
-	}
-
-	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.

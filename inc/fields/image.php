@@ -24,10 +24,11 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @param int   $file  Attachment (file) ID.
 	 * @param int   $index File index.
 	 * @param array $field Field data.
+	 *
 	 * @return string
 	 */
 	protected static function file_html( $file, $index, $field ) {
-		$attributes  = self::get_attributes( $field, $file );
+		$attributes = self::get_attributes( $field, $file );
 
 		return sprintf(
 			'<li class="rwmb-image-item attachment thumbnail">
@@ -63,17 +64,12 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		$output = '<ul>';
-		foreach ( $value as $file ) {
-			$img = sprintf( '<img src="%s" alt="%s">', esc_url( $file['url'] ), esc_attr( $file['alt'] ) );
+		$output = sprintf( '<img src="%s" alt="%s">', esc_url( $value['url'] ), esc_attr( $value['alt'] ) );
 
-			// Link thumbnail to full size image?
-			if ( isset( $args['link'] ) && $args['link'] ) {
-				$img = sprintf( '<a href="%s" title="%s">%s</a>', esc_url( $file['full_url'] ), esc_attr( $file['title'] ), $img );
-			}
-			$output .= "<li>$img</li>";
+		// Link thumbnail to full size image?
+		if ( ! empty( $args['link'] ) ) {
+			$output = sprintf( '<a href="%s" title="%s">%s</a>', esc_url( $value['full_url'] ), esc_attr( $value['title'] ), $output );
 		}
-		$output .= '</ul>';
 		return $output;
 	}
 

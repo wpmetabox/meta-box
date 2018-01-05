@@ -61,24 +61,4 @@ class RWMB_Single_Image_Field extends RWMB_Image_Advanced_Field {
 		$return = RWMB_Image_Field::file_info( $value, $args );
 		return $return;
 	}
-
-	/**
-	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
-	 *
-	 * @param array    $field   Field parameters.
-	 * @param array    $value   The field value.
-	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string
-	 */
-	public static function format_single_value( $field, $value, $args, $post_id ) {
-		$img = sprintf( '<img src="%s" alt="%s">', esc_url( $value['url'] ), esc_attr( $value['alt'] ) );
-
-		// Link thumbnail to full size image?
-		if ( isset( $args['link'] ) && $args['link'] ) {
-			$img = sprintf( '<a href="%s" title="%s">%s</a>', esc_url( $value['full_url'] ), esc_attr( $value['title'] ), $img );
-		}
-		return $img;
-	}
 }

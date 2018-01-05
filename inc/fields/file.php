@@ -338,28 +338,6 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Format value for the helper functions.
-	 *
-	 * @param array        $field   Field parameters.
-	 * @param string|array $value   The field meta value.
-	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null     $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string
-	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
-		if ( ! $field['clone'] ) {
-			return self::call( 'format_single_value', $field, $value, $args, $post_id );
-		}
-		$output = '<ul>';
-		foreach ( $value as $subvalue ) {
-			$output .= '<li>' . self::call( 'format_single_value', $field, $subvalue, $args, $post_id ) . '</li>';
-		}
-		$output .= '</ul>';
-		return $output;
-	}
-
-	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.
@@ -370,11 +348,6 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		$output = '<ul>';
-		foreach ( $value as $file ) {
-			$output .= sprintf( '<li><a href="%s" target="_blank">%s</a></li>', $file['url'], $file['title'] );
-		}
-		$output .= '</ul>';
-		return $output;
+		return sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( $value['url'] ), esc_html( $value['title'] ) );
 	}
 }
