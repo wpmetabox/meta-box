@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.13.1] - 2018-01-08
+### Added
+- Added helper function `render_map` for map field, which can be used with groups to show Google maps.
+### Fixed
+- Fixed duplication of "Add media" button when cloning group contains `image_advanced` field.
+
 ## [4.13.0] - 2017-12-28
 ### Added
 - Added settings `'style' => 'seamless'` to meta boxes which removes the wrapper for meta boxes, makes fields displayed seamlessly.
@@ -743,7 +749,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.0...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.1...HEAD
+[4.13.1]: https://github.com/rilwis/meta-box/compare/4.13.0...4.13.1
 [4.13.0]: https://github.com/rilwis/meta-box/compare/4.12.6...4.13.0
 [4.12.6]: https://github.com/rilwis/meta-box/compare/4.12.5...4.12.6
 [4.12.5]: https://github.com/rilwis/meta-box/compare/4.12.4...4.12.5
