@@ -21,7 +21,9 @@ class RWMB_Media_Modal {
 	 * Initialize.
 	 */
 	public function init() {
-		add_action( 'init', array( $this, 'get_fields' ) );
+		// Meta boxes are registered at priority 20, so we use 30 to capture them all.
+		add_action( 'init', array( $this, 'get_fields' ), 30 );
+
 		add_filter( 'attachment_fields_to_edit', array( $this, 'add_fields' ), 11, 2 );
 		add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
 
