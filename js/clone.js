@@ -181,9 +181,9 @@ jQuery( function ( $ ) {
 	 * @param $container .rwmb-input container
 	 */
 	function toggleAddButton( $container ) {
-		var $button = $container.find( '.add-clone' ),
+		var $button = $container.children( '.add-clone' ),
 			maxClone = parseInt( $container.data( 'max-clone' ) ),
-			numClone = $container.find( '.rwmb-clone' ).length;
+			numClone = $container.children( '.rwmb-clone' ).length;
 
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
 	}
