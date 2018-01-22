@@ -188,6 +188,29 @@ jQuery( function ( $ ) {
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
 	}
 
+	/**
+	 * Initialize clone sorting.
+	 */
+	function initSortable() {
+		$( '.rwmb-input' ).each( function () {
+			var $container = $( this );
+
+			if ( undefined !== $container.sortable( 'instance' ) ) {
+				return;
+			}
+
+			$container.sortable( {
+				handle: '.rwmb-clone-icon',
+				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
+				items: '.rwmb-clone',
+				start: function ( event, ui ) {
+					// Make the placeholder has the same height as dragged item
+					ui.placeholder.height( ui.item.outerHeight() );
+				}
+			} );
+		} );
+	}
+
 	$( document )
 		// Add clones
 		.on( 'click', '.add-clone', function ( e ) {
@@ -198,6 +221,7 @@ jQuery( function ( $ ) {
 
 			toggleRemoveButtons( $container );
 			toggleAddButton( $container );
+			initSortable();
 		} )
 		// Remove clones
 		.on( 'click', '.remove-clone', function ( e ) {
