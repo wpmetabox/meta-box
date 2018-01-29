@@ -17,7 +17,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	 */
 	function rwmb_meta( $key, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_field_data( $key, $args, $post_id );
+		$field = rwmb_get_field_settings( $key, $args, $post_id );
 
 		/*
 		 * If field is not found, which can caused by registering meta boxes for the backend only or conditional registration.
@@ -33,9 +33,9 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	}
 }
 
-if ( ! function_exists( 'rwmb_get_field_data' ) ) {
+if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	/**
-	 * Get field data.
+	 * Get field settings.
 	 *
 	 * @param string   $key       Meta key. Required.
 	 * @param array    $args      Array of arguments. Optional.
@@ -43,7 +43,7 @@ if ( ! function_exists( 'rwmb_get_field_data' ) ) {
 	 *
 	 * @return array
 	 */
-	function rwmb_get_field_data( $key, $args = array(), $object_id = null ) {
+	function rwmb_get_field_settings( $key, $args = array(), $object_id = null ) {
 		$args = wp_parse_args( $args, array(
 			'object_type' => 'post',
 		) );
@@ -115,7 +115,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 */
 	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_field_data( $field_id, $args, $post_id );
+		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
 		// Get field value.
 		$value = $field ? RWMB_Field::call( 'get_value', $field, $args, $post_id ) : false;
@@ -148,7 +148,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 */
 	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
-		$field = rwmb_get_field_data( $field_id, $args, $post_id );
+		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
 		if ( ! $field ) {
 			return '';
