@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.13.2] - 2018-01-31
+### Fixed
+- Fixed meta box not working in media modal.
+- Fixed "add new" button not appearing for nested groups with "max_clone" (for Meta Box Group extension).
+- Fixed sortable nested group being able to be moved outside of its parents (for Meta Box Group extension).
+- Fixed video field: broken CSS in admin and helper function not working.
+### Changed
+- Changed function name from `rwmb_get_field_data` to `rwmb_get_field_settings`.
+
 ## [4.13.1] - 2018-01-08
 ### Added
 - Added helper function `render_map` for map field, which can be used with groups to show Google maps.

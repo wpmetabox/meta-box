@@ -73,6 +73,7 @@ See more documentation [here](https://docs.metabox.io).
 #### Free Extensions
 
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
+- [MB Relationships](https://wordpress.org/plugins/mb-relationships/): Create many-to-many relationships from posts to posts.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
 - [MB Rest API](https://metabox.io/plugins/mb-rest-api/): Pull all meta value from posts, terms into the WP REST API responses.
 - [MB Comment Meta](https://wordpress.org/plugins/mb-comment-meta/): Add custom fields to comments in WordPress. Support all field types and options.

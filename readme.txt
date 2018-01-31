@@ -3,8 +3,8 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: http://paypal.me/anhtnt
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
-Tested up to: 4.9.1
-Stable tag: 4.13.1
+Tested up to: 4.9.2
+Stable tag: 4.13.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -67,6 +67,7 @@ See more documentation [here](https://docs.metabox.io).
 #### Free Extensions
 
 - [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies easily in WordPress with an easy-to-use interface.
+- [MB Relationships](https://wordpress.org/plugins/mb-relationships/): Create many-to-many relationships from posts to posts.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add content of custom fields to Yoast SEO Content Analysis to have better/correct SEO score.
 - [MB Rest API](https://metabox.io/plugins/mb-rest-api/): Pull all meta value from posts, terms into the WP REST API responses.
 - [MB Comment Meta](https://wordpress.org/plugins/mb-comment-meta/): Add custom fields to comments in WordPress. Support all field types and options.
