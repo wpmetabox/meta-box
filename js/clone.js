@@ -202,7 +202,7 @@ jQuery( function ( $ ) {
 			$container.sortable( {
 				handle: '.rwmb-clone-icon',
 				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
-				items: '.rwmb-clone',
+				items: '> .rwmb-clone',
 				start: function ( event, ui ) {
 					// Make the placeholder has the same height as dragged item
 					ui.placeholder.height( ui.item.outerHeight() );
@@ -250,7 +250,7 @@ jQuery( function ( $ ) {
 			.sortable( {
 				handle: '.rwmb-clone-icon',
 				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
-				items: '.rwmb-clone',
+				items: '> .rwmb-clone',
 				start: function ( event, ui ) {
 					// Make the placeholder has the same height as dragged item
 					ui.placeholder.height( ui.item.outerHeight() );
