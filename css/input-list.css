@@ -1,4 +1,5 @@
 .rwmb-input-list {
+	list-style: none;
 	margin: 0;
 	line-height: 1.8;
 }
