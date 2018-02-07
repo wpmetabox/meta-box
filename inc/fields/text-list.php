@@ -51,7 +51,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 		foreach ( $field['options'] as $label ) {
 			$output .= "<th>$label</th>";
 		}
-		$output .= '<tr>';
+		$output .= '</tr></thead><tbody>';
 
 		if ( ! $field['clone'] ) {
 			$output .= self::format_single_value( $field, $value, $args, $post_id );
