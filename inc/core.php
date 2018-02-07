@@ -109,7 +109,7 @@ class RWMB_Core {
 	 *
 	 * @param WP_Post $post The current post object.
 	 */
-	public function add_context( WP_Post $post ) {
+	public function add_context( $post ) {
 		$hook    = current_filter();
 		$context = 'edit_form_top' === $hook ? 'form_top' : substr( $hook, 10 );
 		do_meta_boxes( null, $context, $post );
