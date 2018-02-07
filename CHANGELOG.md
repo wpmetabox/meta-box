@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.13.3] - 2018-02-07
+### Fixed
+- Fixed drag and drop parent groups into child groups.
+- Removed type hint for adding new contexts. Caused fatal error for Tribulant Newsletter plugin.
+
 ## [4.13.2] - 2018-01-31
 ### Fixed
 - Fixed meta box not working in media modal.
@@ -758,7 +763,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.1...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.3...HEAD
+[4.13.3]: https://github.com/rilwis/meta-box/compare/4.13.2...4.13.3
+[4.13.2]: https://github.com/rilwis/meta-box/compare/4.13.1...4.13.2
 [4.13.1]: https://github.com/rilwis/meta-box/compare/4.13.0...4.13.1
 [4.13.0]: https://github.com/rilwis/meta-box/compare/4.12.6...4.13.0
 [4.12.6]: https://github.com/rilwis/meta-box/compare/4.12.5...4.12.6
