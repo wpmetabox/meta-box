@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.13.4] - 2018-02-28
+### Fixed
+- Fixed output of text-list field.
+- Fixed cloning radio field clears the checked status of existing field.
+
 ## [4.13.3] - 2018-02-07
 ### Fixed
 - Fixed drag and drop parent groups into child groups.
@@ -763,7 +768,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.3...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.4...HEAD
+[4.13.4]: https://github.com/rilwis/meta-box/compare/4.13.3...4.13.4
 [4.13.3]: https://github.com/rilwis/meta-box/compare/4.13.2...4.13.3
 [4.13.2]: https://github.com/rilwis/meta-box/compare/4.13.1...4.13.2
 [4.13.1]: https://github.com/rilwis/meta-box/compare/4.13.0...4.13.1
