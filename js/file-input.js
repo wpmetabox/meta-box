@@ -1,9 +1,10 @@
 jQuery( function ( $ ) {
 	'use strict';
 
-	var frame;
+	var frame,
+		$doc = $( document );
 
-	$( 'body' ).on( 'click', '.rwmb-file-input-select', function ( e ) {
+	$doc.on( 'click', '.rwmb-file-input-select', function ( e ) {
 		e.preventDefault();
 		var $el = $( this );
 
@@ -30,8 +31,13 @@ jQuery( function ( $ ) {
 	} );
 
 	// Clear selected images
-	$( 'body' ).on( 'click', '.rwmb-file-input-remove', function ( e ) {
+	$doc.on( 'click', '.rwmb-file-input-remove', function ( e ) {
 		e.preventDefault();
 		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' );
+	} );
+
+	// Hide the Remove button when cloning
+	$doc.on( 'clone', '.rwmb-file_input', function () {
+		$( this ).siblings( '.rwmb-file-input-remove' ).addClass( 'hidden' );
 	} );
 } );
