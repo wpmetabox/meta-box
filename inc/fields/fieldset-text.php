@@ -10,6 +10,13 @@
  */
 class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	/**
+	 * Enqueue field scripts and styles.
+	 */
+	public static function admin_enqueue_scripts() {
+		wp_enqueue_style( 'rwmb-fieldset-text', RWMB_CSS_URL . 'fieldset-text.css', '', RWMB_VER );
+	}
+
+	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
@@ -19,7 +26,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$html = array();
-		$tpl  = '<label>%s %s</label>';
+		$tpl  = '<p><label>%s</label> %s</p>';
 
 		foreach ( $field['options'] as $key => $label ) {
 			$value                       = isset( $meta[ $key ] ) ? $meta[ $key ] : '';
