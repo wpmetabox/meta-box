@@ -26,7 +26,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$html = array();
-		$tpl  = '<label class="rwmb-image-select"><img src="%s"><input type="%s" class="rwmb-image_select hidden" name="%s" value="%s"%s></label>';
+		$tpl  = '<label class="rwmb-image-select"><img src="%s"><input type="%s" class="rwmb-image_select" name="%s" value="%s"%s></label>';
 
 		$meta = (array) $meta;
 		foreach ( $field['options'] as $value => $image ) {
