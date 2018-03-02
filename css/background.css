@@ -13,4 +13,5 @@
 }
 .rwmb-background-wrapper .rwmb-select {
 	width: 49%;
+	max-width: 230px;
 }
