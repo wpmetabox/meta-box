@@ -47,10 +47,27 @@ class RWMB_Image_Field extends RWMB_File_Field {
 				</div>
 			</li>',
 			$attributes['name'], $index, $file,
-			wp_get_attachment_image( $file, 'thumbnail' ),
+			wp_get_attachment_image( $file, $field['image_size'] ),
 			get_edit_post_link( $file ),
 			$file
 		);
+	}
+
+
+	/**
+	 * Normalize field settings.
+	 *
+	 * @param array $field Field settings.
+	 *
+	 * @return array
+	 */
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
+		$field = wp_parse_args( $field, array(
+			'image_size' => 'thumbnail',
+		) );
+
+		return $field;
 	}
 
 	/**
