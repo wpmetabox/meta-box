@@ -49,4 +49,15 @@ class RWMB_Sanitizer {
 	public function checkbox( $value ) {
 		return (int) ! empty( $value );
 	}
+
+	/**
+	 * Set the value of switch to 1 or 0
+	 *
+	 * @param string $value Checkbox value.
+	 *
+	 * @return int
+	 */
+	public function switch( $value ) {
+		return (int) ! empty( $value );
+	}
 }
