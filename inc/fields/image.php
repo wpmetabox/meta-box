@@ -31,7 +31,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		$attributes = self::get_attributes( $field, $file );
 
 		return sprintf(
-			'<li class="rwmb-image-item attachment thumbnail">
+			'<li class="rwmb-image-item attachment %s">
 				<input type="hidden" name="%s[%s]" value="%s">
 				<div class="attachment-preview">
 					<div class="thumbnail">
@@ -46,6 +46,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 					<a href="#" class="rwmb-image-delete rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span></a>
 				</div>
 			</li>',
+			esc_attr( $field['image_size'] ),
 			$attributes['name'], $index, $file,
 			wp_get_attachment_image( $file, $field['image_size'] ),
 			get_edit_post_link( $file ),
