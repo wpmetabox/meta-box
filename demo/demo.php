@@ -439,16 +439,6 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				// Display the "Uploaded 1/2 files" status
 				'max_status'       => true,
 			),
-			// THICKBOX IMAGE UPLOAD (WP 3.3+)
-			array(
-				'name'         => esc_html__( 'Thickbox Image Upload', 'your-prefix' ),
-				'id'           => "{$prefix}thickbox",
-				'type'         => 'thickbox_image',
-
-				// Delete image from Media Library when remove it from post meta?
-				// Note: it might affect other posts if you use same image for multiple posts
-				'force_delete' => false,
-			),
 			// IMAGE
 			array(
 				'name'             => esc_html__( 'Image Upload', 'your-prefix' ),

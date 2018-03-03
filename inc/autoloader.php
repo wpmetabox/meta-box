@@ -144,7 +144,6 @@ class RWMB_Autoloader {
 			'fields/file',
 			'fields/image',
 			'fields/image-select',
-			'fields/thickbox-image',
 
 			'fields/media',
 			'fields/file-upload',

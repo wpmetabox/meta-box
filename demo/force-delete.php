@@ -19,13 +19,6 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				'id'   => "{$prefix}image",
 				'type' => 'image',
 			),
-			// THICKBOX IMAGE UPLOAD (WP 3.3+)
-			array(
-				'name' => __( 'Thickbox Image Upload', 'your-prefix' ),
-				'id'   => "{$prefix}thickbox",
-				'type' => 'thickbox_image',
-				'force_delete' => true,
-			),
 			// PLUPLOAD IMAGE UPLOAD (WP 3.3+)
 			array(
 				'name'             => __( 'Plupload Image Upload', 'your-prefix' ),

@@ -77,7 +77,6 @@ class RWMB_Test_Helper {
 			'file',
 			'file_advanced',
 			'image',
-			'thickbox',
 			'plupload',
 			'imgadv',
 		];
@@ -178,7 +177,6 @@ class RWMB_Test_Helper {
 				$meta = '<pre>' . print_r( $meta, true ) . '</pre>';
 				break;
 			case $this->prefix . 'image':
-			case $this->prefix . 'thickbox':
 			case $this->prefix . 'plupload':
 			case $this->prefix . 'imgadv':
 				$meta = rwmb_meta( $key, 'type=image' );
