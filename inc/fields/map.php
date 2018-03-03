@@ -21,7 +21,13 @@ class RWMB_Map_Field extends RWMB_Field {
 		 */
 		$args            = func_get_args();
 		$field           = $args[0];
-		$google_maps_url = add_query_arg( 'key', $field['api_key'], 'https://maps.google.com/maps/api/js' );
+		$google_maps_url = add_query_arg(
+			array(
+				'key'      => $field['api_key'],
+				'language' => $field['language'],
+			),
+			'https://maps.google.com/maps/api/js'
+		);
 
 		/**
 		 * Allows developers load more libraries via a filter.
@@ -85,6 +91,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		$field = wp_parse_args( $field, array(
 			'std'           => '',
 			'address_field' => '',
+			'language'      => '',
 			'region'        => '',
 
 			// Default API key, required by Google Maps since June 2016.
