@@ -2,10 +2,11 @@
 	margin: 0;
 	line-height: 1.8;
 }
-li .rwmb-input-list {
+.rwmb-input-list .rwmb-input-list {
 	margin-left: 20px;
 }
 .rwmb-input-list li {
+	list-style: none;
 	margin-bottom: 0;
 }
 .rwmb-input-list.inline {

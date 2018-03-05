@@ -1,17 +1,17 @@
 .rwmb-background-row {
-    margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 .rwmb-background-wrapper .wp-picker-container {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
 }
 .rwmb-background-wrapper .wp-picker-holder {
-    position: absolute;
-    z-index: 9;
-    min-width: 255px;
+	position: absolute;
+	z-index: 9;
+	min-width: 255px;
 }
-.rwmb-background-image {
-    display: inline-block;
-    vertical-align: top;
+.rwmb-background-wrapper .rwmb-select {
+	width: 49%;
+	max-width: 230px;
 }

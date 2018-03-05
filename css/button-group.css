@@ -1,67 +1,68 @@
 .rwmb-button-input-list li {
-    margin-bottom: 0;
+	margin-bottom: 0;
+	list-style: none;
 }
 .rwmb-button-input-list .rwmb-button_group {
-    display: none;
+	display: none;
 }
 .rwmb-button-input-list li label {
-    display: inline-block;
-    border: #ccc solid 1px;
-    position: relative;
-    z-index: 1;
-    padding: 5px 10px;
-    background: #fff;
+	display: inline-block;
+	border: #ccc solid 1px;
+	position: relative;
+	z-index: 1;
+	padding: 5px 10px;
+	background: #fff;
 }
 .rwmb-button-input-list li label.selected {
-    border-color: #0073aa;
-    background: #0073aa;
-    color: #fff;
-    z-index: 2;
+	border-color: #0073aa;
+	background: #0073aa;
+	color: #fff;
+	z-index: 2;
 }
-/* layout not inline
+/* Layout not inline
 -------------------------------------------------*/
 .rwmb-button-input-list:not(.inline) li label {
-     border-top-width: 0px;
+	 border-top-width: 0;
 }
 .rwmb-button-input-list:not(.inline) li:first-child label {
-    border-top-width: 1px;
+	border-top-width: 1px;
 }
 .rwmb-button-input-list:not(.inline) li label.selected {
-    border-bottom: 1px solid #fff;
+	border-bottom: 1px solid #fff;
 }
 .rwmb-button-input-list:not(.inline) li:last-child label.selected {
-    border-bottom-color: #0073aa;
+	border-bottom-color: #0073aa;
 }
 .rwmb-button-input-list:not(.inline) > li:first-child:not(:last-child) label {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
 .rwmb-button-input-list:not(.inline)  > li:last-child:not(:first-child) label {
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
 }
 /*  Layout inline
 ---------------------------------------------*/
 .rwmb-button-input-list.inline li {
-    display: inline-block;
+	display: inline-block;
 }
 .rwmb-button-input-list.inline li label {
-    border-left-width: 0;
+	border-left-width: 0;
 }
 .rwmb-button-input-list.inline li:first-child label {
-    border-left-width: 1px;
+	border-left-width: 1px;
 }
 .rwmb-button-input-list.inline li label.selected {
-    border-right-color: rgb(255, 255, 255);
+	border-right-color: rgb(255, 255, 255);
 }
 .rwmb-button-input-list.inline li:last-child label.selected {
-    border-right-color: #0073aa;
+	border-right-color: #0073aa;
 }
 .rwmb-button-input-list.inline > li:first-child:not(:last-child) label {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
 }
 .rwmb-button-input-list.inline > li:last-child:not(:first-child) label {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
 }

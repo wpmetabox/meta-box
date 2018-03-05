@@ -1,5 +1,8 @@
-.rwmb-range {
+.rwmb-range.rwmb-range,
+.rwmb-range.rwmb-range:hover {
 	vertical-align: middle;
+	padding: 0;
+	border: none;
 }
 .rwmb-output {
 	margin-left: 8px;

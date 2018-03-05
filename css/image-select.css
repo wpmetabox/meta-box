@@ -16,6 +16,6 @@
 .rwmb-image-select.rwmb-active {
 	border-color: #0074a2;
 }
-.rwmb-image-select input {
+.rwmb-image_select.rwmb-image_select {
 	display: none;
 }

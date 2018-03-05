@@ -6,11 +6,12 @@
 	background-color: #ccc;
 	padding: 2px;
 	border-radius: 3px;
-	min-width: 36px;
-	min-height: 18px;
+	min-width: 40px;
+	height: 22px;
+	box-sizing: border-box;
 }
 
-input.rwmb-switch {
+.rwmb-switch.rwmb-switch {
 	display: none;
 }
 

@@ -47,6 +47,9 @@ class RWMB_Background_Field extends RWMB_Field {
 		) );
 		$output .= RWMB_Color_Field::html( $meta['color'], $color );
 
+		$output .= '</div><!-- .rwmb-background-row -->';
+		$output .= '<div class="rwmb-background-row">';
+
 		// Image.
 		$image  = RWMB_File_Input_Field::normalize( array(
 			'type'        => 'file_input',
@@ -54,9 +57,7 @@ class RWMB_Background_Field extends RWMB_Field {
 			'field_name'  => "{$field['field_name']}[image]",
 			'placeholder' => __( 'Background Image', 'meta-box' ),
 		) );
-		$output .= '<div class="rwmb-background-image">';
 		$output .= RWMB_File_Input_Field::html( $meta['image'], $image );
-		$output .= '</div>';
 
 		$output .= '</div><!-- .rwmb-background-row -->';
 		$output .= '<div class="rwmb-background-row">';
