@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.14.0] - 2018-03-05
+### Added
+- Added compatibility for Gutenberg. The plugin is now fully compatible with Gutenberg, except the field types `file`, `image` and `wysiwyg`. These are Gutenberg bugs and hopefully they're fixed soon. See [our blog](https://metabox.io/blog/) for more details.
+- Added support for `image_size` for `image` field that sets image size in the backend.
+- Added support for `language` in `map` field.
+### Fixed
+- Fixed file input field doesn't hide the Remove button when cloning.
+- Fixed cloning not clearing "selected" class for buttons in the button groups.
+- Fixed step validation for `number` field.
+### Removed
+- Remove `thickbox_image` field. WordPress doesn't support it anymore. Use `image_advanced` instead.
+
 ## [4.13.4] - 2018-02-28
 ### Fixed
 - Fixed output of text-list field.
@@ -768,7 +780,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.4...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.0...HEAD
+[4.14.0]: https://github.com/rilwis/meta-box/compare/4.13.4...4.14.0
 [4.13.4]: https://github.com/rilwis/meta-box/compare/4.13.3...4.13.4
 [4.13.3]: https://github.com/rilwis/meta-box/compare/4.13.2...4.13.3
 [4.13.2]: https://github.com/rilwis/meta-box/compare/4.13.1...4.13.2
