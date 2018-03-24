@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.14.1] - 2018-03-24
+### Added
+- Added `after_save_field` action. 
+### Fixed
+- Fixed field taxonomy not saving for multiple taxonomies.
+- Fixed cloning taxonomy_advanced field
+
 ## [4.14.0] - 2018-03-05
 ### Added
 - Added compatibility for Gutenberg. The plugin is now fully compatible with Gutenberg, except the field types `file`, `image` and `wysiwyg`. These are Gutenberg bugs and hopefully they're fixed soon. See [our blog](https://metabox.io/blog/) for more details.
@@ -780,7 +787,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.0...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.1...HEAD
+[4.14.1]: https://github.com/rilwis/meta-box/compare/4.14.0...4.14.1
 [4.14.0]: https://github.com/rilwis/meta-box/compare/4.13.4...4.14.0
 [4.13.4]: https://github.com/rilwis/meta-box/compare/4.13.3...4.13.4
 [4.13.3]: https://github.com/rilwis/meta-box/compare/4.13.2...4.13.3
