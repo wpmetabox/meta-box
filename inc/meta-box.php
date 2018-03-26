@@ -432,12 +432,10 @@ class RW_Meta_Box {
 	/**
 	 * Set the object ID.
 	 *
-	 * @param null|int $id Object ID. null means the current object ID.
+	 * @param mixed $id Object ID.
 	 */
 	public function set_object_id( $id = null ) {
-		if ( null === $this->object_id ) {
-			$this->object_id = $id;
-		}
+		$this->object_id = $id;
 	}
 
 	/**
