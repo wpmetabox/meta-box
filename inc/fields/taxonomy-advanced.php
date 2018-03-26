@@ -118,6 +118,9 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @return array
 	 */
 	public static function terms_info( $field, $term_ids, $args ) {
+		if ( empty( $term_ids ) ) {
+			return array();
+		}
 		$args = wp_parse_args( array(
 			'include'    => $term_ids,
 			'hide_empty' => false,
