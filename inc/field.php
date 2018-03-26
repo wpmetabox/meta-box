@@ -286,6 +286,9 @@ abstract class RWMB_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) ) {
+			return;
+		}
 		$name = $field['id'];
 		$storage = $field['storage'];
 
