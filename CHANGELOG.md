@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.14.2] - 2018-03-27
+### Fixed
+- Fixed helper function for `taxonomy_advanced` returns incorrect value when no terms are selected. Fixed #1224
+- Do not save fields without id. Fix for custom table extension.
+
 ## [4.14.1] - 2018-03-24
 ### Added
 - Added `after_save_field` action. 
@@ -788,6 +793,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - procedural code
 
 [Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.1...HEAD
+[4.14.2]: https://github.com/rilwis/meta-box/compare/4.14.1...4.14.2
 [4.14.1]: https://github.com/rilwis/meta-box/compare/4.14.0...4.14.1
 [4.14.0]: https://github.com/rilwis/meta-box/compare/4.13.4...4.14.0
 [4.13.4]: https://github.com/rilwis/meta-box/compare/4.13.3...4.13.4
