@@ -28,7 +28,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Set default field args.
-		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'taxonomy' => 'category',
 		) );
@@ -36,25 +35,29 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		// Force taxonomy to be an array.
 		$field['taxonomy'] = (array) $field['taxonomy'];
 
-		// Set default query args.
-		$field['query_args'] = wp_parse_args( $field['query_args'], array(
-			'hide_empty' => false,
-		) );
-
 		/*
 		 * Set default placeholder:
 		 * - If multiple taxonomies: show 'Select a term'.
 		 * - If single taxonomy: show 'Select a %taxonomy_name%'.
 		 */
-		if ( empty( $field['placeholder'] ) ) {
-			$field['placeholder'] = __( 'Select a term', 'meta-box' );
-			if ( is_string( $field['taxonomy'] ) && taxonomy_exists( $field['taxonomy'] ) ) {
-				$taxonomy_object = get_taxonomy( $field['taxonomy'] );
-
+		$placeholder = __( 'Select a term', 'meta-box' );
+		if ( 1 === count( $field['taxonomy'] ) ) {
+			$taxonomy = reset( $field['taxonomy'] );
+			$taxonomy_object = get_taxonomy( $taxonomy );
+			if ( false !== $taxonomy_object ) {
 				// Translators: %s is the taxonomy singular label.
-				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $taxonomy_object->labels->singular_name );
+				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $taxonomy_object->labels->singular_name ) );
 			}
 		}
+		$field = wp_parse_args( $field, array(
+			'placeholder' => $placeholder,
+		) );
+		$field = parent::normalize( $field );
+
+		// Set default query args.
+		$field['query_args'] = wp_parse_args( $field['query_args'], array(
+			'hide_empty' => false,
+		) );
 
 		// Prevent cloning for taxonomy field.
 		$field['clone'] = false;

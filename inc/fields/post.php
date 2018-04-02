@@ -17,29 +17,34 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		// Set default field args.
-		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'post_type' => 'post',
 			'parent'    => false,
 		) );
 
-		if ( ! isset( $field['query_args']['post_type'] ) ) {
-			$field['query_args']['post_type'] = $field['post_type'];
-		}
+		$field['post_type'] = (array) $field['post_type'];
 
-		/**
-		 * Set default placeholder.
+		/*
+		 * Set default placeholder:
 		 * - If multiple post types: show 'Select a post'.
 		 * - If single post type: show 'Select a %post_type_name%'.
 		 */
-		if ( empty( $field['placeholder'] ) ) {
-			$field['placeholder'] = __( 'Select a post', 'meta-box' );
-			if ( is_string( $field['query_args']['post_type'] ) && post_type_exists( $field['query_args']['post_type'] ) ) {
-				$post_type_object = get_post_type_object( $field['query_args']['post_type'] );
-
-				// Translators: %s is the post type singular label.
-				$field['placeholder'] = sprintf( __( 'Select a %s', 'meta-box' ), $post_type_object->labels->singular_name );
+		$placeholder = __( 'Select a post', 'meta-box' );
+		if ( 1 === count( $field['post_type'] ) ) {
+			$post_type = reset( $field['post_type'] );
+			$post_type_object = get_post_type_object( $post_type );
+			if ( ! empty( $post_type_object ) ) {
+				// Translators: %s is the taxonomy singular label.
+				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $post_type_object->labels->singular_name ) );
 			}
+		}
+		$field = wp_parse_args( $field, array(
+			'placeholder' => $placeholder,
+		) );
+		$field = parent::normalize( $field );
+
+		if ( ! isset( $field['query_args']['post_type'] ) ) {
+			$field['query_args']['post_type'] = $field['post_type'];
 		}
 
 		// Set parent option, which will change field name to `parent_id` to save as post parent.
