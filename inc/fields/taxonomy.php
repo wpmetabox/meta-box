@@ -138,6 +138,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @return array List of post term objects.
 	 */
 	public static function get_value( $field, $args = array(), $post_id = null ) {
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
 		$value = wp_get_object_terms( $post_id, $field['taxonomy'] );
 
 		// Get single value if necessary.
