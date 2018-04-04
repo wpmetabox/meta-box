@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.14.3] - 2018-04-04
+### Fixed
+- Fixed `taxonomy` field not returning correct value if post ID is not set.
+- Fixed placeholder not shown for post/taxonomy/user fields by default.
+
 ## [4.14.2] - 2018-03-27
 ### Fixed
 - Fixed helper function for `taxonomy_advanced` returns incorrect value when no terms are selected. Fixed #1224
@@ -792,7 +797,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.1...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.3...HEAD
+[4.14.3]: https://github.com/rilwis/meta-box/compare/4.14.2...4.14.3
 [4.14.2]: https://github.com/rilwis/meta-box/compare/4.14.1...4.14.2
 [4.14.1]: https://github.com/rilwis/meta-box/compare/4.14.0...4.14.1
 [4.14.0]: https://github.com/rilwis/meta-box/compare/4.13.4...4.14.0
