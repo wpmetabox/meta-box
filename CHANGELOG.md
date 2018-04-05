@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.14.4] - 2018-04-05
+### Fixed
+- Fixed for [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/) not be able to edit submitted posts.
+### Added
+- Added filter `rwmb_*_field` that allows developer to modify field settings before saving field value into the database. Credit @Twinpictures @baden03.
+ 
 ## [4.14.3] - 2018-04-04
 ### Fixed
 - Fixed `taxonomy` field not returning correct value if post ID is not set.
