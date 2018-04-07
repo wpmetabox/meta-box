@@ -302,7 +302,7 @@ abstract class RWMB_Field {
 			return;
 		}
 		
-		// Save cloned fields as multiple values instead serialized array
+		// Save cloned fields as multiple values instead serialized array.
 		if ($field['clone'] && $field['clone_as_multiple']) {
 		    $old = array_filter((array)$old);
 		    $new = array_filter((array)$new);
