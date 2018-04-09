@@ -301,37 +301,37 @@ abstract class RWMB_Field {
 			$storage->delete( $post_id, $name );
 			return;
 		}
-		
+
 		// Save cloned fields as multiple values instead serialized array.
 		if ( $field['clone'] && $field['clone_as_multiple'] ) {
-			$old = array_filter( (array)$old );
-			$new = array_filter( (array)$new );
+			$old = array_filter( (array) $old );
+			$new = array_filter( (array) $new );
 
-			if ( empty($new) ) {
+			if ( empty( $new ) ) {
 				$storage->delete( $post_id, $name );
 			}
 
 			if ( $field['sort_clone'] && array_values( $new ) != array_values( $old ) ) {
 				$storage->delete( $post_id, $name );
 
-			foreach ( $new as $new_value ) {
+				foreach ( $new as $new_value ) {
+					$storage->add( $post_id, $name, $new_value, false );
+				}
+
+				return;
+			}
+
+			$new_values = array_diff( $new, $old );
+			foreach ( $new_values as $new_value ) {
 				$storage->add( $post_id, $name, $new_value, false );
+			}
+			
+			$old_values = array_diff( $old, $new );
+			foreach ( $old_values as $old_value ) {
+				$storage->delete( $post_id, $name, $old_value );
 			}
 
 			return;
-		    }
-
-		    $new_values = array_diff( $new, $old );
-		    foreach ( $new_values as $new_value ) {
-			$storage->add( $post_id, $name, $new_value, false );
-		    }
-			
-		    $old_values = array_diff( $old, $new );
-		    foreach ( $old_values as $old_value ) {
-			$storage->delete( $post_id, $name, $old_value );
-		    }
-
-		    return;
 		}
 
 		// If field is cloneable, value is saved as a single entry in the database.
