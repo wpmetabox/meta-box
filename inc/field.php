@@ -325,7 +325,7 @@ abstract class RWMB_Field {
 			foreach ( $new_values as $new_value ) {
 				$storage->add( $post_id, $name, $new_value, false );
 			}
-			
+
 			$old_values = array_diff( $old, $new );
 			foreach ( $old_values as $old_value ) {
 				$storage->delete( $post_id, $name, $old_value );
