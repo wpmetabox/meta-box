@@ -395,6 +395,7 @@ abstract class RWMB_Field {
 			'sort_clone'    => false,
 			'add_button'    => __( '+ Add more', 'meta-box' ),
 			'clone_default' => false,
+			'clone_as_multiple' => false,
 
 			'class'      => '',
 			'disabled'   => false,
