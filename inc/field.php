@@ -378,6 +378,7 @@ abstract class RWMB_Field {
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
 			'id'                => '',
+			'type'              => 'text',
 			'name'              => '',
 			'label_description' => '',
 			'multiple'          => false,
