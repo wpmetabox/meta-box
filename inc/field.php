@@ -378,7 +378,6 @@ abstract class RWMB_Field {
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, array(
 			'id'                => '',
-			'type'              => 'text',
 			'name'              => '',
 			'label_description' => '',
 			'multiple'          => false,
@@ -390,11 +389,11 @@ abstract class RWMB_Field {
 			'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
 			'placeholder'       => '',
 
-			'clone'         => false,
-			'max_clone'     => 0,
-			'sort_clone'    => false,
-			'add_button'    => __( '+ Add more', 'meta-box' ),
-			'clone_default' => false,
+			'clone'             => false,
+			'max_clone'         => 0,
+			'sort_clone'        => false,
+			'add_button'        => __( '+ Add more', 'meta-box' ),
+			'clone_default'     => false,
 			'clone_as_multiple' => false,
 
 			'class'      => '',
