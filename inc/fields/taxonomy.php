@@ -121,7 +121,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$meta = wp_get_object_terms( $object_id, $field['taxonomy'] );
+		$meta = wp_get_object_terms( $object_id, $field['taxonomy'], [
+			'orderby' => 'term_order',
+		] );
 		$meta = wp_list_pluck( $meta, 'term_id' );
 
 		return $field['multiple'] ? $meta : reset( $meta );
@@ -141,7 +143,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		if ( ! $post_id ) {
 			$post_id = get_the_ID();
 		}
-		$value = wp_get_object_terms( $post_id, $field['taxonomy'] );
+		$value = wp_get_object_terms( $post_id, $field['taxonomy'], [
+			'orderby' => 'term_order',
+		] );
 
 		// Get single value if necessary.
 		if ( ! $field['clone'] && ! $field['multiple'] && is_array( $value ) ) {
