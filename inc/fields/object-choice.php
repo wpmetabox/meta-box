@@ -62,6 +62,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		$attributes = call_user_func( array( self::get_type_class( $field ), 'get_attributes' ), $field, $value );
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$attributes['class'] .= ' rwmb-select_advanced';
+		} elseif ( 'select' === $field['field_type'] ) {
+			$attributes['class'] .= ' rwmb-select';
 		}
 		return $attributes;
 	}

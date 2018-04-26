@@ -431,7 +431,7 @@ abstract class RWMB_Field {
 			'name'      => $field['field_name'],
 		) );
 
-		$attributes['class'] = implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) );
+		$attributes['class'] = trim( implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) ) );
 
 		return $attributes;
 	}
