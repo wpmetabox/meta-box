@@ -210,7 +210,7 @@ class RW_Meta_Box {
 	 * Callback function to show fields in meta box
 	 */
 	public function show() {
-		if ( ! $this->object_id ) {
+		if ( null === $this->object_id ) {
 			$this->set_object_id( $this->get_current_object_id() );
 		}
 		$saved = $this->is_saved();
