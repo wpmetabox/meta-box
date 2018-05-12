@@ -817,7 +817,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.3...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.6...HEAD
+[4.14.6]: https://github.com/rilwis/meta-box/compare/4.14.5...4.14.6
+[4.14.5]: https://github.com/rilwis/meta-box/compare/4.14.4...4.14.5
+[4.14.4]: https://github.com/rilwis/meta-box/compare/4.14.3...4.14.4
 [4.14.3]: https://github.com/rilwis/meta-box/compare/4.14.2...4.14.3
 [4.14.2]: https://github.com/rilwis/meta-box/compare/4.14.1...4.14.2
 [4.14.1]: https://github.com/rilwis/meta-box/compare/4.14.0...4.14.1
