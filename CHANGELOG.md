@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+[4.14.6] - 2018-05-12
+### Added
+- Added `clone_as_multiple` option which allows to store clone values as multiple rows in the database. Props @radeno.
+-  Preserve the order of selected options for taxonomy, post, user and select_advanced that uses `select2`.
+### Fixed
+- Fixed "Select All | None" not working for taxonomy/user/post fields. 
+- Quick fix for MB Frontend Submission.
+### Removed
+- Removed some languages that are available on translate.wordpress.org
+
 ## [4.14.5] - 2018-04-05
 ### Fixed
 - Fixed wrong syntax in the new filter that breaks the plugin to save values.

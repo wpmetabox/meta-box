@@ -32,6 +32,10 @@ jQuery( function ( $ ) {
 
 		rwmbSelect.bindEvents( $this );
 
+		if ( ! $this.attr( 'multiple' ) ) {
+			return;
+		}
+
 		reorderSelected( $this );
 
 		/**
