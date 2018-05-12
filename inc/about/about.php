@@ -107,7 +107,14 @@ class RWMB_About {
 	 * Change WordPress footer text on about page.
 	 */
 	public function change_footer_text() {
-		echo __( 'If you like <strong>Meta Box</strong> please leave us a <a href="https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. A huge thank you from Meta Box in advance!', 'meta-box' );
+		$allowed_html = array(
+			'a'      => array(
+				'href'   => array(),
+				'target' => array(),
+			),
+			'strong' => array(),
+		);
+		echo wp_kses( __( 'If you like <strong>Meta Box</strong> please leave us a <a href="https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. A huge thank you from Meta Box in advance!', 'meta-box' ), $allowed_html );
 	}
 
 	/**
