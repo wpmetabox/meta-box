@@ -2,8 +2,7 @@
 /**
  * Getting started section.
  *
- * @package    Meta Box
- * @subpackage MB Custom Post Type
+ * @package Meta Box
  */
 
 ?>
@@ -33,9 +32,5 @@
 			</ul>
 			<p><a target="_blank" class="button button-primary" href="https://metabox.io/plugins/?utm_source=plugin_about_page&utm_medium=button_extensions&utm_campaign=meta_box_about_page"><?php esc_html_e( 'More Extensions', 'meta-box' ); ?></a>
 		</div>
-	</div>
-	<hr>
-	<div class="return-to-dashboard">
-		<a href="https://metabox.io/plugins/?utm_source=plugin_about_page&utm_medium=link_home&utm_campaign=meta_box_about_page"><?php esc_html_e( 'Go to MetaBox.IO &rarr;', 'meta-box' ); ?></a>
 	</div>
 </div>

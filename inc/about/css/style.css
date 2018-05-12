@@ -11,6 +11,25 @@
 	text-decoration: none;
 }
 
+.about-buttons .dashicons {
+	position: relative;
+	top: 5px;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+/* Newsletter */
+.newsletter {
+	margin: 40px 0;
+	border: 3px dashed #999;
+	padding: 15px;
+	display: inline-block;
+}
+.newsletter p {
+	margin-top: 0;
+}
+
 .feature-section.two-col {
 	align-items: flex-start;
 }
@@ -54,4 +73,35 @@
 	padding-right: 5px;
 	font-size: 16px;
 	vertical-align: middle;
+}
+
+/* Extensions tab */
+.theme-browser {
+	margin-top: 40px;
+}
+.theme-browser .theme {
+	text-decoration: none;
+}
+.theme-browser .theme .more-details {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 48px;
+	border-radius: 0;
+	line-height: 1.7;
+	display: flex;
+	align-items: center;
+	transition: opacity .3s;
+}
+@media (min-width: 1640px) {
+	.theme-browser .theme {
+		width: 30.6%;
+		margin: 0 4% 4% 0;
+	}
+	.theme-browser .theme:nth-child(4n) {
+		margin-right: 4%;
+	}
+	.theme-browser .theme:nth-child(3n) {
+		margin-right: 0;
+	}
 }

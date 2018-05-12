@@ -37,6 +37,10 @@ class RWMB_About {
 
 		// Redirect to about page after activation.
 		add_action( 'activated_plugin', array( $this, 'redirect' ), 10, 2 );
+
+		if ( isset( $_GET['page'] ) && 'meta-box-about' === $_GET['page'] ) {
+			add_filter( 'admin_footer_text', array( $this, 'change_footer_text' ) );
+		}
 	}
 
 	/**
@@ -78,8 +82,11 @@ class RWMB_About {
 		?>
 		<div class="wrap about-wrap">
 			<?php include dirname( __FILE__ ) . '/sections/welcome.php'; ?>
+			<?php include dirname( __FILE__ ) . '/sections/newsletter.php'; ?>
 			<?php include dirname( __FILE__ ) . '/sections/tabs.php'; ?>
 			<?php include dirname( __FILE__ ) . '/sections/getting-started.php'; ?>
+			<?php include dirname( __FILE__ ) . '/sections/extensions.php'; ?>
+			<?php include dirname( __FILE__ ) . '/sections/support.php'; ?>
 		</div>
 		<?php
 	}
@@ -97,6 +104,13 @@ class RWMB_About {
 	}
 
 	/**
+	 * Change WordPress footer text on about page.
+	 */
+	public function change_footer_text() {
+		echo __( 'If you like <strong>Meta Box</strong> please leave us a <a href="https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. A huge thank you from Meta Box in advance!', 'meta-box' );
+	}
+
+	/**
 	 * Redirect to about page after Meta Box has been activated.
 	 *
 	 * @param string $plugin       Path to the main plugin file from plugins directory.
@@ -104,22 +118,9 @@ class RWMB_About {
 	 *                             or just the current site. Multisite only. Default is false.
 	 */
 	public function redirect( $plugin, $network_wide ) {
-		if ( ! $network_wide && 'meta-box/meta-box.php' === $plugin && ! $this->is_bundled() ) {
+		if ( ! $network_wide && 'meta-box/meta-box.php' === $plugin ) {
 			wp_safe_redirect( admin_url( 'index.php?page=meta-box-about' ) );
 			die;
 		}
-	}
-
-	/**
-	 * Check if Meta Box is bundled by TGM Activation Class.
-	 */
-	protected function is_bundled() {
-		// @codingStandardsIgnoreLine
-		foreach ( $_REQUEST as $key => $value ) {
-			if ( false !== strpos( $key, 'tgmpa' ) || false !== strpos( $value, 'tgmpa' ) ) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

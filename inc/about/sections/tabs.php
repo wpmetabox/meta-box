@@ -2,11 +2,12 @@
 /**
  * Tabs navigation.
  *
- * @package    Meta Box
- * @subpackage MB Custom Post Type
+ * @package Meta Box
  */
 
 ?>
 <h2 class="nav-tab-wrapper">
 	<a href="#getting-started" class="nav-tab nav-tab-active"><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></a>
+	<a href="#extensions" class="nav-tab"><?php esc_html_e( 'Extensions', 'meta-box' ); ?></a>
+	<a href="#support" class="nav-tab"><?php esc_html_e( 'Support', 'meta-box' ); ?></a>
 </h2>
