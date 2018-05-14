@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+[4.14.7] - 2018-05-14
+### Changed
+- Updated the About page.
+
 [4.14.6] - 2018-05-12
 ### Added
 - Added `clone_as_multiple` option which allows to store clone values as multiple rows in the database. Props @radeno.
@@ -818,6 +822,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - procedural code
 
 [Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.6...HEAD
+[4.14.7]: https://github.com/rilwis/meta-box/compare/4.14.6...4.14.7
 [4.14.6]: https://github.com/rilwis/meta-box/compare/4.14.5...4.14.6
 [4.14.5]: https://github.com/rilwis/meta-box/compare/4.14.4...4.14.5
 [4.14.4]: https://github.com/rilwis/meta-box/compare/4.14.3...4.14.4
