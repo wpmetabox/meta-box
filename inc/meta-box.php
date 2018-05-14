@@ -397,6 +397,9 @@ class RW_Meta_Box {
 				continue;
 			}
 			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+			if ( false === $value ) {
+				continue;
+			}
 			if (
 				( ! $field['multiple'] && '' !== $value )
 				|| ( $field['multiple'] && array() !== $value )
