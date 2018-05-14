@@ -19,15 +19,9 @@
 	font-size: 16px;
 }
 
-/* Newsletter */
-.newsletter {
-	margin: 40px 0;
-	border: 3px dashed #999;
-	padding: 15px;
-	display: inline-block;
-}
-.newsletter p {
-	margin-top: 0;
+#poststuff .nav-tab-wrapper {
+	padding: 0;
+	margin-top: 60px;
 }
 
 .feature-section.two-col {
@@ -79,19 +73,35 @@
 .theme-browser {
 	margin-top: 40px;
 }
-.theme-browser .theme {
-	text-decoration: none;
+.theme-browser .theme:hover {
+	cursor: initial;
 }
-.theme-browser .theme .more-details {
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 48px;
-	border-radius: 0;
-	line-height: 1.7;
+.extension-inner {
 	display: flex;
-	align-items: center;
-	transition: opacity .3s;
+	background: #fff;
+	padding: 25px 20px;
+}
+.extension-inner svg {
+	width: 48px;
+	height: 48px;
+	margin: 8px 20px 0 0;
+	fill: #b4b9be;
+}
+.extension-info {
+	flex: 1;
+}
+.extension-info h3 {
+	margin: 0 0 5px;
+	font-size: 1.2em;
+}
+.extension-info p {
+	margin: 0;
+}
+.extension-action {
+	border-top: 1px solid #ddd;
+	text-align: center;
+	padding: 20px;
+	background: #f7f7f7;
 }
 @media (min-width: 1640px) {
 	.theme-browser .theme {
@@ -104,4 +114,69 @@
 	.theme-browser .theme:nth-child(3n) {
 		margin-right: 0;
 	}
+	.theme-browser .theme:nth-child(3n+1) {
+		clear: left;
+	}
+}
+
+
+/* Right column */
+#post-body.columns-2 #postbox-container-1 {
+	position: fixed;
+	right: 320px;
+	top: 40px;
+}
+
+/* Newsletter */
+.newsletter {
+	margin: 40px 0;
+	border: 3px dashed #82878c;
+	padding: 15px;
+	background: #fff;
+}
+.newsletter .dashicons {
+	color: #00b9eb;
+	width: 30px;
+	height: 30px;
+	font-size: 30px;
+	position: relative;
+	top: -5px;
+	left: -2px;
+}
+.newsletter h3 {
+	margin: 0 0 5px;
+}
+.newsletter p {
+	margin-top: 0;
+}
+
+/* Upgrade */
+.upgrade {
+	border: 3px dashed #82878c;
+	background: #fff;
+	padding: 15px;
+}
+.upgrade .dashicons {
+	color: #ef4836;
+	width: 26px;
+	height: 26px;
+	font-size: 30px;
+	position: relative;
+	top: -4px;
+	left: -5px;
+}
+.upgrade h3 {
+	margin: 0;
+}
+.upgrade li {
+	padding-left: 20px;
+	position: relative;
+}
+.upgrade svg {
+	width: 1em;
+	height: 1em;
+	fill: #0073aa;
+	position: absolute;
+	top: 4px;
+	left: 0;
 }

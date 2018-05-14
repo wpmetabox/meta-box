@@ -80,13 +80,24 @@ class RWMB_About {
 	 */
 	public function render() {
 		?>
-		<div class="wrap about-wrap">
-			<?php include dirname( __FILE__ ) . '/sections/welcome.php'; ?>
-			<?php include dirname( __FILE__ ) . '/sections/newsletter.php'; ?>
-			<?php include dirname( __FILE__ ) . '/sections/tabs.php'; ?>
-			<?php include dirname( __FILE__ ) . '/sections/getting-started.php'; ?>
-			<?php include dirname( __FILE__ ) . '/sections/extensions.php'; ?>
-			<?php include dirname( __FILE__ ) . '/sections/support.php'; ?>
+		<div class="wrap">
+			<div id="poststuff">
+				<div id="post-body" class="metabox-holder columns-2">
+					<div id="post-body-content">
+						<div class="about-wrap">
+							<?php include dirname( __FILE__ ) . '/sections/welcome.php'; ?>
+							<?php include dirname( __FILE__ ) . '/sections/tabs.php'; ?>
+							<?php include dirname( __FILE__ ) . '/sections/getting-started.php'; ?>
+							<?php include dirname( __FILE__ ) . '/sections/extensions.php'; ?>
+							<?php include dirname( __FILE__ ) . '/sections/support.php'; ?>
+						</div>
+					</div>
+					<div id="postbox-container-1" class="postbox-container">
+						<?php include dirname( __FILE__ ) . '/sections/newsletter.php'; ?>
+						<?php include dirname( __FILE__ ) . '/sections/upgrade.php'; ?>
+					</div>
+				</div>
+			</div>
 		</div>
 		<?php
 	}
@@ -114,7 +125,9 @@ class RWMB_About {
 			),
 			'strong' => array(),
 		);
-		echo wp_kses( __( 'If you like <strong>Meta Box</strong> please leave us a <a href="https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. A huge thank you from Meta Box in advance!', 'meta-box' ), $allowed_html );
+
+		// Translators: %1$s - link to review form.
+		echo wp_kses( sprintf( __( 'Please rate <strong>Meta Box</strong> <a href="%1$s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href="%1$s" target="_blank">WordPress.org</a> to help us spread the word. Thank you from the WPForms team!', 'meta-box' ), 'https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5#new-post' ), $allowed_html );
 	}
 
 	/**
