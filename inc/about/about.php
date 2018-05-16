@@ -138,9 +138,22 @@ class RWMB_About {
 	 *                             or just the current site. Multisite only. Default is false.
 	 */
 	public function redirect( $plugin, $network_wide ) {
-		if ( ! $network_wide && 'meta-box/meta-box.php' === $plugin ) {
+		if ( ! $network_wide && 'meta-box/meta-box.php' === $plugin && ! $this->is_bundled() ) {
 			wp_safe_redirect( admin_url( 'index.php?page=meta-box-about' ) );
 			die;
 		}
+	}
+
+	/**
+	 * Check if Meta Box is bundled by TGM Activation Class.
+	 */
+	protected function is_bundled() {
+		// @codingStandardsIgnoreLine
+		foreach ( $_REQUEST as $key => $value ) {
+			if ( false !== strpos( $key, 'tgmpa' ) || false !== strpos( $value, 'tgmpa' ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
