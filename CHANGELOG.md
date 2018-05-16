@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+[4.14.8] - 2018-05-16
+### Fixed
+- Activation via TGMPA causes 'headers already sent' error.
+
 [4.14.7] - 2018-05-14
 ### Changed
 - Updated the About page.
@@ -821,7 +825,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.6...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.8...HEAD
+[4.14.8]: https://github.com/rilwis/meta-box/compare/4.14.7...4.14.8
 [4.14.7]: https://github.com/rilwis/meta-box/compare/4.14.6...4.14.7
 [4.14.6]: https://github.com/rilwis/meta-box/compare/4.14.5...4.14.6
 [4.14.5]: https://github.com/rilwis/meta-box/compare/4.14.4...4.14.5
