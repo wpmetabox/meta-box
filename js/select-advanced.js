@@ -27,6 +27,7 @@ jQuery( function ( $ ) {
 	function update() {
 		var $this = $( this ),
 			options = $this.data( 'options' );
+		$this.removeClass( 'select2-hidden-accessible' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
 
