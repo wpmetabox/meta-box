@@ -94,7 +94,11 @@ class RWMB_About {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<?php include dirname( __FILE__ ) . '/sections/newsletter.php'; ?>
-						<?php include dirname( __FILE__ ) . '/sections/upgrade.php'; ?>
+						<?php
+						if ( ! $this->is_premium_user() ) {
+							include dirname( __FILE__ ) . '/sections/upgrade.php';
+						}
+						?>
 					</div>
 				</div>
 			</div>
@@ -155,5 +159,21 @@ class RWMB_About {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check if current user is a premium user.
+	 *
+	 * @return bool
+	 */
+	protected function is_premium_user() {
+		$option = is_multisite() ? get_site_option( 'meta_box_updater' ) : get_option( 'meta_box_updater' );
+		if ( empty( $option['api_key'] ) ) {
+			return false;
+		}
+		if ( isset( $option['status'] ) && 'success' !== $option['status'] ) {
+			return false;
+		}
+		return true;
 	}
 }
