@@ -10,6 +10,13 @@
  */
 class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	/**
+	 * Enqueue scripts and styles.
+	 */
+	public static function admin_enqueue_scripts() {
+		wp_enqueue_style( 'rwmb-text-list', RWMB_CSS_URL . 'text-list.css', '', RWMB_VER );
+	}
+
+	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
@@ -18,24 +25,40 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
+		if ( empty( $field['options'] ) ) {
+			return '';
+		}
 		$html  = array();
-		$input = '<label><input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"> %s</label>';
+		$input = '<label><span class="rwmb-text-list-label">%s</span> <input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"></label>';
 
 		$count = 0;
-		if ( ! empty( $field['options'] ) ) :
-			foreach ( $field['options'] as $placeholder => $label ) {
-				$html[] = sprintf(
-					$input,
-					$field['field_name'],
-					isset( $meta[ $count ] ) ? esc_attr( $meta[ $count ] ) : '',
-					$placeholder,
-					$label
-				);
-				$count ++;
-			}
-		endif;
+		foreach ( $field['options'] as $placeholder => $label ) {
+			$html[] = sprintf(
+				$input,
+				$label,
+				$field['field_name'],
+				isset( $meta[ $count ] ) ? esc_attr( $meta[ $count ] ) : '',
+				$placeholder
+			);
+			$count ++;
+		}
 
 		return implode( ' ', $html );
+	}
+
+	/**
+	 * Normalize parameters for field.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
+		if ( ! $field['clone'] ) {
+			$field['class'] .= ' rwmb-text_list-non-cloneable';
+		}
+		return $field;
 	}
 
 	/**
