@@ -29,7 +29,10 @@ class RWMB_About {
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', array( $this, 'plugin_links' ) );
 
 		// Add a shared top-level admin menu.
-		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+
+		// Add a submenu for the About page. Use priority 20 to make sure it is the last item.
+		add_action( 'admin_menu', array( $this, 'add_submenu' ), 20 );
 
 		// If no admin menu, then hide the About page.
 		add_action( 'admin_head', array( $this, 'hide_page' ) );
@@ -53,20 +56,26 @@ class RWMB_About {
 	/**
 	 * Register admin page.
 	 */
-	public function add_admin_menu() {
-		$parent_menu = $this->get_parent_menu();
-		if ( $this->has_menu() ) {
-			add_menu_page(
-				__( 'Meta Box', 'meta-box' ),
-				__( 'Meta Box', 'meta-box' ),
-				'activate_plugins',
-				'meta-box',
-				'__return_null',
-				'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIxNjQuMzI4IDE0OS40NDEgNTMuNDcgNDIuNjYiIHdpZHRoPSI1My40NyIgaGVpZ2h0PSI0Mi42NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNIDIwNC42NjggMTc5LjM5MSBMIDIwNS40ODggMTYwLjU1MSBMIDIwNS4zMTggMTYwLjUyMSBMIDE5My44ODggMTkyLjEwMSBMIDE4OC4xNDggMTkyLjEwMSBMIDE3Ni43NzggMTYwLjY0MSBMIDE3Ni42MDggMTYwLjY2MSBMIDE3Ny40MjggMTc5LjM5MSBMIDE3Ny40MjggMTg2LjA5MSBMIDE4MS45OTggMTg2Ljk3MSBMIDE4MS45OTggMTkyLjEwMSBMIDE2NC4zMjggMTkyLjEwMSBMIDE2NC4zMjggMTg2Ljk3MSBMIDE2OC44NjggMTg2LjA5MSBMIDE2OC44NjggMTU1LjQ4MSBMIDE2NC4zMjggMTU0LjYwMSBMIDE2NC4zMjggMTQ5LjQ0MSBMIDE2OC44NjggMTQ5LjQ0MSBMIDE4MC4wMjggMTQ5LjQ0MSBMIDE5MC44OTggMTgwLjg4MSBMIDE5MS4wNzggMTgwLjg4MSBMIDIwMi4wMzggMTQ5LjQ0MSBMIDIxNy43OTggMTQ5LjQ0MSBMIDIxNy43OTggMTU0LjYwMSBMIDIxMy4yMjggMTU1LjQ4MSBMIDIxMy4yMjggMTg2LjA5MSBMIDIxNy43OTggMTg2Ljk3MSBMIDIxNy43OTggMTkyLjEwMSBMIDIwMC4xMjggMTkyLjEwMSBMIDIwMC4xMjggMTg2Ljk3MSBMIDIwNC42NjggMTg2LjA5MSBMIDIwNC42NjggMTc5LjM5MSBaIiBzdHlsZT0iZmlsbDogcmdiKDE1OCwgMTYzLCAxNjgpOyB3aGl0ZS1zcGFjZTogcHJlOyIvPgo8L3N2Zz4='
-			);
-			$parent_menu = 'meta-box';
+	public function add_menu() {
+		if ( ! $this->has_menu() ) {
+			return;
 		}
-		$about = add_submenu_page(
+		add_menu_page(
+			__( 'Meta Box', 'meta-box' ),
+			__( 'Meta Box', 'meta-box' ),
+			'activate_plugins',
+			'meta-box',
+			'__return_null',
+			'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIxNjQuMzI4IDE0OS40NDEgNTMuNDcgNDIuNjYiIHdpZHRoPSI1My40NyIgaGVpZ2h0PSI0Mi42NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNIDIwNC42NjggMTc5LjM5MSBMIDIwNS40ODggMTYwLjU1MSBMIDIwNS4zMTggMTYwLjUyMSBMIDE5My44ODggMTkyLjEwMSBMIDE4OC4xNDggMTkyLjEwMSBMIDE3Ni43NzggMTYwLjY0MSBMIDE3Ni42MDggMTYwLjY2MSBMIDE3Ny40MjggMTc5LjM5MSBMIDE3Ny40MjggMTg2LjA5MSBMIDE4MS45OTggMTg2Ljk3MSBMIDE4MS45OTggMTkyLjEwMSBMIDE2NC4zMjggMTkyLjEwMSBMIDE2NC4zMjggMTg2Ljk3MSBMIDE2OC44NjggMTg2LjA5MSBMIDE2OC44NjggMTU1LjQ4MSBMIDE2NC4zMjggMTU0LjYwMSBMIDE2NC4zMjggMTQ5LjQ0MSBMIDE2OC44NjggMTQ5LjQ0MSBMIDE4MC4wMjggMTQ5LjQ0MSBMIDE5MC44OTggMTgwLjg4MSBMIDE5MS4wNzggMTgwLjg4MSBMIDIwMi4wMzggMTQ5LjQ0MSBMIDIxNy43OTggMTQ5LjQ0MSBMIDIxNy43OTggMTU0LjYwMSBMIDIxMy4yMjggMTU1LjQ4MSBMIDIxMy4yMjggMTg2LjA5MSBMIDIxNy43OTggMTg2Ljk3MSBMIDIxNy43OTggMTkyLjEwMSBMIDIwMC4xMjggMTkyLjEwMSBMIDIwMC4xMjggMTg2Ljk3MSBMIDIwNC42NjggMTg2LjA5MSBMIDIwNC42NjggMTc5LjM5MSBaIiBzdHlsZT0iZmlsbDogcmdiKDE1OCwgMTYzLCAxNjgpOyB3aGl0ZS1zcGFjZTogcHJlOyIvPgo8L3N2Zz4='
+		);
+	}
+
+	/**
+	 * Add submenu for the About page.
+	 */
+	public function add_submenu() {
+		$parent_menu = $this->has_menu() ? 'meta-box' : $this->get_parent_menu();
+		$about       = add_submenu_page(
 			$parent_menu,
 			__( 'Welcome to Meta Box', 'meta-box' ),
 			__( 'About', 'meta-box' ),
