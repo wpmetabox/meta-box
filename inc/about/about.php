@@ -31,8 +31,8 @@ class RWMB_About {
 		// Add a shared top-level admin menu.
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
-		// Add a submenu for the About page. Use priority 20 to make sure it is the last item.
-		add_action( 'admin_menu', array( $this, 'add_submenu' ), 20 );
+		// Add a submenu for the About page. Use priority 90 to make sure it is the last item.
+		add_action( 'admin_menu', array( $this, 'add_submenu' ), 90 );
 
 		// If no admin menu, then hide the About page.
 		add_action( 'admin_head', array( $this, 'hide_page' ) );
