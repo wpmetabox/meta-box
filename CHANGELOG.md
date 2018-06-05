@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+[4.19.10] - 2018-06-05
+### Fixed
+- Fixed missing styles for `autocomplete` in the frontend.
+- Added the correct image size in returned value of 'srcset' for image field.
+- Fixed `select_advanced` field doesn't keep the same width when cloning.
+### Changed
+- Improved the layout for `text_list` field.
+- Added MB User Profile and Meta Box - Beaver Themer Integrator. Removed ads for premium users.
+- Created a shared admin menu for extensions to add to. Also added hooks for extensions to add tabs to the About page.
+
 [4.14.9] - 2018-05-17
 ### Fixed
 - Fixed short array syntax (PHP 5.4) in taxonomy field.
