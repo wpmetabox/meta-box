@@ -28,11 +28,9 @@ class RWMB_About {
 		// Add links to about page in the plugin action links.
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', array( $this, 'plugin_links' ) );
 
-		// Add a shared top-level admin menu.
-		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-
-		// Add a submenu for the About page. Use priority 90 to make sure it is the last item.
-		add_action( 'admin_menu', array( $this, 'add_submenu' ), 90 );
+		// Add a shared top-level admin menu and Dashboard page. Use priority 5 to show Dashboard at the top.
+		add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
+		add_action( 'admin_menu', array( $this, 'add_submenu' ), 5 );
 
 		// If no admin menu, then hide the About page.
 		add_action( 'admin_head', array( $this, 'hide_page' ) );
@@ -78,7 +76,7 @@ class RWMB_About {
 		$about       = add_submenu_page(
 			$parent_menu,
 			__( 'Welcome to Meta Box', 'meta-box' ),
-			__( 'About', 'meta-box' ),
+			__( 'Dashboard', 'meta-box' ),
 			'activate_plugins',
 			'meta-box',
 			array( $this, 'render' )

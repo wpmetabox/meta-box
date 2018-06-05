@@ -1,5 +1,5 @@
-.about-wrap .wp-badge {
-	background-image: url(../images/meta-box.png);
+.about-wrap.about-wrap .wp-badge {
+	background-image: url(../images/meta-box.svg);
 	background-color: #fff;
 	color: #222;
 	text-transform: uppercase;
@@ -82,15 +82,15 @@
 	padding: 25px 20px;
 }
 .extension-inner svg {
-	width: 48px;
-	height: 48px;
-	margin: 8px 20px 0 0;
+	width: 36px;
+	height: 36px;
+	margin: 8px 15px 0 0;
 	fill: #b4b9be;
 }
 .extension-info {
 	flex: 1;
 }
-.extension-info h3 {
+.extension-info.extension-info h3 {
 	margin: 0 0 5px;
 	font-size: 1.2em;
 }
