@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-[4.19.10] - 2018-06-05
+## [4.19.11] - 2018-06-08
+### Fixed
+- Fixed styles for autocomplete address in map field in the frontend.
+
+## [4.19.10] - 2018-06-05
 ### Fixed
 - Fixed missing styles for `autocomplete` in the frontend.
 - Added the correct image size in returned value of 'srcset' for image field.
@@ -15,24 +19,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Added MB User Profile and Meta Box - Beaver Themer Integrator. Removed ads for premium users.
 - Created a shared admin menu for extensions to add to. Also added hooks for extensions to add tabs to the About page.
 
-[4.14.9] - 2018-05-17
+## [4.14.9] - 2018-05-17
 ### Fixed
 - Fixed short array syntax (PHP 5.4) in taxonomy field.
 
-[4.14.8] - 2018-05-16
+## [4.14.8] - 2018-05-16
 ### Fixed
 - Activation via TGMPA causes 'headers already sent' error.
 
-[4.14.7] - 2018-05-14
+## [4.14.7] - 2018-05-14
 ### Changed
 - Updated the About page.
 
-[4.14.6] - 2018-05-12
+## [4.14.6] - 2018-05-12
 ### Added
 - Added `clone_as_multiple` option which allows to store clone values as multiple rows in the database. Props @radeno.
 -  Preserve the order of selected options for taxonomy, post, user and select_advanced that uses `select2`.
 ### Fixed
-- Fixed "Select All | None" not working for taxonomy/user/post fields. 
+- Fixed "Select All | None" not working for taxonomy/user/post fields.
 - Quick fix for MB Frontend Submission.
 ### Removed
 - Removed some languages that are available on translate.wordpress.org
@@ -46,7 +50,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Fixed for [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/) not be able to edit submitted posts.
 ### Added
 - Added filter `rwmb_*_field` that allows developer to modify field settings before saving field value into the database. Credit @Twinpictures @baden03.
- 
+
 ## [4.14.3] - 2018-04-04
 ### Fixed
 - Fixed `taxonomy` field not returning correct value if post ID is not set.
@@ -59,7 +63,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [4.14.1] - 2018-03-24
 ### Added
-- Added `after_save_field` action. 
+- Added `after_save_field` action.
 ### Fixed
 - Fixed field taxonomy not saving for multiple taxonomies.
 - Fixed cloning taxonomy_advanced field
@@ -839,7 +843,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.9...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.11...HEAD
+[4.14.11]: https://github.com/rilwis/meta-box/compare/4.14.10...4.14.11
+[4.14.10]: https://github.com/rilwis/meta-box/compare/4.14.9...4.14.10
 [4.14.9]: https://github.com/rilwis/meta-box/compare/4.14.8...4.14.9
 [4.14.8]: https://github.com/rilwis/meta-box/compare/4.14.7...4.14.8
 [4.14.7]: https://github.com/rilwis/meta-box/compare/4.14.6...4.14.7
