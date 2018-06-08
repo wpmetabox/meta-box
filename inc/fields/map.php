@@ -13,7 +13,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', array( 'common', 'forms' ), RWMB_VER );
+		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', array(), RWMB_VER );
 
 		/**
 		 * Since June 2016, Google Maps requires a valid API key.
