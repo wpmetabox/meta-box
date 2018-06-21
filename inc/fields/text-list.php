@@ -117,6 +117,9 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
+			return;
+		}
 		$storage = $field['storage'];
 		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );

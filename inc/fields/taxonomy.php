@@ -99,6 +99,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
+			return;
+		}
 		$new = array_unique( array_map( 'intval', (array) $new ) );
 		$new = empty( $new ) ? null : $new;
 
