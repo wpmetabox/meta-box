@@ -3,16 +3,16 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Meta Box 4.8.7\n"
+"Project-Id-Version: Meta Box\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/meta-box\n"
-"POT-Creation-Date: 2017-02-03 17:49+0700\n"
+"POT-Creation-Date: 2018-04-19 08:43+0700\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Meta Box <admin@metabox.io>\n"
-"X-Generator: Poedit 1.8.11\n"
+"Language-Team: Meta Box <info@metabox.io>\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -22,114 +22,284 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: css\n"
 "X-Poedit-SearchPathExcluded-4: lang\n"
 
-#: inc/clone.php:98
-msgid "+ Add more"
+#: inc/about/about.php:50
+msgid "About"
 msgstr ""
 
-#: inc/core.php:42
-msgid "Documentation"
+#: inc/about/about.php:59 inc/about/about.php:60
+msgid "Welcome to Meta Box"
 msgstr ""
 
-#: inc/core.php:43
+#: inc/about/sections/getting-started.php:13
+msgid "Getting Started With Online Generator"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:14
+msgid "The fastest way to getting started with Meta Box is use our online generator to generate meta boxes with custom fields. It provides a friendly UI for you to create meta boxes and custom fields just by drag and drop fields."
+msgstr ""
+
+#: inc/about/sections/getting-started.php:16
+msgid "online generator"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:18
+msgid "Go to Online Generator"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:22
+msgid "Understand The Basics"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:23
+msgid "Meta Box doesn't have any admin page for configuration or settings. Instead of that, it provides a very powerful API to speed up the process of creating meta boxes and custom fields. It might take you a little time at first, but then you'll love the way it work because it helps you do and customize almost everything."
+msgstr ""
+
+#: inc/about/sections/getting-started.php:24
+msgid "Learn More"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:26 inc/core.php:39
 msgid "Extensions"
 msgstr ""
 
-#: inc/fields/autocomplete.php:19 inc/fields/autocomplete.php:78
-#: inc/fields/autocomplete.php:93 inc/fields/file.php:154
+#: inc/about/sections/getting-started.php:27
+msgid "Wanna see more features that transform your WordPress website into a powerful CMS? Check out some extensions below:"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:29
+msgid "Meta Box Group"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:30
+msgid "Meta Box Conditional Logic"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:31
+msgid "MB Settings Page"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:32
+msgid "MB Term Meta"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:34
+msgid "More Extensions"
+msgstr ""
+
+#: inc/about/sections/getting-started.php:39
+msgid "Go to MetaBox.IO &rarr;"
+msgstr ""
+
+#: inc/about/sections/tabs.php:11
+msgid "Getting Started"
+msgstr ""
+
+#: inc/about/sections/welcome.php:13
+#, php-format
+msgid "Welcome to %1$s %2$s"
+msgstr ""
+
+#: inc/about/sections/welcome.php:16
+msgid "This plugin is a lightweight and powerful toolkit that helps you to create custom meta boxes and custom fields in WordPress fast and easy. Follow the instruction below to get started."
+msgstr ""
+
+#: inc/core.php:38
+msgid "Documentation"
+msgstr ""
+
+#: inc/field.php:359
+msgid "+ Add more"
+msgstr ""
+
+#: inc/fields/autocomplete.php:20 inc/fields/autocomplete.php:81
+#: inc/fields/autocomplete.php:93 inc/fields/file.php:121
 msgid "Delete"
+msgstr ""
+
+#: inc/fields/background.php:58
+msgid "Background Image"
+msgstr ""
+
+#: inc/fields/background.php:70
+msgid "-- Background Repeat --"
+msgstr ""
+
+#: inc/fields/background.php:72
+msgid "No Repeat"
+msgstr ""
+
+#: inc/fields/background.php:73
+msgid "Repeat All"
+msgstr ""
+
+#: inc/fields/background.php:74
+msgid "Repeat Horizontally"
+msgstr ""
+
+#: inc/fields/background.php:75
+msgid "Repeat Vertically"
+msgstr ""
+
+#: inc/fields/background.php:76 inc/fields/background.php:110
+#: inc/fields/background.php:122
+msgid "Inherit"
+msgstr ""
+
+#: inc/fields/background.php:86
+msgid "-- Background Position --"
+msgstr ""
+
+#: inc/fields/background.php:88
+msgid "Top Left"
+msgstr ""
+
+#: inc/fields/background.php:89
+msgid "Top Center"
+msgstr ""
+
+#: inc/fields/background.php:90
+msgid "Top Right"
+msgstr ""
+
+#: inc/fields/background.php:91
+msgid "Center Left"
+msgstr ""
+
+#: inc/fields/background.php:92
+msgid "Center Center"
+msgstr ""
+
+#: inc/fields/background.php:93
+msgid "Center Right"
+msgstr ""
+
+#: inc/fields/background.php:94
+msgid "Bottom Left"
+msgstr ""
+
+#: inc/fields/background.php:95
+msgid "Bottom Center"
+msgstr ""
+
+#: inc/fields/background.php:96
+msgid "Bottom Right"
+msgstr ""
+
+#: inc/fields/background.php:106
+msgid "-- Background Attachment --"
+msgstr ""
+
+#: inc/fields/background.php:108
+msgid "Fixed"
+msgstr ""
+
+#: inc/fields/background.php:109
+msgid "Scroll"
+msgstr ""
+
+#: inc/fields/background.php:120
+msgid "-- Background Size --"
+msgstr ""
+
+#: inc/fields/background.php:123
+msgid "Cover"
+msgstr ""
+
+#: inc/fields/background.php:124
+msgid "Contain"
 msgstr ""
 
 #: inc/fields/button.php:32
 msgid "Click me"
 msgstr ""
 
-#: inc/fields/checkbox.php:57
+#: inc/fields/checkbox.php:53
 msgid "Yes"
 msgstr ""
 
-#: inc/fields/checkbox.php:57
+#: inc/fields/checkbox.php:53
 msgid "No"
 msgstr ""
 
-#: inc/fields/file-input.php:21
+#: inc/fields/file-input.php:20
 msgid "Select File"
 msgstr ""
 
-#: inc/fields/file-input.php:43 inc/fields/select.php:89
+#: inc/fields/file-input.php:39 inc/fields/select.php:87
 msgid "Select"
 msgstr ""
 
-#: inc/fields/file-input.php:45 inc/fields/media.php:24
+#: inc/fields/file-input.php:41 inc/fields/media.php:27
 msgid "Remove"
-msgstr ""
-
-#: inc/fields/file.php:20
-#, php-format
-msgid "You may only upload maximum %d file"
 msgstr ""
 
 #: inc/fields/file.php:21
 #, php-format
+msgid "You may only upload maximum %d file"
+msgstr ""
+
+#: inc/fields/file.php:23
+#, php-format
 msgid "You may only upload maximum %d files"
 msgstr ""
 
-#: inc/fields/file.php:77
+#: inc/fields/file.php:53
 msgid "Error: Cannot delete file"
 msgstr ""
 
-#: inc/fields/file.php:89
-msgid "Upload Files"
-msgstr ""
-
-#: inc/fields/file.php:90
+#: inc/fields/file.php:66
 msgid "+ Add new file"
 msgstr ""
 
-#: inc/fields/file.php:155 inc/fields/media.php:25
+#: inc/fields/file.php:122 inc/fields/media.php:28
 msgid "Edit"
 msgstr ""
 
-#: inc/fields/key-value.php:116
+#: inc/fields/input-list.php:90
+msgid "Select All / None"
+msgstr ""
+
+#: inc/fields/key-value.php:132
 msgid "Key"
 msgstr ""
 
-#: inc/fields/key-value.php:117
+#: inc/fields/key-value.php:133
 msgid "Value"
 msgstr ""
 
-#: inc/fields/map.php:60
+#: inc/fields/map.php:73
 msgid "Find Address"
 msgstr ""
 
-#: inc/fields/media.php:21
+#: inc/fields/media.php:24
 msgid "+ Add Media"
 msgstr ""
 
-#: inc/fields/media.php:22
+#: inc/fields/media.php:25
 msgid " file"
 msgstr ""
 
-#: inc/fields/media.php:23
+#: inc/fields/media.php:26
 msgid " files"
 msgstr ""
 
-#: inc/fields/media.php:26
+#: inc/fields/media.php:29
 msgid "View"
 msgstr ""
 
-#: inc/fields/media.php:27
+#: inc/fields/media.php:30
 msgid "No Title"
 msgstr ""
 
-#: inc/fields/media.php:30
+#: inc/fields/media.php:33
 msgid "Select Files"
 msgstr ""
 
-#: inc/fields/media.php:31
+#: inc/fields/media.php:34
 msgid "or"
 msgstr ""
 
-#: inc/fields/media.php:32
+#: inc/fields/media.php:35
 msgid "Drop files here to upload"
 msgstr ""
 
@@ -137,40 +307,44 @@ msgstr ""
 msgid "Embed HTML not available."
 msgstr ""
 
-#: inc/fields/oembed.php:79
-msgid "Preview"
-msgstr ""
-
-#: inc/fields/post.php:38
+#: inc/fields/post.php:32
 msgid "Select a post"
 msgstr ""
 
-#: inc/fields/post.php:41 inc/fields/taxonomy.php:56
+#: inc/fields/post.php:38 inc/fields/taxonomy.php:49
 #, php-format
 msgid "Select a %s"
 msgstr ""
 
-#: inc/fields/select-advanced.php:46
+#: inc/fields/select-advanced.php:45
 msgid "Select an item"
 msgstr ""
 
-#: inc/fields/select.php:89
+#: inc/fields/select.php:87
 msgid "All"
 msgstr ""
 
-#: inc/fields/select.php:89
+#: inc/fields/select.php:87
 msgid "None"
 msgstr ""
 
-#: inc/fields/taxonomy.php:53
+#: inc/fields/sidebar.php:30
+msgid "Select a sidebar"
+msgstr ""
+
+#: inc/fields/switch.php:90
+msgid "On"
+msgstr ""
+
+#: inc/fields/switch.php:91
+msgid "Off"
+msgstr ""
+
+#: inc/fields/taxonomy.php:43
 msgid "Select a term"
 msgstr ""
 
-#: inc/fields/thickbox-image.php:55
-msgid "Upload Images"
-msgstr ""
-
-#: inc/fields/user.php:38
+#: inc/fields/user.php:22
 msgid "Select an user"
 msgstr ""
 

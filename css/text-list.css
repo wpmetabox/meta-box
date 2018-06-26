@@ -1,0 +1,19 @@
+.rwmb-text_list-non-cloneable > .rwmb-input,
+.rwmb-text_list-clone {
+    display: flex;
+    flex-wrap: wrap;
+}
+.rwmb-text_list-non-cloneable > .rwmb-input > label,
+.rwmb-text_list-clone > label {
+    margin: 0 10px 10px 0;
+}
+.rwmb-text_list-non-cloneable > .rwmb-input > label:last-child,
+.rwmb-text_list-clone > label:last-child {
+    margin-right: 0;
+}
+
+.rwmb-text-list-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}

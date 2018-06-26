@@ -5,6 +5,100 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.19.11] - 2018-06-08
+### Fixed
+- Fixed styles for autocomplete address in map field in the frontend.
+
+## [4.19.10] - 2018-06-05
+### Fixed
+- Fixed missing styles for `autocomplete` in the frontend.
+- Added the correct image size in returned value of 'srcset' for image field.
+- Fixed `select_advanced` field doesn't keep the same width when cloning.
+### Changed
+- Improved the layout for `text_list` field.
+- Added MB User Profile and Meta Box - Beaver Themer Integrator. Removed ads for premium users.
+- Created a shared admin menu for extensions to add to. Also added hooks for extensions to add tabs to the About page.
+
+## [4.14.9] - 2018-05-17
+### Fixed
+- Fixed short array syntax (PHP 5.4) in taxonomy field.
+
+## [4.14.8] - 2018-05-16
+### Fixed
+- Activation via TGMPA causes 'headers already sent' error.
+
+## [4.14.7] - 2018-05-14
+### Changed
+- Updated the About page.
+
+## [4.14.6] - 2018-05-12
+### Added
+- Added `clone_as_multiple` option which allows to store clone values as multiple rows in the database. Props @radeno.
+-  Preserve the order of selected options for taxonomy, post, user and select_advanced that uses `select2`.
+### Fixed
+- Fixed "Select All | None" not working for taxonomy/user/post fields.
+- Quick fix for MB Frontend Submission.
+### Removed
+- Removed some languages that are available on translate.wordpress.org
+
+## [4.14.5] - 2018-04-05
+### Fixed
+- Fixed wrong syntax in the new filter that breaks the plugin to save values.
+
+## [4.14.4] - 2018-04-05
+### Fixed
+- Fixed for [MB Frontend Submission](https://metabox.io/plugins/mb-frontend-submission/) not be able to edit submitted posts.
+### Added
+- Added filter `rwmb_*_field` that allows developer to modify field settings before saving field value into the database. Credit @Twinpictures @baden03.
+
+## [4.14.3] - 2018-04-04
+### Fixed
+- Fixed `taxonomy` field not returning correct value if post ID is not set.
+- Fixed placeholder not shown for post/taxonomy/user fields by default.
+
+## [4.14.2] - 2018-03-27
+### Fixed
+- Fixed helper function for `taxonomy_advanced` returns incorrect value when no terms are selected. Fixed #1224
+- Do not save fields without id. Fix for custom table extension.
+
+## [4.14.1] - 2018-03-24
+### Added
+- Added `after_save_field` action.
+### Fixed
+- Fixed field taxonomy not saving for multiple taxonomies.
+- Fixed cloning taxonomy_advanced field
+
+## [4.14.0] - 2018-03-05
+### Added
+- Added compatibility for Gutenberg. The plugin is now fully compatible with Gutenberg, except the field types `file`, `image` and `wysiwyg`. These are Gutenberg bugs and hopefully they're fixed soon. See [our blog](https://metabox.io/blog/) for more details.
+- Added support for `image_size` for `image` field that sets image size in the backend.
+- Added support for `language` in `map` field.
+### Fixed
+- Fixed file input field doesn't hide the Remove button when cloning.
+- Fixed cloning not clearing "selected" class for buttons in the button groups.
+- Fixed step validation for `number` field.
+### Removed
+- Remove `thickbox_image` field. WordPress doesn't support it anymore. Use `image_advanced` instead.
+
+## [4.13.4] - 2018-02-28
+### Fixed
+- Fixed output of text-list field.
+- Fixed cloning radio field clears the checked status of existing field.
+
+## [4.13.3] - 2018-02-07
+### Fixed
+- Fixed drag and drop parent groups into child groups.
+- Removed type hint for adding new contexts. Caused fatal error for Tribulant Newsletter plugin.
+
+## [4.13.2] - 2018-01-31
+### Fixed
+- Fixed meta box not working in media modal.
+- Fixed "add new" button not appearing for nested groups with "max_clone" (for Meta Box Group extension).
+- Fixed sortable nested group being able to be moved outside of its parents (for Meta Box Group extension).
+- Fixed video field: broken CSS in admin and helper function not working.
+### Changed
+- Changed function name from `rwmb_get_field_data` to `rwmb_get_field_settings`.
+
 ## [4.13.1] - 2018-01-08
 ### Added
 - Added helper function `render_map` for map field, which can be used with groups to show Google maps.
@@ -749,7 +843,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.13.1...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.11...HEAD
+[4.14.11]: https://github.com/rilwis/meta-box/compare/4.14.10...4.14.11
+[4.14.10]: https://github.com/rilwis/meta-box/compare/4.14.9...4.14.10
+[4.14.9]: https://github.com/rilwis/meta-box/compare/4.14.8...4.14.9
+[4.14.8]: https://github.com/rilwis/meta-box/compare/4.14.7...4.14.8
+[4.14.7]: https://github.com/rilwis/meta-box/compare/4.14.6...4.14.7
+[4.14.6]: https://github.com/rilwis/meta-box/compare/4.14.5...4.14.6
+[4.14.5]: https://github.com/rilwis/meta-box/compare/4.14.4...4.14.5
+[4.14.4]: https://github.com/rilwis/meta-box/compare/4.14.3...4.14.4
+[4.14.3]: https://github.com/rilwis/meta-box/compare/4.14.2...4.14.3
+[4.14.2]: https://github.com/rilwis/meta-box/compare/4.14.1...4.14.2
+[4.14.1]: https://github.com/rilwis/meta-box/compare/4.14.0...4.14.1
+[4.14.0]: https://github.com/rilwis/meta-box/compare/4.13.4...4.14.0
+[4.13.4]: https://github.com/rilwis/meta-box/compare/4.13.3...4.13.4
+[4.13.3]: https://github.com/rilwis/meta-box/compare/4.13.2...4.13.3
+[4.13.2]: https://github.com/rilwis/meta-box/compare/4.13.1...4.13.2
 [4.13.1]: https://github.com/rilwis/meta-box/compare/4.13.0...4.13.1
 [4.13.0]: https://github.com/rilwis/meta-box/compare/4.12.6...4.13.0
 [4.12.6]: https://github.com/rilwis/meta-box/compare/4.12.5...4.12.6

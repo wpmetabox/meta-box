@@ -5,68 +5,47 @@ jQuery( function ( $ ) {
 	 * Object stores all necessary methods for select All/None actions
 	 * Assign to global variable so we can access to this object from select advanced field
 	 */
-	var select = window.rwmbSelect = {
+	var select = {
 		/**
 		 * Select all/none for select tag
-		 *
-		 * @param $input jQuery selector for input wrapper
-		 *
-		 * @return void
+		 * @param event Click event.
 		 */
-		selectAllNone: function ( $input ) {
-			var $element = $input.find( 'select' );
+		selectAllNone: function ( event ) {
+			event.preventDefault();
+			var $this = $( this ),
+				$element = $this.parent().siblings( 'select' );
 
-			$input.on( 'click', '.rwmb-select-all-none a', function ( e ) {
-				e.preventDefault();
-				if ( 'all' == $( this ).data( 'type' ) ) {
-					var selected = [];
-					$element.find( 'option' ).each( function ( i, e ) {
-						var $value = $( e ).attr( 'value' );
-
-						if ( $value != '' ) {
-							selected.push( $value );
-						}
-					} );
-					$element.val( selected ).trigger( 'change' );
-				}
-				else {
-					$element.val( '' );
-				}
+			if ( 'none' === $this.data( 'type' ) ) {
+				$element.val( [] ).trigger( 'change' );
+				return;
+			}
+			var selected = [];
+			$element.find( 'option' ).each( function ( index, option ) {
+				selected.push( option.value );
 			} );
+			$element.val( selected ).trigger( 'change' );
 		},
 
 		/**
 		 * Add event listener for select all/none links when click
-		 *
-		 * @param $el jQuery element
-		 *
-		 * @return void
+		 * @param $el jQuery select element
 		 */
 		bindEvents: function ( $el ) {
-			var $input = $el.closest( '.rwmb-input' ),
-				$clone = $input.find( '.rwmb-clone' );
-
-			if ( $clone.length ) {
-				$clone.each( function () {
-					select.selectAllNone( $( this ) );
-				} );
-			}
-			else {
-				select.selectAllNone( $input );
-			}
+			$el.closest( '.rwmb-input' ).on( 'click', '.rwmb-select-all-none a', select.selectAllNone );
 		}
 	};
 
 	/**
 	 * Update select field when clicking clone button
-	 *
-	 * @return void
 	 */
 	function update() {
 		select.bindEvents( $( this ) );
 	}
 
-	// Run for select field
+	// Run for select field.
 	$( '.rwmb-select' ).each( update );
 	$( document ).on( 'clone', '.rwmb-select', update );
+
+	// Export to use for select_advanced.
+	window.rwmbSelect = select;
 } );

@@ -163,6 +163,9 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
+			return;
+		}
 		$storage = $field['storage'];
 		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, array(), $post_id, $field );

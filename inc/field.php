@@ -196,6 +196,10 @@ abstract class RWMB_Field {
 			$args['single'] = $field['clone'] || ! $field['multiple'];
 		}
 
+		if ( $field['clone'] && $field['clone_as_multiple'] ) {
+			$args['single'] = false;
+		}
+
 		return $storage->get( $object_id, $field['id'], $args );
 	}
 
@@ -286,12 +290,47 @@ abstract class RWMB_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
+			return;
+		}
 		$name = $field['id'];
 		$storage = $field['storage'];
 
 		// Remove post meta if it's empty.
 		if ( '' === $new || array() === $new ) {
 			$storage->delete( $post_id, $name );
+			return;
+		}
+
+		// Save cloned fields as multiple values instead serialized array.
+		if ( $field['clone'] && $field['clone_as_multiple'] ) {
+			$old = array_filter( (array) $old );
+			$new = array_filter( (array) $new );
+
+			if ( empty( $new ) ) {
+				$storage->delete( $post_id, $name );
+			}
+
+			if ( $field['sort_clone'] && array_values( $new ) != array_values( $old ) ) {
+				$storage->delete( $post_id, $name );
+
+				foreach ( $new as $new_value ) {
+					$storage->add( $post_id, $name, $new_value, false );
+				}
+
+				return;
+			}
+
+			$new_values = array_diff( $new, $old );
+			foreach ( $new_values as $new_value ) {
+				$storage->add( $post_id, $name, $new_value, false );
+			}
+
+			$old_values = array_diff( $old, $new );
+			foreach ( $old_values as $old_value ) {
+				$storage->delete( $post_id, $name, $old_value );
+			}
+
 			return;
 		}
 
@@ -349,12 +388,14 @@ abstract class RWMB_Field {
 			'after'             => '',
 			'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
 			'placeholder'       => '',
+			'save_field'        => true,
 
-			'clone'         => false,
-			'max_clone'     => 0,
-			'sort_clone'    => false,
-			'add_button'    => __( '+ Add more', 'meta-box' ),
-			'clone_default' => false,
+			'clone'             => false,
+			'max_clone'         => 0,
+			'sort_clone'        => false,
+			'add_button'        => __( '+ Add more', 'meta-box' ),
+			'clone_default'     => false,
+			'clone_as_multiple' => false,
 
 			'class'      => '',
 			'disabled'   => false,
@@ -391,7 +432,7 @@ abstract class RWMB_Field {
 			'name'      => $field['field_name'],
 		) );
 
-		$attributes['class'] = implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) );
+		$attributes['class'] = trim( implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) ) );
 
 		return $attributes;
 	}

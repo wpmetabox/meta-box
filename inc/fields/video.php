@@ -3,7 +3,7 @@
  * Video field which uses WordPress media popup to upload and select video.
  *
  * @package Meta Box
- * @since 4.10
+ * @since   4.10
  */
 
 /**
@@ -40,7 +40,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 * Get uploaded file information.
 	 *
 	 * @param int   $file_id Attachment image ID (post ID). Required.
-	 * @param array $args Array of arguments (for size).
+	 * @param array $args    Array of arguments (for size).
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
@@ -100,18 +100,29 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	}
 
 	/**
-	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
+	 * Format value for a clone.
 	 *
-	 * @param array    $field   Field parameters.
-	 * @param array    $value   The value.
-	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 * @param array        $field   Field parameters.
+	 * @param string|array $value   The field meta value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null     $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
-	public static function format_single_value( $field, $value, $args, $post_id ) {
+	public static function format_clone_value( $field, $value, $args, $post_id ) {
 		$ids = implode( ',', wp_list_pluck( $value, 'ID' ) );
 
+		// Display single video.
+		if ( 1 === count( $value ) ) {
+			$video = reset( $value );
+			return wp_video_shortcode( array(
+				'src'    => $video['src'],
+				'width'  => $video['dimensions']['width'],
+				'height' => $video['dimensions']['height'],
+			) );
+		}
+
+		// Display multiple videos in a playlist.
 		return wp_playlist_shortcode( array(
 			'ids'  => $ids,
 			'type' => 'video',

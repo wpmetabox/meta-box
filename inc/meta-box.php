@@ -210,7 +210,9 @@ class RW_Meta_Box {
 	 * Callback function to show fields in meta box
 	 */
 	public function show() {
-		$this->set_object_id( $this->get_current_object_id() );
+		if ( null === $this->object_id ) {
+			$this->set_object_id( $this->get_current_object_id() );
+		}
 		$saved = $this->is_saved();
 
 		// Container.
@@ -295,8 +297,13 @@ class RW_Meta_Box {
 			}
 			$new = RWMB_Field::filter( 'value', $new, $field, $old );
 
+			// Filter to allow the field to be modified.
+			$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
+
 			// Call defined method to save meta value, if there's no methods, call common one.
 			RWMB_Field::call( $field, 'save', $new, $old, $post_id );
+
+			RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $post_id, $field );
 		}
 	}
 
@@ -390,6 +397,9 @@ class RW_Meta_Box {
 				continue;
 			}
 			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+			if ( false === $value ) {
+				continue;
+			}
 			if (
 				( ! $field['multiple'] && '' !== $value )
 				|| ( $field['multiple'] && array() !== $value )
@@ -430,12 +440,10 @@ class RW_Meta_Box {
 	/**
 	 * Set the object ID.
 	 *
-	 * @param null|int $id Object ID. null means the current object ID.
+	 * @param mixed $id Object ID.
 	 */
 	public function set_object_id( $id = null ) {
-		if ( null === $this->object_id ) {
-			$this->object_id = $id;
-		}
+		$this->object_id = $id;
 	}
 
 	/**

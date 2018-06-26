@@ -9,9 +9,9 @@ Thumbs.db export-ignore
 *.yml export-ignore
 *.xml export-ignore
 *.json export-ignore
+*.md export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
-readme.md export-ignore
 lang/*.po export-ignore
 lang/*.pot export-ignore
 lang/*.md export-ignore
