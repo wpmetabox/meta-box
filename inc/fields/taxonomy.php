@@ -58,7 +58,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'hide_empty' => false,
 		) );
-		// Query posts to set field options.
+		// Query terms for field options.
 		$field['options'] = self::query( $field );
 
 		// Prevent cloning for taxonomy field.
@@ -70,7 +70,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
-	 * Query terms to set field options.
+	 * Query terms for field options.
+	 *
 	 * @param  array $field Field settings.
 	 * @return array        Field options array.
 	 */
@@ -87,7 +88,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 		$options = array();
 		foreach ( $terms as $term ) {
-			$options[$term->term_id] = array(
+			$options[ $term->term_id ] = array(
 				'value'  => $term->term_id,
 				'label'  => $term->name,
 				'parent' => $term->parent,
