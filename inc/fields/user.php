@@ -19,8 +19,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	public static function normalize( $field ) {
 		// Set default field args.
 		$field = wp_parse_args( $field, array(
-			'placeholder' => __( 'Select an user', 'meta-box' ),
-			'query_args'  => array(),
+			'placeholder'   => __( 'Select an user', 'meta-box' ),
+			'query_args'    => array(),
+			'display_field' => 'display_name',
 		) );
 
 		// Query posts to set field options.
@@ -37,8 +38,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 * @return array        Field options array.
 	 */
 	public static function query( $field ) {
+		$display_field = $field['display_field'];
 		$args = wp_parse_args( $field['query_args'], array(
-			'orderby' => 'display_name',
+			'orderby' => $display_field,
 			'order'   => 'asc',
 		) );
 		$users   = get_users( $args );
@@ -46,7 +48,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		foreach ( $users as $user ) {
 			$options[$user->ID] = array(
 				'value' => $user->ID,
-				'label' => $user->display_name,
+				'label' => $user->$display_field,
 			);
 		}
 		return $options;
@@ -61,7 +63,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 * @return string
 	 */
 	public static function get_option_label( $field, $value ) {
-		$user  = get_userdata( $value );
-		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->display_name . '</a>';
+		$display_field = $field['display_field'];
+		$user          = get_userdata( $value );
+		return '<a href="' . get_author_posts_url( $value ) . '">' . $user->$display_field . '</a>';
 	}
 }

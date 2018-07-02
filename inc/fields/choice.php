@@ -12,13 +12,12 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	/**
 	 * Walk options.
 	 *
-	 * @param array $field     Field parameters.
-	 * @param mixed $options   Select options.
-	 * @param mixed $db_fields Database fields to use in the output.
-	 * @param mixed $meta      Meta value.
+	 * @param array $field   Field parameters.
+	 * @param mixed $options Field options.
+	 * @param mixed $meta    Meta value.
 	 * @return string
 	 */
-	public static function walk( $field, $options, $db_fields, $meta ) {
+	public static function walk( $field, $options, $meta ) {
 		return '';
 	}
 
@@ -30,11 +29,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$meta      = (array) $meta;
-		$options   = self::call( 'get_options', $field );
-		$options   = self::call( 'filter_options', $field, $options );
-		$db_fields = self::call( 'get_db_fields', $field );
-		return ! empty( $options ) ? self::call( 'walk', $field, $options, $db_fields, $meta ) : null;
+		return self::call( 'walk', $field, $field['options_transformed'], (array) $meta );
 	}
 
 	/**
@@ -50,57 +45,31 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 			'options' => array(),
 		) );
 
+		$field['options_transformed'] = self::transform_options( $field['options'] );
+
 		return $field;
 	}
 
 	/**
-	 * Get field names of object to be used by walker.
+	 * Transform field options into the verbose format.
+	 *
+	 * @param array $options Field options.
 	 *
 	 * @return array
 	 */
-	public static function get_db_fields() {
-		return array(
-			'parent' => 'parent',
-			'id'     => 'value',
-			'label'  => 'label',
-		);
-	}
-
-	/**
-	 * Get options for walker.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
-	 */
-	public static function get_options( $field ) {
-		$options = array();
-		foreach ( (array) $field['options'] as $value => $label ) {
+	public static function transform_options( $options ) {
+		$transformed = array();
+		$options     = (array) $options;
+		foreach ( $options as $value => $label ) {
 			$option = is_array( $label ) ? $label : array(
 				'label' => (string) $label,
 				'value' => (string) $value,
 			);
 			if ( isset( $option['label'] ) && isset( $option['value'] ) ) {
-				$options[ $option['value'] ] = (object) $option;
+				$transformed[ $option['value'] ] = (object) $option;
 			}
 		}
-		return $options;
-	}
-
-	/**
-	 * Filter options for walker.
-	 *
-	 * @param array $field   Field parameters.
-	 * @param array $options Array of choice options.
-	 *
-	 * @return array
-	 */
-	public static function filter_options( $field, $options ) {
-		foreach ( $options as &$option ) {
-			$option        = apply_filters( 'rwmb_option', $option, $field );
-			$option->label = apply_filters( 'rwmb_option_label', $option->label, $option, $field );
-		}
-		return $options;
+		return $transformed;
 	}
 
 	/**
@@ -126,7 +95,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function get_option_label( $field, $value ) {
-		$options = self::call( 'get_options', $field );
+		$options = $field['options_transformed'];
 		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
 }

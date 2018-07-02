@@ -20,23 +20,22 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	/**
 	 * Walk options.
 	 *
-	 * @param array $field     Field parameters.
-	 * @param mixed $options   Select options.
-	 * @param mixed $db_fields Database fields to use in the output.
-	 * @param mixed $meta      Meta value.
+	 * @param array $field   Field parameters.
+	 * @param mixed $options Field options.
+	 * @param mixed $meta    Meta value.
 	 *
 	 * @return string
 	 */
-	public static function walk( $field, $options, $db_fields, $meta ) {
+	public static function walk( $field, $options, $meta ) {
 		$attributes                  = self::call( 'get_attributes', $field, $meta );
 		$attributes['data-selected'] = $meta;
-		$walker                      = new RWMB_Walker_Select( $db_fields, $field, $meta );
+		$walker                      = new RWMB_Walker_Select( $field, $meta );
 		$output                      = sprintf(
 			'<select %s>',
 			self::render_attributes( $attributes )
 		);
-		if ( false === $field['multiple'] ) {
-			$output .= $field['placeholder'] ? '<option value="">' . esc_html( $field['placeholder'] ) . '</option>' : '';
+		if ( ! $field['multiple'] && $field['placeholder'] ) {
+			$output .= '<option value="">' . esc_html( $field['placeholder'] ) . '</option>';
 		}
 		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
 		$output .= '</select>';

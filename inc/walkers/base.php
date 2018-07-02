@@ -11,35 +11,32 @@
  */
 abstract class RWMB_Walker_Base extends Walker {
 	/**
-	 * Field data.
+	 * Field settings.
 	 *
-	 * @access public
 	 * @var array
 	 */
 	public $field;
 
 	/**
-	 * Meta data.
+	 * Field meta data.
 	 *
-	 * @access public
 	 * @var array
 	 */
-	public $meta = array();
+	public $meta;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param array $db_fields Database fields.
-	 * @param array $field     Field parameters.
-	 * @param mixed $meta      Meta value.
+	 * @param array $field Field parameters.
+	 * @param mixed $meta  Meta value.
 	 */
-	public function __construct( $db_fields, $field, $meta ) {
-		$this->db_fields = wp_parse_args( (array) $db_fields, array(
-			'parent' => '',
-			'id'     => '',
-			'label'  => '',
-		) );
-		$this->field     = $field;
-		$this->meta      = (array) $meta;
+	public function __construct( $field, $meta ) {
+		$this->db_fields = array(
+			'id'     => 'value',
+			'parent' => 'parent',
+		);
+
+		$this->field = $field;
+		$this->meta  = (array) $meta;
 	}
 }
