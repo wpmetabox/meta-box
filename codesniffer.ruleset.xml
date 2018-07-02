@@ -8,7 +8,7 @@
 
     <!-- Include the WordPress ruleset, with exclusions. -->
     <rule ref="WordPress-Docs" />
-    <rule ref="WordPress-Extra"/>
+    <rule ref="WordPress-Extra">
         <exclude name="WordPress.Files.FileName" />
     </rule>
 
