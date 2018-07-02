@@ -69,19 +69,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Get field names of object to be used by walker.
-	 *
-	 * @return array
-	 */
-	public static function get_db_fields() {
-		return array(
-			'parent' => '',
-			'id'     => '',
-			'label'  => '',
-		);
-	}
-
-	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
