@@ -12,14 +12,13 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
 	 * Get field HTML
 	 *
-	 * @param array $field     Field parameters.
-	 * @param mixed $options   Select options.
-	 * @param mixed $db_fields Database fields to use in the output.
-	 * @param mixed $meta      Meta value.
+	 * @param array $field   Field parameters.
+	 * @param mixed $options Field options.
+	 * @param mixed $meta    Meta value.
 	 * @return string
 	 */
-	public static function walk( $field, $options, $db_fields, $meta ) {
-		return call_user_func( array( self::get_type_class( $field ), 'walk' ), $field, $options, $db_fields, $meta );
+	public static function walk( $field, $options, $meta ) {
+		return call_user_func( array( self::get_type_class( $field ), 'walk' ), $field, $options, $meta );
 	}
 
 	/**

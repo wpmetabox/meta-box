@@ -10,7 +10,7 @@
  */
 class RWMB_Walker_Select_Tree {
 	/**
-	 * Field data.
+	 * Field settings.
 	 *
 	 * @var string
 	 */
@@ -21,23 +21,17 @@ class RWMB_Walker_Select_Tree {
 	 *
 	 * @var array
 	 */
-	public $meta = array();
+	public $meta;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param array $db_fields Database fields.
-	 * @param array $field     Field parameters.
-	 * @param mixed $meta      Meta value.
+	 * @param array $field Field parameters.
+	 * @param mixed $meta  Meta value.
 	 */
-	public function __construct( $db_fields, $field, $meta ) {
-		$this->db_fields = wp_parse_args( (array) $db_fields, array(
-			'parent' => '',
-			'id'     => '',
-			'label'  => '',
-		) );
-		$this->field     = $field;
-		$this->meta      = (array) $meta;
+	public function __construct( $field, $meta ) {
+		$this->field = $field;
+		$this->meta  = (array) $meta;
 	}
 
 	/**
@@ -48,15 +42,14 @@ class RWMB_Walker_Select_Tree {
 	 * @return string
 	 */
 	public function walk( $options ) {
-		$parent   = $this->db_fields['parent'];
 		$children = array();
 
 		foreach ( $options as $option ) {
-			$index = isset( $option->$parent ) ? $option->$parent : 0;
+			$index = isset( $option->parent ) ? $option->parent : 0;
 			$children[ $index ][] = $option;
 		}
 
-		$top_level = isset( $children[0] ) ? 0 : $options[0]->$parent;
+		$top_level = isset( $children[0] ) ? 0 : $options[0]->parent;
 		return $this->display_level( $children, $top_level, true );
 	}
 
@@ -70,25 +63,24 @@ class RWMB_Walker_Select_Tree {
 	 * @return string
 	 */
 	public function display_level( $options, $parent_id = 0, $active = false ) {
-		$id         = $this->db_fields['id'];
 		$field      = $this->field;
-		$walker     = new RWMB_Walker_Select( $this->db_fields, $field, $this->meta );
+		$walker     = new RWMB_Walker_Select( $field, $this->meta );
 		$attributes = RWMB_Field::call( 'get_attributes', $field, $this->meta );
 
 		$children = $options[ $parent_id ];
 		$output   = sprintf(
 			'<div class="rwmb-select-tree %s" data-parent-id="%s"><select %s>',
 			$active ? '' : 'hidden',
-			$parent_id,
+			esc_attr( $parent_id ),
 			RWMB_Field::render_attributes( $attributes )
 		);
-		$output .= isset( $field['placeholder'] ) ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		$output .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
 		$output .= $walker->walk( $children, - 1 );
 		$output .= '</select>';
 
-		foreach ( $children as $c ) {
-			if ( isset( $options[ $c->$id ] ) ) {
-				$output .= $this->display_level( $options, $c->$id, in_array( $c->$id, $this->meta ) && $active );
+		foreach ( $children as $child ) {
+			if ( isset( $options[ $child->value ] ) ) {
+				$output .= $this->display_level( $options, $child->value, in_array( $child->value, $this->meta ) && $active );
 			}
 		}
 

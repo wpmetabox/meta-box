@@ -21,17 +21,15 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 	 * @param int    $current_object_id ID of the current item.
 	 */
 	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
-		$label  = $this->db_fields['label'];
-		$id     = $this->db_fields['id'];
 		$meta   = $this->meta;
 		$indent = str_repeat( '&nbsp;', $depth * 4 );
 
 		$output .= sprintf(
 			'<option value="%s" %s>%s%s</option>',
-			esc_attr( $object->$id ),
-			selected( in_array( $object->$id, $meta ), true, false ),
+			esc_attr( $object->value ),
+			selected( in_array( $object->value, $meta ), true, false ),
 			$indent,
-			esc_html( RWMB_Field::filter( 'choice_label', $object->$label, $this->field, $object ) )
+			esc_html( $object->label )
 		);
 	}
 }
