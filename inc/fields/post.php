@@ -16,10 +16,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		// Set default field args.
 		$field = wp_parse_args( $field, array(
-			'post_type' => 'post',
-			'parent'    => false,
+			'post_type'  => 'post',
+			'parent'     => false,
+			'query_args' => array(),
 		) );
 
 		$field['post_type'] = (array) $field['post_type'];
@@ -41,11 +41,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$field = wp_parse_args( $field, array(
 			'placeholder' => $placeholder,
 		) );
-		$field = parent::normalize( $field );
 
-		if ( ! isset( $field['query_args']['post_type'] ) ) {
-			$field['query_args']['post_type'] = $field['post_type'];
-		}
+		// Query posts for field options.
+		$field['options'] = self::query( $field );
 
 		// Set parent option, which will change field name to `parent_id` to save as post parent.
 		if ( $field['parent'] ) {
@@ -53,26 +51,35 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$field['field_name'] = 'parent_id';
 		}
 
-		// Set default query args.
-		$field['query_args'] = wp_parse_args( $field['query_args'], array(
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-		) );
+		$field = parent::normalize( $field );
 
 		return $field;
 	}
 
 	/**
-	 * Get field names of object to be used by walker.
-	 *
-	 * @return array
+	 * Query posts for field options.
+	 * @param  array $field Field settings.
+	 * @return array        Field options array.
 	 */
-	public static function get_db_fields() {
-		return array(
-			'parent' => 'post_parent',
-			'id'     => 'ID',
-			'label'  => 'post_title',
-		);
+	public static function query( $field ) {
+		$args = wp_parse_args( $field['query_args'], array(
+			'post_type'              => $field['post_type'],
+			'post_status'            => 'publish',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		) );
+		$query   = new WP_Query( $args );
+		$options = array();
+		foreach ( $query->posts as $post ) {
+			$options[$post->ID] = array(
+				'value'  => $post->ID,
+				'label'  => $post->post_title,
+				'parent' => $post->post_parent,
+			);
+		}
+		return $options;
 	}
 
 	/**
@@ -90,17 +97,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function meta( $post_id, $saved, $field ) {
 		return $field['parent'] ? wp_get_post_parent_id( $post_id ) : parent::meta( $post_id, $saved, $field );
-	}
-
-	/**
-	 * Get options for walker.
-	 *
-	 * @param array $field Field parameters.
-	 * @return array
-	 */
-	public static function get_options( $field ) {
-		$query = new WP_Query( $field['query_args'] );
-		return $query->have_posts() ? $query->posts : array();
 	}
 
 	/**

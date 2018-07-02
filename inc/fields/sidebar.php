@@ -17,48 +17,33 @@ class RWMB_Sidebar_Field extends RWMB_Object_Choice_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		// Set default field args.
+		$field = wp_parse_args( $field, array(
+			'placeholder' => __( 'Select a sidebar', 'meta-box' ),
+		) );
+
+		// Get sidebars for field options.
+		$field['options'] = self::query( $field );
+
 		$field = parent::normalize( $field );
-
-		// Prevent select tree for user since it's not hierarchical.
-		$field['field_type'] = 'select_tree' === $field['field_type'] ? 'select' : $field['field_type'];
-
-		// Set to always flat.
-		$field['flatten'] = true;
-
-		// Set default placeholder.
-		$field['placeholder'] = empty( $field['placeholder'] ) ? __( 'Select a sidebar', 'meta-box' ) : $field['placeholder'];
 
 		return $field;
 	}
 
 	/**
-	 * Get users.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
+	 * Get sidebars for field options.
+	 * @param  array $field Field settings.
+	 * @return array        Field options array.
 	 */
-	public static function get_options( $field ) {
+	public static function query( $field ) {
 		global $wp_registered_sidebars;
 		$options = array();
 		foreach ( $wp_registered_sidebars as $sidebar ) {
-			$options[] = (object) $sidebar;
+			$options[$sidebar['id']] = array(
+				'value' => $sidebar['id'],
+				'label' => $sidebar['name'],
+			);
 		}
 		return $options;
-	}
-
-	/**
-	 * Get field names of object to be used by walker.
-	 *
-	 * @return array
-	 */
-	public static function get_db_fields() {
-		return array(
-			'parent' => 'parent',
-			'id'     => 'id',
-			'label'  => 'name',
-		);
 	}
 
 	/**
