@@ -18,15 +18,13 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Walk options.
+	 * Get field HTML.
 	 *
-	 * @param array $field   Field parameters.
-	 * @param mixed $options Field options.
-	 * @param mixed $meta    Meta value.
-	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
-	public static function walk( $field, $options, $meta ) {
+	public static function html( $meta, $field ) {
 		$attributes                  = self::call( 'get_attributes', $field, $meta );
 		$attributes['data-selected'] = $meta;
 		$walker                      = new RWMB_Walker_Select( $field, $meta );
@@ -37,7 +35,7 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 		if ( ! $field['multiple'] && $field['placeholder'] ) {
 			$output .= '<option value="">' . esc_html( $field['placeholder'] ) . '</option>';
 		}
-		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
+		$output .= $walker->walk( $field['options_transformed'], $field['flatten'] ? -1 : 0 );
 		$output .= '</select>';
 		$output .= self::get_select_all_html( $field );
 		return $output;
