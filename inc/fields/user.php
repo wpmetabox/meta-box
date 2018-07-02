@@ -24,7 +24,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'display_field' => 'display_name',
 		) );
 
-		// Query posts to set field options.
+		// Query posts for field options.
 		$field['options'] = self::query( $field );
 
 		$field = parent::normalize( $field );
@@ -33,7 +33,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
-	 * Query users to set field options.
+	 * Query users for field options.
+	 *
 	 * @param  array $field Field settings.
 	 * @return array        Field options array.
 	 */
@@ -46,7 +47,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$users   = get_users( $args );
 		$options = array();
 		foreach ( $users as $user ) {
-			$options[$user->ID] = array(
+			$options[ $user->ID ] = array(
 				'value' => $user->ID,
 				'label' => $user->$display_field,
 			);

@@ -31,6 +31,7 @@ class RWMB_Sidebar_Field extends RWMB_Object_Choice_Field {
 
 	/**
 	 * Get sidebars for field options.
+	 *
 	 * @param  array $field Field settings.
 	 * @return array        Field options array.
 	 */
@@ -38,7 +39,7 @@ class RWMB_Sidebar_Field extends RWMB_Object_Choice_Field {
 		global $wp_registered_sidebars;
 		$options = array();
 		foreach ( $wp_registered_sidebars as $sidebar ) {
-			$options[$sidebar['id']] = array(
+			$options[ $sidebar['id'] ] = array(
 				'value' => $sidebar['id'],
 				'label' => $sidebar['name'],
 			);
