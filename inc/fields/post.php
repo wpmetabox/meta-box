@@ -100,15 +100,17 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
-	 * Get option label.
+	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
-	 * @param array  $field Field parameters.
-	 * @param string $value Option value.
+	 * @param array    $field   Field parameters.
+	 * @param string   $value   The value.
+	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
-	public static function get_option_label( $field, $value ) {
-		return sprintf(
+	public static function format_single_value( $field, $value, $args, $post_id ) {
+		return ! $value ? '' : sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_permalink( $value ) ),
 			the_title_attribute( array(
