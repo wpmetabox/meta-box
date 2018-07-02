@@ -18,22 +18,20 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Walk options.
+	 * Get field HTML.
 	 *
-	 * @param array $field   Field parameters.
-	 * @param mixed $options Field options.
-	 * @param mixed $meta    Meta value.
-	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
 	 * @return string
 	 */
-	public static function walk( $field, $options, $meta ) {
+	public static function html( $meta, $field ) {
 		$walker = new RWMB_Walker_Input_List( $field, $meta );
 		$output = self::get_select_all_html( $field );
 		$output .= sprintf( '<ul class="rwmb-input-list %s %s">',
 			$field['collapse'] ? 'collapse' : '',
 			$field['inline'] ? 'inline' : ''
 		);
-		$output .= $walker->walk( $options, $field['flatten'] ? - 1 : 0 );
+		$output .= $walker->walk( $field['options_transformed'], $field['flatten'] ? -1 : 0 );
 		$output .= '</ul>';
 
 		return $output;

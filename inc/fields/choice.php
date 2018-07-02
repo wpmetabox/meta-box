@@ -10,18 +10,6 @@
  */
 abstract class RWMB_Choice_Field extends RWMB_Field {
 	/**
-	 * Walk options.
-	 *
-	 * @param array $field   Field parameters.
-	 * @param mixed $options Field options.
-	 * @param mixed $meta    Meta value.
-	 * @return string
-	 */
-	public static function walk( $field, $options, $meta ) {
-		return '';
-	}
-
-	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
@@ -29,7 +17,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		return self::call( 'walk', $field, $field['options_transformed'], (array) $meta );
+		return '';
 	}
 
 	/**
