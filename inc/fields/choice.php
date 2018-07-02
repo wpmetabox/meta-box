@@ -83,18 +83,6 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		return self::call( 'get_option_label', $field, $value );
-	}
-
-	/**
-	 * Get option label.
-	 *
-	 * @param array  $field Field parameters.
-	 * @param string $value Option value.
-	 *
-	 * @return string
-	 */
-	public static function get_option_label( $field, $value ) {
 		$options = $field['options_transformed'];
 		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
