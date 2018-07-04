@@ -25,12 +25,13 @@ class RWMB_Button_Group_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
+		$options = self::transform_options( $field['options'] );
 		$walker = new RWMB_Walker_Input_List( $field, $meta );
 
 		$output = sprintf( '<ul class="rwmb-button-input-list %s">',
 			$field['inline'] ? 'inline' : ''
 		);
-		$output .= $walker->walk( $field['options_transformed'], -1 );
+		$output .= $walker->walk( $options, -1 );
 		$output .= '</ul>';
 
 		return $output;

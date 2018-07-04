@@ -33,8 +33,6 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 			'options' => array(),
 		) );
 
-		$field['options_transformed'] = self::transform_options( $field['options'] );
-
 		return $field;
 	}
 
@@ -71,7 +69,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		$options = $field['options_transformed'];
+		$options = self::transform_options( $field['options'] );
 		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
 }

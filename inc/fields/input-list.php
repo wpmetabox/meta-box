@@ -25,13 +25,14 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
+		$options = self::transform_options( $field['options'] );
 		$walker = new RWMB_Walker_Input_List( $field, $meta );
 		$output = self::get_select_all_html( $field );
 		$output .= sprintf( '<ul class="rwmb-input-list %s %s">',
 			$field['collapse'] ? 'collapse' : '',
 			$field['inline'] ? 'inline' : ''
 		);
-		$output .= $walker->walk( $field['options_transformed'], $field['flatten'] ? -1 : 0 );
+		$output .= $walker->walk( $options, $field['flatten'] ? -1 : 0 );
 		$output .= '</ul>';
 
 		return $output;
