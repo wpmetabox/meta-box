@@ -1,18 +1,17 @@
-/* global google */
-
-(function ( $, document, window, google ) {
+( function( $, L ) {
 	'use strict';
 
+	var osmTileLayer = L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	} );
+
 	// Use function construction to store map & DOM elements separately for each instance
-	var MapField = function ( $container ) {
+	var OsmField = function ( $container ) {
 		this.$container = $container;
 	};
 
-	// Geocoder service.
-	var geocoder = new google.maps.Geocoder();
-
 	// Use prototype for better performance
-	MapField.prototype = {
+	OsmField.prototype = {
 		// Initialize everything
 		init: function () {
 			this.initDomElements();
@@ -20,15 +19,15 @@
 
 			this.initMarkerPosition();
 			this.addListeners();
-			this.autocomplete();
+			// this.autocomplete();
 		},
 
 		// Initialize DOM elements
 		initDomElements: function () {
-			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
+			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
 			this.canvas = this.$canvas[0];
-			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
-			this.$findButton = this.$container.find( '.rwmb-map-goto-address-button' );
+			this.$coordinate = this.$container.find( '.rwmb-osm-coordinate' );
+			this.$findButton = this.$container.find( '.rwmb-osm-goto-address-button' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
@@ -37,16 +36,17 @@
 			var defaultLoc = this.$canvas.data( 'default-loc' ),
 				latLng;
 
-			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, - 6.258860];
-			latLng = new google.maps.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map
+			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, -6.258860];
+			latLng = new L.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map.
 
-			this.map = new google.maps.Map( this.canvas, {
+			this.map = new L.Map( this.canvas, {
 				center: latLng,
-				zoom: 14,
-				streetViewControl: 0,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				zoom: 14
 			} );
-			this.marker = new google.maps.Marker( {position: latLng, map: this.map, draggable: true} );
+			this.map.addLayer( osmTileLayer );
+			this.marker = L.marker( latLng, {
+				draggable: true
+			} ).addTo( this.map );
 		},
 
 		// Initialize marker position
@@ -57,11 +57,12 @@
 
 			if ( coordinate ) {
 				location = coordinate.split( ',' );
-				this.marker.setPosition( new google.maps.LatLng( location[0], location[1] ) );
+				var latLng = new L.latLng( location[0], location[1] );
+				this.marker.setLatLng( latLng );
 
 				zoom = location.length > 2 ? parseInt( location[2], 10 ) : 14;
 
-				this.map.setCenter( this.marker.position );
+				this.map.panTo( latLng );
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
 				this.geocodeAddress();
@@ -71,17 +72,17 @@
 		// Add event listeners for 'click' & 'drag'
 		addListeners: function () {
 			var that = this;
-			google.maps.event.addListener( this.map, 'click', function ( event ) {
-				that.marker.setPosition( event.latLng );
-				that.updateCoordinate( event.latLng );
+			this.map.on( 'click', function ( event ) {
+				that.marker.setLatLng( event.latlng );
+				that.updateCoordinate( event.latlng );
 			} );
 
-			google.maps.event.addListener( this.map, 'zoom_changed', function ( event ) {
-				that.updateCoordinate( that.marker.getPosition() );
+			this.map.on( 'zoom', function ( event ) {
+				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			google.maps.event.addListener( this.marker, 'drag', function ( event ) {
-				that.updateCoordinate( event.latLng );
+			this.marker.on( 'drag', function ( event ) {
+				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
 			this.$findButton.on( 'click', function () {
@@ -91,7 +92,7 @@
 
 			/**
 			 * Add a custom event that allows other scripts to refresh the maps when needed
-			 * For example: when maps is in tabs or hidden div.
+			 * For example: when maps is in tabs or hidden div (this is known issue of Google Maps)
 			 *
 			 * @see https://developers.google.com/maps/documentation/javascript/reference ('resize' Event)
 			 */
@@ -114,6 +115,7 @@
 				center = this.map.getCenter();
 
 			if ( this.map ) {
+				google.maps.event.trigger( this.map, 'resize' );
 				this.map.setZoom( zoom );
 				this.map.panTo( center );
 			}
@@ -121,11 +123,18 @@
 
 		// Autocomplete address
 		autocomplete: function () {
-			var that = this,
-				$address = this.getAddressField();
+			var that = this;
 
-			if ( null === $address ) {
+			// No address field or more than 1 address fields, ignore
+			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
 				return;
+			}
+
+			var $address = $( 'input[name="' + this.addressField + '"]');
+
+			// If map and address is inside a group, the input name of address field is changed.
+			if ( 0 === $address.length ) {
+				$address = this.$container.closest( '.rwmb-group-wrapper' ).find( 'input[name*="[' + this.addressField + ']"]' );
 			}
 
 			// If Meta Box Geo Location installed. Do not run auto complete.
@@ -156,7 +165,8 @@
 				},
 				select: function ( event, ui ) {
 					var latLng = new google.maps.LatLng( ui.item.latitude, ui.item.longitude );
-					that.map.setCenter( latLng );
+
+					that.map.panTo( latLng );
 					that.marker.setPosition( latLng );
 					that.updateCoordinate( latLng );
 				}
@@ -166,13 +176,23 @@
 		// Update coordinate to input field
 		updateCoordinate: function ( latLng ) {
 			var zoom = this.map.getZoom();
-			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom );
+			this.$coordinate.val( latLng.lat + ',' + latLng.lng + ',' + zoom );
 		},
 
 		// Find coordinates by address
 		geocodeAddress: function () {
-			var address = this.getAddress(),
+			var address,
+				addressList = [],
+				fieldList = this.addressField.split( ',' ),
+				loop,
 				that = this;
+
+			for ( loop = 0; loop < fieldList.length; loop ++ ) {
+				addressList[loop] = $( '#' + fieldList[loop] ).val();
+			}
+
+			address = addressList.join( ',' ).replace( /\n/g, ',' ).replace( /,,/g, ',' );
+
 			if ( ! address ) {
 				return;
 			}
@@ -181,68 +201,24 @@
 				if ( status !== google.maps.GeocoderStatus.OK ) {
 					return;
 				}
-				that.map.setCenter( results[0].geometry.location );
+				that.map.panTo( results[0].geometry.location );
 				that.marker.setPosition( results[0].geometry.location );
 				that.updateCoordinate( results[0].geometry.location );
 			} );
-		},
-
-		// Get the address field.
-		getAddressField: function() {
-			// No address field or more than 1 address fields, ignore
-			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
-				return null;
-			}
-			return this.findAddressField( this.addressField );
-		},
-
-		// Get the address value for geocoding.
-		getAddress: function() {
-			var that = this;
-
-			return this.addressField.split( ',' )
-				.map( function( part ) {
-					part = that.findAddressField( part );
-					return null === part ? '' : part.val();
-				} )
-				.join( ',' ).replace( /\n/g, ',' ).replace( /,,/g, ',' );
-		},
-
-		// Find address field based on its name attribute. Auto search inside groups when needed.
-		findAddressField: function( fieldName ) {
-			// Not in a group.
-			var $address = $( 'input[name="' + fieldName + '"]');
-			if ( $address.length ) {
-				return $address;
-			}
-
-			// If map and address is inside a cloneable group.
-			$address = this.$container.closest( '.rwmb-group-clone' ).find( 'input[name*="[' + fieldName + ']"]' );
-			if ( $address.length ) {
-				return $address;
-			}
-
-			// If map and address is inside a non-cloneable group.
-			$address = this.$container.closest( '.rwmb-group-wrapper' ).find( 'input[name*="[' + fieldName + ']"]' );
-			if ( $address.length ) {
-				return $address;
-			}
-
-			return null;
 		}
 	};
 
 	function update() {
-		$( '.rwmb-map-field' ).each( function () {
+		$( '.rwmb-osm-field' ).each( function () {
 			var $this = $( this ),
-				controller = $this.data( 'mapController' );
+				controller = $this.data( 'osmController' );
 			if ( controller ) {
 				return;
 			}
 
-			controller = new MapField( $this );
+			controller = new OsmField( $this );
 			controller.init();
-			$this.data( 'mapController', controller );
+			$this.data( 'osmController', controller );
 		} );
 	}
 
@@ -251,4 +227,4 @@
 		$( '.rwmb-input' ).on( 'clone', update );
 	} );
 
-})( jQuery, document, window, google );
+} )( jQuery, L );

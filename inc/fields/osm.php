@@ -1,24 +1,24 @@
 <?php
 /**
- * The Open Street Maps field.
+ * The Open Street Map field.
  *
  * @package Meta Box
+ * @since   4.15.0
  */
 
 /**
- * OSM Map field class.
+ * Open Street Map field class.
  */
-class RWMB_OSM_Map_Field extends RWMB_Field {
+class RWMB_OSM_Field extends RWMB_Field {
 	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'leafletjs', RWMB_CSS_URL . 'leaflet.css', array(), '1.3.1' );
-		wp_enqueue_script( 'leafletjs', RWMB_JS_URL . 'leaflet.js', array(), '1.3.1', true );
-		
-		wp_enqueue_style( 'rwmb-osm-map', RWMB_CSS_URL . 'osm-map.css', array( 'common', 'forms', 'leafletjs' ), RWMB_VER );
-		wp_enqueue_script( 'rwmb-leaflet-maps', RWMB_JS_URL . 'osm-map.js', array( 'jquery', 'leafletjs' ), RWMB_VER, true );
-		
+		wp_enqueue_style( 'leaflet', RWMB_CSS_URL . 'leaflet.css', array(), '1.3.1' );
+		wp_enqueue_style( 'rwmb-osm', RWMB_CSS_URL . 'osm.css', array( 'common', 'forms', 'leaflet' ), RWMB_VER );
+
+		wp_enqueue_script( 'leaflet', RWMB_JS_URL . 'leaflet.js', array(), '1.3.1', true );
+		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', array( 'jquery', 'leaflet' ), RWMB_VER, true );
 	}
 
 	/**
@@ -32,25 +32,18 @@ class RWMB_OSM_Map_Field extends RWMB_Field {
 	public static function html( $meta, $field ) {
 		$address = is_array( $field['address_field'] ) ? implode( ',', $field['address_field'] ) : $field['address_field'];
 		$html    = sprintf(
-			'<div class="rwmb-osm-map-field" data-address-field="%s">',
+			'<div class="rwmb-osm-field" data-address-field="%s">',
 			esc_attr( $address )
 		);
 
 		$html .= sprintf(
-			'<div class="rwmb-osm-map-canvas" data-default-loc="%s" data-region="%s"></div>
-			<input type="hidden" name="%s" class="rwmb-osm-map-coordinate" value="%s">',
+			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s"></div>
+			<input type="hidden" name="%s" class="rwmb-osm-coordinate" value="%s">',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
 			esc_attr( $field['field_name'] ),
 			esc_attr( $meta )
 		);
-
-		/*if ( $field['address_field'] ) {
-			$html .= sprintf(
-				'<button class="button rwmb-map-goto-address-button">%s</button>',
-				esc_html__( 'Find Address', 'meta-box' )
-			);
-		}*/
 
 		$html .= '</div>';
 
@@ -71,10 +64,6 @@ class RWMB_OSM_Map_Field extends RWMB_Field {
 			'address_field' => '',
 			'language'      => '',
 			'region'        => '',
-
-			// Default API key, required by Google Maps since June 2016.
-			// Users should overwrite this key with their own key.
-// 			'api_key'       => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
 		) );
 
 		return $field;
@@ -109,9 +98,6 @@ class RWMB_OSM_Map_Field extends RWMB_Field {
 	 */
 	public static function the_value( $field, $args = array(), $post_id = null ) {
 		$value = parent::get_value( $field, $args, $post_id );
-		$args  = wp_parse_args( $args, array(
-			'api_key' => isset( $field['api_key'] ) ? $field['api_key'] : '',
-		) );
 		return self::render_map( $value, $args );
 	}
 
@@ -138,10 +124,6 @@ class RWMB_OSM_Map_Field extends RWMB_Field {
 			'marker_title' => '', // Marker title, when hover.
 			'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
 			'js_options'   => array(),
-
-			// Default API key, required by Google Maps since June 2016.
-			// Users should overwrite this key with their own key.
-			'api_key'      => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
 		) );
 
 		$google_maps_url = add_query_arg( 'key', $args['api_key'], 'https://maps.google.com/maps/api/js' );
