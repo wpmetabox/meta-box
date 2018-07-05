@@ -135,32 +135,21 @@ class RWMB_OSM_Field extends RWMB_Field {
 			'js_options'   => array(),
 		) );
 
-		$google_maps_url = add_query_arg( 'key', $args['api_key'], 'https://maps.google.com/maps/api/js' );
+		wp_enqueue_style( 'leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css', array(), '1.3.1' );
+		wp_enqueue_script( 'leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js', array(), '1.3.1', true );
+		wp_enqueue_script( 'rwmb-osm-frontend', RWMB_JS_URL . 'osm-frontend.js', array( 'jquery', 'leaflet' ), RWMB_VER, true );
 
 		/*
-		 * Allows developers load more libraries via a filter.
-		 * @link https://developers.google.com/maps/documentation/javascript/libraries
-		 */
-		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
-		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-map-frontend', RWMB_JS_URL . 'map-frontend.js', array( 'google-maps' ), RWMB_VER, true );
-
-		/*
-		 * Google Maps options.
-		 * Option name is the same as specified in Google Maps documentation.
-		 * This array will be convert to Javascript Object and pass as map options.
-		 * @link https://developers.google.com/maps/documentation/javascript/reference
+		 * More Open Street Map options
+		 * @link https://leafletjs.com/reference-1.3.0.html#map-option
 		 */
 		$args['js_options'] = wp_parse_args( $args['js_options'], array(
 			// Default to 'zoom' level set in admin, but can be overwritten.
-			'zoom'      => $zoom,
-
-			// Map type, see https://developers.google.com/maps/documentation/javascript/reference#MapTypeId.
-			'mapTypeId' => 'ROADMAP',
+			'zoom' => $zoom,
 		) );
 
 		$output = sprintf(
-			'<div class="rwmb-map-canvas" data-map_options="%s" style="width:%s;height:%s"></div>',
+			'<div class="rwmb-osm-canvas" data-osm_options="%s" style="width:%s;height:%s"></div>',
 			esc_attr( wp_json_encode( $args ) ),
 			esc_attr( $args['width'] ),
 			esc_attr( $args['height'] )
