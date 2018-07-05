@@ -38,13 +38,21 @@ class RWMB_OSM_Field extends RWMB_Field {
 		);
 
 		$html .= sprintf(
-			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s"></div>
+			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s" data-language="%s"></div>
 			<input type="hidden" name="%s" class="rwmb-osm-coordinate" value="%s">',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
+			esc_attr( $field['language'] ),
 			esc_attr( $field['field_name'] ),
 			esc_attr( $meta )
 		);
+
+		if ( $field['address_field'] ) {
+			$html .= sprintf(
+				'<button class="button rwmb-osm-goto-address-button">%s</button>',
+				esc_html__( 'Find Address', 'meta-box' )
+			);
+		}
 
 		$html .= '</div>';
 

@@ -19,7 +19,7 @@
 
 			this.initMarkerPosition();
 			this.addListeners();
-			// this.autocomplete();
+			this.autocomplete();
 		},
 
 		// Initialize DOM elements
@@ -37,9 +37,9 @@
 				latLng;
 
 			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, -6.258860];
-			latLng = new L.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map.
+			latLng = L.latLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map.
 
-			this.map = new L.Map( this.canvas, {
+			this.map = L.map( this.canvas, {
 				center: latLng,
 				zoom: 14
 			} );
@@ -57,7 +57,7 @@
 
 			if ( coordinate ) {
 				location = coordinate.split( ',' );
-				var latLng = new L.latLng( location[0], location[1] );
+				var latLng = L.latLng( location[0], location[1] );
 				this.marker.setLatLng( latLng );
 
 				zoom = location.length > 2 ? parseInt( location[2], 10 ) : 14;
@@ -77,17 +77,17 @@
 				that.updateCoordinate( event.latlng );
 			} );
 
-			this.map.on( 'zoom', function ( event ) {
+			this.map.on( 'zoom', function () {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			this.marker.on( 'drag', function ( event ) {
+			this.marker.on( 'drag', function () {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			this.$findButton.on( 'click', function () {
+			this.$findButton.on( 'click', function ( e ) {
+				e.preventDefault();
 				that.geocodeAddress();
-				return false;
 			} );
 
 			/**
@@ -111,63 +111,49 @@
 		},
 
 		refresh: function () {
-			var zoom = this.map.getZoom(),
-				center = this.map.getCenter();
-
 			if ( this.map ) {
-				google.maps.event.trigger( this.map, 'resize' );
-				this.map.setZoom( zoom );
-				this.map.panTo( center );
+				this.map.panTo( this.map.getCenter() );
 			}
 		},
 
 		// Autocomplete address
 		autocomplete: function () {
-			var that = this;
+			var that = this,
+				$address = this.getAddressField();
 
-			// No address field or more than 1 address fields, ignore
-			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
+			if ( null === $address ) {
 				return;
-			}
-
-			var $address = $( 'input[name="' + this.addressField + '"]');
-
-			// If map and address is inside a group, the input name of address field is changed.
-			if ( 0 === $address.length ) {
-				$address = this.$container.closest( '.rwmb-group-wrapper' ).find( 'input[name*="[' + this.addressField + ']"]' );
 			}
 
 			// If Meta Box Geo Location installed. Do not run auto complete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
-				$address.on( 'selected_address', function () {
-					that.$findButton.trigger( 'click' );
-				} );
-
-				return false;
+				$address.on( 'selected_address', that.geocodeAddress );
+				return;
 			}
 
 			$address.autocomplete( {
 				source: function ( request, response ) {
-					var options = {
-						'address': request.term,
-						'region': that.$canvas.data( 'region' )
-					};
-					geocoder.geocode( options, function ( results ) {
-						response( $.map( results, function ( item ) {
+					$.get( 'https://nominatim.openstreetmap.org/search', {
+						format: 'json',
+						q: request.term,
+						countrycodes: that.$canvas.data( 'region' ),
+						"accept-language": that.$canvas.data( 'language' )
+					}, function( result ) {
+						response( result.map( function ( item ) {
 							return {
-								label: item.formatted_address,
-								value: item.formatted_address,
-								latitude: item.geometry.location.lat(),
-								longitude: item.geometry.location.lng()
+								label: item.display_name,
+								value: item.display_name,
+								latitude: item.lat,
+								longitude: item.lon
 							};
 						} ) );
-					} );
+					}, 'json' );
 				},
 				select: function ( event, ui ) {
-					var latLng = new google.maps.LatLng( ui.item.latitude, ui.item.longitude );
+					var latLng = L.latLng( ui.item.latitude, ui.item.longitude );
 
 					that.map.panTo( latLng );
-					that.marker.setPosition( latLng );
+					that.marker.setLatLng( latLng );
 					that.updateCoordinate( latLng );
 				}
 			} );
@@ -181,30 +167,71 @@
 
 		// Find coordinates by address
 		geocodeAddress: function () {
-			var address,
-				addressList = [],
-				fieldList = this.addressField.split( ',' ),
-				loop,
+			var address = this.getAddress(),
 				that = this;
-
-			for ( loop = 0; loop < fieldList.length; loop ++ ) {
-				addressList[loop] = $( '#' + fieldList[loop] ).val();
-			}
-
-			address = addressList.join( ',' ).replace( /\n/g, ',' ).replace( /,,/g, ',' );
-
 			if ( ! address ) {
 				return;
 			}
 
-			geocoder.geocode( {'address': address}, function ( results, status ) {
-				if ( status !== google.maps.GeocoderStatus.OK ) {
+			$.get( 'https://nominatim.openstreetmap.org/search', {
+				format: 'json',
+				q: address,
+				limit: 1,
+				countrycodes: that.$canvas.data( 'region' ),
+				"accept-language": that.$canvas.data( 'language' )
+			}, function( result ) {
+				if ( result.length !== 1 ) {
 					return;
 				}
-				that.map.panTo( results[0].geometry.location );
-				that.marker.setPosition( results[0].geometry.location );
-				that.updateCoordinate( results[0].geometry.location );
-			} );
+				var latLng = L.latLng( result[0].lat, result[0].lon );
+				that.map.panTo( latLng );
+				that.marker.setLatLng( latLng );
+				that.updateCoordinate( latLng );
+			}, 'json' );
+		},
+
+		// Get the address field.
+		getAddressField: function() {
+			// No address field or more than 1 address fields, ignore
+			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
+				return null;
+			}
+			return this.findAddressField( this.addressField );
+		},
+
+		// Get the address value for geocoding.
+		getAddress: function() {
+			var that = this;
+
+			return this.addressField.split( ',' )
+				.map( function( part ) {
+					part = that.findAddressField( part );
+					return null === part ? '' : part.val();
+				} )
+				.join( ',' ).replace( /\n/g, ',' ).replace( /,,/g, ',' );
+		},
+
+		// Find address field based on its name attribute. Auto search inside groups when needed.
+		findAddressField: function( fieldName ) {
+			// Not in a group.
+			var $address = $( 'input[name="' + fieldName + '"]');
+			if ( $address.length ) {
+				return $address;
+			}
+
+			// If map and address is inside a cloneable group.
+			$address = this.$container.closest( '.rwmb-group-clone' ).find( 'input[name*="[' + fieldName + ']"]' );
+			if ( $address.length ) {
+				return $address;
+			}
+
+			// If map and address is inside a non-cloneable group.
+			$address = this.$container.closest( '.rwmb-group-wrapper' ).find( 'input[name*="[' + fieldName + ']"]' );
+			if ( $address.length ) {
+				return $address;
+			}
+
+			return null;
 		}
 	};
 
