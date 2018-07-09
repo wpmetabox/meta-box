@@ -178,6 +178,9 @@ class RW_Meta_Box {
 	 * Add meta box for multiple post types
 	 */
 	public function add_meta_boxes() {
+		$screen = get_current_screen();
+		add_filter( "postbox_classes_{$screen->id}_{$this->id}", array( $this, 'postbox_classes' ) );
+
 		foreach ( $this->post_types as $post_type ) {
 			add_meta_box(
 				$this->id,
@@ -188,6 +191,20 @@ class RW_Meta_Box {
 				$this->priority
 			);
 		}
+	}
+
+	/**
+	 * Modify meta box postbox classes.
+	 *
+	 * @param  array $classes Array of classes
+	 * @return array          Modified array of classes
+	 */
+	public function postbox_classes( $classes ) {
+		if ( $this->closed && ! in_array( 'closed', $classes ) ) {
+			$classes[] = 'closed';
+		}
+
+		return $classes;
 	}
 
 	/**
