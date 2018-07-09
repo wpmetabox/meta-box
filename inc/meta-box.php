@@ -192,8 +192,8 @@ class RW_Meta_Box {
 	/**
 	 * Modify meta box postbox classes.
 	 *
-	 * @param  array $classes Array of classes
-	 * @return array          Modified array of classes
+	 * @param  array $classes Array of classes.
+	 * @return array
 	 */
 	public function postbox_classes( $classes ) {
 		if ( $this->closed && ! in_array( 'closed', $classes ) ) {
