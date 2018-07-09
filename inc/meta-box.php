@@ -144,10 +144,6 @@ class RW_Meta_Box {
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 		}
 
-		if ( 'seamless' === $this->style ) {
-			wp_enqueue_script( 'rwmb', RWMB_JS_URL . 'script.js', array( 'jquery' ), RWMB_VER, true );
-		}
-
 		// Load clone script conditionally.
 		foreach ( $this->fields as $field ) {
 			if ( $field['clone'] ) {
@@ -203,6 +199,9 @@ class RW_Meta_Box {
 		if ( $this->closed && ! in_array( 'closed', $classes ) ) {
 			$classes[] = 'closed';
 		}
+		if ( 'seamless' === $this->style ) {
+			$classes[] = 'rwmb-seamless';
+		}
 
 		return $classes;
 	}
@@ -234,8 +233,7 @@ class RW_Meta_Box {
 
 		// Container.
 		printf(
-			'<div class="rwmb-meta-box%s" data-autosave="%s" data-object-type="%s">',
-			esc_attr( 'seamless' === $this->style ? ' rwmb-meta-box--seamless' : '' ),
+			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s">',
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type )
 		);
