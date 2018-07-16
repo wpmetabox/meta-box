@@ -10,6 +10,25 @@
  */
 class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	/**
+	 * Normalize parameters for field.
+	 *
+	 * @param array $field Field parameters.
+	 * @return array
+	 */
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
+
+		$field = wp_parse_args( $field, array(
+			'not_available_string' => __( 'Embed HTML not available.', 'meta-box' ),
+		) );
+		$field['attributes'] = wp_parse_args( $field['attributes'], array(
+			'data-not-available' => $field['not_available_string'],
+		) );
+
+		return $field;
+	}
+
+	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
@@ -29,16 +48,18 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 */
 	public static function wp_ajax_get_embed() {
 		$url = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
-		wp_send_json_success( self::get_embed( $url ) );
+		$not_available = (string) filter_input( INPUT_POST, 'not_available' );
+		wp_send_json_success( self::get_embed( $url, $not_available ) );
 	}
 
 	/**
 	 * Get embed html from url.
 	 *
-	 * @param string $url URL.
+	 * @param string $url           URL.
+	 * @param string $not_available Not available string displayed to users.
 	 * @return string
 	 */
-	public static function get_embed( $url ) {
+	public static function get_embed( $url, $not_available = '' ) {
 		/**
 		 * Set arguments for getting embeded HTML.
 		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin.
@@ -58,10 +79,19 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 
 		// If no oembed provides found, try WordPress auto embed.
 		if ( ! $embed ) {
-			$embed = $GLOBALS['wp_embed']->shortcode( $args, $url );
+			global $wp_embed;
+			$temp = $wp_embed->return_false_on_fail;
+			$wp_embed->return_false_on_fail = true; // Do not fallback to make a link.
+			$embed = $wp_embed->shortcode( $args, $url );
+			$wp_embed->return_false_on_fail = $temp;
 		}
 
-		return $embed ? $embed : __( 'Embed HTML not available.', 'meta-box' );
+		if ( $not_available ) {
+			$not_available = '<div class="rwmb-oembed-not-available">' . wp_kses_post( $not_available ) . '</div>';
+		}
+		$not_available = apply_filters( 'rwmb_oembed_not_available_string', $not_available );
+
+		return $embed ?: $not_available;
 	}
 
 	/**
@@ -75,7 +105,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 		return parent::html( $meta, $field ) . sprintf(
 			'<span class="spinner"></span>
 			<div class="rwmb-embed-media">%s</div>',
-			$meta ? self::get_embed( $meta ) : ''
+			$meta ? self::get_embed( $meta, $field['not_available_string'] ) : ''
 		);
 	}
 
@@ -104,6 +134,6 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		return self::get_embed( $value );
+		return self::get_embed( $value, $field['not_available_string'] );
 	}
 }

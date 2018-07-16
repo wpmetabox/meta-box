@@ -11,7 +11,8 @@ jQuery( function ( $ ) {
 			$spinner = $this.siblings( '.spinner' ),
 			data = {
 				action: 'rwmb_get_embed',
-				url: $this.val()
+				url: this.value,
+				not_available: $this.data( 'not-available' ),
 			};
 
 		$spinner.css( 'visibility', 'visible' );

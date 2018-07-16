@@ -17,7 +17,19 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		return call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
+		$html = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
+		$html .= self::call( 'add_new_form', $field );
+		return $html;
+	}
+
+	/**
+	 * Render "Add New" form
+	 *
+	 * @param array $field Field settings.
+	 * @return string
+	 */
+	public static function add_new_form( $field ) {
+		return '';
 	}
 
 	/**
