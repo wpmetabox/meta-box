@@ -26,7 +26,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 		if ( false === $field ) {
 			return apply_filters( 'rwmb_meta', rwmb_meta_legacy( $key, $args, $post_id ) );
 		}
-		$meta = in_array( $field['type'], array( 'oembed', 'map' ), true ) ?
+		$meta = in_array( $field['type'], array( 'oembed', 'map', 'osm' ), true ) ?
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
@@ -92,6 +92,7 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 				$field['taxonomy'] = $args['taxonomy'];
 				break;
 			case 'map':
+			case 'osm':
 			case 'oembed':
 				$method = 'the_value';
 				break;
