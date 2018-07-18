@@ -42,6 +42,9 @@ class RWMB_Map_Field extends RWMB_Field {
 			'jquery-ui-autocomplete',
 			'google-maps',
 		), RWMB_VER, true );
+		self::localize_script( 'rwmb-map', 'RWMB_Map', array(
+			'no_results_string' => __( 'No results found', 'meta-box' ),
+		) );
 	}
 
 	/**

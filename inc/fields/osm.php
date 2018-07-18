@@ -20,6 +20,9 @@ class RWMB_OSM_Field extends RWMB_Field {
 
 		wp_enqueue_style( 'rwmb-osm', RWMB_CSS_URL . 'osm.css', array( 'leaflet' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', array( 'jquery', 'leaflet' ), RWMB_VER, true );
+		self::localize_script( 'rwmb-osm', 'RWMB_Osm', array(
+			'no_results_string' => __( 'No results found', 'meta-box' ),
+		) );
 	}
 
 	/**

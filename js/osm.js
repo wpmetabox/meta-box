@@ -138,8 +138,15 @@
 						q: request.term,
 						countrycodes: that.$canvas.data( 'region' ),
 						"accept-language": that.$canvas.data( 'language' )
-					}, function( result ) {
-						response( result.map( function ( item ) {
+					}, function( results ) {
+						if ( ! results.length ) {
+							response( [ {
+								value: '',
+								label: RWMB_Osm.no_results_string
+							} ] );
+							return;
+						}
+						response( results.map( function ( item ) {
 							return {
 								label: item.display_name,
 								value: item.display_name,

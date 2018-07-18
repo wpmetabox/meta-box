@@ -144,7 +144,14 @@
 						'region': that.$canvas.data( 'region' )
 					};
 					geocoder.geocode( options, function ( results ) {
-						response( $.map( results, function ( item ) {
+						if ( ! results.length ) {
+							response( [ {
+								value: '',
+								label: RWMB_Map.no_results_string
+							} ] );
+							return;
+						}
+						response( results.map( function ( item ) {
 							return {
 								label: item.formatted_address,
 								value: item.formatted_address,

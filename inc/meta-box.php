@@ -88,7 +88,7 @@ class RW_Meta_Box {
 	 *
 	 * @return bool
 	 */
-	protected function is_shown() {
+	public function is_shown() {
 		$show = apply_filters( 'rwmb_show', true, $this->meta_box );
 
 		return apply_filters( "rwmb_show_{$this->id}", $show, $this->meta_box );
