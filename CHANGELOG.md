@@ -5,15 +5,33 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-## [4.19.11] - 2018-06-08
+## [4.15.0] - 2018-07-20
+### Added
+- Added new `osm` field for Open Street Map. Google Maps requires developers to enter credit card details to keep using their free service, which is not always possible (and comfortable). The new `osm` field uses open source data from Open Street Map with the Leafleft library to render maps. It has the same settings as the Google Maps `map` field, including autocomplete feature, `language` and `region`.
+- Added new boolean field setting `save_field` for disabling the fields from saving to the database. Developers should handle the "save" action themselves.
+- Added `closed` parameter for meta box that collapses meta box on page load.
+- Allows users to change the "Embeded HTML not available" for oembed field or hide it with CSS:
+    - Added `not_available_string` setting to oembed field.
+    - Added `rwmb_not_available_string` filter for oembed field.
+    - Wrap "Not available" string in a div.
+
+### Changed
+- Object fields: optimized the "clone" functionality. No extra queries for clones.
+
+### Fixed
+- Fixed map field not working in cloneable groups.
+- Fixed warning when installed via WP-CLI. Props Arnaud Hallais.
+
+## [4.14.11] - 2018-06-08
 ### Fixed
 - Fixed styles for autocomplete address in map field in the frontend.
 
-## [4.19.10] - 2018-06-05
+## [4.14.10] - 2018-06-05
 ### Fixed
 - Fixed missing styles for `autocomplete` in the frontend.
 - Added the correct image size in returned value of 'srcset' for image field.
 - Fixed `select_advanced` field doesn't keep the same width when cloning.
+
 ### Changed
 - Improved the layout for `text_list` field.
 - Added MB User Profile and Meta Box - Beaver Themer Integrator. Removed ads for premium users.
@@ -843,7 +861,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.14.11...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.0...HEAD
+[4.15.0]: https://github.com/rilwis/meta-box/compare/4.14.11...4.15.0
 [4.14.11]: https://github.com/rilwis/meta-box/compare/4.14.10...4.14.11
 [4.14.10]: https://github.com/rilwis/meta-box/compare/4.14.9...4.14.10
 [4.14.9]: https://github.com/rilwis/meta-box/compare/4.14.8...4.14.9
