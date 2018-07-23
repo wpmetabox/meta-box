@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.15.1] - 2018-07-23
+### Fixed
+- Fixed rendering HTML in button groups.
+
 ## [4.15.0] - 2018-07-20
 ### Added
 - Added new `osm` field for Open Street Map. Google Maps requires developers to enter credit card details to keep using their free service, which is not always possible (and comfortable). The new `osm` field uses open source data from Open Street Map with the Leafleft library to render maps. It has the same settings as the Google Maps `map` field, including autocomplete feature, `language` and `region`.
@@ -861,7 +865,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.0...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.1...HEAD
+[4.15.1]: https://github.com/rilwis/meta-box/compare/4.15.0...4.15.1
 [4.15.0]: https://github.com/rilwis/meta-box/compare/4.14.11...4.15.0
 [4.14.11]: https://github.com/rilwis/meta-box/compare/4.14.10...4.14.11
 [4.14.10]: https://github.com/rilwis/meta-box/compare/4.14.9...4.14.10
