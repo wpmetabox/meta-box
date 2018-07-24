@@ -1,5 +1,5 @@
 {
-  "name": "rilwis/meta-box",
+  "name": "wpmetabox/meta-box",
   "type": "library",
   "keywords": [
     "wordpress",
@@ -17,7 +17,7 @@
   "authors": [
     {
       "name": "Tran Ngoc Tuan Anh",
-      "email": "rilwis@gmail.com",
+      "email": "anhtnt@elightup.com",
       "homepage": "https://deluxeblogtips.com",
       "role": "Developer"
     }
