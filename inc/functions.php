@@ -281,3 +281,36 @@ if ( ! function_exists( 'rwmb_get_meta_box' ) ) {
 		return new $class_name( $meta_box );
 	}
 }
+
+/**
+ * Helper functions
+ */
+
+if ( ! function_exists( 'rwmb_change_array_key' ) ) {
+	/**
+	 * Change array key.
+	 *
+	 * @param  array  $array Input array.
+	 * @param  string $from  From key.
+	 * @param  string $to    To key.
+	 */
+	function rwmb_change_array_key( &$array, $from, $to ) {
+		if ( isset( $array[ $from ] ) ) {
+			$array[ $to ] = $array[ $from ];
+		}
+		unset( $array[ $from ] );
+	}
+}
+
+if ( ! function_exists( 'rwmb_csv_to_array' ) ) {
+	/**
+	 * Convert a comma separated string to array.
+	 *
+	 * @param string $string Comma separated string.
+	 *
+	 * @return array
+	 */
+	function rwmb_csv_to_array( $string ) {
+		return is_array( $string ) ? $string : array_filter( array_map( 'trim', explode( ',', $string . ',' ) ) );
+	}
+}

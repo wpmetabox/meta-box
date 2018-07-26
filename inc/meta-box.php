@@ -362,12 +362,10 @@ class RW_Meta_Box {
 		 *
 		 * @since 4.4.1
 		 */
-		if ( ! empty( $meta_box['pages'] ) ) {
-			$meta_box['post_types'] = $meta_box['pages'];
-		}
+		rwmb_change_array_key( $meta_box, 'pages', 'post_types' );
 
 		// Make sure the post type is an array and is sanitized.
-		$meta_box['post_types'] = array_map( 'sanitize_key', (array) $meta_box['post_types'] );
+		$meta_box['post_types'] = array_map( 'sanitize_key', rwmb_csv_to_array( $meta_box['post_types'] ) );
 
 		return $meta_box;
 	}
