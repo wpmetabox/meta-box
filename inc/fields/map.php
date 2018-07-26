@@ -37,7 +37,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 * @link https://developers.google.com/maps/documentation/javascript/libraries
 		 */
 		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
-		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), '', true );
+		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-map', RWMB_JS_URL . 'map.js', array(
 			'jquery-ui-autocomplete',
 			'google-maps',

@@ -137,8 +137,8 @@ class RWMB_About {
 	 * Enqueue CSS and JS.
 	 */
 	public function enqueue() {
-		wp_enqueue_style( 'meta-box-about', RWMB_URL . 'inc/about/css/about.css' );
-		wp_enqueue_script( 'meta-box-about', RWMB_URL . 'inc/about/js/about.js', array( 'jquery' ), '', true );
+		wp_enqueue_style( 'meta-box-about', RWMB_URL . 'inc/about/css/about.css', array(), RWMB_VER );
+		wp_enqueue_script( 'meta-box-about', RWMB_URL . 'inc/about/js/about.js', array( 'jquery' ), RWMB_VER, true );
 	}
 
 	/**

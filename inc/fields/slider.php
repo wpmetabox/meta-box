@@ -17,7 +17,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 		wp_enqueue_style( 'jquery-ui-core', "{$url}/jquery.ui.core.css", array(), '1.8.17' );
 		wp_enqueue_style( 'jquery-ui-theme', "{$url}/jquery.ui.theme.css", array(), '1.8.17' );
 		wp_enqueue_style( 'jquery-ui-slider', "{$url}/jquery.ui.slider.css", array(), '1.8.17' );
-		wp_enqueue_style( 'rwmb-slider', RWMB_CSS_URL . 'slider.css' );
+		wp_enqueue_style( 'rwmb-slider', RWMB_CSS_URL . 'slider.css', array(), RWMB_VER );
 
 		wp_enqueue_script( 'rwmb-slider', RWMB_JS_URL . 'slider.js', array( 'jquery-ui-slider', 'jquery-ui-widget', 'jquery-ui-mouse', 'jquery-ui-core' ), RWMB_VER, true );
 	}

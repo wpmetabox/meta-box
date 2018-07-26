@@ -32,7 +32,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css' );
+		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', '', RWMB_VER );
 		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 	}
 
