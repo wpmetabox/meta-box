@@ -7,8 +7,7 @@
     <description>A custom set of code standard rules to check for Meta Box plugin.</description>
 
     <!-- Include the WordPress ruleset, with exclusions. -->
-    <rule ref="WordPress-Docs" />
-    <rule ref="WordPress-Extra">
+    <rule ref="WordPress">
         <exclude name="WordPress.Files.FileName" />
     </rule>
 

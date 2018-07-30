@@ -3,6 +3,6 @@
 }
 .rwmb-color-wrapper .wp-picker-holder {
 	position: absolute;
-	z-index: 9;
+	z-index: 99;
 	min-width: 255px;
 }
