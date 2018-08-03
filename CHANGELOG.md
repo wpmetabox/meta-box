@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.15.2] - 2018-08-03
+### Fixed
+- Fixed z-index for `switch` and `color` fields.
+- Fixed select All / None for checkbox list not working in groups.
+- Fixed select_tree type not working.
+
 ## [4.15.1] - 2018-07-23
 ### Fixed
 - Fixed rendering HTML in button groups.
