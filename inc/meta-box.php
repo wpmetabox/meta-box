@@ -415,7 +415,7 @@ class RW_Meta_Box {
 			}
 			if (
 				( ! $field['multiple'] && '' !== $value )
-				|| ( $field['multiple'] && array() !== $value )
+				|| ( $field['multiple'] && is_array( $value ) && array() !== $value )
 			) {
 				return true;
 			}
