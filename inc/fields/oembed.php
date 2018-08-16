@@ -91,7 +91,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 		}
 		$not_available = apply_filters( 'rwmb_oembed_not_available_string', $not_available );
 
-		return $embed ?: $not_available;
+		return $embed ? $embed : $not_available;
 	}
 
 	/**
