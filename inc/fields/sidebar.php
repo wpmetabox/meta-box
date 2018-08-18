@@ -21,9 +21,6 @@ class RWMB_Sidebar_Field extends RWMB_Object_Choice_Field {
 			'placeholder' => __( 'Select a sidebar', 'meta-box' ),
 		) );
 
-		// Get sidebars for field options.
-		$field['options'] = self::query( $field );
-
 		$field = parent::normalize( $field );
 
 		return $field;

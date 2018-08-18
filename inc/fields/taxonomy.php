@@ -58,8 +58,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$field['query_args'] = wp_parse_args( $field['query_args'], array(
 			'hide_empty' => false,
 		) );
-		// Query terms for field options.
-		$field['options'] = self::query( $field );
 
 		// Prevent cloning for taxonomy field.
 		$field['clone'] = false;

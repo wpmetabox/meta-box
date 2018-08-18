@@ -42,9 +42,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'placeholder' => $placeholder,
 		) );
 
-		// Query posts for field options.
-		$field['options'] = self::query( $field );
-
 		// Set parent option, which will change field name to `parent_id` to save as post parent.
 		if ( $field['parent'] ) {
 			$field['multiple']   = false;

@@ -10,6 +10,20 @@
  */
 abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
+	 * Show field HTML.
+	 * Populate field options before showing to make sure query is made only once.
+	 *
+	 * @param array $field   Field parameters.
+	 * @param bool  $saved   Whether the meta box is saved at least once.
+	 * @param int   $post_id Post ID.
+	 */
+	public static function show( $field, $saved, $post_id = 0 ) {
+		$field['options'] = self::call( $field, 'query' );
+
+		parent::show( $field, $saved, $post_id );
+	}
+
+	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.

@@ -24,9 +24,6 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'display_field' => 'display_name',
 		) );
 
-		// Query posts for field options.
-		$field['options'] = self::query( $field );
-
 		$field = parent::normalize( $field );
 
 		return $field;
