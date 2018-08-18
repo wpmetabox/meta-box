@@ -40,6 +40,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$args = wp_parse_args( $field['query_args'], array(
 			'orderby' => $display_field,
 			'order'   => 'asc',
+			'fields'  => array( 'ID', $display_field ),
 		) );
 		$users   = get_users( $args );
 		$options = array();
