@@ -47,7 +47,6 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 		$args = wp_parse_args( $args, array(
 			'object_type' => 'post',
 		) );
-		$type = get_post_type( $object_id );
 
 		/**
 		 * Filter meta type from object type and object id.
@@ -56,7 +55,10 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 		 * @var string     Object type.
 		 * @var string|int Object id.
 		 */
-		$type = apply_filters( 'rwmb_meta_type', $type, $args['object_type'], $object_id );
+		$type = apply_filters( 'rwmb_meta_type', '', $args['object_type'], $object_id );
+		if ( ! $type ) {
+			$type = get_post_type( $object_id );
+		}
 
 		return rwmb_get_registry( 'field' )->get( $key, $type, $args['object_type'] );
 	}
