@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## 4.15.4 - 2018-08-24
+### Fixed
+- Fixed syntax error for sanitize switch field.
+
 ## 4.15.3 - 2018-08-24
 
 ### Fixed

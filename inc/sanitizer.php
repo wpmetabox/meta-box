@@ -34,7 +34,7 @@ class RWMB_Sanitizer {
 		// Custom callback.
 		$types = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
 		foreach ( $types as $type ) {
-			add_filter( "rwmb_{$type}_sanitize", array( $this, $type ) );
+			add_filter( "rwmb_{$type}_sanitize", array( $this, "sanitize_{$type}" ) );
 		}
 	}
 
@@ -46,7 +46,7 @@ class RWMB_Sanitizer {
 	 * @param string $value Checkbox value.
 	 * @return int
 	 */
-	public function checkbox( $value ) {
+	public function sanitize_checkbox( $value ) {
 		return (int) ! empty( $value );
 	}
 
@@ -57,7 +57,7 @@ class RWMB_Sanitizer {
 	 * @param string $value Switch value.
 	 * @return int
 	 */
-	public function switch( $value ) {
+	public function sanitize_switch( $value ) {
 		return (int) ! empty( $value );
 	}
 }
