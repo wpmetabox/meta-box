@@ -70,7 +70,7 @@ jQuery( function ( $ ) {
 	function updateDom( $wrapper, id ) {
 		// Wrapper div and media buttons
 		$wrapper.attr( 'id', 'wp-' + id + '-wrap' )
-		        .removeClass( 'html-active' ).addClass( 'mce-active' ) // Active the visual mode by default
+		        .removeClass( 'html-active' ).addClass( 'tmce-active' ) // Active the visual mode by default
 		        .find( '.mce-container' ).remove().end()               // Remove rendered tinyMCE editor
 		        .find( '.wp-editor-tools' ).attr( 'id', 'wp-' + id + '-editor-tools' )
 		        .find( '.wp-media-buttons' ).attr( 'id', 'wp-' + id + '-media-buttons' )
