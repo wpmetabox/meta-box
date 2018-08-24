@@ -256,9 +256,9 @@ jQuery( function ( $ ) {
 			this.collection.remove( item );
 		},
 
-		resetItemViews: function( items, options ){
+		resetItemViews: function( items ){
 			var that = this;
-			_.each( options.previousModels, function( item ){
+			_.each( that.models, function( item ){
 				 that.removeItemView( item );
 			 } );
 			items.each( function( item ) {
