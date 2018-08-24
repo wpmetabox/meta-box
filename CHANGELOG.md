@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## 4.15.3 - 2018-08-24
+
+### Fixed
+- Fixed `is_saved()` is wrong for cloneable `text_list` field.
+- Removed quotes for output of helper function for `background` field.
+- Saved value `0` for `switch` field when it's off.
+- Make validation works with `radio`/`checkbox_list`.
+- Fixed compatibility with PHP < 5.4 for `oembed` field.
+- Added missing style for OpenStreetMap (`osm`) field, just like Google Maps (`map`) field.
+- Fixed clone `wysiwyg` not active Visual mode by default.
+
+### Changed
+- Prevent fields `post`, `taxonomy`, `user` from making un-needed queries.
+- Optimized query for `user` field.
+- Removed extra query for other meta type than post when using helper functions.
+
 ## [4.15.2] - 2018-08-03
 ### Fixed
 - Fixed z-index for `switch` and `color` fields.
