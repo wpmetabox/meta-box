@@ -28,9 +28,9 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 		$options = self::transform_options( $field['options'] );
 		$walker = new RWMB_Walker_Input_List( $field, $meta );
 		$output = self::get_select_all_html( $field );
-		$output .= sprintf( '<ul class="rwmb-input-list %s %s">',
-			$field['collapse'] ? 'collapse' : '',
-			$field['inline'] ? 'inline' : ''
+		$output .= sprintf( '<ul class="rwmb-input-list%s%s">',
+			$field['collapse'] ? ' rwmb-collapse' : '',
+			$field['inline'] ? ' rwmb-inline' : ''
 		);
 		$output .= $walker->walk( $options, $field['flatten'] ? -1 : 0 );
 		$output .= '</ul>';

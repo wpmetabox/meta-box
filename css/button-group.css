@@ -21,48 +21,48 @@
 }
 /* Layout not inline
 -------------------------------------------------*/
-.rwmb-button-input-list:not(.inline) li label {
+.rwmb-button-input-list:not(.rwmb-inline) li label {
 	 border-top-width: 0;
 }
-.rwmb-button-input-list:not(.inline) li:first-child label {
+.rwmb-button-input-list:not(.rwmb-inline) li:first-child label {
 	border-top-width: 1px;
 }
-.rwmb-button-input-list:not(.inline) li label.selected {
+.rwmb-button-input-list:not(.rwmb-inline) li label.selected {
 	border-bottom: 1px solid #fff;
 }
-.rwmb-button-input-list:not(.inline) li:last-child label.selected {
+.rwmb-button-input-list:not(.rwmb-inline) li:last-child label.selected {
 	border-bottom-color: #0073aa;
 }
-.rwmb-button-input-list:not(.inline) > li:first-child:not(:last-child) label {
+.rwmb-button-input-list:not(.rwmb-inline) > li:first-child:not(:last-child) label {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 }
-.rwmb-button-input-list:not(.inline)  > li:last-child:not(:first-child) label {
+.rwmb-button-input-list:not(.rwmb-inline)  > li:last-child:not(:first-child) label {
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 }
 /*  Layout inline
 ---------------------------------------------*/
-.rwmb-button-input-list.inline li {
+.rwmb-button-input-list.rwmb-inline li {
 	display: inline-block;
 }
-.rwmb-button-input-list.inline li label {
+.rwmb-button-input-list.rwmb-inline li label {
 	border-left-width: 0;
 }
-.rwmb-button-input-list.inline li:first-child label {
+.rwmb-button-input-list.rwmb-inline li:first-child label {
 	border-left-width: 1px;
 }
-.rwmb-button-input-list.inline li label.selected {
+.rwmb-button-input-list.rwmb-inline li label.selected {
 	border-right-color: rgb(255, 255, 255);
 }
-.rwmb-button-input-list.inline li:last-child label.selected {
+.rwmb-button-input-list.rwmb-inline li:last-child label.selected {
 	border-right-color: #0073aa;
 }
-.rwmb-button-input-list.inline > li:first-child:not(:last-child) label {
+.rwmb-button-input-list.rwmb-inline > li:first-child:not(:last-child) label {
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
 }
-.rwmb-button-input-list.inline > li:last-child:not(:first-child) label {
+.rwmb-button-input-list.rwmb-inline > li:last-child:not(:first-child) label {
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }

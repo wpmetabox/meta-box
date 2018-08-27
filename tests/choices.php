@@ -30,7 +30,7 @@ function your_prefix_choice_demo( $meta_boxes ) {
 					array( 'value' => 'suboption12', 'label' => 'SubOption 2', 'parent' => 'option1' ),
 					array( 'value' => 'suboption13', 'label' => 'SubOption 3', 'parent' => 'option2' ),
 				),
-				'collapse' => false,
+				'collapse' => true,
 				'flatten'  => false,
 			),
 
