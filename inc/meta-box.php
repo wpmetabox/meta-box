@@ -405,23 +405,16 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	public function is_saved() {
-		foreach ( $this->fields as $field ) {
-			if ( empty( $field['id'] ) ) {
-				continue;
+			foreach ($this->fields as $field) {
+					if (empty($field['id'])) {
+							continue;
+					}
+					if ($field['storage']->exists($this->object_id, $field['id'])) {
+							return true;
+					}
 			}
-			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
-			if ( false === $value ) {
-				continue;
-			}
-			if (
-				( ! $field['multiple'] && '' !== $value )
-				|| ( $field['multiple'] && is_array( $value ) && array() !== $value )
-			) {
-				return true;
-			}
-		}
 
-		return false;
+			return false;
 	}
 
 	/**
