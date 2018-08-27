@@ -405,11 +405,11 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	public function is_saved() {
-		foreach ($this->fields as $field) {
-			if ( empty($field['id']) ) {
+		foreach ( $this->fields as $field ) {
+			if ( empty( $field['id'] ) ) {
 				continue;
 			}
-			if ( $field['storage']->exists($this->object_id, $field['id']) ) {
+			if ( $field['storage']->exists( $this->object_id, $field['id'] ) ) {
 				return true;
 			}
 		}
