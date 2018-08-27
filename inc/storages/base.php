@@ -44,8 +44,8 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	/**
 	 * Determine if a meta key is set for a given object
 	 *
-	 * @param int        $object_id ID of the object metadata is for.
-	 * @param string     $meta_key  Metadata key.
+	 * @param int    $object_id ID of the object metadata is for.
+	 * @param string $meta_key  Metadata key.
 	 * @return bool True if exists.
 	 *
 	 * @see metadata_exists()
