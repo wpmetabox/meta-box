@@ -32,9 +32,10 @@ class RWMB_Sanitizer {
 		}
 
 		// Custom callback.
-		$types = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
-		foreach ( $types as $type ) {
-			add_filter( "rwmb_{$type}_sanitize", array( $this, "sanitize_{$type}" ) );
+		$methods = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
+		foreach ( $methods as $method ) {
+			$type = substr( $method, 9 );
+			add_filter( "rwmb_{$type}_sanitize", array( $this, $method ) );
 		}
 	}
 
