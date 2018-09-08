@@ -5,11 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-## 4.15.4 - 2018-08-24
+## [4.15.5] - 2018-09-08
+
+### Fixed
+- Fixed saving `0` for switch/checkbox fields when they're off.
+- Fixed JS error while reordering image_advanced field images. #1265.
+- Fixed incompatibility with Custom Sidebars. #1269.
+
+### Changed
+- Added prefix `rwmb-` to `collapse` and `inline` CSS classes. Used for input list and button group fields.
+
+## [4.15.4] - 2018-08-24
+
 ### Fixed
 - Fixed syntax error for sanitize switch field.
 
-## 4.15.3 - 2018-08-24
+## [4.15.3] - 2018-08-24
 
 ### Fixed
 - Fixed `is_saved()` is wrong for cloneable `text_list` field.
@@ -891,7 +902,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.1...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.5...HEAD
+[4.15.5]: https://github.com/rilwis/meta-box/compare/4.15.4...4.15.5
+[4.15.4]: https://github.com/rilwis/meta-box/compare/4.15.3...4.15.4
+[4.15.3]: https://github.com/rilwis/meta-box/compare/4.15.2...4.15.3
+[4.15.2]: https://github.com/rilwis/meta-box/compare/4.15.1...4.15.2
 [4.15.1]: https://github.com/rilwis/meta-box/compare/4.15.0...4.15.1
 [4.15.0]: https://github.com/rilwis/meta-box/compare/4.14.11...4.15.0
 [4.14.11]: https://github.com/rilwis/meta-box/compare/4.14.10...4.14.11
