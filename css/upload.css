@@ -6,9 +6,9 @@
 	border: 4px dashed #ddd;
 }
 /* Fix blank space in the footer */
-.rwmb-upload-area .moxie-shim {
+/*.rwmb-upload-area .moxie-shim {
 	display: none;
-}
+}*/
 .rwmb-upload-inside {
 	text-align: center;
 	position: absolute;
