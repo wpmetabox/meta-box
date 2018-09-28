@@ -416,7 +416,7 @@ class RW_Meta_Box {
 				}
 			} else {
 				$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
-				
+
 				if ( false === $value ) {
 					continue;
 				}
