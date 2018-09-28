@@ -164,6 +164,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			'marker_title' => '', // Marker title, when hover.
 			'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
 			'js_options'   => array(),
+			'zoom'         => $zoom,
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
@@ -188,7 +189,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 */
 		$args['js_options'] = wp_parse_args( $args['js_options'], array(
 			// Default to 'zoom' level set in admin, but can be overwritten.
-			'zoom'      => $zoom,
+			'zoom'      => $args['zoom'],
 
 			// Map type, see https://developers.google.com/maps/documentation/javascript/reference#MapTypeId.
 			'mapTypeId' => 'ROADMAP',

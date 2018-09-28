@@ -19,7 +19,7 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Field {
 	public static function html( $meta, $field ) {
 		$options = self::transform_options( $field['options'] );
 		$walker = new RWMB_Walker_Select_Tree( $field, $meta );
-		return $walker->walk( $options );
+		return $options ? $walker->walk( $options ) : '';
 	}
 
 	/**

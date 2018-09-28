@@ -132,6 +132,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$meta = wp_get_object_terms( $object_id, $field['taxonomy'], array(
 			'orderby' => 'term_order',
 		) );
+		if ( is_wp_error( $meta ) ) {
+			return '';
+		}
 		$meta = wp_list_pluck( $meta, 'term_id' );
 
 		return $field['multiple'] ? $meta : reset( $meta );
