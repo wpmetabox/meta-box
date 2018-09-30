@@ -42,6 +42,19 @@ class RWMB_Base_Storage implements RWMB_Storage_Interface {
 	}
 
 	/**
+	 * Determine if a meta key is set for a given object
+	 *
+	 * @param int    $object_id ID of the object metadata is for.
+	 * @param string $meta_key  Metadata key.
+	 * @return bool True if exists.
+	 *
+	 * @see metadata_exists()
+	 */
+	public function exists( $object_id, $meta_key ) {
+		return metadata_exists( $this->object_type, $object_id, $meta_key );
+	}
+
+	/**
 	 * Add metadata
 	 *
 	 * @param int    $object_id  ID of the object metadata is for.
