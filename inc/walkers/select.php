@@ -29,7 +29,7 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 			esc_attr( $object->value ),
 			selected( in_array( $object->value, $meta ), true, false ),
 			$indent,
-			esc_html( $object->label )
+			esc_html( RWMB_Field::filter( 'choice_label', $object->label, $this->field, $object ) )
 		);
 	}
 }
