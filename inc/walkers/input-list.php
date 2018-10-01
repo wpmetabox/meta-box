@@ -47,7 +47,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 			'<li><label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
 			checked( in_array( $object->value, $this->meta ), true, false ),
-			$object->label
+			RWMB_Field::filter( 'choice_label', $object->label, $this->field, $object )
 		);
 	}
 
