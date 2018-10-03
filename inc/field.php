@@ -184,10 +184,10 @@ abstract class RWMB_Field {
 			return '';
 		}
 
-		if ( isset( $args['object_type'] ) ) {
-			$storage = rwmb_get_storage( $args['object_type'] );
-		} elseif ( isset( $field['storage'] ) ) {
+		if ( isset( $field['storage'] ) ) {
 			$storage = $field['storage'];
+		} elseif ( isset( $args['object_type'] ) ) {
+			$storage = rwmb_get_storage( $args['object_type'] );
 		} else {
 			$storage = rwmb_get_storage( 'post' );
 		}
