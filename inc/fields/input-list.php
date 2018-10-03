@@ -26,9 +26,10 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$options = self::transform_options( $field['options'] );
-		$walker = new RWMB_Walker_Input_List( $field, $meta );
-		$output = self::get_select_all_html( $field );
-		$output .= sprintf( '<ul class="rwmb-input-list%s%s">',
+		$walker  = new RWMB_Walker_Input_List( $field, $meta );
+		$output  = self::get_select_all_html( $field );
+		$output .= sprintf(
+			'<ul class="rwmb-input-list%s%s">',
 			$field['collapse'] ? ' rwmb-collapse' : '',
 			$field['inline'] ? ' rwmb-inline' : ''
 		);
@@ -48,14 +49,17 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = RWMB_Input_Field::normalize( $field );
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'collapse'        => true,
-			'inline'          => null,
-			'select_all_none' => false,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'collapse'        => true,
+				'inline'          => null,
+				'select_all_none' => false,
+			)
+		);
 
 		$field['flatten'] = $field['multiple'] ? $field['flatten'] : true;
-		$field['inline'] = ! $field['multiple'] && ! isset( $field['inline'] ) ? true : $field['inline'];
+		$field['inline']  = ! $field['multiple'] && ! isset( $field['inline'] ) ? true : $field['inline'];
 
 		return $field;
 	}
@@ -69,10 +73,10 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes           = RWMB_Input_Field::get_attributes( $field, $value );
-		$attributes['id']     = false;
-		$attributes['type']   = $field['multiple'] ? 'checkbox' : 'radio';
-		$attributes['value']  = $value;
+		$attributes          = RWMB_Input_Field::get_attributes( $field, $value );
+		$attributes['id']    = false;
+		$attributes['type']  = $field['multiple'] ? 'checkbox' : 'radio';
+		$attributes['value'] = $value;
 
 		return $attributes;
 	}

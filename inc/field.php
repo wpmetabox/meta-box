@@ -293,7 +293,7 @@ abstract class RWMB_Field {
 		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
 			return;
 		}
-		$name = $field['id'];
+		$name    = $field['id'];
 		$storage = $field['storage'];
 
 		// Remove post meta if it's empty.
@@ -351,8 +351,8 @@ abstract class RWMB_Field {
 
 		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour).
 		if ( $field['multiple'] ) {
-			$old = (array) $old;
-			$new = (array) $new;
+			$old        = (array) $old;
+			$new        = (array) $new;
 			$new_values = array_diff( $new, $old );
 			foreach ( $new_values as $new_value ) {
 				$storage->add( $post_id, $name, $new_value, false );
@@ -376,39 +376,45 @@ abstract class RWMB_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'id'                => '',
-			'name'              => '',
-			'label_description' => '',
-			'multiple'          => false,
-			'std'               => '',
-			'desc'              => '',
-			'format'            => '',
-			'before'            => '',
-			'after'             => '',
-			'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
-			'placeholder'       => '',
-			'save_field'        => true,
+		$field = wp_parse_args(
+			$field,
+			array(
+				'id'                => '',
+				'name'              => '',
+				'label_description' => '',
+				'multiple'          => false,
+				'std'               => '',
+				'desc'              => '',
+				'format'            => '',
+				'before'            => '',
+				'after'             => '',
+				'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
+				'placeholder'       => '',
+				'save_field'        => true,
 
-			'clone'             => false,
-			'max_clone'         => 0,
-			'sort_clone'        => false,
-			'add_button'        => __( '+ Add more', 'meta-box' ),
-			'clone_default'     => false,
-			'clone_as_multiple' => false,
+				'clone'             => false,
+				'max_clone'         => 0,
+				'sort_clone'        => false,
+				'add_button'        => __( '+ Add more', 'meta-box' ),
+				'clone_default'     => false,
+				'clone_as_multiple' => false,
 
-			'class'      => '',
-			'disabled'   => false,
-			'required'   => false,
-			'autofocus'  => false,
-			'attributes' => array(),
-		) );
+				'class'             => '',
+				'disabled'          => false,
+				'required'          => false,
+				'autofocus'         => false,
+				'attributes'        => array(),
+			)
+		);
 
 		if ( $field['clone_default'] ) {
-			$field['attributes'] = wp_parse_args( $field['attributes'], array(
-				'data-default'       => $field['std'],
-				'data-clone-default' => 'true',
-			) );
+			$field['attributes'] = wp_parse_args(
+				$field['attributes'],
+				array(
+					'data-default'       => $field['std'],
+					'data-clone-default' => 'true',
+				)
+			);
 		}
 
 		return $field;
@@ -423,14 +429,17 @@ abstract class RWMB_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = wp_parse_args( $field['attributes'], array(
-			'disabled'  => $field['disabled'],
-			'autofocus' => $field['autofocus'],
-			'required'  => $field['required'],
-			'id'        => $field['id'],
-			'class'     => '',
-			'name'      => $field['field_name'],
-		) );
+		$attributes = wp_parse_args(
+			$field['attributes'],
+			array(
+				'disabled'  => $field['disabled'],
+				'autofocus' => $field['autofocus'],
+				'required'  => $field['required'],
+				'id'        => $field['id'],
+				'class'     => '',
+				'name'      => $field['field_name'],
+			)
+		);
 
 		$attributes['class'] = trim( implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) ) );
 
@@ -488,7 +497,7 @@ abstract class RWMB_Field {
 		}
 
 		// Get raw meta value in the database, no escape.
-		$value  = self::call( $field, 'raw_meta', $post_id, $args );
+		$value = self::call( $field, 'raw_meta', $post_id, $args );
 
 		// Make sure meta value is an array for cloneable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
@@ -620,7 +629,7 @@ abstract class RWMB_Field {
 	 * @return string Field mapped type.
 	 */
 	public static function map_types( $field ) {
-		$type = isset( $field['type'] ) ? $field['type'] : 'input';
+		$type     = isset( $field['type'] ) ? $field['type'] : 'input';
 		$type_map = apply_filters(
 			'rwmb_type_map',
 			array(
@@ -640,7 +649,7 @@ abstract class RWMB_Field {
 	 * @return string Field class name.
 	 */
 	public static function get_class_name( $field ) {
-		$type = self::map_types( $field );
+		$type  = self::map_types( $field );
 		$type  = str_replace( array( '-', '_' ), ' ', $type );
 		$class = 'RWMB_' . ucwords( $type ) . '_Field';
 		$class = str_replace( ' ', '_', $class );

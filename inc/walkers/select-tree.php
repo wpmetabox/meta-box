@@ -45,7 +45,7 @@ class RWMB_Walker_Select_Tree {
 		$children = array();
 
 		foreach ( $options as $option ) {
-			$parent = isset( $option->parent ) ? $option->parent : 0;
+			$parent                = isset( $option->parent ) ? $option->parent : 0;
 			$children[ $parent ][] = $option;
 		}
 
@@ -74,9 +74,9 @@ class RWMB_Walker_Select_Tree {
 			esc_attr( $parent_id ),
 			RWMB_Field::render_attributes( $attributes )
 		);
-		$output .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
-		$output .= $walker->walk( $children, - 1 );
-		$output .= '</select>';
+		$output  .= $field['placeholder'] ? "<option value=''>{$field['placeholder']}</option>" : '<option></option>';
+		$output  .= $walker->walk( $children, - 1 );
+		$output  .= '</select>';
 
 		foreach ( $children as $child ) {
 			if ( isset( $options[ $child->value ] ) ) {

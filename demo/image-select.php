@@ -5,15 +5,15 @@
 add_filter( 'rwmb_meta_boxes', 'your_prefix_image_select_demo' );
 function your_prefix_image_select_demo( $meta_boxes ) {
 	$meta_boxes[] = array(
-		'title' => __( 'Image Select Demo', 'your-prefix' ),
+		'title'  => __( 'Image Select Demo', 'your-prefix' ),
 		'fields' => array(
 			array(
-				'id'       => 'image_select',
-				'name'     => __( 'Layout', 'your-prefix' ),
-				'type'     => 'image_select',
+				'id'      => 'image_select',
+				'name'    => __( 'Layout', 'your-prefix' ),
+				'type'    => 'image_select',
 
 				// Array of 'value' => 'Image Source' pairs
-				'options'  => array(
+				'options' => array(
 					'left'  => 'http://placehold.it/90x90&text=Left',
 					'right' => 'http://placehold.it/90x90&text=Right',
 					'none'  => 'http://placehold.it/90x90&text=None',

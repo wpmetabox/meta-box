@@ -58,18 +58,18 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 			// TEXT
 			array(
 				// Field name - Will be used as label
-				'name'  => esc_html__( 'Text', 'your-prefix' ),
+				'name'              => esc_html__( 'Text', 'your-prefix' ),
 				// Label description, display below field name (optional).
 				'label_description' => esc_html__( 'Some description', 'your-prefix' ),
 				// Field ID, i.e. the meta key
-				'id'    => "{$prefix}text",
+				'id'                => "{$prefix}text",
 				// Field description (optional)
-				'desc'  => esc_html__( 'Text description', 'your-prefix' ),
-				'type'  => 'text',
+				'desc'              => esc_html__( 'Text description', 'your-prefix' ),
+				'type'              => 'text',
 				// Default value (optional)
-				'std'   => esc_html__( 'Default text value', 'your-prefix' ),
+				'std'               => esc_html__( 'Default text value', 'your-prefix' ),
 				// CLONES: Add to make the field cloneable (i.e. have multiple value)
-				'clone' => true,
+				'clone'             => true,
 			),
 			// CHECKBOX
 			array(
@@ -148,7 +148,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 
 	// 2nd meta box
 	$meta_boxes[] = array(
-		'title' => esc_html__( 'Advanced Fields', 'your-prefix' ),
+		'title'  => esc_html__( 'Advanced Fields', 'your-prefix' ),
 
 		'fields' => array(
 			// HEADING

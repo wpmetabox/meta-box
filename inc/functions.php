@@ -44,9 +44,12 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	 * @return array
 	 */
 	function rwmb_get_field_settings( $key, $args = array(), $object_id = null ) {
-		$args = wp_parse_args( $args, array(
-			'object_type' => 'post',
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'object_type' => 'post',
+			)
+		);
 
 		/**
 		 * Filter meta type from object type and object id.
@@ -75,11 +78,14 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 	 * @return mixed
 	 */
 	function rwmb_meta_legacy( $key, $args = array(), $post_id = null ) {
-		$args  = wp_parse_args( $args, array(
-			'type'     => 'text',
-			'multiple' => false,
-			'clone'    => false,
-		) );
+		$args  = wp_parse_args(
+			$args,
+			array(
+				'type'     => 'text',
+				'multiple' => false,
+				'clone'    => false,
+			)
+		);
 		$field = array(
 			'id'       => $key,
 			'type'     => $args['type'],
@@ -187,9 +193,12 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 	 * @return string
 	 */
 	function rwmb_meta_shortcode( $atts ) {
-		$atts = wp_parse_args( $atts, array(
-			'post_id' => get_the_ID(),
-		) );
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'post_id' => get_the_ID(),
+			)
+		);
 		if ( empty( $atts['meta_key'] ) ) {
 			return '';
 		}
@@ -238,7 +247,7 @@ if ( ! function_exists( 'rwmb_get_storage_class_name' ) ) {
 		$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
 		$object_type = ucwords( $object_type );
 		$object_type = str_replace( ' ', '_', $object_type );
-		$class_name = 'RWMB_' . $object_type . '_Storage';
+		$class_name  = 'RWMB_' . $object_type . '_Storage';
 
 		if ( ! class_exists( $class_name ) ) {
 			$class_name = 'RWMB_Post_Storage';
@@ -258,7 +267,7 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 	 */
 	function rwmb_get_storage( $object_type, $meta_box = null ) {
 		$class_name = rwmb_get_storage_class_name( $object_type );
-		$storage = rwmb_get_registry( 'storage' )->get( $class_name );
+		$storage    = rwmb_get_registry( 'storage' )->get( $class_name );
 
 		return apply_filters( 'rwmb_get_storage', $storage, $object_type, $meta_box );
 	}

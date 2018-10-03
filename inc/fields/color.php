@@ -33,16 +33,22 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'alpha_channel' => false,
-			'js_options'    => array(),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'alpha_channel' => false,
+				'js_options'    => array(),
+			)
+		);
 
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'defaultColor' => false,
-			'hide'         => true,
-			'palettes'     => true,
-		) );
+		$field['js_options'] = wp_parse_args(
+			$field['js_options'],
+			array(
+				'defaultColor' => false,
+				'hide'         => true,
+				'palettes'     => true,
+			)
+		);
 
 		$field = parent::normalize( $field );
 
@@ -59,9 +65,12 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes         = parent::get_attributes( $field, $value );
-		$attributes         = wp_parse_args( $attributes, array(
-			'data-options' => wp_json_encode( $field['js_options'] ),
-		) );
+		$attributes         = wp_parse_args(
+			$attributes,
+			array(
+				'data-options' => wp_json_encode( $field['js_options'] ),
+			)
+		);
 		$attributes['type'] = 'text';
 
 		if ( $field['alpha_channel'] ) {

@@ -27,15 +27,21 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 */
 	public static function normalize( $field ) {
 		$field['mime_type'] = 'image';
-		$field              = wp_parse_args( $field, array(
-			'image_size' => 'thumbnail',
-		) );
+		$field              = wp_parse_args(
+			$field,
+			array(
+				'image_size' => 'thumbnail',
+			)
+		);
 
 		$field = parent::normalize( $field );
 
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'imageSize' => $field['image_size'],
-		) );
+		$field['js_options'] = wp_parse_args(
+			$field['js_options'],
+			array(
+				'imageSize' => $field['image_size'],
+			)
+		);
 
 		return $field;
 	}

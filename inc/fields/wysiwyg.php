@@ -49,7 +49,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		ob_start();
 
 		$field['options']['textarea_name'] = $field['field_name'];
-		$attributes = self::get_attributes( $field );
+		$attributes                        = self::get_attributes( $field );
 
 		// Use new wp_editor() since WP 3.3.
 		wp_editor( $meta, $attributes['id'], $field['options'] );
@@ -75,15 +75,21 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'raw'     => false,
-			'options' => array(),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'raw'     => false,
+				'options' => array(),
+			)
+		);
 
-		$field['options'] = wp_parse_args( $field['options'], array(
-			'editor_class' => 'rwmb-wysiwyg',
-			'dfw'          => true, // Use default WordPress full screen UI.
-		) );
+		$field['options'] = wp_parse_args(
+			$field['options'],
+			array(
+				'editor_class' => 'rwmb-wysiwyg',
+				'dfw'          => true, // Use default WordPress full screen UI.
+			)
+		);
 
 		// Keep the filter to be compatible with previous versions.
 		$field['options'] = apply_filters( 'rwmb_wysiwyg_settings', $field['options'] );

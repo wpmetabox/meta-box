@@ -51,9 +51,12 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
-		$field = wp_parse_args( $field, array(
-			'select_all_none' => false,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'select_all_none' => false,
+			)
+		);
 
 		return $field;
 	}
@@ -68,9 +71,12 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes = wp_parse_args( $attributes, array(
-			'multiple' => $field['multiple'],
-		) );
+		$attributes = wp_parse_args(
+			$attributes,
+			array(
+				'multiple' => $field['multiple'],
+			)
+		);
 
 		return $attributes;
 	}

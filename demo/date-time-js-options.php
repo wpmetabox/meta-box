@@ -2,15 +2,15 @@
 add_filter( 'rwmb_meta_boxes', 'your_prefix_register_meta_boxes' );
 
 function your_prefix_register_meta_boxes( $meta_boxes ) {
-	$prefix = 'your_prefix_';
+	$prefix       = 'your_prefix_';
 	$meta_boxes[] = array(
-		'title' => __( 'Date Time Picker With JS Options', 'your-prefix' ),
+		'title'  => __( 'Date Time Picker With JS Options', 'your-prefix' ),
 
 		'fields' => array(
 			array(
-				'name' => __( 'Date', 'your-prefix' ),
-				'id'   => $prefix . 'date',
-				'type' => 'date',
+				'name'       => __( 'Date', 'your-prefix' ),
+				'id'         => $prefix . 'date',
+				'type'       => 'date',
 
 				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
 				'js_options' => array(
@@ -23,9 +23,9 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				),
 			),
 			array(
-				'name' => __( 'Inline Date', 'your-prefix' ),
-				'id'   => $prefix . 'inline-date',
-				'type' => 'date',
+				'name'       => __( 'Inline Date', 'your-prefix' ),
+				'id'         => $prefix . 'inline-date',
+				'type'       => 'date',
 
 				// jQuery date picker options. See here http://jqueryui.com/demos/datepicker
 				'js_options' => array(
@@ -36,12 +36,12 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 					'numberOfMonths'  => 2,
 					'showButtonPanel' => true,
 				),
-				'inline' => true,
+				'inline'     => true,
 			),
 			array(
-				'name' => __( 'Datetime', 'your-prefix' ),
-				'id'   => $prefix . 'datetime',
-				'type' => 'datetime',
+				'name'       => __( 'Datetime', 'your-prefix' ),
+				'id'         => $prefix . 'datetime',
+				'type'       => 'datetime',
 
 				// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
 				'js_options' => array(
@@ -50,9 +50,9 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				),
 			),
 			array(
-				'name' => __( 'Time', 'your-prefix' ),
-				'id'   => $prefix . 'time',
-				'type' => 'time',
+				'name'       => __( 'Time', 'your-prefix' ),
+				'id'         => $prefix . 'time',
+				'type'       => 'time',
 
 				// jQuery datetime picker options. See here http://trentrichardson.com/examples/timepicker/
 				'js_options' => array(

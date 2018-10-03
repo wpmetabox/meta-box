@@ -17,9 +17,13 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-video', RWMB_CSS_URL . 'video.css', array( 'rwmb-media' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-video', RWMB_JS_URL . 'video.js', array( 'rwmb-media' ), RWMB_VER, true );
-		self::localize_script( 'rwmb-video', 'i18nRwmbVideo', array(
-			'extensions' => wp_get_video_extensions(),
-		) );
+		self::localize_script(
+			'rwmb-video',
+			'i18nRwmbVideo',
+			array(
+				'extensions' => wp_get_video_extensions(),
+			)
+		);
 	}
 
 	/**
@@ -85,9 +89,9 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 		$thumb_id = get_post_thumbnail_id( $attachment->ID );
 		if ( ! empty( $thumb_id ) ) {
 			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'full' );
-			$data['image'] = compact( 'src', 'width', 'height' );
+			$data['image']                = compact( 'src', 'width', 'height' );
 			list( $src, $width, $height ) = wp_get_attachment_image_src( $thumb_id, 'thumbnail' );
-			$data['thumb'] = compact( 'src', 'width', 'height' );
+			$data['thumb']                = compact( 'src', 'width', 'height' );
 		} else {
 			$src           = wp_mime_type_icon( $attachment->ID );
 			$width         = 48;
@@ -115,18 +119,22 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 		// Display single video.
 		if ( 1 === count( $value ) ) {
 			$video = reset( $value );
-			return wp_video_shortcode( array(
-				'src'    => $video['src'],
-				'width'  => $video['dimensions']['width'],
-				'height' => $video['dimensions']['height'],
-			) );
+			return wp_video_shortcode(
+				array(
+					'src'    => $video['src'],
+					'width'  => $video['dimensions']['width'],
+					'height' => $video['dimensions']['height'],
+				)
+			);
 		}
 
 		// Display multiple videos in a playlist.
-		return wp_playlist_shortcode( array(
-			'ids'  => $ids,
-			'type' => 'video',
-		) );
+		return wp_playlist_shortcode(
+			array(
+				'ids'  => $ids,
+				'type' => 'video',
+			)
+		);
 	}
 
 	/**
@@ -134,6 +142,6 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 */
 	public static function print_templates() {
 		parent::print_templates();
-		require_once( RWMB_INC_DIR . 'templates/video.php' );
+		require_once RWMB_INC_DIR . 'templates/video.php';
 	}
 }

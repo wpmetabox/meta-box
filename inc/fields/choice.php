@@ -28,10 +28,13 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'flatten' => true,
-			'options' => array(),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'flatten' => true,
+				'options' => array(),
+			)
+		);
 
 		return $field;
 	}

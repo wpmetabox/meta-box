@@ -18,12 +18,18 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 
-		$field = wp_parse_args( $field, array(
-			'not_available_string' => __( 'Embed HTML not available.', 'meta-box' ),
-		) );
-		$field['attributes'] = wp_parse_args( $field['attributes'], array(
-			'data-not-available' => $field['not_available_string'],
-		) );
+		$field               = wp_parse_args(
+			$field,
+			array(
+				'not_available_string' => __( 'Embed HTML not available.', 'meta-box' ),
+			)
+		);
+		$field['attributes'] = wp_parse_args(
+			$field['attributes'],
+			array(
+				'data-not-available' => $field['not_available_string'],
+			)
+		);
 
 		return $field;
 	}
@@ -47,7 +53,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 * Ajax callback for returning oEmbed HTML.
 	 */
 	public static function wp_ajax_get_embed() {
-		$url = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
+		$url           = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
 		$not_available = (string) filter_input( INPUT_POST, 'not_available' );
 		wp_send_json_success( self::get_embed( $url, $not_available ) );
 	}
@@ -80,9 +86,9 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 		// If no oembed provides found, try WordPress auto embed.
 		if ( ! $embed ) {
 			global $wp_embed;
-			$temp = $wp_embed->return_false_on_fail;
+			$temp                           = $wp_embed->return_false_on_fail;
 			$wp_embed->return_false_on_fail = true; // Do not fallback to make a link.
-			$embed = $wp_embed->shortcode( $args, $url );
+			$embed                          = $wp_embed->shortcode( $args, $url );
 			$wp_embed->return_false_on_fail = $temp;
 		}
 
@@ -118,7 +124,7 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes         = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'url';
 		return $attributes;
 	}

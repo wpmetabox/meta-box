@@ -9,21 +9,27 @@
  */
 
 // Overwrite global $content_width with large value
-add_action( 'init', function () {
-	$GLOBALS['content_width'] = 1920;
-} );
+add_action(
+	'init',
+	function () {
+		$GLOBALS['content_width'] = 1920;
+	}
+);
 
 // Register meta box with oembed field
-add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
-	$meta_boxes[] = [
-		'title'  => 'Test large oembed video',
-		'fields' => [
-			[
-				'id'   => 'youtube',
-				'name' => 'Youtube',
-				'type' => 'oembed',
+add_filter(
+	'rwmb_meta_boxes',
+	function ( $meta_boxes ) {
+		$meta_boxes[] = [
+			'title'  => 'Test large oembed video',
+			'fields' => [
+				[
+					'id'   => 'youtube',
+					'name' => 'Youtube',
+					'type' => 'oembed',
+				],
 			],
-		],
-	];
-	return $meta_boxes;
-} );
+		];
+		return $meta_boxes;
+	}
+);

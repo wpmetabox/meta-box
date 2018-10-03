@@ -16,12 +16,16 @@ class RWMB_File_Field extends RWMB_Field {
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', array( 'jquery-ui-sortable' ), RWMB_VER, true );
 
-		self::localize_script( 'rwmb-file', 'rwmbFile', array(
-			// Translators: %d is the number of files in singular form.
-			'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
-			// Translators: %d is the number of files in plural form.
-			'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
-		) );
+		self::localize_script(
+			'rwmb-file',
+			'rwmbFile',
+			array(
+				// Translators: %d is the number of files in singular form.
+				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
+				// Translators: %d is the number of files in plural form.
+				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
+			)
+		);
 	}
 
 	/**
@@ -137,12 +141,18 @@ class RWMB_File_Field extends RWMB_Field {
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			wp_get_attachment_url( $file ), $icon,
-			wp_get_attachment_url( $file ), get_the_title( $file ),
+			wp_get_attachment_url( $file ),
+			$icon,
+			wp_get_attachment_url( $file ),
+			get_the_title( $file ),
 			basename( $path ),
-			get_edit_post_link( $file ), $i18n_edit,
-			$file, $i18n_delete,
-			$attributes['name'], $index, $file
+			get_edit_post_link( $file ),
+			$i18n_edit,
+			$file,
+			$i18n_delete,
+			$attributes['name'],
+			$index,
+			$file
 		);
 	}
 
@@ -256,12 +266,15 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field             = parent::normalize( $field );
-		$field             = wp_parse_args( $field, array(
-			'std'              => array(),
-			'force_delete'     => false,
-			'max_file_uploads' => 0,
-			'mime_type'        => '',
-		) );
+		$field             = wp_parse_args(
+			$field,
+			array(
+				'std'              => array(),
+				'force_delete'     => false,
+				'max_file_uploads' => 0,
+				'mime_type'        => '',
+			)
+		);
 		$field['multiple'] = true;
 
 		$field['file_input_name'] = '_file_' . $field['id'];
@@ -328,13 +341,16 @@ class RWMB_File_Field extends RWMB_Field {
 			return false;
 		}
 
-		return wp_parse_args( array(
-			'ID'    => $file,
-			'name'  => basename( $path ),
-			'path'  => $path,
-			'url'   => wp_get_attachment_url( $file ),
-			'title' => get_the_title( $file ),
-		), wp_get_attachment_metadata( $file ) );
+		return wp_parse_args(
+			array(
+				'ID'    => $file,
+				'name'  => basename( $path ),
+				'path'  => $path,
+				'url'   => wp_get_attachment_url( $file ),
+				'title' => get_the_title( $file ),
+			),
+			wp_get_attachment_metadata( $file )
+		);
 	}
 
 	/**

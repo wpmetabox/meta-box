@@ -16,9 +16,13 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 		wp_enqueue_media();
 		wp_enqueue_style( 'rwmb-file-input', RWMB_CSS_URL . 'file-input.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-file-input', RWMB_JS_URL . 'file-input.js', array( 'jquery' ), RWMB_VER, true );
-		self::localize_script('rwmb-file-input', 'rwmbFileInput', array(
-			'frameTitle' => esc_html__( 'Select File', 'meta-box' ),
-		) );
+		self::localize_script(
+			'rwmb-file-input',
+			'rwmbFileInput',
+			array(
+				'frameTitle' => esc_html__( 'Select File', 'meta-box' ),
+			)
+		);
 	}
 
 	/**
@@ -50,7 +54,7 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes         = parent::get_attributes( $field, $value );
 		$attributes['type'] = 'text';
 
 		return $attributes;

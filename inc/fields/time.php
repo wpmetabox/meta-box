@@ -25,7 +25,7 @@ class RWMB_Time_Field extends RWMB_Datetime_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
+		$field                             = parent::normalize( $field );
 		$field['js_options']['timeFormat'] = empty( $field['format'] ) ? $field['js_options']['timeFormat'] : $field['format'];
 		return $field;
 	}

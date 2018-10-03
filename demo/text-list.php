@@ -13,7 +13,7 @@ function your_prefix_text_list_demo( $meta_boxes ) {
 				'name'    => __( 'Text List', 'your-prefix' ),
 				'type'    => 'text_list',
 
-				'clone' => true,
+				'clone'   => true,
 
 				// Options: array of Placeholder => Label for text boxes
 				// Number of options are not limited

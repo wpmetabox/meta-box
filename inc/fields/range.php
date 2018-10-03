@@ -17,7 +17,7 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$output = parent::html( $meta, $field );
+		$output  = parent::html( $meta, $field );
 		$output .= sprintf( '<span class="rwmb-output">%s</span>', $meta );
 		return $output;
 	}
@@ -37,9 +37,12 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'max' => 10,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'max' => 10,
+			)
+		);
 		$field = parent::normalize( $field );
 		return $field;
 	}

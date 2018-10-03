@@ -37,9 +37,13 @@ class RWMB_Slider_Field extends RWMB_Field {
 				<span class="rwmb-slider-value-label">%s<span>%s</span>%s</span>
 				<input type="hidden" name="%s" value="%s" class="rwmb-slider-value">
 			</div>',
-			$field['id'], esc_attr( wp_json_encode( $field['js_options'] ) ),
-			$field['prefix'], ( $meta >= 0 ) ? $meta : $field['std'], $field['suffix'],
-			$field['field_name'], ( $meta >= 0 ) ? $meta : $field['std']
+			$field['id'],
+			esc_attr( wp_json_encode( $field['js_options'] ) ),
+			$field['prefix'],
+			( $meta >= 0 ) ? $meta : $field['std'],
+			$field['suffix'],
+			$field['field_name'],
+			( $meta >= 0 ) ? $meta : $field['std']
 		);
 	}
 
@@ -52,16 +56,22 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field               = parent::normalize( $field );
-		$field               = wp_parse_args( $field, array(
-			'prefix'     => '',
-			'suffix'     => '',
-			'std'        => '',
-			'js_options' => array(),
-		) );
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'range' => 'min', // range = 'min' will add a dark background to sliding part, better UI.
-			'value' => $field['std'],
-		) );
+		$field               = wp_parse_args(
+			$field,
+			array(
+				'prefix'     => '',
+				'suffix'     => '',
+				'std'        => '',
+				'js_options' => array(),
+			)
+		);
+		$field['js_options'] = wp_parse_args(
+			$field['js_options'],
+			array(
+				'range' => 'min', // range = 'min' will add a dark background to sliding part, better UI.
+				'value' => $field['std'],
+			)
+		);
 
 		return $field;
 	}

@@ -8,9 +8,9 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 		'fields' => array(
 			// FILE UPLOAD
 			array(
-				'name' => __( 'File Upload', 'your-prefix' ),
-				'id'   => "{$prefix}file",
-				'type' => 'file',
+				'name'         => __( 'File Upload', 'your-prefix' ),
+				'id'           => "{$prefix}file",
+				'type'         => 'file',
 				'force_delete' => true,
 			),
 			// IMAGE UPLOAD
@@ -25,7 +25,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 				'id'               => "{$prefix}plupload",
 				'type'             => 'plupload_image',
 				'max_file_uploads' => 4,
-				'force_delete' => true,
+				'force_delete'     => true,
 			),
 		),
 	);

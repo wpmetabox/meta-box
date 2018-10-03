@@ -50,7 +50,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
+		$field                = parent::normalize( $field );
 		$field['field_name'] .= $field['multiple'] ? '[]' : '';
 
 		return $field;

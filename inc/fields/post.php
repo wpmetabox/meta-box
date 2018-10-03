@@ -16,11 +16,14 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'post_type'  => 'post',
-			'parent'     => false,
-			'query_args' => array(),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'post_type'  => 'post',
+				'parent'     => false,
+				'query_args' => array(),
+			)
+		);
 
 		$field['post_type'] = (array) $field['post_type'];
 
@@ -31,16 +34,19 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		 */
 		$placeholder = __( 'Select a post', 'meta-box' );
 		if ( 1 === count( $field['post_type'] ) ) {
-			$post_type = reset( $field['post_type'] );
+			$post_type        = reset( $field['post_type'] );
 			$post_type_object = get_post_type_object( $post_type );
 			if ( ! empty( $post_type_object ) ) {
 				// Translators: %s is the taxonomy singular label.
 				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $post_type_object->labels->singular_name ) );
 			}
 		}
-		$field = wp_parse_args( $field, array(
-			'placeholder' => $placeholder,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'placeholder' => $placeholder,
+			)
+		);
 
 		// Set parent option, which will change field name to `parent_id` to save as post parent.
 		if ( $field['parent'] ) {
@@ -60,14 +66,17 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array        Field options array.
 	 */
 	public static function query( $field ) {
-		$args = wp_parse_args( $field['query_args'], array(
-			'post_type'              => $field['post_type'],
-			'post_status'            => 'publish',
-			'posts_per_page'         => -1,
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		) );
+		$args    = wp_parse_args(
+			$field['query_args'],
+			array(
+				'post_type'              => $field['post_type'],
+				'post_status'            => 'publish',
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
 		$query   = new WP_Query( $args );
 		$options = array();
 		foreach ( $query->posts as $post ) {
@@ -111,10 +120,12 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return ! $value ? '' : sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			esc_url( get_permalink( $value ) ),
-			the_title_attribute( array(
-				'post' => $value,
-				'echo' => false,
-			) ),
+			the_title_attribute(
+				array(
+					'post' => $value,
+					'echo' => false,
+				)
+			),
 			get_the_title( $value )
 		);
 	}

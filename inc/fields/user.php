@@ -18,11 +18,14 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		// Set default field args.
-		$field = wp_parse_args( $field, array(
-			'placeholder'   => __( 'Select an user', 'meta-box' ),
-			'query_args'    => array(),
-			'display_field' => 'display_name',
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'placeholder'   => __( 'Select an user', 'meta-box' ),
+				'query_args'    => array(),
+				'display_field' => 'display_name',
+			)
+		);
 
 		$field = parent::normalize( $field );
 
@@ -37,13 +40,16 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function query( $field ) {
 		$display_field = $field['display_field'];
-		$args = wp_parse_args( $field['query_args'], array(
-			'orderby' => $display_field,
-			'order'   => 'asc',
-			'fields'  => array( 'ID', $display_field ),
-		) );
-		$users   = get_users( $args );
-		$options = array();
+		$args          = wp_parse_args(
+			$field['query_args'],
+			array(
+				'orderby' => $display_field,
+				'order'   => 'asc',
+				'fields'  => array( 'ID', $display_field ),
+			)
+		);
+		$users         = get_users( $args );
+		$options       = array();
 		foreach ( $users as $user ) {
 			$options[ $user->ID ] = array(
 				'value' => $user->ID,

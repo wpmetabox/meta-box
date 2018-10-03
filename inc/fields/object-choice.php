@@ -31,7 +31,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
+		$html  = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
 		$html .= self::call( 'add_new_form', $field );
 		return $html;
 	}
@@ -55,11 +55,14 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'flatten'    => true,
-			'query_args' => array(),
-			'field_type' => 'select_advanced',
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'flatten'    => true,
+				'query_args' => array(),
+				'field_type' => 'select_advanced',
+			)
+		);
 
 		if ( 'checkbox_tree' === $field['field_type'] ) {
 			$field['field_type'] = 'checkbox_list';
@@ -112,8 +115,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ), true ) ) {
 			return 'RWMB_Input_List_Field';
 		}
-		return self::get_class_name( array(
-			'type' => $field['field_type'],
-		) );
+		return self::get_class_name(
+			array(
+				'type' => $field['field_type'],
+			)
+		);
 	}
 }

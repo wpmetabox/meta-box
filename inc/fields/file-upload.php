@@ -27,13 +27,19 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'max_file_size'    => 0,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'max_file_size' => 0,
+			)
+		);
 
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'maxFileSize'      => $field['max_file_size'],
-		) );
+		$field['js_options'] = wp_parse_args(
+			$field['js_options'],
+			array(
+				'maxFileSize' => $field['max_file_size'],
+			)
+		);
 
 		return $field;
 	}

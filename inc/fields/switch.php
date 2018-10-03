@@ -52,11 +52,14 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'style'     => 'rounded',
-			'on_label'  => '',
-			'off_label' => '',
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'style'     => 'rounded',
+				'on_label'  => '',
+				'off_label' => '',
+			)
+		);
 
 		return $field;
 	}

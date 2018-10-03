@@ -40,18 +40,24 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'js_options'  => array(),
-			'placeholder' => __( 'Select an item', 'meta-box' ),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'js_options'  => array(),
+				'placeholder' => __( 'Select an item', 'meta-box' ),
+			)
+		);
 
 		$field = parent::normalize( $field );
 
-		$field['js_options'] = wp_parse_args( $field['js_options'], array(
-			'allowClear'  => true,
-			'width'       => 'none',
-			'placeholder' => $field['placeholder'],
-		) );
+		$field['js_options'] = wp_parse_args(
+			$field['js_options'],
+			array(
+				'allowClear'  => true,
+				'width'       => 'none',
+				'placeholder' => $field['placeholder'],
+			)
+		);
 
 		return $field;
 	}
@@ -65,9 +71,12 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes = wp_parse_args( $attributes, array(
-			'data-options' => wp_json_encode( $field['js_options'] ),
-		) );
+		$attributes = wp_parse_args(
+			$attributes,
+			array(
+				'data-options' => wp_json_encode( $field['js_options'] ),
+			)
+		);
 
 		return $attributes;
 	}

@@ -1,7 +1,7 @@
 <?php
 add_filter( 'rwmb_meta_boxes', 'your_prefix_choice_demo' );
 function your_prefix_choice_demo( $meta_boxes ) {
-	$prefix = '';
+	$prefix       = '';
 	$meta_boxes[] = array(
 		'title'  => __( 'Hierarchical Options', 'your-prefix' ),
 		'fields' => array(
@@ -23,12 +23,33 @@ function your_prefix_choice_demo( $meta_boxes ) {
 				'type'     => 'checkbox_list',
 				// New options syntax.  Supports hierarchical options with addition of parent
 				'options'  => array(
-					array( 'value' => 'option1', 'label' => 'Option 1' ),
-					array( 'value' => 'option2', 'label' => 'Option 2' ),
-					array( 'value' => 'option3', 'label' => 'Option 3' ),
-					array( 'value' => 'suboption11', 'label' => 'SubOption 1', 'parent' => 'option1' ),
-					array( 'value' => 'suboption12', 'label' => 'SubOption 2', 'parent' => 'option1' ),
-					array( 'value' => 'suboption13', 'label' => 'SubOption 3', 'parent' => 'option2' ),
+					array(
+						'value' => 'option1',
+						'label' => 'Option 1',
+					),
+					array(
+						'value' => 'option2',
+						'label' => 'Option 2',
+					),
+					array(
+						'value' => 'option3',
+						'label' => 'Option 3',
+					),
+					array(
+						'value'  => 'suboption11',
+						'label'  => 'SubOption 1',
+						'parent' => 'option1',
+					),
+					array(
+						'value'  => 'suboption12',
+						'label'  => 'SubOption 2',
+						'parent' => 'option1',
+					),
+					array(
+						'value'  => 'suboption13',
+						'label'  => 'SubOption 3',
+						'parent' => 'option2',
+					),
 				),
 				'collapse' => true,
 				'flatten'  => false,
@@ -39,12 +60,33 @@ function your_prefix_choice_demo( $meta_boxes ) {
 				'name'    => __( 'Hierarchical select', 'your-prefix' ),
 				'type'    => 'select',
 				'options' => array(
-					array( 'value' => 'option1', 'label' => 'Option 1' ),
-					array( 'value' => 'option2', 'label' => 'Option 2' ),
-					array( 'value' => 'option3', 'label' => 'Option 3' ),
-					array( 'value' => 'suboption11', 'label' => 'SubOption 1', 'parent' => 'option1' ),
-					array( 'value' => 'suboption12', 'label' => 'SubOption 2', 'parent' => 'option1' ),
-					array( 'value' => 'suboption13', 'label' => 'SubOption 3', 'parent' => 'option2' ),
+					array(
+						'value' => 'option1',
+						'label' => 'Option 1',
+					),
+					array(
+						'value' => 'option2',
+						'label' => 'Option 2',
+					),
+					array(
+						'value' => 'option3',
+						'label' => 'Option 3',
+					),
+					array(
+						'value'  => 'suboption11',
+						'label'  => 'SubOption 1',
+						'parent' => 'option1',
+					),
+					array(
+						'value'  => 'suboption12',
+						'label'  => 'SubOption 2',
+						'parent' => 'option1',
+					),
+					array(
+						'value'  => 'suboption13',
+						'label'  => 'SubOption 3',
+						'parent' => 'option2',
+					),
 				),
 				'flatten' => false,
 			),

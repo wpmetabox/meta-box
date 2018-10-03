@@ -28,9 +28,12 @@ class RWMB_Button_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args( $field, array(
-			'std'      => __( 'Click me', 'meta-box' ),
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'std' => __( 'Click me', 'meta-box' ),
+			)
+		);
 		$field = parent::normalize( $field );
 		return $field;
 	}
@@ -44,9 +47,12 @@ class RWMB_Button_Field extends RWMB_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes           = parent::get_attributes( $field, $value );
-		$attributes = wp_parse_args( $attributes, array(
-			'type'        => $field['type'],
-		) );
+		$attributes           = wp_parse_args(
+			$attributes,
+			array(
+				'type' => $field['type'],
+			)
+		);
 		$attributes['class'] .= ' button hide-if-no-js';
 
 		return $attributes;

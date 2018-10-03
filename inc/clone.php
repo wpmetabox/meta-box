@@ -49,14 +49,14 @@ class RWMB_Clone {
 			$class     = "rwmb-clone rwmb-{$field['type']}-clone";
 			$sort_icon = '';
 			if ( $field['sort_clone'] ) {
-				$class .= ' rwmb-sort-clone';
+				$class    .= ' rwmb-sort-clone';
 				$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 			}
 			$input_html = "<div class='$class'>" . $sort_icon;
 
 			// Call separated methods for displaying each type of field.
 			$input_html .= RWMB_Field::call( $sub_field, 'html', $sub_meta );
-			$input_html = RWMB_Field::filter( 'html', $input_html, $sub_field, $sub_meta );
+			$input_html  = RWMB_Field::filter( 'html', $input_html, $sub_field, $sub_meta );
 
 			// Remove clone button.
 			$input_html .= self::remove_clone_button( $sub_field );
@@ -88,8 +88,8 @@ class RWMB_Clone {
 		}
 
 		foreach ( $new as $key => $value ) {
-			$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
-			$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : null;
+			$value       = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
 			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
 		}
 
