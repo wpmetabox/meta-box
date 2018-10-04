@@ -175,12 +175,16 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		$new = array_filter( (array) $new );
-
+		
 		// Non-cloneable field.
 		if ( ! $field['clone'] ) {
 			$count = self::transform( $input );
 			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = media_handle_upload( "{$input}_{$i}", $post_id );
+				if ( $field['upload_dir'] ) {
+					$attachment = self::move_image_forder_id( "{$input}_{$i}", $field );
+				} else {
+					$attachment = media_handle_upload( "{$input}_{$i}", $post_id );
+				}
 				if ( ! is_wp_error( $attachment ) ) {
 					$new[] = $attachment;
 				}
@@ -195,7 +199,11 @@ class RWMB_File_Field extends RWMB_Field {
 				$new[ $clone_index ] = array();
 			}
 			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = media_handle_upload( "{$input}_{$clone_index}_{$i}", $post_id );
+				if ( $field['upload_dir'] ) {
+					$attachment = self::move_image_forder_id( "{$input}_{$clone_index}_{$i}", $field );
+				} else {
+					$attachment = media_handle_upload( "{$input}_{$clone_index}_{$i}", $post_id );
+				}
 				if ( ! is_wp_error( $attachment ) ) {
 					$new[ $clone_index ][] = $attachment;
 				}
@@ -365,5 +373,44 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		return sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( $value['url'] ), esc_html( $value['title'] ) );
+	}
+
+	public static function move_image_forder_id( $file_id, $field ) {
+		$wp_upload_dir = wp_upload_dir();
+		$upload_dir 	= $wp_upload_dir['basedir'] . '/' . $field['upload_dir'];
+		$file 		= $_FILES[ $file_id ]['tmp_name'];
+		$file_name 	= $_FILES[ $file_id ]['name'];
+		$attach_id = '';
+		if ( ! $file_name ) {
+			return $attach_id;
+		}
+
+		$path = $upload_dir . '/' . $file_name;
+        $url = site_url( '/'. $field['upload_dir'] ) . '/' . basename( $path );
+
+        if ( ! file_exists( $upload_dir ) ) {
+			if ( ! is_dir( $upload_dir ) ) {
+				mkdir( $upload_dir, 0777, true);
+			}
+		}
+		move_uploaded_file( $file, $path );
+		$filetype = wp_check_filetype( basename( $url ), null );
+
+		// Prepare an array of post data for the attachment.
+		$attachment = array(
+			'guid'           => $url, 
+			'post_mime_type' => $filetype['type'],
+			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $url ) ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		);
+
+		// Save the data
+		$attach_id = wp_insert_attachment( $attachment, $path, $post_id, false );
+		
+		if ( ! is_wp_error( $attach_id ) ) {
+			wp_update_attachment_metadata( $attach_id, wp_generate_attachment_metadata( $attach_id, $path ) );
+		}
+		return $attach_id;
 	}
 }
