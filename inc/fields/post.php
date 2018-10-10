@@ -71,11 +71,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query   = new WP_Query( $args );
 		$options = array();
 		foreach ( $query->posts as $post ) {
-			$options[ $post->ID ] = array(
+			$options[ $post->ID ] = array_merge( array(
 				'value'  => $post->ID,
 				'label'  => $post->post_title,
 				'parent' => $post->post_parent,
-			);
+			), (array) $post );
 		}
 		return $options;
 	}

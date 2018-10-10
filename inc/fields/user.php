@@ -45,10 +45,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$users   = get_users( $args );
 		$options = array();
 		foreach ( $users as $user ) {
-			$options[ $user->ID ] = array(
+			$options[ $user->ID ] = array_merge( array(
 				'value' => $user->ID,
 				'label' => $user->$display_field,
-			);
+			), (array) $user );
 		}
 		return $options;
 	}
