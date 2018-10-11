@@ -187,9 +187,9 @@ if ( ! function_exists('rwmb_get_object_fields') ) {
 	 *
 	 * @return array
 	 */
-	function rwmb_get_object_fields( $object_id, $meta_type = 'post' ) {
+	function rwmb_get_object_fields( $object_id, $object_type = 'post' ) {
 		$meta_boxes_registry = rwmb_get_registry('meta_box');
-		$object_meta_boxes_registry = $meta_boxes_registry->get_by( array('object_type' => $meta_type) );
+		$object_meta_boxes_registry = $meta_boxes_registry->get_by( array('object_type' => $object_type) );
 
 		$object_type = null;
 		$filter_name = null;
