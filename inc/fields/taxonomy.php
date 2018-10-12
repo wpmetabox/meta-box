@@ -98,11 +98,14 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 		$options = array();
 		foreach ( $terms as $term ) {
-			$options[ $term->term_id ] = array_merge( array(
-				'value'  => $term->term_id,
-				'label'  => $term->name,
-				'parent' => $term->parent,
-			), (array) $term );
+			$options[ $term->term_id ] = array_merge(
+				array(
+					'value'  => $term->term_id,
+					'label'  => $term->name,
+					'parent' => $term->parent,
+				),
+				(array) $term
+			);
 		}
 		return $options;
 	}
