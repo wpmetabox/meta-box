@@ -111,9 +111,11 @@
 		},
 
 		refresh: function () {
-			if ( this.map ) {
-				this.map.panTo( this.map.getCenter() );
+			if ( ! this.map ) {
+				return;
 			}
+			this.map.invalidateSize();
+			this.map.panTo( this.map.getCenter() );
 		},
 
 		// Autocomplete address

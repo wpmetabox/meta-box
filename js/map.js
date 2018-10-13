@@ -110,13 +110,15 @@
 		},
 
 		refresh: function () {
+			if ( ! this.map ) {
+				return;
+			}
 			var zoom = this.map.getZoom(),
 				center = this.map.getCenter();
 
-			if ( this.map ) {
-				this.map.setZoom( zoom );
-				this.map.panTo( center );
-			}
+			google.maps.event.trigger( this.map, 'resize' );
+			this.map.setZoom( zoom );
+			this.map.panTo( center );
 		},
 
 		// Autocomplete address
