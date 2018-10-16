@@ -191,25 +191,25 @@ if ( ! function_exists('rwmb_get_object_fields') ) {
 		$meta_boxes_registry = rwmb_get_registry('meta_box');
 		$object_meta_boxes_registry = $meta_boxes_registry->get_by( array('object_type' => $object_type) );
 
-		$object_type = null;
+		$meta_type = null;
 		$filter_name = null;
 		switch ($object_type) {
 			case 'post':
-				$object_type = get_post_type($object_id);
+				$meta_type = get_post_type($object_id);
 				$filter_name = 'post_types';
 			break;
 			case 'term':
-				$object_type = get_term($object_id)->id;
+				$meta_type = get_term($object_id)->id;
 				$filter_name = 'taxonomies';
 			break;
 		}
 
 		$filtered_meta_boxes_registry = array();
-		if ( !empty( $object_type ) ) {
+		if ( !empty( $meta_type ) ) {
 			$filtered_meta_boxes_registry = array_filter(
 				$object_meta_boxes_registry,
-				function ( $meta_box_registry ) use ( $filter_name, $object_type, $filtered_meta_boxes_registry ) {
-					return in_array($object_type, $meta_box_registry->meta_box[$filter_name]);
+				function ( $meta_box_registry ) use ( $filter_name, $meta_type, $filtered_meta_boxes_registry ) {
+					return in_array($meta_type, $meta_box_registry->meta_box[$filter_name]);
 				}
 			);
 		} else {
