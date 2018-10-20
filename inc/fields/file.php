@@ -100,7 +100,12 @@ class RWMB_File_Field extends RWMB_Field {
 			if ( get_attached_file( $file ) ) {
 				$output .= self::call( $field, 'file_html', $file, $k );
 			}
+
+			if ( $field['path_dir']) {
+				$output .= self::call( $field, 'file_html_path_dir', $file, $k );
+			}
 		}
+
 		return sprintf(
 			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
@@ -127,6 +132,11 @@ class RWMB_File_Field extends RWMB_Field {
 		$attributes  = self::get_attributes( $field, $file );
 		$path        = get_attached_file( $file );
 		$icon        = wp_get_attachment_image( $file, array( 60, 60 ), true );
+		$url = wp_get_attachment_url( $file );
+		$url_img = wp_get_attachment_url( $file );
+		$title = get_the_title( $file );
+		$title_name = basename( $path );
+		$post_link = get_edit_post_link( $file );
 
 		return sprintf(
 			'<li class="rwmb-file">
@@ -141,12 +151,12 @@ class RWMB_File_Field extends RWMB_Field {
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			wp_get_attachment_url( $file ),
+			$url,
 			$icon,
-			wp_get_attachment_url( $file ),
-			get_the_title( $file ),
-			basename( $path ),
-			get_edit_post_link( $file ),
+			$url_img,
+			$title,
+			$title_name,
+			$post_link,
 			$i18n_edit,
 			$file,
 			$i18n_delete,
@@ -156,6 +166,51 @@ class RWMB_File_Field extends RWMB_Field {
 		);
 	}
 
+	/**
+	 * Get HTML for uploaded file.
+	 *
+	 * @param int   $file  Metadata (file) ID.
+	 * @param int   $index File index.
+	 * @param array $field Field data.
+	 * @return string
+	 */
+	protected static function file_html_path_dir( $file, $index, $field ) {
+		// var_dump($field);
+		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
+		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
+		$meta_file = get_metadata_by_mid( get_post_type(), $file );
+		$url = $meta_file->meta_value['url'];
+		$icon        = '<img width="60" height="60" src="' . $url . '" class="attachment-path-file">';
+		$title = $meta_file->meta_value['title'];
+		$title_name = $meta_file->meta_value['name'];
+		$post_link = '#';
+		return sprintf(
+			'<li class="rwmb-file">
+				<div class="rwmb-file-icon"><a href="%s" target="_blank">%s</a></div>
+				<div class="rwmb-file-info">
+					<a href="%s" target="_blank" class="rwmb-file-title">%s</a>
+					<p class="rwmb-file-name">%s</p>
+					<p class="rwmb-file-actions">
+						<a href="%s" class="rwmb-file-edit" target="_blank"><span class="dashicons dashicons-edit"></span>%s</a>
+						<a href="#" class="rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span>%s</a>
+					</p>
+				</div>
+				<input type="hidden" name="%s[%s]" value="%s">
+			</li>',
+			$url,
+			$icon,
+			$url,
+			$title,
+			$title_name,
+			$post_link,
+			$i18n_edit,
+			$file,
+			$i18n_delete,
+			$attributes['name'],
+			$index,
+			$file
+		);
+	}
 	/**
 	 * Get meta values to save.
 	 *
@@ -175,13 +230,24 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		$new = array_filter( (array) $new );
+		if ( $field['path_dir'] ) {
+			$count = self::transform( $input );
+			for ( $i = 0; $i <= $count; $i ++ ) {
+				$attachment = self::move_path_forder_id( "{$input}_{$i}", $field, $post_id );
+				
+				if ( ! is_wp_error( $attachment ) ) {
+					$new[] = $attachment;
+				}
+			}
+			return $new;
+		}
 		
 		// Non-cloneable field.
 		if ( ! $field['clone'] ) {
 			$count = self::transform( $input );
 			for ( $i = 0; $i <= $count; $i ++ ) {
 				if ( $field['upload_dir'] ) {
-					$attachment = self::move_image_forder_id( "{$input}_{$i}", $field );
+					$attachment = self::move_images_forder_id( "{$input}_{$i}", $field, $post_id );
 				} else {
 					$attachment = media_handle_upload( "{$input}_{$i}", $post_id );
 				}
@@ -200,7 +266,7 @@ class RWMB_File_Field extends RWMB_Field {
 			}
 			for ( $i = 0; $i <= $count; $i ++ ) {
 				if ( $field['upload_dir'] ) {
-					$attachment = self::move_image_forder_id( "{$input}_{$clone_index}_{$i}", $field );
+					$attachment = self::move_images_forder_id( "{$input}_{$clone_index}_{$i}", $field );
 				} else {
 					$attachment = media_handle_upload( "{$input}_{$clone_index}_{$i}", $post_id );
 				}
@@ -300,6 +366,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return mixed Full info of uploaded files
 	 */
 	public static function get_value( $field, $args = array(), $post_id = null ) {
+
 		$value = parent::get_value( $field, $args, $post_id );
 		if ( ! $field['clone'] ) {
 			$value = self::call( 'files_info', $field, $value, $args );
@@ -375,7 +442,7 @@ class RWMB_File_Field extends RWMB_Field {
 		return sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( $value['url'] ), esc_html( $value['title'] ) );
 	}
 
-	public static function move_image_forder_id( $file_id, $field ) {
+	public static function move_images_forder_id( $file_id, $field, $post_id ) {
 		$wp_upload_dir = wp_upload_dir();
 		$upload_dir 	= $wp_upload_dir['basedir'] . '/' . $field['upload_dir'];
 		$file 		= $_FILES[ $file_id ]['tmp_name'];
@@ -413,4 +480,40 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 		return $attach_id;
 	}
+
+	public static function move_path_forder_id( $file_id, $field, $post_id ) {
+		$path_dir 	= ABSPATH  . $field['path_dir'];
+		$file 		= $_FILES[ $file_id ]['tmp_name'];
+		$file_name 	= $_FILES[ $file_id ]['name'];
+		$file_data = $attach_id = '';
+		$attach_id = '';
+		$file_data = array();
+		if ( ! $file_name ) {
+			return $attach_id;
+		}
+
+		$path = $path_dir . '/' . $file_name;
+        $url = site_url( '/'. $field['path_dir'] ) . '/' . basename( $path );
+
+        if ( ! file_exists( $path_dir ) ) {
+			if ( ! is_dir( $path_dir ) ) {
+				mkdir( $path_dir, 0777, true);
+			}
+		}
+		move_uploaded_file( $file, $path );
+		$filetype = wp_check_filetype( basename( $url ), null );
+		$title = preg_replace( '/\.[^.]+$/', '', basename( $url ) );
+		$file_data = array(
+			'id'	=> $file_id,
+			'name'  => basename( $path ),
+			'path'  => $path,
+			'url'   => $url,
+			'title' => preg_replace( '/\.[^.]+$/', '', basename( $url ) ),
+			'url_default' => '',
+		);
+
+		$attach_id = add_post_meta( $post_id, $file_id , $file_data );
+		return $attach_id;
+	}
+
 }
