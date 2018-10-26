@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.15.6] - 2018-10-26
+### Fixed
+- Fixed selecting files in Microsoft Edge for `file_upload` and similar fields.
+- Fixed returning value for cloneable `single_image` field.
+- Fixed `zoom` level is not working for `map` on the front end.
+- Fixed missing missing gettext function and comment for Dashboard page.
+- Restore missing `choice_label` filter for choice fields.
+- Fixed OSM map not refreshing in tabs or after moving meta boxes.
+
+### Added
+- Added a helper function `rwmb_get_object_fields` to get list of fields for an object. See [documentation](https://docs.metabox.io/rwmb-get-object-fields/).
+
+### Changed
+- Updated `select2` library to 4.0.5
+
 ## [4.15.5] - 2018-09-08
 
 ### Fixed
