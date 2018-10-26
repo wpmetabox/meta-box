@@ -184,6 +184,64 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	}
 } // End if().
 
+if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
+	/**
+	 * Get defined meta fields for object.
+	 *
+	 * @param int|string $type_or_id  Object ID or post type / taxonomy (for terms) / user (for users).
+	 * @param string     $object_type Object type. Use post, term.
+	 *
+	 * @return array
+	 */
+	function rwmb_get_object_fields( $type_or_id, $object_type = 'post' ) {
+		$meta_boxes = rwmb_get_registry( 'meta_box' )->get_by( array( 'object_type' => $object_type ) );
+		array_walk( $meta_boxes, 'rwmb_check_meta_box_supports', array( $object_type, $type_or_id ) );
+		$meta_boxes = array_filter( $meta_boxes );
+
+		$fields = array();
+		foreach ( $meta_boxes as $meta_box ) {
+			foreach ( $meta_box->fields as $field ) {
+				$fields[ $field['id'] ] = $field;
+			}
+		}
+
+		return $fields;
+	}
+}
+
+if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
+	/**
+	 * Check if a meta box supports an object.
+	 *
+	 * @param  object $meta_box    Meta Box object.
+	 * @param  int    $key         Not used.
+	 * @param  array  $object_data Object data (type and ID).
+	 */
+	function rwmb_check_meta_box_supports( &$meta_box, $key, $object_data ) {
+		list( $object_type, $type_or_id ) = $object_data;
+
+		$type = null;
+		$prop = null;
+		switch ( $object_type ) {
+			case 'post':
+				$type = is_numeric( $type_or_id ) ? get_post_type( $type_or_id ) : $type_or_id;
+				$prop = 'post_types';
+				break;
+			case 'term':
+				$type = $type_or_id;
+				if ( is_numeric( $type_or_id ) ) {
+					$term = get_term( $type_or_id );
+					$type = is_array( $term ) ? $term->taxonomy : null;
+				}
+				$prop = 'taxonomies';
+				break;
+		}
+		if ( ! $type || ! in_array( $type, $meta_box->meta_box[ $prop ], true ) ) {
+			$meta_box = false;
+		}
+	}
+}
+
 if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 	/**
 	 * Shortcode to display meta value.
