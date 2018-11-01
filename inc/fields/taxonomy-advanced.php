@@ -31,20 +31,24 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		return $field;
 	}
 
-	/**
-	 * Get meta values to save.
-	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
-	 *
-	 * @param mixed $new     The submitted meta value.
-	 * @param mixed $old     The existing meta value.
-	 * @param int   $post_id The post ID.
-	 * @param array $field   The field parameters.
-	 *
-	 * @return string
-	 */
-	public static function value( $new, $old, $post_id, $field ) {
-		return implode( ',', array_unique( (array) $new ) );
-	}
+    /**
+     * Get meta values to save.
+     * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
+     *
+     * @param mixed $new     The submitted meta value.
+     * @param mixed $old     The existing meta value.
+     * @param int   $post_id The post ID.
+     * @param array $field   The field parameters.
+     *
+     * @return string
+     */
+    public static function value( $new, $old, $post_id, $field ) {
+    	if ( ! empty( $field['clone'] ) &&  $field['clone'] == true ) {
+	    	return $new;
+	    }
+        return implode( ',', array_unique( (array) $new ) );
+    }
+
 
 	/**
 	 * Save meta value.
@@ -59,8 +63,11 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return;
 		}
 		$storage = $field['storage'];
-
+		
 		if ( $new ) {
+			if ( ! empty( $field['clone'] ) &&  $field['clone'] == true ) {
+				$new = call_user_func_array( 'array_merge', $new );
+			}
 			$storage->update( $post_id, $field['id'], $new );
 		} else {
 			$storage->delete( $post_id, $field['id'] );
