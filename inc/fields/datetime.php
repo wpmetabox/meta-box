@@ -153,6 +153,13 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 */
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
+
+		if ( $field['js_options']['dateFormat'] ) {
+			$dateFormat = strtr( $field['js_options']['dateFormat'], self::$date_formats );
+			$date = date_create( $meta );
+			$meta = date_format( $date, $dateFormat );
+		}
+		
 		if ( $field['timestamp'] ) {
 			$meta = self::prepare_meta( $meta, $field );
 		}
