@@ -80,9 +80,14 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		$args['single'] = true;
 		$meta           = RWMB_Field::raw_meta( $object_id, $field, $args );
 
+		if ( $field['clone'] && $field['clone_as_multiple'] ) {
+			$meta = call_user_func_array( 'array_merge', $meta );
+		}
+
 		if ( empty( $meta ) ) {
 			return $field['multiple'] ? array() : '';
 		}
+
 		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
 		$meta = array_filter( $meta );
 
