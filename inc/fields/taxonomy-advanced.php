@@ -10,28 +10,6 @@
  */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	/**
-	 * Normalize the field parameters.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
-	 */
-	public static function normalize( $field ) {
-		$field = wp_parse_args(
-			$field,
-			array(
-				'clone' => false,
-			)
-		);
-
-		$clone          = $field['clone'];
-		$field          = parent::normalize( $field );
-		$field['clone'] = $clone;
-
-		return $field;
-	}
-
-	/**
 	 * Get meta values to save.
 	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
 	 *
@@ -68,7 +46,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			$array_multiple = array();
 			foreach ( $new as $key => $value ) {
 				foreach ( $value as $key_value => $value_field ) {
-					$array_multiple[$key_value][] = $value_field[0];
+					$array_multiple[ $key_value ][] = $value_field[0];
 				}
 			}
 			$new = $array_multiple;
@@ -99,8 +77,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		}
 
 		if ( $field['clone'] && $field['clone_as_multiple'] ) {
-            $meta = call_user_func_array( 'array_merge', $meta );
-        }
+			$meta = call_user_func_array( 'array_merge', $meta );
+		}
 
 		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
 
