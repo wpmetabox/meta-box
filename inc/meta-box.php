@@ -413,18 +413,10 @@ class RW_Meta_Box {
 				continue;
 			}
 
-			if ( method_exists( $field['storage'], 'exists' ) ) {
-				if ( $field['storage']->exists( $this->object_id, $field['id'] ) ) {
-					return true;
-				}
-				continue;
-			}
-
 			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 			if ( false === $value ) {
 				continue;
 			}
-
 			if (
 				( ! $field['multiple'] && '' !== $value )
 				|| ( $field['multiple'] && is_array( $value ) && array() !== $value )
