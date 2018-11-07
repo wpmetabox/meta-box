@@ -42,17 +42,13 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		}
 		$storage = $field['storage'];
 
-		if ( $field['clone'] && $field['multiple'] ) {
-			$array_multiple = array();
-			foreach ( $new as $key => $value ) {
-				foreach ( $value as $key_value => $value_field ) {
-					$array_multiple[ $key_value ][] = $value_field[0];
-				}
-			}
-			$new = $array_multiple;
-		}
-
 		if ( $new ) {
+			if ( $field['clone'] && $field['clone_as_multiple'] ) {
+				foreach ( $new as $key => $value ) {
+					$storage->add( $post_id, $field['id'], $value );
+				}
+				return;
+			}
 			$storage->update( $post_id, $field['id'], $new );
 		} else {
 			$storage->delete( $post_id, $field['id'] );
@@ -74,10 +70,6 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 
 		if ( empty( $meta ) ) {
 			return $field['multiple'] ? array() : '';
-		}
-
-		if ( $field['clone'] && $field['clone_as_multiple'] ) {
-			$meta = call_user_func_array( 'array_merge', $meta );
 		}
 
 		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
