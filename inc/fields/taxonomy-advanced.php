@@ -21,10 +21,6 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @return string
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		if ( $field['clone'] && $field['multiple'] ) {
-			return $new;
-		}
-
 		return implode( ',', array_unique( (array) $new ) );
 	}
 
@@ -44,10 +40,11 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 
 		if ( $new ) {
 			if ( $field['clone'] && $field['clone_as_multiple'] ) {
+				$storage->delete( $post_id, $field['id'] );
 				foreach ( $new as $key => $value ) {
 					$storage->add( $post_id, $field['id'], $value );
 				}
-				return;
+				return;		
 			}
 			$storage->update( $post_id, $field['id'], $new );
 		} else {
