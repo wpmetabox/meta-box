@@ -68,8 +68,10 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			)
 		);
 
-		// Prevent cloning for taxonomy field.
-		$field['clone'] = false;
+		// Prevent cloning for taxonomy field, not for child fields (taxonomy_advanced).
+		if ( 'taxonomy' == $field['type'] ) {
+			$field['clone'] = false;
+		}
 
 		$field = parent::normalize( $field );
 
