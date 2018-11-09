@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [4.15.7] - 2018-11-09
+### Fixed
+- Fixed `taxonomy` field not showing correct saved value.
+- Fixed cloning `taxonomy_advanced` fields when set `field_type=select_tree` or set `clone_as_multiple=true`.
+- Changed global variable name for the loader to prevent conflict with other plugins.
+
 ## [4.15.6] - 2018-10-26
 ### Fixed
 - Fixed selecting files in Microsoft Edge for `file_upload` and similar fields.
@@ -917,7 +923,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.5...HEAD
+[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.7...HEAD
+[4.15.7]: https://github.com/rilwis/meta-box/compare/4.15.6...4.15.7
+[4.15.6]: https://github.com/rilwis/meta-box/compare/4.15.5...4.15.6
 [4.15.5]: https://github.com/rilwis/meta-box/compare/4.15.4...4.15.5
 [4.15.4]: https://github.com/rilwis/meta-box/compare/4.15.3...4.15.4
 [4.15.3]: https://github.com/rilwis/meta-box/compare/4.15.2...4.15.3
