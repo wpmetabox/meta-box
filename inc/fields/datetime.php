@@ -267,12 +267,14 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		if ( empty( $args['format'] ) ) {
-			return $value;
+		if ( $field['timestamp'] ) {
+			$value = self::prepare_meta( $value, $field );
+		} else {
+			$value = array(
+				'timestamp' => strtotime( $value ),
+				'formatted' => $value,
+			);
 		}
-		if ( ! $field['timestamp'] ) {
-			$value = strtotime( $value );
-		}
-		return date( $args['format'], $value );
+		return empty( $args['format'] ) ? $value['formatted'] : date( $args['format'], $value['timestamp'] );
 	}
 }
