@@ -296,70 +296,36 @@ abstract class RWMB_Field {
 		$name    = $field['id'];
 		$storage = $field['storage'];
 
-		// Remove post meta if it's empty.
-		if ( '' === $new || array() === $new ) {
-			$storage->delete( $post_id, $name );
-			return;
-		}
-
-		// Save cloned fields as multiple values instead serialized array.
-		if ( $field['clone'] && $field['clone_as_multiple'] ) {
-			$old = array_filter( (array) $old );
-			$new = array_filter( (array) $new );
-
-			if ( empty( $new ) ) {
-				$storage->delete( $post_id, $name );
-			}
-
-			if ( $field['sort_clone'] && array_values( $new ) != array_values( $old ) ) {
-				$storage->delete( $post_id, $name );
-
-				foreach ( $new as $new_value ) {
-					$storage->add( $post_id, $name, $new_value, false );
-				}
-
-				return;
-			}
-
-			$new_values = array_diff( $new, $old );
-			foreach ( $new_values as $new_value ) {
-				$storage->add( $post_id, $name, $new_value, false );
-			}
-
-			$old_values = array_diff( $old, $new );
-			foreach ( $old_values as $old_value ) {
-				$storage->delete( $post_id, $name, $old_value );
-			}
-
-			return;
-		}
-
-		// If field is cloneable, value is saved as a single entry in the database.
+		// Remove empty values for clones.
 		if ( $field['clone'] ) {
-			// Remove empty values.
 			$new = (array) $new;
 			foreach ( $new as $k => $v ) {
 				if ( '' === $v || array() === $v ) {
 					unset( $new[ $k ] );
 				}
 			}
+		}
+
+		// Remove post meta if it's empty.
+		if ( '' === $new || array() === $new ) {
+			$storage->delete( $post_id, $name );
+			return;
+		}
+
+		// If field is cloneable AND not force to save as multiple rows, value is saved as a single row in the database.
+		if ( $field['clone'] && ! $field['clone_as_multiple'] ) {
 			// Reset indexes.
 			$new = array_values( $new );
 			$storage->update( $post_id, $name, $new );
 			return;
 		}
 
-		// If field is multiple, value is saved as multiple entries in the database (WordPress behaviour).
-		if ( $field['multiple'] ) {
-			$old        = (array) $old;
-			$new        = (array) $new;
-			$new_values = array_diff( $new, $old );
-			foreach ( $new_values as $new_value ) {
+		// Save cloned fields as multiple values instead serialized array.
+		if ( ( $field['clone'] && $field['clone_as_multiple'] ) || $field['multiple'] ) {
+			$storage->delete( $post_id, $name );
+			$new = (array) $new;
+			foreach ( $new as $new_value ) {
 				$storage->add( $post_id, $name, $new_value, false );
-			}
-			$old_values = array_diff( $old, $new );
-			foreach ( $old_values as $old_value ) {
-				$storage->delete( $post_id, $name, $old_value );
 			}
 			return;
 		}
