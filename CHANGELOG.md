@@ -1,9 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.15.8] - 2018-12-10
+### Fixed
+- Fixed output of datetime field when timestampt=true
+- Fixed WYSIWYG field blank when inside a sortable, cloneable group.
+- Fixed updating clonetable field with values contain quotes.
+- Fixed wysiwyg field not saving in Gutenberg / WordPress 5.0.
 
 ## [4.15.7] - 2018-11-09
 ### Fixed
@@ -923,7 +928,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## 1.0
 - procedural code
 
-[Unreleased]: https://github.com/rilwis/meta-box/compare/4.15.7...HEAD
+[4.15.8]: https://github.com/rilwis/meta-box/compare/4.15.7...4.15.8
 [4.15.7]: https://github.com/rilwis/meta-box/compare/4.15.6...4.15.7
 [4.15.6]: https://github.com/rilwis/meta-box/compare/4.15.5...4.15.6
 [4.15.5]: https://github.com/rilwis/meta-box/compare/4.15.4...4.15.5
