@@ -101,7 +101,7 @@ jQuery( function ( $ ) {
 		wp.data.subscribe( function() {
 			var editor = wp.data.hasOwnProperty( 'select' ) ? wp.data.select( 'core/editor' ) : {};
 
-			if ( editor.isSavingPost && editor.isSavingPost() ) {
+			if ( editor && editor.isSavingPost && editor.isSavingPost() ) {
 				window.tinyMCE.triggerSave();
 			}
 		} );
