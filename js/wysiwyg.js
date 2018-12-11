@@ -95,11 +95,13 @@ jQuery( function ( $ ) {
 	 * https://github.com/WordPress/gutenberg/issues/7176
 	 */
 	function ensureSave() {
-		if ( ! wp.data || ! window.tinyMCE ) {
+		if ( ! wp.data || ! wp.data.hasOwnProperty( 'subscribe' ) || ! window.tinyMCE ) {
 			return;
 		}
 		wp.data.subscribe( function() {
-			if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
+			var editor = wp.data.hasOwnProperty( 'select' ) ? wp.data.select( 'core/editor' ) : {};
+
+			if ( editor.isSavingPost && editor.isSavingPost() ) {
 				window.tinyMCE.triggerSave();
 			}
 		} );
