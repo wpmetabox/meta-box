@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.15.9] - 2018-12-12
+### Fixed
+- Fix compatibility issue with Yoast SEO in WordPress 5.0 or Gutenberg plugin is installed, and ClassicPress editor is active.
+
 ## [4.15.8] - 2018-12-10
 ### Fixed
 - Fixed output of datetime field when timestampt=true
