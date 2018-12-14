@@ -86,8 +86,10 @@ class RWMB_Loader {
 		$core = new RWMB_Core();
 		$core->init();
 
-		$about = new RWMB_About();
-		$about->init();
+		if ( is_admin() ) {
+			$about = new RWMB_About();
+			$about->init();
+		}
 
 		// Validation module.
 		new RWMB_Validation();
