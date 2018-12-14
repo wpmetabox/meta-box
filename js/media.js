@@ -215,14 +215,17 @@ jQuery( function ( $ ) {
 				},
 				function ( item ) {
 					return item.cid;
-				} );
+				}
+			);
 
 			this.listenTo( this.collection, 'add', this.addItemView );
 			this.listenTo( this.collection, 'remove', this.removeItemView );
 			this.listenTo( this.collection, 'reset', this.resetItemViews );
 
-			// Sort media using sortable
-			this.initSortable();
+			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
+			this.$el.sortable( {
+				helper : 'clone'
+			} );
 		},
 
 		listenToItemView: function ( itemView ) {
@@ -321,37 +324,6 @@ jQuery( function ( $ ) {
 			} );
 
 			this._editFrame.open();
-		},
-
-		initSortable: function () {
-			var collection = this.controller.get( 'items' );
-			this.$el.sortable( {
-				// Clone the element and the clone will be dragged. Prevent trigger click on the image, which means reselect.
-				helper : 'clone',
-
-				// Record the initial `index` of the dragged model.
-				start: function ( event, ui ) {
-					ui.item.data( 'sortableIndexStart', ui.item.index() );
-				},
-
-				// Update the model's index in the collection.
-				// Do so silently, as the view is already accurate.
-				update: function ( event, ui ) {
-					var model = collection.at( ui.item.data( 'sortableIndexStart' ) );
-
-					// Silently shift the model to its new index.
-					collection.remove( model, {
-						silent: true
-					} );
-					collection.add( model, {
-						silent: true,
-						at: ui.item.index()
-					} );
-
-					// Fire the `reset` event to ensure other collections sync.
-					collection.trigger( 'reset', collection );
-				}
-			} );
 		}
 	} );
 
@@ -458,9 +430,8 @@ jQuery( function ( $ ) {
 			this.$el.data( 'id', this.model.cid );
 		},
 
-
 		events: {
-			'click .rwmb-overlay': function () {
+			'click .rwmb-image-overlay': function () {
 				this.trigger( 'click:switch', this.model );
 				return false;
 			},
