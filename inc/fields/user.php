@@ -48,6 +48,14 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				'fields'  => array( 'ID', $display_field ),
 			)
 		);
+
+		// Get from cache to prevent same queries.
+		$cache_key = md5( serialize( $args ) );
+		$options = wp_cache_get( $cache_key, 'meta-box-user-field' );
+		if ( false !== $options ) {
+			return $options;
+		}
+
 		$users         = get_users( $args );
 		$options       = array();
 		foreach ( $users as $user ) {
@@ -59,6 +67,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				(array) $user
 			);
 		}
+
+		// Cache the query.
+		wp_cache_set( $cache_key, $options, 'meta-box-user-field' );
+
 		return $options;
 	}
 

@@ -77,6 +77,14 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				'update_post_term_cache' => false,
 			)
 		);
+
+		// Get from cache to prevent same queries.
+		$cache_key = md5( serialize( $args ) );
+		$options = wp_cache_get( $cache_key, 'meta-box-post-field' );
+		if ( false !== $options ) {
+			return $options;
+		}
+
 		$query   = new WP_Query( $args );
 		$options = array();
 		foreach ( $query->posts as $post ) {
@@ -89,6 +97,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				(array) $post
 			);
 		}
+
+		// Cache the query.
+		wp_cache_set( $cache_key, $options, 'meta-box-post-field' );
+
 		return $options;
 	}
 
