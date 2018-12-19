@@ -9,7 +9,7 @@
 ?>
 <h1>
 	<?php
-	$plugin = get_plugin_data( RWMB_DIR . 'meta-box.php' );
+	$plugin = get_plugin_data( RWMB_DIR . 'meta-box.php', false, false );
 
 	// Translators: %s - Plugin name.
 	echo esc_html( sprintf( __( 'Welcome to %s', 'meta-box' ), $plugin['Name'] ) );
