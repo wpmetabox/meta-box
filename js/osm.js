@@ -1,10 +1,6 @@
 ( function( $, L ) {
 	'use strict';
 
-	var osmTileLayer = L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	} );
-
 	// Use function construction to store map & DOM elements separately for each instance
 	var OsmField = function ( $container ) {
 		this.$container = $container;
@@ -43,7 +39,9 @@
 				center: latLng,
 				zoom: 14
 			} );
-			this.map.addLayer( osmTileLayer );
+			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			} ).addTo( this.map );
 			this.marker = L.marker( latLng, {
 				draggable: true
 			} ).addTo( this.map );
