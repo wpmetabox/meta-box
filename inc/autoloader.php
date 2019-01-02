@@ -57,7 +57,7 @@ class RWMB_Autoloader {
 		foreach ( $this->dirs as $dir ) {
 			if (
 				( $dir['prefix'] && 0 !== strpos( $class, $dir['prefix'] ) )
-				&& ( $dir['suffix'] && substr( $class, - strlen( $dir['suffix'] ) ) !== $dir['suffix'] )
+				|| ( $dir['suffix'] && substr( $class, - strlen( $dir['suffix'] ) ) !== $dir['suffix'] )
 			) {
 				continue;
 			}
