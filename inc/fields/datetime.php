@@ -153,39 +153,26 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 */
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
-		$formatSave = '';
 
-		if ( isset( $field['js_options']['formatSave'] ) ) {
-			$formatSave = strtr( $field['js_options']['formatSave'], self::$date_formats )
-			. $field['js_options']['separator']
-			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
-
-			if ( ! empty( $meta ) ) {
-				if ( is_numeric( $meta ) ) {
-					$meta = date( $formatSave, $meta );
-				}
-
-				$date_time = self::prepare_meta( $meta, $field );
-			
-				$date = DateTime::createFromFormat( $formatSave, $date_time['timestamp'] ); 
-				$meta = $date->format( self::call( 'translate_format', $field ) );
-
-				if ( $field['timestamp'] ) {
-					$meta_timestamp = $date_time;
-					$meta_timestamp['formatted'] = $meta;
-					$meta_timestamp['timestamp'] = strtotime( $meta );
-					$meta = $meta_timestamp;
-				}
-			}
-			
-			return $meta;
-		}
-		
 		if ( $field['timestamp'] ) {
 			$meta = self::prepare_meta( $meta, $field );
+			return $meta;
 		}
+
+		if ( ! isset( $field['js_options']['formatSave'] ) || empty( $meta ) ) {
+			return $meta;
+		}
+
+		$format_save = strtr( $field['js_options']['formatSave'], self::$date_formats )
+		. $field['js_options']['separator']
+		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
+
+		$date = DateTime::createFromFormat( $format_save, $meta );
+		$meta = $date->format( self::call( 'translate_format', $field ) );
+
 		return $meta;
 	}
+
 	/**
 	 * Save meta value.
 	 *
@@ -198,16 +185,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		$name    = $field['id'];
 		$storage = $field['storage'];
 
-		// Date format when saving
+		// Date format when saving.
 		if ( $field['js_options']['formatSave'] ) {
-			$formatSave = strtr( $field['js_options']['formatSave'], self::$date_formats )
+			$format_save = strtr( $field['js_options']['formatSave'], self::$date_formats )
 			. $field['js_options']['separator']
 			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 
 			if ( ! is_numeric( $new ) ) {
 				$new = strtotime( $new );
 			}
-			$new = date( $formatSave, $new );
+			$new = date( $format_save, $new );
 		}
 
 		if ( $field['timestamp'] && ! is_numeric( $new ) ) {
