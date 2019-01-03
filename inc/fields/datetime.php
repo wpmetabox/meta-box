@@ -153,19 +153,69 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 */
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
+		$formatSave = '';
+
+		if ( isset( $field['js_options']['formatSave'] ) ) {
+			$formatSave = strtr( $field['js_options']['formatSave'], self::$date_formats )
+			. $field['js_options']['separator']
+			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
+
+			if ( ! empty( $meta ) ) {
+				if ( is_numeric( $meta ) ) {
+					$meta = date( $formatSave, $meta );
+				}
+
+				$date_time = self::prepare_meta( $meta, $field );
+			
+				$date = DateTime::createFromFormat( $formatSave, $date_time['timestamp'] ); 
+				$meta = $date->format( self::call( 'translate_format', $field ) );
+
+				if ( $field['timestamp'] ) {
+					$meta_timestamp = $date_time;
+					$meta_timestamp['formatted'] = $meta;
+					$meta_timestamp['timestamp'] = strtotime( $meta );
+					$meta = $meta_timestamp;
+				}
+			}
+			
+			return $meta;
+		}
+		
 		if ( $field['timestamp'] ) {
 			$meta = self::prepare_meta( $meta, $field );
 		}
-		
-		if ( $field['js_options']['dateFormat'] ) {
-			$dateFormat = strtr( $field['js_options']['dateFormat'], self::$date_formats );
-			$date = date_create( $meta );
-			$meta = date_format( $date, $dateFormat );
-		}
-
 		return $meta;
 	}
+	/**
+	 * Save meta value.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 */
+	public static function save( $new, $old, $post_id, $field ) {
+		$name    = $field['id'];
+		$storage = $field['storage'];
 
+		// Date format when saving
+		if ( $field['js_options']['formatSave'] ) {
+			$formatSave = strtr( $field['js_options']['formatSave'], self::$date_formats )
+			. $field['js_options']['separator']
+			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
+
+			if ( ! is_numeric( $new ) ) {
+				$new = strtotime( $new );
+			}
+			$new = date( $formatSave, $new );
+		}
+
+		if ( $field['timestamp'] && ! is_numeric( $new ) ) {
+			$new = strtotime( $new );
+		}
+
+		$storage->update( $post_id, $name, $new );
+	}
 	/**
 	 * Format meta value if set 'timestamp'.
 	 *

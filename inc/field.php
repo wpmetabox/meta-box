@@ -330,14 +330,6 @@ abstract class RWMB_Field {
 			return;
 		}
 
-		// Date format when saving
-		if ( $field['js_options']['formatSave'] ) {
-			$dateFormat = strtr( $field['js_options']['formatSave'], RWMB_Datetime_Field::$date_formats );
-			$date = date_create( $new );
-			$new = date_format( $date, $dateFormat );
-		}
-
-
 		// Default: just update post meta.
 		$storage->update( $post_id, $name, $new );
 	}
