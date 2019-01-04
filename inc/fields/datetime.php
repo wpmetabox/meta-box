@@ -139,20 +139,15 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @return string|int
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-
 		if ( $field['timestamp'] ) {
 			return $new['timestamp'];
 		}
 
-		if (  isset( $field['formatSave'] ) && ! $field['timestamp'] ) {
-			$format_save = strtr( $field['formatSave'], self::$date_formats )
-			. $field['js_options']['separator']
-			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
-
+		if ( $field['save_format'] ) {
 			$date = DateTime::createFromFormat( self::call( 'translate_format', $field ), $new );
-			$new = $date->format( $format_save );
+			$new  = $date->format( $field['save_format'] );
 		}
-		
+
 		return $new;
 	}
 
@@ -173,15 +168,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			return $meta;
 		}
 
-		if ( ! isset( $field['formatSave'] ) || empty( $meta ) ) {
+		if ( ! $field['save_format'] || ! $meta ) {
 			return $meta;
 		}
 
-		$format_save = strtr( $field['formatSave'], self::$date_formats )
-		. $field['js_options']['separator']
-		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
-
-		$date = DateTime::createFromFormat( $format_save, $meta );
+		$date = DateTime::createFromFormat( $field['save_format'], $meta );
 		$meta = $date->format( self::call( 'translate_format', $field ) );
 
 		return $meta;
@@ -217,9 +208,10 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		$field = wp_parse_args(
 			$field,
 			array(
-				'timestamp'  => false,
-				'inline'     => false,
-				'js_options' => array(),
+				'timestamp'   => false,
+				'inline'      => false,
+				'js_options'  => array(),
+				'save_format' => '',
 			)
 		);
 
