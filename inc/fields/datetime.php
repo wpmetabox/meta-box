@@ -139,6 +139,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @return string|int
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+		if (  isset( $field['formatSave'] ) && ! $field['timestamp'] ) {
+			$format_save = strtr( $field['formatSave'], self::$date_formats )
+			. $field['js_options']['separator']
+			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
+
+			$new = str_replace( "/", "-", $new );
+			$new = strtotime( $new );
+			$new = date( $format_save, $new ); 
+		}
+		
 		return $field['timestamp'] ? $new['timestamp'] : $new;
 	}
 
@@ -154,55 +164,40 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
 
+	
+
 		if ( $field['timestamp'] ) {
 			$meta = self::prepare_meta( $meta, $field );
+
+			if ( ! is_numeric( $meta['timestamp'] ) ) {
+				$meta['formatted'] = $meta['timestamp'];
+			}
 			return $meta;
 		}
 
-		if ( ! isset( $field['js_options']['formatSave'] ) || empty( $meta ) ) {
+		if ( ! isset( $field['formatSave'] ) || empty( $meta ) ) {
 			return $meta;
 		}
 
-		$format_save = strtr( $field['js_options']['formatSave'], self::$date_formats )
+		$format_save = strtr( $field['formatSave'], self::$date_formats )
 		. $field['js_options']['separator']
 		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 
-		$date = DateTime::createFromFormat( $format_save, $meta );
-		$meta = $date->format( self::call( 'translate_format', $field ) );
+		
+
+		// check format when dropped timestamp
+		if ( is_numeric( $meta ) ) {
+			$meta = date( self::call( 'translate_format', $field ), $meta );
+		}
+		
+		$meta = str_replace( "/", "-", $meta );
+
+		$meta = strtotime( $meta );
+		$meta = date( self::call( 'translate_format', $field ), $meta );
 
 		return $meta;
 	}
 
-	/**
-	 * Save meta value.
-	 *
-	 * @param mixed $new     The submitted meta value.
-	 * @param mixed $old     The existing meta value.
-	 * @param int   $post_id The post ID.
-	 * @param array $field   The field parameters.
-	 */
-	public static function save( $new, $old, $post_id, $field ) {
-		$name    = $field['id'];
-		$storage = $field['storage'];
-
-		// Date format when saving.
-		if ( $field['js_options']['formatSave'] ) {
-			$format_save = strtr( $field['js_options']['formatSave'], self::$date_formats )
-			. $field['js_options']['separator']
-			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
-
-			if ( ! is_numeric( $new ) ) {
-				$new = strtotime( $new );
-			}
-			$new = date( $format_save, $new );
-		}
-
-		if ( $field['timestamp'] && ! is_numeric( $new ) ) {
-			$new = strtotime( $new );
-		}
-
-		$storage->update( $post_id, $name, $new );
-	}
 	/**
 	 * Format meta value if set 'timestamp'.
 	 *
