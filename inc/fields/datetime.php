@@ -150,7 +150,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 
 			$date = DateTime::createFromFormat( self::call( 'translate_format', $field ), $new );
-        	$new = $date->format( $format_save );
+			$new = $date->format( $format_save );
 		}
 		
 		return $new;
@@ -181,9 +181,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		. $field['js_options']['separator']
 		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 
-        $date = DateTime::createFromFormat( $format_save, $meta );
-        $meta = $date->format( self::call( 'translate_format', $field ) );
-
+		$date = DateTime::createFromFormat( $format_save, $meta );
+		$meta = $date->format( self::call( 'translate_format', $field ) );
 
 		return $meta;
 	}
