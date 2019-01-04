@@ -139,6 +139,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @return string|int
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+
+		if ( $field['timestamp'] ) {
+			return $new['timestamp'];
+		}
+
 		if (  isset( $field['formatSave'] ) && ! $field['timestamp'] ) {
 			$format_save = strtr( $field['formatSave'], self::$date_formats )
 			. $field['js_options']['separator']
@@ -149,7 +154,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			$new = date( $format_save, $new ); 
 		}
 		
-		return $field['timestamp'] ? $new['timestamp'] : $new;
+		return $new;
 	}
 
 	/**
@@ -164,11 +169,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
 
-	
-
 		if ( $field['timestamp'] ) {
 			$meta = self::prepare_meta( $meta, $field );
-
 			if ( ! is_numeric( $meta['timestamp'] ) ) {
 				$meta['formatted'] = $meta['timestamp'];
 			}
@@ -183,13 +185,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		. $field['js_options']['separator']
 		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
 
-		
-
 		// check format when dropped timestamp
 		if ( is_numeric( $meta ) ) {
 			$meta = date( self::call( 'translate_format', $field ), $meta );
 		}
-		
+
 		$meta = str_replace( "/", "-", $meta );
 
 		$meta = strtotime( $meta );
