@@ -1,6 +1,7 @@
 .rwmb-field .select2-container {
 	height: auto;
 	min-width: 200px;
+	max-width: 100%;
 }
 #wpbody .rwmb-select-all {
 	display: block;
