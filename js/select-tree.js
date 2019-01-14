@@ -5,6 +5,7 @@ jQuery( function ( $ ) {
 		var $this = $( this ),
 			required = $this.prop( 'required' );
 
+		$this.select2();
 		if ( required ) {
 			$this.data( 'initial-required', required );
 		}
