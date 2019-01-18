@@ -29,7 +29,7 @@ jQuery( function ( $ ) {
 			$notSelected = $this.siblings().not( $selected ),
 			options = $this.data( 'options' );
 
-		// processing option select2
+		// Turn select into beautiful select2.
 		$this.removeClass( 'select2-hidden-accessible' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
