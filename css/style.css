@@ -31,6 +31,10 @@
 	font-weight: bold;
 	margin-left: 3px;
 }
+.rwmb-input input,
+.rwmb-input select {
+	max-width: 99%;
+}
 
 /* 75% if field has label, 100% if no label */
 .rwmb-input {
@@ -121,6 +125,9 @@ select.rwmb-error {
 #side-sortables .rwmb-label,
 #side-sortables .rwmb-input {
 	width: 100%;
+}
+#side-sortables .rwmb-label {
+	margin-bottom: 3px;
 }
 
 /* Seamless style

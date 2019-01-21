@@ -45,7 +45,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 		'post_types' => array( 'post', 'page' ),
 
 		// Where the meta box appear: normal (default), advanced, side. Optional.
-		'context'    => 'normal',
+		'context'    => 'side',
 
 		// Order of meta box: high (default), low. Optional.
 		'priority'   => 'high',
@@ -149,6 +149,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 	// 2nd meta box
 	$meta_boxes[] = array(
 		'title'  => esc_html__( 'Advanced Fields', 'your-prefix' ),
+		'context' => 'side',
 
 		'fields' => array(
 			// HEADING
