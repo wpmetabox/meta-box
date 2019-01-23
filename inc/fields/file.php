@@ -97,7 +97,7 @@ class RWMB_File_Field extends RWMB_Field {
 
 		foreach ( (array) $files as $k => $file ) {
 			// Ignore deleted files (if users accidentally deleted files or uses `force_delete` without saving post).
-			if ( get_attached_file( $file ) || self::handle_link_upload_dir( $field ) == true ) {
+			if ( get_attached_file( $file ) || self::is_upload_dir_in_library( $field ) == true ) {
 				$output .= self::call( $field, 'file_html', $file, $k );
 			}
 		}
@@ -131,7 +131,7 @@ class RWMB_File_Field extends RWMB_Field {
 			return;
 		}
 		// get field upload_dir data
-		if ( self::handle_link_upload_dir( $field ) == true ) {
+		if ( self::is_upload_dir_in_library( $field ) == true ) {
 			$data = self::custom_data_file_html( $file );
 		} else {
 			$data = array(
@@ -209,29 +209,14 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
-		$check_upload_dir = self::handle_link_upload_dir( $field );
 
 		$new = array_filter( (array) $new );
+
 		// Non-cloneable field.
 		if ( ! $field['clone'] ) {
 			$count = self::transform( $input );
-			if ( $check_upload_dir == true ) {
-				for ( $i = 0; $i <= $count; $i ++ ) {
-					$attachment = self::handle_upload_outside_media_library( "{$input}_{$i}", $field, $post_id );
-
-					if ( ! is_wp_error( $attachment ) ) {
-						$new[] = $attachment;
-					}
-				}
-				return $new;
-			}
-
 			for ( $i = 0; $i <= $count; $i ++ ) {
-				if ( $field['upload_dir'] ) {
-					$attachment = self::handle_upload_inside_media_library( "{$input}_{$i}", $field, $post_id );
-				} else {
-					$attachment = media_handle_upload( "{$input}_{$i}", $post_id );
-				}
+				$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
 				if ( ! is_wp_error( $attachment ) ) {
 					$new[] = $attachment;
 				}
@@ -246,15 +231,7 @@ class RWMB_File_Field extends RWMB_Field {
 				$new[ $clone_index ] = array();
 			}
 			for ( $i = 0; $i <= $count; $i ++ ) {
-				if ( $field['upload_dir'] ) {
-					if ( $check_upload_dir == true ) {
-						$attachment = self::handle_upload_outside_media_library( "{$input}_{$clone_index}_{$i}", $field, $post_id );
-					} else {
-						$attachment = self::handle_upload_inside_media_library( "{$input}_{$clone_index}_{$i}", $field, $post_id );
-					}
-				} else {
-					$attachment = media_handle_upload( "{$input}_{$clone_index}_{$i}", $post_id );
-				}
+				$attachment = self::handle_upload( "{$input}_{$clone_index}_{$i}", $post_id, $field );
 				if ( ! is_wp_error( $attachment ) ) {
 					$new[ $clone_index ][] = $attachment;
 				}
@@ -262,6 +239,23 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return $new;
+	}
+
+	/**
+	 * Handle file upload.
+	 * Consider upload to Media Library or custom folder.
+	 *
+	 * @param string $file_id File ID in $_FILES when uploading.
+	 * @param int    $post_id Post ID.
+	 * @param array  $field   Field settings.
+	 *
+	 * @return \WP_Error|int|string WP_Error if has error, attachment ID if upload in Media Library, URL to file if upload to custom folder.
+	 */
+	protected static handle_upload( $file_id, $post_id, $field ) {
+		if ( $field['upload_dir'] ) {
+			return self::handle_upload_custom_dir( $key, $post_id, $field );
+		}
+		return media_handle_upload( $key, $post_id );
 	}
 
 	/**
@@ -332,6 +326,7 @@ class RWMB_File_Field extends RWMB_Field {
 				'force_delete'     => false,
 				'max_file_uploads' => 0,
 				'mime_type'        => '',
+				'upload_dir'       => '',
 			)
 		);
 		$field['multiple'] = true;
@@ -427,89 +422,33 @@ class RWMB_File_Field extends RWMB_Field {
 		return sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( $value['url'] ), esc_html( $value['title'] ) );
 	}
 
-	public static function handle_upload_inside_media_library( $file_id, $field, $post_id ) {
-		$wp_upload_dir = wp_upload_dir();
-		$forder_upload = str_replace( $wp_upload_dir['baseurl'], '', $field['upload_dir'] );
-		$upload_dir    = $wp_upload_dir['basedir'] . $forder_upload;
-		$file          = $_FILES[ $file_id ]['tmp_name'];
-		$file_name     = $_FILES[ $file_id ]['name'];
-		$attach_id     = '';
-
-		if ( ! $file_name ) {
-			return $attach_id;
-		}
-
-		$path = $upload_dir . '/' . $file_name;
-		$url  = $field['upload_dir'] . '/' . basename( $path );
-
-        if ( ! file_exists( $upload_dir ) ) {
-			if ( ! is_dir( $upload_dir ) ) {
-				mkdir( $upload_dir, 0777, true);
-			}
-		}
-		move_uploaded_file( $file, $path );
-		$filetype = wp_check_filetype( basename( $url ), null );
-
-		// Prepare an array of post data for the attachment.
-		$attachment = array(
-			'guid'           => $url,
-			'post_mime_type' => $filetype['type'],
-			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $url ) ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		);
-
-
-		// Save the data
-		$attach_id = wp_insert_attachment( $attachment, $path, $post_id, false );
-
-		if ( ! is_wp_error( $attach_id ) ) {
-			wp_update_attachment_metadata( $attach_id, wp_generate_attachment_metadata( $attach_id, $path ) );
-		}
-		return $attach_id;
-	}
-
-	public static function handle_upload_outside_media_library( $file_id, $field, $post_id ) {
-		$forder_upload = str_replace( home_url('/'), '', $field['upload_dir'] );
-		$path_dir      = ABSPATH  . $forder_upload;
-		$file          = $_FILES[ $file_id ]['tmp_name'];
-		$file_name     = $_FILES[ $file_id ]['name'];
+	public static function handle_upload_custom_dir( $file_id, $post_id, $field ) {
+		$file      = $_FILES[ $file_id ]['tmp_name'];
+		$file_name = $_FILES[ $file_id ]['name'];
 
 		if ( ! $file_name ) {
 			return;
 		}
 
-		$path = $path_dir . '/' . $file_name;
-		$url = self::convert_path_to_url( $path, $forder_upload, $field );
-
-        if ( ! file_exists( $path_dir ) ) {
-			if ( ! is_dir( $path_dir ) ) {
-				mkdir( $path_dir, 0777, true);
-			}
+        if ( ! file_exists( $field['upload_dir'] ) ) {
+			wp_mkdir_p( $field['upload_dir'] );
 		}
+		if ( ! is_dir( $field['upload_dir'] ) || ! is_writable( $field['upload_dir'] ) ) {
+			return WP_Error( 'rwmb-file-move', __( 'Cannot move file to custom table', 'meta-box' ), $field );
+		}
+
+		$path = $field['upload_dir'] . '/' . $file_name;
+
 		move_uploaded_file( $file, $path );
+
+		$url = self::convert_path_to_url( $path );
 
 		return $url;
 	}
-	public static function convert_path_to_url( $path, $forder, $field ) {
+
+	public static function convert_path_to_url( $path ) {
 		$url = home_url( '/'. $forder . '/' ) . basename( $path );
 		$url = str_replace( '\\', '/', $url );
 		return $url;
 	}
-	public static function handle_link_upload_dir( $field ) {
-		if ( empty( $field['upload_dir'] ) ) {
-			return false;
-		}
-
-		$wp_upload_dir     = wp_upload_dir();
-		$link              = $field['upload_dir'];
-		$check_link_upload = strpos( $link, $wp_upload_dir['baseurl'] );
-
-		if ( $check_link_upload > -1  ) {
-			return false;
-		}
-
-		return true;
-	}
-
 }
