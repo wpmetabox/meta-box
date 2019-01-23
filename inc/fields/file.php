@@ -97,7 +97,7 @@ class RWMB_File_Field extends RWMB_Field {
 
 		foreach ( (array) $files as $k => $file ) {
 			// Ignore deleted files (if users accidentally deleted files or uses `force_delete` without saving post).
-			if ( get_attached_file( $file ) || self::is_upload_dir_in_library( $field ) == true ) {
+			if ( get_attached_file( $file ) || $field['upload_dir'] ) {
 				$output .= self::call( $field, 'file_html', $file, $k );
 			}
 		}
@@ -130,8 +130,9 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( ! $file ) {
 			return;
 		}
+
 		// get field upload_dir data
-		if ( self::is_upload_dir_in_library( $field ) == true ) {
+		if ( $field['upload_dir'] ) {
 			$data = self::custom_data_file_html( $file );
 		} else {
 			$data = array(
@@ -181,12 +182,14 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function custom_data_file_html( $file ) {
+		$file_url = self::convert_path_to_url( $file );
+
 		$data = array(
-			'icon'       =>  '<img width="60" height="60" src="' . $file . '" class="attachment-path-file">',
-			'url'        => $file,
-			'url_img'    => $file,
-			'title'      => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
-			'title_name' => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
+			'icon'       =>  '<img width="60" height="60" src="' . $file_url . '" class="attachment-path-file">',
+			'url'        => $file_url,
+			'url_img'    => $file_url,
+			'title'      => preg_replace( '/\.[^.]+$/', '', basename( $file_url ) ),
+			'title_name' => preg_replace( '/\.[^.]+$/', '', basename( $file_url ) ),
 			'post_link'  => '#',
 		);
 		return $data;
@@ -221,6 +224,7 @@ class RWMB_File_Field extends RWMB_Field {
 					$new[] = $attachment;
 				}
 			}
+
 			return $new;
 		}
 
@@ -251,11 +255,11 @@ class RWMB_File_Field extends RWMB_Field {
 	 *
 	 * @return \WP_Error|int|string WP_Error if has error, attachment ID if upload in Media Library, URL to file if upload to custom folder.
 	 */
-	protected static handle_upload( $file_id, $post_id, $field ) {
+	protected static function handle_upload( $file_id, $post_id, $field ) {
 		if ( $field['upload_dir'] ) {
-			return self::handle_upload_custom_dir( $key, $post_id, $field );
+			return self::handle_upload_custom_dir( $file_id, $post_id, $field );
 		}
-		return media_handle_upload( $key, $post_id );
+		return media_handle_upload( $file_id, $post_id );
 	}
 
 	/**
@@ -422,6 +426,14 @@ class RWMB_File_Field extends RWMB_Field {
 		return sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( $value['url'] ), esc_html( $value['title'] ) );
 	}
 
+	/**
+	 * Get URL for uploaded file.
+	 *
+	 * @param string $file_id File ID in $_FILES when uploading.
+	 * @param int    $post_id Post ID.
+	 * @param array  $field   Field settings.
+	 * @return string
+	 */
 	public static function handle_upload_custom_dir( $file_id, $post_id, $field ) {
 		$file      = $_FILES[ $file_id ]['tmp_name'];
 		$file_name = $_FILES[ $file_id ]['name'];
@@ -438,17 +450,26 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		$path = $field['upload_dir'] . '/' . $file_name;
-
 		move_uploaded_file( $file, $path );
 
-		$url = self::convert_path_to_url( $path );
+		$path = addslashes( $path );
 
-		return $url;
+		return $path;
 	}
 
-	public static function convert_path_to_url( $path ) {
-		$url = home_url( '/'. $forder . '/' ) . basename( $path );
-		$url = str_replace( '\\', '/', $url );
-		return $url;
+	/**
+	 * Convert link path to link url.
+	 *
+	 * @param string $file  URL (file) path.
+	 * @return string
+	 */
+	public static function convert_path_to_url( $file ) {
+		$wp_upload_dir = wp_upload_dir();
+		$location_path = strpos( $wp_upload_dir['basedir'], '/' );
+		$link_path     = substr( $wp_upload_dir['basedir'], 0, $location_path );
+		$file_url      = str_replace( $link_path, home_url(), $file );
+		$file_url      = str_replace( '\\', '/', $file_url );
+
+		return $file_url;
 	}
 }
