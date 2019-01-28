@@ -37,3 +37,17 @@ add_filter(
 		return $meta_boxes;
 	}
 );
+
+add_filter(
+	'the_content',
+	function( $content ) {
+		if ( ! is_single() ) {
+			return $content;
+		}
+		$value    = rwmb_meta( 'f' );
+		$value    = '<pre>' . print_r( $value, true ) . '</pre>';
+		$content .= $value;
+
+		return $content;
+	}
+);

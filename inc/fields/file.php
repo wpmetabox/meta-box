@@ -136,9 +136,9 @@ class RWMB_File_Field extends RWMB_Field {
 		} else {
 			$data = array(
 				'icon'      => wp_get_attachment_image( $file, array( 60, 60 ), true ),
+				'name'      => basename( get_attached_file( $file ) ),
 				'url'       => wp_get_attachment_url( $file ),
 				'title'     => get_the_title( $file ),
-				'file_name' => basename( get_attached_file( $file ) ),
 				'edit_link' => sprintf( '<a href="%s" class="rwmb-file-edit" target="_blank"><span class="dashicons dashicons-edit"></span>%s</a>', get_edit_post_link( $file ), $i18n_edit ),
 			);
 		}
@@ -160,7 +160,7 @@ class RWMB_File_Field extends RWMB_Field {
 			$data['icon'],
 			$data['url'],
 			$data['title'],
-			$data['file_name'],
+			$data['name'],
 			$data['edit_link'],
 			$file,
 			$i18n_delete,
@@ -178,14 +178,15 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function get_file_data_custom_dir( $file, $field ) {
-		$path     = trailingslashit( $field['upload_dir'] ) . basename( $file );
+		$path     = wp_normalize_path( trailingslashit( $field['upload_dir'] ) . basename( $file ) );
 		$ext      = pathinfo( $path, PATHINFO_EXTENSION );
 		$icon_url = wp_mime_type_icon( wp_ext2type( $ext ) );
 		$data     = array(
 			'icon'      => '<img width="48" height="64" src="' . esc_url( $icon_url ) . '" alt="">',
+			'name'      => basename( $path ),
+			'path'      => $path,
 			'url'       => $file,
-			'title'     => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
-			'file_name' => basename( $file ),
+			'title'     => preg_replace( '/\.[^.]+$/', '', basename( $path ) ),
 			'edit_link' => '',
 		);
 		return $data;
@@ -343,7 +344,6 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return mixed Full info of uploaded files
 	 */
 	public static function get_value( $field, $args = array(), $post_id = null ) {
-
 		$value = parent::get_value( $field, $args, $post_id );
 		if ( ! $field['clone'] ) {
 			$value = self::call( 'files_info', $field, $value, $args );
@@ -382,12 +382,17 @@ class RWMB_File_Field extends RWMB_Field {
 	/**
 	 * Get uploaded file information.
 	 *
-	 * @param int   $file Attachment file ID (post ID). Required.
-	 * @param array $args Array of arguments (for size).
+	 * @param int   $file  Attachment file ID (post ID). Required.
+	 * @param array $args  Array of arguments (for size).
+	 * @param array $field Field settings.
 	 *
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success.
 	 */
-	public static function file_info( $file, $args = array() ) {
+	public static function file_info( $file, $args = array(), $field ) {
+		if ( $field['upload_dir'] ) {
+			return self::get_file_data_custom_dir( $file, $field );
+		}
+
 		$path = get_attached_file( $file );
 		if ( ! $path ) {
 			return false;
