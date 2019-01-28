@@ -10,10 +10,11 @@ add_filter(
 			'title'  => 'File Upload Custom Folder',
 			'fields' => [
 				[
-					'type'       => 'file',
-					'id'         => 'f',
-					'name'       => 'Upload Directory In Root',
-					'upload_dir' => ABSPATH . '/uploads',
+					'type'         => 'file',
+					'id'           => 'f',
+					'name'         => 'Upload Directory In Root',
+					'upload_dir'   => ABSPATH . '/uploads',
+					'force_delete' => true,
 				],
 				[
 					'type'       => 'file',

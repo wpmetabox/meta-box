@@ -47,11 +47,18 @@ class RWMB_File_Field extends RWMB_Field {
 	 * Ajax callback for deleting files.
 	 */
 	public static function ajax_delete_file() {
-		$field_id      = (string) filter_input( INPUT_POST, 'field_id' );
-		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
-
+		$field_id = filter_input( INPUT_POST, 'field_id', FILTER_SANITIZE_STRING );
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
-		if ( wp_delete_attachment( $attachment_id ) ) {
+
+		$attachment = filter_input( INPUT_POST, 'attachment_id' );
+		if ( is_numeric( $attachment ) ) {
+			$result = wp_delete_attachment( $attachment );
+		} else {
+			$path = str_replace( home_url( '/' ), ABSPATH . '/', $attachment );
+			$result = unlink( $path );
+		}
+
+		if ( $result ) {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
