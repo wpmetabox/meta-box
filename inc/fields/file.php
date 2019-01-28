@@ -132,7 +132,7 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		if ( $field['upload_dir'] ) {
-			$data = self::get_file_data_custom_dir( $file, $field );
+			$data = self::file_info_custom_dir( $file, $field );
 		} else {
 			$data = array(
 				'icon'      => wp_get_attachment_image( $file, array( 60, 60 ), true ),
@@ -177,7 +177,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @param array  $field Field settings.
 	 * @return string
 	 */
-	protected static function get_file_data_custom_dir( $file, $field ) {
+	protected static function file_info_custom_dir( $file, $field ) {
 		$path     = wp_normalize_path( trailingslashit( $field['upload_dir'] ) . basename( $file ) );
 		$ext      = pathinfo( $path, PATHINFO_EXTENSION );
 		$icon_url = wp_mime_type_icon( wp_ext2type( $ext ) );
@@ -390,7 +390,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function file_info( $file, $args = array(), $field ) {
 		if ( $field['upload_dir'] ) {
-			return self::get_file_data_custom_dir( $file, $field );
+			return self::file_info_custom_dir( $file, $field );
 		}
 
 		$path = get_attached_file( $file );
@@ -451,7 +451,8 @@ class RWMB_File_Field extends RWMB_Field {
 			return;
 		}
 
-		$path = wp_normalize_path( trailingslashit( $field['upload_dir'] ) . basename( $file['name'] ) );
+		$file_name = wp_unique_filename( $field['upload_dir'], basename( $file['name'] ) );
+		$path      = trailingslashit( $field['upload_dir'] ) . $file_name;
 		move_uploaded_file( $file['tmp_name'], $path );
 
 		return self::convert_path_to_url( $path );
