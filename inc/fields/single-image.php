@@ -68,7 +68,7 @@ class RWMB_Single_Image_Field extends RWMB_Image_Advanced_Field {
 
 		$return = array();
 		foreach ( $value as $image_id ) {
-			$return[] = RWMB_Image_Field::file_info( $image_id, $args );
+			$return[] = RWMB_Image_Field::file_info( $image_id, $args, $field );
 		}
 
 		return $return;

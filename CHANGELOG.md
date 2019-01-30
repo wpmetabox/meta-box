@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.16.1] - 2019-01-30
+### Fixed
+- Hot fix for missing arguments in `file_info` function.
+
 ## [4.16.0] - 2019-01-30
 ### Added
 - New feature: allow users to upload files to custom folders in `file` field.
@@ -950,6 +954,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com) and this pr
 ## 1.0
 - procedural code
 
+[4.16.1]: https://github.com/rilwis/meta-box/compare/4.16.0...4.16.1
 [4.16.0]: https://github.com/rilwis/meta-box/compare/4.15.9...4.16.0
 [4.15.9]: https://github.com/rilwis/meta-box/compare/4.15.8...4.15.9
 [4.15.8]: https://github.com/rilwis/meta-box/compare/4.15.7...4.15.8
