@@ -67,7 +67,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
-	public static function file_info( $file, $args = array(), $field ) {
+	public static function file_info( $file, $args = array(), $field = array() ) {
 		return RWMB_Image_Field::file_info( $file, $args, $field );
 	}
 
