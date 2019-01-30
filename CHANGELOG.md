@@ -3,6 +3,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.16.0] - 2019-01-30
+### Added
+- New feature: allow users to upload files to custom folders in `file` field.
+- New feature: allow users to show date time in a format and save in a different format.
+
+### Changed
+- Turned `select_tree` into beautiful dropdown with select2.
+- Added larger margin for label in side column.
+- Improved autoloader. Props @David Matějka.
+- Improved performance by caching queries for post, user fields. Taxonomy and taxonomy advanced are cached by WordPress.
+
+### Fixed
+- Fixed select elements with long titles from relationship boxes break out of meta box. Props @Doug
+- Fixed OSM not working if there are more than 1 map.
+- Fixed quote style changed for Czech and other languages that use other quote style.
+- Fixed cannot save posts when `select_tree` has `required` attribute.
+- Fixed reorder images delete images when `force_delete` is set to `true`.
+
 ## [4.15.9] - 2018-12-12
 ### Fixed
 - Fix compatibility issue with Yoast SEO in WordPress 5.0 or Gutenberg plugin is installed, and ClassicPress editor is active.
@@ -932,6 +950,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com) and this pr
 ## 1.0
 - procedural code
 
+[4.16.0]: https://github.com/rilwis/meta-box/compare/4.15.9...4.16.0
+[4.15.9]: https://github.com/rilwis/meta-box/compare/4.15.8...4.15.9
 [4.15.8]: https://github.com/rilwis/meta-box/compare/4.15.7...4.15.8
 [4.15.7]: https://github.com/rilwis/meta-box/compare/4.15.6...4.15.7
 [4.15.6]: https://github.com/rilwis/meta-box/compare/4.15.5...4.15.6

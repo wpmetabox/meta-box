@@ -99,8 +99,9 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	/**
 	 * Get uploaded file information.
 	 *
-	 * @param int   $file Attachment image ID (post ID). Required.
-	 * @param array $args Array of arguments (for size).
+	 * @param int   $file  Attachment image ID (post ID). Required.
+	 * @param array $args  Array of arguments (for size).
+	 * @param array $field Field settings.
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
