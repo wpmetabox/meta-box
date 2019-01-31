@@ -21,7 +21,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @return string
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		return implode( ',', array_unique( (array) $new ) );
+		return implode( ',', array_filter( array_unique( (array) $new ) ) );
 	}
 
 	/**
