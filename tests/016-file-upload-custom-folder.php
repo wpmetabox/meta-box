@@ -13,7 +13,7 @@ add_filter(
 					'type'         => 'file',
 					'id'           => 'f',
 					'name'         => 'Upload Directory In Root',
-					'upload_dir'   => ABSPATH . '/uploads',
+					'upload_dir'   => ABSPATH . 'uploads',
 					'force_delete' => true,
 				],
 				[
