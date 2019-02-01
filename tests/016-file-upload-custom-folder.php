@@ -35,7 +35,7 @@ add_filter(
 				],
 				[
 					'type'         => 'file',
-					'id'           => 'f4',
+					'id'           => 'f5',
 					'name'         => 'Upload to upper folder',
 					'upload_dir'   => '../',
 				],
