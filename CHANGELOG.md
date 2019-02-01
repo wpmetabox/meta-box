@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com) and this pr
 ## [4.16.2] - 2019-02-01
 ### Fixed
 - Fixed a security issue with upload file to custom folders.
+- Fixed empty values are saved for `taxonomy_advanced` field.
 
 ## [4.16.1] - 2019-01-30
 ### Fixed
