@@ -442,25 +442,74 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function handle_upload_custom_dir( $file_id, $post_id, $field ) {
 		// @codingStandardsIgnoreStart
-		if ( ! isset( $_FILES[ $file_id ] ) ) {
+		if ( empty( $_FILES[ $file_id ] ) ) {
 			return;
 		}
 		$file = $_FILES[ $file_id ];
+		// @codingStandardsIgnoreEnd
+
+		/*
+		 * Verify file uploads.
+		 * @see wp_handle_upload()
+		 * @see wp_upload_bits()
+		 */
+
+		// If there's any upload error.
 		if ( UPLOAD_ERR_OK !== $file['error'] || ! $file['tmp_name'] ) {
 			return;
 		}
-		// @codingStandardsIgnoreEnd
 
-		if ( ! file_exists( $field['upload_dir'] ) ) {
-			wp_mkdir_p( $field['upload_dir'] );
+		// Check file size, make sure it's not empty and less than max upload size. This takes care of PHP settings and WordPress Multisite settings.
+		if ( 0 >= $file['size'] || wp_max_upload_size() < $file['size'] ) {
+			return;
 		}
+
+		// Make sure file is proper uploaded.
+		if ( ! is_uploaded_file( $file['tmp_name'] ) ) {
+			return;
+		}
+
+		// Check against WordPress's allowed file types.
+		$file_type = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+		if ( ! $file_type['ext'] || ! $file_type['type'] ) {
+			return;
+		}
+
+		// Set proper file name.
+		if ( ! empty( $file_type['proper_filename'] ) ) {
+			$file['name'] = $file_type['proper_filename'];
+		}
+
+		// Check if path is inside WordPress folder.
+		if ( 0 !== strpos( $field['upload_dir'], ABSPATH ) ) {
+			return;
+		}
+
+		// Create upload dir if neccessary. Also check for write permission.
+		wp_mkdir_p( $field['upload_dir'] );
 		if ( ! is_dir( $field['upload_dir'] ) || ! is_writable( $field['upload_dir'] ) ) {
 			return;
 		}
 
+		// Make sure file name is unique.
 		$file_name = wp_unique_filename( $field['upload_dir'], basename( $file['name'] ) );
 		$path      = trailingslashit( $field['upload_dir'] ) . $file_name;
-		move_uploaded_file( $file['tmp_name'], $path );
+
+		// Check if uploaded file is moved successfully. Using @ to prevent PHP warning in case of error.
+		$is_moved  = @ move_uploaded_file( $file['tmp_name'], $path );
+		if ( ! $is_moved ) {
+			return;
+		}
+
+		// Set correct file permissions.
+		$stat = stat( dirname( $path ) );
+		$perms = $stat['mode'] & 0000666;
+		@ chmod( $path, $perms );
+
+		// Update dir size cache on Multisite.
+		if ( is_multisite() ) {
+			delete_transient( 'dirsize_cache' );
+		}
 
 		return self::convert_path_to_url( $path );
 	}

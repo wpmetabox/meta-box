@@ -33,6 +33,12 @@ add_filter(
 					'id'   => 'f4',
 					'name' => 'Normal Upload',
 				],
+				[
+					'type'         => 'file',
+					'id'           => 'f4',
+					'name'         => 'Upload to upper folder',
+					'upload_dir'   => '../',
+				],
 			],
 		];
 		return $meta_boxes;
