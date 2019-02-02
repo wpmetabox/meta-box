@@ -31,7 +31,8 @@
 
 		var $this = $( this ),
 			$item = $this.closest( 'li' ),
-			$uploaded = $this.closest( '.rwmb-uploaded' );
+			$uploaded = $this.closest( '.rwmb-uploaded' ),
+			$metaBox = $uploaded.closest( '.rwmb-meta-box' );
 
 		$item.remove();
 		file.updateVisibility.call( $uploaded );
@@ -44,6 +45,8 @@
 			action: 'rwmb_delete_file',
 			_ajax_nonce: $uploaded.data( 'delete_nonce' ),
 			field_id: $uploaded.data( 'field_id' ),
+			object_type: $metaBox.data( 'object-type' ),
+			object_id: $metaBox.data( 'object-id' ),
 			attachment_id: $this.data( 'attachment_id' )
 		}, function ( response ) {
 			if ( ! response.success ) {

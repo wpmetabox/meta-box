@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.16.3] - 2019-02-02
+### Fixed
+- Fixed non-authorized users can delete files via ajax.
+
 ## [4.16.2] - 2019-02-01
 ### Fixed
 - Fixed a security issue with upload file to custom folders.

@@ -50,11 +50,22 @@ class RWMB_File_Field extends RWMB_Field {
 		$field_id = filter_input( INPUT_POST, 'field_id', FILTER_SANITIZE_STRING );
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
-		$attachment = filter_input( INPUT_POST, 'attachment_id' );
+		// Make sure the file to delete is in the custom field.
+		$attachment  = filter_input( INPUT_POST, 'attachment_id' );
+		$object_id   = filter_input( INPUT_POST, 'object_id', FILTER_SANITIZE_STRING );
+		$object_type = filter_input( INPUT_POST, 'object_type', FILTER_SANITIZE_STRING );
+		$field       = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
+		$field_value = self::raw_meta( $object_id, $field );
+		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
+		if ( ! in_array( $attachment, $field_value ) ) {
+			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
+		}
+
+		// Delete the file.
 		if ( is_numeric( $attachment ) ) {
 			$result = wp_delete_attachment( $attachment );
 		} else {
-			$path = str_replace( home_url( '/' ), ABSPATH . '/', $attachment );
+			$path   = str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $attachment );
 			$result = unlink( $path );
 		}
 
@@ -457,6 +468,13 @@ class RWMB_File_Field extends RWMB_Field {
 
 			return $uploads;
 		};
+
+		// Make sure upload dir is inside WordPress.
+		$upload_dir = wp_normalize_path( untrailingslashit( $field['upload_dir'] ) );
+		$root       = wp_normalize_path( untrailingslashit( ABSPATH ) );
+		if ( 0 !== strpos( $upload_dir, $root ) ) {
+			return;
+		}
 
 		// Let WordPress handle upload to the custom directory.
 		add_filter( 'upload_dir', $filter_upload_dir );
