@@ -193,7 +193,7 @@ class RWMB_About {
 	protected function is_bundled() {
 		// @codingStandardsIgnoreLine
 		foreach ( $_REQUEST as $key => $value ) {
-			if ( false !== strpos( $key, 'tgmpa' ) || false !== strpos( $value, 'tgmpa' ) ) {
+			if ( false !== strpos( $key, 'tgmpa' ) || ( ! is_array( $value ) && false !== strpos( $value, 'tgmpa' ) ) ) {
 				return true;
 			}
 		}
