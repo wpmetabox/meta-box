@@ -5,7 +5,7 @@ matrix:
   fast_finish: true
 before_script:
 - composer create-project wp-coding-standards/wpcs --no-dev
-- wpcs/vendor/bin/phpcs --config-set installed_paths ./wpcs
+- wpcs/vendor/bin/phpcs --config-set installed_paths wpcs
 script:
 - wpcs/vendor/bin/phpcs -n --standard=./codesniffer.ruleset.xml --extensions=php --ignore=demo,tests,wpcs .
 notifications:
