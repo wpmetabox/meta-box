@@ -275,7 +275,7 @@ abstract class RWMB_Field {
 	 * @param int   $post_id The post ID.
 	 * @param array $field   The field parameters.
 	 *
-	 * @return int
+	 * @return mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		return $new;

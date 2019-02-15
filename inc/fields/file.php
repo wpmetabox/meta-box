@@ -89,12 +89,17 @@ class RWMB_File_Field extends RWMB_Field {
 		$html      = self::get_uploaded_files( $meta, $field );
 
 		// Show form upload.
+		$attributes          = self::get_attributes( $field, $meta );
+		$attributes['type']  = 'file';
+		$attributes['name']  = "{$field['file_input_name']}[]";
+		$attributes['class'] = 'rwmb-file-input';
+
 		$html .= sprintf(
 			'<div class="rwmb-file-new">
-				<input type="file" name="%s[]" class="rwmb-file-input">
+				<input %s>
 				<a class="rwmb-file-add" href="#"><strong>%s</strong></a>
 			</div>',
-			$field['file_input_name'],
+			self::render_attributes( $attributes ),
 			$i18n_more
 		);
 
@@ -271,7 +276,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return \WP_Error|int|string WP_Error if has error, attachment ID if upload in Media Library, URL to file if upload to custom folder.
 	 */
 	protected static function handle_upload( $file_id, $post_id, $field ) {
-		return $field['upload_dir'] ? self::handle_upload_custom_dir( $file_id, $post_id, $field ) : media_handle_upload( $file_id, $post_id );
+		return $field['upload_dir'] ? self::handle_upload_custom_dir( $file_id, $field ) : media_handle_upload( $file_id, $post_id );
 	}
 
 	/**
@@ -446,12 +451,11 @@ class RWMB_File_Field extends RWMB_Field {
 	 * Handle upload for files in custom directory.
 	 *
 	 * @param string $file_id File ID in $_FILES when uploading.
-	 * @param int    $post_id Post ID.
 	 * @param array  $field   Field settings.
 	 *
 	 * @return string URL to uploaded file.
 	 */
-	public static function handle_upload_custom_dir( $file_id, $post_id, $field ) {
+	public static function handle_upload_custom_dir( $file_id, $field ) {
 		// @codingStandardsIgnoreStart
 		if ( empty( $_FILES[ $file_id ] ) ) {
 			return;
