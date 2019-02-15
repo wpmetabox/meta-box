@@ -255,6 +255,8 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 			$atts,
 			array(
 				'post_id' => get_the_ID(),
+				'output'  => '',
+
 			)
 		);
 		if ( empty( $atts['meta_key'] ) ) {
@@ -264,6 +266,11 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 		$field_id = $atts['meta_key'];
 		$post_id  = $atts['post_id'];
 		unset( $atts['meta_key'], $atts['post_id'] );
+
+        if ( $atts['output'] ) {
+            $field = rwmb_get_field_settings( $field_id, $atts, $post_id );
+            return $field[ $atts['output'] ];
+        }
 
 		return rwmb_the_value( $field_id, $atts, $post_id, false );
 	}
