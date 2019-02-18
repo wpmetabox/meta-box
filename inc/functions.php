@@ -267,9 +267,28 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 		$post_id  = $atts['post_id'];
 		unset( $atts['meta_key'], $atts['post_id'] );
 
-        if ( $atts['output'] ) {
-            $field = rwmb_get_field_settings( $field_id, $atts, $post_id );
-            return $field[ $atts['output'] ];
+		$output = $atts['output'];
+        if ( $output ) {
+			$meta_value = rwmb_meta( $field_id, $atts, $post_id );
+            if ( ! is_array( $meta_value ) ) {
+            	return $meta_value;
+            }
+
+         	// convert object term to array
+            $meta_value = json_encode( $meta_value );
+			$meta_value = json_decode( $meta_value, true );
+
+			$field_value = '';
+           	foreach ( $meta_value as $keys => $value ) {
+           		if ( ! $value[ $output ] ) {
+           			continue;
+           		}
+
+           		$field_value .= $value[ $output ] . ',';
+           	}
+           	$field_value = substr( $field_value,  0, -1 );
+
+            return $field_value;
         }
 
 		return rwmb_the_value( $field_id, $atts, $post_id, false );
