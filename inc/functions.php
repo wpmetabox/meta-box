@@ -254,8 +254,8 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 		$atts = wp_parse_args(
 			$atts,
 			array(
-				'post_id' => get_the_ID(),
-				'output'  => '',
+				'post_id'   => get_the_ID(),
+				'attribute' => '',
 
 			)
 		);
@@ -267,29 +267,24 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 		$post_id  = $atts['post_id'];
 		unset( $atts['meta_key'], $atts['post_id'] );
 
-		$output = $atts['output'];
-        if ( $output ) {
-			$meta_value = rwmb_meta( $field_id, $atts, $post_id );
-            if ( ! is_array( $meta_value ) ) {
-            	return $meta_value;
-            }
+		$attribute = $atts['attribute'];
+		if ( $attribute ) {
+			$meta_value = rwmb_get_value( $field_id, $atts, $post_id );
 
-         	// convert object term to array
-            $meta_value = json_encode( $meta_value );
-			$meta_value = json_decode( $meta_value, true );
+			if ( ! is_array( $meta_value ) && ! is_object( $meta_value ) ) {
+				return $meta_value;
+			}
 
-			$field_value = '';
-           	foreach ( $meta_value as $keys => $value ) {
-           		if ( ! $value[ $output ] ) {
-           			continue;
-           		}
+			if ( is_object( $meta_value ) ) {
+				$field_value = $meta_value->$attribute;
+				return $field_value;
+			}
 
-           		$field_value .= $value[ $output ] . ',';
-           	}
-           	$field_value = substr( $field_value,  0, -1 );
+			$field_value = wp_list_pluck( $meta_value, $attribute );
+			$field_value = implode( ',', $field_value );
 
-            return $field_value;
-        }
+			return $field_value;
+		}
 
 		return rwmb_the_value( $field_id, $atts, $post_id, false );
 	}
