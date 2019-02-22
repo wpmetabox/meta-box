@@ -1,0 +1,14 @@
+.rwmb-input-group {
+	display: flex;
+	align-items: stretch;
+}
+.rwmb-input-group-append,
+.rwmb-input-group-prepend {
+	display: flex;
+	align-items: center;
+	padding: 0 8px;
+	background: #ddd;
+}
+.rwmb-input-group input {
+	margin: 0;
+}
