@@ -2,12 +2,12 @@ jQuery( function ( $ ) {
 	'use strict';
 
 	function rwmb_update_slider() {
-		var $input = $( this ),
-			$slider = $input.siblings( '.rwmb-slider' ),
+		var $input      = $( this ),
+			$slider     = $input.siblings( '.rwmb-slider' ),
 			$valueLabel = $slider.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
-			value = $input.val(),
-			options = $slider.data( 'options' );
-
+			value       = $input.val(),
+			value_laber = '',
+			options     = $slider.data( 'options' );
 
 		$slider.html( '' );
 
@@ -17,14 +17,21 @@ jQuery( function ( $ ) {
 			$valueLabel.text( '0' );
 		}
 		else {
-			$valueLabel.text( value );
+			value_laber = options.range ? value.replace( '|' , ' - ' ) : value;
+			$valueLabel.text( value_laber );
 		}
 
-		// Assign field value and callback function when slide
-		options.value = value;
+		value         = options.range ? value.split('|') : value;
+		options.values = value;
+
 		options.slide = function ( event, ui ) {
-			$input.val( ui.value );
-			$valueLabel.text( ui.value );
+			if ( options.range == true ) {
+				$input.val( ui.values[ 0 ] + "|" + ui.values[ 1 ] );
+				$valueLabel.html( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+			} else {
+				$input.val( ui.value );
+				$valueLabel.html( ui.value );
+			}
 		};
 
 		$slider.slider( options );
