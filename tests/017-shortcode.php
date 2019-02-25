@@ -65,3 +65,20 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
 	);
 	return $meta_boxes;
 }
+
+add_filter( 'the_content', function( $content ) {
+	if ( ! is_singular() ) {
+		return $content;
+	}
+	$content .= do_shortcode( '[rwmb_meta id="text_1"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="text_clone"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="image_advanced_3"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="image_advanced_3" attribute="url"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="taxonomy_advanced_4"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="taxonomy_advanced_4" attribute="name"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="oembed_6"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="oembed_6" attribute="url"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="autocomplete_7"]' ) . '<br>';
+	$content .= do_shortcode( '[rwmb_meta id="background_8" attribute="color"]' ) . '<br>';
+	return $content;
+} );

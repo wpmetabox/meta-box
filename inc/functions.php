@@ -254,39 +254,41 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 		$atts = wp_parse_args(
 			$atts,
 			array(
-				'post_id'   => get_the_ID(),
+				'id'        => '',
+				'object_id' => get_queried_object_id(),
 				'attribute' => '',
-
 			)
 		);
-		if ( empty( $atts['meta_key'] ) ) {
+		rwmb_change_array_key( $atts, 'post_id', 'object_id' );
+		rwmb_change_array_key( $atts, 'meta_key', 'id' );
+
+		if ( empty( $atts['id'] ) ) {
 			return '';
 		}
 
-		$field_id = $atts['meta_key'];
-		$post_id  = $atts['post_id'];
-		unset( $atts['meta_key'], $atts['post_id'] );
+		$field_id  = $atts['id'];
+		$object_id = $atts['object_id'];
+		unset( $atts['id'], $atts['object_id'] );
 
 		$attribute = $atts['attribute'];
-		if ( $attribute ) {
-			$meta_value = rwmb_get_value( $field_id, $atts, $post_id );
-
-			if ( ! is_array( $meta_value ) && ! is_object( $meta_value ) ) {
-				return $meta_value;
-			}
-
-			if ( is_object( $meta_value ) ) {
-				$field_value = $meta_value->$attribute;
-				return $field_value;
-			}
-
-			$field_value = wp_list_pluck( $meta_value, $attribute );
-			$field_value = implode( ',', $field_value );
-
-			return $field_value;
+		if ( ! $attribute ) {
+			return rwmb_the_value( $field_id, $atts, $object_id, false );
 		}
 
-		return rwmb_the_value( $field_id, $atts, $post_id, false );
+		$value = rwmb_get_value( $field_id, $atts, $object_id );
+
+		if ( ! is_array( $value ) && ! is_object( $value ) ) {
+			return $value;
+		}
+
+		if ( is_object( $value ) ) {
+			return $value->$attribute;
+		}
+
+		$value = wp_list_pluck( $value, $attribute );
+		$value = implode( ',', $value );
+
+		return $value;
 	}
 
 	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
