@@ -2,23 +2,19 @@
 -------------------------------------------------------------- */
 
 /* Clearfix for field */
-.rwmb-field:before,
 .rwmb-field:after {
 	content: " ";
 	display: table;
-}
-.rwmb-field:after {
 	clear: both;
 }
 .rwmb-field:not(:last-of-type) {
-	*zoom: 1;
-
 	margin: 0 0 12px;
 }
 .rwmb-label,
 .rwmb-input {
 	vertical-align: top;
 	float: left;
+	box-sizing: border-box;
 }
 .rwmb-label {
 	width: 25%;
