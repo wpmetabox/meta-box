@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Meta Box
- * Plugin URI: https://metabox.io
+ * Plugin URI:  https://metabox.io
  * Description: Create custom meta boxes and custom fields in WordPress.
- * Version: 4.16.3
- * Author: MetaBox.io
- * Author URI: https://metabox.io
- * License: GPL2+
+ * Version:     4.16.3
+ * Author:      MetaBox.io
+ * Author URI:  https://metabox.io
+ * License:     GPL2+
  * Text Domain: meta-box
  * Domain Path: /languages/
  *
