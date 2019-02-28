@@ -11,6 +11,18 @@
 /**
  * The main meta box class.
  *
+ * @property string $id             Meta Box ID.
+ * @property string $title          Meta Box title.
+ * @property array  $fields         List of fields.
+ * @property array  $post_types     List of post types that the meta box is created for.
+ * @property string $style          Meta Box style.
+ * @property bool   $closed         Whether to collapse the meta box when page loads.
+ * @property string $priority       The meta box priority.
+ * @property string $context        Where the meta box is displayed.
+ * @property bool   $default_hidden Whether the meta box is hidden by default.
+ * @property bool   $autosave       Whether the meta box auto saves.
+ * @property bool   $media_modal    Add custom fields to media modal when viewing/editing an attachment.
+ *
  * @package Meta Box
  */
 class RW_Meta_Box {
