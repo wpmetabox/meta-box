@@ -40,10 +40,10 @@ class RWMB_Slider_Field extends RWMB_Field {
 			$field['id'],
 			esc_attr( wp_json_encode( $field['js_options'] ) ),
 			$field['prefix'],
-			( $meta >= 0 ) ? $meta : $field['std'],
+			$meta,
 			$field['suffix'],
 			$field['field_name'],
-			( $meta >= 0 ) ? $meta : $field['std']
+			$meta
 		);
 	}
 
