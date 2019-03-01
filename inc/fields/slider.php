@@ -31,14 +31,6 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$value = $meta;
-
-		if ( $field['js_options']['range'] ) {
-			$meta       = ! is_array( $meta ) ? explode( '|', $meta ) : $meta;
-			$value      = implode( '|', $meta );
-			$value_text = implode( ' - ', $meta );
-		}
-
 		return sprintf(
 			'<div class="clearfix">
 				<div class="rwmb-slider" id="%s" data-options="%s"></div>
@@ -48,10 +40,10 @@ class RWMB_Slider_Field extends RWMB_Field {
 			$field['id'],
 			esc_attr( wp_json_encode( $field['js_options'] ) ),
 			$field['prefix'],
-			( is_array( $meta ) ) ? $value_text : $field['std'],
+			$meta,
 			$field['suffix'],
 			$field['field_name'],
-			( is_array( $meta ) ) ? $value : $field['std']
+			$meta
 		);
 	}
 
@@ -83,42 +75,4 @@ class RWMB_Slider_Field extends RWMB_Field {
 
 		return $field;
 	}
-
-	/**
-	 * Get the field value.
-	 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
-	 * of the field saved in the database, while this function returns more meaningful value of the field, for ex.:
-	 * for file/image: return array of file/image information instead of file/image IDs.
-	 *
-	 * Each field can extend this function and add more data to the returned value.
-	 * See specific field classes for details.
-	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Field value
-	 */
-	public static function get_value( $field, $args = array(), $post_id = null ) {
-		// Some fields does not have ID like heading, custom HTML, etc.
-		if ( empty( $field['id'] ) ) {
-			return '';
-		}
-
-		if ( ! $post_id ) {
-			$post_id = get_the_ID();
-		}
-
-		// Get raw meta value in the database, no escape.
-		$value = self::call( $field, 'raw_meta', $post_id, $args );
-		$value = str_replace( '|', ' - ', $value );
-
-		// Make sure meta value is an array for cloneable and multiple fields.
-		if ( $field['clone'] || $field['multiple'] ) {
-			$value = is_array( $value ) && $value ? $value : array();
-		}
-
-		return $value;
-	}
-
 }
