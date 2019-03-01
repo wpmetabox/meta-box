@@ -378,10 +378,10 @@ class RW_Meta_Box {
 		 *
 		 * @since 4.4.1
 		 */
-		rwmb_change_array_key( $meta_box, 'pages', 'post_types' );
+		RWMB_Helpers_Array::change_key( $meta_box, 'pages', 'post_types' );
 
 		// Make sure the post type is an array and is sanitized.
-		$meta_box['post_types'] = array_map( 'sanitize_key', rwmb_csv_to_array( $meta_box['post_types'] ) );
+		$meta_box['post_types'] = array_map( 'sanitize_key', RWMB_Helpers_Array::from_csv( $meta_box['post_types'] ) );
 
 		return $meta_box;
 	}

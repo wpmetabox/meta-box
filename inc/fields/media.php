@@ -159,9 +159,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$new = rwmb_csv_to_array( $new );
-		array_walk( $new, 'absint' );
-		return array_filter( array_unique( $new ) );
+		$new = RWMB_Helpers_Array::from_csv( $new );
+		return array_filter( array_unique( array_map( 'absint', $new ) ) );
 	}
 
 	/**

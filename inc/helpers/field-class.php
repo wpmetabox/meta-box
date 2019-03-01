@@ -19,9 +19,7 @@ class RWMB_Helpers_Field_Class {
 	 */
 	public static function get_class_name( $field ) {
 		$type  = self::map_types( $field );
-		$type  = str_replace( array( '-', '_' ), ' ', $type );
-		$class = 'RWMB_' . ucwords( $type ) . '_Field';
-		$class = str_replace( ' ', '_', $class );
+		$class = 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Field';
 		return class_exists( $class ) ? $class : 'RWMB_Input_Field';
 	}
 
