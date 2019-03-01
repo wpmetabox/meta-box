@@ -33,11 +33,7 @@ abstract class RWMB_Field {
 	 * @param mixed  $data Localized data.
 	 */
 	public static function localize_script( $handle, $name, $data ) {
-		/*
-		 * Check with function_exists to make it work in WordPress 4.1.
-		 * @link https://github.com/rilwis/meta-box/issues/1009
-		 */
-		if ( ! function_exists( 'wp_scripts' ) || ! wp_scripts()->get_data( $handle, 'data' ) ) {
+		if ( ! wp_scripts()->get_data( $handle, 'data' ) ) {
 			wp_localize_script( $handle, $name, $data );
 		}
 	}
