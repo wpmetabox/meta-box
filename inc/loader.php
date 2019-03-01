@@ -80,6 +80,7 @@ class RWMB_Loader {
 		$autoloader->add( RWMB_INC_DIR . 'walkers', 'RWMB_Walker_' );
 		$autoloader->add( RWMB_INC_DIR . 'interfaces', 'RWMB_', '_Interface' );
 		$autoloader->add( RWMB_INC_DIR . 'storages', 'RWMB_', '_Storage' );
+		$autoloader->add( RWMB_INC_DIR . 'helpers', 'RWMB_Helpers_' );
 		$autoloader->register();
 
 		// Plugin core.
