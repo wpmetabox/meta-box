@@ -210,13 +210,11 @@ abstract class RWMB_Field {
 
 		// Ensure multiple fields are arrays.
 		if ( $field['multiple'] ) {
+			$meta = (array) $meta;
 			if ( $field['clone'] ) {
-				$meta = (array) $meta;
 				foreach ( $meta as $key => $m ) {
 					$meta[ $key ] = (array) $m;
 				}
-			} else {
-				$meta = (array) $meta;
 			}
 		}
 		// Escape attributes.
