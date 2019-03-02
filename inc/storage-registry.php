@@ -25,10 +25,6 @@ class RWMB_Storage_Registry {
 	 */
 	public function get( $class_name ) {
 		if ( empty( $this->storages[ $class_name ] ) ) {
-			if ( ! class_exists( $class_name ) ) {
-				return null;
-			}
-
 			$this->storages[ $class_name ] = new $class_name();
 		}
 

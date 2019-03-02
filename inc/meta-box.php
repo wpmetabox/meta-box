@@ -64,12 +64,7 @@ class RW_Meta_Box {
 		$meta_box       = self::normalize( $meta_box );
 		$this->meta_box = $meta_box;
 
-		$storage = $this->get_storage();
-		if ( ! $storage ) {
-			return;
-		}
-
-		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $storage );
+		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
 		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
@@ -397,10 +392,7 @@ class RW_Meta_Box {
 			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
 			$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
 
-			// Add storage object to field.
-			if ( $storage ) {
-				$field['storage'] = $storage;
-			}
+			$field['storage'] = $storage;
 
 			$fields[ $k ] = $field;
 		}

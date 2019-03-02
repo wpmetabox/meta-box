@@ -315,23 +315,6 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 	}
 }
 
-if ( ! function_exists( 'rwmb_get_storage_class_name' ) ) {
-	/**
-	 * Get storage class name.
-	 *
-	 * @param string $object_type Object type. Use post or term.
-	 * @return string
-	 */
-	function rwmb_get_storage_class_name( $object_type ) {
-		$class_name  = 'RWMB_' . RWMB_Helpers_String::title_case( $object_type ) . '_Storage';
-		if ( ! class_exists( $class_name ) ) {
-			$class_name = 'RWMB_Post_Storage';
-		}
-
-		return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
-	}
-}
-
 if ( ! function_exists( 'rwmb_get_storage' ) ) {
 	/**
 	 * Get storage instance.
@@ -341,8 +324,9 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 	 * @return RWMB_Storage_Interface
 	 */
 	function rwmb_get_storage( $object_type, $meta_box = null ) {
-		$class_name = rwmb_get_storage_class_name( $object_type );
-		$storage    = rwmb_get_registry( 'storage' )->get( $class_name );
+		$class   = 'RWMB_' . RWMB_Helpers_String::title_case( $object_type ) . '_Storage';
+		$class   = class_exists( $class ) ? $class : 'RWMB_Post_Storage';
+		$storage = rwmb_get_registry( 'storage' )->get( $class );
 
 		return apply_filters( 'rwmb_get_storage', $storage, $object_type, $meta_box );
 	}
