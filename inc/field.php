@@ -24,21 +24,6 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Localize scripts with prevention of loading localized data twice.
-	 *
-	 * @link https://github.com/rilwis/meta-box/issues/850
-	 *
-	 * @param string $handle Script handle.
-	 * @param string $name Object name.
-	 * @param mixed  $data Localized data.
-	 */
-	public static function localize_script( $handle, $name, $data ) {
-		if ( ! wp_scripts()->get_data( $handle, 'data' ) ) {
-			wp_localize_script( $handle, $name, $data );
-		}
-	}
-
-	/**
 	 * Show field HTML
 	 * Filters are put inside this method, not inside methods such as "meta", "html", "begin_html", etc.
 	 * That ensures the returned value are always been applied filters.

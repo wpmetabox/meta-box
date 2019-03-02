@@ -48,7 +48,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			RWMB_VER,
 			true
 		);
-		self::localize_script(
+		RWMB_Helpers_Field::localize_script_once(
 			'rwmb-map',
 			'RWMB_Map',
 			array(

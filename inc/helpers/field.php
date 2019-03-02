@@ -12,6 +12,21 @@
  */
 class RWMB_Helpers_Field {
 	/**
+	 * Localize a script only once.
+	 *
+	 * @link https://github.com/rilwis/meta-box/issues/850
+	 *
+	 * @param string $handle Script handle.
+	 * @param string $name   Object name.
+	 * @param array  $data   Localized data.
+	 */
+	public static function localize_script_once( $handle, $name, $data ) {
+		if ( ! wp_scripts()->get_data( $handle, 'data' ) ) {
+			wp_localize_script( $handle, $name, $data );
+		}
+	}
+
+	/**
 	 * Get field class name.
 	 *
 	 * @param array $field Field settings.

@@ -79,7 +79,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			'localeShort' => $locale_short,
 		);
 		foreach ( $handles as $handle ) {
-			self::localize_script( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
+			RWMB_Helpers_Field::localize_script_once( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
 		}
 	}
 

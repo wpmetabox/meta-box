@@ -17,7 +17,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-video', RWMB_CSS_URL . 'video.css', array( 'rwmb-media' ), RWMB_VER );
 		wp_enqueue_script( 'rwmb-video', RWMB_JS_URL . 'video.js', array( 'rwmb-media' ), RWMB_VER, true );
-		self::localize_script(
+		RWMB_Helpers_Field::localize_script_once(
 			'rwmb-video',
 			'i18nRwmbVideo',
 			array(
