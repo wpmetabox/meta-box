@@ -12,9 +12,9 @@
  */
 class RWMB_Helpers_String {
 	/**
-	 * Convert a value to studly caps case.
+	 * Convert text to Title_Case.
 	 *
-	 * @param  string $value
+	 * @param  string $text Input text.
 	 * @return string
 	 */
 	public static function title_case( $text ) {

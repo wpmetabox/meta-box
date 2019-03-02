@@ -46,7 +46,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	public static function add_actions() {
 		$args  = func_get_args();
 		$field = reset( $args );
-		add_action( 'print_media_templates', array( RWMB_Helpers_Field_Class::get_class_name( $field ), 'print_templates' ) );
+		add_action( 'print_media_templates', array( RWMB_Helpers_Field::get_class( $field ), 'print_templates' ) );
 	}
 
 	/**

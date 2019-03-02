@@ -581,7 +581,7 @@ abstract class RWMB_Field {
 			}
 		}
 
-		return call_user_func_array( array( RWMB_Helpers_Field_Class::get_class_name( $field ), $method ), $args );
+		return call_user_func_array( array( RWMB_Helpers_Field::get_class( $field ), $method ), $args );
 	}
 
 	/**
