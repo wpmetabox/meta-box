@@ -276,51 +276,45 @@ class RW_Meta_Box {
 	/**
 	 * Save data from meta box
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int $object_id Object ID.
 	 */
-	public function save_post( $post_id ) {
+	public function save_post( $object_id ) {
 		if ( ! $this->validate() ) {
 			return;
 		}
 		$this->saved = true;
 
-		// Make sure meta is added to the post, not a revision.
-		if ( 'post' === $this->object_type ) {
-			$the_post = wp_is_post_revision( $post_id );
-			if ( $the_post ) {
-				$post_id = $the_post;
-			}
-		}
+		$object_id = $this->get_real_object_id( $object_id );
 
 		// Before save action.
-		do_action( 'rwmb_before_save_post', $post_id );
-		do_action( "rwmb_{$this->id}_before_save_post", $post_id );
+		do_action( 'rwmb_before_save_post', $object_id );
+		do_action( "rwmb_{$this->id}_before_save_post", $object_id );
 
-		$this->save_fields( $post_id, $this->fields );
+		$this->save_fields( $object_id, $this->fields );
 
 		// After save action.
-		do_action( 'rwmb_after_save_post', $post_id );
-		do_action( "rwmb_{$this->id}_after_save_post", $post_id );
+		do_action( 'rwmb_after_save_post', $object_id );
+		do_action( "rwmb_{$this->id}_after_save_post", $object_id );
 	}
 
 	/**
-	 * Save fields data.
+	 * Save fields.
 	 *
-	 * @param int   $post_id Post id.
-	 * @param array $fields  Fields data.
+	 * @param int   $object_id Object ID.
+	 * @param array $fields    Fields settings.
 	 */
-	public function save_fields( $post_id, $fields ) {
+	public function save_fields( $object_id, $fields ) {
 		foreach ( $fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
-			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );
+			$old    = RWMB_Field::call( $field, 'raw_meta', $object_id );
 			// @codingStandardsIgnoreLine
 			$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
 
 			// Allow field class change the value.
 			if ( $field['clone'] ) {
-				$new = RWMB_Clone::value( $new, $old, $post_id, $field );
+				$new = RWMB_Clone::value( $new, $old, $object_id, $field );
 			} else {
-				$new = RWMB_Field::call( $field, 'value', $new, $old, $post_id );
+				$new = RWMB_Field::call( $field, 'value', $new, $old, $object_id );
 				$new = RWMB_Field::filter( 'sanitize', $new, $field );
 			}
 			$new = RWMB_Field::filter( 'value', $new, $field, $old );
@@ -329,9 +323,9 @@ class RW_Meta_Box {
 			$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
 
 			// Call defined method to save meta value, if there's no methods, call common one.
-			RWMB_Field::call( $field, 'save', $new, $old, $post_id );
+			RWMB_Field::call( $field, 'save', $new, $old, $object_id );
 
-			RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $post_id, $field );
+			RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $object_id, $field );
 		}
 	}
 
@@ -497,9 +491,25 @@ class RW_Meta_Box {
 	/**
 	 * Get current object id.
 	 *
-	 * @return int|string
+	 * @return int
 	 */
 	protected function get_current_object_id() {
 		return get_the_ID();
+	}
+
+	/**
+	 * Get real object ID when submitting.
+	 *
+	 * @param int $object_id Object ID.
+	 * @return int
+	 */
+	protected function get_real_object_id( $object_id ) {
+		// Make sure meta is added to the post, not a revision.
+		if ( 'post' !== $this->object_type ) {
+			return $object_id;
+		}
+		$parent = wp_is_post_revision( $object_id );
+
+		return $parent ? $parent : $object_id;
 	}
 }
