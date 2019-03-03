@@ -115,7 +115,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ), true ) ) {
 			return 'RWMB_Input_List_Field';
 		}
-		return self::get_class_name(
+		return RWMB_Helpers_Field::get_class(
 			array(
 				'type' => $field['field_type'],
 			)

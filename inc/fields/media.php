@@ -20,7 +20,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', array( 'jquery-ui-sortable', 'underscore', 'backbone', 'media-grid' ), RWMB_VER, true );
 
-		self::localize_script(
+		RWMB_Helpers_Field::localize_script_once(
 			'rwmb-media',
 			'i18nRwmbMedia',
 			array(
@@ -46,7 +46,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	public static function add_actions() {
 		$args  = func_get_args();
 		$field = reset( $args );
-		add_action( 'print_media_templates', array( self::get_class_name( $field ), 'print_templates' ) );
+		add_action( 'print_media_templates', array( RWMB_Helpers_Field::get_class( $field ), 'print_templates' ) );
 	}
 
 	/**
@@ -159,9 +159,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$new = rwmb_csv_to_array( $new );
-		array_walk( $new, 'absint' );
-		return array_filter( array_unique( $new ) );
+		$new = RWMB_Helpers_Array::from_csv( $new );
+		return array_filter( array_unique( array_map( 'absint', $new ) ) );
 	}
 
 	/**

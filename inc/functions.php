@@ -259,8 +259,8 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 				'attribute' => '',
 			)
 		);
-		rwmb_change_array_key( $atts, 'post_id', 'object_id' );
-		rwmb_change_array_key( $atts, 'meta_key', 'id' );
+		RWMB_Helpers_Array::change_key( $atts, 'post_id', 'object_id' );
+		RWMB_Helpers_Array::change_key( $atts, 'meta_key', 'id' );
 
 		if ( empty( $atts['id'] ) ) {
 			return '';
@@ -306,35 +306,12 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 	function rwmb_get_registry( $type ) {
 		static $data = array();
 
-		$type  = str_replace( array( '-', '_' ), ' ', $type );
-		$class = 'RWMB_' . ucwords( $type ) . '_Registry';
-		$class = str_replace( ' ', '_', $class );
+		$class = 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Registry';
 		if ( ! isset( $data[ $type ] ) ) {
 			$data[ $type ] = new $class();
 		}
 
 		return $data[ $type ];
-	}
-}
-
-if ( ! function_exists( 'rwmb_get_storage_class_name' ) ) {
-	/**
-	 * Get storage class name.
-	 *
-	 * @param string $object_type Object type. Use post or term.
-	 * @return string
-	 */
-	function rwmb_get_storage_class_name( $object_type ) {
-		$object_type = str_replace( array( '-', '_' ), ' ', $object_type );
-		$object_type = ucwords( $object_type );
-		$object_type = str_replace( ' ', '_', $object_type );
-		$class_name  = 'RWMB_' . $object_type . '_Storage';
-
-		if ( ! class_exists( $class_name ) ) {
-			$class_name = 'RWMB_Post_Storage';
-		}
-
-		return apply_filters( 'rwmb_storage_class_name', $class_name, $object_type );
 	}
 }
 
@@ -347,8 +324,9 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 	 * @return RWMB_Storage_Interface
 	 */
 	function rwmb_get_storage( $object_type, $meta_box = null ) {
-		$class_name = rwmb_get_storage_class_name( $object_type );
-		$storage    = rwmb_get_registry( 'storage' )->get( $class_name );
+		$class   = 'RWMB_' . RWMB_Helpers_String::title_case( $object_type ) . '_Storage';
+		$class   = class_exists( $class ) ? $class : 'RWMB_Post_Storage';
+		$storage = rwmb_get_registry( 'storage' )->get( $class );
 
 		return apply_filters( 'rwmb_get_storage', $storage, $object_type, $meta_box );
 	}
@@ -374,35 +352,3 @@ if ( ! function_exists( 'rwmb_get_meta_box' ) ) {
 	}
 }
 
-/**
- * Helper functions
- */
-
-if ( ! function_exists( 'rwmb_change_array_key' ) ) {
-	/**
-	 * Change array key.
-	 *
-	 * @param  array  $array Input array.
-	 * @param  string $from  From key.
-	 * @param  string $to    To key.
-	 */
-	function rwmb_change_array_key( &$array, $from, $to ) {
-		if ( isset( $array[ $from ] ) ) {
-			$array[ $to ] = $array[ $from ];
-		}
-		unset( $array[ $from ] );
-	}
-}
-
-if ( ! function_exists( 'rwmb_csv_to_array' ) ) {
-	/**
-	 * Convert a comma separated string to array.
-	 *
-	 * @param string $string Comma separated string.
-	 *
-	 * @return array
-	 */
-	function rwmb_csv_to_array( $string ) {
-		return is_array( $string ) ? $string : array_filter( array_map( 'trim', explode( ',', $string . ',' ) ) );
-	}
-}
