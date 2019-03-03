@@ -8,7 +8,7 @@
 /**
  * Array helper class.
  *
- * @package Meta Box.
+ * @package Meta Box
  */
 class RWMB_Helpers_Array {
 	/**

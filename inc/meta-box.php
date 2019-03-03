@@ -203,12 +203,10 @@ class RW_Meta_Box {
 	 * @return array
 	 */
 	public function postbox_classes( $classes ) {
-		if ( $this->closed && ! in_array( 'closed', $classes ) ) {
+		if ( $this->closed ) {
 			$classes[] = 'closed';
 		}
-		if ( 'seamless' === $this->style ) {
-			$classes[] = 'rwmb-seamless';
-		}
+		$classes[] = "rwmb-{$this->style}";
 
 		return $classes;
 	}

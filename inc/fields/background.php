@@ -2,7 +2,7 @@
 /**
  * The background field.
  *
- * @package Meta Box.
+ * @package Meta Box
  */
 
 /**
