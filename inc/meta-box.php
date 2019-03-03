@@ -280,12 +280,13 @@ class RW_Meta_Box {
 		$this->saved = true;
 
 		$object_id = $this->get_real_object_id( $object_id );
+		$this->set_object_id( $object_id );
 
 		// Before save action.
 		do_action( 'rwmb_before_save_post', $object_id );
 		do_action( "rwmb_{$this->id}_before_save_post", $object_id );
 
-		$this->save_fields( $object_id, $this->fields );
+		array_walk( $this->fields, array( $this, 'save_field' ) );
 
 		// After save action.
 		do_action( 'rwmb_after_save_post', $object_id );
@@ -293,35 +294,32 @@ class RW_Meta_Box {
 	}
 
 	/**
-	 * Save fields.
+	 * Save field.
 	 *
-	 * @param int   $object_id Object ID.
-	 * @param array $fields    Fields settings.
+	 * @param array $field Field settings.
 	 */
-	public function save_fields( $object_id, $fields ) {
-		foreach ( $fields as $field ) {
-			$single = $field['clone'] || ! $field['multiple'];
-			$old    = RWMB_Field::call( $field, 'raw_meta', $object_id );
-			// @codingStandardsIgnoreLine
-			$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
+	public function save_field( $field ) {
+		$single = $field['clone'] || ! $field['multiple'];
+		$old    = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+		// @codingStandardsIgnoreLine
+		$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
 
-			// Allow field class change the value.
-			if ( $field['clone'] ) {
-				$new = RWMB_Clone::value( $new, $old, $object_id, $field );
-			} else {
-				$new = RWMB_Field::call( $field, 'value', $new, $old, $object_id );
-				$new = RWMB_Field::filter( 'sanitize', $new, $field );
-			}
-			$new = RWMB_Field::filter( 'value', $new, $field, $old );
-
-			// Filter to allow the field to be modified.
-			$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
-
-			// Call defined method to save meta value, if there's no methods, call common one.
-			RWMB_Field::call( $field, 'save', $new, $old, $object_id );
-
-			RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $object_id, $field );
+		// Allow field class change the value.
+		if ( $field['clone'] ) {
+			$new = RWMB_Clone::value( $new, $old, $this->object_id, $field );
+		} else {
+			$new = RWMB_Field::call( $field, 'value', $new, $old, $this->object_id );
+			$new = RWMB_Field::filter( 'sanitize', $new, $field );
 		}
+		$new = RWMB_Field::filter( 'value', $new, $field, $old );
+
+		// Filter to allow the field to be modified.
+		$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
+
+		// Call defined method to save meta value, if there's no methods, call common one.
+		RWMB_Field::call( $field, 'save', $new, $old, $this->object_id );
+
+		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id, $field );
 	}
 
 	/**
