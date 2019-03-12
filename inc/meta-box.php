@@ -284,7 +284,7 @@ class RW_Meta_Box {
 		do_action( 'rwmb_before_save_post', $object_id );
 		do_action( "rwmb_{$this->id}_before_save_post", $object_id );
 
-		array_walk( $this->fields, array( $this, 'save_field' ) );
+		array_map( array( $this, 'save_field' ), $this->fields );
 
 		// After save action.
 		do_action( 'rwmb_after_save_post', $object_id );
