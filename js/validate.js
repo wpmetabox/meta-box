@@ -35,7 +35,7 @@ jQuery( function ( $ ) {
 		var subRules = $( this ).data( 'rules' );
 		$.extend( true, rules, subRules );
 
-		// Required field styling
+		// Required field styling.
 		$.each( subRules.rules, function ( k, v ) {
 			if ( ! v['required'] ) {
 				return;
@@ -44,7 +44,7 @@ jQuery( function ( $ ) {
 			if ( ! $el.length ) {
 				return;
 			}
-			$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).append( '<span class="rwmb-required">*</span>' );
+			$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
 		} );
 	} );
 
