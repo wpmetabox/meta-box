@@ -426,9 +426,7 @@ jQuery( function ( $ ) {
 		initialize: function ( options ) {
 			this.controller = options.controller;
 			this.render();
-			this.listenTo( this.model, 'change', function () {
-				this.render();
-			} );
+			this.listenTo( this.model, 'change', this.render );
 
 			this.$el.data( 'id', this.model.cid );
 		},
@@ -452,9 +450,9 @@ jQuery( function ( $ ) {
 		},
 
 		render: function () {
-			var attrs = _.clone( this.model.attributes );
-			attrs.controller = _.clone( this.controller.attributes );
-			this.$el.html( this.template( attrs ) );
+			var data = this.model.toJSON();
+			data.controller = this.controller.toJSON();
+			this.$el.html( this.template( data ) );
 			return this;
 		}
 	} );
