@@ -50,17 +50,6 @@ jQuery( function ( $ ) {
 			return media.model.Attachments.prototype.add.call( this, models, options );
 		},
 
-		remove: function ( models, options ) {
-			models = media.model.Attachments.prototype.remove.call( this, models, options );
-			if ( true !== this.controller.get( 'forceDelete' ) ) {
-				return;
-			}
-			models = Array.isArray( models ) ? models : [models];
-			models.forEach( function ( model ) {
-				model.destroy();
-			} );
-		},
-
 		destroyAll: function () {
 			_.each( _.clone( this.models ), function ( model ) {
 				model.destroy();
@@ -98,7 +87,6 @@ jQuery( function ( $ ) {
 				}
 			} );
 		},
-
 
 		// Load initial media
 		load: function () {
@@ -214,8 +202,6 @@ jQuery( function ( $ ) {
 						controller: this.controller
 					} );
 
-					this.listenToItemView( itemView );
-
 					return itemView;
 				},
 				function ( item ) {
@@ -224,19 +210,12 @@ jQuery( function ( $ ) {
 			);
 
 			this.listenTo( this.collection, 'add', this.addItemView );
-			this.listenTo( this.collection, 'remove', this.removeItemView );
 			this.listenTo( this.collection, 'reset', this.resetItemViews );
 
 			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
 			this.$el.sortable( {
 				helper : 'clone'
 			} );
-		},
-
-		listenToItemView: function ( itemView ) {
-			this.listenTo( itemView, 'click:remove', this.removeItem );
-			this.listenTo( itemView, 'click:switch', this.switchItem );
-			this.listenTo( itemView, 'click:edit', this.editItem );
 		},
 
 		addItemView: function ( item ) {
@@ -254,79 +233,14 @@ jQuery( function ( $ ) {
 			}
 		},
 
-		removeItemView: function ( item ) {
-			this.getItemView( item ).$el.detach();
-		},
-
 		resetItemViews: function( items ){
 			var that = this;
 			_.each( that.models, function( item ){
-				 that.removeItemView( item );
-			 } );
+				that.getItemView( item ).$el.detach();
+			} );
 			items.each( function( item ) {
 				that.addItemView( item );
 			} );
-		},
-
-		removeItem: function ( item ) {
-			this.collection.remove( item );
-		},
-
-		switchItem: function ( item ) {
-			if ( this._switchFrame ) {
-				//this.stopListening( this._frame );
-				this._switchFrame.dispose();
-			}
-			this._switchFrame = new MediaSelect( {
-				className: 'media-frame rwmb-media-frame',
-				multiple: false,
-				title: i18nRwmbMedia.select,
-				editing: true,
-				library: {
-					type: this.controller.get( 'mimeType' )
-				},
-				edit: this.controller.get( 'items' )
-			} );
-
-			this._switchFrame.on( 'select', function () {
-				var selection = this._switchFrame.state().get( 'selection' ),
-					collection = this.collection,
-					index = collection.indexOf( item );
-
-				if ( ! _.isEmpty( selection ) ) {
-					collection.remove( item );
-					collection.add( selection, {at: index} );
-				}
-			}, this );
-
-			this._switchFrame.open();
-			return false;
-		},
-
-		editItem: function ( item ) {
-			// Destroy the previous collection frame.
-			if ( this._editFrame ) {
-				//this.stopListening( this._frame );
-				this._editFrame.dispose();
-			}
-
-			// Trigger the media frame to open the correct item
-			this._editFrame = new EditMedia( {
-				frame: 'edit-attachments',
-				controller: {
-					// Needed to trick Edit modal to think there is a gridRouter
-					gridRouter: {
-						navigate: function ( destination ) {
-						},
-						baseUrl: function ( url ) {
-						}
-					}
-				},
-				library: this.collection,
-				model: item
-			} );
-
-			this._editFrame.open();
 		}
 	} );
 
@@ -357,8 +271,7 @@ jQuery( function ( $ ) {
 		},
 
 		render: function () {
-			var attributes = _.clone( this.controller.attributes );
-			this.$el.html( this.template( attributes ) );
+			this.$el.html( this.template( this.controller.toJSON() ) );
 		}
 	} );
 
@@ -425,6 +338,7 @@ jQuery( function ( $ ) {
 		template: wp.template( 'rwmb-media-item' ),
 		initialize: function ( options ) {
 			this.controller = options.controller;
+			this.collection = this.controller.get( 'items' );
 			this.render();
 			this.listenTo( this.model, 'change', this.render );
 
@@ -432,21 +346,79 @@ jQuery( function ( $ ) {
 		},
 
 		events: {
-			'click .rwmb-image-overlay': function () {
-				this.trigger( 'click:switch', this.model );
-				return false;
-			},
+			'click .rwmb-image-overlay': 'replace',
+			'click .rwmb-remove-media': 'delete',
+			'click .rwmb-edit-media': 'edit',
+		},
 
-			// Event when remove button clicked
-			'click .rwmb-remove-media': function () {
-				this.trigger( 'click:remove', this.model );
-				return false;
-			},
-
-			'click .rwmb-edit-media': function () {
-				this.trigger( 'click:edit', this.model );
-				return false;
+		replace: function() {
+			if ( this._replaceFrame ) {
+				this._replaceFrame.dispose();
 			}
+			this._replaceFrame = new MediaSelect( {
+				className: 'media-frame rwmb-media-frame',
+				multiple: false,
+				title: i18nRwmbMedia.select,
+				editing: true,
+				library: {
+					type: this.controller.get( 'mimeType' )
+				},
+				edit: this.collection
+			} );
+
+			this._replaceFrame.on( 'select', function () {
+				var selection = this._replaceFrame.state().get( 'selection' );
+
+				if ( _.isEmpty( selection ) ) {
+					return;
+				}
+
+				var index = this.collection.indexOf( this.model );
+				this.remove();
+				this.collection.remove( this.model );
+				this.collection.add( selection, {at: index} );
+			}, this );
+
+			this._replaceFrame.open();
+
+			return false;
+		},
+
+		edit: function() {
+			if ( this._editFrame ) {
+				this._editFrame.dispose();
+			}
+
+			// Trigger the media frame to open the correct item.
+			this._editFrame = new EditMedia( {
+				frame: 'edit-attachments',
+				controller: {
+					// Needed to trick Edit modal to think there is a gridRouter.
+					gridRouter: {
+						navigate: function ( destination ) {
+						},
+						baseUrl: function ( url ) {
+						}
+					}
+				},
+				library: this.collection,
+				model: this.model
+			} );
+
+			this._editFrame.open();
+
+			return false;
+		},
+
+		delete: function() {
+			this.remove();
+			this.collection.remove( this.model );
+
+			if ( true === this.controller.get( 'forceDelete' ) ) {
+				this.model.destroy();
+			}
+
+			return false;
 		},
 
 		render: function () {
