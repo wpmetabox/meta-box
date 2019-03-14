@@ -386,14 +386,12 @@ jQuery( function ( $ ) {
 					library: {
 						type: this.controller.get( 'mimeType' )
 					},
-					edit: this.controller.get( 'items' )
+					edit: this.collection
 				} );
 
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
-					this.controller.get( 'items' ).add( selection.models );
-
-					this._frame.dispose();
+					this.collection.add( selection.models );
 				}, this );
 
 				this._frame.open();
