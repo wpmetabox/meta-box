@@ -220,24 +220,21 @@ jQuery( function ( $ ) {
 
 		addItemView: function ( item ) {
 			var index = this.collection.indexOf( item ),
-				itemEl = this.getItemView( item ).el;
+				itemEl = this.getItemView( item ).el,
+				$children = this.$el.children();
 
 			if ( 0 >= index ) {
 				this.$el.prepend( itemEl );
-			}
-			else if ( this.$el.children().length <= index ) {
+			} else if ( $children.length <= index ) {
 				this.$el.append( itemEl )
-			}
-			else {
-				this.$el.children().eq( index - 1 ).after( itemEl );
+			} else {
+				$children.eq( index - 1 ).after( itemEl );
 			}
 		},
 
 		resetItemViews: function( items ){
 			var that = this;
-			_.each( that.models, function( item ){
-				that.getItemView( item ).$el.detach();
-			} );
+			this.$el.empty();
 			items.each( function( item ) {
 				that.addItemView( item );
 			} );
