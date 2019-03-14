@@ -234,7 +234,6 @@ jQuery( function ( $ ) {
 			this.listenTo( itemView, 'click:edit', this.editItem );
 		},
 
-		//Add item view
 		addItemView: function ( item ) {
 			var index = this.collection.indexOf( item ),
 				itemEl = this.getItemView( item ).el;
@@ -250,13 +249,8 @@ jQuery( function ( $ ) {
 			}
 		},
 
-		// Remove item view
 		removeItemView: function ( item ) {
 			this.getItemView( item ).$el.detach();
-		},
-
-		removeItem: function ( item ) {
-			this.collection.remove( item );
 		},
 
 		resetItemViews: function( items ){
@@ -267,6 +261,10 @@ jQuery( function ( $ ) {
 			items.each( function( item ) {
 				that.addItemView( item );
 			} );
+		},
+
+		removeItem: function ( item ) {
+			this.collection.remove( item );
 		},
 
 		switchItem: function ( item ) {
