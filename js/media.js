@@ -28,20 +28,24 @@ jQuery( function ( $ ) {
 			var max = this.controller.get( 'maxFiles' ),
 				left = max - this.length;
 
-			if ( max > 0 && left <= 0 ) {
+			if ( ! models || ( max > 0 && left <= 0 ) ) {
 				return this;
 			}
-			if( models) {
-				if ( ! models.hasOwnProperty( 'length' ) ) {
-					models = [models];
-				} else if ( models instanceof media.model.Attachments ) {
-					models = models.models;
-				}
+			if ( ! models.hasOwnProperty( 'length' ) ) {
+				models = [models];
+			} else if ( models instanceof media.model.Attachments ) {
+				models = models.models;
 			}
-			if ( left > 0 ) {
-				models = _.difference( models, this.models );
-				models = _.first( models, left );
-			}
+
+			models = _.difference( models, this.models );
+			models = _.first( models, left );
+
+			/**
+			 * Make a copy version of models. Do not work directly on models since WordPress might sent some events (like 'remove') to those models.
+			 * @see https://metabox.io/support/topic/error-with-image-advanced-in-gutenberg/
+			 * @see https://stackoverflow.com/a/5344074/371240
+			 */
+			models = JSON.parse( JSON.stringify( models ) );
 
 			return media.model.Attachments.prototype.add.call( this, models, options );
 		},
@@ -387,6 +391,8 @@ jQuery( function ( $ ) {
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
 					this.controller.get( 'items' ).add( selection.models );
+
+					this._frame.dispose();
 				}, this );
 
 				this._frame.open();
