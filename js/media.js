@@ -52,12 +52,13 @@ jQuery( function ( $ ) {
 
 		remove: function ( models, options ) {
 			models = media.model.Attachments.prototype.remove.call( this, models, options );
-			if ( this.controller.get( 'forceDelete' ) === true ) {
-				models = ! _.isArray( models ) ? [models] : models;
-				_.each( models, function ( model ) {
-					model.destroy();
-				} );
+			if ( true !== this.controller.get( 'forceDelete' ) ) {
+				return;
 			}
+			models = Array.isArray( models ) ? models : [models];
+			models.forEach( function ( model ) {
+				model.destroy();
+			} );
 		},
 
 		destroyAll: function () {
