@@ -282,16 +282,12 @@ jQuery( function ( $ ) {
 		template: wp.template( 'rwmb-media-button' ),
 		events: {
 			'click .button': function () {
-				// Destroy the previous collection frame.
 				if ( this._frame ) {
-					//this.stopListening( this._frame );
 					this._frame.dispose();
 				}
 				var maxFiles = this.controller.get( 'maxFiles' );
 				this._frame = new MediaSelect( {
-					className: 'media-frame rwmb-media-frame',
 					multiple: maxFiles > 1 || maxFiles <= 0 ? 'add' : false,
-					title: i18nRwmbMedia.select,
 					editing: true,
 					library: {
 						type: this.controller.get( 'mimeType' )
@@ -354,9 +350,7 @@ jQuery( function ( $ ) {
 				this._replaceFrame.dispose();
 			}
 			this._replaceFrame = new MediaSelect( {
-				className: 'media-frame rwmb-media-frame',
 				multiple: false,
-				title: i18nRwmbMedia.select,
 				editing: true,
 				library: {
 					type: this.controller.get( 'mimeType' )
@@ -457,7 +451,7 @@ jQuery( function ( $ ) {
 	MediaLibrary = media.controller.Library.extend( {
 		defaults: _.defaults( {
 			multiple: 'add',
-			filterable: 'uploaded',
+			filterable: 'all',
 			priority: 100,
 			syncSelection: false
 		}, media.controller.Library.prototype.defaults ),
@@ -508,7 +502,6 @@ jQuery( function ( $ ) {
 				new MediaLibrary( {
 					library: media.query( options.library ),
 					multiple: options.multiple,
-					title: options.title,
 					priority: 20
 				} )
 			] );
