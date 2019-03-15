@@ -338,6 +338,7 @@ jQuery( function ( $ ) {
 			this.collection = this.controller.get( 'items' );
 			this.render();
 			this.listenTo( this.model, 'change', this.render );
+			this.listenTo( this.model, 'remove', this.remove );
 
 			this.$el.data( 'id', this.model.cid );
 		},
@@ -371,7 +372,7 @@ jQuery( function ( $ ) {
 				}
 
 				var index = this.collection.indexOf( this.model );
-				this.remove();
+				// Remove from collection also triggers 'remove' event for the model, which calls this.remove() to remove the element from DOM.
 				this.collection.remove( this.model );
 				this.collection.add( selection, {at: index} );
 			}, this );
@@ -408,7 +409,7 @@ jQuery( function ( $ ) {
 		},
 
 		delete: function() {
-			this.remove();
+			// Remove from collection also triggers 'remove' event for the model, which calls this.remove() to remove the element from DOM.
 			this.collection.remove( this.model );
 
 			if ( true === this.controller.get( 'forceDelete' ) ) {
