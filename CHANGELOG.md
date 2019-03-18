@@ -3,6 +3,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.17.0] - 2019-03-18
+### Added
+- Added `range` support for `slider` field for storing 2 values.
+- Added `attribute` to `[rwmb_meta]` shortcode to get only one attribute from the value (such as URL of the image or term slug).
+- Added `prepend` and `append` attributes for inputs like Bootstrap's input group.
+
+### Changed
+- Refactored the code.
+- Changed shortcode attributes to use `id` (instead of `meta_key`), `object_id` (instead of `post_id`).
+
+### Fixed
+- Fixed empty date field with save_format causes error.
+- Fixed wrong position of the asterisk when the field is required and has label description.
+- Fixed indirect modification of `meta_box->$fields`.
+- Fixed `required` attribute not working for `file`, `image` fields.
+- Fixed warning in the about page.
+- Fixed box-sizing issue for settings page.
+
 ## [4.16.3] - 2019-02-02
 ### Fixed
 - Fixed non-authorized users can delete files via ajax.
