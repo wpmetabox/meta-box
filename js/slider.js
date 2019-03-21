@@ -9,18 +9,13 @@ jQuery( function ( $ ) {
 			options     = $slider.data( 'options' );
 
 		$slider.html( '' );
-
-		if ( ! value ) {
-			value = 0;
-		}
-		$input.val( value );
 		$valueLabel.text( value );
 
-		value         = options.range ? value.split( '|' ) : value;
+		value          = options.range === true ? value.split( '|' ) : value;
 		options.values = value;
 
 		options.slide = function ( event, ui ) {
-			if ( options.range == true ) {
+			if ( options.range === true ) {
 				$input.val( ui.values[ 0 ] + '|' + ui.values[ 1 ] );
 				$valueLabel.html( ui.values[ 0 ] + '|' + ui.values[ 1 ] );
 			} else {
