@@ -124,6 +124,14 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
 			return;
 		}
+
+		if ( $_POST['rwmb-new-category'] ) {
+			$cate_name = $_POST['rwmb-new-category'];
+			$my_cat = array('cat_name' => $cate_name, 'category_nicename' => 'category-slug');
+			// Create the category
+			$cate_id = wp_insert_category( $my_cat );
+		}
+
 		$new = array_unique( array_map( 'intval', (array) $new ) );
 		$new = empty( $new ) ? null : $new;
 
@@ -208,5 +216,39 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			esc_attr( $value->name ),
 			esc_html( $value->name )
 		);
+	}
+
+	/**
+	 * Get field HTML.
+	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	public static function html( $meta, $field ) {
+		$html  = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
+		$html .= self::call( 'add_new_form', $field );
+		$html .= self::html_add_category();
+
+		return $html;
+	}
+	public static function html_add_category() {
+		$html = '';
+		$html .= '<div class="add_new_categories">';
+			$html .= '<a id="rwmb-category-add-toggle" href="#category-add" class="taxonomy-add-new">' .__( '+ Add New Category', 'meta-box' ) .'</a>';
+			$html .= '<div id="category-add" class="category-add closed">';
+				$html .= '<input type="text" name="rwmb-new-category" id="rwmb-newcategory" class="form-required">';
+			$html .= '</div>';
+		$html .= '</div>';
+		return $html;
+	}
+
+	/**
+	 * Enqueue scripts and styles.
+	 */
+	public static function admin_enqueue_scripts() {
+		parent::admin_enqueue_scripts();
+		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', '', RWMB_VER );
+		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
 	}
 }
