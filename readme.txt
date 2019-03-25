@@ -3,7 +3,7 @@ Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, rua
 Donate link: https://metabox.io/pricing/
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
-Tested up to: 5.1
+Tested up to: 5.1.1
 Stable tag: 4.17.0
 License: GPLv2 or later
 
@@ -187,6 +187,6 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 - Fixed warning in the about page.
 - Fixed box-sizing issue for settings page.
 
-[See full changelog here](https://github.com/wpmetabox/meta-box/blob/master/CHANGELOG.md).
+[See full changelog here](https://metabox.io/changelog/).
 
 == Upgrade Notice ==
