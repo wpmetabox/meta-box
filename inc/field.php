@@ -275,12 +275,6 @@ abstract class RWMB_Field {
 		$name    = $field['id'];
 		$storage = $field['storage'];
 
-		// Remove empty values for clones.
-		if ( $field['clone'] ) {
-			$new = (array) $new;
-			$new = array_filter( $new, 'RWMB_Helpers_Value::is_valid_for_field' );
-		}
-
 		// Remove post meta if it's empty.
 		if ( ! RWMB_Helpers_Value::is_valid_for_field( $new ) ) {
 			$storage->delete( $post_id, $name );
@@ -289,8 +283,6 @@ abstract class RWMB_Field {
 
 		// If field is cloneable AND not force to save as multiple rows, value is saved as a single row in the database.
 		if ( $field['clone'] && ! $field['clone_as_multiple'] ) {
-			// Reset indexes.
-			$new = array_values( $new );
 			$storage->update( $post_id, $name, $new );
 			return;
 		}

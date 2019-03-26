@@ -93,6 +93,12 @@ class RWMB_Clone {
 			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
 		}
 
+		// Remove empty clones.
+		$new = array_filter( $new, 'RWMB_Helpers_Value::is_valid_for_field' );
+
+		// Reset indexes.
+		$new = array_values( $new );
+
 		return $new;
 	}
 
