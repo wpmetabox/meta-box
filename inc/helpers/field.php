@@ -45,13 +45,18 @@ class RWMB_Helpers_Field {
 	 * @return string
 	 */
 	private static function get_type( $field ) {
-		$type = isset( $field['type'] ) ? $field['type'] : 'input';
-		$map  = array(
-			'file_advanced'  => 'media',
-			'plupload_image' => 'image_upload',
-			'url'            => 'text',
+		$type = isset( $field['type'] ) ? $field['type'] : 'text';
+		$map  = array_merge(
+			array(
+				$type => $type,
+			),
+			array(
+				'file_advanced'  => 'media',
+				'plupload_image' => 'image_upload',
+				'url'            => 'text',
+			)
 		);
 
-		return isset( $map[ $type ] ) ? $map[ $type ] : $type;
+		return $map[ $type ];
 	}
 }
