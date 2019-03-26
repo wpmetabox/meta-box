@@ -62,6 +62,22 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	}
 
 	/**
+	 * Set value of meta before saving into database.
+	 * Do not save if all inputs has no value.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 *
+	 * @return mixed
+	 */
+	public static function value( $new, $old, $post_id, $field ) {
+		$filtered = array_filter( $new );
+		return count( $filtered ) ? $new : array();
+	}
+
+	/**
 	 * Format value for the helper functions.
 	 *
 	 * @param array        $field   Field parameters.
