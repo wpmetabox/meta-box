@@ -56,7 +56,6 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		);
 	}
 
-
 	/**
 	 * Normalize field settings.
 	 *

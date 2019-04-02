@@ -94,6 +94,16 @@ class RWMB_File_Field extends RWMB_Field {
 		$attributes['name']  = "{$field['file_input_name']}[]";
 		$attributes['class'] = 'rwmb-file-input';
 
+		/*
+		 * Use JavaScript to toggle 'required' attribute, because:
+		 * - Field might already have value (uploaded files).
+		 * - Be able to detect when uploading multiple files.
+		 */
+		if ( $attributes['required'] ) {
+			$attributes['data-required'] = 1;
+			$attributes['required'] = false;
+		}
+
 		$html .= sprintf(
 			'<div class="rwmb-file-new">
 				<input %s>
