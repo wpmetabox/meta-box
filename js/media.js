@@ -38,7 +38,9 @@ jQuery( function ( $ ) {
 			}
 
 			models = _.difference( models, this.models );
-			models = _.first( models, left );
+			if ( left > 0 ) {
+				models = _.first( models, left );
+			}
 
 			/**
 			 * Make a copy version of models. Do not work directly on models since WordPress might sent some events (like 'remove') to those models.
