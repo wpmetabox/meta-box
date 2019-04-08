@@ -42,14 +42,17 @@ jQuery( function ( $ ) {
 				models = _.first( models, left );
 			}
 
-			/**
-			 * Make a copy version of models. Do not work directly on models since WordPress might sent some events (like 'remove') to those models.
-			 * @see https://metabox.io/support/topic/error-with-image-advanced-in-gutenberg/
-			 * @see https://stackoverflow.com/a/5344074/371240
-			 */
-			models = JSON.parse( JSON.stringify( models ) );
-
 			return media.model.Attachments.prototype.add.call( this, models, options );
+		},
+
+		remove: function ( models, options ) {
+			models = media.model.Attachments.prototype.remove.call( this, models, options );
+			if ( this.controller.get( 'forceDelete' ) === true ) {
+				models = ! _.isArray( models ) ? [models] : models;
+				_.each( models, function ( model ) {
+					model.destroy();
+				} );
+			}
 		},
 
 		destroyAll: function () {
@@ -89,6 +92,7 @@ jQuery( function ( $ ) {
 				}
 			} );
 		},
+
 
 		// Load initial media
 		load: function () {
@@ -204,6 +208,8 @@ jQuery( function ( $ ) {
 						controller: this.controller
 					} );
 
+					this.listenToItemView( itemView );
+
 					return itemView;
 				},
 				function ( item ) {
@@ -212,12 +218,19 @@ jQuery( function ( $ ) {
 			);
 
 			this.listenTo( this.collection, 'add', this.addItemView );
+			this.listenTo( this.collection, 'remove', this.removeItemView );
 			this.listenTo( this.collection, 'reset', this.resetItemViews );
 
 			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
 			this.$el.sortable( {
 				helper : 'clone'
 			} );
+		},
+
+		listenToItemView: function ( itemView ) {
+			this.listenTo( itemView, 'click:remove', this.removeItem );
+			this.listenTo( itemView, 'click:switch', this.switchItem );
+			this.listenTo( itemView, 'click:edit', this.editItem );
 		},
 
 		addItemView: function ( item ) {
@@ -234,12 +247,71 @@ jQuery( function ( $ ) {
 			}
 		},
 
+		// Remove item view
+		removeItemView: function ( item ) {
+			this.getItemView( item ).$el.detach();
+		},
+
+		removeItem: function ( item ) {
+			this.collection.remove( item );
+		},
+
 		resetItemViews: function( items ){
 			var that = this;
-			this.$el.empty();
-			items.each( function( item ) {
-				that.addItemView( item );
+			_.each( that.models, that.removeItemView );
+			items.each( that.addItemView );
+		},
+
+		switchItem: function ( item ) {
+			if ( this._switchFrame ) {
+				this._switchFrame.dispose();
+			}
+			this._switchFrame = new MediaSelect( {
+				multiple: false,
+				editing: true,
+				library: {
+					type: this.controller.get( 'mimeType' )
+				},
+				edit: this.collection
 			} );
+
+			this._switchFrame.on( 'select', function () {
+				var selection = this._switchFrame.state().get( 'selection' ),
+					collection = this.collection,
+					index = collection.indexOf( item );
+
+				if ( ! _.isEmpty( selection ) ) {
+					collection.remove( item );
+					collection.add( selection, {at: index} );
+				}
+			}, this );
+
+			this._switchFrame.open();
+			return false;
+		},
+
+		editItem: function ( item ) {
+			if ( this._editFrame ) {
+				this._editFrame.dispose();
+			}
+
+			// Trigger the media frame to open the correct item.
+			this._editFrame = new EditMedia( {
+				frame: 'edit-attachments',
+				controller: {
+					// Needed to trick Edit modal to think there is a gridRouter.
+					gridRouter: {
+						navigate: function ( destination ) {
+						},
+						baseUrl: function ( url ) {
+						}
+					}
+				},
+				library: this.collection,
+				model: item
+			} );
+
+			this._editFrame.open();
 		}
 	} );
 
@@ -336,83 +408,26 @@ jQuery( function ( $ ) {
 			this.collection = this.controller.get( 'items' );
 			this.render();
 			this.listenTo( this.model, 'change', this.render );
-			this.listenTo( this.model, 'remove', this.remove );
 
 			this.$el.data( 'id', this.model.cid );
 		},
 
 		events: {
-			'click .rwmb-image-overlay': 'replace',
-			'click .rwmb-remove-media': 'delete',
-			'click .rwmb-edit-media': 'edit',
-		},
+			'click .rwmb-image-overlay': function () {
+				this.trigger( 'click:switch', this.model );
+				return false;
+			},
 
-		replace: function() {
-			if ( this._replaceFrame ) {
-				this._replaceFrame.dispose();
+			// Event when remove button clicked
+			'click .rwmb-remove-media': function () {
+				this.trigger( 'click:remove', this.model );
+				return false;
+			},
+
+			'click .rwmb-edit-media': function () {
+				this.trigger( 'click:edit', this.model );
+				return false;
 			}
-			this._replaceFrame = new MediaSelect( {
-				multiple: false,
-				editing: true,
-				library: {
-					type: this.controller.get( 'mimeType' )
-				},
-				edit: this.collection
-			} );
-
-			this._replaceFrame.on( 'select', function () {
-				var selection = this._replaceFrame.state().get( 'selection' );
-
-				if ( _.isEmpty( selection ) ) {
-					return;
-				}
-
-				var index = this.collection.indexOf( this.model );
-				// Remove from collection also triggers 'remove' event for the model, which calls this.remove() to remove the element from DOM.
-				this.collection.remove( this.model );
-				this.collection.add( selection, {at: index} );
-			}, this );
-
-			this._replaceFrame.open();
-
-			return false;
-		},
-
-		edit: function() {
-			if ( this._editFrame ) {
-				this._editFrame.dispose();
-			}
-
-			// Trigger the media frame to open the correct item.
-			this._editFrame = new EditMedia( {
-				frame: 'edit-attachments',
-				controller: {
-					// Needed to trick Edit modal to think there is a gridRouter.
-					gridRouter: {
-						navigate: function ( destination ) {
-						},
-						baseUrl: function ( url ) {
-						}
-					}
-				},
-				library: this.collection,
-				model: this.model
-			} );
-
-			this._editFrame.open();
-
-			return false;
-		},
-
-		delete: function() {
-			// Remove from collection also triggers 'remove' event for the model, which calls this.remove() to remove the element from DOM.
-			this.collection.remove( this.model );
-
-			if ( true === this.controller.get( 'forceDelete' ) ) {
-				this.model.destroy();
-			}
-
-			return false;
 		},
 
 		render: function () {
