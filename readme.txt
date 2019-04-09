@@ -165,12 +165,11 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 == Changelog ==
 
-= 4.17.1 - 2019-04-02 =
+= 4.17.3 - 2019-04-09 =
 
 **Fixed**
 
-- Fixed `required` attribute for `file` prevents updating posts when the field already has value.
-- Fixed couldn't add images if `max_file_uploads` is not set (`image_advanced`).
+- Fixed image_upload, file_upload field not working.
 
 [See full changelog here](https://metabox.io/changelog/).
 
