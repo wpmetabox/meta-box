@@ -1,3 +1,18 @@
-.category-add.closed {
+.rwmb-taxonomy-add,
+.rwmb-taxonomy-add-form {
+	margin-top: 12px;
+}
+.rwmb-taxonomy-add-button {
+	padding: 0;
+	border: 0;
+	background: none;
+	color: #0073aa;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.rwmb-taxonomy-add-button:hover {
+	color: #00a0d2;
+}
+.rwmb-taxonomy-add-form.rwmb-hidden {
 	display: none;
 }

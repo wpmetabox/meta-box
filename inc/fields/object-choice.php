@@ -32,7 +32,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$html  = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
-		$html .= self::call( 'add_new_form', $field );
+
+		if ( $field['add_new'] ) {
+			$html .= self::call( 'add_new_form', $field );
+		}
+
 		return $html;
 	}
 
@@ -61,6 +65,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				'flatten'    => true,
 				'query_args' => array(),
 				'field_type' => 'select_advanced',
+				'add_new'    => false,
 			)
 		);
 

@@ -1,10 +1,8 @@
-jQuery( function ( $, document ) {
+jQuery( function ( $ ) {
 	'use strict';
 
-	$('#rwmb-category-add-toggle').click(function(e){
+	$( document ).on( 'click', '.rwmb-taxonomy-add-button', function( e ) {
 		e.preventDefault();
-		var $this = $( this ).parent();
-		$( '.category-add' ).toggleClass('closed');
-	});
-
+		this.nextElementSibling.classList.toggle( 'rwmb-hidden' );
+	} );
 } );

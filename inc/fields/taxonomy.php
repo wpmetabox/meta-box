@@ -44,14 +44,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		 * - If multiple taxonomies: show 'Select a term'.
 		 * - If single taxonomy: show 'Select a %taxonomy_name%'.
 		 */
-		$placeholder = __( 'Select a term', 'meta-box' );
-		if ( 1 === count( $field['taxonomy'] ) ) {
-			$taxonomy        = reset( $field['taxonomy'] );
-			$taxonomy_object = get_taxonomy( $taxonomy );
-			if ( false !== $taxonomy_object ) {
-				// Translators: %s is the taxonomy singular label.
-				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $taxonomy_object->labels->singular_name ) );
-			}
+		$placeholder   = __( 'Select a term', 'meta-box' );
+		$taxonomy_name = self::get_taxonomy_singular_name( $field );
+		if ( $taxonomy_name ) {
+			// Translators: %s is the taxonomy singular label.
+			$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $taxonomy_name ) );
 		}
 		$field = wp_parse_args(
 			$field,
@@ -123,13 +120,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function save( $new, $old, $post_id, $field ) {
 		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
 			return;
-		}
-
-		if ( $_POST['rwmb-new-category'] ) {
-			$cate_name = $_POST['rwmb-new-category'];
-			$my_cat = array('cat_name' => $cate_name, 'category_nicename' => 'category-slug');
-			// Create the category
-			$cate_id = wp_insert_category( $my_cat );
 		}
 
 		$new = array_unique( array_map( 'intval', (array) $new ) );
@@ -219,27 +209,34 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
-	 * Get field HTML.
+	 * Render "Add New" form
 	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
+	 * @param array $field Field settings.
 	 * @return string
 	 */
-	public static function html( $meta, $field ) {
-		$html  = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
-		$html .= self::call( 'add_new_form', $field );
-		$html .= self::html_add_category();
+	public static function add_new_form( $field ) {
+		// Only add new term if field has only one taxonomy.
+		if ( 1 !== count( $field['taxonomy'] ) ) {
+			return '';
+		}
 
-		return $html;
-	}
-	public static function html_add_category() {
-		$html = '';
-		$html .= '<div class="add_new_categories">';
-			$html .= '<a id="rwmb-category-add-toggle" href="#category-add" class="taxonomy-add-new">' .__( '+ Add New Category', 'meta-box' ) .'</a>';
-			$html .= '<div id="category-add" class="category-add closed">';
-				$html .= '<input type="text" name="rwmb-new-category" id="rwmb-newcategory" class="form-required">';
-			$html .= '</div>';
-		$html .= '</div>';
+		$taxonomy_name = self::get_taxonomy_singular_name( $field );
+
+		// Translators: %s is the taxonomy singular label.
+		$button_text = sprintf( __( 'Add New %s', 'meta-box' ), ucwords( $taxonomy_name ) );
+		// Translators: %s is the taxonomy singular label.
+		$placeholder = sprintf( __( 'Enter new %s name', 'meta-box' ), strtolower( $taxonomy_name ) );
+
+		$html = '
+		<div class="rwmb-taxonomy-add">
+			<button class="rwmb-taxonomy-add-button">%s</button>
+			<div class="rwmb-taxonomy-add-form rwmb-hidden">
+				<input type="text" name="rwmb_taxonomy_new" size="30" placeholder="%s">
+			</div>
+		</div>';
+
+		$html = sprintf( $html, esc_html( $button_text ), esc_attr( $placeholder ) );
+
 		return $html;
 	}
 
@@ -250,5 +247,21 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', '', RWMB_VER );
 		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
+	}
+
+	/**
+	 * Get taxonomy singular name.
+	 *
+	 * @param array $field Field settings.
+	 * @return string
+	 */
+	protected static function get_taxonomy_singular_name( $field ) {
+		if ( 1 !== count( $field['taxonomy'] ) ) {
+			return '';
+		}
+		$taxonomy        = reset( $field['taxonomy'] );
+		$taxonomy_object = get_taxonomy( $taxonomy );
+
+		return false === $taxonomy_object ? '' : $taxonomy_object->labels->singular_name;
 	}
 }
