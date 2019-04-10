@@ -18,12 +18,17 @@ jQuery( function ( $ ) {
 		.on( 'clone', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', update );
 	$( '.rwmb-input-list.rwmb-collapse input[type="checkbox"]' ).each( update );
 
-	$( '.rwmb-input-list-select-all-none' ).toggle(
-		function () {
-			$( this ).parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', true );
-		},
-		function () {
-			$( this ).parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', false );
+	$( document ).on( 'click', '.rwmb-input-list-select-all-none', function() {
+		var $this = $( this ),
+			checked = $this.data( 'checked' );
+
+		if ( undefined === checked ) {
+			checked = true;
 		}
-	);
+
+		$this.parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', checked );
+
+		checked = ! checked;
+		$this.data( 'checked', checked );
+	} );
 } );
