@@ -122,12 +122,45 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return;
 		}
 
-		$new = array_unique( array_map( 'intval', (array) $new ) );
-		$new = empty( $new ) ? null : $new;
+		$new_terms = self::add_terms( $field );
+		$new       = array_unique( array_map( 'intval', (array) $new ) );
+		$new       = array_merge( $new, $new_terms );
 
 		foreach ( $field['taxonomy'] as $taxonomy ) {
 			wp_set_object_terms( $post_id, $new, $taxonomy );
 		}
+	}
+
+	/**
+	 * Add new terms if users created some.
+	 *
+	 * @param array $field Field settings.
+	 * @return array
+	 */
+	protected static function add_terms( $field ) {
+		if ( 1 !== count( $field['taxonomy'] ) ) {
+			return array();
+		}
+
+		$taxonomy = reset( $field['taxonomy'] );
+
+		// @codingStandardsIgnoreLine
+		if ( empty( $_POST['rwmb_taxonomy_new'] ) || empty( $_POST['rwmb_taxonomy_new'][ $taxonomy ] ) ) {
+			return array();
+		}
+
+		$new_terms = array();
+
+		// @codingStandardsIgnoreLine
+		$terms = (array) $_POST['rwmb_taxonomy_new'][ $taxonomy ];
+
+		foreach ( $terms as $term ) {
+			$new_terms[] = wp_insert_term( $term, $taxonomy );
+		}
+		$new_terms = array_filter( $new_terms, 'is_array' );
+		$new_terms = wp_list_pluck( $new_terms, 'term_id' );
+
+		return $new_terms;
 	}
 
 	/**
@@ -231,11 +264,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		<div class="rwmb-taxonomy-add">
 			<button class="rwmb-taxonomy-add-button">%s</button>
 			<div class="rwmb-taxonomy-add-form rwmb-hidden">
-				<input type="text" name="rwmb_taxonomy_new" size="30" placeholder="%s">
+				<input type="text" name="rwmb_taxonomy_new[%s][]" size="30" placeholder="%s">
 			</div>
 		</div>';
 
-		$html = sprintf( $html, esc_html( $button_text ), esc_attr( $placeholder ) );
+		$taxonomy = reset( $field['taxonomy'] );
+		$html     = sprintf( $html, esc_html( $button_text ), esc_attr( $taxonomy ), esc_attr( $placeholder ) );
 
 		return $html;
 	}
