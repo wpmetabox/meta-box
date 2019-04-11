@@ -110,6 +110,25 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
+	 * Get meta values to save.
+	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 *
+	 * @return string
+	 */
+	public static function value( $new, $old, $post_id, $field ) {
+		$new   = (array) $new;
+		$new[] = self::add_term( $field );
+		$new   = array_unique( array_map( 'intval', array_filter( $new ) ) );
+
+		return $new;
+	}
+
+	/**
 	 * Save meta value.
 	 *
 	 * @param mixed $new     The submitted meta value.
@@ -122,10 +141,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return;
 		}
 
-		$new_terms = self::add_terms( $field );
-		$new       = array_unique( array_map( 'intval', (array) $new ) );
-		$new       = array_merge( $new, $new_terms );
-
 		foreach ( $field['taxonomy'] as $taxonomy ) {
 			wp_set_object_terms( $post_id, $new, $taxonomy );
 		}
@@ -135,32 +150,18 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * Add new terms if users created some.
 	 *
 	 * @param array $field Field settings.
-	 * @return array
+	 * @return int|null Term ID if added successfully, null otherwise.
 	 */
-	protected static function add_terms( $field ) {
-		if ( 1 !== count( $field['taxonomy'] ) ) {
-			return array();
+	protected static function add_term( $field ) {
+		$term = filter_input( INPUT_POST, $field['id'] . '_new' );
+		if ( ! $field['add_new'] || ! $term || 1 !== count( $field['taxonomy'] ) ) {
+			return null;
 		}
 
 		$taxonomy = reset( $field['taxonomy'] );
+		$term     = wp_insert_term( $term, $taxonomy );
 
-		// @codingStandardsIgnoreLine
-		if ( empty( $_POST['rwmb_taxonomy_new'] ) || empty( $_POST['rwmb_taxonomy_new'][ $taxonomy ] ) ) {
-			return array();
-		}
-
-		$new_terms = array();
-
-		// @codingStandardsIgnoreLine
-		$terms = (array) $_POST['rwmb_taxonomy_new'][ $taxonomy ];
-
-		foreach ( $terms as $term ) {
-			$new_terms[] = wp_insert_term( $term, $taxonomy );
-		}
-		$new_terms = array_filter( $new_terms, 'is_array' );
-		$new_terms = wp_list_pluck( $new_terms, 'term_id' );
-
-		return $new_terms;
+		return isset( $term['term_id'] ) ? $term['term_id'] : null;
 	}
 
 	/**
@@ -264,12 +265,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		<div class="rwmb-taxonomy-add">
 			<button class="rwmb-taxonomy-add-button">%s</button>
 			<div class="rwmb-taxonomy-add-form rwmb-hidden">
-				<input type="text" name="rwmb_taxonomy_new[%s][]" size="30" placeholder="%s">
+				<input type="text" name="%s_new" size="30" placeholder="%s">
 			</div>
 		</div>';
 
 		$taxonomy = reset( $field['taxonomy'] );
-		$html     = sprintf( $html, esc_html( $button_text ), esc_attr( $taxonomy ), esc_attr( $placeholder ) );
+		$html     = sprintf( $html, esc_html( $button_text ), esc_attr( $field['id'] ), esc_attr( $placeholder ) );
 
 		return $html;
 	}
