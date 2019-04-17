@@ -10,8 +10,7 @@
  */
 class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	/**
-	 * Get meta values to save.
-	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
+	 * Save terms in form of comma-separated IDs.
 	 *
 	 * @param mixed $new     The submitted meta value.
 	 * @param mixed $old     The existing meta value.

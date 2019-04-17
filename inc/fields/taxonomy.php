@@ -111,14 +111,13 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 	/**
 	 * Get meta values to save.
-	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
 	 *
 	 * @param mixed $new     The submitted meta value.
 	 * @param mixed $old     The existing meta value.
 	 * @param int   $post_id The post ID.
 	 * @param array $field   The field parameters.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		$new   = (array) $new;
@@ -283,7 +282,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', '', RWMB_VER );
+		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
 	}
 
