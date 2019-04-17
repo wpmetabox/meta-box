@@ -254,12 +254,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$taxonomy_name = self::get_taxonomy_singular_name( $field );
-
-		// Translators: %s is the taxonomy singular label.
-		$button_text = sprintf( __( 'Add New %s', 'meta-box' ), ucwords( $taxonomy_name ) );
-		// Translators: %s is the taxonomy singular label.
-		$placeholder = sprintf( __( 'Enter new %s name', 'meta-box' ), strtolower( $taxonomy_name ) );
+		$taxonomy        = reset( $field['taxonomy'] );
+		$taxonomy_object = get_taxonomy( $taxonomy );
+		if ( false === $taxonomy_object ) {
+			return '';
+		}
 
 		$html = '
 		<div class="rwmb-taxonomy-add">
@@ -269,8 +268,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			</div>
 		</div>';
 
-		$taxonomy = reset( $field['taxonomy'] );
-		$html     = sprintf( $html, esc_html( $button_text ), esc_attr( $field['id'] ), esc_attr( $placeholder ) );
+		$html = sprintf(
+			$html,
+			esc_html( $taxonomy_object->labels->add_new_item ),
+			esc_attr( $field['id'] ),
+			esc_attr( $taxonomy_object->labels->new_item_name )
+		);
 
 		return $html;
 	}
