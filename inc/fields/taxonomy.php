@@ -44,14 +44,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		 * - If multiple taxonomies: show 'Select a term'.
 		 * - If single taxonomy: show 'Select a %taxonomy_name%'.
 		 */
-		$placeholder = __( 'Select a term', 'meta-box' );
-		if ( 1 === count( $field['taxonomy'] ) ) {
-			$taxonomy        = reset( $field['taxonomy'] );
-			$taxonomy_object = get_taxonomy( $taxonomy );
-			if ( false !== $taxonomy_object ) {
-				// Translators: %s is the taxonomy singular label.
-				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $taxonomy_object->labels->singular_name ) );
-			}
+		$placeholder   = __( 'Select a term', 'meta-box' );
+		$taxonomy_name = self::get_taxonomy_singular_name( $field );
+		if ( $taxonomy_name ) {
+			// Translators: %s is the taxonomy singular label.
+			$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $taxonomy_name ) );
 		}
 		$field = wp_parse_args(
 			$field,
@@ -113,6 +110,25 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	/**
+	 * Get meta values to save.
+	 * Save terms in custom field in form of comma-separated IDs, no more by setting post terms.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 *
+	 * @return string
+	 */
+	public static function value( $new, $old, $post_id, $field ) {
+		$new   = (array) $new;
+		$new[] = self::add_term( $field );
+		$new   = array_unique( array_map( 'intval', array_filter( $new ) ) );
+
+		return $new;
+	}
+
+	/**
 	 * Save meta value.
 	 *
 	 * @param mixed $new     The submitted meta value.
@@ -124,12 +140,28 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
 			return;
 		}
-		$new = array_unique( array_map( 'intval', (array) $new ) );
-		$new = empty( $new ) ? null : $new;
 
 		foreach ( $field['taxonomy'] as $taxonomy ) {
 			wp_set_object_terms( $post_id, $new, $taxonomy );
 		}
+	}
+
+	/**
+	 * Add new terms if users created some.
+	 *
+	 * @param array $field Field settings.
+	 * @return int|null Term ID if added successfully, null otherwise.
+	 */
+	protected static function add_term( $field ) {
+		$term = filter_input( INPUT_POST, $field['id'] . '_new' );
+		if ( ! $field['add_new'] || ! $term || 1 !== count( $field['taxonomy'] ) ) {
+			return null;
+		}
+
+		$taxonomy = reset( $field['taxonomy'] );
+		$term     = wp_insert_term( $term, $taxonomy );
+
+		return isset( $term['term_id'] ) ? $term['term_id'] : null;
 	}
 
 	/**
@@ -208,5 +240,66 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			esc_attr( $value->name ),
 			esc_html( $value->name )
 		);
+	}
+
+	/**
+	 * Render "Add New" form
+	 *
+	 * @param array $field Field settings.
+	 * @return string
+	 */
+	public static function add_new_form( $field ) {
+		// Only add new term if field has only one taxonomy.
+		if ( 1 !== count( $field['taxonomy'] ) ) {
+			return '';
+		}
+
+		$taxonomy        = reset( $field['taxonomy'] );
+		$taxonomy_object = get_taxonomy( $taxonomy );
+		if ( false === $taxonomy_object ) {
+			return '';
+		}
+
+		$html = '
+		<div class="rwmb-taxonomy-add">
+			<button class="rwmb-taxonomy-add-button">%s</button>
+			<div class="rwmb-taxonomy-add-form rwmb-hidden">
+				<input type="text" name="%s_new" size="30" placeholder="%s">
+			</div>
+		</div>';
+
+		$html = sprintf(
+			$html,
+			esc_html( $taxonomy_object->labels->add_new_item ),
+			esc_attr( $field['id'] ),
+			esc_attr( $taxonomy_object->labels->new_item_name )
+		);
+
+		return $html;
+	}
+
+	/**
+	 * Enqueue scripts and styles.
+	 */
+	public static function admin_enqueue_scripts() {
+		parent::admin_enqueue_scripts();
+		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', '', RWMB_VER );
+		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
+	}
+
+	/**
+	 * Get taxonomy singular name.
+	 *
+	 * @param array $field Field settings.
+	 * @return string
+	 */
+	protected static function get_taxonomy_singular_name( $field ) {
+		if ( 1 !== count( $field['taxonomy'] ) ) {
+			return '';
+		}
+		$taxonomy        = reset( $field['taxonomy'] );
+		$taxonomy_object = get_taxonomy( $taxonomy );
+
+		return false === $taxonomy_object ? '' : $taxonomy_object->labels->singular_name;
 	}
 }
