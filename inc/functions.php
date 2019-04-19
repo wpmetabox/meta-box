@@ -255,7 +255,7 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 			$atts,
 			array(
 				'id'        => '',
-				'object_id' => get_queried_object_id(),
+				'object_id' => null,
 				'attribute' => '',
 			)
 		);
