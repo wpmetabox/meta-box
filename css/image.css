@@ -1,7 +1,7 @@
 .rwmb-image-wrapper .rwmb-uploaded:empty {
 	display: none;
 }
-.rwmb-uploaded:not(:empty) {
+.rwmb-image-wrapper .rwmb-uploaded:not(:empty) {
 	display: block;
 	margin: -8px 0 0 -8px;
 	overflow: hidden;
