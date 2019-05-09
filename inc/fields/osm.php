@@ -19,10 +19,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_enqueue_script( 'leaflet', 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js', array(), '1.5.1', true );
 
 		wp_enqueue_style( 'rwmb-osm', RWMB_CSS_URL . 'osm.css', array( 'leaflet' ), RWMB_VER );
-		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', array( 'jquery', 'leaflet' ), RWMB_VER, true );
-
-		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', '', RWMB_VER );
-		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', array( 'jquery-ui-autocomplete' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', array( 'jquery', 'jquery-ui-autocomplete', 'leaflet' ), RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once(
 			'rwmb-osm',
