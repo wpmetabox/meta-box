@@ -1,4 +1,4 @@
-( function( $, L ) {
+( function( $, L, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
@@ -63,7 +63,7 @@
 				this.map.panTo( latLng );
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
-				this.geocodeAddress();
+				this.geocodeAddress( false );
 			}
 		},
 
@@ -142,7 +142,7 @@
 						if ( ! results.length ) {
 							response( [ {
 								value: '',
-								label: RWMB_Osm.no_results_string
+								label: i18n.no_results_string
 							} ] );
 							return;
 						}
@@ -173,13 +173,16 @@
 		},
 
 		// Find coordinates by address
-		geocodeAddress: function () {
+		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
 			if ( ! address ) {
 				return;
 			}
 
+			if ( false !== notify ) {
+				notify = true;
+			}
 			$.get( 'https://nominatim.openstreetmap.org/search', {
 				format: 'json',
 				q: address,
@@ -188,6 +191,9 @@
 				"accept-language": that.$canvas.data( 'language' )
 			}, function( result ) {
 				if ( result.length !== 1 ) {
+					if ( notify ) {
+						alert( i18n.no_results_string );
+					}
 					return;
 				}
 				var latLng = L.latLng( result[0].lat, result[0].lon );
@@ -261,4 +267,4 @@
 		$( '.rwmb-input' ).on( 'clone', update );
 	} );
 
-} )( jQuery, L );
+} )( jQuery, L, RWMB_Osm );

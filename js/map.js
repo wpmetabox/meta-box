@@ -1,6 +1,6 @@
 /* global google */
 
-(function ( $, document, window, google ) {
+(function ( $, document, window, google, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
@@ -64,7 +64,7 @@
 				this.map.setCenter( this.marker.position );
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
-				this.geocodeAddress();
+				this.geocodeAddress( false );
 			}
 		},
 
@@ -149,7 +149,7 @@
 						if ( ! results.length ) {
 							response( [ {
 								value: '',
-								label: RWMB_Map.no_results_string
+								label: i18n.no_results_string
 							} ] );
 							return;
 						}
@@ -179,15 +179,21 @@
 		},
 
 		// Find coordinates by address
-		geocodeAddress: function () {
+		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
 			if ( ! address ) {
 				return;
 			}
 
+			if ( false !== notify ) {
+				notify = true;
+			}
 			geocoder.geocode( {'address': address}, function ( results, status ) {
 				if ( status !== google.maps.GeocoderStatus.OK ) {
+					if ( notify ) {
+						alert( i18n.no_results_string );
+					}
 					return;
 				}
 				that.map.setCenter( results[0].geometry.location );
@@ -260,4 +266,4 @@
 		$( '.rwmb-input' ).on( 'clone', update );
 	} );
 
-})( jQuery, document, window, google );
+})( jQuery, document, window, google, RWMB_Map );
