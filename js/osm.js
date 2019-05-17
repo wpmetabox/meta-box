@@ -23,7 +23,6 @@
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
 			this.canvas = this.$canvas[0];
 			this.$coordinate = this.$container.find( '.rwmb-osm-coordinate' );
-			this.$findButton = this.$container.find( '.rwmb-osm-goto-address-button' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
@@ -70,6 +69,21 @@
 		// Add event listeners for 'click' & 'drag'
 		addListeners: function () {
 			var that = this;
+
+			/*
+			 * Auto change the map when there's change in address fields.
+			 * Works only for multiple address fields as single address field has autocomplete functionality.
+			 */
+			if ( this.addressField.split( ',' ).length > 1 ) {
+				var geocodeAddress = that.geocodeAddress.bind( that );
+				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+					var $field = that.findAddressField( part );
+					if ( null !== $field ) {
+						$field.on( 'change', geocodeAddress );
+					}
+				} );
+			}
+
 			this.map.on( 'click', function ( event ) {
 				that.marker.setLatLng( event.latlng );
 				that.updateCoordinate( event.latlng );
@@ -83,29 +97,18 @@
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			this.$findButton.on( 'click', function ( e ) {
-				e.preventDefault();
-				that.geocodeAddress();
-			} );
-
 			/**
 			 * Add a custom event that allows other scripts to refresh the maps when needed
 			 * For example: when maps is in tabs or hidden div (this is known issue of Google Maps)
 			 *
 			 * @see https://developers.google.com/maps/documentation/javascript/reference ('resize' Event)
 			 */
-			$( window ).on( 'rwmb_map_refresh', function () {
-				that.refresh();
-			} );
+			$( window ).on( 'rwmb_map_refresh', that.refresh );
 
 			// Refresh on meta box hide and show
-			$( document ).on( 'postbox-toggled', function () {
-				that.refresh();
-			} );
+			$( document ).on( 'postbox-toggled', that.refresh );
 			// Refresh on sorting meta boxes
-			$( '.meta-box-sortables' ).on( 'sortstop', function () {
-				that.refresh();
-			} );
+			$( '.meta-box-sortables' ).on( 'sortstop', that.refresh );
 		},
 
 		refresh: function () {

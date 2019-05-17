@@ -28,7 +28,6 @@
 			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
 			this.canvas = this.$canvas[0];
 			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
-			this.$findButton = this.$container.find( '.rwmb-map-goto-address-button' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
@@ -71,6 +70,21 @@
 		// Add event listeners for 'click' & 'drag'
 		addListeners: function () {
 			var that = this;
+
+			/*
+			 * Auto change the map when there's change in address fields.
+			 * Works only for multiple address fields as single address field has autocomplete functionality.
+			 */
+			if ( this.addressField.split( ',' ).length > 1 ) {
+				var geocodeAddress = that.geocodeAddress.bind( that );
+				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+					var $field = that.findAddressField( part );
+					if ( null !== $field ) {
+						$field.on( 'change', geocodeAddress );
+					}
+				} );
+			}
+
 			google.maps.event.addListener( this.map, 'click', function ( event ) {
 				that.marker.setPosition( event.latLng );
 				that.updateCoordinate( event.latLng );
@@ -84,29 +98,18 @@
 				that.updateCoordinate( event.latLng );
 			} );
 
-			this.$findButton.on( 'click', function () {
-				that.geocodeAddress();
-				return false;
-			} );
-
 			/**
 			 * Add a custom event that allows other scripts to refresh the maps when needed
 			 * For example: when maps is in tabs or hidden div.
 			 *
 			 * @see https://developers.google.com/maps/documentation/javascript/reference ('resize' Event)
 			 */
-			$( window ).on( 'rwmb_map_refresh', function () {
-				that.refresh();
-			} );
+			$( window ).on( 'rwmb_map_refresh', that.refresh );
 
 			// Refresh on meta box hide and show
-			$( document ).on( 'postbox-toggled', function () {
-				that.refresh();
-			} );
+			$( document ).on( 'postbox-toggled', that.refresh );
 			// Refresh on sorting meta boxes
-			$( '.meta-box-sortables' ).on( 'sortstop', function () {
-				that.refresh();
-			} );
+			$( '.meta-box-sortables' ).on( 'sortstop', that.refresh );
 		},
 
 		refresh: function () {
@@ -132,10 +135,7 @@
 
 			// If Meta Box Geo Location installed. Do not run auto complete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
-				$address.on( 'selected_address', function () {
-					that.$findButton.trigger( 'click' );
-				} );
-
+				$address.on( 'selected_address', that.geocodeAddress );
 				return false;
 			}
 
