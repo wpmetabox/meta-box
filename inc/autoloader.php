@@ -9,7 +9,6 @@
  * Autoload class
  */
 class RWMB_Autoloader {
-
 	/**
 	 * List of directories to load classes.
 	 *
@@ -20,13 +19,13 @@ class RWMB_Autoloader {
 	/**
 	 * Adds a base directory for a class name prefix and/or suffix.
 	 *
-	 * @param string $base_dir A base directory for class files.
-	 * @param string $prefix   The class name prefix.
-	 * @param string $suffix   The class name suffix.
+	 * @param string $dir    A base directory for class files.
+	 * @param string $prefix The class name prefix.
+	 * @param string $suffix The class name suffix.
 	 */
-	public function add( $base_dir, $prefix, $suffix = '' ) {
+	public function add( $dir, $prefix, $suffix = '' ) {
 		$this->dirs[] = array(
-			'dir'    => trailingslashit( $base_dir ),
+			'dir'    => trailingslashit( $dir ),
 			'prefix' => $prefix,
 			'suffix' => $suffix,
 		);
@@ -34,24 +33,15 @@ class RWMB_Autoloader {
 
 	/**
 	 * Register autoloader for plugin classes.
-	 * In PHP 5.3, SPL extension cannot be disabled and it's safe to use autoload.
-	 * However, hosting providers can disable it in PHP 5.2. In that case, we provide a fallback for autoload.
-	 *
-	 * @link http://php.net/manual/en/spl.installation.php
-	 * @link https://github.com/rilwis/meta-box/issues/810
 	 */
 	public function register() {
 		spl_autoload_register( array( $this, 'autoload' ) );
-		if ( ! class_exists( 'RWMB_Core' ) ) {
-			$this->fallback();
-		}
 	}
 
 	/**
-	 * Autoload fields' classes.
+	 * Autoload classes.
 	 *
 	 * @param string $class Class name.
-	 * @return mixed Boolean false if no mapped file can be loaded, or the name of the mapped file that was loaded.
 	 */
 	public function autoload( $class ) {
 		foreach ( $this->dirs as $dir ) {
@@ -67,100 +57,7 @@ class RWMB_Autoloader {
 			}
 			$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
 			$file = $dir['dir'] . $file;
-			if ( $this->require_file( $file ) ) {
-				return $file;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Fallback for autoload in PHP 5.2.
-	 */
-	protected function fallback() {
-		$files = array(
-			// Core.
-			'core',
-			'clone',
-			'meta-box',
-			'meta-box-registry',
-			'storage-registry',
-			'interfaces/storage.php',
-			'storages/base.php',
-			'storages/post.php',
-			'validation',
-			'sanitizer',
-			'media-modal',
-			'wpml',
-			'about/about.php',
-
-			// Walkers.
-			'walkers/walker',
-			'walkers/select',
-			'walkers/select-tree',
-			'walkers/input-list',
-
-			// Fields.
-			'field',
-			'field-registry',
-
-			'fields/multiple-values',
-			'fields/autocomplete',
-			'fields/text-list',
-
-			'fields/choice',
-
-			'fields/select',
-			'fields/select-advanced',
-			'fields/select-tree',
-
-			'fields/input-list',
-			'fields/radio',
-			'fields/checkbox-list',
-
-			'fields/object-choice',
-			'fields/post',
-			'fields/taxonomy',
-			'fields/taxonomy-advanced',
-			'fields/user',
-
-			'fields/input',
-
-			'fields/checkbox',
-			'fields/number',
-			'fields/range',
-
-			'fields/text',
-			'fields/color',
-			'fields/datetime',
-			'fields/date',
-			'fields/time',
-			'fields/fieldset-text',
-			'fields/key-value',
-			'fields/oembed',
-			'fields/password',
-
-			'fields/file-input',
-			'fields/file',
-			'fields/image',
-			'fields/image-select',
-
-			'fields/media',
-			'fields/file-upload',
-			'fields/image-advanced',
-			'fields/image-upload',
-
-			'fields/button',
-			'fields/custom-html',
-			'fields/divider',
-			'fields/heading',
-			'fields/map',
-			'fields/slider',
-			'fields/textarea',
-			'fields/wysiwyg',
-		);
-		foreach ( $files as $file ) {
-			$this->require_file( RWMB_INC_DIR . "$file.php" );
+			$this->require_file( $file );
 		}
 	}
 
@@ -168,13 +65,10 @@ class RWMB_Autoloader {
 	 * If a file exists, require it from the file system.
 	 *
 	 * @param string $file The file to require.
-	 * @return bool True if the file exists, false if not.
 	 */
 	protected function require_file( $file ) {
 		if ( file_exists( $file ) ) {
 			require_once $file;
-			return true;
 		}
-		return false;
 	}
 }
