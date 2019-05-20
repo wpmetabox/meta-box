@@ -10,6 +10,24 @@
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	/**
+	 * Add actions.
+	 */
+	public static function add_actions() {
+		add_action( 'clean_user_cache', array( __CLASS__, 'update_cache' ) );
+	}
+
+	/**
+	 * Update object cache to make sure query method below always get the fresh list of users.
+	 * Unlike posts and terms, WordPress doesn't set 'last_changed' for users.
+	 * So we have to do it ourselves.
+	 *
+	 * @see clean_post_cache()
+	 */
+	public static function update_cache() {
+		wp_cache_set( 'last_changed', microtime(), 'users' );
+	}
+
+	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
@@ -50,7 +68,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		);
 
 		// Get from cache to prevent same queries.
-		$cache_key = md5( serialize( $args ) );
+		$last_changed = wp_cache_get_last_changed( 'users' );
+		$key          = md5( serialize( $args ) );
+		$cache_key    = "$key:$last_changed";
 		$options = wp_cache_get( $cache_key, 'meta-box-user-field' );
 		if ( false !== $options ) {
 			return $options;
