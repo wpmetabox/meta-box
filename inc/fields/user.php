@@ -71,13 +71,13 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$last_changed = wp_cache_get_last_changed( 'users' );
 		$key          = md5( serialize( $args ) );
 		$cache_key    = "$key:$last_changed";
-		$options = wp_cache_get( $cache_key, 'meta-box-user-field' );
+		$options      = wp_cache_get( $cache_key, 'meta-box-user-field' );
 		if ( false !== $options ) {
 			return $options;
 		}
 
-		$users         = get_users( $args );
-		$options       = array();
+		$users   = get_users( $args );
+		$options = array();
 		foreach ( $users as $user ) {
 			$options[ $user->ID ] = array_merge(
 				array(

@@ -66,7 +66,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array        Field options array.
 	 */
 	public static function query( $field ) {
-		$args    = wp_parse_args(
+		$args = wp_parse_args(
 			$field['query_args'],
 			array(
 				'post_type'              => $field['post_type'],

@@ -63,7 +63,7 @@ class RWMB_Clone {
 			$input_html .= '</div>';
 
 			$field_html .= $input_html;
-		} // End foreach().
+		}
 
 		return $field_html;
 	}
