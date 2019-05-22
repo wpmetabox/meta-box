@@ -128,10 +128,11 @@
 				return;
 			}
 
-			// If Meta Box Geo Location installed. Do not run auto complete.
+			// If Meta Box Geo Location installed. Do not run autocomplete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
-				$address.on( 'selected_address', that.geocodeAddress );
-				return;
+				var geocodeAddress = that.geocodeAddress.bind( that );
+				$address.on( 'selected_address', geocodeAddress );
+				return false;
 			}
 
 			$address.autocomplete( {
