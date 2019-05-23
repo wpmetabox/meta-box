@@ -18,7 +18,7 @@
 		echo wp_kses( sprintf( __( 'Still need help with Meta Box? We offer excellent support for you. But don\'t forget to check our <a href="%s">documentation</a> first.', 'meta-box' ), 'https://docs.metabox.io?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ), $allowed_html );
 		?>
 	</p>
-	<div class="feature-section two-col">
+	<div class="two">
 		<div class="col">
 			<h3><?php esc_html_e( 'Free Support', 'meta-box' ); ?></h3>
 			<p><?php esc_html_e( 'If you have any question about how to use the plugin, please open a new topic on WordPress.org support forum or open a new issue on Github (preferable). We will try to answer as soon as we can.', 'meta-box' ); ?><p>

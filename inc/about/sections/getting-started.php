@@ -7,7 +7,7 @@
 
 ?>
 <div id="getting-started" class="gt-tab-pane gt-is-active">
-	<div class="feature-section two-col">
+	<div class="two">
 		<div class="col">
 			<h3><?php esc_html_e( 'Getting Started With Online Generator', 'meta-box' ); ?></h3>
 			<p><?php esc_html_e( 'The fastest way to getting started with Meta Box is use our online generator to generate meta boxes with custom fields. It provides a friendly UI for you to create meta boxes and custom fields just by drag and drop fields.', 'meta-box' ); ?><p>
@@ -30,7 +30,7 @@
 				<li><a target="_blank" href="https://metabox.io/plugins/mb-settings-page/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-admin-generic"></span> <?php esc_html_e( 'MB Settings Page', 'meta-box' ); ?></a></li>
 				<li><a target="_blank" href="https://metabox.io/plugins/mb-term-meta/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-image-filter"></span> <?php esc_html_e( 'MB Term Meta', 'meta-box' ); ?></a></li>
 			</ul>
-			<p><a class="button" target="_blank" href="https://metabox.io/plugins/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'More Extensions', 'meta-box' ); ?></a>
+			<p><a class="button" target="_blank" href="https://metabox.io/plugins/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'More Extensions', 'meta-box' ); ?></a></p>
 		</div>
 	</div>
 </div>
