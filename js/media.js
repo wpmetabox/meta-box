@@ -104,8 +104,7 @@ jQuery( function ( $ ) {
 				include: this.get( 'ids' ),
 				orderby: 'post__in',
 				order: 'ASC',
-				type: this.get( 'mimeType' ),
-				perPage: this.get( 'maxFiles' ) || - 1
+				perPage: this.get( 'ids' ).length
 			} );
 			// Get more then trigger ready
 			this.get( 'items' ).more();
