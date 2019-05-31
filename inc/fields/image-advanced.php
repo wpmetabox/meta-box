@@ -19,6 +19,29 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	}
 
 	/**
+	 * Get field HTML.
+	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 *
+	 * @return string
+	 */
+	public static function html( $meta, $field ) {
+		$html = parent::html( $meta, $field );
+
+		if ( empty( $meta ) ) {
+			return $html;
+		}
+
+		$meta = array_map( 'wp_prepare_attachment_for_js', $meta );
+		$meta = array_filter( $meta );
+
+		$html .= '<script type="text/html" class="rwmb-data" data-attachments="' . esc_attr( json_encode( $meta ) ) . '"></script>';
+
+		return $html;
+	}
+
+	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
