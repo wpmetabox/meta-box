@@ -126,7 +126,7 @@ jQuery( function ( $ ) {
 			this.render();
 
 			// Load initial attachments.
-			var models = this.$input.siblings( '.rwmb-data' ).data( 'attachments' ).map( function( attachment ) {
+			var models = this.$input.data( 'attachments' ).map( function( attachment ) {
 				return wp.media.model.Attachment.create( attachment );
 			} );
 			this.controller.get( 'items' ).add( models );
