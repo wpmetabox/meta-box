@@ -91,24 +91,6 @@ jQuery( function ( $ ) {
 					this.get( 'items' ).destroyAll();
 				}
 			} );
-		},
-
-
-		// Load initial media
-		load: function () {
-			if ( _.isEmpty( this.get( 'ids' ) ) ) {
-				return;
-			}
-			this.get( 'items' ).props.set( {
-				query: true,
-				include: this.get( 'ids' ),
-				orderby: 'post__in',
-				order: 'ASC',
-				type: this.get( 'mimeType' ),
-				perPage: this.get( 'maxFiles' ) || - 1
-			} );
-			// Get more then trigger ready
-			this.get( 'items' ).more();
 		}
 	} );
 
@@ -143,8 +125,11 @@ jQuery( function ( $ ) {
 			// Render
 			this.render();
 
-			// Load media
-			this.controller.load();
+			// Load initial attachments.
+			var models = this.$input.data( 'attachments' ).map( function( attachment ) {
+				return wp.media.model.Attachment.create( attachment );
+			} );
+			this.controller.get( 'items' ).add( models );
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
