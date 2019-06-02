@@ -38,9 +38,10 @@
 
 .two {
 	margin-top: 15px;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 40px;
+	display: flex;
+}
+.two .col + .col {
+	margin-left: 40px;
 }
 .two h3:not(:first-child) {
 	margin-top: 3em;
@@ -52,6 +53,9 @@
 .screenshot {
 	display: block;
 	margin: 3em auto;
+}
+.col {
+	flex: 1;
 }
 .col ul {
 	font-size: 14px;
@@ -70,9 +74,13 @@
 /* Extensions tab */
 .extensions {
 	margin-top: 40px;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-gap: 30px;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.extension {
+	width: 100%;
+	margin-bottom: 20px;
 }
 .extension-inner {
 	display: flex;
@@ -104,14 +112,14 @@
 
 /* Extensions tab: 2 columns */
 @media (min-width: 768px) {
-	.extensions {
-		grid-template-columns: repeat(2, 1fr);
+	.extension {
+		width: 49%;
 	}
 }
 /* For large screen: 3 columns */
 @media (min-width: 1440px) {
-	.extensions {
-		grid-template-columns: repeat(3, 1fr);
+	.extension {
+		width: 32%;
 	}
 }
 
