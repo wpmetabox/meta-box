@@ -16,6 +16,11 @@
 			this.initMarkerPosition();
 			this.addListeners();
 			this.autocomplete();
+
+			// Make sure the map is displayed fully.
+			setTimeout( function() {
+				this.map.invalidateSize();
+			}, 0 );
 		},
 
 		// Initialize DOM elements
