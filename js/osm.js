@@ -18,8 +18,9 @@
 			this.autocomplete();
 
 			// Make sure the map is displayed fully.
+			var map = this.map;
 			setTimeout( function() {
-				this.map.invalidateSize();
+				map.invalidateSize();
 			}, 0 );
 		},
 
@@ -43,6 +44,8 @@
 				center: latLng,
 				zoom: 14
 			} );
+
+
 			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			} ).addTo( this.map );
