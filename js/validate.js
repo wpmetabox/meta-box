@@ -49,5 +49,10 @@ jQuery( function ( $ ) {
 	} );
 
 	// Execute.
-	$form.validate( rules );
+	$form.on( 'submit', function() {
+		// Update underlying textarea before submit validation.
+		if ( typeof tinyMCE !== 'undefined' ) {
+			tinyMCE.triggerSave();
+		}
+	} ).validate( rules );
 } );
