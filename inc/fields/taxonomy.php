@@ -31,8 +31,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$field = wp_parse_args(
 			$field,
 			array(
-				'taxonomy'   => 'category',
-				'query_args' => array(),
+				'taxonomy'       => 'category',
+				'query_args'     => array(),
+				'remove_default' => true,
 			)
 		);
 
@@ -284,6 +285,26 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
 		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
+
+		// Field is the 1st param.
+		$args  = func_get_args();
+		$field = $args[0];
+		self::remove_default_meta_box( $field );
+	}
+
+	/**
+	 * Remove default WordPress taxonomy meta box.
+	 *
+	 * @param array $field Field settings.
+	 */
+	protected static function remove_default_meta_box( $field ) {
+		if ( empty( $field['remove_default'] ) ) {
+			return;
+		}
+		foreach ( $field['taxonomy'] as $taxonomy ) {
+			$id = is_taxonomy_hierarchical( $taxonomy ) ? "{$taxonomy}div" : "tagsdiv-{$taxonomy}";
+			remove_meta_box( $id, null, 'side' );
+		}
 	}
 
 	/**
