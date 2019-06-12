@@ -18,7 +18,9 @@ jQuery( function ( $ ) {
 		.on( 'clone', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', update );
 	$( '.rwmb-input-list.rwmb-collapse input[type="checkbox"]' ).each( update );
 
-	$( document ).on( 'click', '.rwmb-input-list-select-all-none', function() {
+	$( document ).on( 'click', '.rwmb-input-list-select-all-none', function( e ) {
+		e.preventDefault();
+
 		var $this = $( this ),
 			checked = $this.data( 'checked' );
 
