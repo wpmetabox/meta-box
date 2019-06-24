@@ -43,5 +43,8 @@ jQuery( function ( $ ) {
 	$( '.rwmb-image_advanced' ).each( initImageField );
 	$( document )
 		.on( 'clone', '.rwmb-image_advanced', removeView )
-		.on( 'after_clone', '.rwmb-image_advanced', initImageField );
+		.on( 'after_clone', '.rwmb-image_advanced', initImageField )
+		.on( 'rwmb_ready', function() {
+			$( '.rwmb-image_advanced' ).each( initImageField );
+		} );
 } );
