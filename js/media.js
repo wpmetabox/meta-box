@@ -12,7 +12,9 @@ jQuery( function ( $ ) {
 		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia,
 		MediaDetails, MediaLibrary, MediaSelect;
 
-	MediaCollection = models.MediaCollection = media.model.Attachments.extend( {
+	MediaCollection = Backbone.Collection.extend( {
+		model: wp.media.model.Attachment,
+
 		initialize: function ( models, options ) {
 			this.controller = options.controller || new models.Controller;
 			this.on( 'add remove reset', function () {
@@ -20,8 +22,6 @@ jQuery( function ( $ ) {
 				this.controller.set( 'length', this.length );
 				this.controller.set( 'full', max > 0 && this.length >= max );
 			} );
-
-			media.model.Attachments.prototype.initialize.call( this, models, options );
 		},
 
 		add: function ( models, options ) {
@@ -42,11 +42,15 @@ jQuery( function ( $ ) {
 				models = _.first( models, left );
 			}
 
-			return media.model.Attachments.prototype.add.call( this, models, options );
+			Backbone.Collection.prototype.add.call( this, models, options );
 		},
 
 		remove: function ( models, options ) {
-			models = media.model.Attachments.prototype.remove.call( this, models, options );
+			// Don't remove models if event came from a Gutenberg component.
+			if( $( event.target ).hasClass( 'components-button' ) || $( event.target ).parents().hasClass( 'components-button' ) ) {
+				return;
+			}
+			models = Backbone.Collection.prototype.remove.call( this, models, options );
 			if ( this.controller.get( 'forceDelete' ) === true ) {
 				models = ! _.isArray( models ) ? [models] : models;
 				_.each( models, function ( model ) {
@@ -260,6 +264,15 @@ jQuery( function ( $ ) {
 				edit: this.collection
 			} );
 
+			// Refresh content when frame opens
+			this._switchFrame.on( 'open', function() {
+				var frameContent = this._switchFrame.content.get();
+				if ( frameContent && frameContent.collection ) {
+					frameContent.collection.mirroring._hasMore = true;
+					frameContent.collection.more();
+				}
+			}, this );
+			
 			this._switchFrame.on( 'select', function () {
 				var selection = this._switchFrame.state().get( 'selection' ),
 					collection = this.collection,
@@ -354,6 +367,15 @@ jQuery( function ( $ ) {
 					edit: this.collection
 				} );
 
+				// Refresh content when frame opens
+				this._frame.on( 'open', function() {
+					var frameContent = this._frame.content.get();
+					if ( frameContent && frameContent.collection ) {          
+						frameContent.collection.mirroring._hasMore = true;
+						frameContent.collection.more();
+					}
+				}, this );
+				
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
 					this.collection.add( selection.models );
