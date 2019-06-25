@@ -46,8 +46,8 @@ jQuery( function ( $ ) {
 		},
 
 		remove: function ( models, options ) {
-			// Don't remove models if event came from a Gutenberg component.
-			if( $( event.target ).hasClass( 'components-button' ) || $( event.target ).parents().hasClass( 'components-button' ) ) {
+			// Don't remove models if event is not fired from MB plugin.
+			if( ! $( event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
 				return;
 			}
 			models = Backbone.Collection.prototype.remove.call( this, models, options );
@@ -519,6 +519,9 @@ jQuery( function ( $ ) {
 		 */
 		createStates: function () {
 			var options = this.options;
+
+			// Add reference so we know MediaFrame belongs to MB plugin.
+			this.$el.attr( 'data-class', 'rwmb-field' );
 
 			if ( this.options.states ) {
 				return;
