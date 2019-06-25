@@ -46,6 +46,10 @@ jQuery( function ( $ ) {
 		},
 
 		remove: function ( models, options ) {
+			// Don't remove models if event came from a Gutenberg component.
+			if( $( event.target ).hasClass( 'components-button' ) || $( event.target ).parents().hasClass( 'components-button' ) ) {
+				return;
+			}
 			models = Backbone.Collection.prototype.remove.call( this, models, options );
 			if ( this.controller.get( 'forceDelete' ) === true ) {
 				models = ! _.isArray( models ) ? [models] : models;
@@ -260,6 +264,15 @@ jQuery( function ( $ ) {
 				edit: this.collection
 			} );
 
+			// Refresh content when frame opens
+			this._switchFrame.on( 'open', function() {
+				var frameContent = this._switchFrame.content.get();
+				if ( frameContent && frameContent.collection ) {
+					frameContent.collection.mirroring._hasMore = true;
+					frameContent.collection.more();
+				}
+			}, this );
+			
 			this._switchFrame.on( 'select', function () {
 				var selection = this._switchFrame.state().get( 'selection' ),
 					collection = this.collection,
@@ -354,6 +367,15 @@ jQuery( function ( $ ) {
 					edit: this.collection
 				} );
 
+				// Refresh content when frame opens
+				this._frame.on( 'open', function() {
+					var frameContent = this._frame.content.get();
+					if ( frameContent && frameContent.collection ) {          
+						frameContent.collection.mirroring._hasMore = true;
+						frameContent.collection.more();
+					}
+				}, this );
+				
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
 					this.collection.add( selection.models );
