@@ -126,14 +126,8 @@ jQuery( function ( $ ) {
 			this.createAddButton();
 			this.createStatus();
 
-			// Render
 			this.render();
-
-			// Load initial attachments.
-			var models = this.$input.data( 'attachments' ).map( function( attachment ) {
-				return wp.media.model.Attachment.create( attachment );
-			} );
-			this.controller.get( 'items' ).add( models );
+			this.loadInitialAttachments();
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
@@ -151,6 +145,16 @@ jQuery( function ( $ ) {
 			this.controller.get( 'items' ).on( 'remove', _.debounce( function () {
 				that.$input.val( '' );
 			}, 500 ) );
+		},
+
+		loadInitialAttachments: function () {
+			if ( ! this.$input.val() ) {
+				return;
+			}
+			var models = this.$input.data( 'attachments' ).map( function( attachment ) {
+				return wp.media.model.Attachment.create( attachment );
+			} );
+			this.controller.get( 'items' ).add( models );
 		},
 
 		// Creates media list
@@ -272,7 +276,7 @@ jQuery( function ( $ ) {
 					frameContent.collection.more();
 				}
 			}, this );
-			
+
 			this._switchFrame.on( 'select', function () {
 				var selection = this._switchFrame.state().get( 'selection' ),
 					collection = this.collection,
@@ -370,12 +374,12 @@ jQuery( function ( $ ) {
 				// Refresh content when frame opens
 				this._frame.on( 'open', function() {
 					var frameContent = this._frame.content.get();
-					if ( frameContent && frameContent.collection ) {          
+					if ( frameContent && frameContent.collection ) {
 						frameContent.collection.mirroring._hasMore = true;
 						frameContent.collection.more();
 					}
 				}, this );
-				
+
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
 					this.collection.add( selection.models );
