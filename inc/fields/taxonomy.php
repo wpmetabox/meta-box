@@ -298,7 +298,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @param array $field Field settings.
 	 */
 	protected static function remove_default_meta_box( $field ) {
-		if ( empty( $field['remove_default'] ) ) {
+		if ( empty( $field['remove_default'] ) || ! function_exists( 'remove_meta_box' ) ) {
 			return;
 		}
 		foreach ( $field['taxonomy'] as $taxonomy ) {
