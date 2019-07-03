@@ -144,3 +144,11 @@ select.rwmb-error {
 .rwmb-seamless .rwmb-clone {
 	background: none;
 }
+
+/* CSS fixes
+--------------------------------------------------------------*/
+/* Fix color picker field is hidden by the post editor at after_title position. https://metabox.io/support/topic/bug-color-picker-field-is-showed-below-the-title-field/ */
+.postarea {
+	position: relative;
+	z-index: 0;
+}
