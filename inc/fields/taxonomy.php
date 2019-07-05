@@ -33,7 +33,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			array(
 				'taxonomy'       => 'category',
 				'query_args'     => array(),
-				'remove_default' => true,
+				'remove_default' => false,
 			)
 		);
 
