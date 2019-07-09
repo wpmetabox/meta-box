@@ -61,10 +61,10 @@ class RW_Meta_Box {
 	 * @param array $meta_box Meta box definition.
 	 */
 	public function __construct( $meta_box ) {
-		$meta_box       = self::normalize( $meta_box );
+		$meta_box       = static::normalize( $meta_box );
 		$this->meta_box = $meta_box;
 
-		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $this->get_storage() );
+		$this->meta_box['fields'] = static::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
 		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
