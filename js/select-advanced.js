@@ -31,7 +31,7 @@ jQuery( function ( $ ) {
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
 
-		rwmb.select.bindEvents( $this );
+		rwmb.selectToggle.bind.apply( this );
 
 		if ( ! $this.attr( 'multiple' ) ) {
 			return;
@@ -51,5 +51,9 @@ jQuery( function ( $ ) {
 	}
 
 	$( '.rwmb-select_advanced' ).each( update );
-	$( document ).on( 'clone', '.rwmb-select_advanced', update );
+	$( document )
+		.on( 'clone', '.rwmb-select_advanced', update )
+		.on( 'mb_blocks_edit', function( e ) {
+			$( e.target ).find( '.rwmb-select_advanced' ).each( update );
+		} );
 } );

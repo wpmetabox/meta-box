@@ -1,53 +1,44 @@
-window.rwmb = rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, document, rwmb ) {
 	'use strict';
 
 	/**
-	 * Object stores all necessary methods for select All/None actions
-	 * Assign to global variable so we can access to this object from select advanced field
+	 * Object stores all necessary methods for toggle all actions.
 	 */
-	var select = {
-		toggleAll: function ( event ) {
-			event.preventDefault();
+	var selectToggle = {
+		run: function ( e ) {
+			e.preventDefault();
+
 			var $this = $( this ),
-				$element = $this.parent().siblings( 'select' );
+				$select = $this.parent().siblings( 'select' );
 
 			if ( 'none' === $this.data( 'type' ) ) {
-				$element.val( [] ).trigger( 'change' );
+				$select.val( [] ).trigger( 'change' );
 				return;
 			}
 			var selected = [];
-			$element.find( 'option' ).each( function ( index, option ) {
+			$select.find( 'option' ).each( function ( index, option ) {
 				selected.push( option.value );
 			} );
-			$element.val( selected ).trigger( 'change' );
+			$select.val( selected ).trigger( 'change' );
 		},
 
 		/**
-		 * Add event listener for toggle All links when click
-		 * @param $el jQuery select element
+		 * Add event listener for the toggle all link.
+		 * Expect this = select element.
 		 */
-		bindEvents: function ( $el ) {
-			$el.closest( '.rwmb-input' ).on( 'click', '.rwmb-select-all-none a', select.toggleAll );
+		bind: function () {
+			$( this ).closest( '.rwmb-input' ).on( 'click', '.rwmb-select-all-none a', selectToggle.run );
 		}
 	};
 
-	/**
-	 * Update select field when clicking clone button
-	 */
-	function update() {
-		select.bindEvents( $( this ) );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-select' ).each( selectToggle.bind );
 	}
 
-	// Run for select field.
-	$( '.rwmb-select' ).each( update );
 	$( document )
-		.on( 'clone', '.rwmb-select', update )
-		.on( 'mb_blocks_edit', function( e ) {
-			$( e.target ).find( '.rwmb-select' ).each( update );
-		} );
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-select', selectToggle.bind );
 
 	// Export to use for select_advanced.
-	window.rwmb.select = select;
-} );
+	rwmb.selectToggle = selectToggle;
+} )( jQuery, document, rwmb );
