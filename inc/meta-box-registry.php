@@ -18,6 +18,20 @@ class RWMB_Meta_Box_Registry {
 	private $data = array();
 
 	/**
+	 * Create a meta box object.
+	 *
+	 * @param array $settings Meta box settings.
+	 * @return \RW_Meta_Box
+	 */
+	public function make( $settings ) {
+		$class_name = apply_filters( 'rwmb_meta_box_class_name', 'RW_Meta_Box', $settings );
+
+		$meta_box = new $class_name( $settings );
+		$this->add( $meta_box );
+		return $meta_box;
+	}
+
+	/**
 	 * Add a meta box to the registry.
 	 *
 	 * @param RW_Meta_Box $meta_box Meta box instance.
