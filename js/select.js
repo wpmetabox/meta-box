@@ -1,3 +1,5 @@
+window.rwmb = rwmb || {};
+
 jQuery( function ( $ ) {
 	'use strict';
 
@@ -6,11 +8,7 @@ jQuery( function ( $ ) {
 	 * Assign to global variable so we can access to this object from select advanced field
 	 */
 	var select = {
-		/**
-		 * Select all/none for select tag
-		 * @param event Click event.
-		 */
-		selectAllNone: function ( event ) {
+		toggleAll: function ( event ) {
 			event.preventDefault();
 			var $this = $( this ),
 				$element = $this.parent().siblings( 'select' );
@@ -27,11 +25,11 @@ jQuery( function ( $ ) {
 		},
 
 		/**
-		 * Add event listener for select all/none links when click
+		 * Add event listener for toggle All links when click
 		 * @param $el jQuery select element
 		 */
 		bindEvents: function ( $el ) {
-			$el.closest( '.rwmb-input' ).on( 'click', '.rwmb-select-all-none a', select.selectAllNone );
+			$el.closest( '.rwmb-input' ).on( 'click', '.rwmb-select-all-none a', select.toggleAll );
 		}
 	};
 
@@ -44,8 +42,12 @@ jQuery( function ( $ ) {
 
 	// Run for select field.
 	$( '.rwmb-select' ).each( update );
-	$( document ).on( 'clone', '.rwmb-select', update );
+	$( document )
+		.on( 'clone', '.rwmb-select', update )
+		.on( 'mb_blocks_edit', function( e ) {
+			$( e.target ).find( '.rwmb-select' ).each( update );
+		} );
 
 	// Export to use for select_advanced.
-	window.rwmbSelect = select;
+	window.rwmb.select = select;
 } );

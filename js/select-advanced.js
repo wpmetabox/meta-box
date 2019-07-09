@@ -31,7 +31,7 @@ jQuery( function ( $ ) {
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
 
-		rwmbSelect.bindEvents( $this );
+		rwmb.select.bindEvents( $this );
 
 		if ( ! $this.attr( 'multiple' ) ) {
 			return;
