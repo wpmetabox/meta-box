@@ -1,5 +1,4 @@
-/* global jQuery */
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	// Object holds all methods related to fields' index when clone
@@ -188,84 +187,84 @@ jQuery( function ( $ ) {
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
 	}
 
+	function addClone( e ) {
+		e.preventDefault();
+
+		var $container = $( this ).closest( '.rwmb-input' );
+		clone( $container );
+
+		toggleRemoveButtons( $container );
+		toggleAddButton( $container );
+		sortClones.apply( $container[0] );
+	}
+
+	function removeClone( e ) {
+		e.preventDefault();
+
+		var $this = $( this ),
+			$container = $this.closest( '.rwmb-input' );
+
+		// Remove clone only if there are 2 or more of them
+		if ( $container.children( '.rwmb-clone' ).length < 2 ) {
+			return;
+		}
+
+		$this.parent().trigger( 'remove' ).remove();
+		toggleRemoveButtons( $container );
+		toggleAddButton( $container );
+	}
+
 	/**
-	 * Initialize clone sorting.
+	 * Sort clones.
+	 * Expect this = .rwmb-input element.
 	 */
-	function initSortable() {
-		$( '.rwmb-input' ).each( function () {
-			var $container = $( this );
+	function sortClones() {
+		var $container = $( this );
 
-			if ( undefined !== $container.sortable( 'instance' ) ) {
-				return;
+		if ( undefined !== $container.sortable( 'instance' ) ) {
+			return;
+		}
+		if ( 0 === $container.children( '.rwmb-clone' ).length ) {
+			return;
+		}
+
+		$container.sortable( {
+			handle: '.rwmb-clone-icon',
+			placeholder: ' rwmb-clone rwmb-sortable-placeholder',
+			items: '> .rwmb-clone',
+			start: function ( event, ui ) {
+				// Make the placeholder has the same height as dragged item
+				ui.placeholder.height( ui.item.outerHeight() );
+
+				// Fixed WYSIWYG field blank when inside a sortable, cloneable group.
+				// https://stackoverflow.com/a/25667486/371240
+				$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
+					tinymce.execCommand( 'mceRemoveEditor', false, this.id );
+				} );
+			},
+			stop: function(e,ui) {
+				$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
+					tinymce.execCommand( 'mceAddEditor', true, this.id );
+				} );
 			}
-
-			$container.sortable( {
-				handle: '.rwmb-clone-icon',
-				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
-				items: '> .rwmb-clone',
-				start: function ( event, ui ) {
-					// Make the placeholder has the same height as dragged item
-					ui.placeholder.height( ui.item.outerHeight() );
-				}
-			} );
 		} );
 	}
 
-	$( document )
-		// Add clones
-		.on( 'click', '.add-clone', function ( e ) {
-			e.preventDefault();
-
-			var $container = $( this ).closest( '.rwmb-input' );
-			clone( $container );
-
-			toggleRemoveButtons( $container );
-			toggleAddButton( $container );
-			initSortable();
-		} )
-		// Remove clones
-		.on( 'click', '.remove-clone', function ( e ) {
-			e.preventDefault();
-
-			var $this = $( this ),
-				$container = $this.closest( '.rwmb-input' );
-
-			// Remove clone only if there are 2 or more of them
-			if ( $container.children( '.rwmb-clone' ).length < 2 ) {
-				return;
-			}
-
-			$this.parent().trigger( 'remove' ).remove();
-			toggleRemoveButtons( $container );
-			toggleAddButton( $container );
-		} );
-
-	$( '.rwmb-input' ).each( function () {
+	function start() {
 		var $container = $( this );
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
 
-		$container
-			.data( 'next-index', $container.children( '.rwmb-clone' ).length )
-			.sortable( {
-				handle: '.rwmb-clone-icon',
-				placeholder: ' rwmb-clone rwmb-sortable-placeholder',
-				items: '> .rwmb-clone',
-				start: function ( event, ui ) {
-					// Make the placeholder has the same height as dragged item
-					ui.placeholder.height( ui.item.outerHeight() );
+		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length );
+		sortClones.apply( this );
+	}
 
-					// Fixed WYSIWYG field blank when inside a sortable, cloneable group.
-					// https://stackoverflow.com/a/25667486/371240
-					$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
-						tinymce.execCommand( 'mceRemoveEditor', false, this.id );
-					} );
-				},
-				stop: function(e,ui) {
-					$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
-						tinymce.execCommand( 'mceAddEditor', true, this.id );
-					} );
-				}
-			} );
-	} );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-input' ).each( start );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'click', '.add-clone', addClone )
+		.on( 'click', '.remove-clone', removeClone );
+} )( jQuery, rwmb );
