@@ -28,8 +28,6 @@
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
 
-		rwmb.selectToggle.bind.apply( this );
-
 		if ( ! $this.attr( 'multiple' ) ) {
 			return;
 		}
