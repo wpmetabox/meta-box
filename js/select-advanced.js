@@ -1,4 +1,4 @@
-( function ( $, document, rwmb ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	/**
@@ -49,7 +49,7 @@
 		$( e.target ).find( '.rwmb-select_advanced' ).each( transform );
 	}
 
-	$( document )
+	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-select_advanced', transform );
-} )( jQuery, document, rwmb );
+} )( jQuery, rwmb );

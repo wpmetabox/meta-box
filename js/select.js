@@ -1,4 +1,4 @@
-( function ( $, document ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	function toggleAll( e ) {
@@ -18,5 +18,5 @@
 		$select.val( selected ).trigger( 'change' );
 	};
 
-	$( document ).on( 'click', '.rwmb-select-all-none a', toggleAll );
-} )( jQuery, document );
+	rwmb.$document.on( 'click', '.rwmb-select-all-none a', toggleAll );
+} )( jQuery, rwmb );
