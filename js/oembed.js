@@ -1,4 +1,4 @@
-jQuery( function ( $ ) {
+( function ( $, _, rwmb ) {
 	'use strict';
 
 	/**
@@ -29,7 +29,7 @@ jQuery( function ( $ ) {
 		$( this ).siblings( '.rwmb-embed-media' ).html( '' );
 	}
 
-	$( document )
+	rwmb.$document
 		.on( 'change', '.rwmb-oembed', _.debounce( showPreview, 250 ) )
 	    .on( 'clone', '.rwmb-oembed', removePreview );
-} );
+} )( jQuery, _, rwmb );
