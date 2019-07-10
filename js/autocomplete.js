@@ -38,7 +38,7 @@
 		} );
 	}
 
-	function delete( e ) {
+	function deleteSelection( e ) {
 		e.preventDefault();
 		$( this ).parent().remove();
 	}
@@ -50,5 +50,5 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-autocomplete', updateAutocomplete )
-		.on( 'click', '.rwmb-autocomplete-result .actions', delete );
+		.on( 'click', '.rwmb-autocomplete-result .actions', deleteSelection );
 } )( jQuery, rwmb );

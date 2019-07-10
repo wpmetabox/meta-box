@@ -1,4 +1,4 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	function setInitialRequiredProp() {
@@ -46,9 +46,15 @@ jQuery( function ( $ ) {
 		toggleTree.call( this );
 	}
 
-	$( '.rwmb-select-tree > select' ).select2();
-	$( '.rwmb-select-tree > select' ).each( setInitialRequiredProp );
-	$( '.rwmb-input' )
+	function init( e ) {
+		var $el = $( e.target );
+
+		$el.find( '.rwmb-select-tree > select' ).select2();
+		$el.find( '.rwmb-select-tree > select' ).each( setInitialRequiredProp );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
 		.on( 'change', '.rwmb-select-tree > select', toggleTree )
 		.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
-} );
+} )( jQuery, rwmb );
