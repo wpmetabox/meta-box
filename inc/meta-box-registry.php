@@ -20,7 +20,7 @@ class RWMB_Meta_Box_Registry {
 	/**
 	 * Create a meta box object.
 	 *
-	 * @param array Meta box settings.
+	 * @param array $settings Meta box settings.
 	 * @return \RW_Meta_Box
 	 */
 	public function make( $settings ) {

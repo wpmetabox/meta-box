@@ -355,6 +355,7 @@ class RW_Meta_Box {
 				'autosave'       => false,
 				'default_hidden' => false,
 				'style'          => 'default',
+				'fields'         => array(),
 			)
 		);
 
