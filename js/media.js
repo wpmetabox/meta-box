@@ -1,4 +1,4 @@
-( function ( $, wp, rwmb ) {
+( function ( $, wp, _, rwmb, i18n ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -385,7 +385,7 @@
 			}
 		},
 		render: function () {
-			this.$el.html( this.template( {text: i18nRwmbMedia.add} ) );
+			this.$el.html( this.template( {text: i18n.add} ) );
 			return this;
 		},
 
@@ -577,4 +577,4 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-file_advanced', initMediaField );
-} )( jQuery, wp, rwmb );
+} )( jQuery, wp, _, rwmb, i18nRwmbMedia );
