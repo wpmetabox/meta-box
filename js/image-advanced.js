@@ -27,15 +27,10 @@
 	 * Initialize image fields
 	 */
 	function initImageField() {
-		var view = new ImageField( { input: this } );
-		$( this ).after( view.el );
-	}
-
-	/**
-	 * Remove views for uploaded images.
-	 */
-	function removeView() {
-		$( this ).siblings( '.rwmb-media-view' ).remove();
+		var $this = $( this ),
+			view = new ImageField( { input: this } );
+		$this.siblings( '.rwmb-media-view' ).remove();
+		$this.after( view.el );
 	}
 
 	function init( e ) {
@@ -44,6 +39,5 @@
 
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'clone', '.rwmb-image_advanced', removeView )
-		.on( 'after_clone', '.rwmb-image_advanced', initImageField )
+		.on( 'clone', '.rwmb-image_advanced', initImageField );
 } )( jQuery, rwmb );
