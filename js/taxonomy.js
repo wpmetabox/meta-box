@@ -1,8 +1,10 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
-	$( document ).on( 'click', '.rwmb-taxonomy-add-button', function( e ) {
+	function toggleAddInput( e ) {
 		e.preventDefault();
 		this.nextElementSibling.classList.toggle( 'rwmb-hidden' );
-	} );
-} );
+	}
+
+	rwmb.$document.on( 'click', '.rwmb-taxonomy-add-button', toggleAddInput );
+} )( jQuery, rwmb );
