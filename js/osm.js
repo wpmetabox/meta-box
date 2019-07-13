@@ -1,4 +1,4 @@
-( function( $, L, i18n ) {
+( function( $, L, rwmb, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
@@ -260,23 +260,27 @@
 		}
 	};
 
-	function update() {
-		$( '.rwmb-osm-field' ).each( function () {
-			var $this = $( this ),
-				controller = $this.data( 'osmController' );
-			if ( controller ) {
-				return;
-			}
+	function initOsmMap() {
+		var $this = $( this ),
+			controller = $this.data( 'osmController' );
+		if ( controller ) {
+			return;
+		}
 
-			controller = new OsmField( $this );
-			controller.init();
-			$this.data( 'osmController', controller );
-		} );
+		controller = new OsmField( $this );
+		controller.init();
+		$this.data( 'osmController', controller );
 	}
 
-	$( function () {
-		update();
-		$( '.rwmb-input' ).on( 'clone', update );
-	} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-osm-field' ).each( initOsmMap );
+	}
 
-} )( jQuery, L, RWMB_Osm );
+	function restart() {
+		$( '.rwmb-osm-field' ).each( initOsmMap );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-input', restart );
+} )( jQuery, L, rwmb, RWMB_Osm );
