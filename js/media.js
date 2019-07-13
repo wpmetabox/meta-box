@@ -1,8 +1,4 @@
-/* global jQuery, _,i18nRwmbMedia */
-
-window.rwmb = window.rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, wp, rwmb ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -567,10 +563,6 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	/**
-	 * Initialize media fields
-	 * @return void
-	 */
 	function initMediaField() {
 		var view = new MediaField( { input: this } );
 		//Remove old then add new
@@ -578,6 +570,11 @@ jQuery( function ( $ ) {
 		$( this ).after( view.el );
 	}
 
-	$( '.rwmb-file_advanced' ).each( initMediaField );
-	$( document ).on( 'clone', '.rwmb-file_advanced', initMediaField );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-file_advanced' ).each( initMediaField );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-file_advanced', initMediaField );
+} )( jQuery, wp, rwmb );

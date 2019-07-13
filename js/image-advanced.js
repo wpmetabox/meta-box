@@ -1,6 +1,4 @@
-window.rwmb = window.rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -40,11 +38,12 @@ jQuery( function ( $ ) {
 		$( this ).siblings( '.rwmb-media-view' ).remove();
 	}
 
-	$( '.rwmb-image_advanced' ).each( initImageField );
-	$( document )
+	function init( e ) {
+		$( e.target ).find( '.rwmb-image_advanced' ).each( initImageField );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-image_advanced', removeView )
 		.on( 'after_clone', '.rwmb-image_advanced', initImageField )
-		.on( 'mb_blocks_edit', function( e ) {
-			$( e.target ).find( '.rwmb-image_advanced' ).each( initImageField );
-		} );
-} );
+} )( jQuery, rwmb );

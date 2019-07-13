@@ -1,6 +1,4 @@
-window.rwmb = window.rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -14,18 +12,18 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	/**
-	 * Initialize fields
-	 * @return void
-	 */
-	function init() {
+	function initImageUpload() {
 		var view = new ImageUploadField( { input: this } );
 		//Remove old then add new
 		$( this ).siblings( 'div.rwmb-media-view' ).remove();
 		$( this ).after( view.el );
 	}
 
-	$( '.rwmb-image_upload, .rwmb-plupload_image' ).each( init );
-	$( document )
-		.on( 'clone', '.rwmb-image_upload, .rwmb-plupload_image', init )
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-image_upload, .rwmb-plupload_image' ).each( initImageUpload );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-image_upload, .rwmb-plupload_image', initImageUpload )
+} )( jQuery, rwmb );
