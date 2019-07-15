@@ -1,5 +1,5 @@
 // Global object for shared functions and data.
-window.rwmb = rwmb || {};
+window.rwmb = window.rwmb || {};
 
 ( function( $, document, rwmb ) {
 	'use strict';
