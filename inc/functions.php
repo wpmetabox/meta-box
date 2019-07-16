@@ -235,8 +235,20 @@ if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
 				}
 				$prop = 'taxonomies';
 				break;
+			case 'user':
+				$type = 'user';
+				$prop = 'user';
+				break;
+			case 'setting':
+				$type = 'setting';
+				$prop = 'settings_pages';
+				break;
 		}
-		if ( ! $type || ! in_array( $type, $meta_box->meta_box[ $prop ], true ) ) {
+		if ( ! $type ) {
+			$meta_box = false;
+			return;
+		}
+		if ( isset( $meta_box->meta_box[ $prop ] ) && ! in_array( $type, $meta_box->meta_box[ $prop ], true ) ) {
 			$meta_box = false;
 		}
 	}
