@@ -28,9 +28,17 @@
 	 */
 	function initImageField() {
 		var $this = $( this ),
-			view = new ImageField( { input: this } );
+			view = $this.data( 'view' );
+
+		if ( view ) {
+			return;
+		}
+
+		view = new ImageField( { input: this } );
+
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
+		$this.data( 'view', view );
 	}
 
 	function init( e ) {
