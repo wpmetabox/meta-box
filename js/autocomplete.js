@@ -1,4 +1,4 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	/**
@@ -38,12 +38,17 @@ jQuery( function ( $ ) {
 		} );
 	}
 
-	$( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( updateAutocomplete );
-	$( document )
+	function deleteSelection( e ) {
+		e.preventDefault();
+		$( this ).parent().remove();
+	}
+
+	function init( e ) {
+		$( e.target ).find( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( updateAutocomplete );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-autocomplete', updateAutocomplete )
-		// Handle remove action
-		.on( 'click', '.rwmb-autocomplete-result .actions', function () {
-			// remove result
-			$( this ).parent().remove();
-		} );
-} );
+		.on( 'click', '.rwmb-autocomplete-result .actions', deleteSelection );
+} )( jQuery, rwmb );

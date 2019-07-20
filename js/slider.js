@@ -1,7 +1,7 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
-	function update() {
+	function transform() {
 		var $input      = $( this ),
 			$slider     = $input.siblings( '.rwmb-slider' ),
 			$valueLabel = $slider.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
@@ -31,6 +31,11 @@ jQuery( function ( $ ) {
 		$slider.slider( options );
 	}
 
-	$( '.rwmb-slider-value' ).each( update );
-	$( document ).on( 'clone', '.rwmb-slider-value', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-slider-value' ).each( transform );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-slider-value', transform );
+} )( jQuery, rwmb );

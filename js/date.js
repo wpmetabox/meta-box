@@ -1,11 +1,10 @@
-jQuery( function ( $ ) {
+( function ( $, _, rwmb ) {
 	'use strict';
 
 	/**
-	 * Update date picker element
-	 * Used for static & dynamic added elements (when clone)
+	 * Transform an input into a date picker.
 	 */
-	function update() {
+	function transform() {
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
@@ -20,29 +19,29 @@ jQuery( function ( $ ) {
 			};
 		}
 
-		if ( $inline.length ) {
-			options.altField = '#' + $this.attr( 'id' );
-			$this.on( 'keydown', _.debounce( function () {
-				// if val is empty, return to allow empty datepicker input.
-				if ( !$this.val() ) {
-					return;
-				}
-				$picker
-					.datepicker( 'setDate', $this.val() )
-					.find( ".ui-datepicker-current-day" )
-					.trigger( "click" );
-			}, 600 ) );
-
-			$inline
-				.removeClass( 'hasDatepicker' )
-				.empty()
-				.prop( 'id', '' )
-				.datepicker( options )
-				.datepicker( 'setDate', current );
-		}
-		else {
+		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datepicker( options );
+			return;
 		}
+
+		options.altField = '#' + $this.attr( 'id' );
+		$this.on( 'keydown', _.debounce( function () {
+			// if val is empty, return to allow empty datepicker input.
+			if ( ! $this.val() ) {
+				return;
+			}
+			$picker
+				.datepicker( 'setDate', $this.val() )
+				.find( '.ui-datepicker-current-day' )
+				.trigger( 'click' );
+		}, 600 ) );
+
+		$inline
+			.removeClass( 'hasDatepicker' )
+			.empty()
+			.prop( 'id', '' )
+			.datepicker( options )
+			.datepicker( 'setDate', current );
 	}
 
 	/**
@@ -53,12 +52,17 @@ jQuery( function ( $ ) {
 	 */
 	function getTimestamp( date ) {
 		if ( date === null ) {
-			return "";
+			return '';
 		}
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
 
-	$( '.rwmb-date' ).each( update );
-	$( document ).on( 'clone', '.rwmb-date', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-date' ).each( transform );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-date', transform );
+} )( jQuery, _, rwmb );

@@ -1,5 +1,4 @@
-/* global jQuery */
-( function ( $, document ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	var file = {};
@@ -119,17 +118,19 @@
 		}
 	};
 
-	// Initialize when document ready.
-	$( function ( $ ) {
-		$( document )
-			.on( 'click', '.rwmb-file-add', file.addHandler )
-			.on( 'click', '.rwmb-file-delete', file.deleteHandler )
-			.on( 'clone', '.rwmb-file-input', file.resetClone );
+	function init( e ) {
+		var $el = $( e.target ),
+			$uploaded = $el.find( '.rwmb-uploaded' );
 
-		var $uploaded = $( '.rwmb-uploaded' );
 		$uploaded.each( file.sort );
 		$uploaded.each( file.updateVisibility );
 
-		$( '.rwmb-file-wrapper' ).each( file.setRequired );
-	} );
-} )( jQuery, document );
+		$el.find( '.rwmb-file-wrapper' ).each( file.setRequired );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'click', '.rwmb-file-add', file.addHandler )
+		.on( 'click', '.rwmb-file-delete', file.deleteHandler )
+		.on( 'clone', '.rwmb-file-input', file.resetClone );
+} )( jQuery, rwmb );

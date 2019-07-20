@@ -1,7 +1,7 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
-	$( 'body' ).on( 'change', '.rwmb-image-select input', function () {
+	function setActiveClass() {
 		var $this = $( this ),
 			type = $this.attr( 'type' ),
 			selected = $this.is( ':checked' ),
@@ -15,6 +15,13 @@ jQuery( function ( $ ) {
 		} else {
 			$parent.removeClass( 'rwmb-active' );
 		}
-	} );
-	$( '.rwmb-image-select input' ).trigger( 'change' );
-} );
+	}
+
+	function init( e ) {
+		$( e.target ).find( '.rwmb-image-select input' ).trigger( 'change' );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'change', '.rwmb-image-select input', setActiveClass );
+} )( jQuery, rwmb );

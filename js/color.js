@@ -1,11 +1,10 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	/**
-	 * Update color picker element
-	 * Used for static & dynamic added elements (when clone)
+	 * Transform an input into a color picker.
 	 */
-	function update() {
+	function transform() {
 		var $this = $( this ),
 			$container = $this.closest( '.wp-picker-container' ),
 			data = $.extend(
@@ -30,6 +29,11 @@ jQuery( function ( $ ) {
 		$this.wpColorPicker( data );
 	}
 
-	$( '.rwmb-color' ).each( update );
-	$( document ).on( 'clone', '.rwmb-color', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-color' ).each( transform );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-color', transform );
+} )( jQuery, rwmb );

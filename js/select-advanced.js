@@ -1,4 +1,4 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	/**
@@ -19,19 +19,14 @@ jQuery( function ( $ ) {
 	}
 
 	/**
-	 * Turn select field into beautiful dropdown with select2 library
-	 * This function is called when document ready and when clone button is clicked (to update the new cloned field)
-	 *
-	 * @return void
+	 * Transform select fields into beautiful dropdown with select2 library.
 	 */
-	function update() {
+	function transform() {
 		var $this = $( this ),
 			options = $this.data( 'options' );
 		$this.removeClass( 'select2-hidden-accessible' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.show().select2( options );
-
-		rwmbSelect.bindEvents( $this );
 
 		if ( ! $this.attr( 'multiple' ) ) {
 			return;
@@ -50,6 +45,11 @@ jQuery( function ( $ ) {
 		} );
 	}
 
-	$( '.rwmb-select_advanced' ).each( update );
-	$( document ).on( 'clone', '.rwmb-select_advanced', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-select_advanced' ).each( transform );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-select_advanced', transform );
+} )( jQuery, rwmb );

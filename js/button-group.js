@@ -1,7 +1,7 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
-	function update() {
+	function setActiveClass() {
 		var $this = $( this ),
 			$input = $this.find( 'input' ),
 			$label = $input.parent();
@@ -31,7 +31,12 @@ jQuery( function ( $ ) {
 		}
 	}
 
-	$( '.rwmb-button-input-list li' ).each( update );
-	$( document ).on( 'click', '.rwmb-button-input-list li', clickHandler );
-	$( document ).on( 'clone', '.rwmb-button-input-list', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-button-input-list li' ).each( setActiveClass );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'click', '.rwmb-button-input-list li', clickHandler )
+		.on( 'clone', '.rwmb-button-input-list', setActiveClass );
+} )( jQuery, rwmb );
