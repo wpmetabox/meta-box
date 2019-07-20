@@ -33,6 +33,22 @@ class RWMB_Update_Settings {
 	private $page_hook;
 
 	/**
+	 * The update checker object
+	 *
+	 * @var object
+	 */
+	private $checker;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param object $checker Update checker object.
+	 */
+	public function __construct( $checker ) {
+		$this->checker = $checker;
+	}
+
+	/**
 	 * Add hooks to create the settings page and show admin notice.
 	 */
 	public function init() {
@@ -122,7 +138,7 @@ class RWMB_Update_Settings {
 
 		$args           = $option;
 		$args['action'] = 'check_license';
-		$message        = RWMB_Update_Checker::request( $args );
+		$message        = $this->checker->request( $args );
 
 		if ( $message ) {
 			add_settings_error( '', 'invalid', $message );

@@ -16,14 +16,14 @@ class RWMB_Update_Checker {
 	 *
 	 * @var string
 	 */
-	private static $api_url = 'https://metabox.io/index.php';
+	private $api_url = 'https://metabox.io/index.php';
 
 	/**
 	 * The update option.
 	 *
 	 * @var string
 	 */
-	private static $option = 'meta_box_updater';
+	private $option = 'meta_box_updater';
 
 	/**
 	 * Add hooks to check plugin updates.
@@ -45,7 +45,7 @@ class RWMB_Update_Checker {
 
 		// Make sure to send remote request once.
 		if ( null === $plugins ) {
-			$plugins = self::request( 'action=check_updates' );
+			$plugins = $this->request( 'action=check_updates' );
 		}
 
 		if ( false === $plugins ) {
@@ -61,12 +61,12 @@ class RWMB_Update_Checker {
 			$data->response[ $plugin->plugin ] = $plugin;
 		}
 
-		$option            = self::get_option();
+		$option            = $this->get_option();
 		$option['plugins'] = array_keys( $plugins );
 		if ( is_multisite() ) {
-			update_site_option( self::$option, $option );
+			update_site_option( $this->option, $option );
 		} else {
-			update_option( self::$option, $option );
+			update_option( $this->option, $option );
 		}
 
 		return $data;
@@ -88,7 +88,7 @@ class RWMB_Update_Checker {
 			return $data;
 		}
 
-		$info = self::request(
+		$info = $this->request(
 			array(
 				'action'  => 'get_info',
 				'product' => $args->slug,
@@ -105,14 +105,14 @@ class RWMB_Update_Checker {
 	 *
 	 * @return mixed
 	 */
-	public static function request( $args = '' ) {
+	public function request( $args = '' ) {
 		// Add email and API key to the request params.
-		$option = self::get_option();
+		$option = $this->get_option();
 		$args   = wp_parse_args( $args, $option );
 		$args   = array_filter( $args );
 
 		$request = wp_remote_post(
-			self::$api_url,
+			$this->api_url,
 			array(
 				'body' => $args,
 			)
@@ -146,7 +146,7 @@ class RWMB_Update_Checker {
 	 *
 	 * @return array
 	 */
-	private static function get_option() {
-		return is_multisite() ? get_site_option( self::$option, array() ) : get_option( self::$option, array() );
+	private function get_option() {
+		return is_multisite() ? get_site_option( $this->option, array() ) : get_option( $this->option, array() );
 	}
 }

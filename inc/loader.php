@@ -109,7 +109,7 @@ class RWMB_Loader {
 		// Update.
 		$update_checker = new RWMB_Update_Checker();
 		$update_checker->init();
-		$update_settings = new RWMB_Update_Settings();
+		$update_settings = new RWMB_Update_Settings( $update_checker );
 		$update_settings->init();
 
 		// Public functions.
