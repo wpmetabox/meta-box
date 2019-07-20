@@ -52,8 +52,8 @@ class RWMB_Update_Settings {
 	 * Add hooks to create the settings page and show admin notice.
 	 */
 	public function init() {
-		// Show Meta Box admin menu.
-		add_filter( 'rwmb_admin_menu', '__return_true' );
+		// Whether to enable Meta Box menu. Priority 1 makes sure it runs before adding Meta Box menu.
+		add_action( 'admin_menu', array( $this, 'enable_menu' ), 1 );
 
 		// Add submenu. Use priority 80 to show it just above the About page (priority = 90).
 		$admin_menu_hook = is_multisite() ? 'network_admin_menu' : 'admin_menu';
@@ -61,6 +61,50 @@ class RWMB_Update_Settings {
 
 		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, array( $this, 'notify' ) );
+	}
+
+	/**
+	 * Whether to enable Meta Box menu.
+	 */
+	public function enable_menu() {
+		if ( $this->has_extensions() ) {
+			add_filter( 'rwmb_admin_menu', '__return_true' );
+		}
+	}
+
+	/**
+	 * Check if any premium extension is installed.
+	 *
+	 * @return bool
+	 */
+	public function has_extensions() {
+		$extensions = array(
+			'mb-admin-columns',
+			'mb-blocks',
+			'mb-custom-table',
+			'mb-frontend-submission',
+			'mb-revision',
+			'mb-settings-page',
+			'mb-term-meta',
+			'mb-user-meta',
+			'mb-user-profile',
+			'meta-box-aio',
+			'meta-box-builder',
+			'meta-box-columns',
+			'meta-box-conditional-logic',
+			'meta-box-geolocation',
+			'meta-box-group',
+			'meta-box-include-exclude',
+			'meta-box-show-hide',
+			'meta-box-tabs',
+			'meta-box-template',
+		);
+		$plugins = get_plugins();
+		$plugins = array_map( 'dirname', array_keys( $plugins ) );
+
+		$installed_extensions = array_intersect( $extensions, $plugins );
+
+		return ! empty( $installed_extensions );
 	}
 
 	/**
