@@ -29,8 +29,56 @@ class RWMB_Update_Checker {
 	 * Add hooks to check plugin updates.
 	 */
 	public function init() {
-		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_updates' ) );
-		add_filter( 'plugins_api', array( $this, 'get_info' ), 10, 3 );
+		add_action( 'init', array( $this, 'enable_update' ), 1 );
+	}
+
+	/**
+	 * Enable update checker when premium extensions are installed.
+	 */
+	public function enable_update() {
+		if ( $this->has_extensions() ) {
+			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_updates' ) );
+			add_filter( 'plugins_api', array( $this, 'get_info' ), 10, 3 );
+		}
+	}
+
+	/**
+	 * Check if any premium extension is installed.
+	 *
+	 * @return bool
+	 */
+	public function has_extensions() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$extensions = array(
+			'mb-admin-columns',
+			'mb-blocks',
+			'mb-custom-table',
+			'mb-frontend-submission',
+			'mb-revision',
+			'mb-settings-page',
+			'mb-term-meta',
+			'mb-user-meta',
+			'mb-user-profile',
+			'meta-box-aio',
+			'meta-box-builder',
+			'meta-box-columns',
+			'meta-box-conditional-logic',
+			'meta-box-geolocation',
+			'meta-box-group',
+			'meta-box-include-exclude',
+			'meta-box-show-hide',
+			'meta-box-tabs',
+			'meta-box-template',
+		);
+		$plugins = get_plugins();
+		$plugins = array_map( 'dirname', array_keys( $plugins ) );
+
+		$installed_extensions = array_intersect( $extensions, $plugins );
+
+		return ! empty( $installed_extensions );
 	}
 
 	/**

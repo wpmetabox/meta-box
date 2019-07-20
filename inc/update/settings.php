@@ -67,44 +67,9 @@ class RWMB_Update_Settings {
 	 * Whether to enable Meta Box menu.
 	 */
 	public function enable_menu() {
-		if ( $this->has_extensions() ) {
+		if ( $this->checker->has_extensions() ) {
 			add_filter( 'rwmb_admin_menu', '__return_true' );
 		}
-	}
-
-	/**
-	 * Check if any premium extension is installed.
-	 *
-	 * @return bool
-	 */
-	public function has_extensions() {
-		$extensions = array(
-			'mb-admin-columns',
-			'mb-blocks',
-			'mb-custom-table',
-			'mb-frontend-submission',
-			'mb-revision',
-			'mb-settings-page',
-			'mb-term-meta',
-			'mb-user-meta',
-			'mb-user-profile',
-			'meta-box-aio',
-			'meta-box-builder',
-			'meta-box-columns',
-			'meta-box-conditional-logic',
-			'meta-box-geolocation',
-			'meta-box-group',
-			'meta-box-include-exclude',
-			'meta-box-show-hide',
-			'meta-box-tabs',
-			'meta-box-template',
-		);
-		$plugins = get_plugins();
-		$plugins = array_map( 'dirname', array_keys( $plugins ) );
-
-		$installed_extensions = array_intersect( $extensions, $plugins );
-
-		return ! empty( $installed_extensions );
 	}
 
 	/**
