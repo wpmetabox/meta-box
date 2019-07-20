@@ -81,6 +81,7 @@ class RWMB_Loader {
 		$autoloader->add( RWMB_INC_DIR . 'interfaces', 'RWMB_', '_Interface' );
 		$autoloader->add( RWMB_INC_DIR . 'storages', 'RWMB_', '_Storage' );
 		$autoloader->add( RWMB_INC_DIR . 'helpers', 'RWMB_Helpers_' );
+		$autoloader->add( RWMB_INC_DIR . 'update', 'RWMB_Update_' );
 		$autoloader->register();
 
 		// Plugin core.
@@ -104,6 +105,12 @@ class RWMB_Loader {
 		// WPML Compatibility.
 		$wpml = new RWMB_WPML();
 		$wpml->init();
+
+		// Update.
+		$update_checker = new RWMB_Update_Checker();
+		$update_checker->init();
+		$update_settings = new RWMB_Update_Settings();
+		$update_settings->init();
 
 		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';
