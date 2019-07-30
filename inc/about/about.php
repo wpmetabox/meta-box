@@ -152,7 +152,7 @@ class RWMB_About {
 	 * @param bool   $network_wide Whether to enable the plugin for all sites in the network
 	 *                             or just the current site. Multisite only. Default is false.
 	 */
-	public function redirect( $plugin, $network_wide ) {
+	public function redirect( $plugin, $network_wide = false ) {
 		if ( 'cli' !== php_sapi_name() && ! $network_wide && 'meta-box/meta-box.php' === $plugin && ! $this->is_bundled() ) {
 			wp_safe_redirect( $this->get_menu_link() );
 			die;
