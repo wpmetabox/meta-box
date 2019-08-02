@@ -26,6 +26,11 @@
 		if ( window.tinymce ) {
 			var editor = new tinymce.Editor(id, settings.tinymce, tinymce.EditorManager);
 			editor.render();
+
+			editor.on( 'keyup change', function() {
+				editor.save();
+				$this.trigger( 'change' );
+			} );
 		}
 
 		// Quick tags
