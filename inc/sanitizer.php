@@ -25,7 +25,7 @@ class RWMB_Sanitizer {
 	 * Register hook to sanitize field value.
 	 */
 	public function init() {
-		add_filter( 'rwmb_value', array( $this, 'run_sanitize_callback' ), 10, 3 );
+		add_filter( 'rwmb_value', array( $this, 'run_sanitize_callback' ), 10, 4 );
 
 		// Built-in callback.
 		foreach ( $this->callbacks as $type => $callback ) {
@@ -46,12 +46,13 @@ class RWMB_Sanitizer {
 	 * @param mixed $value     The submitted new value.
 	 * @param array $field     The field settings.
 	 * @param mixed $old_value The old field value in the database.
+	 * @param int.  $object_id The object ID.
 	 */
-	public function run_sanitize_callback( $value, $field, $old_value ) {
+	public function run_sanitize_callback( $value, $field, $old_value, $object_id ) {
 		if ( ! is_callable( $field['sanitize_callback'] ) ) {
 			return $value;
 		}
-		return call_user_func( $field['sanitize_callback'], $value, $old_value, $field );
+		return call_user_func( $field['sanitize_callback'], $value, $old_value, $field, $object_id );
 	}
 
 	/**

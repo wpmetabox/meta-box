@@ -262,7 +262,7 @@ abstract class RWMB_Field {
 		} else {
 			$value = self::call( $field, 'value', $value, $old_value, $object_id );
 		}
-		$value = self::filter( 'value', $value, $field, $old_value );
+		$value = self::filter( 'value', $value, $field, $old_value, $object_id );
 
 		return $value;
 	}
