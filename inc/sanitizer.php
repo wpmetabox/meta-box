@@ -28,14 +28,14 @@ class RWMB_Sanitizer {
 	public function init() {
 		// Built-in callback.
 		foreach ( $this->callbacks as $type => $callback ) {
-			add_filter( "rwmb_{$type}_sanitize", $callback );
+			add_filter( "rwmb_{$type}_value", $callback );
 		}
 
 		// Custom callback.
 		$methods = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
 		foreach ( $methods as $method ) {
 			$type = substr( $method, 9 );
-			add_filter( "rwmb_{$type}_sanitize", array( $this, $method ) );
+			add_filter( "rwmb_{$type}_value", array( $this, $method ) );
 		}
 	}
 

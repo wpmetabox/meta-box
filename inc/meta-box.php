@@ -303,15 +303,7 @@ class RW_Meta_Box {
 		$old    = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 		// @codingStandardsIgnoreLine
 		$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
-
-		// Allow field class change the value.
-		if ( $field['clone'] ) {
-			$new = RWMB_Clone::value( $new, $old, $this->object_id, $field );
-		} else {
-			$new = RWMB_Field::call( $field, 'value', $new, $old, $this->object_id );
-			$new = RWMB_Field::filter( 'sanitize', $new, $field );
-		}
-		$new = RWMB_Field::filter( 'value', $new, $field, $old );
+		$new    = RWMB_Field::process_value( $new, $this->object_id, $field );
 
 		// Filter to allow the field to be modified.
 		$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
