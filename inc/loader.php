@@ -96,8 +96,8 @@ class RWMB_Loader {
 		// Validation module.
 		new RWMB_Validation();
 
-		$sanitize = new RWMB_Sanitizer();
-		$sanitize->init();
+		$sanitizer = new RWMB_Sanitizer();
+		$sanitizer->init();
 
 		$media_modal = new RWMB_Media_Modal();
 		$media_modal->init();

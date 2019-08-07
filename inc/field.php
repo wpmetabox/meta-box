@@ -358,6 +358,8 @@ abstract class RWMB_Field {
 				'required'          => false,
 				'autofocus'         => false,
 				'attributes'        => array(),
+
+				'sanitize_callback' => null,
 			)
 		);
 

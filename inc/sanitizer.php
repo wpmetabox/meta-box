@@ -9,13 +9,12 @@
  * Sanitize class.
  */
 class RWMB_Sanitizer {
-
 	/**
 	 * Built-in callbacks for some specific types.
 	 *
 	 * @var array
 	 */
-	protected $callbacks = array(
+	private $callbacks = array(
 		'email'      => 'sanitize_email',
 		'file_input' => 'esc_url_raw',
 		'oembed'     => 'esc_url_raw',
@@ -26,17 +25,33 @@ class RWMB_Sanitizer {
 	 * Register hook to sanitize field value.
 	 */
 	public function init() {
+		add_filter( 'rwmb_value', array( $this, 'run_sanitize_callback' ), 10, 3 );
+
 		// Built-in callback.
 		foreach ( $this->callbacks as $type => $callback ) {
 			add_filter( "rwmb_{$type}_value", $callback );
 		}
 
 		// Custom callback.
-		$methods = array_diff( get_class_methods( __CLASS__ ), array( 'init' ) );
+		$methods = array_diff( get_class_methods( __CLASS__ ), array( 'init', 'run_sanitize_callback' ) );
 		foreach ( $methods as $method ) {
 			$type = substr( $method, 9 );
 			add_filter( "rwmb_{$type}_value", array( $this, $method ) );
 		}
+	}
+
+	/**
+	 * Run `sanitize_callback` for each field if it's defined.
+	 *
+	 * @param mixed $value     The submitted new value.
+	 * @param array $field     The field settings.
+	 * @param mixed $old_value The old field value in the database.
+	 */
+	public function run_sanitize_callback( $value, $field, $old_value ) {
+		if ( ! is_callable( $field['sanitize_callback'] ) ) {
+			return $value;
+		}
+		return call_user_func( $field['sanitize_callback'], $value, $old_value, $field );
 	}
 
 	/**
