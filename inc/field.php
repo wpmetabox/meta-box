@@ -247,6 +247,27 @@ abstract class RWMB_Field {
 	}
 
 	/**
+	 * Process the submitted value before saving into the database.
+	 *
+	 * @param mixed $value     The submitted value.
+	 * @param int   $object_id The object ID.
+	 * @param array $field     The field settings.
+	 */
+	public static function process_value( $value, $object_id, $field ) {
+		$old_value = self::call( $field, 'raw_meta', $object_id );
+
+		// Allow field class change the value.
+		if ( $field['clone'] ) {
+			$value = RWMB_Clone::value( $value, $old_value, $object_id, $field );
+		} else {
+			$value = self::call( $field, 'value', $value, $old_value, $object_id );
+		}
+		$value = self::filter( 'value', $value, $field, $old_value, $object_id );
+
+		return $value;
+	}
+
+	/**
 	 * Set value of meta before saving into database.
 	 *
 	 * @param mixed $new     The submitted meta value.
@@ -337,6 +358,8 @@ abstract class RWMB_Field {
 				'required'          => false,
 				'autofocus'         => false,
 				'attributes'        => array(),
+
+				'sanitize_callback' => null,
 			)
 		);
 
