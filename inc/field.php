@@ -598,7 +598,13 @@ abstract class RWMB_Field {
 			'rwmb_' . $field['type'] . '_' . $name,
 		);
 		if ( isset( $field['id'] ) ) {
-			$filters[] = 'rwmb_' . $field['id'] . '_' . $name;
+			$field_id = $field['id'];
+
+			if ( $field['clone'] && RWMB_Clone::get_current_index() ) {
+				$field_id = preg_replace( '/_\d+$/', '', $field_id );
+			}
+
+			$filters[] = 'rwmb_' . $field_id . '_' . $name;
 		}
 
 		// Filter params: value, field, other params. Note: value is changed after each run.
