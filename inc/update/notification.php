@@ -56,17 +56,23 @@ class RWMB_Update_Notification {
 		if ( ! $this->checker->has_extensions() ) {
 			return;
 		}
-		$messages  = array(
-			// Translators: %1$s - URL to Meta Box Updater settings page, %2$s - URL to MetaBox.io website.
+		$messages = array(
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
 			'no_key'  => __( '<b>Warning!</b> You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
-			// Translators: %1$s - URL to Meta Box Updater settings page, %2$s - URL to MetaBox.io website.
-			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is invalid or expired. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">renew</a> to receive automatic updates and premium support.', 'meta-box-updater' ),
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
+			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
+			'error'   => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
+			// Translators: %3$s - URL to the My Account page.
+			'expired' => __( '<b>Warning!</b> Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
 		);
-		$status    = $this->get_license_status();
-		$admin_url = is_multisite() ? network_admin_url( "settings.php?page={$this->page_id}" ) : admin_url( "admin.php?page={$this->page_id}" );
-		if ( isset( $messages[ $status ] ) ) {
-			echo '<div class="notice notice-warning"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/' ) ), '</p></div>';
+		$status   = $this->get_license_status();
+		if ( ! isset( $messages[ $status ] ) ) {
+			return;
 		}
+
+		$admin_url = is_multisite() ? network_admin_url( "settings.php?page={$this->page_id}" ) : admin_url( "admin.php?page={$this->page_id}" );
+		echo '<div class="notice notice-warning"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
 	}
 
 	/**
@@ -77,9 +83,6 @@ class RWMB_Update_Notification {
 		if ( empty( $option['api_key'] ) ) {
 			return 'no_key';
 		}
-		if ( isset( $option['status'] ) && 'success' !== $option['status'] ) {
-			return 'invalid';
-		}
-		return 'valid';
+		return isset( $option['status'] ) ? $option['status'] : 'active';
 	}
 }
