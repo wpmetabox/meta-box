@@ -99,7 +99,7 @@ class RWMB_Update_Settings {
 				<?php
 				printf(
 					// Translators: %s - URL to MetaBox.io website.
-					wp_kses_post( __( 'To get the license key, please visit your profile page at <a href="%s" target="_blank">metabox.io website</a>.', 'meta-box-updater' ) ),
+					wp_kses_post( __( 'To get the license key, please visit the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box-updater' ) ),
 					'https://metabox.io/my-account/'
 				);
 				?>
@@ -140,23 +140,32 @@ class RWMB_Update_Settings {
 		// @codingStandardsIgnoreLine
 		$option           = isset( $_POST[ $this->option ] ) ? $_POST[ $this->option ] : array();
 		$option           = (array) $option;
-		$option['status'] = 'success';
+		$option['status'] = 'active';
 
 		$args           = $option;
 		$args['action'] = 'check_license';
-		$message        = $this->checker->request( $args );
+		$result         = $this->checker->request( $args );
 
-		if ( $message ) {
-			add_settings_error( '', 'invalid', $message );
-			$option['status'] = 'error';
+		if ( false === $result ) {
+			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
+			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' );
+			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
+
+			add_settings_error( '', 'mb-invalid', $message );
+			$option['status'] = 'invalid';
+		} elseif ( 'expired' === $result ) {
+			// Translators: %s - URL to the My Account page.
+			$message = __( 'License expired. Please renew on the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box-updater' );
+			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/' ) );
+
+			add_settings_error( '', 'mb-expired', $message );
+			$option['status'] = 'expired';
 		} else {
-			add_settings_error( '', 'success', __( 'Settings saved.', 'meta-box-updater' ), 'updated' );
+			add_settings_error( '', 'mb-success', __( 'Settings saved.', 'meta-box-updater' ), 'updated' );
 		}
 
-		// Non-multisite auto shows update message. See wp-admin/options-head.php.
-		if ( is_multisite() ) {
-			add_action( 'network_admin_notices', array( $this, 'show_update_message' ) );
-		}
+		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+		add_action( $admin_notices_hook, array( $this, 'show_update_message' ) );
 
 		if ( is_multisite() ) {
 			update_site_option( $this->option, $option );
