@@ -154,10 +154,13 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function request( $args = '' ) {
-		// Add email and API key to the request params.
-		$option = $this->get_option();
-		$args   = wp_parse_args( $args, $option );
-		$args   = array_filter( $args );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'api_key' => $this->get_api_key(),
+			)
+		);
+		$args = array_filter( $args );
 
 		$request = wp_remote_post(
 			$this->api_url,
@@ -187,6 +190,19 @@ class RWMB_Update_Checker {
 		$plugins = get_plugins();
 
 		return isset( $plugins[ $plugin_data->plugin ] ) && version_compare( $plugins[ $plugin_data->plugin ]['Version'], $plugin_data->new_version, '<' );
+	}
+
+	/**
+	 * Get the API key.
+	 *
+	 * @return string
+	 */
+	public function get_api_key() {
+		if ( defined( 'META_BOX_KEY' ) ) {
+			return META_BOX_KEY;
+		}
+		$option = $this->get_option();
+		return isset( $option['api_key'] ) ? $option['api_key'] : null;
 	}
 
 	/**

@@ -79,10 +79,10 @@ class RWMB_Update_Notification {
 	 * Get license status.
 	 */
 	public function get_license_status() {
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-		if ( empty( $option['api_key'] ) ) {
+		if ( ! $this->checker->get_api_key() ) {
 			return 'no_key';
 		}
+		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
 		return isset( $option['status'] ) ? $option['status'] : 'active';
 	}
 }
