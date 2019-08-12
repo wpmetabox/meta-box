@@ -46,7 +46,7 @@ class RWMB_Sanitizer {
 	 * @param mixed $value     The submitted new value.
 	 * @param array $field     The field settings.
 	 * @param mixed $old_value The old field value in the database.
-	 * @param int.  $object_id The object ID.
+	 * @param int   $object_id The object ID.
 	 */
 	public function run_sanitize_callback( $value, $field, $old_value, $object_id ) {
 		if ( ! is_callable( $field['sanitize_callback'] ) ) {

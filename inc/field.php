@@ -363,6 +363,11 @@ abstract class RWMB_Field {
 			)
 		);
 
+		// Store the original ID to run correct filters for the clonable field.
+		if ( $field['clone'] ) {
+			$field['_original_id'] = $field['id'];
+		}
+
 		if ( $field['clone_default'] ) {
 			$field['attributes'] = wp_parse_args(
 				$field['attributes'],
@@ -597,13 +602,8 @@ abstract class RWMB_Field {
 			'rwmb_' . $name,
 			'rwmb_' . $field['type'] . '_' . $name,
 		);
-		if ( isset( $field['id'] ) ) {
-			$field_id = $field['id'];
-
-			if ( $field['clone'] && RWMB_Clone::get_current_index() ) {
-				$field_id = preg_replace( '/_\d+$/', '', $field_id );
-			}
-
+		if ( $field['id'] ) {
+			$field_id  = $field['clone'] ? $field['_original_id'] : $field['id'];
 			$filters[] = 'rwmb_' . $field_id . '_' . $name;
 		}
 

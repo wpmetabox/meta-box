@@ -10,13 +10,6 @@
  */
 class RWMB_Clone {
 	/**
-	 * Current clone index.
-	 *
-	 * @var int
-	 */
-	private static $index;
-
-	/**
 	 * Get clone field HTML.
 	 *
 	 * @param mixed $meta  The meta value.
@@ -33,8 +26,6 @@ class RWMB_Clone {
 		 * @see meta()
 		 */
 		foreach ( $meta as $index => $sub_meta ) {
-			self::set_current_index( $index );
-
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 			if ( $index > 0 ) {
@@ -133,23 +124,5 @@ class RWMB_Clone {
 	public static function remove_clone_button( $field ) {
 		$text = RWMB_Field::filter( 'remove_clone_button_text', '<i class="dashicons dashicons-minus"></i>', $field );
 		return '<a href="#" class="rwmb-button remove-clone">' . $text . '</a>';
-	}
-
-	/**
-	 * Set current clone index.
-	 *
-	 * @param int $index The current clone index.
-	 */
-	public static function set_current_index( $index ) {
-		self::$index = $index;
-	}
-
-	/**
-	 * Get current clone index.
-	 *
-	 * @return int
-	 */
-	public static function get_current_index() {
-		return self::$index;
 	}
 }
