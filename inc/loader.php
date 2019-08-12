@@ -111,6 +111,8 @@ class RWMB_Loader {
 		$update_checker->init();
 		$update_settings = new RWMB_Update_Settings( $update_checker );
 		$update_settings->init();
+		$update_notification = new RWMB_Update_Notification( $update_checker );
+		$update_notification->init();
 
 		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';
