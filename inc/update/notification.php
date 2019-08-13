@@ -82,6 +82,13 @@ class RWMB_Update_Notification {
 		if ( ! $this->checker->has_extensions() ) {
 			return;
 		}
+
+		// Do not show notification on License page.
+		$screen = get_current_screen();
+		if ( 'meta-box_page_meta-box-updater' === $screen->id ) {
+			return;
+		}
+
 		$messages = array(
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
 			'no_key'  => __( '<b>Warning!</b> You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
