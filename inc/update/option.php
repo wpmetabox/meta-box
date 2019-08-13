@@ -27,7 +27,7 @@ class RWMB_Update_Option {
 	public function get( $name = null, $default = null ) {
 		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
 
-		if ( null === $option ) {
+		if ( null === $name ) {
 			return $option;
 		}
 

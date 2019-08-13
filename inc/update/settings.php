@@ -130,8 +130,6 @@ class RWMB_Update_Settings {
 		$args['action'] = 'check_license';
 		$result         = $this->checker->request( $args );
 
-		info( $result );
-
 		if ( false === $result ) {
 			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
 			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' );
