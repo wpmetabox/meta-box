@@ -98,14 +98,14 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function check_updates( $data ) {
-		static $plugins = null;
+		static $response = null;
 
 		// Make sure to send remote request once.
-		if ( null === $plugins ) {
-			$plugins = $this->request( 'action=check_updates' );
+		if ( null === $response ) {
+			$response = $this->request( array( 'action' => 'check_updates' ) );
 		}
 
-		if ( false === $plugins ) {
+		if ( false === $response ) {
 			return $data;
 		}
 
@@ -113,11 +113,12 @@ class RWMB_Update_Checker {
 			$data->response = array();
 		}
 
-		$plugins = array_filter( $plugins, array( $this, 'has_update' ) );
+		$plugins = array_filter( $response['data'], array( $this, 'has_update' ) );
 		foreach ( $plugins as $plugin ) {
 			$data->response[ $plugin->plugin ] = $plugin;
 		}
 
+		$this->option->set( 'status', $response['status'] );
 		$this->option->set( 'plugins', array_keys( $plugins ) );
 
 		return $data;
@@ -133,20 +134,19 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function get_info( $data, $action, $args ) {
-		$option  = $this->get_option();
-		$plugins = isset( $option['plugins'] ) ? $option['plugins'] : array();
+		$plugins = $this->option->get( 'plugins', array() );
 		if ( 'plugin_information' !== $action || ! isset( $args->slug ) || ! in_array( $args->slug, $plugins, true ) ) {
 			return $data;
 		}
 
-		$info = $this->request(
+		$response = $this->request(
 			array(
 				'action'  => 'get_info',
 				'product' => $args->slug,
 			)
 		);
 
-		return false === $info ? $data : $info;
+		return false === $response ? $data : $response['data'];
 	}
 
 	/**
@@ -173,13 +173,7 @@ class RWMB_Update_Checker {
 		);
 
 		$response = wp_remote_retrieve_body( $request );
-		if ( $response ) {
-			$data = @unserialize( $response );
-
-			return $data;
-		}
-
-		return false;
+		return $response ? @unserialize( $response ) : false;
 	}
 
 	/**

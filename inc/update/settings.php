@@ -128,16 +128,22 @@ class RWMB_Update_Settings {
 
 		$args           = $option;
 		$args['action'] = 'check_license';
-		$result         = $this->checker->request( $args );
+		$response       = $this->checker->request( $args );
+		$status         = isset( $response['status'] ) ? $response['status'] : 'active';
 
-		if ( false === $result ) {
+		if ( false === $response ) {
+			$message = __( 'Something wrong with the connection to metabox.io. Please try again later.', 'meta-box' );
+			$message = wp_kses_post( $message );
+
+			add_settings_error( '', 'mb-error', $message );
+		} elseif ( 'invalid' === $status ) {
 			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
 			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' );
 			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
 
 			add_settings_error( '', 'mb-invalid', $message );
 			$option['status'] = 'invalid';
-		} elseif ( 'expired' === $result ) {
+		} elseif ( 'expired' === $status ) {
 			// Translators: %s - URL to the My Account page.
 			$message = __( 'License expired. Please renew on the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box' );
 			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/' ) );
