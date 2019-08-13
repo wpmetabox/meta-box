@@ -12,11 +12,11 @@
  */
 class RWMB_Update_Notification {
 	/**
-	 * Update option.
+	 * The update option object.
 	 *
-	 * @var string
+	 * @var object
 	 */
-	private $option = 'meta_box_updater';
+	private $option;
 
 	/**
 	 * Settings page ID.
@@ -26,7 +26,7 @@ class RWMB_Update_Notification {
 	private $page_id = 'meta-box-updater';
 
 	/**
-	 * The update checker object
+	 * The update checker object.
 	 *
 	 * @var object
 	 */
@@ -36,16 +36,18 @@ class RWMB_Update_Notification {
 	 * Constructor.
 	 *
 	 * @param object $checker Update checker object.
+	 * @param object $option  Update option object.
 	 */
-	public function __construct( $checker ) {
+	public function __construct( $checker, $option ) {
 		$this->checker = $checker;
+		$this->option  = $option;
 	}
 
 	/**
 	 * Add hooks to show admin notice.
 	 */
 	public function init() {
-		if ( $this->is_dismissed() ) {
+		if ( $this->option->get( 'notification_dismissed' ) ) {
 			return;
 		}
 
@@ -69,16 +71,7 @@ class RWMB_Update_Notification {
 	 */
 	public function dismiss() {
 		check_ajax_referer( 'dismiss', 'nonce' );
-
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-		$option['notification_dismissed'] = 1;
-
-		if ( is_multisite() ) {
-			update_site_option( $this->option, $option );
-		} else {
-			update_option( $this->option, $option );
-		}
-
+		$this->option->set( 'notification_dismissed', 1 );
 		wp_send_json_success();
 	}
 
@@ -112,20 +105,6 @@ class RWMB_Update_Notification {
 	 * Get license status.
 	 */
 	private function get_license_status() {
-		if ( ! $this->checker->get_api_key() ) {
-			return 'no_key';
-		}
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-		return isset( $option['status'] ) ? $option['status'] : 'active';
-	}
-
-	/**
-	 * Check if the license notification is dismissed.
-	 *
-	 * @return bool
-	 */
-	private function is_dismissed() {
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-		return ! empty( $option['notification_dismissed'] );
+		return $this->checker->get_api_key() ? $this->option->get( 'status', 'active' ) : 'no_key';
 	}
 }

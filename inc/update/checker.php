@@ -19,11 +19,20 @@ class RWMB_Update_Checker {
 	private $api_url = 'https://metabox.io/index.php';
 
 	/**
-	 * The update option.
+	 * The update option object.
 	 *
-	 * @var string
+	 * @var object
 	 */
-	private $option = 'meta_box_updater';
+	private $option;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param object $option  Update option object.
+	 */
+	public function __construct( $option ) {
+		$this->option  = $option;
+	}
 
 	/**
 	 * Add hooks to check plugin updates.
@@ -109,13 +118,7 @@ class RWMB_Update_Checker {
 			$data->response[ $plugin->plugin ] = $plugin;
 		}
 
-		$option            = $this->get_option();
-		$option['plugins'] = array_keys( $plugins );
-		if ( is_multisite() ) {
-			update_site_option( $this->option, $option );
-		} else {
-			update_option( $this->option, $option );
-		}
+		$this->option->set( 'plugins', array_keys( $plugins ) );
 
 		return $data;
 	}
@@ -198,19 +201,6 @@ class RWMB_Update_Checker {
 	 * @return string
 	 */
 	public function get_api_key() {
-		if ( defined( 'META_BOX_KEY' ) ) {
-			return META_BOX_KEY;
-		}
-		$option = $this->get_option();
-		return isset( $option['api_key'] ) ? $option['api_key'] : null;
-	}
-
-	/**
-	 * Get update option.
-	 *
-	 * @return array
-	 */
-	private function get_option() {
-		return is_multisite() ? get_site_option( $this->option, array() ) : get_option( $this->option, array() );
+		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->option->get( 'api_key' );
 	}
 }
