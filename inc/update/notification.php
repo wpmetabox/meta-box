@@ -42,11 +42,44 @@ class RWMB_Update_Notification {
 	}
 
 	/**
-	 * Add hooks to create the settings page and show admin notice.
+	 * Add hooks to show admin notice.
 	 */
 	public function init() {
+		if ( $this->is_dismissed() ) {
+			return;
+		}
+
 		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, array( $this, 'notify' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'wp_ajax_mb_dismiss_notification', array( $this, 'dismiss' ) );
+	}
+
+	/**
+	 * Enqueue the notification script.
+	 */
+	public function enqueue() {
+		wp_enqueue_script( 'mb-notification', RWMB_JS_URL . 'notification.js', array( 'jquery' ), RWMB_VER, true );
+		wp_localize_script( 'mb-notification', 'MBNotification', array( 'nonce' => wp_create_nonce( 'dismiss' ) ) );
+	}
+
+	/**
+	 * Dismiss the notification permanently via ajax.
+	 */
+	public function dismiss() {
+		check_ajax_referer( 'dismiss', 'nonce' );
+
+		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
+		$option['notification_dismissed'] = 1;
+
+		if ( is_multisite() ) {
+			update_site_option( $this->option, $option );
+		} else {
+			update_option( $this->option, $option );
+		}
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -72,17 +105,27 @@ class RWMB_Update_Notification {
 		}
 
 		$admin_url = is_multisite() ? network_admin_url( "settings.php?page={$this->page_id}" ) : admin_url( "admin.php?page={$this->page_id}" );
-		echo '<div class="notice notice-warning"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
+		echo '<div id="meta-box-notification" class="notice notice-warning is-dismissible"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
 	}
 
 	/**
 	 * Get license status.
 	 */
-	public function get_license_status() {
+	private function get_license_status() {
 		if ( ! $this->checker->get_api_key() ) {
 			return 'no_key';
 		}
 		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
 		return isset( $option['status'] ) ? $option['status'] : 'active';
+	}
+
+	/**
+	 * Check if the license notification is dismissed.
+	 *
+	 * @return bool
+	 */
+	private function is_dismissed() {
+		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
+		return ! empty( $option['notification_dismissed'] );
 	}
 }
