@@ -151,7 +151,7 @@ class RWMB_Update_Settings {
 			add_settings_error( '', 'mb-expired', $message );
 			$option['status'] = 'expired';
 		} else {
-			add_settings_error( '', 'mb-success', __( 'Settings saved.', 'meta-box' ), 'updated' );
+			add_settings_error( '', 'mb-success', __( 'Your license is activated.', 'meta-box' ), 'updated' );
 		}
 
 		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
