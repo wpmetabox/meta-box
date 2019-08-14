@@ -23,15 +23,13 @@ class RWMB_Update_Option {
 	 *
 	 * @param string $name    Option name. Pass null to return the option array.
 	 * @param mixed  $default Default value.
+	 *
+	 * @return mixed Option value or option array.
 	 */
 	public function get( $name = null, $default = null ) {
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
+		$option = is_multisite() ? get_site_option( $this->option, array() ) : get_option( $this->option, array() );
 
-		if ( null === $name ) {
-			return $option;
-		}
-
-		return isset( $option[ $name ] ) ? $option[ $name ] : $default;
+		return null === $name ? $option : ( isset( $option[ $name ] ) ? $option[ $name ] : $default );
 	}
 
 	/**
@@ -40,7 +38,7 @@ class RWMB_Update_Option {
 	 * @param array $option Option value.
 	 */
 	public function update( $option ) {
-		$old_option = $this->get();
+		$old_option = (array) $this->get();
 
 		$option = array_merge( $old_option, $option );
 		if ( is_multisite() ) {
