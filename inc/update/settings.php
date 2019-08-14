@@ -12,25 +12,11 @@
  */
 class RWMB_Update_Settings {
 	/**
-	 * Update option.
+	 * The update option object.
 	 *
-	 * @var string
+	 * @var object
 	 */
-	private $option = 'meta_box_updater';
-
-	/**
-	 * Settings page ID.
-	 *
-	 * @var string
-	 */
-	private $page_id = 'meta-box-updater';
-
-	/**
-	 * Settings page hook.
-	 *
-	 * @var string
-	 */
-	private $page_hook;
+	private $option;
 
 	/**
 	 * The update checker object
@@ -43,51 +29,53 @@ class RWMB_Update_Settings {
 	 * Constructor.
 	 *
 	 * @param object $checker Update checker object.
+	 * @param object $option  Update option object.
 	 */
-	public function __construct( $checker ) {
+	public function __construct( $checker, $option ) {
 		$this->checker = $checker;
+		$this->option  = $option;
 	}
 
 	/**
-	 * Add hooks to create the settings page and show admin notice.
+	 * Add hooks to create the settings page.
 	 */
 	public function init() {
 		// Whether to enable Meta Box menu. Priority 1 makes sure it runs before adding Meta Box menu.
 		add_action( 'admin_menu', array( $this, 'enable_menu' ), 1 );
-
-		// Add submenu. Use priority 80 to show it just above the About page (priority = 90).
-		$admin_menu_hook = is_multisite() ? 'network_admin_menu' : 'admin_menu';
-		add_action( $admin_menu_hook, array( $this, 'add_settings_page' ), 80 );
-
-		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
-		add_action( $admin_notices_hook, array( $this, 'notify' ) );
 	}
 
 	/**
-	 * Whether to enable Meta Box menu.
+	 * Enable Meta Box menu when a premium extension is installed.
 	 */
 	public function enable_menu() {
-		if ( $this->checker->has_extensions() ) {
-			add_filter( 'rwmb_admin_menu', '__return_true' );
+		if ( ! $this->checker->has_extensions() ) {
+			return;
 		}
+
+		// Enable Meta Box menu.
+		add_filter( 'rwmb_admin_menu', '__return_true' );
+
+		// Add submenu. Priority 90 makes it the last sub-menu item.
+		$admin_menu_hook = is_multisite() ? 'network_admin_menu' : 'admin_menu';
+		add_action( $admin_menu_hook, array( $this, 'add_settings_page' ), 90 );
 	}
 
 	/**
 	 * Add settings page.
 	 */
 	public function add_settings_page() {
-		$parent          = is_multisite() ? 'settings.php' : 'meta-box';
-		$capability      = is_multisite() ? 'manage_network_options' : 'manage_options';
-		$title           = is_multisite() ? esc_html__( 'Meta Box Updater', 'meta-box-updater' ) : esc_html__( 'License', 'meta-box-updater' );
-		$this->page_hook = add_submenu_page(
+		$parent     = is_multisite() ? 'settings.php' : 'meta-box';
+		$capability = is_multisite() ? 'manage_network_options' : 'manage_options';
+		$title      = is_multisite() ? esc_html__( 'Meta Box License', 'meta-box' ) : esc_html__( 'License', 'meta-box' );
+		$page_hook  = add_submenu_page(
 			$parent,
 			$title,
 			$title,
 			$capability,
-			$this->page_id,
+			'meta-box-updater',
 			array( $this, 'render' )
 		);
-		add_action( "load-{$this->page_hook}", array( $this, 'save' ) );
+		add_action( "load-{$page_hook}", array( $this, 'save' ) );
 	}
 
 	/**
@@ -96,34 +84,46 @@ class RWMB_Update_Settings {
 	public function render() {
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Meta Box License' ); ?></h1>
-			<p><?php esc_html_e( 'Please enter your license key to receive automatic updates for Meta Box extensions.', 'meta-box-updater' ); ?></p>
+			<h1><?php esc_html_e( 'Meta Box License', 'meta-box' ); ?></h1>
+			<p><?php esc_html_e( 'Please enter your license key to enable automatic updates for Meta Box extensions.', 'meta-box' ); ?></p>
 			<p>
 				<?php
 				printf(
-					// Translators: %s - URL to MetaBox.io website.
-					wp_kses_post( __( 'To get the license key, please visit your profile page at <a href="%s" target="_blank">metabox.io website</a>.', 'meta-box-updater' ) ),
-					'https://metabox.io/my-account/'
+					// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
+					wp_kses_post( __( 'To get the license key, visit the <a href="%1$s" target="_blank">My Account</a> page on metabox.io website. If you have not purchased any extension yet, please <a href="%2$s" target="_blank">get a new license here</a>.', 'meta-box' ) ),
+					'https://metabox.io/my-account/',
+					'https://metabox.io/pricing/'
 				);
 				?>
 			</p>
 
 			<form action="" method="post">
-				<?php wp_nonce_field( 'meta-box-updater' ); ?>
-
-				<?php
-				$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-				$key    = isset( $option['api_key'] ) ? $option['api_key'] : '';
-				?>
+				<?php wp_nonce_field( 'meta-box' ); ?>
 
 				<table class="form-table">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'License Key', 'meta-box-updater' ); ?></th>
-						<td><input required class="regular-text" name="<?php echo esc_attr( $this->option ); ?>[api_key]" value="<?php echo esc_attr( $key ); ?>" type="password"></td>
+						<th scope="row"><?php esc_html_e( 'License Key', 'meta-box' ); ?></th>
+						<td>
+							<input required class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $this->option->get( 'api_key' ) ); ?>" type="password">
+							<?php
+							$messages = array(
+								// Translators: %1$s - URL to the pricing page.
+								'invalid' => __( 'Your license key is <b>invalid</b>. Please update your license key or <a href="%1$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+								// Translators: %1$s - URL to the pricing page.
+								'error'   => __( 'Your license key is <b>invalid</b>. Please update your license key or <a href="%1$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+								// Translators: %2$s - URL to the My Account page.
+								'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%2$s" target="_blank">renew your license</a>.', 'meta-box' ),
+							);
+							$status = $this->checker->get_api_key() ? $this->option->get( 'status', 'active' ) : 'no_key';
+							if ( isset( $messages[ $status ] ) ) {
+								echo '<p class="description">', wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p>';
+							}
+							?>
+						</td>
 					</tr>
 				</table>
 
-				<?php submit_button( __( 'Save Changes', 'meta-box-updater' ) ); ?>
+				<?php submit_button( __( 'Save Changes', 'meta-box' ) ); ?>
 			</form>
 		</div>
 		<?php
@@ -133,79 +133,44 @@ class RWMB_Update_Settings {
 	 * Save update settings.
 	 */
 	public function save() {
-		static $message_shown = false;
-
 		if ( empty( $_POST['submit'] ) ) {
 			return;
 		}
-		check_admin_referer( 'meta-box-updater' );
+		check_admin_referer( 'meta-box' );
 
 		// @codingStandardsIgnoreLine
-		$option           = isset( $_POST[ $this->option ] ) ? $_POST[ $this->option ] : array();
+		$option           = isset( $_POST['meta_box_updater'] ) ? $_POST['meta_box_updater'] : array();
 		$option           = (array) $option;
-		$option['status'] = 'success';
+		$option['status'] = 'active';
 
 		$args           = $option;
 		$args['action'] = 'check_license';
-		$message        = $this->checker->request( $args );
+		$response       = $this->checker->request( $args );
+		$status         = isset( $response['status'] ) ? $response['status'] : 'invalid';
 
-		if ( $message ) {
-			add_settings_error( '', 'invalid', $message );
-			$option['status'] = 'error';
+		if ( false === $response ) {
+			add_settings_error( '', 'mb-error', __( 'Something wrong with the connection to metabox.io. Please try again later.', 'meta-box' ) );
+		} elseif ( 'active' === $status ) {
+			add_settings_error( '', 'mb-success', __( 'Your license is activated.', 'meta-box' ), 'updated' );
+		} elseif ( 'expired' === $status ) {
+			// Translators: %s - URL to the My Account page.
+			$message = __( 'License expired. Please renew on the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box' );
+			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/' ) );
+
+			add_settings_error( '', 'mb-expired', $message );
 		} else {
-			add_settings_error( '', 'success', __( 'Settings saved.', 'meta-box-updater' ), 'updated' );
+			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
+			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get a new license here</a>.', 'meta-box' );
+			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
+
+			add_settings_error( '', 'mb-invalid', $message );
 		}
 
-		// Non-multisite auto shows update message. See wp-admin/options-head.php.
-		if ( is_multisite() ) {
-			add_action( 'network_admin_notices', array( $this, 'show_update_message' ) );
-		}
+		$option['status'] = $status;
 
-		if ( is_multisite() ) {
-			update_site_option( $this->option, $option );
-		} else {
-			update_option( $this->option, $option );
-		}
-	}
+		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+		add_action( $admin_notices_hook, 'settings_errors' );
 
-	/**
-	 * Show update message.
-	 */
-	public function show_update_message() {
-		settings_errors();
-	}
-
-	/**
-	 * Notify users to enter license key.
-	 */
-	public function notify() {
-		if ( ! $this->checker->has_extensions() ) {
-			return;
-		}
-		$messages  = array(
-			// Translators: %1$s - URL to Meta Box Updater settings page, %2$s - URL to MetaBox.io website.
-			'no_key'  => __( '<b>Warning!</b> You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
-			// Translators: %1$s - URL to Meta Box Updater settings page, %2$s - URL to MetaBox.io website.
-			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is invalid or expired. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">renew</a> to receive automatic updates and premium support.', 'meta-box-updater' ),
-		);
-		$status    = $this->get_license_status();
-		$admin_url = is_multisite() ? network_admin_url( "settings.php?page={$this->page_id}" ) : admin_url( "admin.php?page={$this->page_id}" );
-		if ( isset( $messages[ $status ] ) ) {
-			echo '<div class="notice notice-warning"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/' ) ), '</p></div>';
-		}
-	}
-
-	/**
-	 * Get license status.
-	 */
-	public function get_license_status() {
-		$option = is_multisite() ? get_site_option( $this->option ) : get_option( $this->option );
-		if ( empty( $option['api_key'] ) ) {
-			return 'no_key';
-		}
-		if ( isset( $option['status'] ) && 'success' !== $option['status'] ) {
-			return 'invalid';
-		}
-		return 'valid';
+		$this->option->update( $option );
 	}
 }

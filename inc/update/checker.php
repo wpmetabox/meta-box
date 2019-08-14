@@ -6,7 +6,7 @@
  */
 
 /**
- * The updater class for Meta Box extensions
+ * The update checker class for Meta Box extensions
  *
  * @package Meta Box
  */
@@ -19,11 +19,20 @@ class RWMB_Update_Checker {
 	private $api_url = 'https://metabox.io/index.php';
 
 	/**
-	 * The update option.
+	 * The update option object.
 	 *
-	 * @var string
+	 * @var object
 	 */
-	private $option = 'meta_box_updater';
+	private $option;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param object $option  Update option object.
+	 */
+	public function __construct( $option ) {
+		$this->option  = $option;
+	}
 
 	/**
 	 * Add hooks to check plugin updates.
@@ -48,6 +57,16 @@ class RWMB_Update_Checker {
 	 * @return bool
 	 */
 	public function has_extensions() {
+		$extensions = $this->get_extensions();
+		return ! empty( $extensions );
+	}
+
+	/**
+	 * Get installed premium extensions.
+	 *
+	 * @return array Array of extension slugs.
+	 */
+	public function get_extensions() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -76,9 +95,7 @@ class RWMB_Update_Checker {
 		$plugins = get_plugins();
 		$plugins = array_map( 'dirname', array_keys( $plugins ) );
 
-		$installed_extensions = array_intersect( $extensions, $plugins );
-
-		return ! empty( $installed_extensions );
+		return array_intersect( $extensions, $plugins );
 	}
 
 	/**
@@ -89,14 +106,14 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function check_updates( $data ) {
-		static $plugins = null;
+		static $response = null;
 
 		// Make sure to send remote request once.
-		if ( null === $plugins ) {
-			$plugins = $this->request( 'action=check_updates' );
+		if ( null === $response ) {
+			$response = $this->request( array( 'action' => 'check_updates' ) );
 		}
 
-		if ( false === $plugins ) {
+		if ( false === $response ) {
 			return $data;
 		}
 
@@ -104,18 +121,21 @@ class RWMB_Update_Checker {
 			$data->response = array();
 		}
 
-		$plugins = array_filter( $plugins, array( $this, 'has_update' ) );
+		$plugins = array_filter( $response['data'], array( $this, 'has_update' ) );
 		foreach ( $plugins as $plugin ) {
+			if ( empty( $plugin->package ) ) {
+				$plugin->upgrade_notice = __( 'UPDATE UNAVAILABLE! Please enter a valid license key to enable automatic updates.', 'meta-box' );
+			}
+
 			$data->response[ $plugin->plugin ] = $plugin;
 		}
 
-		$option            = $this->get_option();
-		$option['plugins'] = array_keys( $plugins );
-		if ( is_multisite() ) {
-			update_site_option( $this->option, $option );
-		} else {
-			update_option( $this->option, $option );
-		}
+		$this->option->update(
+			array(
+				'status'  => $response['status'],
+				'plugins' => array_keys( $plugins ),
+			)
+		);
 
 		return $data;
 	}
@@ -130,20 +150,19 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function get_info( $data, $action, $args ) {
-		$option  = $this->get_option();
-		$plugins = isset( $option['plugins'] ) ? $option['plugins'] : array();
+		$plugins = $this->option->get( 'plugins', array() );
 		if ( 'plugin_information' !== $action || ! isset( $args->slug ) || ! in_array( $args->slug, $plugins, true ) ) {
 			return $data;
 		}
 
-		$info = $this->request(
+		$response = $this->request(
 			array(
 				'action'  => 'get_info',
 				'product' => $args->slug,
 			)
 		);
 
-		return false === $info ? $data : $info;
+		return false === $response ? $data : $response['data'];
 	}
 
 	/**
@@ -154,10 +173,13 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function request( $args = '' ) {
-		// Add email and API key to the request params.
-		$option = $this->get_option();
-		$args   = wp_parse_args( $args, $option );
-		$args   = array_filter( $args );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'api_key' => $this->get_api_key(),
+			)
+		);
+		$args = array_filter( $args );
 
 		$request = wp_remote_post(
 			$this->api_url,
@@ -167,13 +189,7 @@ class RWMB_Update_Checker {
 		);
 
 		$response = wp_remote_retrieve_body( $request );
-		if ( $response ) {
-			$data = @unserialize( $response );
-
-			return $data;
-		}
-
-		return false;
+		return $response ? @unserialize( $response ) : false;
 	}
 
 	/**
@@ -190,11 +206,11 @@ class RWMB_Update_Checker {
 	}
 
 	/**
-	 * Get update option.
+	 * Get the API key.
 	 *
-	 * @return array
+	 * @return string
 	 */
-	private function get_option() {
-		return is_multisite() ? get_site_option( $this->option, array() ) : get_option( $this->option, array() );
+	public function get_api_key() {
+		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->option->get( 'api_key' );
 	}
 }
