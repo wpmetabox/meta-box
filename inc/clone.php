@@ -122,7 +122,7 @@ class RWMB_Clone {
 	 * @return string $html
 	 */
 	public static function remove_clone_button( $field ) {
-		$text = RWMB_Field::filter( 'remove_clone_button_text', '<i class="dashicons dashicons-minus"></i>', $field );
+		$text = RWMB_Field::filter( 'remove_clone_button_text', '<span class="dashicons dashicons-dismiss"></span>', $field );
 		return '<a href="#" class="rwmb-button remove-clone">' . $text . '</a>';
 	}
 }
