@@ -102,20 +102,20 @@ class RWMB_Update_Notification {
 
 		$messages = array(
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( '<b>Warning!</b> You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
+			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
+			'invalid' => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
+			'error'   => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
-			'expired' => __( '<b>Warning!</b> Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew here</a> to get automatic updates and premium support.', 'meta-box' ),
+			'expired' => __( 'Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a> to get automatic updates and premium support.', 'meta-box' ),
 		);
 		$status   = $this->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
 			return;
 		}
 
-		echo '<div id="meta-box-notification" class="notice notice-warning is-dismissible"><p>', wp_kses_post( sprintf( $messages[ $status ], $this->settings_page, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
+		echo '<div id="meta-box-notification" class="notice notice-warning is-dismissible"><p><span class="dashicons dashicons-warning" style="color: #f56e28"></span> ', wp_kses_post( sprintf( $messages[ $status ], $this->settings_page, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
 	}
 
 	/**
@@ -138,7 +138,7 @@ class RWMB_Update_Notification {
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
 			'error'   => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
-			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew here</a>.', 'meta-box' ),
+			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
 		);
 		$status = $this->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {

@@ -129,30 +129,27 @@ class RWMB_Update_Settings {
 		$args           = $option;
 		$args['action'] = 'check_license';
 		$response       = $this->checker->request( $args );
-		$status         = isset( $response['status'] ) ? $response['status'] : 'active';
+		$status         = isset( $response['status'] ) ? $response['status'] : 'invalid';
 
 		if ( false === $response ) {
-			$message = __( 'Something wrong with the connection to metabox.io. Please try again later.', 'meta-box' );
-			$message = wp_kses_post( $message );
-
-			add_settings_error( '', 'mb-error', $message );
-		} elseif ( 'invalid' === $status ) {
-			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
-			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' );
-			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
-
-			add_settings_error( '', 'mb-invalid', $message );
-			$option['status'] = 'invalid';
+			add_settings_error( '', 'mb-error', __( 'Something wrong with the connection to metabox.io. Please try again later.', 'meta-box' ) );
+		} elseif ( 'active' === $status ) {
+			add_settings_error( '', 'mb-success', __( 'Your license is activated.', 'meta-box' ), 'updated' );
 		} elseif ( 'expired' === $status ) {
 			// Translators: %s - URL to the My Account page.
 			$message = __( 'License expired. Please renew on the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box' );
 			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/' ) );
 
 			add_settings_error( '', 'mb-expired', $message );
-			$option['status'] = 'expired';
 		} else {
-			add_settings_error( '', 'mb-success', __( 'Your license is activated.', 'meta-box' ), 'updated' );
+			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
+			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' );
+			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
+
+			add_settings_error( '', 'mb-invalid', $message );
 		}
+
+		$option['status'] = $status;
 
 		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, 'settings_errors' );
