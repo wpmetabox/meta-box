@@ -130,8 +130,12 @@ class RWMB_Update_Checker {
 			$data->response[ $plugin->plugin ] = $plugin;
 		}
 
-		$this->option->set( 'status', $response['status'] );
-		$this->option->set( 'plugins', array_keys( $plugins ) );
+		$this->option->update(
+			array(
+				'status'  => $response['status'],
+				'plugins' => array_keys( $plugins ),
+			)
+		);
 
 		return $data;
 	}

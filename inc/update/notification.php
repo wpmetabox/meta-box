@@ -58,7 +58,7 @@ class RWMB_Update_Notification {
 		}
 
 		// Show global update notification.
-		if ( $this->option->get( 'notification_dismissed' ) ) {
+		if ( $this->is_dismissed() ) {
 			return;
 		}
 
@@ -82,7 +82,14 @@ class RWMB_Update_Notification {
 	 */
 	public function dismiss() {
 		check_ajax_referer( 'dismiss', 'nonce' );
-		$this->option->set( 'notification_dismissed', 1 );
+
+		$this->option->update(
+			array(
+				'notification_dismissed'      => 1,
+				'notification_dismissed_time' => time(),
+			)
+		);
+
 		wp_send_json_success();
 	}
 
@@ -102,7 +109,7 @@ class RWMB_Update_Notification {
 
 		$messages = array(
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
 			'invalid' => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
@@ -172,5 +179,17 @@ class RWMB_Update_Notification {
 	 */
 	private function get_license_status() {
 		return $this->checker->get_api_key() ? $this->option->get( 'status', 'active' ) : 'no_key';
+	}
+
+	/**
+	 * Check if the global notification is dismissed.
+	 * Auto re-enable the notification every 2 weeks after it's dissmissed.
+	 *
+	 * @return bool
+	 */
+	private function is_dismissed() {
+		$time = $this->option->get( 'notification_dismissed_time' );
+
+		return $this->option->get( 'notification_dismissed' ) && time() - $time < 14 * DAY_IN_SECONDS;
 	}
 }

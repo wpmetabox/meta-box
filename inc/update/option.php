@@ -35,24 +35,14 @@ class RWMB_Update_Option {
 	}
 
 	/**
-	 * Set an option.
-	 *
-	 * @param string $name  Option name.
-	 * @param mixed  $value Option value.
-	 */
-	public function set( $name, $value ) {
-		$option          = $this->get();
-		$option[ $name ] = $value;
-
-		$this->update( $option );
-	}
-
-	/**
 	 * Update the option array.
 	 *
 	 * @param array $option Option value.
 	 */
 	public function update( $option ) {
+		$old_option = $this->get();
+
+		$option = array_merge( $old_option, $option );
 		if ( is_multisite() ) {
 			update_site_option( $this->option, $option );
 		} else {
