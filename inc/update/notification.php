@@ -49,6 +49,10 @@ class RWMB_Update_Notification {
 	 * Add hooks to show admin notice.
 	 */
 	public function init() {
+		if ( ! $this->checker->has_extensions() ) {
+			return;
+		}
+
 		// Show update message on Plugins page.
 		$extensions = $this->checker->get_extensions();
 		foreach ( $extensions as $extension ) {
@@ -97,10 +101,6 @@ class RWMB_Update_Notification {
 	 * Notify users to enter license key.
 	 */
 	public function notify() {
-		if ( ! $this->checker->has_extensions() ) {
-			return;
-		}
-
 		// Do not show notification on License page.
 		$screen = get_current_screen();
 		if ( 'meta-box_page_meta-box-updater' === $screen->id ) {
