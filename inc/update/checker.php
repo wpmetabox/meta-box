@@ -57,6 +57,16 @@ class RWMB_Update_Checker {
 	 * @return bool
 	 */
 	public function has_extensions() {
+		$extensions = $this->get_extensions();
+		return ! empty( $extensions );
+	}
+
+	/**
+	 * Get installed premium extensions.
+	 *
+	 * @return array Array of extension slugs.
+	 */
+	public function get_extensions() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -85,9 +95,7 @@ class RWMB_Update_Checker {
 		$plugins = get_plugins();
 		$plugins = array_map( 'dirname', array_keys( $plugins ) );
 
-		$installed_extensions = array_intersect( $extensions, $plugins );
-
-		return ! empty( $installed_extensions );
+		return array_intersect( $extensions, $plugins );
 	}
 
 	/**

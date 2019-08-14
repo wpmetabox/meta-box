@@ -47,6 +47,13 @@ class RWMB_Update_Notification {
 	 * Add hooks to show admin notice.
 	 */
 	public function init() {
+		// Show update message on Plugins page.
+		$extensions = $this->checker->get_extensions();
+		foreach ( $extensions as $extension ) {
+			add_action( "in_plugin_update_message-{$extension}/{$extension}.php", array( $this, 'show_update_message' ), 10, 2 );
+		}
+
+		// Show global update notification.
 		if ( $this->option->get( 'notification_dismissed' ) ) {
 			return;
 		}
@@ -93,9 +100,9 @@ class RWMB_Update_Notification {
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
 			'no_key'  => __( '<b>Warning!</b> You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
+			'invalid' => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">fix it</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
+			'error'   => __( '<b>Warning!</b> Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( '<b>Warning!</b> Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew here</a> to get automatic updates and premium support.', 'meta-box-updater' ),
 		);
@@ -106,6 +113,41 @@ class RWMB_Update_Notification {
 
 		$admin_url = is_multisite() ? network_admin_url( "settings.php?page={$this->page_id}" ) : admin_url( "admin.php?page={$this->page_id}" );
 		echo '<div id="meta-box-notification" class="notice notice-warning is-dismissible"><p>', wp_kses_post( sprintf( $messages[ $status ], $admin_url, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p></div>';
+	}
+
+	/**
+	 * Show update message on Plugins page.
+	 *
+	 * @param  array  $plugin_data Plugin data.
+	 * @param  object $response    Available plugin update data.
+	 */
+	public function show_update_message( $plugin_data, $response ) {
+		// Users have an active license.
+		if ( ! empty( $response->package ) ) {
+			return;
+		}
+
+		$messages = array(
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
+			'no_key'  => __( 'Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
+			'invalid' => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
+			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
+			'error'   => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box-updater' ),
+			// Translators: %3$s - URL to the My Account page.
+			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew here</a>.', 'meta-box-updater' ),
+		);
+		$status = $this->get_license_status();
+		if ( ! isset( $messages[ $status ] ) ) {
+			return;
+		}
+
+		$message = __( '<strong>UPDATE UNAVAILABLE!</strong>', 'meta-box' ) . '&nbsp;';
+		$message .= $messages[ $status ];
+
+		$admin_url = is_multisite() ? network_admin_url( 'settings.php?page=meta-box-updater' ) : admin_url( 'admin.php?page=meta-box-updater' );
+
+		echo '<br><span style="width: 26px; height: 20px; display: inline-block;">&nbsp;</span>' . wp_kses_post( sprintf( $message, $admin_url, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) );
 	}
 
 	/**
