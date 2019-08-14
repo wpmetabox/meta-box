@@ -102,11 +102,11 @@ class RWMB_Update_Notification {
 
 		$messages = array(
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
+			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! <a href="%1$s">Enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
+			'invalid' => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a> to get automatic updates and premium support.', 'meta-box' ),
+			'error'   => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( 'Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a> to get automatic updates and premium support.', 'meta-box' ),
 		);
@@ -132,11 +132,11 @@ class RWMB_Update_Notification {
 
 		$messages = array(
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( 'Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
+			'no_key'  => __( 'Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
+			'invalid' => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get one here</a>.', 'meta-box' ),
+			'error'   => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
 		);
