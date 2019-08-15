@@ -43,6 +43,7 @@ class RWMB_Sanitizer {
 		}
 
 		$callbacks = array(
+			'autocomplete'    => array( $this, 'sanitize_choice' ),
 			'button_group'    => array( $this, 'sanitize_choice' ),
 			'checkbox'        => array( $this, 'sanitize_checkbox' ),
 			'checkbox_list'   => array( $this, 'sanitize_choice' ),
@@ -124,7 +125,6 @@ class RWMB_Sanitizer {
 
 	/**
 	 * Sanitize value for a choice field.
-	 * select, select advanced, radio, checkbox list, button group.
 	 *
 	 * @param  string|array $value The submitted value.
 	 * @param  array        $field The field settings.
@@ -137,8 +137,7 @@ class RWMB_Sanitizer {
 
 
 	/**
-	 * Sanitize value for an object field.
-	 * post, user, file advanced, file upload, image advanced, image upload, single image, video.
+	 * Sanitize value for an object & media field.
 	 *
 	 * @param  mixed $value The submitted value.
 	 * @param  array $field The field settings.
