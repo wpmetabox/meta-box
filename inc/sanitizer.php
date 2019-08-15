@@ -80,6 +80,7 @@ class RWMB_Sanitizer {
 			'taxonomy'          => array( $this, 'sanitize_object' ),
 			'taxonomy_advanced' => 'sanitize_text_field',
 			'text'              => 'sanitize_text_field',
+			'text_list'         => array( $this, 'sanitize_text' ),
 			'textarea'          => 'wp_kses_post',
 			'time'              => 'sanitize_text_field',
 			'url'               => 'esc_url_raw',
