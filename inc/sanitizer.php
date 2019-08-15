@@ -53,9 +53,11 @@ class RWMB_Sanitizer {
 			'datetime'        => 'sanitize_text_field',
 			'email'           => 'sanitize_email',
 			'fieldset_text'   => array( $this, 'sanitize_text' ),
+			'file'            => array( $this, 'sanitize_file' ),
 			'file_advanced'   => array( $this, 'sanitize_object' ),
 			'file_input'      => 'esc_url_raw',
 			'file_upload'     => array( $this, 'sanitize_object' ),
+			'image'           => array( $this, 'sanitize_file' ),
 			'image_advanced'  => array( $this, 'sanitize_object' ),
 			'image_select'    => array( $this, 'sanitize_choice' ),
 			'image_upload'    => array( $this, 'sanitize_object' ),
@@ -185,5 +187,16 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_text( $value ) {
 		return is_array( $value ) ? array_map( __METHOD__, $value ) : sanitize_text_field( $value );
+	}
+
+	/**
+	 * Sanitize value for a file/image field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @param  array $field The field settings.
+	 * @return array
+	 */
+	private function sanitize_file( $value, $field ) {
+		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : array_map( 'absint', $value );
 	}
 }
