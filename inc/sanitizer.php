@@ -49,8 +49,8 @@ class RWMB_Sanitizer {
 			'checkbox'          => array( $this, 'sanitize_checkbox' ),
 			'checkbox_list'     => array( $this, 'sanitize_choice' ),
 			'color'             => array( $this, 'sanitize_color' ),
-			'date'              => 'sanitize_text_field',
-			'datetime'          => 'sanitize_text_field',
+			'date'              => array( $this, 'sanitize_datetime' ),
+			'datetime'          => array( $this, 'sanitize_datetime' ),
 			'email'             => 'sanitize_email',
 			'fieldset_text'     => array( $this, 'sanitize_text' ),
 			'file'              => array( $this, 'sanitize_file' ),
@@ -218,5 +218,16 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_slider( $value, $field ) {
 		return true === $field['js_options']['range'] ? sanitize_text_field( $value ) : $this->sanitize_number( $value );
+	}
+
+	/**
+	 * Sanitize datetime field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @param  array $field The field settings.
+	 * @return array
+	 */
+	private function sanitize_datetime( $value, $field ) {
+		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
 	}
 }
