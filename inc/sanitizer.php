@@ -44,6 +44,7 @@ class RWMB_Sanitizer {
 
 		$callbacks = array(
 			'autocomplete'    => array( $this, 'sanitize_choice' ),
+			'background'      => array( $this, 'sanitize_background' ),
 			'button_group'    => array( $this, 'sanitize_choice' ),
 			'checkbox'        => array( $this, 'sanitize_checkbox' ),
 			'checkbox_list'   => array( $this, 'sanitize_choice' ),
@@ -135,15 +136,42 @@ class RWMB_Sanitizer {
 		return is_array( $value ) ? array_intersect( $value, array_keys( $options ) ) : ( isset( $options[ $value ] ) ? $value : '' );
 	}
 
-
 	/**
 	 * Sanitize value for an object & media field.
 	 *
 	 * @param  mixed $value The submitted value.
-	 * @param  array $field The field settings.
 	 * @return int|array
 	 */
-	private function sanitize_object( $value, $field ) {
+	private function sanitize_object( $value ) {
 		return is_array( $value ) ? array_map( 'absint', $value ) : absint( $value );
+	}
+
+	/**
+	 * Sanitize background field.
+	 *
+	 * @param  array $value The submitted value.
+	 * @return array
+	 */
+	private function sanitize_background( $value ) {
+		$value = wp_parse_args(
+			$value,
+			array(
+				'color'      => '',
+				'image'      => '',
+				'repeat'     => '',
+				'attachment' => '',
+				'position'   => '',
+				'size'       => '',
+			)
+		);
+		$value['color'] = $this->sanitize_color( $value['color'] );
+		$value['image'] = esc_url_raw( $value['image'] );
+
+		$value['repeat']     = in_array( $value['repeat'], array( 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ), true ) ? $value['repeat'] : '';
+		$value['position']   = in_array( $value['repeat'], array( 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ), true ) ? $value['position'] : '';
+		$value['attachment'] = in_array( $value['repeat'], array( 'fixed', 'scroll', 'inherit' ), true ) ? $value['attachment'] : '';
+		$value['size']       = in_array( $value['repeat'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['attachment'] : '';
+
+		return $value;
 	}
 }
