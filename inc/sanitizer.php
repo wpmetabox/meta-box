@@ -54,6 +54,7 @@ class RWMB_Sanitizer {
 			'file_input'      => 'esc_url_raw',
 			'file_upload'     => array( $this, 'sanitize_object' ),
 			'image_advanced'  => array( $this, 'sanitize_object' ),
+			'image_select'    => array( $this, 'sanitize_choice' ),
 			'image_upload'    => array( $this, 'sanitize_object' ),
 			'number'          => array( $this, 'sanitize_number' ),
 			'oembed'          => 'esc_url_raw',
