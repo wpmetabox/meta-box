@@ -52,6 +52,7 @@ class RWMB_Sanitizer {
 			'date'            => 'sanitize_text_field',
 			'datetime'        => 'sanitize_text_field',
 			'email'           => 'sanitize_email',
+			'fieldset_text'   => array( $this, 'sanitize_text' ),
 			'file_advanced'   => array( $this, 'sanitize_object' ),
 			'file_input'      => 'esc_url_raw',
 			'file_upload'     => array( $this, 'sanitize_object' ),
@@ -173,5 +174,15 @@ class RWMB_Sanitizer {
 		$value['size']       = in_array( $value['repeat'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['attachment'] : '';
 
 		return $value;
+	}
+
+	/**
+	 * Sanitize value for a text field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @return int|array
+	 */
+	private function sanitize_text( $value ) {
+		return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : sanitize_text_field( $value );
 	}
 }
