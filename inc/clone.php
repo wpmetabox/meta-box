@@ -71,25 +71,25 @@ class RWMB_Clone {
 	/**
 	 * Set value of meta before saving into database
 	 *
-	 * @param mixed $new     The submitted meta value.
-	 * @param mixed $old     The existing meta value.
-	 * @param int   $post_id The post ID.
-	 * @param array $field   The field parameters.
+	 * @param mixed $new       The submitted meta value.
+	 * @param mixed $old       The existing meta value.
+	 * @param int   $object_id The object ID.
+	 * @param array $field     The field parameters.
 	 *
 	 * @return mixed
 	 */
-	public static function value( $new, $old, $post_id, $field ) {
+	public static function value( $new, $old, $object_id, $field ) {
 		if ( ! is_array( $new ) ) {
 			$new = array();
 		}
 
 		if ( in_array( $field['type'], array( 'file', 'image' ), true ) ) {
-			return RWMB_Field::call( $field, 'value', $new, '', $post_id );
+			return RWMB_Field::call( $field, 'value', $new, '', $object_id );
 		}
 
 		foreach ( $new as $key => $value ) {
 			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : null;
-			$value       = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+			$value       = RWMB_Field::call( $field, 'value', $value, $old_value, $object_id );
 			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
 
