@@ -73,6 +73,7 @@ class RWMB_Sanitizer {
 			'range'           => array( $this, 'sanitize_number' ),
 			'select'          => array( $this, 'sanitize_choice' ),
 			'select_advanced' => array( $this, 'sanitize_choice' ),
+			'sidebar'         => array( $this, 'sanitize_text' ),
 			'single_image'    => 'absint',
 			'switch'          => array( $this, 'sanitize_checkbox' ),
 			'text'            => 'sanitize_text_field',
