@@ -63,10 +63,10 @@ class RWMB_Sanitizer {
 			'image_select'      => array( $this, 'sanitize_choice' ),
 			'image_upload'      => array( $this, 'sanitize_object' ),
 			'key_value'         => array( $this, 'sanitize_text' ),
-			'map'               => 'sanitize_text_field',
+			'map'               => array( $this, 'sanitize_map' ),
 			'number'            => array( $this, 'sanitize_number' ),
 			'oembed'            => 'esc_url_raw',
-			'osm'               => 'sanitize_text_field',
+			'osm'               => array( $this, 'sanitize_map' ),
 			'password'          => 'sanitize_text_field',
 			'post'              => array( $this, 'sanitize_object' ),
 			'radio'             => array( $this, 'sanitize_choice' ),
@@ -229,5 +229,23 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_datetime( $value, $field ) {
 		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
+	}
+
+	/**
+	 * Sanitize map field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @param  array $field The field settings.
+	 * @return array
+	 */
+	private function sanitize_map( $value, $field ) {
+		$value = sanitize_text_field( $value );
+		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
+
+		$latitude  = (float) $latitude;
+		$longitude = (float) $longitude;
+		$zoom      = (int) $zoom;
+
+		return "$latitude,$longitude,$zoom";
 	}
 }
