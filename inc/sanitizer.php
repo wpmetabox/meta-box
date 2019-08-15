@@ -27,7 +27,7 @@ class RWMB_Sanitizer {
 	public function sanitize( $value, $field, $old_value, $object_id ) {
 		$callback = $this->get_callback( $field );
 
-		return is_callable( $callback ) ? call_user_func( $callback, $value, $old_value, $field, $object_id ) : $value;
+		return is_callable( $callback ) ? call_user_func( $callback, $value, $field, $old_value, $object_id ) : $value;
 	}
 
 	/**
