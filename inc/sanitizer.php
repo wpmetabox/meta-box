@@ -52,6 +52,7 @@ class RWMB_Sanitizer {
 			'number'     => array( $this, 'sanitize_number' ),
 			'oembed'     => 'esc_url_raw',
 			'post'       => 'absint',
+			'range'      => array( $this, 'sanitize_number' ),
 			'switch'     => array( $this, 'sanitize_checkbox' ),
 			'text'       => 'sanitize_text_field',
 			'textarea'   => 'wp_kses_post',
@@ -81,7 +82,7 @@ class RWMB_Sanitizer {
 	/**
 	 * Sanitize numeric value.
 	 *
-	 * @param string $value The number value.
+	 * @param  int|float $value The number value.
 	 * @return int|float
 	 */
 	private function sanitize_number( $value ) {
