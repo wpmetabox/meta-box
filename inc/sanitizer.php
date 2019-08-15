@@ -52,7 +52,7 @@ class RWMB_Sanitizer {
 		if ( ! is_callable( $field['sanitize_callback'] ) ) {
 			return $value;
 		}
-		return call_user_func( $field['sanitize_callback'], $value, $old_value, $field, $object_id );
+		return call_user_func( $field['sanitize_callback'], $value, $field, $old_value, $object_id );
 	}
 
 	/**
