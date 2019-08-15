@@ -75,6 +75,7 @@ class RWMB_Sanitizer {
 			'select_advanced' => array( $this, 'sanitize_choice' ),
 			'sidebar'         => array( $this, 'sanitize_text' ),
 			'single_image'    => 'absint',
+			'slider'          => array( $this, 'sanitize_slider' ),
 			'switch'          => array( $this, 'sanitize_checkbox' ),
 			'text'            => 'sanitize_text_field',
 			'textarea'        => 'wp_kses_post',
@@ -203,5 +204,16 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_file( $value, $field ) {
 		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : array_map( 'absint', $value );
+	}
+
+	/**
+	 * Sanitize slider field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @param  array $field The field settings.
+	 * @return array
+	 */
+	private function sanitize_slider( $value, $field ) {
+		return true === $field['js_options']['range'] ? sanitize_text_field( $value ) : $this->sanitize_number( $value );
 	}
 }
