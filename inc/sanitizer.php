@@ -53,7 +53,7 @@ class RWMB_Sanitizer {
 			'file_input'      => 'esc_url_raw',
 			'number'          => array( $this, 'sanitize_number' ),
 			'oembed'          => 'esc_url_raw',
-			'post'            => 'absint',
+			'post'            => array( $this, 'sanitize_object' ),
 			'radio'           => array( $this, 'sanitize_choice' ),
 			'range'           => array( $this, 'sanitize_number' ),
 			'select'          => array( $this, 'sanitize_choice' ),
@@ -63,7 +63,7 @@ class RWMB_Sanitizer {
 			'textarea'        => 'wp_kses_post',
 			'time'            => 'sanitize_text_field',
 			'url'             => 'esc_url_raw',
-			'user'            => 'absint',
+			'user'            => array( $this, 'sanitize_object' ),
 			'wysiwyg'         => 'wp_kses_post',
 		);
 
@@ -116,7 +116,7 @@ class RWMB_Sanitizer {
 	}
 
 	/**
-	 * Sanitize value for a choice field (select, radio, checkbox list, button group).
+	 * Sanitize value for a choice field (select, select advanced, radio, checkbox list, button group).
 	 *
 	 * @param  string|array $value The submitted value.
 	 * @param  array        $field The field settings.
@@ -125,5 +125,17 @@ class RWMB_Sanitizer {
 	private function sanitize_choice( $value, $field ) {
 		$options = $field['options'];
 		return is_array( $value ) ? array_intersect( $value, array_keys( $options ) ) : ( isset( $options[ $value ] ) ? $value : '' );
+	}
+
+
+	/**
+	 * Sanitize value for an object field (post, user).
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @param  array $field The field settings.
+	 * @return int|array
+	 */
+	private function sanitize_object( $value, $field ) {
+		return is_array( $value ) ? array_map( 'absint', $value ) : absint( $value );
 	}
 }
