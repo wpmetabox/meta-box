@@ -13,7 +13,7 @@ class RWMB_Sanitizer {
 	 * Register hook to sanitize field value.
 	 */
 	public function init() {
-		add_filter( 'rwmb_value', array( $this, 'sanitize' ), 10, 4 );
+		add_filter( 'rwmb_sanitize', array( $this, 'sanitize' ), 10, 4 );
 	}
 
 	/**

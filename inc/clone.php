@@ -89,7 +89,8 @@ class RWMB_Clone {
 
 		foreach ( $new as $key => $value ) {
 			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : null;
-			$new[ $key ] = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+			$value       = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
+			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
 
 		// Remove empty clones.
