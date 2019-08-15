@@ -43,23 +43,28 @@ class RWMB_Sanitizer {
 		}
 
 		$callbacks = array(
-			'checkbox'   => array( $this, 'sanitize_checkbox' ),
-			'color'      => array( $this, 'sanitize_color' ),
-			'date'       => 'sanitize_text_field',
-			'datetime'   => 'sanitize_text_field',
-			'email'      => 'sanitize_email',
-			'file_input' => 'esc_url_raw',
-			'number'     => array( $this, 'sanitize_number' ),
-			'oembed'     => 'esc_url_raw',
-			'post'       => 'absint',
-			'range'      => array( $this, 'sanitize_number' ),
-			'switch'     => array( $this, 'sanitize_checkbox' ),
-			'text'       => 'sanitize_text_field',
-			'textarea'   => 'wp_kses_post',
-			'time'       => 'sanitize_text_field',
-			'url'        => 'esc_url_raw',
-			'user'       => 'absint',
-			'wysiwyg'    => 'wp_kses_post',
+			'button_group'    => array( $this, 'sanitize_choice' ),
+			'checkbox'        => array( $this, 'sanitize_checkbox' ),
+			'checkbox_list'   => array( $this, 'sanitize_choice' ),
+			'color'           => array( $this, 'sanitize_color' ),
+			'date'            => 'sanitize_text_field',
+			'datetime'        => 'sanitize_text_field',
+			'email'           => 'sanitize_email',
+			'file_input'      => 'esc_url_raw',
+			'number'          => array( $this, 'sanitize_number' ),
+			'oembed'          => 'esc_url_raw',
+			'post'            => 'absint',
+			'radio'           => array( $this, 'sanitize_choice' ),
+			'range'           => array( $this, 'sanitize_number' ),
+			'select'          => array( $this, 'sanitize_choice' ),
+			'select_advanced' => array( $this, 'sanitize_choice' ),
+			'switch'          => array( $this, 'sanitize_checkbox' ),
+			'text'            => 'sanitize_text_field',
+			'textarea'        => 'wp_kses_post',
+			'time'            => 'sanitize_text_field',
+			'url'             => 'esc_url_raw',
+			'user'            => 'absint',
+			'wysiwyg'         => 'wp_kses_post',
 		);
 
 		$type = $field['type'];
@@ -108,5 +113,17 @@ class RWMB_Sanitizer {
 		sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
 
 		return 'rgba(' . $red . ',' . $green . ',' . $blue . ',' . $alpha . ')';
+	}
+
+	/**
+	 * Sanitize value for a choice field (select, radio, checkbox list, button group).
+	 *
+	 * @param  string|array $value The submitted value.
+	 * @param  array        $field The field settings.
+	 * @return string|array
+	 */
+	private function sanitize_choice( $value, $field ) {
+		$options = $field['options'];
+		return is_array( $value ) ? array_intersect( $value, array_keys( $options ) ) : ( isset( $options[ $value ] ) ? $value : '' );
 	}
 }
