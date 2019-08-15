@@ -59,6 +59,7 @@ class RWMB_Sanitizer {
 			'image_advanced'  => array( $this, 'sanitize_object' ),
 			'image_select'    => array( $this, 'sanitize_choice' ),
 			'image_upload'    => array( $this, 'sanitize_object' ),
+			'key_value'       => array( $this, 'sanitize_text' ),
 			'number'          => array( $this, 'sanitize_number' ),
 			'oembed'          => 'esc_url_raw',
 			'post'            => array( $this, 'sanitize_object' ),
@@ -183,6 +184,6 @@ class RWMB_Sanitizer {
 	 * @return int|array
 	 */
 	private function sanitize_text( $value ) {
-		return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : sanitize_text_field( $value );
+		return is_array( $value ) ? array_map( __METHOD__, $value ) : sanitize_text_field( $value );
 	}
 }
