@@ -78,7 +78,7 @@ class RWMB_Sanitizer {
 			'slider'            => array( $this, 'sanitize_slider' ),
 			'switch'            => array( $this, 'sanitize_checkbox' ),
 			'taxonomy'          => array( $this, 'sanitize_object' ),
-			'taxonomy_advanced' => 'sanitize_text_field',
+			'taxonomy_advanced' => array( $this, 'sanitize_taxonomy_advanced' ),
 			'text'              => 'sanitize_text_field',
 			'text_list'         => array( $this, 'sanitize_text' ),
 			'textarea'          => 'wp_kses_post',
@@ -214,7 +214,7 @@ class RWMB_Sanitizer {
 	 *
 	 * @param  mixed $value The submitted value.
 	 * @param  array $field The field settings.
-	 * @return array
+	 * @return string|int|float
 	 */
 	private function sanitize_slider( $value, $field ) {
 		return true === $field['js_options']['range'] ? sanitize_text_field( $value ) : $this->sanitize_number( $value );
@@ -225,7 +225,7 @@ class RWMB_Sanitizer {
 	 *
 	 * @param  mixed $value The submitted value.
 	 * @param  array $field The field settings.
-	 * @return array
+	 * @return float|string
 	 */
 	private function sanitize_datetime( $value, $field ) {
 		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
@@ -235,10 +235,9 @@ class RWMB_Sanitizer {
 	 * Sanitize map field.
 	 *
 	 * @param  mixed $value The submitted value.
-	 * @param  array $field The field settings.
-	 * @return array
+	 * @return string
 	 */
-	private function sanitize_map( $value, $field ) {
+	private function sanitize_map( $value ) {
 		$value = sanitize_text_field( $value );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 
@@ -247,5 +246,18 @@ class RWMB_Sanitizer {
 		$zoom      = (int) $zoom;
 
 		return "$latitude,$longitude,$zoom";
+	}
+
+	/**
+	 * Sanitize taxonomy advanced field.
+	 *
+	 * @param  mixed $value The submitted value.
+	 * @return string
+	 */
+	private function sanitize_taxonomy_advanced( $value ) {
+		$value = RWMB_Helpers_Array::from_csv( $value );
+		$value = array_map( 'absint', $value );
+
+		return implode( ',', $value );
 	}
 }
