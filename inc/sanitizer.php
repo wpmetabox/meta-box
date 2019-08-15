@@ -50,7 +50,11 @@ class RWMB_Sanitizer {
 			'date'            => 'sanitize_text_field',
 			'datetime'        => 'sanitize_text_field',
 			'email'           => 'sanitize_email',
+			'file_advanced'   => array( $this, 'sanitize_object' ),
 			'file_input'      => 'esc_url_raw',
+			'file_upload'     => array( $this, 'sanitize_object' ),
+			'image_advanced'  => array( $this, 'sanitize_object' ),
+			'image_upload'    => array( $this, 'sanitize_object' ),
 			'number'          => array( $this, 'sanitize_number' ),
 			'oembed'          => 'esc_url_raw',
 			'post'            => array( $this, 'sanitize_object' ),
@@ -58,12 +62,14 @@ class RWMB_Sanitizer {
 			'range'           => array( $this, 'sanitize_number' ),
 			'select'          => array( $this, 'sanitize_choice' ),
 			'select_advanced' => array( $this, 'sanitize_choice' ),
+			'single_image'    => 'absint',
 			'switch'          => array( $this, 'sanitize_checkbox' ),
 			'text'            => 'sanitize_text_field',
 			'textarea'        => 'wp_kses_post',
 			'time'            => 'sanitize_text_field',
 			'url'             => 'esc_url_raw',
 			'user'            => array( $this, 'sanitize_object' ),
+			'video'           => array( $this, 'sanitize_object' ),
 			'wysiwyg'         => 'wp_kses_post',
 		);
 
@@ -116,7 +122,8 @@ class RWMB_Sanitizer {
 	}
 
 	/**
-	 * Sanitize value for a choice field (select, select advanced, radio, checkbox list, button group).
+	 * Sanitize value for a choice field.
+	 * select, select advanced, radio, checkbox list, button group.
 	 *
 	 * @param  string|array $value The submitted value.
 	 * @param  array        $field The field settings.
@@ -129,7 +136,8 @@ class RWMB_Sanitizer {
 
 
 	/**
-	 * Sanitize value for an object field (post, user).
+	 * Sanitize value for an object field.
+	 * post, user, file advanced, file upload, image advanced, image upload, single image, video.
 	 *
 	 * @param  mixed $value The submitted value.
 	 * @param  array $field The field settings.
