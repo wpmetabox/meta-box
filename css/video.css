@@ -1,9 +1,8 @@
-/* Video */
 .rwmb-video-item {
 	position: relative;
 	float: left;
-	padding: 0;
-	margin: 0 5px 5px 0;
+	padding: 8px;
+	margin: 0;
 	box-sizing: border-box;
 	width: 300px;
 }
@@ -11,7 +10,7 @@
 .rwmb-video-item .rwmb-media-preview {
 	width: 100%;
 	float: none;
-	background: #EEE;
+	background: #eee;
 }
 
 .rwmb-video-item video {
@@ -21,5 +20,5 @@
 
 .rwmb-video-item .rwmb-media-info {
 	margin-left: 0;
-	padding: 10px;
+	padding: 10px 0;
 }
