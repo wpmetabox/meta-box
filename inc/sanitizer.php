@@ -25,6 +25,11 @@ class RWMB_Sanitizer {
 	 * @param int   $object_id The object ID.
 	 */
 	public function sanitize( $value, $field, $old_value, $object_id ) {
+		// Allow developers to bypass the sanitization.
+		if ( 'none' === $field['sanitize_callback'] ) {
+			return $value;
+		}
+
 		$callback = $this->get_callback( $field );
 
 		return is_callable( $callback ) ? call_user_func( $callback, $value, $field, $old_value, $object_id ) : $value;
@@ -150,9 +155,9 @@ class RWMB_Sanitizer {
 	}
 
 	/**
-	 * Sanitize value for an object & media field.
+	 * Sanitize object & media field.
 	 *
-	 * @param  mixed $value The submitted value.
+	 * @param  int|array $value The submitted value.
 	 * @return int|array
 	 */
 	private function sanitize_object( $value ) {
@@ -189,19 +194,19 @@ class RWMB_Sanitizer {
 	}
 
 	/**
-	 * Sanitize value for a text field.
+	 * Sanitize text field.
 	 *
-	 * @param  mixed $value The submitted value.
-	 * @return int|array
+	 * @param  string|array $value The submitted value.
+	 * @return string|array
 	 */
 	private function sanitize_text( $value ) {
 		return is_array( $value ) ? array_map( __METHOD__, $value ) : sanitize_text_field( $value );
 	}
 
 	/**
-	 * Sanitize value for a file/image field.
+	 * Sanitize file, image field.
 	 *
-	 * @param  mixed $value The submitted value.
+	 * @param  array $value The submitted value.
 	 * @param  array $field The field settings.
 	 * @return array
 	 */
