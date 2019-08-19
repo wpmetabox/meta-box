@@ -261,6 +261,7 @@ abstract class RWMB_Field {
 			$value = RWMB_Clone::value( $value, $old_value, $object_id, $field );
 		} else {
 			$value = self::call( $field, 'value', $value, $old_value, $object_id );
+			$value = self::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
 		$value = self::filter( 'value', $value, $field, $old_value, $object_id );
 
