@@ -114,11 +114,11 @@ class RWMB_Sanitizer {
 	/**
 	 * Sanitize numeric value.
 	 *
-	 * @param  int|float $value The number value.
-	 * @return int|float
+	 * @param  string $value The number value.
+	 * @return string
 	 */
 	private function sanitize_number( $value ) {
-		return is_numeric( $value ) ? $value : 0;
+		return is_numeric( $value ) ? $value : '';
 	}
 
 	/**
