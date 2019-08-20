@@ -336,6 +336,7 @@ abstract class RWMB_Field {
 			array(
 				'id'                => '',
 				'name'              => '',
+				'type'              => 'text',
 				'label_description' => '',
 				'multiple'          => false,
 				'std'               => '',
