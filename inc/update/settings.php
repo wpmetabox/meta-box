@@ -113,6 +113,7 @@ class RWMB_Update_Settings {
 								'error'   => __( 'Your license key is <b>invalid</b>. Please update your license key or <a href="%1$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 								// Translators: %2$s - URL to the My Account page.
 								'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%2$s" target="_blank">renew your license</a>.', 'meta-box' ),
+								'active'  => __( 'Your license key is <b>active</b>.', 'meta-box' ),
 							);
 							$status = $this->checker->get_api_key() ? $this->option->get( 'status', 'active' ) : 'no_key';
 							if ( isset( $messages[ $status ] ) ) {
