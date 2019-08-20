@@ -60,7 +60,7 @@ class RWMB_Sanitizer {
 			'fieldset_text'     => array( $this, 'sanitize_text' ),
 			'file'              => array( $this, 'sanitize_file' ),
 			'file_advanced'     => array( $this, 'sanitize_object' ),
-			'file_input'        => 'esc_url_raw',
+			'file_input'        => array( $this, 'sanitize_url' ),
 			'file_upload'       => array( $this, 'sanitize_object' ),
 			'hidden'            => 'sanitize_text_field',
 			'image'             => array( $this, 'sanitize_file' ),
@@ -70,7 +70,7 @@ class RWMB_Sanitizer {
 			'key_value'         => array( $this, 'sanitize_text' ),
 			'map'               => array( $this, 'sanitize_map' ),
 			'number'            => array( $this, 'sanitize_number' ),
-			'oembed'            => 'esc_url_raw',
+			'oembed'            => array( $this, 'sanitize_url' ),
 			'osm'               => array( $this, 'sanitize_map' ),
 			'password'          => 'sanitize_text_field',
 			'post'              => array( $this, 'sanitize_object' ),
@@ -88,7 +88,7 @@ class RWMB_Sanitizer {
 			'text_list'         => array( $this, 'sanitize_text' ),
 			'textarea'          => 'wp_kses_post',
 			'time'              => 'sanitize_text_field',
-			'url'               => 'esc_url_raw',
+			'url'               => array( $this, 'sanitize_url' ),
 			'user'              => array( $this, 'sanitize_object' ),
 			'video'             => array( $this, 'sanitize_object' ),
 			'wysiwyg'           => 'wp_kses_post',
@@ -264,5 +264,15 @@ class RWMB_Sanitizer {
 		$value = array_map( 'absint', $value );
 
 		return implode( ',', $value );
+	}
+
+	/**
+	 * Sanitize URL field.
+	 *
+	 * @param  string $value The submitted value.
+	 * @return string
+	 */
+	private function sanitize_url( $value ) {
+		return esc_url_raw( $value );
 	}
 }
