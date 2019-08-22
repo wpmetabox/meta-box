@@ -104,14 +104,18 @@ class RWMB_File_Field extends RWMB_Field {
 			$attributes['required']      = false;
 		}
 
+		// Upload new files.
 		$html .= sprintf(
-			'<div class="rwmb-file-new">
-				<input %s>
-				<a class="rwmb-file-add" href="#"><strong>%s</strong></a>
-			</div>',
-			self::render_attributes( $attributes ),
-			$i18n_more
+			'<div class="rwmb-file-new"><input %s>',
+			self::render_attributes( $attributes )
 		);
+		if ( 1 !== $field['max_file_uploads'] ) {
+			$html .= sprintf(
+				'<a class="rwmb-file-add" href="#"><strong>%s</strong></a>',
+				$i18n_more
+			);
+		}
+		$html .= '</div>';
 
 		return $html;
 	}
