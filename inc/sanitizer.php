@@ -24,7 +24,7 @@ class RWMB_Sanitizer {
 	 * @param mixed $old_value The old field value in the database.
 	 * @param int   $object_id The object ID.
 	 */
-	public function sanitize( $value, $field, $old_value, $object_id ) {
+	public function sanitize( $value, $field, $old_value = null, $object_id = null ) {
 		// Allow developers to bypass the sanitization.
 		if ( 'none' === $field['sanitize_callback'] ) {
 			return $value;
