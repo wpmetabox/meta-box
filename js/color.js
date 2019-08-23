@@ -10,10 +10,10 @@
 			data = $.extend(
 				{
 					change: function () {
-						$( this ).trigger( 'color:change' );
+						$this.trigger( 'color:change' ).trigger( 'mb_change' );
 					},
 					clear: function () {
-						$( this ).trigger( 'color:clear' );
+						$this.trigger( 'color:clear' ).trigger( 'mb_change' );
 					}
 				},
 				$this.data( 'options' )
