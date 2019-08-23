@@ -5,7 +5,7 @@ Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, 
 Requires at least: 4.3
 Requires PHP: 5.3
 Tested up to: 5.2.2
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -167,7 +167,19 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 == Changelog ==
 
-= 5.1.0 - 2019-08-19 =
+= 5.1.1 - 2019-08-23 =
+
+**Fixed**
+
+- Fix sanitizing number always return 0 if it's blank
+- Fix sanitizing URL
+
+**Changed**
+
+- Set default field 'type' to 'text', make it optional and help you write less code
+- File/image fields: do not show add new file link if max_file_uploads = 1
+
+= [5.1.0 - 2019-08-19](https://metabox.io/meta-box-510/) =
 
 **Fixed**
 
@@ -189,7 +201,7 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 - Fix license notification always show
 
-= 5.0.0 - 2019-07-24 =
+= [5.0.0 - 2019-07-24](https://metabox.io/meta-box-5-released/) =
 
 **IMPORTANT:** Since version 5.0.0, the plugin requires PHP >= 5.3. If you use an older PHP version, please ask your host to upgrade or use an older version of Meta Box.
 
