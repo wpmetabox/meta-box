@@ -42,7 +42,7 @@ class RWMB_Update_Notification {
 		$this->checker = $checker;
 		$this->option  = $option;
 
-		$this->settings_page = is_multisite() ? network_admin_url( 'settings.php?page=meta-box-updater' ) : admin_url( 'admin.php?page=meta-box-updater' );
+		$this->settings_page = $option->is_network_activated() ? network_admin_url( 'settings.php?page=meta-box-updater' ) : admin_url( 'admin.php?page=meta-box-updater' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class RWMB_Update_Notification {
 			return;
 		}
 
-		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+		$admin_notices_hook = $this->option->is_network_activated() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, array( $this, 'notify' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
@@ -103,7 +103,7 @@ class RWMB_Update_Notification {
 	public function notify() {
 		// Do not show notification on License page.
 		$screen = get_current_screen();
-		if ( 'meta-box_page_meta-box-updater' === $screen->id ) {
+		if ( in_array( $screen->id, array( 'meta-box_page_meta-box-updater', 'settings_page_meta-box-updater-network' ), true ) ) {
 			return;
 		}
 

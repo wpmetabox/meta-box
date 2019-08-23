@@ -41,7 +41,8 @@ class RWMB_Update_Settings {
 	 */
 	public function init() {
 		// Whether to enable Meta Box menu. Priority 1 makes sure it runs before adding Meta Box menu.
-		add_action( 'admin_menu', array( $this, 'enable_menu' ), 1 );
+		$admin_menu_hook = $this->option->is_network_activated() ? 'network_admin_menu' : 'admin_menu';
+		add_action( $admin_menu_hook, array( $this, 'enable_menu' ), 1 );
 	}
 
 	/**
@@ -52,11 +53,13 @@ class RWMB_Update_Settings {
 			return;
 		}
 
-		// Enable Meta Box menu.
-		add_filter( 'rwmb_admin_menu', '__return_true' );
+		// Enable Meta Box menu only in single site.
+		if ( ! $this->option->is_network_activated() ) {
+			add_filter( 'rwmb_admin_menu', '__return_true' );
+		}
 
 		// Add submenu. Priority 90 makes it the last sub-menu item.
-		$admin_menu_hook = is_multisite() ? 'network_admin_menu' : 'admin_menu';
+		$admin_menu_hook = $this->option->is_network_activated() ? 'network_admin_menu' : 'admin_menu';
 		add_action( $admin_menu_hook, array( $this, 'add_settings_page' ), 90 );
 	}
 
@@ -64,9 +67,9 @@ class RWMB_Update_Settings {
 	 * Add settings page.
 	 */
 	public function add_settings_page() {
-		$parent     = is_multisite() ? 'settings.php' : 'meta-box';
-		$capability = is_multisite() ? 'manage_network_options' : 'manage_options';
-		$title      = is_multisite() ? esc_html__( 'Meta Box License', 'meta-box' ) : esc_html__( 'License', 'meta-box' );
+		$parent     = $this->option->is_network_activated() ? 'settings.php' : 'meta-box';
+		$capability = $this->option->is_network_activated() ? 'manage_network_options' : 'manage_options';
+		$title      = $this->option->is_network_activated() ? esc_html__( 'Meta Box License', 'meta-box' ) : esc_html__( 'License', 'meta-box' );
 		$page_hook  = add_submenu_page(
 			$parent,
 			$title,
@@ -169,7 +172,7 @@ class RWMB_Update_Settings {
 
 		$option['status'] = $status;
 
-		$admin_notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+		$admin_notices_hook = $this->option->is_network_activated() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, 'settings_errors' );
 
 		$this->option->update( $option );
