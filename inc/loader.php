@@ -88,11 +88,6 @@ class RWMB_Loader {
 		$core = new RWMB_Core();
 		$core->init();
 
-		if ( is_admin() ) {
-			$about = new RWMB_About();
-			$about->init();
-		}
-
 		// Validation module.
 		new RWMB_Validation();
 
@@ -114,6 +109,11 @@ class RWMB_Loader {
 		$update_settings->init();
 		$update_notification = new RWMB_Update_Notification( $update_checker, $update_option );
 		$update_notification->init();
+
+		if ( is_admin() ) {
+			$about = new RWMB_About( $update_checker );
+			$about->init();
+		}
 
 		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';

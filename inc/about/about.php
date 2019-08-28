@@ -10,6 +10,22 @@
  */
 class RWMB_About {
 	/**
+	 * The updater checker object.
+	 *
+	 * @var object
+	 */
+	private $update_checker;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param $update_checker The updater checker object.
+	 */
+	public function __construct( $update_checker ) {
+		$this->update_checker = $update_checker;
+	}
+
+	/**
 	 * Init hooks.
 	 */
 	public function init() {
@@ -110,7 +126,7 @@ class RWMB_About {
 					<div id="postbox-container-1" class="postbox-container">
 						<?php
 						include dirname( __FILE__ ) . '/sections/newsletter.php';
-						if ( ! $this->is_premium_user() ) {
+						if ( ! $this->update_checker->has_extensions() ) {
 							include dirname( __FILE__ ) . '/sections/upgrade.php';
 						}
 						?>
@@ -133,16 +149,8 @@ class RWMB_About {
 	 * Change WordPress footer text on about page.
 	 */
 	public function change_footer_text() {
-		$allowed_html = array(
-			'a'      => array(
-				'href'   => array(),
-				'target' => array(),
-			),
-			'strong' => array(),
-		);
-
 		// Translators: %1$s - link to review form.
-		echo wp_kses( sprintf( __( 'Please rate <strong>Meta Box</strong> <a href="%1$s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href="%1$s" target="_blank">WordPress.org</a> to help us spread the word. Thank you from the Meta Box team!', 'meta-box' ), 'https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5#new-post' ), $allowed_html );
+		echo wp_kses_post( sprintf( __( 'Please rate <strong>Meta Box</strong> <a href="%1$s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href="%1$s" target="_blank">WordPress.org</a> to help us spread the word. Thank you from the Meta Box team!', 'meta-box' ), 'https://wordpress.org/support/view/plugin-reviews/meta-box?filter=5#new-post' ) );
 	}
 
 	/**
@@ -198,21 +206,5 @@ class RWMB_About {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Check if current user is a premium user.
-	 *
-	 * @return bool
-	 */
-	protected function is_premium_user() {
-		$option = is_multisite() ? get_site_option( 'meta_box_updater' ) : get_option( 'meta_box_updater' );
-		if ( empty( $option['api_key'] ) ) {
-			return false;
-		}
-		if ( isset( $option['status'] ) && 'success' !== $option['status'] ) {
-			return false;
-		}
-		return true;
 	}
 }
