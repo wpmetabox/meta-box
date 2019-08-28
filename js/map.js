@@ -105,7 +105,7 @@
 			$( window ).on( 'rwmb_map_refresh', that.refresh );
 
 			// Refresh on meta box hide and show
-			$( document ).on( 'postbox-toggled', that.refresh );
+			rwmb.$document.on( 'postbox-toggled', that.refresh );
 			// Refresh on sorting meta boxes
 			$( '.meta-box-sortables' ).on( 'sortstop', that.refresh );
 		},

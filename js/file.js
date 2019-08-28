@@ -66,9 +66,12 @@
 	file.sort = function () {
 		$( this ).sortable( {
 			items: 'li',
-			start: function ( e, ui ) {
+			start: function ( event, ui ) {
 				ui.placeholder.height( ui.helper.outerHeight() );
 				ui.placeholder.width( ui.helper.outerWidth() );
+			},
+			update: function( event, ui ) {
+				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
 		} );
 	};

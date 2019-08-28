@@ -212,7 +212,10 @@
 
 			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
 			this.$el.sortable( {
-				helper : 'clone'
+				helper : 'clone',
+				update: function( event, ui ) {
+					ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
+				}
 			} );
 		},
 

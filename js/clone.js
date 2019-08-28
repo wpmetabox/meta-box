@@ -135,11 +135,10 @@
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone' ).last(),
 			$clone = $last.clone(),
-			inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]',
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Reset value for fields
-		var $inputs = $clone.find( inputSelectors );
+		var $inputs = $clone.find( rwmb.inputSelectors );
 		$inputs.each( cloneValue.reset );
 
 		// Insert Clone
@@ -238,14 +237,16 @@
 
 				// Fixed WYSIWYG field blank when inside a sortable, cloneable group.
 				// https://stackoverflow.com/a/25667486/371240
-				$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
+				ui.item.find( '.rwmb-wysiwyg' ).each( function () {
 					tinymce.execCommand( 'mceRemoveEditor', false, this.id );
 				} );
 			},
-			stop: function(e,ui) {
-				$( ui.item ).find( '.rwmb-wysiwyg' ).each( function () {
+			update: function( event, ui ) {
+				ui.item.find( '.rwmb-wysiwyg' ).each( function () {
 					tinymce.execCommand( 'mceAddEditor', true, this.id );
 				} );
+
+				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
 		} );
 	}
