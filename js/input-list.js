@@ -22,7 +22,7 @@
 			checked = true;
 		}
 
-		$this.parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', checked );
+		$this.parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', checked ).trigger( 'change' );
 
 		checked = ! checked;
 		$this.data( 'checked', checked );

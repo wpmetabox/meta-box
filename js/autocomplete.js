@@ -1,20 +1,17 @@
-( function ( $, rwmb ) {
+( function ( $, rwmb, i18n ) {
 	'use strict';
 
 	/**
-	 * Update date picker element
-	 * Used for static & dynamic added elements (when clone)
+	 * Transform an input into an autocomplete.
 	 */
-	function updateAutocomplete( e ) {
+	function transform( e ) {
 		var $this = $( this ),
 			$search = $this.siblings( '.rwmb-autocomplete-search' ),
 			$result = $this.siblings( '.rwmb-autocomplete-results' ),
 			name = $this.attr( 'name' );
 
 		// If the function is called on cloning, then change the field name and clear all results
-		// @see clone.js
 		if ( e.hasOwnProperty( 'type' ) && 'clone' == e.type ) {
-			// Clear all results
 			$result.html( '' );
 		}
 
@@ -25,13 +22,13 @@
 				$result.append(
 					'<div class="rwmb-autocomplete-result">' +
 					'<div class="label">' + ( typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label ) + '</div>' +
-					'<div class="actions">' + RWMB_Autocomplete.delete + '</div>' +
+					'<div class="actions">' + i18n.delete + '</div>' +
 					'<input type="hidden" class="rwmb-autocomplete-value" name="' + name + '" value="' + ui.item.value + '">' +
 					'</div>'
 				);
 
-				// Reinitialize value
-				$search.val( '' );
+				// Reinitialize value.
+				$search.val( '' ).trigger( 'change' );
 
 				return false;
 			}
@@ -40,15 +37,19 @@
 
 	function deleteSelection( e ) {
 		e.preventDefault();
-		$( this ).parent().remove();
+		var $item = $( this ).parent(),
+			$search = $item.parent().siblings( '.rwmb-autocomplete-search' );
+
+		$item.remove();
+		$search.trigger( 'change' );
 	}
 
 	function init( e ) {
-		$( e.target ).find( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( updateAutocomplete );
+		$( e.target ).find( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( transform );
 	}
 
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'clone', '.rwmb-autocomplete', updateAutocomplete )
+		.on( 'clone', '.rwmb-autocomplete', transform )
 		.on( 'click', '.rwmb-autocomplete-result .actions', deleteSelection );
-} )( jQuery, rwmb );
+} )( jQuery, rwmb, RWMB_Autocomplete );

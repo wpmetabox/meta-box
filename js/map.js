@@ -174,7 +174,7 @@
 		// Update coordinate to input field
 		updateCoordinate: function ( latLng ) {
 			var zoom = this.map.getZoom();
-			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom );
+			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom ).trigger( 'change' );
 		},
 
 		// Find coordinates by address

@@ -139,7 +139,7 @@
 			}, 500 ) );
 
 			this.controller.get( 'items' ).on( 'remove', _.debounce( function () {
-				that.$input.val( '' );
+				that.$input.val( '' ).trigger( 'change' );
 			}, 500 ) );
 		},
 

@@ -24,7 +24,7 @@
 				value = ui.values[ 0 ] + '|' + ui.values[ 1 ];
 			}
 
-			$input.val( value );
+			$input.val( value ).trigger( 'change' );
 			$valueLabel.html( value );
 		};
 

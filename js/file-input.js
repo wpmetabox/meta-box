@@ -25,13 +25,13 @@
 		// Handle selection
 		frame.on( 'select', function () {
 			var url = frame.state().get( 'selection' ).first().toJSON().url;
-			$el.siblings( 'input' ).val( url ).siblings( 'a' ).removeClass( 'hidden' );
+			$el.siblings( 'input' ).val( url ).trigger( 'change' ).siblings( 'a' ).removeClass( 'hidden' );
 		} );
 	}
 
 	function clearSelection( e ) {
 		e.preventDefault();
-		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' );
+		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' ).trigger( 'change' );
 	}
 
 	function hideRemoveButtonWhenCloning() {

@@ -12,6 +12,10 @@
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
 
+		options.onSelect = function() {
+			$this.trigger( 'change' );
+		}
+
 		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).timepicker( options );
 			return;

@@ -155,6 +155,9 @@
 
 		// After cloning fields.
 		$inputs.trigger( 'after_clone', nextIndex );
+
+		// Trigger custom change event for MB Blocks to update block attributes.
+		$inputs.first().trigger( 'mb_change' );
 	}
 
 	/**
@@ -211,6 +214,9 @@
 		$this.parent().trigger( 'remove' ).remove();
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
+
+		// Trigger custom change event for MB Blocks to update block attributes.
+		$container.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 	}
 
 	/**
