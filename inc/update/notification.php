@@ -117,7 +117,7 @@ class RWMB_Update_Notification {
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( 'Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a> to get automatic updates and premium support.', 'meta-box' ),
 		);
-		$status   = $this->get_license_status();
+		$status   = $this->option->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
 			return;
 		}
@@ -147,7 +147,7 @@ class RWMB_Update_Notification {
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
 		);
-		$status = $this->get_license_status();
+		$status = $this->option->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
 			return;
 		}
@@ -163,7 +163,7 @@ class RWMB_Update_Notification {
 	 * @return array
 	 */
 	public function plugin_links( $links ) {
-		$status = $this->get_license_status();
+		$status = $this->option->get_license_status();
 		if ( 'active' === $status ) {
 			return $links;
 		}
@@ -172,13 +172,6 @@ class RWMB_Update_Notification {
 		$links[] = '<a href="' . esc_url( $this->settings_page ) . '" style="color: #39b54a; font-weight: bold">' . esc_html( $text ) . '</a>';
 
 		return $links;
-	}
-
-	/**
-	 * Get license status.
-	 */
-	private function get_license_status() {
-		return $this->checker->get_api_key() ? $this->option->get( 'status', 'active' ) : 'no_key';
 	}
 
 	/**

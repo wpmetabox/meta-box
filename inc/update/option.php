@@ -33,6 +33,22 @@ class RWMB_Update_Option {
 	}
 
 	/**
+	 * Get the API key.
+	 *
+	 * @return string
+	 */
+	public function get_api_key() {
+		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->get( 'api_key' );
+	}
+
+	/**
+	 * Get license status.
+	 */
+	public function get_license_status() {
+		return $this->get_api_key() ? $this->get( 'status', 'active' ) : 'no_key';
+	}
+
+	/**
 	 * Update the option array.
 	 *
 	 * @param array $option Option value.

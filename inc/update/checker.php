@@ -176,7 +176,7 @@ class RWMB_Update_Checker {
 		$args = wp_parse_args(
 			$args,
 			array(
-				'api_key' => $this->get_api_key(),
+				'api_key' => $this->option->get_api_key(),
 			)
 		);
 		$args = array_filter( $args );
@@ -203,14 +203,5 @@ class RWMB_Update_Checker {
 		$plugins = get_plugins();
 
 		return isset( $plugins[ $plugin_data->plugin ] ) && version_compare( $plugins[ $plugin_data->plugin ]['Version'], $plugin_data->new_version, '<' );
-	}
-
-	/**
-	 * Get the API key.
-	 *
-	 * @return string
-	 */
-	public function get_api_key() {
-		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->option->get( 'api_key' );
 	}
 }
