@@ -19,7 +19,7 @@ class RWMB_About {
 	/**
 	 * Constructor.
 	 *
-	 * @param $update_checker The updater checker object.
+	 * @param object $update_checker The updater checker object.
 	 */
 	public function __construct( $update_checker ) {
 		$this->update_checker = $update_checker;
