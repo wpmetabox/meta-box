@@ -7,11 +7,18 @@
 	function transform() {
 		var $this = $( this ),
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
-			id = $this.attr( 'id' );
+			id = $this.attr( 'id' ),
+			isInBlock = $this.closest( '.wp-block' ).length > 0;
 
 		// Ignore existing editor.
-		if ( tinyMCEPreInit.mceInit[id] ) {
+		if ( ! isInBlock && tinyMCEPreInit.mceInit[id] ) {
 			return;
+		}
+
+		// Update the ID attribute if the editor is in a new block.
+		if ( isInBlock ) {
+			id = id + '_' + rwmb.uniqid();
+			$this.attr( 'id', id );
 		}
 
 		// Update the DOM
