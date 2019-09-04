@@ -91,7 +91,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Show form upload.
 		$attributes          = self::get_attributes( $field, $meta );
 		$attributes['type']  = 'file';
-		$attributes['name']  = "{$field['file_input_name']}[]";
+		$attributes['name']  = "{$field['field_name']}[]";
 		$attributes['class'] = 'rwmb-file-input';
 
 		/*
@@ -244,7 +244,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$input = $field['file_input_name'];
+		$input = $field['field_name'];
 
 		// @codingStandardsIgnoreLine
 		if ( empty( $_FILES[ $input ] ) ) {
@@ -370,7 +370,7 @@ class RWMB_File_Field extends RWMB_Field {
 		);
 		$field['multiple'] = true;
 
-		$field['file_input_name'] = '_file_' . $field['id'];
+		$field['field_name'] = '_file_' . $field['id'];
 
 		return $field;
 	}
