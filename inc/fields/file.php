@@ -117,6 +117,12 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 		$html .= '</div>';
 
+		$html .= sprintf(
+			'<input type="hidden" class="rwmb-file-field-name" name="%s" value="%s">',
+			$field['field_key'],
+			$field['field_name']
+		);
+
 		return $html;
 	}
 
@@ -244,10 +250,11 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$input = $field['field_name'];
+		$key   = $field['field_key'];
+		$input = filter_input( INPUT_POST, $key, FILTER_SANITIZE_STRING );
 
 		// @codingStandardsIgnoreLine
-		if ( empty( $_FILES[ $input ] ) ) {
+		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
 
@@ -370,7 +377,8 @@ class RWMB_File_Field extends RWMB_Field {
 		);
 		$field['multiple'] = true;
 
-		$field['field_name'] = '_file_' . $field['id'];
+		$field['field_name'] = "_file_{$field['id']}";
+		$field['field_key']  = "_key_{$field['id']}";
 
 		return $field;
 	}
