@@ -250,8 +250,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$key   = $field['file_input_key'];
-		$input = filter_input( INPUT_POST, $key, FILTER_SANITIZE_STRING );
+		$input = $field['clone'] ? $field['file_input_key'] : $field['file_input_name'];
 
 		// @codingStandardsIgnoreLine
 		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
@@ -260,30 +259,11 @@ class RWMB_File_Field extends RWMB_Field {
 
 		$new = array_filter( (array) $new );
 
-		// Non-cloneable field.
-		if ( ! $field['clone'] ) {
-			$count = self::transform( $input );
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[] = $attachment;
-				}
-			}
-
-			return $new;
-		}
-
-		// Cloneable field.
-		$counts = self::transform_cloneable( $input );
-		foreach ( $counts as $clone_index => $count ) {
-			if ( empty( $new[ $clone_index ] ) ) {
-				$new[ $clone_index ] = array();
-			}
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$clone_index}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[ $clone_index ][] = $attachment;
-				}
+		$count = self::transform( $input );
+		for ( $i = 0; $i <= $count; $i ++ ) {
+			$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
+			if ( $attachment && ! is_wp_error( $attachment ) ) {
+				$new[] = $attachment;
 			}
 		}
 
@@ -324,36 +304,6 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return count( $_FILES[ $input_name ]['name'] );
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
-	 * Transform $_FILES from $_FILES['field']['key']['cloneIndex']['index'] to $_FILES['field_cloneIndex_index']['key'].
-	 *
-	 * @param string $input_name The field input name.
-	 *
-	 * @return array
-	 */
-	protected static function transform_cloneable( $input_name ) {
-		// @codingStandardsIgnoreStart
-		foreach ( $_FILES[ $input_name ] as $key => $list ) {
-			foreach ( $list as $clone_index => $clone_values ) {
-				foreach ( $clone_values as $index => $value ) {
-					$file_key = "{$input_name}_{$clone_index}_{$index}";
-
-					if ( ! isset( $_FILES[ $file_key ] ) ) {
-						$_FILES[ $file_key ] = array();
-					}
-					$_FILES[ $file_key ][ $key ] = $value;
-				}
-			}
-		}
-
-		$counts = array();
-		foreach ( $_FILES[ $input_name ]['name'] as $clone_index => $clone_values ) {
-			$counts[ $clone_index ] = count( $clone_values );
-		}
-		return $counts;
 		// @codingStandardsIgnoreEnd
 	}
 
