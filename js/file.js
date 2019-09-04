@@ -100,7 +100,7 @@
 	file.resetClone = function() {
 		var $this = $( this ),
 			$clone = $this.closest( '.rwmb-clone' ),
-			$key = $clone.find( '.rwmb-file-input-key' ),
+			$key = $clone.find( '.rwmb-file-index' ),
 			inputName = '_file_' + rwmb.uniqid();
 
 		$clone.find( '.rwmb-uploaded' ).remove();

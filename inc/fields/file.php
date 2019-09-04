@@ -91,7 +91,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Show form upload.
 		$attributes          = self::get_attributes( $field, $meta );
 		$attributes['type']  = 'file';
-		$attributes['name']  = "{$field['file_input_name']}[]";
+		$attributes['name']  = "{$field['input_name']}[]";
 		$attributes['class'] = 'rwmb-file-input';
 
 		/*
@@ -118,9 +118,9 @@ class RWMB_File_Field extends RWMB_Field {
 		$html .= '</div>';
 
 		$html .= sprintf(
-			'<input type="hidden" class="rwmb-file-input-key" name="%s" value="%s">',
-			$field['file_input_key'],
-			$field['file_input_name']
+			'<input type="hidden" class="rwmb-file-index" name="%s" value="%s">',
+			$field['index_name'],
+			$field['input_name']
 		);
 
 		return $html;
@@ -250,7 +250,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$input = $field['clone'] ? $field['file_input_key'] : $field['file_input_name'];
+		$input = isset( $field['index'] ) ? $field['index'] : $field['input_name'];
 
 		// @codingStandardsIgnoreLine
 		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
@@ -326,9 +326,9 @@ class RWMB_File_Field extends RWMB_Field {
 			)
 		);
 
-		$field['multiple']        = true;
-		$field['file_input_name'] = "_file_{$field['id']}";
-		$field['file_input_key']  = "_key_{$field['id']}";
+		$field['multiple']   = true;
+		$field['input_name'] = "_file_{$field['id']}";
+		$field['index_name'] = "_index_{$field['id']}";
 
 		return $field;
 	}
