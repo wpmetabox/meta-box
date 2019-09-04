@@ -118,9 +118,9 @@ class RWMB_File_Field extends RWMB_Field {
 		$html .= '</div>';
 
 		$html .= sprintf(
-			'<input type="hidden" class="rwmb-file-field-name" name="%s" value="%s">',
-			$field['field_key'],
-			$field['field_input_name']
+			'<input type="hidden" class="rwmb-file-input-key" name="%s" value="%s">',
+			$field['file_input_key'],
+			$field['file_input_name']
 		);
 
 		return $html;
@@ -250,7 +250,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$key   = $field['field_key'];
+		$key   = $field['file_input_key'];
 		$input = filter_input( INPUT_POST, $key, FILTER_SANITIZE_STRING );
 
 		// @codingStandardsIgnoreLine
@@ -364,8 +364,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field             = parent::normalize( $field );
-		$field             = wp_parse_args(
+		$field = parent::normalize( $field );
+		$field = wp_parse_args(
 			$field,
 			array(
 				'std'              => array(),
@@ -375,10 +375,10 @@ class RWMB_File_Field extends RWMB_Field {
 				'upload_dir'       => '',
 			)
 		);
-		$field['multiple'] = true;
 
+		$field['multiple']        = true;
 		$field['file_input_name'] = "_file_{$field['id']}";
-		$field['field_key']       = "_key_{$field['id']}";
+		$field['file_input_key']  = "_key_{$field['id']}";
 
 		return $field;
 	}
