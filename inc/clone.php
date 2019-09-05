@@ -85,16 +85,7 @@ class RWMB_Clone {
 		}
 
 		if ( in_array( $field['type'], array( 'file', 'image' ), true ) ) {
-			// @codingStandardsIgnoreLine
-			$indexes = isset( $_POST[ "_index_{$field['id']}" ] ) ? $_POST[ "_index_{$field['id']}" ] : array();
-			foreach ( $indexes as $key => $index ) {
-				$field['index'] = $index;
-
-				$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : array();
-				$value       = isset( $new[ $key ] ) ? $new[ $key ] : array();
-				$value       = RWMB_Field::call( $field, 'value', $value, $old_value, $object_id );
-				$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field, $old_value, $object_id );
-			}
+			$new = RWMB_File_Field::clone_value( $new, $old, $object_id, $field );
 		} else {
 			foreach ( $new as $key => $value ) {
 				$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : null;

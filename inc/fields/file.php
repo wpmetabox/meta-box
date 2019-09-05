@@ -271,6 +271,37 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
+	 * Get meta values to save for cloneable fields.
+	 *
+	 * @param array $new         The submitted meta value.
+	 * @param array $old         The existing meta value.
+	 * @param int   $object_id   The object ID.
+	 * @param array $field       The field settings.
+	 * @param array $data_source Data source. Either $_POST or custom array. Used in group to get uploaded files.
+	 *
+	 * @return mixed
+	 */
+	public static function clone_value( $new, $old, $object_id, $field, $data_source = null ) {
+		if ( ! $data_source ) {
+			// @codingStandardsIgnoreLine
+			$data_source = $_POST;
+		}
+
+		// @codingStandardsIgnoreLine
+		$indexes = isset( $data_source[ "_index_{$field['id']}" ] ) ? $data_source[ "_index_{$field['id']}" ] : array();
+		foreach ( $indexes as $key => $index ) {
+			$field['index'] = $index;
+
+			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : array();
+			$value       = isset( $new[ $key ] ) ? $new[ $key ] : array();
+			$value       = self::value( $value, $old_value, $object_id, $field );
+			$new[ $key ] = self::filter( 'sanitize', $value, $field, $old_value, $object_id );
+		}
+
+		return $new;
+	}
+
+	/**
 	 * Handle file upload.
 	 * Consider upload to Media Library or custom folder.
 	 *
