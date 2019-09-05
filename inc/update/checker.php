@@ -108,6 +108,12 @@ class RWMB_Update_Checker {
 	public function check_updates( $data ) {
 		static $response = null;
 
+		// Bypass embed plugins via TGMPA.
+		// @codingStandardsIgnoreLine
+		if ( isset( $_GET['tgmpa-update'] ) || ( isset( $_POST['action'] ) && 'tgmpa-bulk-update' === $_POST['action'] ) ) {
+			return $data;
+		}
+
 		// Make sure to send remote request once.
 		if ( null === $response ) {
 			$response = $this->request( array( 'action' => 'check_updates' ) );
