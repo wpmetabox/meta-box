@@ -91,7 +91,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Show form upload.
 		$attributes          = self::get_attributes( $field, $meta );
 		$attributes['type']  = 'file';
-		$attributes['name']  = "{$field['file_input_name']}[]";
+		$attributes['name']  = "{$field['input_name']}[]";
 		$attributes['class'] = 'rwmb-file-input';
 
 		/*
@@ -116,6 +116,12 @@ class RWMB_File_Field extends RWMB_Field {
 			);
 		}
 		$html .= '</div>';
+
+		$html .= sprintf(
+			'<input type="hidden" class="rwmb-file-index" name="%s" value="%s">',
+			$field['index_name'],
+			$field['input_name']
+		);
 
 		return $html;
 	}
@@ -244,40 +250,52 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$input = $field['file_input_name'];
+		$input = isset( $field['index'] ) ? $field['index'] : $field['input_name'];
 
 		// @codingStandardsIgnoreLine
-		if ( empty( $_FILES[ $input ] ) ) {
+		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
 
 		$new = array_filter( (array) $new );
 
-		// Non-cloneable field.
-		if ( ! $field['clone'] ) {
-			$count = self::transform( $input );
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[] = $attachment;
-				}
+		$count = self::transform( $input );
+		for ( $i = 0; $i <= $count; $i ++ ) {
+			$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
+			if ( $attachment && ! is_wp_error( $attachment ) ) {
+				$new[] = $attachment;
 			}
-
-			return $new;
 		}
 
-		// Cloneable field.
-		$counts = self::transform_cloneable( $input );
-		foreach ( $counts as $clone_index => $count ) {
-			if ( empty( $new[ $clone_index ] ) ) {
-				$new[ $clone_index ] = array();
-			}
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$clone_index}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[ $clone_index ][] = $attachment;
-				}
-			}
+		return $new;
+	}
+
+	/**
+	 * Get meta values to save for cloneable fields.
+	 *
+	 * @param array $new         The submitted meta value.
+	 * @param array $old         The existing meta value.
+	 * @param int   $object_id   The object ID.
+	 * @param array $field       The field settings.
+	 * @param array $data_source Data source. Either $_POST or custom array. Used in group to get uploaded files.
+	 *
+	 * @return mixed
+	 */
+	public static function clone_value( $new, $old, $object_id, $field, $data_source = null ) {
+		if ( ! $data_source ) {
+			// @codingStandardsIgnoreLine
+			$data_source = $_POST;
+		}
+
+		// @codingStandardsIgnoreLine
+		$indexes = isset( $data_source[ "_index_{$field['id']}" ] ) ? $data_source[ "_index_{$field['id']}" ] : array();
+		foreach ( $indexes as $key => $index ) {
+			$field['index'] = $index;
+
+			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : array();
+			$value       = isset( $new[ $key ] ) ? $new[ $key ] : array();
+			$value       = self::value( $value, $old_value, $object_id, $field );
+			$new[ $key ] = self::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
 
 		return $new;
@@ -321,44 +339,14 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Transform $_FILES from $_FILES['field']['key']['cloneIndex']['index'] to $_FILES['field_cloneIndex_index']['key'].
-	 *
-	 * @param string $input_name The field input name.
-	 *
-	 * @return array
-	 */
-	protected static function transform_cloneable( $input_name ) {
-		// @codingStandardsIgnoreStart
-		foreach ( $_FILES[ $input_name ] as $key => $list ) {
-			foreach ( $list as $clone_index => $clone_values ) {
-				foreach ( $clone_values as $index => $value ) {
-					$file_key = "{$input_name}_{$clone_index}_{$index}";
-
-					if ( ! isset( $_FILES[ $file_key ] ) ) {
-						$_FILES[ $file_key ] = array();
-					}
-					$_FILES[ $file_key ][ $key ] = $value;
-				}
-			}
-		}
-
-		$counts = array();
-		foreach ( $_FILES[ $input_name ]['name'] as $clone_index => $clone_values ) {
-			$counts[ $clone_index ] = count( $clone_values );
-		}
-		return $counts;
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field             = parent::normalize( $field );
-		$field             = wp_parse_args(
+		$field = parent::normalize( $field );
+		$field = wp_parse_args(
 			$field,
 			array(
 				'std'              => array(),
@@ -368,9 +356,10 @@ class RWMB_File_Field extends RWMB_Field {
 				'upload_dir'       => '',
 			)
 		);
-		$field['multiple'] = true;
 
-		$field['file_input_name'] = '_file_' . $field['id'];
+		$field['multiple']   = true;
+		$field['input_name'] = "_file_{$field['id']}";
+		$field['index_name'] = "_index_{$field['id']}";
 
 		return $field;
 	}

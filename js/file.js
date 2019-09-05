@@ -99,9 +99,14 @@
 	// Reset field when cloning.
 	file.resetClone = function() {
 		var $this = $( this ),
-			$clone = $this.closest( '.rwmb-clone' );
+			$clone = $this.closest( '.rwmb-clone' ),
+			$key = $clone.find( '.rwmb-file-index' ),
+			inputName = '_file_' + rwmb.uniqid();
+
 		$clone.find( '.rwmb-uploaded' ).remove();
-		$clone.find( '.rwmb-file-input' ).not( ':first' ).remove();
+		$clone.find( '.rwmb-file-input' ).attr( 'name', inputName + '[]' ).not( ':first' ).remove();
+
+		$key.val( inputName );
 	};
 
 	// Set 'required' attribute. 'this' is the wrapper field input.
