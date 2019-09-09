@@ -14,12 +14,15 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_posts', array( __CLASS__, 'ajax_get_posts' ) );
+		add_action( 'wp_ajax_nopriv_rwmb_get_posts', array( __CLASS__, 'ajax_get_posts' ) );
 	}
 
 	/**
 	 * Query posts via ajax.
 	 */
 	public static function ajax_get_posts() {
+		check_ajax_referer( 'query' );
+
 		$query_args = filter_input( INPUT_GET, 'query_args', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
 		// User entered some text, search for it.
@@ -109,6 +112,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$field['js_options']['ajax_data'] = array(
 				'action'     => 'rwmb_get_posts',
 				'query_args' => $field['query_args'],
+				'_wpnonce'   => wp_create_nonce( 'query' ),
 			);
 
 			$field['js_options']['ajax'] = array(
