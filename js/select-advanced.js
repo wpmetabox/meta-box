@@ -49,6 +49,24 @@
 
 				return results;
 			};
+
+			// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
+			var cache = {};
+			options.ajax.transport = function ( params, success, failure ) {
+				if ( params.data._type === 'query' ) {
+					delete params.data.page;
+				}
+				var key = JSON.stringify( params.data );
+				if ( cache[key] ) {
+					success( cache[key] );
+					return;
+				}
+
+				return $.ajax( params ).then( function ( data ) {
+					cache[key] = data;
+					return data;
+				} ).then( success ).fail( failure );
+		   };
 		}
 
 		$this.show().select2( options );
