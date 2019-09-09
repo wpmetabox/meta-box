@@ -20,10 +20,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * Query posts via ajax.
 	 */
 	public static function ajax_get_posts() {
-		$field = array(
-			'query_args' => $_GET['query_args'],
-		);
-		$posts = self::query( null, $field );
+		$query_args      = isset( $_GET['query_args'] ) ? $_GET['query_args'] : array();
+		$query_args['s'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
+
+		$field      = compact( 'query_args' );
+		$posts      = self::query( null, $field );
 		wp_send_json_success( array_values( $posts ) );
 	}
 
