@@ -33,16 +33,21 @@
 				return Object.assign( options.ajax_data, params );
 			};
 			options.ajax.processResults = function ( response ) {
-				var data = response.data;
-				data = data.map( function( item ) {
+				var items = response.data.items.map( function( item ) {
 					return {
 						id: item.value,
 						text: item.label,
 					}
 				} );
-				return {
-					results: data
-				};
+
+				var results = {
+					results: items
+				}
+				if ( response.data.hasOwnProperty( 'more' ) ) {
+					results.pagination = { more: true };
+				}
+
+				return results;
 			};
 		}
 

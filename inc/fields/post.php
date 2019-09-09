@@ -20,12 +20,30 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * Query posts via ajax.
 	 */
 	public static function ajax_get_posts() {
-		$query_args      = isset( $_GET['query_args'] ) ? $_GET['query_args'] : array();
+		$query_args = filter_input( INPUT_GET, 'query_args', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+
+		// User entered some text, search for it.
 		$query_args['s'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
 
-		$field      = compact( 'query_args' );
-		$posts      = self::query( null, $field );
-		wp_send_json_success( array_values( $posts ) );
+		// Pagination.
+		if ( 'query:append' === filter_input( INPUT_GET, '_type', FILTER_SANITIZE_STRING ) ) {
+			$query_args['paged'] = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+		}
+
+		// Query the database to get posts.
+		$field = compact( 'query_args' );
+		$posts = self::query( null, $field );
+		$posts = array_values( $posts );
+
+		$data = array( 'items' => $posts );
+
+		// More items for pagination.
+		$limit = (int) $query_args['posts_per_page'];
+		if ( -1 !== $limit && count( $posts ) === $limit ) {
+			$data['more'] = true;
+		}
+
+		wp_send_json_success( $data );
 	}
 
 	/**
@@ -111,7 +129,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	public static function query( $meta, $field ) {
 		$args = $field['query_args'];
 
-		if ( $field['ajax'] ) {
+		if ( ! empty( $field['ajax'] ) ) {
 			$meta                   = array_map( 'absint', (array) $meta );
 			$args['posts_per_page'] = count( $meta );
 			$args['post__in']       = $meta;
