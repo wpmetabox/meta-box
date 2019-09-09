@@ -29,6 +29,7 @@
 		$this.siblings( '.select2-container' ).remove();
 
 		if ( options.ajax_data ) {
+			options.ajax.dataType = 'json';
 			options.ajax.data = function( params ) {
 				return Object.assign( options.ajax_data, params );
 			};
