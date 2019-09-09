@@ -10,6 +10,24 @@
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	/**
+	 * Add ajax actions callback.
+	 */
+	public static function add_actions() {
+		add_action( 'wp_ajax_rwmb_get_posts', array( __CLASS__, 'ajax_get_posts' ) );
+	}
+
+	/**
+	 * Query posts via ajax.
+	 */
+	public static function ajax_get_posts() {
+		$field = array(
+			'query_args' => $_GET['query_args'],
+		);
+		$posts = self::query( null, $field );
+		wp_send_json_success( array_values( $posts ) );
+	}
+
+	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
@@ -56,17 +74,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		return $field;
-	}
-
-	/**
-	 * Query posts for field options.
-	 *
-	 * @param  array $field Field settings.
-	 * @return array        Field options array.
-	 */
-	public static function query( $field ) {
-		$args = wp_parse_args(
+		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
 				'post_type'              => $field['post_type'],
@@ -77,6 +85,36 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				'update_post_term_cache' => false,
 			)
 		);
+
+		if ( $field['ajax'] ) {
+			$field['js_options']['ajax_data'] = array(
+				'action'     => 'rwmb_get_posts',
+				'query_args' => $field['query_args'],
+			);
+
+			$field['js_options']['ajax'] = array(
+				'url'      => admin_url( 'admin-ajax.php' ),
+				'dataType' => 'json',
+			);
+		}
+
+		return $field;
+	}
+
+	/**
+	 * Query posts for field options.
+	 *
+	 * @param  array $field Field settings.
+	 * @return array        Field options array.
+	 */
+	public static function query( $meta, $field ) {
+		$args = $field['query_args'];
+
+		if ( $field['ajax'] ) {
+			$meta                   = array_map( 'absint', (array) $meta );
+			$args['posts_per_page'] = count( $meta );
+			$args['post__in']       = $meta;
+		}
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'posts' );

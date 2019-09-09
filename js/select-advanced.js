@@ -24,8 +24,28 @@
 	function transform() {
 		var $this = $( this ),
 			options = $this.data( 'options' );
+
 		$this.removeClass( 'select2-hidden-accessible' );
 		$this.siblings( '.select2-container' ).remove();
+
+		if ( options.ajax_data ) {
+			options.ajax.data = function( params ) {
+				return Object.assign( options.ajax_data, params );
+			};
+			options.ajax.processResults = function ( response ) {
+				var data = response.data;
+				data = data.map( function( item ) {
+					return {
+						id: item.value,
+						text: item.label,
+					}
+				} );
+				return {
+					results: data
+				};
+			};
+		}
+
 		$this.show().select2( options );
 
 		if ( ! $this.attr( 'multiple' ) ) {
