@@ -1,6 +1,9 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
+	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
+	var cache = {};
+
 	/**
 	 * Reorder selected values in correct order that they were selected.
 	 * @param $select2 jQuery element of the select2.
@@ -51,8 +54,6 @@
 				return results;
 			};
 
-			// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
-			var cache = {};
 			options.ajax.transport = function ( params, success, failure ) {
 				if ( params.data._type === 'query' ) {
 					delete params.data.page;
