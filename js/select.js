@@ -1,6 +1,12 @@
-( function ( $, rwmb ) {
-	'use strict';
+// Global object for shared functions and data.
+window.rwmb = window.rwmb || {}; // add this for remove rwmb is not defined
 
+( function ( $ , document, rwmb ) { // include document and rwmb
+	'use strict';
+	rwmb.$document = $( document ); // include document inside rwmb
+	rwmb.$document.on( 'ready', function() {
+		rwmb.$document.trigger( 'mb_ready' ); // check ready to continue rwmb
+	} );
 	function toggleAll( e ) {
 		e.preventDefault();
 
@@ -19,4 +25,5 @@
 	};
 
 	rwmb.$document.on( 'click', '.rwmb-select-all-none a', toggleAll );
-} )( jQuery, rwmb );
+} )( jQuery, document, rwmb );  // include document and rwmb
+
