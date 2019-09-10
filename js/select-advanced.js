@@ -25,7 +25,7 @@
 		var $this = $( this ),
 			options = $this.data( 'options' );
 
-		$this.removeClass( 'select2-hidden-accessible' );
+		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 
 		if ( options.ajax_data ) {
