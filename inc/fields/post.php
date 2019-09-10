@@ -159,17 +159,12 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query   = new WP_Query( $args );
 		$options = array();
 		foreach ( $query->posts as $post ) {
-			$item = array_merge(
-				array(
-					'value'  => $post->ID,
-					'label'  => $post->post_title,
-					'parent' => $post->post_parent,
-				),
-				(array) $post
+			$label                = self::filter( 'choice_label', $post->post_title, $field, $post );
+			$options[ $post->ID ] = array(
+				'value'  => $post->ID,
+				'label'  => $label,
+				'parent' => $post->post_parent,
 			);
-			$item['label'] = self::filter( 'choice_label', $item['label'], $field, (object) $item );
-
-			$options[ $post->ID ] = $item;
 		}
 
 		// Cache the query.
