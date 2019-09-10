@@ -106,8 +106,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		if ( $field['ajax'] ) {
 			$field['js_options']['ajax_data'] = array(
-				'action'     => 'rwmb_get_posts',
-				'field'      => array(
+				'action'   => 'rwmb_get_posts',
+				'field'    => array(
 					'id'           => $field['id'],
 					'type'         => $field['type'],
 					'query_args'   => $field['query_args'],
@@ -116,7 +116,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 					'clone'        => false,
 					'_original_id' => $field['id'],
 				),
-				'_wpnonce'   => wp_create_nonce( 'query' ),
+				'_wpnonce' => wp_create_nonce( 'query' ),
 			);
 
 			$field['js_options']['ajax'] = array(
@@ -130,15 +130,19 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Query posts for field options.
 	 *
+	 * @param  array $meta  Saved meta value.
 	 * @param  array $field Field settings.
 	 * @return array        Field options array.
 	 */
 	public static function query( $meta, $field ) {
-		$args = wp_parse_args( $field['query_args'], array(
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		) );
+		$args = wp_parse_args(
+			$field['query_args'],
+			array(
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
 
 		// Query only selected items.
 		$meta = RWMB_Helpers_Array::flatten( (array) $meta );

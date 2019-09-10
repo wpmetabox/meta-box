@@ -171,7 +171,7 @@ class RWMB_Sanitizer {
 	 * @return array
 	 */
 	private function sanitize_background( $value ) {
-		$value = wp_parse_args(
+		$value          = wp_parse_args(
 			$value,
 			array(
 				'color'      => '',
@@ -243,7 +243,7 @@ class RWMB_Sanitizer {
 	 * @return string
 	 */
 	private function sanitize_map( $value ) {
-		$value = sanitize_text_field( $value );
+		$value                               = sanitize_text_field( $value );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 
 		$latitude  = (float) $latitude;

@@ -31,7 +31,7 @@ class RWMB_Update_Checker {
 	 * @param object $option  Update option object.
 	 */
 	public function __construct( $option ) {
-		$this->option  = $option;
+		$this->option = $option;
 	}
 
 	/**
@@ -92,8 +92,8 @@ class RWMB_Update_Checker {
 			'meta-box-tabs',
 			'meta-box-template',
 		);
-		$plugins = get_plugins();
-		$plugins = array_map( 'dirname', array_keys( $plugins ) );
+		$plugins    = get_plugins();
+		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
 
 		return array_intersect( $extensions, $plugins );
 	}

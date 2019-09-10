@@ -102,7 +102,7 @@ class RWMB_Loader {
 		$wpml->init();
 
 		// Update.
-		$update_option = new RWMB_Update_Option();
+		$update_option  = new RWMB_Update_Option();
 		$update_checker = new RWMB_Update_Checker( $update_option );
 		$update_checker->init();
 		$update_settings = new RWMB_Update_Settings( $update_checker, $update_option );

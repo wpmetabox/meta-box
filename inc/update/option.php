@@ -71,7 +71,7 @@ class RWMB_Update_Option {
 	 */
 	public function is_network_activated() {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 		return is_multisite() && is_plugin_active_for_network( 'meta-box/meta-box.php' );
 	}
