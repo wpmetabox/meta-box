@@ -34,4 +34,20 @@ class RWMB_Helpers_Array {
 		}
 		unset( $array[ $from ] );
 	}
+
+	/**
+	 * Flatten an array.
+	 *
+	 * @link https://stackoverflow.com/a/1320156/371240
+	 *
+	 * @param  array $array Input array
+	 * @return array
+	 */
+	public static function flatten( $array ) {
+		$return = array();
+		array_walk_recursive( $array, function( $a ) use ( &$return ) {
+			$return[] = $a;
+		} );
+		return $return;
+	}
 }
