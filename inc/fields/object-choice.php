@@ -95,7 +95,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
 	 * Set ajax parameters.
 	 *
-	 * @param array &$field Field settings.
+	 * @param array $field Field settings.
 	 */
 	protected static function set_ajax_params( &$field ) {
 		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
