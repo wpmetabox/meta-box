@@ -25,6 +25,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$field = filter_input( INPUT_GET, 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
+		// Required for 'choice_label' filter. See self::filter().
+		$field['clone']        = false;
+		$field['_original_id'] = $field['id'];
+
 		// User entered some text, search for it.
 		$field['query_args']['s'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
 
@@ -33,15 +37,15 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$field['query_args']['paged'] = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
 
-		// Query the database to get posts.
-		$posts = self::query( null, $field );
-		$posts = array_values( $posts );
+		// Query the database.
+		$items = self::query( null, $field );
+		$items = array_values( $items );
 
-		$data = array( 'items' => $posts );
+		$data = array( 'items' => $items );
 
 		// More items for pagination.
 		$limit = (int) $field['query_args']['posts_per_page'];
-		if ( -1 !== $limit && count( $posts ) === $limit ) {
+		if ( -1 !== $limit && count( $items ) === $limit ) {
 			$data['more'] = true;
 		}
 
@@ -93,8 +97,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$field['field_name'] = 'parent_id';
 		}
 
-		$field = parent::normalize( $field );
-
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
@@ -104,25 +106,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			)
 		);
 
-		if ( $field['ajax'] ) {
-			$field['js_options']['ajax_data'] = array(
-				'action'   => 'rwmb_get_posts',
-				'field'    => array(
-					'id'           => $field['id'],
-					'type'         => $field['type'],
-					'query_args'   => $field['query_args'],
-
-					// Required for 'choice_label' filter. See self::filter().
-					'clone'        => false,
-					'_original_id' => $field['id'],
-				),
-				'_wpnonce' => wp_create_nonce( 'query' ),
-			);
-
-			$field['js_options']['ajax'] = array(
-				'url' => admin_url( 'admin-ajax.php' ),
-			);
-		}
+		$field = parent::normalize( $field );
 
 		return $field;
 	}
@@ -145,8 +129,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		);
 
 		// Query only selected items.
-		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
-		$meta = array_unique( array_filter( array_map( 'absint', $meta ) ) );
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
 			$args['posts_per_page'] = count( $meta );
 			$args['post__in']       = $meta;
@@ -165,10 +147,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query   = new WP_Query( $args );
 		$options = array();
 		foreach ( $query->posts as $post ) {
-			$label                = self::filter( 'choice_label', $post->post_title, $field, $post );
 			$options[ $post->ID ] = array(
 				'value'  => $post->ID,
-				'label'  => $label,
+				'label'  => self::filter( 'choice_label', $post->post_title, $field, $post ),
 				'parent' => $post->post_parent,
 			);
 		}

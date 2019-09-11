@@ -18,8 +18,12 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @param int   $post_id Post ID.
 	 */
 	public static function show( $field, $saved, $post_id = 0 ) {
+		// Get unique saved IDs for ajax fields.
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
+		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
+		$meta = array_unique( array_filter( array_map( 'absint', $meta ) ) );
+		sort( $meta );
 
 		$field['options'] = self::call( $field, 'query', $meta );
 
@@ -83,7 +87,26 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( 'checkbox_list' === $field['field_type'] ) {
 			$field['multiple'] = true;
 		}
-		return call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
+		$field = call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
+
+		if ( ! $field['ajax'] ) {
+			return $field;
+		}
+
+		// Ajax field, used with select_advanced type only.
+		$field['js_options']['ajax']      = array(
+			'url' => admin_url( 'admin-ajax.php' ),
+		);
+		$field['js_options']['ajax_data'] = array(
+			'field'    => array(
+				'id'         => $field['id'],
+				'type'       => $field['type'],
+				'query_args' => $field['query_args'],
+			),
+			'_wpnonce' => wp_create_nonce( 'query' ),
+		);
+
+		return $field;
 	}
 
 	/**

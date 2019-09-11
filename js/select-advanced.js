@@ -58,11 +58,28 @@
 				if ( params.data._type === 'query' ) {
 					delete params.data.page;
 				}
-				var key = JSON.stringify( params.data );
+
+				// Create cache key from ajax params from only neccessary keys to make cache available for multiple fields.
+				var data = $.extend( true, {}, params.data );
+				delete data.field.id;
+				delete data.action;
+				if ( ! data.term ) {
+					delete data.term;
+				}
+
+				var key = JSON.stringify( data );
 				if ( cache[key] ) {
 					success( cache[key] );
 					return;
 				}
+
+				var actions = {
+					'post'             : 'rwmb_get_posts',
+					'taxonomy'         : 'rwmb_get_terms',
+					'taxonomy_advanced': 'rwmb_get_terms',
+					'user'             : 'rwmb_get_users'
+				};
+				params.data.action = actions[ params.data.field.type ];
 
 				return $.ajax( params ).then( function ( data ) {
 					cache[key] = data;
