@@ -73,7 +73,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				'query_args' => array(),
 				'field_type' => 'select_advanced',
 				'add_new'    => false,
-				'ajax'       => false,
+				'ajax'       => true,
 			)
 		);
 
@@ -89,11 +89,20 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		}
 		$field = call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
 
-		if ( ! $field['ajax'] ) {
-			return $field;
+		return $field;
+	}
+
+	/**
+	 * Set ajax parameters.
+	 *
+	 * @param array &$field Field settings.
+	 */
+	protected static function set_ajax_params( &$field ) {
+		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
+		if ( ! $is_ajax ) {
+			return;
 		}
 
-		// Ajax field, used with select_advanced type only.
 		$field['js_options']['ajax']      = array(
 			'url' => admin_url( 'admin-ajax.php' ),
 		);
@@ -105,8 +114,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			),
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		);
-
-		return $field;
 	}
 
 	/**

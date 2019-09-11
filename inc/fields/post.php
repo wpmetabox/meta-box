@@ -29,7 +29,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
-		// User entered some text, search for it.
+		// Search.
 		$field['query_args']['s'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
 
 		// Pagination.
@@ -97,16 +97,22 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$field['field_name'] = 'parent_id';
 		}
 
+		$field = parent::normalize( $field );
+
+		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
+
+		// Set default query args.
+		$posts_per_page      = $is_ajax ? 10 : -1;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
 				'post_type'      => $field['post_type'],
 				'post_status'    => 'publish',
-				'posts_per_page' => -1,
+				'posts_per_page' => $posts_per_page,
 			)
 		);
 
-		$field = parent::normalize( $field );
+		parent::set_ajax_params( $field );
 
 		return $field;
 	}

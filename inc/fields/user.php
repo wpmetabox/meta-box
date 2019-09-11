@@ -30,7 +30,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
-		// User entered some text, search for it.
+		// Search.
 		$term = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
 		if ( $term ) {
 			$field['query_args']['search'] = "*{$term}*";
@@ -87,7 +87,20 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		if ( $field['ajax'] ) {
+		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
+
+		// Set default query args.
+		$limit               = $is_ajax ? 10 : 0;
+		$field['query_args'] = wp_parse_args(
+			$field['query_args'],
+			array(
+				'number' => $limit,
+			)
+		);
+
+		parent::set_ajax_params( $field );
+
+		if ( $is_ajax ) {
 			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
 		}
 
