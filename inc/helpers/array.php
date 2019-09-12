@@ -13,7 +13,7 @@
 class RWMB_Helpers_Array {
 	/**
 	 * New array map function that accepts more params than just values.
-	 * Params: array, callback, other params.
+	 * Params: array|item, callback, other params.
 	 *
 	 * @return array
 	 */
@@ -21,6 +21,11 @@ class RWMB_Helpers_Array {
 		$args     = func_get_args();
 		$items    = array_shift( $args );
 		$callback = array_shift( $args );
+
+		if ( ! is_array( $items ) ) {
+			array_unshift( $args, $items );
+			return call_user_func_array( $callback, $args );
+		}
 
 		return array_map(
 			function( $item ) use ( $callback, $args ) {

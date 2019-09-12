@@ -164,11 +164,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		$meta = parent::meta( $post_id, $saved, $field );
 
 		if ( $field['timestamp'] ) {
-			return self::from_timestamp( $meta, $field );
+			return RWMB_Helpers_Array::map( $meta, __CLASS__ . '::from_timestamp', $field );
 		}
 
 		if ( $field['save_format'] && $meta ) {
-			return self::from_save_format( $meta, $field );
+			return RWMB_Helpers_Array::map( $meta, __CLASS__ . '::from_save_format', $field );
 		}
 
 		return $meta;
@@ -177,14 +177,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Format meta value if set 'timestamp'.
 	 *
-	 * @param array|string $meta  The meta value.
-	 * @param array        $field Field parameters.
+	 * @param  string $meta  The meta value.
+	 * @param  array  $field Field parameters.
 	 * @return array
 	 */
 	public static function from_timestamp( $meta, $field ) {
-		if ( is_array( $meta ) ) {
-			return RWMB_Helpers_Array::map( $meta, __METHOD__, $field );
-		}
 		return array(
 			'timestamp' => $meta ? $meta : null,
 			'formatted' => $meta ? date( $field['php_format'], intval( $meta ) ) : '',
@@ -194,15 +191,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	/**
 	 * Transform meta value from save format to the JS format.
 	 *
-	 * @param array|string $meta  The meta value.
-	 * @param array        $field Field parameters.
+	 * @param  string $meta  The meta value.
+	 * @param  array  $field Field parameters.
 	 * @return array
 	 */
 	public static function from_save_format( $meta, $field ) {
-		if ( is_array( $meta ) ) {
-			return RWMB_Helpers_Array::map( $meta, __METHOD__, $field );
-		}
-
 		$date = DateTime::createFromFormat( $field['save_format'], $meta );
 		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}
