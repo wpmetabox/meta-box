@@ -144,7 +144,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		}
 
 		if ( $field['save_format'] ) {
-			$date = DateTime::createFromFormat( self::call( 'translate_format', $field ), $new );
+			$date = DateTime::createFromFormat( $field['php_format'], $new );
 			$new  = false === $date ? $new : $date->format( $field['save_format'] );
 		}
 
@@ -164,12 +164,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		$meta = parent::meta( $post_id, $saved, $field );
 
 		if ( $field['timestamp'] ) {
-			$meta = self::prepare_meta( $meta, $field );
-			return $meta;
+			return self::from_timestamp( $meta, $field );
 		}
 
 		if ( $field['save_format'] && $meta ) {
-			$meta = self::transform_from_save_format( $meta, $field );
+			return self::from_save_format( $meta, $field );
 		}
 
 		return $meta;
@@ -182,16 +181,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @param array        $field Field parameters.
 	 * @return array
 	 */
-	protected static function prepare_meta( $meta, $field ) {
+	protected static function from_timestamp( $meta, $field ) {
 		if ( is_array( $meta ) ) {
 			foreach ( $meta as $key => $value ) {
-				$meta[ $key ] = self::prepare_meta( $value, $field );
+				$meta[ $key ] = self::from_timestamp( $value, $field );
 			}
 			return $meta;
 		}
 		return array(
 			'timestamp' => $meta ? $meta : null,
-			'formatted' => $meta ? date( self::call( 'translate_format', $field ), intval( $meta ) ) : '',
+			'formatted' => $meta ? date( $field['php_format'], intval( $meta ) ) : '',
 		);
 	}
 
@@ -202,16 +201,16 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @param array        $field Field parameters.
 	 * @return array
 	 */
-	protected static function transform_from_save_format( $meta, $field ) {
+	protected static function from_save_format( $meta, $field ) {
 		if ( is_array( $meta ) ) {
 			foreach ( $meta as $key => $value ) {
-				$meta[ $key ] = self::transform_from_save_format( $value, $field );
+				$meta[ $key ] = self::from_save_format( $value, $field );
 			}
 			return $meta;
 		}
 
 		$date = DateTime::createFromFormat( $field['save_format'], $meta );
-		$meta = false === $date ? $meta : $date->format( self::call( 'translate_format', $field ) );
+		$meta = false === $date ? $meta : $date->format( $field['php_format'] );
 
 		return $meta;
 	}
@@ -254,6 +253,8 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			);
 		}
 
+		$field['php_format'] = static::get_php_format( $field['js_options'] );
+
 		$field = parent::normalize( $field );
 
 		return $field;
@@ -284,14 +285,14 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * Returns a date() compatible format string from the JavaScript format.
 	 *
 	 * @link http://www.php.net/manual/en/function.date.php
-	 * @param array $field The field parameters.
+	 * @param array $js_options JavaScript options.
 	 *
 	 * @return string
 	 */
-	public static function translate_format( $field ) {
-		return strtr( $field['js_options']['dateFormat'], self::$date_formats )
-		. $field['js_options']['separator']
-		. strtr( $field['js_options']['timeFormat'], self::$time_formats );
+	protected static function get_php_format( $js_options ) {
+		return strtr( $js_options['dateFormat'], self::$date_formats )
+		. $js_options['separator']
+		. strtr( $js_options['timeFormat'], self::$time_formats );
 	}
 
 	/**
@@ -306,7 +307,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		if ( $field['timestamp'] ) {
-			$value = self::prepare_meta( $value, $field );
+			$value = self::from_timestamp( $value, $field );
 		} else {
 			$value = array(
 				'timestamp' => strtotime( $value ),

@@ -22,11 +22,11 @@ class RWMB_Date_Field extends RWMB_Datetime_Field {
 	 * Returns a date() compatible format string from the JavaScript format.
 	 *
 	 * @link http://www.php.net/manual/en/function.date.php
-	 * @param array $field Field parameters.
+	 * @param array $js_options JavaScript options.
 	 *
 	 * @return string
 	 */
-	public static function translate_format( $field ) {
-		return strtr( $field['js_options']['dateFormat'], self::$date_formats );
+	public static function get_php_format( $js_options ) {
+		return strtr( $js_options['dateFormat'], self::$date_formats );
 	}
 }
