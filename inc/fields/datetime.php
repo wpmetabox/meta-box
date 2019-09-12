@@ -168,12 +168,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			return $meta;
 		}
 
-		if ( ! $field['save_format'] || ! $meta ) {
-			return $meta;
+		if ( $field['save_format'] && $meta ) {
+			$meta = self::transform_from_save_format( $meta, $field );
 		}
-
-		$date = DateTime::createFromFormat( $field['save_format'], $meta );
-		$meta = false === $date ? $meta : $date->format( self::call( 'translate_format', $field ) );
 
 		return $meta;
 	}
@@ -196,6 +193,27 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			'timestamp' => $meta ? $meta : null,
 			'formatted' => $meta ? date( self::call( 'translate_format', $field ), intval( $meta ) ) : '',
 		);
+	}
+
+	/**
+	 * Transform meta value from save format to the JS format.
+	 *
+	 * @param array|string $meta  The meta value.
+	 * @param array        $field Field parameters.
+	 * @return array
+	 */
+	protected static function transform_from_save_format( $meta, $field ) {
+		if ( is_array( $meta ) ) {
+			foreach ( $meta as $key => $value ) {
+				$meta[ $key ] = self::transform_from_save_format( $value, $field );
+			}
+			return $meta;
+		}
+
+		$date = DateTime::createFromFormat( $field['save_format'], $meta );
+		$meta = false === $date ? $meta : $date->format( self::call( 'translate_format', $field ) );
+
+		return $meta;
 	}
 
 	/**
