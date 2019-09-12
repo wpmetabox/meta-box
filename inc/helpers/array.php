@@ -12,6 +12,26 @@
  */
 class RWMB_Helpers_Array {
 	/**
+	 * New array map function that accepts more params than just values.
+	 * Params: array, callback, other params.
+	 *
+	 * @return array
+	 */
+	public static function map() {
+		$args     = func_get_args();
+		$items    = array_shift( $args );
+		$callback = array_shift( $args );
+
+		return array_map(
+			function( $item ) use ( $callback, $args ) {
+				array_unshift( $args, $item );
+				return call_user_func_array( $callback, $args );
+			},
+			$items
+		);
+	}
+
+	/**
 	 * Convert a comma separated string to array.
 	 *
 	 * @param string $csv Comma separated string.

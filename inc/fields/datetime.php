@@ -181,12 +181,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @param array        $field Field parameters.
 	 * @return array
 	 */
-	protected static function from_timestamp( $meta, $field ) {
+	public static function from_timestamp( $meta, $field ) {
 		if ( is_array( $meta ) ) {
-			foreach ( $meta as $key => $value ) {
-				$meta[ $key ] = self::from_timestamp( $value, $field );
-			}
-			return $meta;
+			return RWMB_Helpers_Array::map( $meta, __METHOD__, $field );
 		}
 		return array(
 			'timestamp' => $meta ? $meta : null,
@@ -201,18 +198,13 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * @param array        $field Field parameters.
 	 * @return array
 	 */
-	protected static function from_save_format( $meta, $field ) {
+	public static function from_save_format( $meta, $field ) {
 		if ( is_array( $meta ) ) {
-			foreach ( $meta as $key => $value ) {
-				$meta[ $key ] = self::from_save_format( $value, $field );
-			}
-			return $meta;
+			return RWMB_Helpers_Array::map( $meta, __METHOD__, $field );
 		}
 
 		$date = DateTime::createFromFormat( $field['save_format'], $meta );
-		$meta = false === $date ? $meta : $date->format( $field['php_format'] );
-
-		return $meta;
+		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}
 
 	/**
