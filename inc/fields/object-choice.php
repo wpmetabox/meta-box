@@ -82,10 +82,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			$field['flatten']    = false;
 		}
 		if ( 'radio_list' === $field['field_type'] ) {
-			$field['multiple'] = false;
-		}
-		if ( 'checkbox_list' === $field['field_type'] ) {
-			$field['multiple'] = true;
+			$field['field_type'] = 'radio';
 		}
 		$field = call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
 
@@ -151,9 +148,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	protected static function get_type_class( $field ) {
-		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ), true ) ) {
-			return 'RWMB_Input_List_Field';
-		}
 		return RWMB_Helpers_Field::get_class(
 			array(
 				'type' => $field['field_type'],
