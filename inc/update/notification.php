@@ -169,7 +169,7 @@ class RWMB_Update_Notification {
 		}
 
 		$text    = 'no_key' === $status ? __( 'Activate License', 'meta-box' ) : __( 'Update License', 'meta-box' );
-		$links[] = '<a href="' . esc_url( $this->settings_page ) . '" style="color: #39b54a; font-weight: bold">' . esc_html( $text ) . '</a>';
+		$links[] = '<a href="' . esc_url( $this->settings_page ) . '" class="rwmb-activate-license" style="color: #39b54a; font-weight: bold">' . esc_html( $text ) . '</a>';
 
 		return $links;
 	}
