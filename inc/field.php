@@ -65,7 +65,7 @@ abstract class RWMB_Field {
 
 		$outer_html = sprintf(
 			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
-			trim( $classes ),
+			esc_attr( trim( $classes ) ),
 			$html
 		);
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
