@@ -240,7 +240,8 @@ class RW_Meta_Box {
 
 		// Container.
 		printf(
-			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			esc_attr( trim( "rwmb-meta-box {$this->class}" ) ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type ),
 			esc_attr( $this->object_id )
@@ -349,6 +350,7 @@ class RW_Meta_Box {
 				'autosave'       => false,
 				'default_hidden' => false,
 				'style'          => 'default',
+				'class'          => '',
 				'fields'         => array(),
 			)
 		);
