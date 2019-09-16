@@ -143,5 +143,11 @@
 	ensureSave();
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
-		.on( 'clone', '.rwmb-wysiwyg', transform );
+		.on( 'clone', '.rwmb-wysiwyg', function() {
+			/*
+			 * Transform a textarea to an editor is a heavy task.
+			 * Moving it to the end of task queue with setTimeout makes cloning faster.
+			 */
+			setTimeout( transform.bind( this ), 0 );
+		} );
 } )( jQuery, wp, window, rwmb );
