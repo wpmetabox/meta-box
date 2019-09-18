@@ -10,6 +10,50 @@
  */
 class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	/**
+	 * Add ajax actions callback.
+	 */
+	public static function add_actions() {
+		add_action( 'wp_ajax_rwmb_get_terms', array( __CLASS__, 'ajax_get_terms' ) );
+		add_action( 'wp_ajax_nopriv_rwmb_get_terms', array( __CLASS__, 'ajax_get_terms' ) );
+	}
+
+	/**
+	 * Query terms via ajax.
+	 */
+	public static function ajax_get_terms() {
+		check_ajax_referer( 'query' );
+
+		$field = filter_input( INPUT_GET, 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+
+		// Required for 'choice_label' filter. See self::filter().
+		$field['clone']        = false;
+		$field['_original_id'] = $field['id'];
+
+		// Search.
+		$field['query_args']['name__like'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
+
+		// Pagination.
+		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
+		if ( 'query:append' === filter_input( INPUT_GET, '_type', FILTER_SANITIZE_STRING ) ) {
+			$page                          = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+			$field['query_args']['offset'] = $limit * ( $page - 1 );
+		}
+
+		// Query the database.
+		$items = self::query( null, $field );
+		$items = array_values( $items );
+
+		$data = array( 'items' => $items );
+
+		// More items for pagination.
+		if ( $limit && count( $items ) === $limit ) {
+			$data['more'] = true;
+		}
+
+		wp_send_json_success( $data );
+	}
+
+	/**
 	 * Add default value for 'taxonomy' field.
 	 *
 	 * @param array $field Field parameters.
@@ -58,20 +102,26 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			)
 		);
 
+		$field = parent::normalize( $field );
+
+		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
+
 		// Set default query args.
+		$limit               = $is_ajax ? 10 : 0;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
-				'hide_empty' => false,
+				'taxonomy' => $field['taxonomy'],
+				'number'   => $limit,
 			)
 		);
+
+		parent::set_ajax_params( $field );
 
 		// Prevent cloning for taxonomy field, not for child fields (taxonomy_advanced).
 		if ( 'taxonomy' === $field['type'] ) {
 			$field['clone'] = false;
 		}
-
-		$field = parent::normalize( $field );
 
 		return $field;
 	}
@@ -79,32 +129,35 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Query terms for field options.
 	 *
+	 * @param  array $meta  Saved meta value.
 	 * @param  array $field Field settings.
 	 * @return array        Field options array.
 	 */
-	public static function query( $field ) {
-		$args  = wp_parse_args(
+	public static function query( $meta, $field ) {
+		$args = wp_parse_args(
 			$field['query_args'],
 			array(
-				'taxonomy'               => $field['taxonomy'],
 				'hide_empty'             => false,
 				'count'                  => false,
 				'update_term_meta_cache' => false,
 			)
 		);
+
+		// Query only selected items.
+		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
+			$args['include'] = $meta;
+		}
+
 		$terms = get_terms( $args );
 		if ( ! is_array( $terms ) ) {
 			return array();
 		}
 		$options = array();
 		foreach ( $terms as $term ) {
-			$options[ $term->term_id ] = array_merge(
-				array(
-					'value'  => $term->term_id,
-					'label'  => $term->name,
-					'parent' => $term->parent,
-				),
-				(array) $term
+			$options[ $term->term_id ] = array(
+				'value'  => $term->term_id,
+				'label'  => self::filter( 'choice_label', $term->name, $field, $term ),
+				'parent' => $term->parent,
 			);
 		}
 		return $options;

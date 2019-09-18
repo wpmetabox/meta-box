@@ -40,7 +40,7 @@ class RWMB_Clone {
 			}
 
 			if ( in_array( $sub_field['type'], array( 'file', 'image' ), true ) ) {
-				$sub_field['input_name'] = '_file_' . uniqid();
+				$sub_field['input_name']  = '_file_' . uniqid();
 				$sub_field['index_name'] .= "[{$index}]";
 			} elseif ( $field['multiple'] ) {
 				$sub_field['field_name'] .= '[]';

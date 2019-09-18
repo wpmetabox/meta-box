@@ -118,7 +118,7 @@ class RWMB_Update_Settings {
 								'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%2$s" target="_blank">renew your license</a>.', 'meta-box' ),
 								'active'  => __( 'Your license key is <b>active</b>.', 'meta-box' ),
 							);
-							$status = $this->option->get_license_status();
+							$status   = $this->option->get_license_status();
 							if ( isset( $messages[ $status ] ) ) {
 								echo '<p class="description">', wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p>';
 							}

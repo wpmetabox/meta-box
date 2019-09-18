@@ -18,7 +18,14 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @param int   $post_id Post ID.
 	 */
 	public static function show( $field, $saved, $post_id = 0 ) {
-		$field['options'] = self::call( $field, 'query' );
+		// Get unique saved IDs for ajax fields.
+		$meta = self::call( $field, 'meta', $post_id, $saved );
+		$meta = self::filter( 'field_meta', $meta, $field, $saved );
+		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
+		$meta = array_unique( array_filter( array_map( 'absint', $meta ) ) );
+		sort( $meta );
+
+		$field['options'] = self::call( $field, 'query', $meta );
 
 		parent::show( $field, $saved, $post_id );
 	}
@@ -66,6 +73,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				'query_args' => array(),
 				'field_type' => 'select_advanced',
 				'add_new'    => false,
+				'ajax'       => true,
 			)
 		);
 
@@ -74,12 +82,35 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			$field['flatten']    = false;
 		}
 		if ( 'radio_list' === $field['field_type'] ) {
-			$field['multiple'] = false;
+			$field['field_type'] = 'radio';
 		}
-		if ( 'checkbox_list' === $field['field_type'] ) {
-			$field['multiple'] = true;
+		$field = call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
+
+		return $field;
+	}
+
+	/**
+	 * Set ajax parameters.
+	 *
+	 * @param array $field Field settings.
+	 */
+	protected static function set_ajax_params( &$field ) {
+		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
+		if ( ! $is_ajax ) {
+			return;
 		}
-		return call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
+
+		$field['js_options']['ajax']      = array(
+			'url' => admin_url( 'admin-ajax.php' ),
+		);
+		$field['js_options']['ajax_data'] = array(
+			'field'    => array(
+				'id'         => $field['id'],
+				'type'       => $field['type'],
+				'query_args' => $field['query_args'],
+			),
+			'_wpnonce' => wp_create_nonce( 'query' ),
+		);
 	}
 
 	/**
@@ -117,9 +148,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	protected static function get_type_class( $field ) {
-		if ( in_array( $field['field_type'], array( 'checkbox_list', 'radio_list' ), true ) ) {
-			return 'RWMB_Input_List_Field';
-		}
 		return RWMB_Helpers_Field::get_class(
 			array(
 				'type' => $field['field_type'],

@@ -147,7 +147,7 @@ class RWMB_Update_Notification {
 			// Translators: %3$s - URL to the My Account page.
 			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
 		);
-		$status = $this->option->get_license_status();
+		$status   = $this->option->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
 			return;
 		}
