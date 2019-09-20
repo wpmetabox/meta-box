@@ -104,10 +104,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-
 		// Set default query args.
-		$limit               = $is_ajax ? 10 : 0;
+		$limit               = $field['ajax'] ? 10 : 0;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(

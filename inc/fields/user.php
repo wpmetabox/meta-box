@@ -87,10 +87,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-
 		// Set default query args.
-		$limit               = $is_ajax ? 10 : 0;
+		$limit               = $field['ajax'] ? 10 : 0;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
@@ -100,7 +98,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
-		if ( $is_ajax ) {
+		if ( $field['ajax'] ) {
 			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
 		}
 

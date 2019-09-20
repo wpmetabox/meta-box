@@ -99,10 +99,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-
 		// Set default query args.
-		$posts_per_page      = $is_ajax ? 10 : -1;
+		$posts_per_page      = $field['ajax'] ? 10 : -1;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
