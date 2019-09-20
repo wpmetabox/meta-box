@@ -358,7 +358,7 @@ class RWMB_File_Field extends RWMB_Field {
 		);
 
 		$field['multiple']   = true;
-		$field['input_name'] = "_file_{$field['id']}";
+		$field['input_name'] = '_file_' . uniqid();
 		$field['index_name'] = "_index_{$field['id']}";
 
 		return $field;
