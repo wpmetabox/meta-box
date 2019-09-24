@@ -126,7 +126,11 @@ abstract class RWMB_Field {
 	 * @return string
 	 */
 	public static function end_html( $meta, $field ) {
-		return RWMB_Clone::add_clone_button( $field ) . self::call( 'input_description', $field ) . '</div>';
+		return RWMB_Clone::add_clone_button( $field ) .
+				RWMB_Clone::add_all_button( $field ) .
+				RWMB_Clone::remove_all_button( $field ) .
+				self::call( 'input_description', $field ) .
+				'</div>';
 	}
 
 	/**
@@ -354,6 +358,9 @@ abstract class RWMB_Field {
 				'add_button'        => __( '+ Add more', 'meta-box' ),
 				'clone_default'     => false,
 				'clone_as_multiple' => false,
+				'bulk_clone'        => false,
+				'add_all_button'    => __( '+ Add All', 'meta-box' ),
+				'remove_all_button' => __( '- Remove All', 'meta-box' ),
 
 				'class'             => '',
 				'disabled'          => false,

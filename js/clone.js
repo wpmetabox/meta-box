@@ -192,8 +192,41 @@
 	function addClone( e ) {
 		e.preventDefault();
 
-		var $container = $( this ).closest( '.rwmb-input' );
+		var $this = $( this ),
+			$container = $this.closest( '.rwmb-input' );
+
 		clone( $container );
+		$container.children( '.rwmb-clone' ).last().val('8349').change();
+		toggleRemoveButtons( $container );
+		toggleAddButton( $container );
+		sortClones.apply( $container[0] );
+	}
+
+	function addAll( e ) {
+		e.preventDefault();
+
+		var $this = $( this ),
+			$container = $this.closest( '.rwmb-input' ),
+			$clones = $container.children( '.rwmb-clone' ),
+			options = [],
+			i = 0;
+
+		$clones.find('select[class*="rwmb"]').first().find('option').each( function() {
+			options.push( $(this).val() );
+		});
+
+
+		$clones.find('select[class*="rwmb"]').each( function () {
+			var index = options.indexOf($( this ).val());
+			if (index > -1) {
+				options.splice(index, 1);
+			}
+		} );
+
+		while( (i = options.shift()) !== undefined ) {
+			if ( '' !== $container.children( '.rwmb-clone' ).last().find('select[class*="rwmb"]').last().val() ) clone( $container );
+			$container.children( '.rwmb-clone' ).last().find('select[class*="rwmb"]').last().val(i).change()
+		}
 
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
@@ -217,6 +250,30 @@
 
 		// Trigger custom change event for MB Blocks to update block attributes.
 		$container.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
+	}
+
+	function removeAll( e ) {
+		e.preventDefault();
+
+		var $this = $( this ),
+			$container = $this.closest( '.rwmb-input' ),
+			$clones = $container.children( '.rwmb-clone' ),
+			$firstClone = $clones.slice(0);
+
+		// Iterate all and remove. Skip the first one so we can always clone.
+		$.each( $clones.slice(1), function () {
+			$( this ).trigger( 'remove' ).remove();
+		} );
+
+
+		// Trigger the clearing of the first value too, but leave the field there for future cloning.
+		$firstClone.find(".select2-selection__clear").first().mousedown();
+
+		// Close the dropdown that openned upon the clear
+		$firstClone.mousedown()
+
+		toggleRemoveButtons( $container );
+		toggleAddButton( $container );
 	}
 
 	/**
@@ -273,5 +330,7 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'click', '.add-clone', addClone )
-		.on( 'click', '.remove-clone', removeClone );
+		.on( 'click', '.remove-clone', removeClone )
+		.on( 'click', '.add-all', addAll )
+		.on( 'click', '.remove-all', removeAll );
 } )( jQuery, rwmb );

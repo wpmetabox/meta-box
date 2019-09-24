@@ -127,4 +127,35 @@ class RWMB_Clone {
 		$text = RWMB_Field::filter( 'remove_clone_button_text', '<span class="dashicons dashicons-dismiss"></span>', $field );
 		return '<a href="#" class="rwmb-button remove-clone">' . $text . '</a>';
 	}
+
+	/**
+	 * Add All button.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string $html
+	 */
+	public static function add_all_button( $field ) {
+		// Only add this button if bulk cloning is allowed and it is a select advanced field.
+		if ( ! $field['clone'] || ! $field['bulk_clone'] || ( 'select_advanced' !== $field['field_type'] ) ) {
+			return '';
+		}
+		$text = RWMB_Field::filter( 'add_all_button_text', $field['add_all_button'], $field );
+		return '<a href="#" class="rwmb-button button-primary add-all">' . esc_html( $text ) . '</a>';
+	}
+
+	/**
+	 * Remove All button.
+	 *
+	 * @param array $field Field parameters.
+	 * @return string $html
+	 */
+	public static function remove_all_button( $field ) {
+		// Only add this button if bulk cloning is allowed and it is a select advanced field.
+		if ( ! $field['clone'] || ! $field['bulk_clone'] || ( 'select_advanced' !== $field['field_type'] ) ) {
+			return '';
+		}
+		$text = RWMB_Field::filter( 'add_all_button_text', $field['remove_all_button'], $field );
+		return '<a href="#" class="rwmb-button button-primary remove-all">' . esc_html( $text ) . '</a>';
+	}
+
 }

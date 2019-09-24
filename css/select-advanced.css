@@ -18,3 +18,13 @@
 .select2-container .select2-search--inline {
 	margin-bottom: 0;
 }
+a.rwmb-button.button-primary.add-clone, a.rwmb-button.button-primary.add-all, a.rwmb-button.button-primary.remove-all  {
+	float: left;
+}
+a.rwmb-button.button-primary.add-all, a.rwmb-button.button-primary.remove-all {
+	margin-top: 10px;
+}
+a.rwmb-button.button-primary.add-all {
+	clear: left;
+	margin-right: 10px;
+}
