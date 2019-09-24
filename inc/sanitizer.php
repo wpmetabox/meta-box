@@ -186,9 +186,9 @@ class RWMB_Sanitizer {
 		$value['image'] = esc_url_raw( $value['image'] );
 
 		$value['repeat']     = in_array( $value['repeat'], array( 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ), true ) ? $value['repeat'] : '';
-		$value['position']   = in_array( $value['repeat'], array( 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ), true ) ? $value['position'] : '';
-		$value['attachment'] = in_array( $value['repeat'], array( 'fixed', 'scroll', 'inherit' ), true ) ? $value['attachment'] : '';
-		$value['size']       = in_array( $value['repeat'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['attachment'] : '';
+		$value['position']   = in_array( $value['position'], array( 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ), true ) ? $value['position'] : '';
+		$value['attachment'] = in_array( $value['attachment'], array( 'fixed', 'scroll', 'inherit' ), true ) ? $value['attachment'] : '';
+		$value['size']       = in_array( $value['size'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['size'] : '';
 
 		return $value;
 	}
