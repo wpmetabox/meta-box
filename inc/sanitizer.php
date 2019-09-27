@@ -161,7 +161,7 @@ class RWMB_Sanitizer {
 	 * @return int|array
 	 */
 	private function sanitize_object( $value ) {
-		return is_array( $value ) ? array_map( 'absint', $value ) : absint( $value );
+		return is_array( $value ) ? array_filter( array_map( 'absint', $value ) ) : ( $value ? absint( $value ) : '' );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class RWMB_Sanitizer {
 	 * @return array
 	 */
 	private function sanitize_file( $value, $field ) {
-		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : array_map( 'absint', $value );
+		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : $this->sanitize_object( $value );
 	}
 
 	/**
@@ -261,7 +261,7 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_taxonomy_advanced( $value ) {
 		$value = RWMB_Helpers_Array::from_csv( $value );
-		$value = array_map( 'absint', $value );
+		$value = array_filter( array_map( 'absint', $value ) );
 
 		return implode( ',', $value );
 	}
