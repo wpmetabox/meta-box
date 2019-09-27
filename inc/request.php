@@ -83,54 +83,27 @@ class RWMB_Request {
 	 * Filter a GET parameter.
 	 *
 	 * @param string $name    Parameter name.
-	 * @param mixed  $default Default = null.
 	 * @param int    $filter  FILTER_* constant.
 	 * @param mixed  $options Filter options.
 	 *
 	 * @return mixed
 	 */
-	public function filter_get( $name, $default = null, $filter = FILTER_DEFAULT, $options = array() ) {
-		$value = $this->get( $name, $default );
-		return $this->filter( $value, $filter, $options );
+	public function filter_get( $name, $filter = FILTER_DEFAULT, $options = array() ) {
+		$value = $this->get( $name );
+		return filter_var( $value, $filter, $options );
 	}
 
 	/**
 	 * Filter a POST parameter.
 	 *
 	 * @param string $name    Parameter name.
-	 * @param mixed  $default Default = null.
 	 * @param int    $filter  FILTER_* constant.
 	 * @param mixed  $options Filter options.
 	 *
 	 * @return mixed
 	 */
-	public function filter_post( $name, $default = null, $filter = FILTER_DEFAULT, $options = array() ) {
-		$value = $this->post( $name, $default );
-		return $this->filter( $value, $filter, $options );
-	}
-
-	/**
-	 * Filter a value.
-	 *
-	 * @param  mixed $value   Parameter value.
-	 * @param  int   $filter  FILTER_* constant.
-	 * @param  mixed $options Filter options.
-	 *
-	 * @link https://github.com/symfony/symfony/blob/4.4/src/Symfony/Component/HttpFoundation/ParameterBag.php#L191
-	 *
-	 * @return mixed
-	 */
-	private function filter( $value, $filter, $options ) {
-		// Always turn $options into an array - this allows filter_var option shortcuts.
-		if ( ! is_array( $options ) && $options ) {
-			$options = array( 'flags' => $options );
-		}
-
-		// Add a convenience check for arrays.
-		if ( is_array( $value ) && ! isset( $options['flags'] ) ) {
-			$options['flags'] = FILTER_REQUIRE_ARRAY;
-		}
-
+	public function filter_post( $name, $filter = FILTER_DEFAULT, $options = array() ) {
+		$value = $this->post( $name );
 		return filter_var( $value, $filter, $options );
 	}
 }
