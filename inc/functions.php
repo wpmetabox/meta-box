@@ -343,3 +343,18 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 		return apply_filters( 'rwmb_get_storage', $storage, $object_type, $meta_box );
 	}
 }
+
+if ( ! function_exists( 'rwmb_request' ) ) {
+	/**
+	 * Get request object.
+	 *
+	 * @return RWMB_Request
+	 */
+	function rwmb_request() {
+		static $request;
+		if ( ! $request ) {
+			$request = new RWMB_Request();
+		}
+		return $request;
+	}
+}

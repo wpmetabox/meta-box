@@ -137,13 +137,13 @@ class RWMB_Update_Settings {
 	 * Save update settings.
 	 */
 	public function save() {
-		if ( empty( $_POST['submit'] ) ) {
+		$request = rwmb_request();
+		if ( ! $request->post( 'submit' ) ) {
 			return;
 		}
 		check_admin_referer( 'meta-box' );
 
-		// @codingStandardsIgnoreLine
-		$option           = isset( $_POST['meta_box_updater'] ) ? $_POST['meta_box_updater'] : array();
+		$option           = $request->post( 'meta_box_updater', array() );
 		$option           = (array) $option;
 		$option['status'] = 'active';
 
