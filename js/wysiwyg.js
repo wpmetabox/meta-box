@@ -143,6 +143,7 @@
 	ensureSave();
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
+		.on( 'mb_init_editors', init )
 		.on( 'clone', '.rwmb-wysiwyg', function() {
 			/*
 			 * Transform a textarea to an editor is a heavy task.
