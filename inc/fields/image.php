@@ -143,6 +143,18 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		// Do not overwrite width and height by returned value of image meta.
 		$info['width']  = $image[1];
 		$info['height'] = $image[2];
+		
+		foreach (get_intermediate_image_sizes() as $size) {
+		    if (isset($info['sizes'][$size])) {
+			continue;
+		    }
+
+		    $info['sizes'][$size] = [
+			'width'      => $info['width'],
+			'height'     => $info['height'],
+			'source_url' => $info['full_url'],
+		    ];
+		}
 
 		return $info;
 	}
