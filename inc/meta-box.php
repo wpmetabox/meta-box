@@ -46,7 +46,7 @@ class RW_Meta_Box {
 	 *
 	 * @var int
 	 */
-	protected $object_id = null;
+	public $object_id = null;
 
 	/**
 	 * The object type.
