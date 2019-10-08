@@ -18,3 +18,6 @@
 .select2-container .select2-search--inline {
 	margin-bottom: 0;
 }
+body > .select2-container {
+	z-index: 999999;
+}

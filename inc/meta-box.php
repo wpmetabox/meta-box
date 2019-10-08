@@ -46,7 +46,7 @@ class RW_Meta_Box {
 	 *
 	 * @var int
 	 */
-	protected $object_id = null;
+	public $object_id = null;
 
 	/**
 	 * The object type.
@@ -300,11 +300,11 @@ class RW_Meta_Box {
 	 * @param array $field Field settings.
 	 */
 	public function save_field( $field ) {
-		$single = $field['clone'] || ! $field['multiple'];
-		$old    = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
-		// @codingStandardsIgnoreLine
-		$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
-		$new    = RWMB_Field::process_value( $new, $this->object_id, $field );
+		$single  = $field['clone'] || ! $field['multiple'];
+		$default = $single ? '' : array();
+		$old     = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+		$new     = rwmb_request()->post( $field['id'], $default );
+		$new     = RWMB_Field::process_value( $new, $this->object_id, $field );
 
 		// Filter to allow the field to be modified.
 		$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
@@ -324,7 +324,7 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	public function validate() {
-		$nonce = filter_input( INPUT_POST, "nonce_{$this->id}", FILTER_SANITIZE_STRING );
+		$nonce = rwmb_request()->filter_post( "nonce_{$this->id}", FILTER_SANITIZE_STRING );
 
 		return ! $this->saved
 			&& ( ! defined( 'DOING_AUTOSAVE' ) || $this->autosave )

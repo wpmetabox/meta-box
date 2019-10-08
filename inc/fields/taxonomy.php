@@ -23,19 +23,21 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function ajax_get_terms() {
 		check_ajax_referer( 'query' );
 
-		$field = filter_input( INPUT_GET, 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$request = rwmb_request();
+
+		$field = $request->filter_get( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$field['query_args']['name__like'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
+		$field['query_args']['name__like'] = $request->filter_get( 'term', FILTER_SANITIZE_STRING );
 
 		// Pagination.
 		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
-		if ( 'query:append' === filter_input( INPUT_GET, '_type', FILTER_SANITIZE_STRING ) ) {
-			$page                          = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+		if ( 'query:append' === $request->filter_get( '_type', FILTER_SANITIZE_STRING ) ) {
+			$page                          = $request->filter_get( 'page', FILTER_SANITIZE_NUMBER_INT );
 			$field['query_args']['offset'] = $limit * ( $page - 1 );
 		}
 
@@ -204,7 +206,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @return int|null Term ID if added successfully, null otherwise.
 	 */
 	protected static function add_term( $field ) {
-		$term = filter_input( INPUT_POST, $field['id'] . '_new' );
+		$term = rwmb_request()->post( $field['id'] . '_new' );
 		if ( ! $field['add_new'] || ! $term || 1 !== count( $field['taxonomy'] ) ) {
 			return null;
 		}
