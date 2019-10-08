@@ -206,7 +206,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @return int|null Term ID if added successfully, null otherwise.
 	 */
 	protected static function add_term( $field ) {
-		$term = rwmb_request()->filter_post( $field['id'] . '_new' );
+		$term = rwmb_request()->post( $field['id'] . '_new' );
 		if ( ! $field['add_new'] || ! $term || 1 !== count( $field['taxonomy'] ) ) {
 			return null;
 		}

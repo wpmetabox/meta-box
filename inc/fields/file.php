@@ -53,7 +53,7 @@ class RWMB_File_Field extends RWMB_Field {
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 		// Make sure the file to delete is in the custom field.
-		$attachment  = $request->filter_post( 'attachment_id' );
+		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id', FILTER_SANITIZE_STRING );
 		$object_type = $request->filter_post( 'object_type', FILTER_SANITIZE_STRING );
 		$field       = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
