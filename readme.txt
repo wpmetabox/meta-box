@@ -5,7 +5,7 @@ Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, 
 Requires at least: 4.3
 Requires PHP: 5.3
 Tested up to: 5.2.3
-Stable tag: 5.2.1
+Stable tag: 5.2.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -166,6 +166,19 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.2.2 - 2019-10-09 =
+
+**Fixed**
+
+- Fix sanitizing empty post field
+- Fix post thumbnail not saving in MB Frontend Submission
+- Fix undefined index for `image_select` field when using helper functions with no value.
+- Fix JQMIGRATE: 'ready' event is deprecated
+
+**Changed**
+
+- Add styling for date picker, autocomplete, select2 to show in the Customizer (for MB Settings Page)
 
 = 5.2.1 - 2019-09-26 =
 
