@@ -234,7 +234,7 @@ class RW_Meta_Box {
 	 */
 	public function show() {
 		if ( null === $this->object_id ) {
-			$this->set_object_id( $this->get_current_object_id() );
+			$this->object_id = $this->get_current_object_id();
 		}
 		$saved = $this->is_saved();
 
@@ -280,8 +280,8 @@ class RW_Meta_Box {
 		}
 		$this->saved = true;
 
-		$object_id = $this->get_real_object_id( $object_id );
-		$this->set_object_id( $object_id );
+		$object_id       = $this->get_real_object_id( $object_id );
+		$this->object_id = $object_id;
 
 		// Before save action.
 		do_action( 'rwmb_before_save_post', $object_id );
