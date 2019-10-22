@@ -25,19 +25,19 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$request = rwmb_request();
 
-		$field = $request->filter_get( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$field['query_args']['name__like'] = $request->filter_get( 'term', FILTER_SANITIZE_STRING );
+		$field['query_args']['name__like'] = $request->filter_post( 'term', FILTER_SANITIZE_STRING );
 
 		// Pagination.
 		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
-		if ( 'query:append' === $request->filter_get( '_type', FILTER_SANITIZE_STRING ) ) {
-			$page                          = $request->filter_get( 'page', FILTER_SANITIZE_NUMBER_INT );
+		if ( 'query:append' === $request->filter_post( '_type', FILTER_SANITIZE_STRING ) ) {
+			$page                          = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 			$field['query_args']['offset'] = $limit * ( $page - 1 );
 		}
 

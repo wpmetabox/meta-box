@@ -81,6 +81,7 @@
 					'user'             : 'rwmb_get_users'
 				};
 				params.data.action = actions[ params.data.field.type ];
+				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {
 					cache[key] = data;
