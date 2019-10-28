@@ -107,7 +107,6 @@ class RWMB_Update_Settings {
 					<tr>
 						<th scope="row"><?php esc_html_e( 'License Key', 'meta-box' ); ?></th>
 						<td>
-							<input required class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $this->option->get( 'api_key' ) ); ?>" type="password">
 							<?php
 							$messages = array(
 								// Translators: %1$s - URL to the pricing page.
@@ -119,10 +118,12 @@ class RWMB_Update_Settings {
 								'active'  => __( 'Your license key is <b>active</b>.', 'meta-box' ),
 							);
 							$status   = $this->option->get_license_status();
-							if ( isset( $messages[ $status ] ) ) {
-								echo '<p class="description">', wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ), '</p>';
-							}
+							$api_key  = in_array( $status, array( 'expired', 'active' ), true ) ? '********************************' : $this->option->get( 'api_key' );
 							?>
+							<input required class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $api_key ); ?>" type="password">
+							<?php if ( isset( $messages[ $status ] ) ) : ?>
+								<p class="description"><?php echo wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ); ?></p>
+							<?php endif; ?>
 						</td>
 					</tr>
 				</table>
