@@ -154,7 +154,7 @@ class RWMB_Clone {
 		if ( ! $field['clone'] || ! $field['bulk_clone'] || ( 'select_advanced' !== $field['field_type'] ) ) {
 			return '';
 		}
-		$text = RWMB_Field::filter( 'add_all_button_text', $field['remove_all_button'], $field );
+		$text = RWMB_Field::filter( 'remove_all_button_text', $field['remove_all_button'], $field );
 		return '<a href="#" class="rwmb-button button-primary remove-all">' . esc_html( $text ) . '</a>';
 	}
 
