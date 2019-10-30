@@ -81,6 +81,7 @@ class RWMB_Media_Modal {
 		foreach ( $this->fields as $field ) {
 			$key = $field['id'];
 
+			$old = RWMB_Field::call( $field, 'raw_meta', $post['ID'] );
 			$new = isset( $attachment[ $key ] ) ? $attachment[ $key ] : '';
 
 			$new = RWMB_Field::process_value( $new, $post['ID'], $field );
@@ -101,9 +102,7 @@ class RWMB_Media_Modal {
 	 * @return bool
 	 */
 	public function is_in_normal_mode( $show, $meta_box ) {
-		$show = $show && ! $this->is_in_modal( $meta_box );
-
-		return $show;
+		return $show && ! $this->is_in_modal( $meta_box );
 	}
 
 	/**

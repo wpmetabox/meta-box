@@ -23,18 +23,20 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	public static function ajax_get_posts() {
 		check_ajax_referer( 'query' );
 
-		$field = filter_input( INPUT_GET, 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$request = rwmb_request();
+
+		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$field['query_args']['s'] = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
+		$field['query_args']['s'] = $request->filter_post( 'term', FILTER_SANITIZE_STRING );
 
 		// Pagination.
-		if ( 'query:append' === filter_input( INPUT_GET, '_type', FILTER_SANITIZE_STRING ) ) {
-			$field['query_args']['paged'] = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+		if ( 'query:append' === $request->filter_post( '_type', FILTER_SANITIZE_STRING ) ) {
+			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
 
 		// Query the database.
@@ -99,10 +101,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-
 		// Set default query args.
-		$posts_per_page      = $is_ajax ? 10 : -1;
+		$posts_per_page      = $field['ajax'] ? 10 : -1;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(

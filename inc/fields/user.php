@@ -24,22 +24,24 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	public static function ajax_get_users() {
 		check_ajax_referer( 'query' );
 
-		$field = filter_input( INPUT_GET, 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$request = rwmb_request();
+
+		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$term = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_STRING );
+		$term = $request->filter_post( 'term', FILTER_SANITIZE_STRING );
 		if ( $term ) {
 			$field['query_args']['search'] = "*{$term}*";
 		}
 
 		// Pagination.
 		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
-		if ( $limit && 'query:append' === filter_input( INPUT_GET, '_type', FILTER_SANITIZE_STRING ) ) {
-			$field['query_args']['paged'] = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+		if ( $limit && 'query:append' === $request->filter_post( '_type', FILTER_SANITIZE_STRING ) ) {
+			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
 
 		// Query the database.
@@ -87,10 +89,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$field = parent::normalize( $field );
 
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-
 		// Set default query args.
-		$limit               = $is_ajax ? 10 : 0;
+		$limit               = $field['ajax'] ? 10 : 0;
 		$field['query_args'] = wp_parse_args(
 			$field['query_args'],
 			array(
@@ -100,7 +100,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
-		if ( $is_ajax ) {
+		if ( $field['ajax'] ) {
 			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
 		}
 

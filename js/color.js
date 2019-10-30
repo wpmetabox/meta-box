@@ -5,15 +5,21 @@
 	 * Transform an input into a color picker.
 	 */
 	function transform() {
-		var $this = $( this ),
-			$container = $this.closest( '.wp-picker-container' ),
-			data = $.extend(
+		var $this = $( this );
+
+		function triggerChange() {
+			$this.trigger( 'color:change' ).trigger( 'mb_change' );
+		}
+
+		var $container = $this.closest( '.wp-picker-container' ),
+			// Hack: the picker needs a small delay (learn from the Kirki plugin).
+			options = $.extend(
 				{
 					change: function () {
-						$this.trigger( 'color:change' ).trigger( 'mb_change' );
+						setTimeout( triggerChange, 20 );
 					},
 					clear: function () {
-						$this.trigger( 'color:clear' ).trigger( 'mb_change' );
+						setTimeout( triggerChange, 20 );
 					}
 				},
 				$this.data( 'options' )
@@ -25,8 +31,8 @@
 			$container.remove();
 		}
 
-		// Show color picker
-		$this.wpColorPicker( data );
+		// Show color picker.
+		$this.wpColorPicker( options );
 	}
 
 	function init( e ) {

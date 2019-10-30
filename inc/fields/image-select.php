@@ -67,6 +67,6 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		return sprintf( '<img src="%s">', esc_url( $field['options'][ $value ] ) );
+		return $value ? sprintf( '<img src="%s">', esc_url( $field['options'][ $value ] ) ) : '';
 	}
 }

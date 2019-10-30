@@ -161,7 +161,7 @@ class RWMB_Sanitizer {
 	 * @return int|array
 	 */
 	private function sanitize_object( $value ) {
-		return is_array( $value ) ? array_map( 'absint', $value ) : absint( $value );
+		return is_array( $value ) ? array_filter( array_map( 'absint', $value ) ) : ( $value ? absint( $value ) : '' );
 	}
 
 	/**
@@ -186,9 +186,9 @@ class RWMB_Sanitizer {
 		$value['image'] = esc_url_raw( $value['image'] );
 
 		$value['repeat']     = in_array( $value['repeat'], array( 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ), true ) ? $value['repeat'] : '';
-		$value['position']   = in_array( $value['repeat'], array( 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ), true ) ? $value['position'] : '';
-		$value['attachment'] = in_array( $value['repeat'], array( 'fixed', 'scroll', 'inherit' ), true ) ? $value['attachment'] : '';
-		$value['size']       = in_array( $value['repeat'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['attachment'] : '';
+		$value['position']   = in_array( $value['position'], array( 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ), true ) ? $value['position'] : '';
+		$value['attachment'] = in_array( $value['attachment'], array( 'fixed', 'scroll', 'inherit' ), true ) ? $value['attachment'] : '';
+		$value['size']       = in_array( $value['size'], array( 'inherit', 'cover', 'contain' ), true ) ? $value['size'] : '';
 
 		return $value;
 	}
@@ -211,7 +211,7 @@ class RWMB_Sanitizer {
 	 * @return array
 	 */
 	private function sanitize_file( $value, $field ) {
-		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : array_map( 'absint', $value );
+		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : $this->sanitize_object( $value );
 	}
 
 	/**
@@ -261,7 +261,7 @@ class RWMB_Sanitizer {
 	 */
 	private function sanitize_taxonomy_advanced( $value ) {
 		$value = RWMB_Helpers_Array::from_csv( $value );
-		$value = array_map( 'absint', $value );
+		$value = array_filter( array_map( 'absint', $value ) );
 
 		return implode( ',', $value );
 	}

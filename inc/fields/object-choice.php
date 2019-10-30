@@ -76,7 +76,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				'ajax'       => true,
 			)
 		);
-
+		if ( 'select_advanced' !== $field['field_type'] ) {
+			$field['ajax'] = false;
+		}
 		if ( 'checkbox_tree' === $field['field_type'] ) {
 			$field['field_type'] = 'checkbox_list';
 			$field['flatten']    = false;
@@ -95,8 +97,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @param array $field Field settings.
 	 */
 	protected static function set_ajax_params( &$field ) {
-		$is_ajax = $field['ajax'] && 'select_advanced' === $field['field_type'];
-		if ( ! $is_ajax ) {
+		if ( ! $field['ajax'] ) {
 			return;
 		}
 

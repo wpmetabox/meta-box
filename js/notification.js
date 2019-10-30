@@ -1,4 +1,4 @@
-( function( $, document, i18n ) {
+( function( $, i18n ) {
 	'use strict';
 
 	function dismissNotification() {
@@ -7,10 +7,10 @@
 
 			$.post( ajaxurl, {
 				action: 'mb_dismiss_notification',
-				nonce: MBNotification.nonce
+				nonce: i18n.nonce
 			} );
 		} );
 	}
 
-	$( document ).on( 'ready', dismissNotification );
-} )( jQuery, document, MBNotification );
+	$( dismissNotification );
+} )( jQuery, MBNotification );

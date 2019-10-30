@@ -17,6 +17,11 @@
 		options.onSelect = function() {
 			$this.trigger( 'change' );
 		}
+		options.beforeShow = function( i ) {
+			if ( $( i ).prop( 'readonly' ) ) {
+				return false;
+			}
+		}
 
 		if ( $timestamp.length ) {
 			options.onClose = options.onSelect = function () {

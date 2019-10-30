@@ -210,7 +210,7 @@ abstract class RWMB_Field {
 		$meta = self::call( $field, 'raw_meta', $post_id );
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved ? $field['std'] : $meta;
+		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $meta;
 
 		// Ensure multiple fields are arrays.
 		if ( $field['multiple'] ) {
