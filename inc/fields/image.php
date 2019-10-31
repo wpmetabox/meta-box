@@ -76,6 +76,12 @@ class RWMB_Image_Field extends RWMB_File_Field {
 				'image_size' => 'thumbnail',
 			)
 		);
+		$field['attributes'] = wp_parse_args(
+			$field['attributes'],
+			array(
+				'accept' => 'image/*',
+			)
+		);
 
 		return $field;
 	}
