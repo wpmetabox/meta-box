@@ -380,6 +380,10 @@ abstract class RWMB_Field {
 			);
 		}
 
+		if ( 1 === $field['max_clone'] ) {
+			$field['clone'] = false;
+		}
+
 		return $field;
 	}
 
