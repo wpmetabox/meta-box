@@ -25,10 +25,10 @@
 			<h3><?php esc_html_e( 'Extensions', 'meta-box' ); ?></h3>
 			<p><?php esc_html_e( 'Wanna see more features that transform your WordPress website into a powerful CMS? Check out some extensions below:', 'meta-box' ); ?><p>
 			<ul>
-				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-group/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-welcome-widgets-menus"></span> <?php esc_html_e( 'Meta Box Group', 'meta-box' ); ?></a></li>
-				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-conditional-logic/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Meta Box Conditional Logic', 'meta-box' ); ?></a></li>
-				<li><a target="_blank" href="https://metabox.io/plugins/mb-settings-page/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-admin-generic"></span> <?php esc_html_e( 'MB Settings Page', 'meta-box' ); ?></a></li>
-				<li><a target="_blank" href="https://metabox.io/plugins/mb-term-meta/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-image-filter"></span> <?php esc_html_e( 'MB Term Meta', 'meta-box' ); ?></a></li>
+				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-builder/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-image-filter"></span> <?php esc_html_e( 'Meta Box Builder', 'meta-box' ); ?></a> - <?php esc_html_e( 'Build meta boxes and fields with UI.', 'meta-box' ); ?></li>
+				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-group/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-welcome-widgets-menus"></span> <?php esc_html_e( 'Meta Box Group', 'meta-box' ); ?></a> - <?php esc_html_e( 'Organize fields into groups.', 'meta-box' ); ?></li>
+				<li><a target="_blank" href="https://metabox.io/plugins/meta-box-conditional-logic/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Meta Box Conditional Logic', 'meta-box' ); ?></a> - <?php esc_html_e( 'Control the visibility of fields.', 'meta-box' ); ?></li>
+				<li><a target="_blank" href="https://metabox.io/plugins/mb-settings-page/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><span class="dashicons dashicons-admin-generic"></span> <?php esc_html_e( 'MB Settings Page', 'meta-box' ); ?></a> - <?php esc_html_e( 'Create settings pages or Customizer sections.', 'meta-box' ); ?></li>
 			</ul>
 			<p><a class="button" target="_blank" href="https://metabox.io/plugins/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'More Extensions', 'meta-box' ); ?></a></p>
 		</div>

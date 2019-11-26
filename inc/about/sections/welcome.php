@@ -2,8 +2,7 @@
 /**
  * Welcome section.
  *
- * @package    Meta Box
- * @subpackage MB Custom Post Type
+ * @package Meta Box
  */
 
 ?>

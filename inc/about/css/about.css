@@ -49,6 +49,7 @@
 .two img {
 	display: block;
 	box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+	border-radius: 4px;
 }
 .screenshot {
 	display: block;
@@ -167,7 +168,8 @@
 }
 .newsletter.newsletter input {
 	width: 145px;
-	padding: 5px;
+	min-height: 28px;
+	line-height: 26px;
 }
 
 /* Upgrade */
