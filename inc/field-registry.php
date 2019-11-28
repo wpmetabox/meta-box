@@ -36,6 +36,8 @@ class RWMB_Field_Registry {
 			$this->data[ $object_type ][ $type ] = array();
 		}
 		$this->data[ $object_type ][ $type ][ $field['id'] ] = $field;
+
+		do_action( 'rwmb_field_registered', $field, $type, $object_type );
 	}
 
 	/**
