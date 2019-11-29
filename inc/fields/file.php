@@ -87,7 +87,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$meta      = array_filter( (array) $meta );
-		$i18n_more = apply_filters( 'rwmb_file_add_string', _x( '+ Add new file', 'file upload', 'meta-box' ), $field );
+		$i18n_more = apply_filters( 'rwmb_file_add_string',esc_html_x( '+ Add new file', 'file upload', 'meta-box' ), $field );
 		$html      = self::get_uploaded_files( $meta, $field );
 
 		// Show form upload.
@@ -168,8 +168,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function file_html( $file, $index, $field ) {
-		$i18n_delete = apply_filters( 'rwmb_file_delete_string', _x( 'Delete', 'file upload', 'meta-box' ) );
-		$i18n_edit   = apply_filters( 'rwmb_file_edit_string', _x( 'Edit', 'file upload', 'meta-box' ) );
+		$i18n_delete = apply_filters( 'rwmb_file_delete_string',esc_html_x( 'Delete', 'file upload', 'meta-box' ) );
+		$i18n_edit   = apply_filters( 'rwmb_file_edit_string',esc_html_x( 'Edit', 'file upload', 'meta-box' ) );
 		$attributes  = self::get_attributes( $field, $file );
 
 		if ( ! $file ) {
