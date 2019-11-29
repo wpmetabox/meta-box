@@ -21,9 +21,9 @@ class RWMB_File_Field extends RWMB_Field {
 			'rwmbFile',
 			array(
 				// Translators: %d is the number of files in singular form.
-				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'meta-box' ),
+				'maxFileUploadsSingle' =>esc_html__( 'You may only upload maximum %d file', 'meta-box' ),
 				// Translators: %d is the number of files in plural form.
-				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'meta-box' ),
+				'maxFileUploadsPlural' =>esc_html__( 'You may only upload maximum %d files', 'meta-box' ),
 			)
 		);
 	}
@@ -60,7 +60,7 @@ class RWMB_File_Field extends RWMB_Field {
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
 		if ( ! in_array( $attachment, $field_value ) ) {
-			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
+			wp_send_json_error(esc_html__( 'Error: Invalid file', 'meta-box' ) );
 		}
 
 		// Delete the file.
@@ -74,7 +74,7 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( $result ) {
 			wp_send_json_success();
 		}
-		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
+		wp_send_json_error(esc_html__( 'Error: Cannot delete file', 'meta-box' ) );
 	}
 
 	/**
