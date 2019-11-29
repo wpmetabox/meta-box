@@ -164,7 +164,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			}
 		}
 		$attachments                    = array_values( $attachments );
-		$attributes['data-attachments'] = json_encode( $attachments );
+		$attributes['data-attachments'] = wp_json_encode( $attachments );
 
 		return $attributes;
 	}
