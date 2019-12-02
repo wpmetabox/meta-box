@@ -13,6 +13,6 @@ Thumbs.db export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 .github export-ignore
-lang/*.po export-ignore
-lang/*.pot export-ignore
-lang/*.md export-ignore
+languages/*.po export-ignore
+languages/*.pot export-ignore
+languages/*.md export-ignore
