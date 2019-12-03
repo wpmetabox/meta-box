@@ -120,7 +120,7 @@ class RWMB_Update_Settings {
 							$status   = $this->option->get_license_status();
 							$api_key  = in_array( $status, array( 'expired', 'active' ), true ) ? '********************************' : $this->option->get( 'api_key' );
 							?>
-							<input required class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $api_key ); ?>" type="password">
+							<input class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $api_key ); ?>" type="password">
 							<?php if ( isset( $messages[ $status ] ) ) : ?>
 								<p class="description"><?php echo wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ); ?></p>
 							<?php endif; ?>
