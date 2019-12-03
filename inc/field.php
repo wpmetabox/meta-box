@@ -98,11 +98,12 @@ abstract class RWMB_Field {
 		if ( $field['name'] ) {
 			$field_label = sprintf(
 				'<div class="rwmb-label">
-					<label for="%s">%s</label>
+					<label for="%s">%s%s</label>
 					%s
 				</div>',
 				esc_attr( $field['id'] ),
 				$field['name'],
+				$field['required'] || ! empty( $field['attributes']['required'] ) ? '<span class="rwmb-required">*</span>' : '',
 				self::label_description( $field )
 			);
 		}
