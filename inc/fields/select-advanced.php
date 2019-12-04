@@ -59,6 +59,10 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 			)
 		);
 
+		if ( version_compare( get_bloginfo( 'version' ), '5.3', '>=' ) ) {
+			$field['class'] .= ' rwmb-select-advanced-dark';
+		}
+
 		return $field;
 	}
 

@@ -1,5 +1,7 @@
-.rwmb-select.rwmb-select {
+.rwmb-select {
 	min-width: 160px;
+}
+.rwmb-select.rwmb-select[multiple] {
 	padding: 0;
 }
 .rwmb-select option {

@@ -3,20 +3,25 @@
 	min-width: 200px;
 	max-width: 100%;
 }
-#wpbody .rwmb-select-all {
-	display: block;
-	margin-top: 5px;
-}
 #wpbody .select2-selection--single,
 #wpbody .select2-selection--multiple,
 .select2-dropdown {
 	border-color: #ddd;
+}
+#wpbody .rwmb-select-advanced-dark .select2-selection--single,
+#wpbody .rwmb-select-advanced-dark .select2-selection--multiple,
+.rwmb-select-advanced-dark .select2-dropdown {
+	border-color: #7e8993;
 }
 .select2-results__option {
 	margin-bottom: 0;
 }
 .select2-container .select2-search--inline {
 	margin-bottom: 0;
+}
+.select2-search--dropdown .select2-search__field {
+	padding: 0 4px;
+	min-height: 28px;
 }
 body > .select2-container {
 	z-index: 999999;
