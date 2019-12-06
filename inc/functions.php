@@ -240,7 +240,7 @@ if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
 				$prop = 'user';
 				break;
 			case 'setting':
-				$type = 'setting';
+				$type = $type_or_id;
 				$prop = 'settings_pages';
 				break;
 		}
