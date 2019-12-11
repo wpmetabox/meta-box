@@ -2,11 +2,11 @@
 * text=auto
 
 # Ignore files when export
-demo export-ignore
-tests export-ignore
 .DS_Store export-ignore
 Thumbs.db export-ignore
-*.yml export-ignore
+
+tests export-ignore
+.travis.yml export-ignore
 *.xml export-ignore
 *.json export-ignore
 *.md export-ignore
