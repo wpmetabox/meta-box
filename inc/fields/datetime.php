@@ -184,7 +184,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	public static function from_timestamp( $meta, $field ) {
 		return array(
 			'timestamp' => $meta ? $meta : null,
-			'formatted' => $meta ? date( $field['php_format'], intval( $meta ) ) : '',
+			'formatted' => $meta ? gmdate( $field['php_format'], intval( $meta ) ) : '',
 		);
 	}
 
@@ -299,6 +299,6 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 				'formatted' => $value,
 			);
 		}
-		return empty( $args['format'] ) ? $value['formatted'] : date( $args['format'], $value['timestamp'] );
+		return empty( $args['format'] ) ? $value['formatted'] : gmdate( $args['format'], $value['timestamp'] );
 	}
 }
