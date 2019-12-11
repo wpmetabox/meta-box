@@ -161,10 +161,15 @@ class RWMB_About {
 	 *                             or just the current site. Multisite only. Default is false.
 	 */
 	public function redirect( $plugin, $network_wide = false ) {
-		if ( 'cli' !== php_sapi_name() && ! $network_wide && 'meta-box/meta-box.php' === $plugin && ! $this->is_bundled() && ! $this->is_bulk_activate() ) {
-			wp_safe_redirect( $this->get_menu_link() );
-			die;
+		$is_cli           = 'cli' === php_sapi_name();
+		$is_plugin        = 'meta-box/meta-box.php' === $plugin;
+		$is_bulk_activate = 'activate-selected' === rwmb_request()->post( 'action' ) && count( rwmb_request()->post( 'checked' ) ) > 1;
+
+		if ( ! $is_plugin || $network_wide || $is_cli || $is_bulk_activate || $this->is_bundled() ) {
+			return;
 		}
+		wp_safe_redirect( $this->get_menu_link() );
+		die;
 	}
 
 	/**
@@ -208,14 +213,5 @@ class RWMB_About {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Check if the plugin is activated via bulk activate action.
-	 *
-	 * @return bool
-	 */
-	private function is_bulk_activate() {
-		return 'activate-selected' === rwmb_request()->post( 'action' );
 	}
 }
