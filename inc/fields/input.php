@@ -26,8 +26,13 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function html( $meta, $field ) {
 		$output = '';
 
+		$wrapper_class = 'rwmb-input-group';
+		if ( version_compare( get_bloginfo( 'version' ), '5.3', '>=' ) ) {
+			$wrapper_class .= ' rwmb-input-dark';
+		}
+
 		if ( $field['prepend'] || $field['append'] ) {
-			$output = '<div class="rwmb-input-group">';
+			$output = "<div class='$wrapper_class'>";
 		}
 
 		if ( $field['prepend'] ) {

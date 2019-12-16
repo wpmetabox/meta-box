@@ -12,3 +12,24 @@
 .rwmb-input-group input {
 	margin: 0;
 }
+
+/* Dark version for WordPress >= 5.3 */
+.rwmb-input-dark .rwmb-input-group-append,
+.rwmb-input-dark .rwmb-input-group-prepend {
+	border: 1px solid #7e8993;
+}
+.rwmb-input-dark .rwmb-input-group-append {
+	border-radius: 0 4px 4px 0;
+}
+.rwmb-input-dark .rwmb-input-group-prepend {
+	border-radius: 4px 0 0 4px;
+}
+.rwmb-input-dark input {
+	border-right-width: 0;
+	border-radius: 4px 0 0 4px;
+}
+.rwmb-input-dark .rwmb-input-group-prepend + input {
+	border-left: none;
+	border-right-width: 1px;
+	border-radius: 0 4px 4px 0;
+}
