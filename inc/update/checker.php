@@ -74,6 +74,7 @@ class RWMB_Update_Checker {
 		$extensions = array(
 			'mb-admin-columns',
 			'mb-blocks',
+			'mb-core',
 			'mb-custom-table',
 			'mb-frontend-submission',
 			'mb-revision',
