@@ -27,6 +27,10 @@
 	function transform() {
 		var $this = $( this ),
 			options = $this.data( 'options' );
+		
+		if ( options.ajax && !options.ajax.delay ) {
+			options.ajax.delay = 350;
+		}
 
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
