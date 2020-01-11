@@ -300,13 +300,7 @@
 			this._editFrame = new EditMedia( {
 				frame: 'edit-attachments',
 				controller: {
-					// Needed to trick Edit modal to think there is a gridRouter.
-					gridRouter: {
-						navigate: function ( destination ) {
-						},
-						baseUrl: function ( url ) {
-						}
-					}
+					gridRouter: new wp.media.view.MediaFrame.Manage.Router()
 				},
 				library: this.collection,
 				model: item
@@ -423,20 +417,17 @@
 		},
 
 		events: {
-			'click .rwmb-image-overlay': function () {
+			'click .rwmb-image-overlay': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:switch', this.model );
-				return false;
 			},
-
-			// Event when remove button clicked
-			'click .rwmb-remove-media': function () {
+			'click .rwmb-remove-media': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:remove', this.model );
-				return false;
 			},
-
-			'click .rwmb-edit-media': function () {
+			'click .rwmb-edit-media': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:edit', this.model );
-				return false;
 			}
 		},
 
@@ -563,7 +554,8 @@
 				controller: this,
 				model: this.model
 			} ) );
-		}
+		},
+		resetRoute: function() {}
 	} );
 
 	function initMediaField() {
