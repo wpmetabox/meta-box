@@ -97,17 +97,16 @@
 			} );
 
 			/**
-			 * Add a custom event that allows other scripts to refresh the maps when needed
-			 * For example: when maps is in tabs or hidden div.
-			 *
+			 * Custom event to refresh maps when in hidden divs.
 			 * @see https://developers.google.com/maps/documentation/javascript/reference ('resize' Event)
 			 */
-			$( window ).on( 'rwmb_map_refresh', that.refresh );
+			var refresh = that.refresh.bind( this );
+			$( window ).on( 'rwmb_map_refresh', refresh );
 
 			// Refresh on meta box hide and show
-			rwmb.$document.on( 'postbox-toggled', that.refresh );
+			rwmb.$document.on( 'postbox-toggled', refresh );
 			// Refresh on sorting meta boxes
-			$( '.meta-box-sortables' ).on( 'sortstop', that.refresh );
+			$( '.meta-box-sortables' ).on( 'sortstop', refresh );
 		},
 
 		refresh: function () {
@@ -246,7 +245,7 @@
 		}
 	};
 
-	function initMap() {
+	function createController() {
 		var $this = $( this ),
 			controller = $this.data( 'mapController' );
 		if ( controller ) {
@@ -259,11 +258,11 @@
 	}
 
 	function init( e ) {
-		$( e.target ).find( '.rwmb-map-field' ).each( initMap );
+		$( e.target ).find( '.rwmb-map-field' ).each( createController );
 	}
 
 	function restart() {
-		$( '.rwmb-map-field' ).each( initMap );
+		$( '.rwmb-map-field' ).each( createController );
 	}
 
 	rwmb.$document
