@@ -5,7 +5,7 @@ Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, 
 Requires at least: 4.3
 Requires PHP: 5.3
 Tested up to: 5.3.2
-Stable tag: 5.2.5
+Stable tag: 5.2.6
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -166,6 +166,12 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.2.6 - 2020-02-03 =
+
+**Fixed**
+
+- Fix wrong tag when deploying
 
 = 5.2.5 - 2020-02-03 =
 
