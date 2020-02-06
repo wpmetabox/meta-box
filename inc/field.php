@@ -327,11 +327,17 @@ abstract class RWMB_Field {
 	/**
 	 * Normalize parameters for field.
 	 *
-	 * @param array $field Field parameters.
-	 *
+	 * @param array|string $field Field settings.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
+		// Quick define text fields with "name" attribute only.
+		if ( is_string( $field ) ) {
+			$field = array(
+				'name' => $field,
+				'id'   => sanitize_key( $field ),
+			);
+		}
 		$field = wp_parse_args(
 			$field,
 			array(
