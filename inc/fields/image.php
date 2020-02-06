@@ -161,8 +161,11 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 */
 	protected static function get_image_meta_data( $attachment_id ) {
 		$metadata = wp_get_attachment_metadata( $attachment_id );
-		$dir_url  = dirname( wp_get_attachment_url( $attachment_id ) );
+		if ( empty( $metadata['sizes'] ) ) {
+			return $metadata;
+		}
 
+		$dir_url  = dirname( wp_get_attachment_url( $attachment_id ) );
 		foreach ( $metadata['sizes'] as &$size ) {
 			$size['url'] = "{$dir_url}/{$size['file']}";
 		}
