@@ -101,8 +101,14 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			return;
 		}
 
-		$field['js_options']['ajax']      = array(
-			'url' => admin_url( 'admin-ajax.php' ),
+		if ( empty( $field['js_options']['ajax'] ) ) {
+			$field['js_options']['ajax'] = array();
+		}
+		$field['js_options']['ajax']      = wp_parse_args(
+			array(
+				'url' => admin_url( 'admin-ajax.php' ),
+			),
+			$field['js_options']['ajax']
 		);
 		$field['js_options']['ajax_data'] = array(
 			'field'    => array(
