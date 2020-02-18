@@ -139,6 +139,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 				'marker_title' => '', // Marker title, when hover.
 				'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
 				'js_options'   => array(),
+				'zoom'         => $zoom,
 			)
 		);
 
@@ -154,7 +155,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 			$args['js_options'],
 			array(
 				// Default to 'zoom' level set in admin, but can be overwritten.
-				'zoom' => $zoom,
+				'zoom' => $args['zoom'],
 			)
 		);
 
