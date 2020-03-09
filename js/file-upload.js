@@ -25,7 +25,6 @@
 			this.el.id = _.uniqueId( 'rwmb-upload-area-' );
 			this.render();
 
-			//Areas
 			this.dropzone = this.el;
 			this.browser = this.$( '.rwmb-browse-button' )[0];
 
@@ -39,13 +38,12 @@
 			} );
 		},
 
-		//Initializes plupload
-		//Uses code from wp.Uploader
+		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
 		initUploader: function () {
-			var isIE = navigator.userAgent.indexOf( 'Trident/' ) != - 1 || navigator.userAgent.indexOf( 'MSIE ' ) != - 1,
-				self = this,
+			var self = this,
 				extensions = this.getExtensions().join( ',' ),
-				max_file_size;
+				maxFileSize = this.controller.get( 'maxFileSize' );
+
 			this.plupload = $.extend( true, {
 				multipart_params: {
 					post_id : $( '#post_ID' ).val()
@@ -53,23 +51,14 @@
 				multipart: true,
 				urlstream_upload: true,
 				drop_element: this.dropzone,
-				browse_button: this.browser,
-				filters: {}
+				browse_button: this.browser
 			}, wp.Uploader.defaults );
 
-			if( max_file_size = this.controller.get( 'maxFileSize' ) ) {
-				this.plupload.filters.max_file_size = max_file_size;
+			if ( maxFileSize ) {
+				this.plupload.filters.max_file_size = maxFileSize;
 			}
-
 			if ( extensions ) {
 				this.plupload.filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
-			}
-
-			// Make sure flash sends cookies (seems in IE it does without switching to urlstream mode)
-			if ( ! isIE && 'flash' === plupload.predictRuntime( this.plupload ) &&
-			     ( ! this.plupload.required_features || ! this.plupload.required_features.hasOwnProperty( 'send_binary_string' ) ) ) {
-				this.plupload.required_features = this.plupload.required_features || {};
-				this.plupload.required_features.send_binary_string = true;
 			}
 
 			// Initialize the plupload instance.
