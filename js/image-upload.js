@@ -24,6 +24,10 @@
 
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
+
+		// Init uploader after view is inserted to make wp.Uploader works.
+		view.addButton.initUploader();
+
 		$this.data( 'view', view );
 	}
 
