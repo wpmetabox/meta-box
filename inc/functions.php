@@ -297,8 +297,12 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 			return $value->$attribute;
 		}
 
+		if ( isset( $value[ $attribute ] ) ) {
+			return $value[ $attribute ];
+		}
+
 		$value = wp_list_pluck( $value, $attribute );
-		$value = implode( ',', $value );
+		$value = implode( ',', array_filter( $value ) );
 
 		return $value;
 	}
