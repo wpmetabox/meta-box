@@ -14,7 +14,7 @@ jQuery( function ( $ ) {
 				$form.trigger( 'after_validate' );
 			}, 200 );
 		},
-		ignore: ':not([class|="rwmb"])',
+		ignore: ':not([class|="rwmb"]:visible)',
 		errorPlacement: function( error, element ) {
 			error.appendTo( element.closest( '.rwmb-input' ) );
 		},
