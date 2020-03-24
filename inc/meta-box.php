@@ -312,7 +312,7 @@ class RW_Meta_Box {
 		// Call defined method to save meta value, if there's no methods, call common one.
 		RWMB_Field::call( $field, 'save', $new, $old, $this->object_id );
 
-		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id, $field );
+		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id );
 	}
 
 	/**
