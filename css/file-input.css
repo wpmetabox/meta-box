@@ -1,6 +1,17 @@
+.rwmb-file_input-wrapper > .rwmb-input {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+}
 .rwmb-file_input.rwmb-file_input {
 	line-height: 18px;
-	margin: 0;
+	margin: 0 5px 0 0;
 	padding: 4px;
 	width: 300px;
+}
+@media (max-width: 767px) {
+	.rwmb-file_input.rwmb-file_input,
+	.rwmb-file-input-select {
+		margin-bottom: 5px;
+	}
 }

@@ -15,7 +15,17 @@ class RWMB_Background_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-background', RWMB_CSS_URL . 'background.css', '', RWMB_VER );
 
-		RWMB_Color_Field::admin_enqueue_scripts();
+		$args  = func_get_args();
+		$field = reset( $args );
+		$color = RWMB_Color_Field::normalize(
+			array(
+				'type'          => 'color',
+				'id'            => "{$field['id']}_color",
+				'field_name'    => "{$field['field_name']}[color]",
+				'alpha_channel' => true,
+			)
+		);
+		RWMB_Color_Field::admin_enqueue_scripts( $color );
 		RWMB_File_Input_Field::admin_enqueue_scripts();
 	}
 
@@ -45,9 +55,10 @@ class RWMB_Background_Field extends RWMB_Field {
 		// Color.
 		$color   = RWMB_Color_Field::normalize(
 			array(
-				'type'       => 'color',
-				'id'         => "{$field['id']}_color",
-				'field_name' => "{$field['field_name']}[color]",
+				'type'          => 'color',
+				'id'            => "{$field['id']}_color",
+				'field_name'    => "{$field['field_name']}[color]",
+				'alpha_channel' => true,
 			)
 		);
 		$output .= RWMB_Color_Field::html( $meta['color'], $color );
@@ -75,7 +86,7 @@ class RWMB_Background_Field extends RWMB_Field {
 				'type'        => 'select',
 				'id'          => "{$field['id']}_repeat",
 				'field_name'  => "{$field['field_name']}[repeat]",
-				'placeholder' => esc_html__( '-- Background Repeat --', 'meta-box' ),
+				'placeholder' => esc_html__( '-- Repeat --', 'meta-box' ),
 				'options'     => array(
 					'no-repeat' => esc_html__( 'No Repeat', 'meta-box' ),
 					'repeat'    => esc_html__( 'Repeat All', 'meta-box' ),
@@ -93,7 +104,7 @@ class RWMB_Background_Field extends RWMB_Field {
 				'type'        => 'select',
 				'id'          => "{$field['id']}_position",
 				'field_name'  => "{$field['field_name']}[position]",
-				'placeholder' => esc_html__( '-- Background Position --', 'meta-box' ),
+				'placeholder' => esc_html__( '-- Position --', 'meta-box' ),
 				'options'     => array(
 					'top left'      => esc_html__( 'Top Left', 'meta-box' ),
 					'top center'    => esc_html__( 'Top Center', 'meta-box' ),
@@ -115,7 +126,7 @@ class RWMB_Background_Field extends RWMB_Field {
 				'type'        => 'select',
 				'id'          => "{$field['id']}_attachment",
 				'field_name'  => "{$field['field_name']}[attachment]",
-				'placeholder' => esc_html__( '-- Background Attachment --', 'meta-box' ),
+				'placeholder' => esc_html__( '-- Attachment --', 'meta-box' ),
 				'options'     => array(
 					'fixed'   => esc_html__( 'Fixed', 'meta-box' ),
 					'scroll'  => esc_html__( 'Scroll', 'meta-box' ),
@@ -131,7 +142,7 @@ class RWMB_Background_Field extends RWMB_Field {
 				'type'        => 'select',
 				'id'          => "{$field['id']}_size",
 				'field_name'  => "{$field['field_name']}[size]",
-				'placeholder' => esc_html__( '-- Background Size --', 'meta-box' ),
+				'placeholder' => esc_html__( '-- Size --', 'meta-box' ),
 				'options'     => array(
 					'inherit' => esc_html__( 'Inherit', 'meta-box' ),
 					'cover'   => esc_html__( 'Cover', 'meta-box' ),
