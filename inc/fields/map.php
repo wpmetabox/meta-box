@@ -207,6 +207,9 @@ class RWMB_Map_Field extends RWMB_Field {
 
 				// Map type, see https://developers.google.com/maps/documentation/javascript/reference#MapTypeId.
 				'mapTypeId' => 'ROADMAP',
+
+				// Open Info Window
+				'openInfoWindow' => false,
 			)
 		);
 
