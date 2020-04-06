@@ -1,11 +1,11 @@
 === Meta Box - WordPress Custom Fields Framework ===
-Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
+Contributors: elightup, metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: https://metabox.io/pricing/
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
 Requires PHP: 5.3
-Tested up to: 5.3.2
-Stable tag: 5.2.7
+Tested up to: 5.4
+Stable tag: 5.2.8
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -167,9 +167,31 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 == Changelog ==
 
-= 5.2.6 - 2020-02-03 =
+= 5.2.8 - 2020-04-06 =
+
+**Added**
+
+- Add option open info window in Google Maps when loaded
+- Add `alpha_channel` & update style to background field
+- Add support for custom Ajax parameters for object fields.
 
 **Fixed**
+
+- Fix validation rules still applied for hidden fields
+- Fix `image_upload` field select files not working on iPhone
+- Fix fatal error with Frontend Submission & Elementor
+- Fix 'zoom' parameter not working for OSM field on the front end
+
+**Changed**
+
+- Remove languages folder. Load languages from translate.wordpress.org only
+
+= 5.2.7 - 2020-02-07 =
+
+- Fix warning in image field for metadata[‘sizes’].
+- Allow to quick define text fields with “name” attribute only.
+
+= 5.2.6 - 2020-02-03 =
 
 - Fix wrong tag when deploying
 
