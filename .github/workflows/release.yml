@@ -1,0 +1,20 @@
+name: Release new version on WordPress.org
+on:
+  push:
+    tags:
+    - "*"
+jobs:
+  tag:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: 10up/action-wordpress-plugin-deploy@master
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+    - uses: rtCamp/action-slack-notify@v2.0.1
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: Meta Box
+        SLACK_ICON: https://github.com/wpmetabox  .png?size=48
