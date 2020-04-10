@@ -85,45 +85,36 @@
 
 	// Object holds all method related to fields' value when clone.
 	var cloneValue = {
-		/**
-		 * Reset field value when clone. Expect this = current input.
-		 */
-		reset: function() {
-			cloneValue.$field = $( this );
-			cloneValue.type = cloneValue.$field.attr( 'type' );
-			cloneValue.isHiddenField = cloneValue.$field.hasClass( 'rwmb-hidden' );
+		setDefault: function() {
+			var $field = $( this );
 
-			if ( true === cloneValue.$field.data( 'clone-default' ) ) {
-				cloneValue.resetToDefault();
-			} else {
-				cloneValue.clear();
+			if ( true !== $field.data( 'clone-default' ) ) {
+				return;
+			}
+
+			var type = $field.attr( 'type' ),
+				defaultValue = $field.data( 'default' );
+
+			if ( 'radio' === type ) {
+				$field.prop( 'checked', $field.val() === defaultValue );
+			} else if ( 'checkbox' === type ) {
+				$field.prop( 'checked', Array.isArray( defaultValue ) ? -1 !== defaultValue.indexOf( $field.val() ) : !! defaultValue );
+			} else if ( 'select' === type ) {
+				$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
+			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
+				$field.val( defaultValue );
 			}
 		},
-		/**
-		 * Reset field value to its default.
-		 */
-		resetToDefault: function() {
-			var defaultValue = cloneValue.$field.data( 'default' );
-			if ( 'radio' === cloneValue.type ) {
-				cloneValue.$field.prop( 'checked', cloneValue.$field.val() === defaultValue );
-			} else if ( 'checkbox' === cloneValue.type ) {
-				cloneValue.$field.prop( 'checked', !!defaultValue );
-			} else if ( 'select' === cloneValue.type ) {
-				cloneValue.$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
-			} else if ( ! cloneValue.isHiddenField ) {
-				cloneValue.$field.val( defaultValue );
-			}
-		},
-		/**
-		 * Clear field value.
-		 */
 		clear: function() {
-			if ( 'radio' === cloneValue.type || 'checkbox' === cloneValue.type ) {
-				cloneValue.$field.prop( 'checked', false );
-			} else if ( 'select' === cloneValue.type ) {
-				cloneValue.$field.prop( 'selectedIndex', - 1 );
-			} else if ( ! cloneValue.isHiddenField ) {
-				cloneValue.$field.val( '' );
+			var $field = $( this ),
+				type = $field.attr( 'type' );
+
+			if ( 'radio' === type || 'checkbox' === type ) {
+				$field.prop( 'checked', false );
+			} else if ( 'select' === type ) {
+				$field.prop( 'selectedIndex', - 1 );
+			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
+				$field.val( '' );
 			}
 		}
 	};
@@ -137,11 +128,11 @@
 			$clone = $last.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
-		// Reset value for fields
+		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );
-		$inputs.each( cloneValue.reset );
+		$inputs.each( cloneValue.clear );
 
-		// Insert Clone
+		// Insert clone.
 		$clone.insertAfter( $last );
 
 		// Trigger custom event for the clone instance. Required for Group extension to update sub fields.
@@ -149,6 +140,9 @@
 
 		// Set fields index. Must run before trigger clone event.
 		cloneIndex.set( $inputs, nextIndex );
+
+		// Set fields' default values: do after index is set to prevent previous radio fields from unchecking.
+		$inputs.each( cloneValue.setDefault );
 
 		// Trigger custom clone event.
 		$inputs.trigger( 'clone', nextIndex );
