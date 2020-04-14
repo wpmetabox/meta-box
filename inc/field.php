@@ -182,7 +182,9 @@ abstract class RWMB_Field {
 			$args['single'] = false;
 		}
 
-		return $storage->get( $object_id, $field['id'], $args );
+		$value = $storage->get( $object_id, $field['id'], $args );
+		$value = self::filter( 'raw_meta', $value, $field, $object_id, $args );
+		return $value;
 	}
 
 	/**
