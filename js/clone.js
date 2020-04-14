@@ -26,13 +26,6 @@
 
 				$field.trigger( 'update_index', index );
 			} );
-
-			// Address button's value attribute
-			var $address = $inputs.filter( '.rwmb-map-goto-address-button' );
-			if ( $address.length ) {
-				var value = $address.attr( 'value' );
-				$address.attr( 'value', cloneIndex.replace( index, value, '_' ) );
-			}
 		},
 
 		/**
