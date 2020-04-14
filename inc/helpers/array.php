@@ -78,4 +78,13 @@ class RWMB_Helpers_Array {
 		);
 		return $return;
 	}
+
+	/**
+	 * Ensure a variable is an array.
+	 * @param  mixed $input Input value.
+	 * @return array
+	 */
+	public static function ensure( $input ) {
+		return (array) $input;
+	}
 }

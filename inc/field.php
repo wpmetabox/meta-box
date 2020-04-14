@@ -211,29 +211,27 @@ abstract class RWMB_Field {
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $meta;
 
-		// Ensure multiple fields are arrays.
-		if ( $field['multiple'] ) {
-			$meta = (array) $meta;
-			if ( $field['clone'] ) {
-				foreach ( $meta as $key => $m ) {
-					$meta[ $key ] = (array) $m;
-				}
+		if ( $field['clone'] ) {
+			$meta = RWMB_Helpers_Array::ensure( $meta );
+
+			// Ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
+			if ( empty( $meta ) ) {
+				$meta = array( '' );
 			}
+
+			if ( $field['multiple'] ) {
+				$first = reset( $meta );
+
+				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
+				// In other cases, make sure each value is an array.
+				$meta = is_array( $first ) ? array_walk( $meta, 'RWMB_Helpers_Array::ensure' ) : array( $meta );
+			}
+		} elseif ( $field['multiple'] ) {
+			$meta = RWMB_Helpers_Array::ensure( $meta );
 		}
+
 		// Escape attributes.
 		$meta = self::call( $field, 'esc_meta', $meta );
-
-		// Make sure meta value is an array for clonable and multiple fields.
-		if ( $field['clone'] || $field['multiple'] ) {
-			if ( empty( $meta ) || ! is_array( $meta ) ) {
-				/**
-				 * If field is clonable, $meta must be an array with values so that the foreach loop in self::show() runs properly.
-				 *
-				 * @see self::show()
-				 */
-				$meta = $field['clone'] ? array( '' ) : array();
-			}
-		}
 
 		return $meta;
 	}
