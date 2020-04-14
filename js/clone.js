@@ -97,8 +97,11 @@
 
 			if ( 'radio' === type ) {
 				$field.prop( 'checked', $field.val() === defaultValue );
-			} else if ( 'checkbox' === type ) {
-				$field.prop( 'checked', Array.isArray( defaultValue ) ? -1 !== defaultValue.indexOf( $field.val() ) : !! defaultValue );
+			} else if ( $field.hasClass( 'rwmb-checkbox' ) ) {
+					$field.prop( 'checked', !! defaultValue );
+			} else if ( $field.hasClass( 'rwmb-checkbox_list' ) ) {
+				var value = $field.val();
+				$field.prop( 'checked', Array.isArray( defaultValue ) ? -1 !== defaultValue.indexOf( value ) : value == defaultValue );
 			} else if ( 'select' === type ) {
 				$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
 			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
