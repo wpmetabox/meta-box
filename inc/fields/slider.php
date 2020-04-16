@@ -31,19 +31,20 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
+		$attributes = self::call( 'get_attributes', $field, $meta );
 		return sprintf(
 			'<div class="clearfix">
-				<div class="rwmb-slider" id="%s" data-options="%s"></div>
-				<span class="rwmb-slider-value-label">%s<span>%s</span>%s</span>
-				<input type="hidden" name="%s" value="%s" class="rwmb-slider-value">
+				<div class="rwmb-slider-ui" id="%s" data-options="%s"></div>
+				<span class="rwmb-slider-label">%s<span>%s</span>%s</span>
+				<input type="hidden" value="%s" %s>
 			</div>',
 			$field['id'],
 			esc_attr( wp_json_encode( $field['js_options'] ) ),
 			$field['prefix'],
 			$meta,
 			$field['suffix'],
-			$field['field_name'],
-			$meta
+			$meta,
+			self::render_attributes( $attributes )
 		);
 	}
 
