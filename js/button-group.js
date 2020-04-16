@@ -38,5 +38,5 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'click', '.rwmb-button-input-list li', clickHandler )
-		.on( 'clone', '.rwmb-button-input-list', setActiveClass );
+		.on( 'clone', '.rwmb-button-input-list li', setActiveClass );
 } )( jQuery, rwmb );
