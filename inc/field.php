@@ -224,7 +224,7 @@ abstract class RWMB_Field {
 
 				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
 				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_walk( $meta, 'RWMB_Helpers_Array::ensure' ) : array( $meta );
+				$meta = is_array( $first ) ? array_map( 'RWMB_Helpers_Array::ensure', $meta ) : array( $meta );
 			}
 		} elseif ( $field['multiple'] ) {
 			$meta = RWMB_Helpers_Array::ensure( $meta );
