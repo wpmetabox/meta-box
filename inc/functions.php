@@ -48,7 +48,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
-		$type = key_exists('type', $args) ? $args['type'] : get_post_type( $object_id );
+		$type = key_exists('object_type', $args) ? $args['object_type'] : get_post_type( $object_id );
 
 		if ( false === $field ) {
 			$args  = wp_parse_args(
