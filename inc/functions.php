@@ -75,7 +75,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 		$new = RWMB_Field::filter( 'rest_value', $new, $field, $old, $object_id );
 		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
 		
-		return apply_filters( 'rwmb_set_meta', $key, $value, $args, $object_id, $old );
+		return apply_filters( 'rwmb_set_meta', $object_id, $key, $value, $args, $old );
 	}
 }
 
