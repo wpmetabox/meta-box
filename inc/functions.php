@@ -45,20 +45,19 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	 * @return mixed
 	 */
 	function rwmb_set_meta( $object_id, $key, $value, $args = array() ) {
-		$args  = wp_parse_args( $args );
+		$args = wp_parse_args( 
+			$args,
+			array(
+				'type'     => 'text',
+				'multiple' => false,
+				'clone'    => false,
+			)
+		);
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
-		$type = key_exists('object_type', $args) ? $args['object_type'] : get_post_type( $object_id );
-
 		if ( false === $field ) {
-			$args  = wp_parse_args(
-				$args,
-				array(
-					'type'     => 'text',
-					'multiple' => false,
-					'clone'    => false,
-				)
-			);
+			$type = key_exists('object_type', $args) ? $args['object_type'] : get_post_type( $object_id );
+
 			$field = array(
 				'id'       => $key,
 				'type'     => $args['type'],
