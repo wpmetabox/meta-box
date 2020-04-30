@@ -35,46 +35,24 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 
 if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	/**
-	 * Set post meta.
+	 * Set meta value.
 	 *
-	 * @param int      $object_id Object ID. Required.
-	 * @param string   $key       Meta key. Required.
-	 * @param string   $value     Meta value. Required.
-	 * @param array    $args      Array of arguments. Optional.
-	 *
-	 * @return mixed
+	 * @param int    $object_id Object ID. Required.
+	 * @param string $key       Meta key. Required.
+	 * @param string $value     Meta value. Required.
+	 * @param array  $args      Array of arguments. Optional.
 	 */
 	function rwmb_set_meta( $object_id, $key, $value, $args = array() ) {
-		$args = wp_parse_args( 
-			$args,
-			array(
-				'type'     => 'text',
-				'multiple' => false,
-				'clone'    => false,
-			)
-		);
+		$args = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
 		if ( false === $field ) {
-			$type = key_exists('object_type', $args) ? $args['object_type'] : get_post_type( $object_id );
-
-			$field = array(
-				'id'       => $key,
-				'type'     => $args['type'],
-				'clone'    => $args['clone'],
-				'multiple' => $args['multiple'],
-				'storage'  => rwmb_get_storage( $type ),
-			);
-	
-			$field = RWMB_Field::call( 'normalize', $field );
+			return;
 		}
 
 		$old = RWMB_Field::call( $field, 'raw_meta', $object_id );
 		$new = RWMB_Field::process_value( $value, $object_id, $field );
-		$new = RWMB_Field::filter( 'rest_value', $new, $field, $old, $object_id );
 		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
-		
-		return apply_filters( 'rwmb_set_meta', $object_id, $key, $value, $args, $old );
 	}
 }
 
