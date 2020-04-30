@@ -33,6 +33,29 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	}
 }
 
+if ( ! function_exists( 'rwmb_set_meta' ) ) {
+	/**
+	 * Set meta value.
+	 *
+	 * @param int    $object_id Object ID. Required.
+	 * @param string $key       Meta key. Required.
+	 * @param string $value     Meta value. Required.
+	 * @param array  $args      Array of arguments. Optional.
+	 */
+	function rwmb_set_meta( $object_id, $key, $value, $args = array() ) {
+		$args = wp_parse_args( $args );
+		$field = rwmb_get_field_settings( $key, $args, $object_id );
+
+		if ( false === $field ) {
+			return;
+		}
+
+		$old = RWMB_Field::call( $field, 'raw_meta', $object_id );
+		$new = RWMB_Field::process_value( $value, $object_id, $field );
+		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
+	}
+}
+
 if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	/**
 	 * Get field settings.
