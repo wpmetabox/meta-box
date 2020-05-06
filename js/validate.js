@@ -44,24 +44,8 @@
 		},
 
 		getForm: function () {
-			// In Gutenberg.
-			if ( rwmb.isGutenberg ) {
-				Validation.$form = $( '#poststuff' );
-				return;
-			}
-
-			// Edit post form.
-			Validation.$form = $( '#post, .rwmb-form' );
-
-			// Edit user form.
-			if ( ! Validation.$form.length ) {
-				Validation.$form = $( '#your-profile' );
-			}
-
-			// Edit term form.
-			if ( ! Validation.$form.length ) {
-				Validation.$form = $( '#edittag' );
-			}
+			// Gutenberg edit post form, classic edit post form, edit term form, edit user form, front-end form.
+			Validation.$form = $( '#editor, #post, #edittag, #your-profile, .rwmb-form' );
 		},
 
 		runOnGutenberg: function () {
@@ -104,8 +88,8 @@
 					// Re-enable the submit ( publish/update ) button and hide the ajax indicator
 					$( '#publish' ).removeClass( 'button-primary-disabled' );
 					$( '#ajax-loading' ).attr( 'style', '' );
-					Validation.$form.siblings( '#message' ).remove();
-					Validation.$form.before( '<div id="message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
+					$( '#rwmb-validation-message' ).remove();
+					Validation.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
 
 					// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
 					setTimeout( function() {
