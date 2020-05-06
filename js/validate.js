@@ -16,6 +16,7 @@
 			if ( rwmb.isGutenberg ) {
 				Validation.runOnGutenberg();
 				return;
+			}
 
 			Validation.$form.on( 'submit', function() {
 				// Update underlying textarea before submit validation.
@@ -26,8 +27,8 @@
 		},
 
 		addAsterisks: function () {
-			$( '.rwmb-validation-rules' ).each( function () {
-				var data = $( this ).data( 'rules' );
+			$( '.rwmb-validation' ).each( function () {
+				var data = $( this ).data( 'validation' );
 
 				$.each( data.rules, function ( k, v ) {
 					if ( ! v['required'] ) {
@@ -71,7 +72,7 @@
 
 			// Change validation settings on Gutenberg: invalid and submit handlers.
 			Validation.settings.invalidHandler = function() {
-				wp.data.dispatch( 'core/notices' ).createErrorNotice( i18n.summaryMessage, {
+				wp.data.dispatch( 'core/notices' ).createErrorNotice( i18n.message, {
 					id: 'meta-box-validation',
 					isDismissible: true
 				} );
@@ -104,7 +105,7 @@
 					$( '#publish' ).removeClass( 'button-primary-disabled' );
 					$( '#ajax-loading' ).attr( 'style', '' );
 					Validation.$form.siblings( '#message' ).remove();
-					Validation.$form.before( '<div id="message" class="notice notice-error is-dismissible"><p>' + i18n.summaryMessage + '</p></div>' );
+					Validation.$form.before( '<div id="message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
 
 					// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
 					setTimeout( function() {
@@ -114,8 +115,8 @@
 			};
 
 			// Gather all validation rules.
-			$( '.rwmb-validation-rules' ).each( function () {
-				$.extend( true, Validation.settings, $( this ).data( 'rules' ) );
+			$( '.rwmb-validation' ).each( function () {
+				$.extend( true, Validation.settings, $( this ).data( 'validation' ) );
 			} );
 		},
 	};
