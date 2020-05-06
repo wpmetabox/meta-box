@@ -8,16 +8,19 @@
 		// Validation settings.
 		settings: {},
 
-		init: function() {
-			Validation.addAsterisks();
-			Validation.getForm();
-			Validation.getSettings();
-
-			if ( rwmb.isGutenberg ) {
-				Validation.runOnGutenberg();
-				return;
+		initGutenberg: function() {
+			wp.data.dispatch( 'core/editor' ).savePost = function() {
+				Validation.getForm();
+				Validation.getGutenbergSettings();
+				let v = Validation.$form.validate( Validation.settings );
+				console.log( v );
+				console.log( v.valid() );
 			}
+		},
 
+		initClassic: function() {
+			Validation.getForm();
+			Validation.getClassicSettings();
 			Validation.$form.on( 'submit', function() {
 				// Update underlying textarea before submit validation.
 				if ( typeof tinyMCE !== 'undefined' ) {
@@ -44,36 +47,48 @@
 		},
 
 		getForm: function () {
-			// Gutenberg edit post form, classic edit post form, edit term form, edit user form, front-end form.
-			Validation.$form = $( '#editor, #post, #edittag, #your-profile, .rwmb-form' );
+			// Classic edit post form, edit term form, edit user form, front-end form.
+			Validation.$form = rwmb.isGutenberg ? $( '.metabox-location-normal' ) : $( '#post, #edittag, #your-profile, .rwmb-form' );
 		},
 
-		runOnGutenberg: function () {
-			var editor = wp.data.dispatch( 'core/editor' );
+		getClassicSettings: function () {
+			Validation.getSettings();
+			Validation.settings.invalidHandler = function () {
+				// Re-enable the submit ( publish/update ) button and hide the ajax indicator
+				$( '#publish' ).removeClass( 'button-primary-disabled' );
+				$( '#ajax-loading' ).attr( 'style', '' );
+				$( '#rwmb-validation-message' ).remove();
+				Validation.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
+
+				// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
+				setTimeout( function() {
+					Validation.$form.trigger( 'after_validate' );
+				}, 200 );
+			};
+		},
+
+		getGutenbergSettings: function() {
+			Validation.getSettings();
 
 			// Reference original method.
-			var savePost = editor.savePost;
+			Validation.savePost = wp.data.dispatch( 'core/editor' ).savePost;
 
-			// Change validation settings on Gutenberg: invalid and submit handlers.
 			Validation.settings.invalidHandler = function() {
 				wp.data.dispatch( 'core/notices' ).createErrorNotice( i18n.message, {
 					id: 'meta-box-validation',
 					isDismissible: true
 				} );
-				editor.lockPostSaving( 'meta_box' );
+				wp.data.dispatch( 'core/editor' ).lockPostSaving( 'meta_box' );
 
 				setTimeout( function() {
 					Validation.$form.trigger( 'after_validate' );
 				}, 200 );
 			};
-			Validation.settings.submitHandler = function() {
-				savePost();
-			};
 
-			// Override core method.
-			editor.savePost = function() {
-				Validation.$form.removeAttr( 'novalidate' ).validate( Validation.settings );
-			}
+			Validation.settings.submitHandler = function() {
+				// Call original savePost method.
+				Validation.savePost();
+			};
 		},
 
 		getSettings: function () {
@@ -84,18 +99,6 @@
 				},
 				errorClass: 'rwmb-error',
 				errorElement: 'p',
-				invalidHandler: function () {
-					// Re-enable the submit ( publish/update ) button and hide the ajax indicator
-					$( '#publish' ).removeClass( 'button-primary-disabled' );
-					$( '#ajax-loading' ).attr( 'style', '' );
-					$( '#rwmb-validation-message' ).remove();
-					Validation.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
-
-					// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
-					setTimeout( function() {
-						Validation.$form.trigger( 'after_validate' );
-					}, 200 );
-				}
 			};
 
 			// Gather all validation rules.
@@ -106,5 +109,13 @@
 	};
 
 	// Run on document ready.
-	$( Validation.init );
+	$( function() {
+		Validation.addAsterisks();
+
+		if ( rwmb.isGutenberg ) {
+			Validation.initGutenberg();
+		} else {
+			Validation.initClassic();
+		}
+	} );
 } )( jQuery, rwmb, rwmbValidate );
