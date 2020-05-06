@@ -36,9 +36,6 @@ class RWMB_Validation {
 	 * @param RW_Meta_Box $object Meta Box object.
 	 */
 	public function enqueue( RW_Meta_Box $object ) {
-		if ( empty( $object->meta_box['validation'] ) ) {
-			return;
-		}
 		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'jquery-validation/jquery.validate.min.js', array( 'jquery' ), '1.15.0', true );
 		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'jquery-validation/additional-methods.min.js', array( 'jquery-validation' ), '1.15.0', true );
 		wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validation', 'jquery-validation-additional-methods' ), RWMB_VER, true );
