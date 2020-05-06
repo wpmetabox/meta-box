@@ -7,6 +7,9 @@ window.rwmb = window.rwmb || {};
 	// Selectors for all plugin inputs.
 	rwmb.inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]';
 
+	// Detect Gutenberg.
+	rwmb.isGutenberg = document.body.classList.contains( 'block-editor-page' );
+
 	// Generate unique ID.
 	rwmb.uniqid = function uniqid() {
 		return Math.random().toString( 36 ).substr( 2 );
