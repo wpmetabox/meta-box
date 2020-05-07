@@ -16,3 +16,5 @@ tests export-ignore
 languages/*.po export-ignore
 languages/*.pot export-ignore
 languages/*.md export-ignore
+
+js/validation.js export-ignore
