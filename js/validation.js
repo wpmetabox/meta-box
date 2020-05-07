@@ -116,4 +116,4 @@
 			form.init();
 		}
 	} );
-} )( jQuery, rwmb, rwmbValidate );
+} )( jQuery, rwmb, rwmbValidation );
