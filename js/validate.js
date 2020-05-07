@@ -10,12 +10,7 @@
 		}
 
 		init() {
-			this.$form.on( 'submit', function() {
-				// Update underlying textarea before submit.
-				if ( typeof tinyMCE !== 'undefined' ) {
-					tinyMCE.triggerSave();
-				}
-			} ).validate( this.settings );
+			this.$form.validate( this.settings );
 		}
 
 		showAsterisks() {
@@ -43,7 +38,8 @@
 				},
 				errorClass: 'rwmb-error',
 				errorElement: 'p',
-				invalidHandler: this.error.bind( this )
+				invalidHandler: this.invalidHandler.bind( this ),
+				submitHandler: this.submitHandler.bind( this )
 			};
 
 			// Gather all validation rules.
@@ -53,19 +49,31 @@
 			} );
 		}
 
-		error() {
-			var that = this;
+		invalidHandler() {
+			this.showMessage();
 
+			// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
+			var that = this;
+			setTimeout( function() {
+				that.$form.trigger( 'after_validate' );
+			}, 200 );
+		}
+
+		showMessage() {
 			// Re-enable the submit ( publish/update ) button and hide the ajax indicator
 			$( '#publish' ).removeClass( 'button-primary-disabled' );
 			$( '#ajax-loading' ).attr( 'style', '' );
 			$( '#rwmb-validation-message' ).remove();
-			that.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
+			this.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
+		}
 
-			// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
-			setTimeout( function() {
-				that.$form.trigger( 'after_validate' );
-			}, 200 );
+		submitHandler( form ) {
+			// Update underlying textarea before submit.
+			if ( typeof tinyMCE !== 'undefined' ) {
+				tinyMCE.triggerSave();
+			}
+
+			form.submit();
 		}
 	};
 
@@ -75,27 +83,22 @@
 				editor = wp.data.dispatch( 'core/editor' ),
 				savePost = editor.savePost; // Reference original method.
 
+			// Change the editor method.
 			editor.savePost = function() {
 				that.$form.validate( that.settings );
 
+				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
 				if ( that.$form.valid() ) {
-					// Call the original method.
 					savePost();
 				}
 			};
 		}
 
-		error() {
-			var that = this;
-
+		showMessage() {
 			wp.data.dispatch( 'core/notices' ).createErrorNotice( i18n.message, {
 				id: 'meta-box-validation',
 				isDismissible: true
 			} );
-
-			setTimeout( function() {
-				that.$form.trigger( 'after_validate' );
-			}, 200 );
 		}
 	};
 
