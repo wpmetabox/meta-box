@@ -1,9 +1,8 @@
 # Meta Box - WordPress Custom Fields Framework
 
-[![Build Status](https://travis-ci.org/wpmetabox/meta-box.svg?branch=master)](https://travis-ci.org/wpmetabox/meta-box)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wpmetabox/meta-box/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wpmetabox/meta-box/?branch=master)
-[![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
-[![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)
+![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)]
 [![License](https://img.shields.io/packagist/l/wpmetabox/meta-box.svg)](https://metabox.io)
 
 ## Description
