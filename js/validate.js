@@ -104,8 +104,16 @@
 
 	// Run on document ready.
 	$( function() {
-		// Edit post form, edit term form, edit user form, front-end form.
-		var validation = rwmb.isGutenberg ? new GutenbergValidation( '.metabox-location-normal' ) : new Validation( '#post, #edittag, #your-profile, .rwmb-form' );
-		validation.init();
+		if ( rwmb.isGutenberg ) {
+			var normal = new GutenbergValidation( '.metabox-location-normal' ),
+				side = new GutenbergValidation( '.metabox-location-side' );
+
+			normal.init();
+			side.init();
+		} else {
+			// Edit post, edit term, edit user, front-end form.
+			var form = new Validation( '#post, #edittag, #your-profile, .rwmb-form' );
+			form.init();
+		}
 	} );
 } )( jQuery, rwmb, rwmbValidate );
