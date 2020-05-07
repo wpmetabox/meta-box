@@ -10,7 +10,15 @@
 		}
 
 		init() {
-			this.$form.validate( this.settings );
+			this.$form
+				// Update underlying textarea before submit.
+				// Don't use submitHandler() because form can be submitted via Ajax on the front end.
+				.on( 'submit', function() {
+					if ( typeof tinyMCE !== 'undefined' ) {
+						tinyMCE.triggerSave();
+					}
+				} )
+				.validate( this.settings );
 		}
 
 		showAsterisks() {
@@ -38,8 +46,7 @@
 				},
 				errorClass: 'rwmb-error',
 				errorElement: 'p',
-				invalidHandler: this.invalidHandler.bind( this ),
-				submitHandler: this.submitHandler.bind( this )
+				invalidHandler: this.invalidHandler.bind( this )
 			};
 
 			// Gather all validation rules.
@@ -65,15 +72,6 @@
 			$( '#ajax-loading' ).attr( 'style', '' );
 			$( '#rwmb-validation-message' ).remove();
 			this.$form.before( '<div id="rwmb-validation-message" class="notice notice-error is-dismissible"><p>' + i18n.message + '</p></div>' );
-		}
-
-		submitHandler( form ) {
-			// Update underlying textarea before submit.
-			if ( typeof tinyMCE !== 'undefined' ) {
-				tinyMCE.triggerSave();
-			}
-
-			form.submit();
 		}
 	};
 
