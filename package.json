@@ -3,9 +3,12 @@
     "build:validation": "babel js/validation.js --out-file js/validation.min.js --presets=@babel/preset-env,babel-preset-minify"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "babel-preset-minify": "^0.5.1"
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify-es": "^2.0.0"
   }
 }
