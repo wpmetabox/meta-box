@@ -103,11 +103,13 @@
 	// Run on document ready.
 	$( function() {
 		if ( rwmb.isGutenberg ) {
-			var normal = new GutenbergValidation( '.metabox-location-normal' ),
+			var advanced = new GutenbergValidation( '.metabox-location-advanced' ),
+				normal = new GutenbergValidation( '.metabox-location-normal' ),
 				side = new GutenbergValidation( '.metabox-location-side' );
 
 			side.init();
 			normal.init();
+			advanced.init();
 		} else {
 			// Edit post, edit term, edit user, front-end form.
 			var form = new Validation( '#post, #edittag, #your-profile, .rwmb-form' );
