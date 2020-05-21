@@ -110,10 +110,14 @@
 			side.init();
 			normal.init();
 			advanced.init();
-		} else {
-			// Edit post, edit term, edit user, front-end form.
-			var form = new Validation( '#post, #edittag, #your-profile, .rwmb-form' );
-			form.init();
+			return;
 		}
+
+		// Edit post, edit term, edit user, front-end form.
+		var $forms = $('#post, #edittag, #your-profile, .rwmb-form');
+		$forms.each( function () {
+			var form = new Validation( this );
+			form.init();
+		} );
 	} );
 } )( jQuery, rwmb, rwmbValidation );
