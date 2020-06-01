@@ -125,6 +125,9 @@ class RWMB_Update_Checker {
 			return $data;
 		}
 
+		if ( empty( $data ) ) {
+			$data = new stdClass;
+		}
 		if ( ! isset( $data->response ) ) {
 			$data->response = array();
 		}
