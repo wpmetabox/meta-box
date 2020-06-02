@@ -42,7 +42,6 @@
 
 		// Quick tags
 		if ( window.quicktags ) {
-			console.log( 'init quick tags' );
 			settings.quicktags.id = id;
 			quicktags( settings.quicktags );
 			QTags._buttonsInit();

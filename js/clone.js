@@ -233,14 +233,18 @@
 
 				// Fixed WYSIWYG field blank when inside a sortable, cloneable group.
 				// https://stackoverflow.com/a/25667486/371240
-				ui.item.find( '.rwmb-wysiwyg' ).each( function () {
-					tinymce.execCommand( 'mceRemoveEditor', false, this.id );
-				} );
+				if ( window.tinymce ) {
+					ui.item.find( '.rwmb-wysiwyg' ).each( function () {
+						tinymce.execCommand( 'mceRemoveEditor', false, this.id );
+					} );
+				}
 			},
 			update: function( event, ui ) {
-				ui.item.find( '.rwmb-wysiwyg' ).each( function () {
-					tinymce.execCommand( 'mceAddEditor', true, this.id );
-				} );
+				if ( window.tinymce ) {
+					ui.item.find( '.rwmb-wysiwyg' ).each( function () {
+						tinymce.execCommand( 'mceAddEditor', true, this.id );
+					} );
+				}
 
 				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
