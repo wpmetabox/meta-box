@@ -139,7 +139,7 @@ select.rwmb-error {
 }
 
 /* Mobile style */
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
 	.rwmb-label,
 	.rwmb-label ~ .rwmb-input {
 		width: 100%;
