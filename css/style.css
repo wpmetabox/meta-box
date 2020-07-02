@@ -138,6 +138,26 @@ select.rwmb-error {
 	width: auto;
 }
 
+/* Mobile style */
+@media (max-width: 1199px) {
+	.rwmb-label,
+	.rwmb-label ~ .rwmb-input {
+		width: 100%;
+	}
+	.rwmb-label {
+		margin-bottom: 3px;
+	}
+	.rwmb-input input,
+	.rwmb-input select {
+		width: 100%;
+		max-width: 100%;
+	}
+	.rwmb-input input[type="checkbox"],
+	.rwmb-input input[type="radio"] {
+		width: auto;
+	}
+}
+
 /* Seamless style
 --------------------------------------------------------------*/
 .rwmb-seamless {
