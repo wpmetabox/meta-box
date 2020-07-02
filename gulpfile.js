@@ -1,7 +1,7 @@
 const { src, dest, series } = require('gulp');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
-const uglify = require('gulp-uglify-es').default;
+const terser = require('gulp-terser');
 const clean = require('gulp-clean');
 
 const validationCompile = () => {
@@ -15,7 +15,7 @@ const validationCompile = () => {
 const validationConcat = () => {
 	return src(['js/validation/jquery.validate.js', 'js/validation/additional-methods.js', 'js/build/validation.js'])
 		.pipe(concat('validation.min.js'))
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(dest('js'));
 }
 

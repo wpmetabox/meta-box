@@ -145,11 +145,12 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	public static function get_attributes( $field, $value = null ) {
 		$value = (array) $value;
 
-		$attributes          = parent::get_attributes( $field, $value );
-		$attributes['type']  = 'hidden';
-		$attributes['name']  = $field['clone'] ? str_replace( '[]', '', $attributes['name'] ) : $attributes['name'];
-		$attributes['id']    = false;
-		$attributes['value'] = implode( ',', $value );
+		$attributes           = parent::get_attributes( $field, $value );
+		$attributes['type']   = 'hidden';
+		$attributes['name']   = $field['clone'] ? str_replace( '[]', '', $attributes['name'] ) : $attributes['name'];
+		$attributes['id']     = false;
+		$attributes['value']  = implode( ',', $value );
+		$attributes['class'] .= ' rwmb-media';
 
 		// Add attachment details.
 		$attachments = array();
