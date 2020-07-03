@@ -373,7 +373,11 @@
 
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
-					this.collection.add( selection.models );
+					if ( this.controller.get( 'addTo' ) === 'beginning' ) {
+						this.collection.add( selection.models, {at: 0} );
+					} else {
+						this.collection.add( selection.models );
+					}
 				}, this );
 
 				this._frame.open();

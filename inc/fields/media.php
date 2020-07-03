@@ -116,6 +116,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 				'force_delete'     => false,
 				'max_status'       => true,
 				'js_options'       => array(),
+				'add_to'           => 'end',
 			)
 		);
 
@@ -126,6 +127,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 				'maxFiles'    => $field['max_file_uploads'],
 				'forceDelete' => $field['force_delete'] ? true : false,
 				'maxStatus'   => $field['max_status'],
+				'addTo'       => $field['add_to'],
 			)
 		);
 
