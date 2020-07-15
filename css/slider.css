@@ -1,9 +1,9 @@
-.rwmb-slider {
+.rwmb-slider-ui {
 	display: inline-block;
 	vertical-align: middle;
 	width: 50%;
 }
-.rwmb-slider-value-label {
+.rwmb-slider-label {
 	margin-left: 10px;
 	vertical-align: middle;
 }

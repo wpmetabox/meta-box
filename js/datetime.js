@@ -1,11 +1,10 @@
-jQuery( function ( $ ) {
+( function ( $, _, rwmb, i18n ) {
 	'use strict';
 
 	/**
-	 * Update datetime picker element
-	 * Used for static & dynamic added elements (when clone)
+	 * Transform an input into a datetime picker.
 	 */
-	function update() {
+	function transform() {
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
@@ -14,31 +13,46 @@ jQuery( function ( $ ) {
 			$picker = $inline.length ? $inline : $this;
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
+
+		options.onSelect = function() {
+			$this.trigger( 'change' );
+		}
+		options.beforeShow = function( i ) {
+			if ( $( i ).prop( 'readonly' ) ) {
+				return false;
+			}
+		}
+
 		if ( $timestamp.length ) {
 			options.onClose = options.onSelect = function () {
 				$timestamp.val( getTimestamp( $picker.datetimepicker( 'getDate' ) ) );
+				$this.trigger( 'change' );
 			};
 		}
 
-		if ( $inline.length ) {
-			options.altField = '#' + $this.attr( 'id' );
-			$this.on( 'keydown', _.debounce( function () {
-				$picker
-					.datepicker( 'setDate', $this.val() )
-					.find( ".ui-datepicker-current-day" )
-					.trigger( "click" );
-			}, 600 ) );
-
-			$inline
-				.removeClass( 'hasDatepicker' )
-				.empty()
-				.prop( 'id', '' )
-				.datetimepicker( options )
-				.datetimepicker( 'setDate', current );
-		}
-		else {
+		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datetimepicker( options );
+			return;
 		}
+
+		options.altField = '#' + $this.attr( 'id' );
+		$this.on( 'keydown', _.debounce( function () {
+			// if val is empty, return to allow empty datepicker input.
+			if ( ! $this.val() ) {
+				return;
+			}
+			$picker
+				.datepicker( 'setDate', $this.val() )
+				.find( '.ui-datepicker-current-day' )
+				.trigger( 'click' );
+		}, 600 ) );
+
+		$inline
+			.removeClass( 'hasDatepicker' )
+			.empty()
+			.prop( 'id', '' )
+			.datetimepicker( options )
+			.datetimepicker( 'setDate', current );
 	}
 
 	/**
@@ -49,21 +63,27 @@ jQuery( function ( $ ) {
 	 */
 	function getTimestamp( date ) {
 		if ( date === null ) {
-			return "";
+			return '';
 		}
 		var milliseconds = Date.UTC( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() );
 		return Math.floor( milliseconds / 1000 );
 	}
 
 	// Set language if available
-	$.timepicker.setDefaults( $.timepicker.regional[""] );
-	if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.locale ) ) {
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.locale] );
-	}
-	else if ( $.timepicker.regional.hasOwnProperty( RWMB_Datetime.localeShort ) ) {
-		$.timepicker.setDefaults( $.timepicker.regional[RWMB_Datetime.localeShort] );
+	function setTimeI18n() {
+		if ( $.timepicker.regional.hasOwnProperty( i18n.locale ) ) {
+			$.timepicker.setDefaults( $.timepicker.regional[i18n.locale] );
+		} else if ( $.timepicker.regional.hasOwnProperty( i18n.localeShort ) ) {
+			$.timepicker.setDefaults( $.timepicker.regional[i18n.localeShort] );
+		}
 	}
 
-	$( '.rwmb-datetime' ).each( update );
-	$( document ).on( 'clone', '.rwmb-datetime', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-datetime' ).each( transform );
+	}
+
+	setTimeI18n();
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-datetime', transform );
+} )( jQuery, _, rwmb, RWMB_Datetime );

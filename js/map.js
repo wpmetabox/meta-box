@@ -1,6 +1,4 @@
-/* global google */
-
-(function ( $, document, window, google ) {
+( function ( $, document, window, google, rwmb, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
@@ -28,7 +26,6 @@
 			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
 			this.canvas = this.$canvas[0];
 			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
-			this.$findButton = this.$container.find( '.rwmb-map-goto-address-button' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
@@ -64,13 +61,28 @@
 				this.map.setCenter( this.marker.position );
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
-				this.geocodeAddress();
+				this.geocodeAddress( false );
 			}
 		},
 
 		// Add event listeners for 'click' & 'drag'
 		addListeners: function () {
 			var that = this;
+
+			/*
+			 * Auto change the map when there's change in address fields.
+			 * Works only for multiple address fields as single address field has autocomplete functionality.
+			 */
+			if ( this.addressField.split( ',' ).length > 1 ) {
+				var geocodeAddress = that.geocodeAddress.bind( that );
+				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+					var $field = that.findAddressField( part );
+					if ( null !== $field ) {
+						$field.on( 'change', geocodeAddress );
+					}
+				} );
+			}
+
 			google.maps.event.addListener( this.map, 'click', function ( event ) {
 				that.marker.setPosition( event.latLng );
 				that.updateCoordinate( event.latLng );
@@ -84,29 +96,17 @@
 				that.updateCoordinate( event.latLng );
 			} );
 
-			this.$findButton.on( 'click', function () {
-				that.geocodeAddress();
-				return false;
-			} );
-
 			/**
-			 * Add a custom event that allows other scripts to refresh the maps when needed
-			 * For example: when maps is in tabs or hidden div.
-			 *
+			 * Custom event to refresh maps when in hidden divs.
 			 * @see https://developers.google.com/maps/documentation/javascript/reference ('resize' Event)
 			 */
-			$( window ).on( 'rwmb_map_refresh', function () {
-				that.refresh();
-			} );
+			var refresh = that.refresh.bind( this );
+			$( window ).on( 'rwmb_map_refresh', refresh );
 
 			// Refresh on meta box hide and show
-			$( document ).on( 'postbox-toggled', function () {
-				that.refresh();
-			} );
+			rwmb.$document.on( 'postbox-toggled', refresh );
 			// Refresh on sorting meta boxes
-			$( '.meta-box-sortables' ).on( 'sortstop', function () {
-				that.refresh();
-			} );
+			$( '.meta-box-sortables' ).on( 'sortstop', refresh );
 		},
 
 		refresh: function () {
@@ -130,12 +130,10 @@
 				return;
 			}
 
-			// If Meta Box Geo Location installed. Do not run auto complete.
+			// If Meta Box Geo Location installed. Do not run autocomplete.
 			if ( $( '.rwmb-geo-binding' ).length ) {
-				$address.on( 'selected_address', function () {
-					that.$findButton.trigger( 'click' );
-				} );
-
+				var geocodeAddress = that.geocodeAddress.bind( that );
+				$address.on( 'selected_address', geocodeAddress );
 				return false;
 			}
 
@@ -149,7 +147,7 @@
 						if ( ! results.length ) {
 							response( [ {
 								value: '',
-								label: RWMB_Map.no_results_string
+								label: i18n.no_results_string
 							} ] );
 							return;
 						}
@@ -175,19 +173,25 @@
 		// Update coordinate to input field
 		updateCoordinate: function ( latLng ) {
 			var zoom = this.map.getZoom();
-			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom );
+			this.$coordinate.val( latLng.lat() + ',' + latLng.lng() + ',' + zoom ).trigger( 'change' );
 		},
 
 		// Find coordinates by address
-		geocodeAddress: function () {
+		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
 			if ( ! address ) {
 				return;
 			}
 
+			if ( false !== notify ) {
+				notify = true;
+			}
 			geocoder.geocode( {'address': address}, function ( results, status ) {
 				if ( status !== google.maps.GeocoderStatus.OK ) {
+					if ( notify ) {
+						alert( i18n.no_results_string );
+					}
 					return;
 				}
 				that.map.setCenter( results[0].geometry.location );
@@ -241,23 +245,27 @@
 		}
 	};
 
-	function update() {
-		$( '.rwmb-map-field' ).each( function () {
-			var $this = $( this ),
-				controller = $this.data( 'mapController' );
-			if ( controller ) {
-				return;
-			}
+	function createController() {
+		var $this = $( this ),
+			controller = $this.data( 'mapController' );
+		if ( controller ) {
+			return;
+		}
 
-			controller = new MapField( $this );
-			controller.init();
-			$this.data( 'mapController', controller );
-		} );
+		controller = new MapField( $this );
+		controller.init();
+		$this.data( 'mapController', controller );
 	}
 
-	$( function () {
-		update();
-		$( '.rwmb-input' ).on( 'clone', update );
-	} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-map-field' ).each( createController );
+	}
 
-})( jQuery, document, window, google );
+	function restart() {
+		$( '.rwmb-map-field' ).each( createController );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-input', restart );
+} )( jQuery, document, window, google, rwmb, RWMB_Map );

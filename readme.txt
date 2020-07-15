@@ -1,10 +1,11 @@
 === Meta Box - WordPress Custom Fields Framework ===
-Contributors: metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
+Contributors: elightup, metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: https://metabox.io/pricing/
 Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
-Tested up to: 5.1.1
-Stable tag: 4.18.0
+Requires PHP: 5.3
+Tested up to: 5.4.2
+Stable tag: 5.3.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
@@ -101,6 +102,7 @@ You'll have ultimate control to add whatever meta box and custom fields in WordP
 
 #### Premium Extensions
 
+- [MB Blocks](https://metabox.io/plugins/mb-blocks/): Create custom Gutenberg blocks with PHP, using the same syntax in Meta Box.
 - [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Create custom meta boxes and custom fields in WordPress using a user-friendly drag-and-drop interface.
 - [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Create repeatable groups of WordPress custom fields for better appearance and structure.
 - [MB Settings Page](https://metabox.io/plugins/mb-settings-page/): Create settings pages for themes, plugins or websites with beautiful syntax.
@@ -165,6 +167,216 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 == Changelog ==
 
+= 5.3.2 - 2020-07-03 =
+- Fix validation not working for media fields
+- Add "add_to" option for media fields to allow adding new images to the beginning/end of the list
+- Improve style for input & select on the sidebar
+- Improve style for mobiles
+
+= 5.3.1 - 2020-06-03 =
+- Fix validation not working for multiple forms (front end)
+- Fix PHP warning: Creating default object from empty value
+- Fix cloning, sorting wysiwyg field when users disable visual editor
+- Change color of switch based on admin color scheme
+
+= 5.3.0 - 2020-05-11 =
+- Add `rwmb_set_meta` function to set meta value.
+- Add Gutenberg compatibility for validation.
+- Fix wrong label output for switch when it's off.
+
+= 5.2.10 - 2020-04-17 =
+- Hotfix for getting meta value for checkbox list.
+
+= 5.2.9 - 2020-04-17 =
+- Fix cloning default value not working for some fields.
+
+= 5.2.8 - 2020-04-06 =
+
+**Added**
+
+- Add option open info window in Google Maps when loaded
+- Add `alpha_channel` & update style to background field
+- Add support for custom Ajax parameters for object fields.
+
+**Fixed**
+
+- Fix validation rules still applied for hidden fields
+- Fix `image_upload` field select files not working on iPhone
+- Fix fatal error with Frontend Submission & Elementor
+- Fix 'zoom' parameter not working for OSM field on the front end
+
+**Changed**
+
+- Remove languages folder. Load languages from translate.wordpress.org only
+
+= 5.2.7 - 2020-02-07 =
+
+- Fix warning in image field for metadata[‘sizes’].
+- Allow to quick define text fields with “name” attribute only.
+
+= 5.2.6 - 2020-02-03 =
+
+- Fix wrong tag when deploying
+
+= 5.2.5 - 2020-02-03 =
+
+**Fixed**
+
+- Fix CSS in about page and add MB Core to list of premium plugins
+- Fix edit icon not showing popup for image fields
+- Fix OpenStreetMap not loading properly in tabs
+
+**Changed**
+
+- Replace date() with gmdate()
+- Update style for input prepend/append for WordPress >= 5.3
+
+**Added**
+
+- Add custom trigger after validation for Tabs/Settings extensiosn to show error fields
+- Add URL to all sizes in the returned value of helper functions for images
+
+= 5.2.4 - 2019-12-11 =
+
+**Added**
+
+- Add hook `rwmb_field_registered` after a field is registered.
+- Add (*) to required fields
+
+**Changed**
+
+- Remove required attribute for license input box.
+- Don't redirect when bulk activate with other plugins.
+
+**Fixed**
+
+- Fix style for `select`, `select_advanced` fields in WordPress 5.3.
+- Fix getting object fields for settings pages
+
+= 5.2.3 - 2019-11-01 =
+
+**Changed**
+
+- Set clone=false if max_clone=1
+- Shows only images in the selection popup for image field
+- Hide license key
+
+**Fixed**
+
+- Fixed parsed terms in taxonomy advanced for MB Blocks
+- Don't show date picker for readonly fields
+- Fix warning when output empty background field value
+- Fix empty meta value when save_field=false
+
+= 5.2.2 - 2019-10-09 =
+
+**Fixed**
+
+- Fix sanitizing empty post field
+- Fix post thumbnail not saving in MB Frontend Submission
+- Fix undefined index for `image_select` field when using helper functions with no value.
+- Fix JQMIGRATE: 'ready' event is deprecated
+
+**Changed**
+
+- Add styling for date picker, autocomplete, select2 to show in the Customizer (for MB Settings Page)
+
+= 5.2.1 - 2019-09-26 =
+
+**Fixed**
+
+- Fix object fields show only selected items when field type is not select advanced
+- Fix background field not saving position, attachment & size
+- Fix undefined variable in media modal
+- Fix non-unique input name for a non-cloneable file in a cloneable group
+
+= 5.2.0 - 2019-09-18 =
+
+**Added**
+
+- Add ajax support for object fields.
+- Add custom CSS class for meta box wrapper div.
+
+**Changed**
+
+- Improve file upload, making it works in groups.
+- Optimize performance for cloning wysiwyg field.
+- Bypass updates for embed extensions via TGMPA.
+
+**Fixed**
+
+- Fix PHP warning when using clone with date formatting.
+- Fix file upload input not visible when clone a file field with uploaded files = max_file_uploads.
+
+= 5.1.2 - 2019-08-29 =
+
+**Fixed**
+
+- Fix adding >= 2 blocks containing a wysiwyg field not rendering
+- Fix CSS for wyswigy field in Gutenberg
+- Do not show upgrade message in the Dashboard for premium users
+- Fix media field is blank
+- Fix cannot access to license page in Multisite
+
+**Changed**
+
+- Fire `change` and/or `mb_change` events when fields change to update custom blocks in real-time (requires [MB Blocks](https://metabox.io/plugins/mb-blocks/) extension)
+
+= 5.1.1 - 2019-08-23 =
+
+**Fixed**
+
+- Fix sanitizing number always return 0 if it's blank
+- Fix sanitizing URL
+
+**Changed**
+
+- Set default field 'type' to 'text', make it optional and help you write less code
+- File/image fields: do not show add new file link if max_file_uploads = 1
+
+= 5.1.0 - 2019-08-19 =
+
+**Fixed**
+
+- Fatal error with `RWMB_About::redirect()`
+- Ensure change event fires when editors change
+- Fix `rwmb_{$field_id}_choice_label` not working for cloneable fields
+- Fix missing dependency (underscore) for datepicker JS
+- Fix unindex notice for key_value field
+- Fix alignment for video field
+
+**Changed**
+
+- Update notification sytem
+- Improve sanitization for fields. See [documentation](https://docs.metabox.io/sanitization/) for details.
+
+= 5.0.1 - 2019-07-25 =
+
+**Fixed**
+
+- Fix license notification always show
+
+= 5.0.0 - 2019-07-24 =
+
+**IMPORTANT:** Since version 5.0.0, the plugin requires PHP >= 5.3. If you use an older PHP version, please ask your host to upgrade or use an older version of Meta Box.
+
+**Changed**
+
+- New minimum PHP version is now 5.3.
+- Rewrite all JavaScript to prepare for Gutenberg blocks
+- Allow to create meta box with no fields.
+
+**Added**
+
+- Add the updater for auto update of premium extensions
+- Add support for `user`, `settings_pages` in `rwmb_get_object_fields`
+
+**Fixed**
+
+- Fix warning for cloneable single image.
+
 [See full changelog here](https://metabox.io/changelog/).
 
 == Upgrade Notice ==
+
+Since version 5.0.0, the plugin requires PHP >= 5.3. If you use an older PHP version, please ask your host to upgrade or use an older version of Meta Box.

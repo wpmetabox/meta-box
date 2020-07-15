@@ -1,4 +1,4 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	function setInitialRequiredProp() {
@@ -22,25 +22,39 @@ jQuery( function ( $ ) {
 		}
 	}
 
-	function update() {
+	function toggleTree() {
 		var $this = $( this ),
 			val = $this.val(),
-			$selected = $this.siblings( "[data-parent-id='" + val + "']" ),
-			$notSelected = $this.siblings().not( $selected ),
-			options = $this.data( 'options' );
-
-		// Turn select into beautiful select2.
-		$this.removeClass( 'select2-hidden-accessible' );
-		$this.siblings( '.select2-container' ).remove();
-		$this.show().select2( options );
+			$tree = $this.siblings( '.rwmb-select-tree' ),
+			$selected = $tree.filter( "[data-parent-id='" + val + "']" ),
+			$notSelected = $tree.not( $selected );
 
 		$selected.removeClass( 'hidden' ).find( 'select' ).each( setRequiredProp );
 		$notSelected.addClass( 'hidden' ).find( 'select' ).each( unsetRequiredProp ).prop( 'selectedIndex', 0 );
 	}
 
-	$( '.rwmb-select-tree select' ).select2();
-	$( '.rwmb-select-tree select' ).each( setInitialRequiredProp );
-	$( '.rwmb-input' )
-		.on( 'change', '.rwmb-select-tree select', update )
-		.on( 'clone', '.rwmb-select-tree select', update );
-} );
+	function instantiateSelect2() {
+		var $this = $( this ),
+			options = $this.data( 'options' );
+
+		$this
+			.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' )
+			.children().removeAttr( 'data-select2-id' ).end()
+			.siblings( '.select2-container' ).remove().end()
+			.select2( options );
+
+		toggleTree.call( this );
+	}
+
+	function init( e ) {
+		var $el = $( e.target );
+
+		$el.find( '.rwmb-select-tree > select' ).select2();
+		$el.find( '.rwmb-select-tree > select' ).each( setInitialRequiredProp );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'change', '.rwmb-select-tree > select', toggleTree )
+		.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
+} )( jQuery, rwmb );

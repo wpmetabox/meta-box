@@ -1,20 +1,23 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
 	/**
-	 * Update color picker element
-	 * Used for static & dynamic added elements (when clone)
+	 * Update text value.
 	 */
 	function update() {
 		var $this = $( this ),
 			$output = $this.siblings( '.rwmb-output' );
 
-		$this.on( 'input propertychange change', function ( e ) {
+		$this.on( 'input propertychange change', function () {
 			$output.html( $this.val() );
 		} );
-
 	}
 
-	$( '.rwmb-range' ).each( update );
-	$( document ).on( 'clone', '.rwmb-range', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-range' ).each( update );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-range', update );
+} )( jQuery, rwmb );

@@ -46,7 +46,7 @@ class RW_Meta_Box {
 	 *
 	 * @var int
 	 */
-	protected $object_id = null;
+	public $object_id = null;
 
 	/**
 	 * The object type.
@@ -61,10 +61,10 @@ class RW_Meta_Box {
 	 * @param array $meta_box Meta box definition.
 	 */
 	public function __construct( $meta_box ) {
-		$meta_box       = self::normalize( $meta_box );
+		$meta_box       = static::normalize( $meta_box );
 		$this->meta_box = $meta_box;
 
-		$this->meta_box['fields'] = self::normalize_fields( $meta_box['fields'], $this->get_storage() );
+		$this->meta_box['fields'] = static::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
 		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
@@ -151,6 +151,8 @@ class RW_Meta_Box {
 			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
 		}
 
+		wp_enqueue_script( 'rwmb', RWMB_JS_URL . 'script.js', array( 'jquery' ), RWMB_VER, true );
+
 		// Load clone script conditionally.
 		foreach ( $this->fields as $field ) {
 			if ( $field['clone'] ) {
@@ -232,13 +234,14 @@ class RW_Meta_Box {
 	 */
 	public function show() {
 		if ( null === $this->object_id ) {
-			$this->set_object_id( $this->get_current_object_id() );
+			$this->object_id = $this->get_current_object_id();
 		}
 		$saved = $this->is_saved();
 
 		// Container.
 		printf(
-			'<div class="rwmb-meta-box" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			esc_attr( trim( "rwmb-meta-box {$this->class}" ) ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type ),
 			esc_attr( $this->object_id )
@@ -277,8 +280,8 @@ class RW_Meta_Box {
 		}
 		$this->saved = true;
 
-		$object_id = $this->get_real_object_id( $object_id );
-		$this->set_object_id( $object_id );
+		$object_id       = $this->get_real_object_id( $object_id );
+		$this->object_id = $object_id;
 
 		// Before save action.
 		do_action( 'rwmb_before_save_post', $object_id );
@@ -297,19 +300,11 @@ class RW_Meta_Box {
 	 * @param array $field Field settings.
 	 */
 	public function save_field( $field ) {
-		$single = $field['clone'] || ! $field['multiple'];
-		$old    = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
-		// @codingStandardsIgnoreLine
-		$new    = isset( $_POST[ $field['id'] ] ) ? $_POST[ $field['id'] ] : ( $single ? '' : array() );
-
-		// Allow field class change the value.
-		if ( $field['clone'] ) {
-			$new = RWMB_Clone::value( $new, $old, $this->object_id, $field );
-		} else {
-			$new = RWMB_Field::call( $field, 'value', $new, $old, $this->object_id );
-			$new = RWMB_Field::filter( 'sanitize', $new, $field );
-		}
-		$new = RWMB_Field::filter( 'value', $new, $field, $old );
+		$single  = $field['clone'] || ! $field['multiple'];
+		$default = $single ? '' : array();
+		$old     = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+		$new     = rwmb_request()->post( $field['id'], $default );
+		$new     = RWMB_Field::process_value( $new, $this->object_id, $field );
 
 		// Filter to allow the field to be modified.
 		$field = RWMB_Field::filter( 'field', $field, $field, $new, $old );
@@ -317,7 +312,7 @@ class RW_Meta_Box {
 		// Call defined method to save meta value, if there's no methods, call common one.
 		RWMB_Field::call( $field, 'save', $new, $old, $this->object_id );
 
-		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id, $field );
+		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id );
 	}
 
 	/**
@@ -329,7 +324,7 @@ class RW_Meta_Box {
 	 * @return bool
 	 */
 	public function validate() {
-		$nonce = filter_input( INPUT_POST, "nonce_{$this->id}", FILTER_SANITIZE_STRING );
+		$nonce = rwmb_request()->filter_post( "nonce_{$this->id}", FILTER_SANITIZE_STRING );
 
 		return ! $this->saved
 			&& ( ! defined( 'DOING_AUTOSAVE' ) || $this->autosave )
@@ -355,6 +350,8 @@ class RW_Meta_Box {
 				'autosave'       => false,
 				'default_hidden' => false,
 				'style'          => 'default',
+				'class'          => '',
+				'fields'         => array(),
 			)
 		);
 

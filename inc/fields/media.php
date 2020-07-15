@@ -50,6 +50,35 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	/**
+	 * Get meta value.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param bool  $saved   Whether the meta box is saved at least once.
+	 * @param array $field   Field parameters.
+	 *
+	 * @return mixed
+	 */
+	public static function meta( $post_id, $saved, $field ) {
+		$meta = parent::meta( $post_id, $saved, $field );
+
+		/*
+		 * Update meta cache for all attachments, preparing for getting data for rendering in JS.
+		 * This reduces the number of queries for updating all attachments' meta.
+		 * @see get_attributes()
+		 */
+		$ids = (array) $meta;
+		if ( $field['clone'] ) {
+			foreach ( $ids as &$value ) {
+				$value = (array) $value;
+			}
+			$ids = call_user_func_array( 'array_merge', $ids );
+		}
+		update_meta_cache( 'post', $ids );
+
+		return $meta;
+	}
+
+	/**
 	 * Get field HTML.
 	 *
 	 * @param mixed $meta  Meta value.
@@ -58,8 +87,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$meta       = (array) $meta;
-		$meta       = implode( ',', $meta );
 		$attributes = self::call( 'get_attributes', $field, $meta );
 
 		$html = sprintf(
@@ -89,6 +116,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 				'force_delete'     => false,
 				'max_status'       => true,
 				'js_options'       => array(),
+				'add_to'           => 'end',
 			)
 		);
 
@@ -99,6 +127,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 				'maxFiles'    => $field['max_file_uploads'],
 				'forceDelete' => $field['force_delete'] ? true : false,
 				'maxStatus'   => $field['max_status'],
+				'addTo'       => $field['add_to'],
 			)
 		);
 
@@ -116,11 +145,29 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes          = parent::get_attributes( $field, $value );
-		$attributes['type']  = 'hidden';
-		$attributes['name']  = $field['clone'] ? str_replace( '[]', '', $attributes['name'] ) : $attributes['name'];
-		$attributes['id']    = false;
-		$attributes['value'] = $value;
+		$value = (array) $value;
+
+		$attributes           = parent::get_attributes( $field, $value );
+		$attributes['type']   = 'hidden';
+		$attributes['name']   = $field['clone'] ? str_replace( '[]', '', $attributes['name'] ) : $attributes['name'];
+		$attributes['id']     = false;
+		$attributes['value']  = implode( ',', $value );
+		$attributes['class'] .= ' rwmb-media';
+
+		// Add attachment details.
+		$attachments = array();
+		foreach ( $value as $media ) {
+			$media = wp_prepare_attachment_for_js( $media );
+			// Some themes/plugins add HTML, shortcodes to "compat" attrbute which break JSON validity.
+			if ( isset( $media['compat'] ) ) {
+				unset( $media['compat'] );
+			}
+			if ( ! empty( $media ) ) {
+				$attachments[] = $media;
+			}
+		}
+		$attachments                    = array_values( $attachments );
+		$attributes['data-attachments'] = json_encode( $attachments );
 
 		return $attributes;
 	}

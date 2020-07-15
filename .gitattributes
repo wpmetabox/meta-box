@@ -2,16 +2,15 @@
 * text=auto
 
 # Ignore files when export
-demo export-ignore
-tests export-ignore
 .DS_Store export-ignore
 Thumbs.db export-ignore
-*.yml export-ignore
-*.xml export-ignore
-*.json export-ignore
-*.md export-ignore
+
+tests export-ignore
+.github export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
-lang/*.po export-ignore
-lang/*.pot export-ignore
-lang/*.md export-ignore
+*.json export-ignore
+gulpfile.js export-ignore
+*.md export-ignore
+
+js/validation export-ignore

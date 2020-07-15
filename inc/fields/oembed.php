@@ -53,8 +53,9 @@ class RWMB_OEmbed_Field extends RWMB_Text_Field {
 	 * Ajax callback for returning oEmbed HTML.
 	 */
 	public static function wp_ajax_get_embed() {
-		$url           = (string) filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
-		$not_available = (string) filter_input( INPUT_POST, 'not_available' );
+		$request       = rwmb_request();
+		$url           = (string) $request->filter_post( 'url', FILTER_SANITIZE_URL );
+		$not_available = (string) $request->post( 'not_available' );
 		wp_send_json_success( self::get_embed( $url, $not_available ) );
 	}
 

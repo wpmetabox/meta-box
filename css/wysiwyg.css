@@ -4,3 +4,8 @@
 .rwmb-wysiwyg-clone {
 	padding-top: 20px;
 }
+
+/* Fix style for Gutenberg */
+.block-editor .wp-editor-wrap {
+	box-sizing: content-box;
+}

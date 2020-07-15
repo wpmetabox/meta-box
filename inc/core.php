@@ -35,8 +35,8 @@ class RWMB_Core {
 	 * @return array
 	 */
 	public function plugin_links( $links ) {
-		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Documentation', 'meta-box' ) . '</a>';
-		$links[] = '<a href="https://metabox.io/plugins/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Extensions', 'meta-box' ) . '</a>';
+		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
+		$links[] = '<a href="https://metabox.io/pricing/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
 		return $links;
 	}
 
@@ -47,12 +47,11 @@ class RWMB_Core {
 	 * - no need to check for class existences.
 	 */
 	public function register_meta_boxes() {
-		$configs    = apply_filters( 'rwmb_meta_boxes', array() );
-		$meta_boxes = rwmb_get_registry( 'meta_box' );
+		$configs  = apply_filters( 'rwmb_meta_boxes', array() );
+		$registry = rwmb_get_registry( 'meta_box' );
 
 		foreach ( $configs as $config ) {
-			$meta_box = rwmb_get_meta_box( $config );
-			$meta_boxes->add( $meta_box );
+			$meta_box = $registry->make( $config );
 			$meta_box->register_fields();
 		}
 	}

@@ -81,13 +81,6 @@ class RWMB_Map_Field extends RWMB_Field {
 			esc_attr( $meta )
 		);
 
-		if ( $field['address_field'] ) {
-			$html .= sprintf(
-				'<button class="button rwmb-map-goto-address-button">%s</button>',
-				esc_html__( 'Find Address', 'meta-box' )
-			);
-		}
-
 		$html .= '</div>';
 
 		return $html;
@@ -198,7 +191,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 */
 		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
 		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-map-frontend', RWMB_JS_URL . 'map-frontend.js', array( 'google-maps' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-map-frontend', RWMB_JS_URL . 'map-frontend.js', array( 'google-maps', 'jquery' ), RWMB_VER, true );
 
 		/*
 		 * Google Maps options.
@@ -214,6 +207,9 @@ class RWMB_Map_Field extends RWMB_Field {
 
 				// Map type, see https://developers.google.com/maps/documentation/javascript/reference#MapTypeId.
 				'mapTypeId' => 'ROADMAP',
+
+				// Open Info Window
+				'openInfoWindow' => false,
 			)
 		);
 

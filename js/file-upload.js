@@ -1,6 +1,4 @@
-window.rwmb = window.rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, wp, rwmb ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -27,138 +25,40 @@ jQuery( function ( $ ) {
 			this.el.id = _.uniqueId( 'rwmb-upload-area-' );
 			this.render();
 
-			//Areas
-			this.dropzone = this.el;
-			this.browser = this.$( '.rwmb-browse-button' )[0];
-
-			if ( wp.Uploader.browser.supported ) {
-				this.initUploader();
-			}
-
 			// Auto hide if you reach the max number of media
 			this.listenTo( this.controller, 'change:full', function () {
 				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
 		},
 
-		//Initializes plupload
-		//Uses code from wp.Uploader
+		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
 		initUploader: function () {
-			var isIE = navigator.userAgent.indexOf( 'Trident/' ) != - 1 || navigator.userAgent.indexOf( 'MSIE ' ) != - 1,
-				self = this,
+			var self = this,
 				extensions = this.getExtensions().join( ',' ),
-				max_file_size;
-			this.plupload = $.extend( true, {
-				multipart_params: {
-					post_id : $( '#post_ID' ).val()
-				},
-				multipart: true,
-				urlstream_upload: true,
-				drop_element: this.dropzone,
-				browse_button: this.browser,
-				filters: {}
-			}, wp.Uploader.defaults );
-
-			if( max_file_size = this.controller.get( 'maxFileSize' ) ) {
-				this.plupload.filters.max_file_size = max_file_size;
-			}
-
-			if ( extensions ) {
-				this.plupload.filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
-			}
-
-			// Make sure flash sends cookies (seems in IE it does without switching to urlstream mode)
-			if ( ! isIE && 'flash' === plupload.predictRuntime( this.plupload ) &&
-			     ( ! this.plupload.required_features || ! this.plupload.required_features.hasOwnProperty( 'send_binary_string' ) ) ) {
-				this.plupload.required_features = this.plupload.required_features || {};
-				this.plupload.required_features.send_binary_string = true;
-			}
+				maxFileSize = this.controller.get( 'maxFileSize' ),
+				options = {
+					container: this.el,
+					dropzone: this.el,
+					browser: this.$( '.rwmb-browse-button' ),
+					params: {
+						post_id : $( '#post_ID' ).val()
+					},
+					added: function( attachment ) {
+						self.controller.get( 'items' ).add( [attachment] );
+					}
+				};
 
 			// Initialize the plupload instance.
-			this.uploader = new plupload.Uploader( this.plupload );
-			this.uploader.init();
+			this.uploader = new wp.Uploader( options );
 
-			this.uploader.bind( 'FilesAdded', function ( up, files ) {
-				_.each( files, function ( file ) {
-					var attributes, image;
-
-					// Ignore failed uploads.
-					if ( plupload.FAILED === file.status ) {
-						return;
-					}
-
-					// Generate attributes for a new `Attachment` model.
-					attributes = _.extend( {
-						file: file,
-						uploading: true,
-						date: new Date(),
-						filename: file.name,
-						menuOrder: 0,
-						uploadedTo: wp.media.model.settings.post.id,
-						icon: i18nRwmbMedia.loadingUrl
-					}, _.pick( file, 'loaded', 'size', 'percent' ) );
-
-					// Handle early mime type scanning for images.
-					image = /(?:jpe?g|png|gif)$/i.exec( file.name );
-
-					// For images set the model's type and subtype attributes.
-					if ( image ) {
-						attributes.type = 'image';
-
-						// `jpeg`, `png` and `gif` are valid subtypes.
-						// `jpg` is not, so map it to `jpeg`.
-						attributes.subtype = ( 'jpg' === image[0] ) ? 'jpeg' : image[0];
-					}
-
-					// Create a model for the attachment, and add it to the Upload queue collection
-					// so listeners to the upload queue can track and display upload progress.
-					file.attachment = wp.media.model.Attachment.create( attributes );
-					wp.Uploader.queue.add( file.attachment );
-					self.controller.get( 'items' ).add( [file.attachment] );
-				} );
-
-				up.refresh();
-				up.start();
-			} );
-
-			this.uploader.bind( 'UploadProgress', function ( up, file ) {
-				file.attachment.set( _.pick( file, 'loaded', 'percent' ) );
-			} );
-
-			this.uploader.bind( 'FileUploaded', function ( up, file, response ) {
-				var complete;
-
-				try {
-					response = JSON.parse( response.response );
-				} catch ( e ) {
-					return false;
-				}
-
-				if ( ! _.isObject( response ) || _.isUndefined( response.success ) || ! response.success ) {
-					return false;
-				}
-
-				_.each( ['file', 'loaded', 'size', 'percent'], function ( key ) {
-					file.attachment.unset( key );
-				} );
-
-				file.attachment.set( _.extend( response.data, {uploading: false} ) );
-				wp.media.model.Attachment.get( response.data.id, file.attachment );
-
-				complete = wp.Uploader.queue.all( function ( attachment ) {
-					return ! attachment.get( 'uploading' );
-				} );
-
-				if ( complete ) {
-					wp.Uploader.queue.reset();
-				}
-			} );
-
-			this.uploader.bind( 'Error', function ( up, error ) {
-				if ( error.file.attachment ) {
-					error.file.attachment.destroy();
-				}
-			} );
+			var filters = this.uploader.uploader.getOption( 'filters' );
+			if ( maxFileSize ) {
+				filters.max_file_size = maxFileSize;
+			}
+			if ( extensions ) {
+				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
+			}
+			this.uploader.uploader.setOption( 'filters', filters );
 		},
 
 		getExtensions: function () {
@@ -174,17 +74,30 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	/**
-	 * Initialize fields
-	 * @return void
-	 */
-	function init() {
-		var view = new FileUploadField( { input: this } );
-		//Remove old then add new
-		$( this ).siblings( 'div.rwmb-media-view' ).remove();
-		$( this ).after( view.el );
+	function initFileUpload() {
+		var $this = $( this ),
+			view = $this.data( 'view' );
+
+		if ( view ) {
+			return;
+		}
+
+		view = new FileUploadField( { input: this } );
+
+		$this.siblings( '.rwmb-media-view' ).remove();
+		$this.after( view.el );
+
+		// Init uploader after view is inserted to make wp.Uploader works.
+		view.addButton.initUploader();
+
+		$this.data( 'view', view );
 	}
 
-	$( '.rwmb-file_upload' ).each( init );
-	$( document ).on( 'clone', '.rwmb-file_upload', init )
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-file_upload' ).each( initFileUpload );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-file_upload', initFileUpload )
+} )( jQuery, wp, rwmb );

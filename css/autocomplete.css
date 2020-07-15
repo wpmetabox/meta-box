@@ -12,3 +12,6 @@
 	float: right;
 	cursor: pointer;
 }
+.ui-autocomplete {
+	z-index: 999999;
+}

@@ -2,21 +2,20 @@
 /**
  * Welcome section.
  *
- * @package    Meta Box
- * @subpackage MB Custom Post Type
+ * @package Meta Box
  */
 
 ?>
 <h1>
 	<?php
-	$plugin = get_plugin_data( RWMB_DIR . 'meta-box.php', false, false );
+	$plugin_data = get_plugin_data( RWMB_DIR . 'meta-box.php', false, false );
 
 	// Translators: %s - Plugin name.
-	echo esc_html( sprintf( __( 'Welcome to %s', 'meta-box' ), $plugin['Name'] ) );
+	echo esc_html( sprintf( __( 'Welcome to %s', 'meta-box' ), $plugin_data['Name'] ) );
 	?>
 </h1>
 <div class="about-text"><?php esc_html_e( 'Meta Box is a free Gutenberg and GDPR-compatible WordPress custom fields plugin and framework that makes quick work of customizing a website with—you guessed it—meta boxes and custom fields in WordPress. Follow the instruction below to get started!', 'meta-box' ); ?></div>
-<a target="_blank" class="wp-badge" href="<?php echo esc_url( 'https://metabox.io/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ); ?>"><?php echo esc_html( $plugin['Name'] ); ?></a>
+<a target="_blank" class="wp-badge" href="<?php echo esc_url( 'https://metabox.io/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ); ?>"><?php echo esc_html( $plugin_data['Name'] ); ?></a>
 <p class="about-buttons">
 	<a target="_blank" class="button" href="<?php echo esc_url( 'https://docs.metabox.io?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ); ?>"><?php esc_html_e( 'Documentation', 'meta-box' ); ?></a>
 	<a target="_blank" class="button" href="<?php echo esc_url( 'https://metabox.io/plugins/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ); ?>"><?php esc_html_e( 'Extensions', 'meta-box' ); ?></a>

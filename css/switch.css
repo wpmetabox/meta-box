@@ -92,3 +92,29 @@
 .rwmb-switch-off {
 	padding-left: 20px;
 }
+
+/* Admin color schemes */
+.admin-color-blue .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #e1a948;
+	box-shadow: 0 0 1px #e1a948;
+}
+.admin-color-coffee .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #c7a589;
+	box-shadow: 0 0 1px #c7a589;
+}
+.admin-color-ectoplasm .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #a3b745;
+	box-shadow: 0 0 1px #a3b745;
+}
+.admin-color-midnight .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #e14d43;
+	box-shadow: 0 0 1px #e14d43;
+}
+.admin-color-ocean .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #9ebaa0;
+	box-shadow: 0 0 1px #9ebaa0;
+}
+.admin-color-sunrise .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #dd823b;
+	box-shadow: 0 0 1px #dd823b;
+}

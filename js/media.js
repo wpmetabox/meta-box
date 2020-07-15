@@ -1,8 +1,4 @@
-/* global jQuery, _,i18nRwmbMedia */
-
-window.rwmb = window.rwmb || {};
-
-jQuery( function ( $ ) {
+( function ( $, wp, _, rwmb, i18n ) {
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
@@ -12,7 +8,9 @@ jQuery( function ( $ ) {
 		MediaCollection, Controller, MediaField, MediaList, MediaItem, MediaButton, MediaStatus, EditMedia,
 		MediaDetails, MediaLibrary, MediaSelect;
 
-	MediaCollection = models.MediaCollection = media.model.Attachments.extend( {
+	MediaCollection = Backbone.Collection.extend( {
+		model: wp.media.model.Attachment,
+
 		initialize: function ( models, options ) {
 			this.controller = options.controller || new models.Controller;
 			this.on( 'add remove reset', function () {
@@ -20,8 +18,6 @@ jQuery( function ( $ ) {
 				this.controller.set( 'length', this.length );
 				this.controller.set( 'full', max > 0 && this.length >= max );
 			} );
-
-			media.model.Attachments.prototype.initialize.call( this, models, options );
 		},
 
 		add: function ( models, options ) {
@@ -42,11 +38,15 @@ jQuery( function ( $ ) {
 				models = _.first( models, left );
 			}
 
-			return media.model.Attachments.prototype.add.call( this, models, options );
+			Backbone.Collection.prototype.add.call( this, models, options );
 		},
 
 		remove: function ( models, options ) {
-			models = media.model.Attachments.prototype.remove.call( this, models, options );
+			// Don't remove models if event is not fired from MB plugin.
+			if( ! $( event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
+				return;
+			}
+			models = Backbone.Collection.prototype.remove.call( this, models, options );
 			if ( this.controller.get( 'forceDelete' ) === true ) {
 				models = ! _.isArray( models ) ? [models] : models;
 				_.each( models, function ( model ) {
@@ -91,24 +91,6 @@ jQuery( function ( $ ) {
 					this.get( 'items' ).destroyAll();
 				}
 			} );
-		},
-
-
-		// Load initial media
-		load: function () {
-			if ( _.isEmpty( this.get( 'ids' ) ) ) {
-				return;
-			}
-			this.get( 'items' ).props.set( {
-				query: true,
-				include: this.get( 'ids' ),
-				orderby: 'post__in',
-				order: 'ASC',
-				type: this.get( 'mimeType' ),
-				perPage: this.get( 'maxFiles' ) || - 1
-			} );
-			// Get more then trigger ready
-			this.get( 'items' ).more();
 		}
 	} );
 
@@ -140,28 +122,33 @@ jQuery( function ( $ ) {
 			this.createAddButton();
 			this.createStatus();
 
-			// Render
 			this.render();
-
-			// Load media
-			this.controller.load();
+			this.loadInitialAttachments();
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
 				that.controller.destroy();
 			} );
 
+			var collection = this.controller.get( 'items' );
 			this.$input.on( 'media:reset', function() {
-				that.controller.get( 'items' ).reset();
+				collection.reset();
 			} );
 
-			this.controller.get( 'items' ).on( 'add remove reset', _.debounce( function () {
-				that.$input.trigger( 'change', [that.$( '.rwmb-media-input' )] );
+			collection.on( 'add remove reset', _.debounce( function () {
+				var ids = collection.pluck( 'id' ).join( ',' );
+				that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
 			}, 500 ) );
+		},
 
-			this.controller.get( 'items' ).on( 'remove', _.debounce( function () {
-				that.$input.val( '' );
-			}, 500 ) );
+		loadInitialAttachments: function () {
+			if ( ! this.$input.val() ) {
+				return;
+			}
+			var models = this.$input.data( 'attachments' ).map( function( attachment ) {
+				return wp.media.model.Attachment.create( attachment );
+			} );
+			this.controller.get( 'items' ).add( models );
 		},
 
 		// Creates media list
@@ -223,7 +210,10 @@ jQuery( function ( $ ) {
 
 			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
 			this.$el.sortable( {
-				helper : 'clone'
+				helper : 'clone',
+				update: function( event, ui ) {
+					ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
+				}
 			} );
 		},
 
@@ -275,6 +265,15 @@ jQuery( function ( $ ) {
 				edit: this.collection
 			} );
 
+			// Refresh content when frame opens
+			this._switchFrame.on( 'open', function() {
+				var frameContent = this._switchFrame.content.get();
+				if ( frameContent && frameContent.collection ) {
+					frameContent.collection.mirroring._hasMore = true;
+					frameContent.collection.more();
+				}
+			}, this );
+
 			this._switchFrame.on( 'select', function () {
 				var selection = this._switchFrame.state().get( 'selection' ),
 					collection = this.collection,
@@ -299,13 +298,7 @@ jQuery( function ( $ ) {
 			this._editFrame = new EditMedia( {
 				frame: 'edit-attachments',
 				controller: {
-					// Needed to trick Edit modal to think there is a gridRouter.
-					gridRouter: {
-						navigate: function ( destination ) {
-						},
-						baseUrl: function ( url ) {
-						}
-					}
+					gridRouter: new wp.media.view.MediaFrame.Manage.Router()
 				},
 				library: this.collection,
 				model: item
@@ -369,16 +362,29 @@ jQuery( function ( $ ) {
 					edit: this.collection
 				} );
 
+				// Refresh content when frame opens
+				this._frame.on( 'open', function() {
+					var frameContent = this._frame.content.get();
+					if ( frameContent && frameContent.collection ) {
+						frameContent.collection.mirroring._hasMore = true;
+						frameContent.collection.more();
+					}
+				}, this );
+
 				this._frame.on( 'select', function () {
 					var selection = this._frame.state().get( 'selection' );
-					this.collection.add( selection.models );
+					if ( this.controller.get( 'addTo' ) === 'beginning' ) {
+						this.collection.add( selection.models, {at: 0} );
+					} else {
+						this.collection.add( selection.models );
+					}
 				}, this );
 
 				this._frame.open();
 			}
 		},
 		render: function () {
-			this.$el.html( this.template( {text: i18nRwmbMedia.add} ) );
+			this.$el.html( this.template( {text: i18n.add} ) );
 			return this;
 		},
 
@@ -413,20 +419,17 @@ jQuery( function ( $ ) {
 		},
 
 		events: {
-			'click .rwmb-image-overlay': function () {
+			'click .rwmb-image-overlay': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:switch', this.model );
-				return false;
 			},
-
-			// Event when remove button clicked
-			'click .rwmb-remove-media': function () {
+			'click .rwmb-remove-media': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:remove', this.model );
-				return false;
 			},
-
-			'click .rwmb-edit-media': function () {
+			'click .rwmb-edit-media': function ( e ) {
+				e.preventDefault();
 				this.trigger( 'click:edit', this.model );
-				return false;
 			}
 		},
 
@@ -509,6 +512,9 @@ jQuery( function ( $ ) {
 		createStates: function () {
 			var options = this.options;
 
+			// Add reference so we know MediaFrame belongs to MB plugin.
+			this.$el.attr( 'data-class', 'rwmb-field' );
+
 			if ( this.options.states ) {
 				return;
 			}
@@ -550,20 +556,30 @@ jQuery( function ( $ ) {
 				controller: this,
 				model: this.model
 			} ) );
-		}
+		},
+		resetRoute: function() {}
 	} );
 
-	/**
-	 * Initialize media fields
-	 * @return void
-	 */
 	function initMediaField() {
-		var view = new MediaField( { input: this } );
-		//Remove old then add new
-		$( this ).siblings( 'div.rwmb-media-view' ).remove();
-		$( this ).after( view.el );
+		var $this = $( this ),
+			view = $this.data( 'view' );
+
+		if ( view ) {
+			return;
+		}
+
+		view = new MediaField( { input: this } );
+
+		$this.siblings( '.rwmb-media-view' ).remove();
+		$this.after( view.el );
+		$this.data( 'view', view );
 	}
 
-	$( '.rwmb-file_advanced' ).each( initMediaField );
-	$( document ).on( 'clone', '.rwmb-file_advanced', initMediaField );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-file_advanced' ).each( initMediaField );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-file_advanced', initMediaField );
+} )( jQuery, wp, _, rwmb, i18nRwmbMedia );

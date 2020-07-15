@@ -20,34 +20,27 @@ class RWMB_Validation {
 
 	/**
 	 * Output validation rules of each meta box.
-	 * The rules are outputted in [data-rules] attribute of an hidden <script> and will be converted into JSON by JS.
+	 * The rules are outputted in [data-validation] attribute of an hidden <script> and will be converted into JSON by JS.
 	 *
 	 * @param RW_Meta_Box $object Meta Box object.
 	 */
 	public function rules( RW_Meta_Box $object ) {
 		if ( ! empty( $object->meta_box['validation'] ) ) {
-			echo '<script type="text/html" class="rwmb-validation-rules" data-rules="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+			echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
 		}
 	}
 
 	/**
 	 * Enqueue scripts for validation.
-	 *
-	 * @param RW_Meta_Box $object Meta Box object.
 	 */
-	public function enqueue( RW_Meta_Box $object ) {
-		if ( empty( $object->meta_box['validation'] ) ) {
-			return;
-		}
-		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'jquery-validation/jquery.validate.min.js', array( 'jquery' ), '1.15.0', true );
-		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'jquery-validation/additional-methods.min.js', array( 'jquery-validation' ), '1.15.0', true );
-		wp_enqueue_script( 'rwmb-validate', RWMB_JS_URL . 'validate.js', array( 'jquery-validation', 'jquery-validation-additional-methods' ), RWMB_VER, true );
+	public function enqueue() {
+		wp_enqueue_script( 'rwmb-validation', RWMB_JS_URL . 'validation.min.js', array( 'jquery', 'rwmb' ), RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once(
-			'rwmb-validate',
-			'rwmbValidate',
+			'rwmb-validation',
+			'rwmbValidation',
 			array(
-				'summaryMessage' => esc_html__( 'Please correct the errors highlighted below and try again.', 'meta-box' ),
+				'message' => esc_html__( 'Please correct the errors highlighted below and try again.', 'meta-box' ),
 			)
 		);
 	}

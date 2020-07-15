@@ -33,6 +33,29 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	}
 }
 
+if ( ! function_exists( 'rwmb_set_meta' ) ) {
+	/**
+	 * Set meta value.
+	 *
+	 * @param int    $object_id Object ID. Required.
+	 * @param string $key       Meta key. Required.
+	 * @param string $value     Meta value. Required.
+	 * @param array  $args      Array of arguments. Optional.
+	 */
+	function rwmb_set_meta( $object_id, $key, $value, $args = array() ) {
+		$args = wp_parse_args( $args );
+		$field = rwmb_get_field_settings( $key, $args, $object_id );
+
+		if ( false === $field ) {
+			return;
+		}
+
+		$old = RWMB_Field::call( $field, 'raw_meta', $object_id );
+		$new = RWMB_Field::process_value( $value, $object_id, $field );
+		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
+	}
+}
+
 if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	/**
 	 * Get field settings.
@@ -109,7 +132,7 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 
 		return RWMB_Field::call( $method, $field, $args, $post_id );
 	}
-} // End if().
+}
 
 if ( ! function_exists( 'rwmb_get_value' ) ) {
 	/**
@@ -182,7 +205,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 
 		return $output;
 	}
-} // End if().
+}
 
 if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
 	/**
@@ -235,8 +258,20 @@ if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
 				}
 				$prop = 'taxonomies';
 				break;
+			case 'user':
+				$type = 'user';
+				$prop = 'user';
+				break;
+			case 'setting':
+				$type = $type_or_id;
+				$prop = 'settings_pages';
+				break;
 		}
-		if ( ! $type || ! in_array( $type, $meta_box->meta_box[ $prop ], true ) ) {
+		if ( ! $type ) {
+			$meta_box = false;
+			return;
+		}
+		if ( isset( $meta_box->meta_box[ $prop ] ) && ! in_array( $type, $meta_box->meta_box[ $prop ], true ) ) {
 			$meta_box = false;
 		}
 	}
@@ -285,8 +320,12 @@ if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
 			return $value->$attribute;
 		}
 
+		if ( isset( $value[ $attribute ] ) ) {
+			return $value[ $attribute ];
+		}
+
 		$value = wp_list_pluck( $value, $attribute );
-		$value = implode( ',', $value );
+		$value = implode( ',', array_filter( $value ) );
 
 		return $value;
 	}
@@ -332,23 +371,17 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 	}
 }
 
-if ( ! function_exists( 'rwmb_get_meta_box' ) ) {
+if ( ! function_exists( 'rwmb_request' ) ) {
 	/**
-	 * Get meta box object from meta box data.
+	 * Get request object.
 	 *
-	 * @param  array $meta_box Array of meta box data.
-	 * @return RW_Meta_Box
+	 * @return RWMB_Request
 	 */
-	function rwmb_get_meta_box( $meta_box ) {
-		/**
-		 * Allow filter meta box class name.
-		 *
-		 * @var string Meta box class name.
-		 * @var array  Meta box data.
-		 */
-		$class_name = apply_filters( 'rwmb_meta_box_class_name', 'RW_Meta_Box', $meta_box );
-
-		return new $class_name( $meta_box );
+	function rwmb_request() {
+		static $request;
+		if ( ! $request ) {
+			$request = new RWMB_Request();
+		}
+		return $request;
 	}
 }
-

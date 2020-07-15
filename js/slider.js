@@ -1,15 +1,15 @@
-jQuery( function ( $ ) {
+( function ( $, rwmb ) {
 	'use strict';
 
-	function update() {
-		var $input      = $( this ),
-			$slider     = $input.siblings( '.rwmb-slider' ),
-			$valueLabel = $slider.siblings( '.rwmb-slider-value-label' ).find( 'span' ),
-			value       = $input.val(),
-			options     = $slider.data( 'options' );
+	function transform() {
+		var $input  = $( this ),
+			$slider = $input.siblings( '.rwmb-slider-ui' ),
+			$label  = $slider.siblings( '.rwmb-slider-label' ).find( 'span' ),
+			value   = $input.val(),
+			options = $slider.data( 'options' );
 
 		$slider.html( '' );
-		$valueLabel.text( value );
+		$label.text( value );
 
 		if ( true === options.range ) {
 			value = value.split( '|' );
@@ -24,13 +24,18 @@ jQuery( function ( $ ) {
 				value = ui.values[ 0 ] + '|' + ui.values[ 1 ];
 			}
 
-			$input.val( value );
-			$valueLabel.html( value );
+			$input.val( value ).trigger( 'change' );
+			$label.html( value );
 		};
 
 		$slider.slider( options );
 	}
 
-	$( '.rwmb-slider-value' ).each( update );
-	$( document ).on( 'clone', '.rwmb-slider-value', update );
-} );
+	function init( e ) {
+		$( e.target ).find( '.rwmb-slider' ).each( transform );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', '.rwmb-slider', transform );
+} )( jQuery, rwmb );

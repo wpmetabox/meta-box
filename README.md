@@ -1,9 +1,8 @@
 # Meta Box - WordPress Custom Fields Framework
 
-[![Build Status](https://travis-ci.org/wpmetabox/meta-box.svg?branch=master)](https://travis-ci.org/wpmetabox/meta-box)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wpmetabox/meta-box/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wpmetabox/meta-box/?branch=master)
-[![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
-[![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)](http://wordpress.org/plugins/meta-box/)
+![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)
+![WordPress](https://img.shields.io/wordpress/v/meta-box.svg)
 [![License](https://img.shields.io/packagist/l/wpmetabox/meta-box.svg)](https://metabox.io)
 
 ## Description
@@ -98,6 +97,7 @@ You'll have ultimate control to add whatever meta box and custom fields in WordP
 
 #### Premium Extensions
 
+- [MB Blocks](https://metabox.io/plugins/mb-blocks/): Create custom Gutenberg blocks with PHP, using the same syntax in Meta Box.
 - [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Create custom meta boxes and custom fields in WordPress using a user-friendly drag-and-drop interface.
 - [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Create repeatable groups of WordPress custom fields for better appearance and structure.
 - [MB Settings Page](https://metabox.io/plugins/mb-settings-page/): Create settings pages for themes, plugins or websites with beautiful syntax.

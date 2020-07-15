@@ -34,26 +34,8 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @param array $field   The field parameters.
 	 */
 	public static function save( $new, $old, $post_id, $field ) {
-		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
-			return;
-		}
-		$storage = $field['storage'];
-
-		if ( ! $new ) {
-			$storage->delete( $post_id, $field['id'] );
-			return;
-		}
-
-		if ( ! $field['clone'] || ! $field['clone_as_multiple'] ) {
-			$storage->update( $post_id, $field['id'], $new );
-			return;
-		}
-
-		// clone and clone_as_multiple.
-		$storage->delete( $post_id, $field['id'] );
-		foreach ( $new as $value ) {
-			$storage->add( $post_id, $field['id'], $value );
-		}
+		$field['multiple'] = false; // Force to save in 1 row in the database.
+		RWMB_Field::save( $new, $old, $post_id, $field );
 	}
 
 	/**
@@ -73,7 +55,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return $field['multiple'] ? array() : '';
 		}
 
-		$meta = is_array( $meta ) ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
+		$meta = $field['clone'] ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
 
 		$meta = array_filter( $meta );
 

@@ -47,13 +47,15 @@ class RWMB_File_Field extends RWMB_Field {
 	 * Ajax callback for deleting files.
 	 */
 	public static function ajax_delete_file() {
-		$field_id = filter_input( INPUT_POST, 'field_id', FILTER_SANITIZE_STRING );
+		$request = rwmb_request();
+
+		$field_id = $request->filter_post( 'field_id', FILTER_SANITIZE_STRING );
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 		// Make sure the file to delete is in the custom field.
-		$attachment  = filter_input( INPUT_POST, 'attachment_id' );
-		$object_id   = filter_input( INPUT_POST, 'object_id', FILTER_SANITIZE_STRING );
-		$object_type = filter_input( INPUT_POST, 'object_type', FILTER_SANITIZE_STRING );
+		$attachment  = $request->post( 'attachment_id' );
+		$object_id   = $request->filter_post( 'object_id', FILTER_SANITIZE_STRING );
+		$object_type = $request->filter_post( 'object_type', FILTER_SANITIZE_STRING );
 		$field       = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
@@ -91,7 +93,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Show form upload.
 		$attributes          = self::get_attributes( $field, $meta );
 		$attributes['type']  = 'file';
-		$attributes['name']  = "{$field['file_input_name']}[]";
+		$attributes['name']  = "{$field['input_name']}[]";
 		$attributes['class'] = 'rwmb-file-input';
 
 		/*
@@ -101,16 +103,26 @@ class RWMB_File_Field extends RWMB_Field {
 		 */
 		if ( $attributes['required'] ) {
 			$attributes['data-required'] = 1;
-			$attributes['required'] = false;
+			$attributes['required']      = false;
 		}
 
+		// Upload new files.
 		$html .= sprintf(
-			'<div class="rwmb-file-new">
-				<input %s>
-				<a class="rwmb-file-add" href="#"><strong>%s</strong></a>
-			</div>',
-			self::render_attributes( $attributes ),
-			$i18n_more
+			'<div class="rwmb-file-new"><input %s>',
+			self::render_attributes( $attributes )
+		);
+		if ( 1 !== $field['max_file_uploads'] ) {
+			$html .= sprintf(
+				'<a class="rwmb-file-add" href="#"><strong>%s</strong></a>',
+				$i18n_more
+			);
+		}
+		$html .= '</div>';
+
+		$html .= sprintf(
+			'<input type="hidden" class="rwmb-file-index" name="%s" value="%s">',
+			$field['index_name'],
+			$field['input_name']
 		);
 
 		return $html;
@@ -167,7 +179,7 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( $field['upload_dir'] ) {
 			$data = self::file_info_custom_dir( $file, $field );
 		} else {
-			$data = array(
+			$data      = array(
 				'icon'      => wp_get_attachment_image( $file, array( 60, 60 ), true ),
 				'name'      => basename( get_attached_file( $file ) ),
 				'url'       => wp_get_attachment_url( $file ),
@@ -240,40 +252,52 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$input = $field['file_input_name'];
+		$input = isset( $field['index'] ) ? $field['index'] : $field['input_name'];
 
 		// @codingStandardsIgnoreLine
-		if ( empty( $_FILES[ $input ] ) ) {
+		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
 
 		$new = array_filter( (array) $new );
 
-		// Non-cloneable field.
-		if ( ! $field['clone'] ) {
-			$count = self::transform( $input );
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[] = $attachment;
-				}
+		$count = self::transform( $input );
+		for ( $i = 0; $i <= $count; $i ++ ) {
+			$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
+			if ( $attachment && ! is_wp_error( $attachment ) ) {
+				$new[] = $attachment;
 			}
-
-			return $new;
 		}
 
-		// Cloneable field.
-		$counts = self::transform_cloneable( $input );
-		foreach ( $counts as $clone_index => $count ) {
-			if ( empty( $new[ $clone_index ] ) ) {
-				$new[ $clone_index ] = array();
-			}
-			for ( $i = 0; $i <= $count; $i ++ ) {
-				$attachment = self::handle_upload( "{$input}_{$clone_index}_{$i}", $post_id, $field );
-				if ( $attachment && ! is_wp_error( $attachment ) ) {
-					$new[ $clone_index ][] = $attachment;
-				}
-			}
+		return $new;
+	}
+
+	/**
+	 * Get meta values to save for cloneable fields.
+	 *
+	 * @param array $new         The submitted meta value.
+	 * @param array $old         The existing meta value.
+	 * @param int   $object_id   The object ID.
+	 * @param array $field       The field settings.
+	 * @param array $data_source Data source. Either $_POST or custom array. Used in group to get uploaded files.
+	 *
+	 * @return mixed
+	 */
+	public static function clone_value( $new, $old, $object_id, $field, $data_source = null ) {
+		if ( ! $data_source ) {
+			// @codingStandardsIgnoreLine
+			$data_source = $_POST;
+		}
+
+		// @codingStandardsIgnoreLine
+		$indexes = isset( $data_source[ "_index_{$field['id']}" ] ) ? $data_source[ "_index_{$field['id']}" ] : array();
+		foreach ( $indexes as $key => $index ) {
+			$field['index'] = $index;
+
+			$old_value   = isset( $old[ $key ] ) ? $old[ $key ] : array();
+			$value       = isset( $new[ $key ] ) ? $new[ $key ] : array();
+			$value       = self::value( $value, $old_value, $object_id, $field );
+			$new[ $key ] = self::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
 
 		return $new;
@@ -317,44 +341,14 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Transform $_FILES from $_FILES['field']['key']['cloneIndex']['index'] to $_FILES['field_cloneIndex_index']['key'].
-	 *
-	 * @param string $input_name The field input name.
-	 *
-	 * @return array
-	 */
-	protected static function transform_cloneable( $input_name ) {
-		// @codingStandardsIgnoreStart
-		foreach ( $_FILES[ $input_name ] as $key => $list ) {
-			foreach ( $list as $clone_index => $clone_values ) {
-				foreach ( $clone_values as $index => $value ) {
-					$file_key = "{$input_name}_{$clone_index}_{$index}";
-
-					if ( ! isset( $_FILES[ $file_key ] ) ) {
-						$_FILES[ $file_key ] = array();
-					}
-					$_FILES[ $file_key ][ $key ] = $value;
-				}
-			}
-		}
-
-		$counts = array();
-		foreach ( $_FILES[ $input_name ]['name'] as $clone_index => $clone_values ) {
-			$counts[ $clone_index ] = count( $clone_values );
-		}
-		return $counts;
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field             = parent::normalize( $field );
-		$field             = wp_parse_args(
+		$field = parent::normalize( $field );
+		$field = wp_parse_args(
 			$field,
 			array(
 				'std'              => array(),
@@ -364,9 +358,10 @@ class RWMB_File_Field extends RWMB_Field {
 				'upload_dir'       => '',
 			)
 		);
-		$field['multiple'] = true;
 
-		$field['file_input_name'] = '_file_' . $field['id'];
+		$field['multiple']   = true;
+		$field['input_name'] = "_file_{$field['id']}";
+		$field['index_name'] = "_index_{$field['id']}";
 
 		return $field;
 	}
