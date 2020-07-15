@@ -14,6 +14,7 @@
 				// Update underlying textarea before submit.
 				// Don't use submitHandler() because form can be submitted via Ajax on the front end.
 				.on( 'submit', function() {
+					console.log( this.validationTrigger );
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
