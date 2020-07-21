@@ -10,7 +10,7 @@
 	<div class="two">
 		<div class="col">
 			<h3><?php esc_html_e( 'Getting Started With Online Generator', 'meta-box' ); ?></h3>
-			<p><?php esc_html_e( 'The fastest way to getting started with Meta Box is use our online generator to generate meta boxes with custom fields. It provides a friendly UI for you to create meta boxes and custom fields just by drag and drop fields.', 'meta-box' ); ?><p>
+			<p><?php esc_html_e( 'Online Generator is a free tool to help you create and set up custom fields using a simple, friendly user interface. With it, you can add fields, set options and generate needed code that\'s ready to copy and paste.', 'meta-box' ); ?></p>
 
 			<a target="_blank" class="screenshot" href="https://metabox.io/online-generator/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><img src="<?php echo esc_url( RWMB_URL . 'inc/about/images/online-generator.png' ); ?>" alt="<?php esc_attr_e( 'online generator', 'meta-box' ); ?>"></a>
 
