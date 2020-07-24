@@ -339,11 +339,13 @@ class RW_Meta_Box {
 	 * @return array $meta_box Normalized meta box.
 	 */
 	public static function normalize( $meta_box ) {
+		$default_title = __( 'Meta Box Title', 'meta-box' );
 		// Set default values for meta box.
 		$meta_box = wp_parse_args(
 			$meta_box,
 			array(
-				'id'             => sanitize_title( $meta_box['title'] ),
+				'title'          => $default_title,
+				'id'             => ! empty( $meta_box['title'] ) ? sanitize_title( $meta_box['title'] ) : sanitize_title( $default_title ),
 				'context'        => 'normal',
 				'priority'       => 'high',
 				'post_types'     => 'post',
