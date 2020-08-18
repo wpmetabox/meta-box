@@ -170,7 +170,8 @@ select.rwmb-error {
 	padding-right: 0;
 }
 .postbox.rwmb-seamless .hndle,
-.postbox.rwmb-seamless .handlediv {
+.postbox.rwmb-seamless .handlediv,
+.postbox.rwmb-seamless .postbox-header {
 	display: none;
 }
 .rwmb-seamless .rwmb-clone {
