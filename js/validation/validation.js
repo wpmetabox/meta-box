@@ -82,7 +82,11 @@
 				savePost = editor.savePost; // Reference original method.
 
 			// Change the editor method.
-			editor.savePost = function() {
+			editor.savePost = function( object ) {
+				// Bypass the validation when previewing in Gutenberg.
+				if ( typeof object === 'object' && object.isPreview ) {
+					return;
+				}
 				that.$form.validate( that.settings );
 
 				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
