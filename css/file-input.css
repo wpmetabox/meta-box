@@ -1,8 +1,3 @@
-.rwmb-file_input-wrapper > .rwmb-input {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-}
 .rwmb-file_input.rwmb-file_input {
 	line-height: 18px;
 	margin: 0 5px 0 0;

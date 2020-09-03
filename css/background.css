@@ -4,6 +4,11 @@
 	flex-wrap: wrap;
 	align-items: flex-start;
 }
+
+.rwmb-background-row .button {
+	margin-right: 5px;
+}
+
 .rwmb-background-wrapper .wp-picker-container {
 	position: relative;
 	display: inline-block;
