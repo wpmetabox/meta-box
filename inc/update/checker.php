@@ -82,6 +82,7 @@ class RWMB_Update_Checker {
 			'mb-term-meta',
 			'mb-user-meta',
 			'mb-user-profile',
+			'mb-views',
 			'meta-box-aio',
 			'meta-box-builder',
 			'meta-box-columns',
