@@ -23,6 +23,18 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 			$dependencies = array( 'wp-color-picker-alpha' );
 		}
 		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', $dependencies, RWMB_VER, true );
+		RWMB_Helpers_Field::add_inline_script_once( 'rwmb-color', '
+			if ( wpColorPickerL10n !== undefined && wpColorPickerL10n.clear !== undefined ) {
+				wpColorPickerL10n = Object.assign( {
+					clear: "' . esc_html__( 'Clear', 'meta-box' ) . '",
+					clearAriaLabel: "' . esc_html__( 'Clear color', 'meta-box' ) . '",
+					defaultAriaLabel: "' . esc_html__( 'Select default color', 'meta-box' ) . '",
+					defaultLabel: "' . esc_html__( 'Color value', 'meta-box' ) . '",
+					defaultString: "' . esc_html__( 'Default', 'meta-box' ) . '",
+					pick: "' . esc_html__( 'Select Color', 'meta-box' ) . '",
+				}, wpColorPickerL10n );
+			}
+		' );
 	}
 
 	/**

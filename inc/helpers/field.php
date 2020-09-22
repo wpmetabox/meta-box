@@ -26,6 +26,12 @@ class RWMB_Helpers_Field {
 		}
 	}
 
+	public static function add_inline_script_once( $handle, $text ) {
+		if ( ! wp_scripts()->get_data( $handle, 'after' ) ) {
+			wp_add_inline_script( $handle, $text );
+		}
+	}
+
 	/**
 	 * Get field class name.
 	 *
