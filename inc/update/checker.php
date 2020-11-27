@@ -193,6 +193,16 @@ class RWMB_Update_Checker {
 		);
 		$args = array_filter( $args );
 
+		$cache_key = 'meta_box_' . md5( serialize( $args ) );
+		if ( $this->option->is_network_activated() ) {
+			$cache = get_site_transient( $cache_key );
+		} else {
+			$cache = get_transient( $cache_key );
+		}
+		if ( $cache ) {
+			return $cache;
+		}
+
 		$request = wp_remote_post(
 			$this->api_url,
 			array(
@@ -201,7 +211,14 @@ class RWMB_Update_Checker {
 		);
 
 		$response = wp_remote_retrieve_body( $request );
-		return $response ? @unserialize( $response ) : false;
+		$response = $response ? @unserialize( $response ) : false;
+		if ( $this->option->is_network_activated() ) {
+			set_site_transient( $cache_key, $response, DAY_IN_SECONDS );
+		} else {
+			set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		}
+
+		return $response;
 	}
 
 	/**
