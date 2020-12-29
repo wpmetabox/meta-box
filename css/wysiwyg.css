@@ -5,6 +5,11 @@
 	padding-top: 20px;
 }
 
+/* Fix both tinymce & quick tags display together (somehow) */
+.html-active .mce-container {
+	display: none;
+}
+
 /* Fix style for Gutenberg */
 .block-editor .wp-editor-wrap {
 	box-sizing: content-box;
