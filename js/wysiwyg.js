@@ -1,5 +1,7 @@
-( function ( $, wp, window, rwmb ) {
+( function( $, wp, window, rwmb ) {
 	'use strict';
+
+	var renderedEditors = [];
 
 	/**
 	 * Transform textarea into wysiwyg editor.
@@ -9,6 +11,10 @@
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
 			id = $this.attr( 'id' ),
 			isInBlock = $this.closest( '.wp-block' ).length > 0;
+
+		if ( renderedEditors.includes( id ) ) {
+			return;
+		}
 
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
@@ -29,10 +35,12 @@
 			var editor = new tinymce.Editor( id, settings.tinymce, tinymce.EditorManager );
 			editor.render();
 
-			editor.on( 'keyup change', function () {
+			editor.on( 'keyup change', function() {
 				editor.save();
 				$this.trigger( 'change' );
 			} );
+
+			renderedEditors.push( id );
 		}
 
 		// Quick tags
@@ -131,7 +139,7 @@
 		if ( !wp.data || !wp.data.hasOwnProperty( 'subscribe' ) || !window.tinyMCE ) {
 			return;
 		}
-		wp.data.subscribe( function () {
+		wp.data.subscribe( function() {
 			var editor = wp.data.hasOwnProperty( 'select' ) ? wp.data.select( 'core/editor' ) : {};
 
 			if ( editor && editor.isSavingPost && editor.isSavingPost() ) {
@@ -145,8 +153,8 @@
 	}
 
 	// Force re-render editors. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
-	$( function () {
-		setTimeout( function () {
+	$( function() {
+		setTimeout( function() {
 			$( '.rwmb-wysiwyg' ).each( transform );
 		}, 0 );
 	} );
@@ -155,7 +163,7 @@
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
 		.on( 'mb_init_editors', init )
-		.on( 'clone', '.rwmb-wysiwyg', function () {
+		.on( 'clone', '.rwmb-wysiwyg', function() {
 			/*
 			 * Transform a textarea to an editor is a heavy task.
 			 * Moving it to the end of task queue with setTimeout makes cloning faster.
