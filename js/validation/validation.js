@@ -40,7 +40,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,[class|="rwmb"]:visible)',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,[class|="rwmb"]:visible)',
 				errorPlacement: function( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
