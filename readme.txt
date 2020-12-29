@@ -1,24 +1,24 @@
 === Meta Box - WordPress Custom Fields Framework ===
 Contributors: elightup, metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: https://metabox.io/pricing/
-Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, matrix, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
+Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, post type, post types, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
 Requires PHP: 5.3
-Tested up to: 5.5.4
-Stable tag: 5.3.5
+Tested up to: 5.6
+Stable tag: 5.3.6
 License: GPLv2 or later
 
-Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress.
+Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
 
 == Description ==
 
-**Meta Box is a powerful, professional, and lightweight toolkit for developers to create unlimited custom meta boxes and WordPress custom fields.**
+**Meta Box is a powerful, professional, and lightweight toolkit for developers to create custom meta boxes and custom fields for any custom post type in WordPress.**
 
-Meta Box helps you add [custom fields](https://metabox.io) and details on your website such as pages, posts, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
+Meta Box helps you add [custom fields](https://metabox.io) and details on your website such as pages, posts, custom post types, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
 
 On top of that, each WordPress custom field type has extensive internal options for unlimited content possibilities. Complete customization and control is just a few clicks away.
 
-Adding WordPress custom fields and custom meta boxes is quick and painless: Select the field types you want in the user-friendly [Online Generator](https://metabox.io/online-generator/), then copy and paste the code into your child theme's `functions.php` file.
+Adding WordPress custom fields and custom meta boxes for custom post types is quick and painless: Select the field types you want in the user-friendly [Online Generator](https://metabox.io/online-generator/), then copy and paste the code into your child theme's `functions.php` file.
 
 **Boom! All the power with none of the bloat.**
 
@@ -36,7 +36,7 @@ That's right – any type. No matter where you need to insert custom data and fe
 
 - Posts
 - Pages
-- Custom post types
+- Custom post types (you can also use our free plugin [MB Custom Post Types & Custom Taxonomies](https://metabox.io/plugins/custom-post-type/) to create custom post types and custom taxonomies)
 - [Taxonomies](https://metabox.io/plugins/mb-term-meta/)
 - [Settings pages](https://metabox.io/plugins/mb-settings-page/)
 - [Theme option pages](https://metabox.io/plugins/mb-settings-page/)
@@ -57,7 +57,7 @@ Take your standard WordPress custom field and imagine it infinitely expanded. Th
 
 As a developer, you have enough on your plate. You shouldn't have to create an entirely new system for each project. Use Meta Box to your full advantage.
 
-You can use Meta Box and its custom fields in WordPress on as many websites as you want so you can use it on client projects as well.
+You can use Meta Box and its custom fields for any custom post type in WordPress on as many websites as you want so you can use it on client projects as well.
 
 - Has an ultra-lightweight, yet powerful API that won't overload your site.
 - Add only what you need instead of getting stuck with a bundle of features you don't even want that bloat your site.
@@ -69,7 +69,7 @@ You can use Meta Box and its custom fields in WordPress on as many websites as y
 
 Meta Box is built mostly for developers since you need to copy and paste some code, but if you prefer a more visual system to create custom fields in WordPress, you can choose one or all of the extensions below:
 
-- [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/)
+- [MB Custom Post Types & Custom Taxonomies](https://wordpress.org/plugins/mb-custom-post-type/)
 - [Meta Box – Beaver Themer Integrator](https://metabox.io/plugins/meta-box-beaver-themer-integrator/)
 - [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)
 
@@ -90,7 +90,7 @@ You'll have ultimate control to add whatever meta box and custom fields in WordP
 
 #### Free Extensions
 
-- [MB Custom Post Type](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies quickly with an easy-to-use interface.
+- [MB Custom Post Types & Custom Taxonomies](https://wordpress.org/plugins/mb-custom-post-type/): Create and manage custom post types and taxonomies quickly with an easy-to-use interface.
 - [MB Relationships](https://wordpress.org/plugins/mb-relationships/): Create as many connections as you want from post-to-post or page-to-page.
 - [Meta Box Yoast SEO](https://wordpress.org/plugins/meta-box-yoast-seo/): Add WordPress custom fields to Yoast SEO Content Analysis to generate more accurate SEO scores.
 - [MB Rest API](https://metabox.io/plugins/mb-rest-api/): Pull all meta values from posts and terms into the WP REST API responses.
@@ -102,6 +102,7 @@ You'll have ultimate control to add whatever meta box and custom fields in WordP
 
 #### Premium Extensions
 
+- [MB Views](https://metabox.io/plugins/mb-views/): Outputing custom fields and build front-end templates for WordPress without touching theme files.
 - [MB Blocks](https://metabox.io/plugins/mb-blocks/): Create custom Gutenberg blocks with PHP, using the same syntax in Meta Box.
 - [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/): Create custom meta boxes and custom fields in WordPress using a user-friendly drag-and-drop interface.
 - [Meta Box Group](https://metabox.io/plugins/meta-box-group/): Create repeatable groups of WordPress custom fields for better appearance and structure.
@@ -166,6 +167,12 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.3.6 - 2020-12-29 =
+- Fix validation not working for image-select, image and wysiwyg fields
+- Fix clone_default not working for switch
+- Fix saving select field value when defining each option as an array
+- Fix wysiwyg not editable in WP 5.6
 
 = 5.3.5 - 2020-11-30 =
 - Update color picker library to v3.0.0 and fix color picker with opacity not working in the Customizer (used with [MB Settings Page](https://metabox.io/plugins/mb-settings/page/)).
