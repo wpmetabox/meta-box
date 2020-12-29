@@ -1,4 +1,4 @@
-( function ( $, rwmb, i18n ) {
+( function( $, rwmb, i18n ) {
 	'use strict';
 
 	class Validation {
@@ -22,15 +22,15 @@
 		}
 
 		showAsterisks() {
-			this.validationElements.each( function () {
+			this.validationElements.each( function() {
 				var data = $( this ).data( 'validation' );
 
-				$.each( data.rules, function ( k, v ) {
-					if ( ! v['required'] ) {
+				$.each( data.rules, function( k, v ) {
+					if ( !v[ 'required' ] ) {
 						return;
 					}
 					var $el = $( '[name="' + k + '"]' );
-					if ( ! $el.length ) {
+					if ( !$el.length ) {
 						return;
 					}
 					$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
@@ -40,7 +40,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,[class|="rwmb"]:visible)',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,[class|="rwmb"]:visible)',
 				errorPlacement: function( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
@@ -51,7 +51,7 @@
 
 			// Gather all validation rules.
 			var that = this;
-			this.validationElements.each( function () {
+			this.validationElements.each( function() {
 				$.extend( true, that.settings, $( this ).data( 'validation' ) );
 			} );
 		}
@@ -119,8 +119,8 @@
 		}
 
 		// Edit post, edit term, edit user, front-end form.
-		var $forms = $('#post, #edittag, #your-profile, .rwmb-form');
-		$forms.each( function () {
+		var $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+		$forms.each( function() {
 			var form = new Validation( this );
 			form.init();
 		} );

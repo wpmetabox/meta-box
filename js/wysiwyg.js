@@ -16,6 +16,8 @@
 			return;
 		}
 
+		addRequiredAttribute( $this );
+
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
 			id = id + '_' + rwmb.uniqid();
@@ -48,6 +50,12 @@
 			settings.quicktags.id = id;
 			quicktags( settings.quicktags );
 			QTags._buttonsInit();
+		}
+	}
+
+	function addRequiredAttribute( $el ) {
+		if ( $el.hasClass( 'rwmb-wysiwyg-required' ) ) {
+			$el.prop( 'required', true );
 		}
 	}
 
