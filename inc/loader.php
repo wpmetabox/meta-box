@@ -113,6 +113,8 @@ class RWMB_Loader {
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );
 			$about->init();
+
+			new RWMB_Dashboard( 'http://feeds.feedburner.com/metaboxio', 'https://metabox.io/blog/', 'Meta Box' );
 		}
 
 		// Public functions.
