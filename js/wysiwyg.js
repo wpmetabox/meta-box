@@ -10,11 +10,6 @@
 			id = $this.attr( 'id' ),
 			isInBlock = $this.closest( '.wp-block' ).length > 0;
 
-		// Ignore existing editor.
-		if ( ! isInBlock && tinyMCEPreInit.mceInit[id] ) {
-			return;
-		}
-
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
 			id = id + '_' + rwmb.uniqid();
@@ -31,10 +26,10 @@
 
 		// TinyMCE
 		if ( window.tinymce ) {
-			var editor = new tinymce.Editor(id, settings.tinymce, tinymce.EditorManager);
+			var editor = new tinymce.Editor( id, settings.tinymce, tinymce.EditorManager );
 			editor.render();
 
-			editor.on( 'keyup change', function() {
+			editor.on( 'keyup change', function () {
 				editor.save();
 				$this.trigger( 'change' );
 			} );
@@ -52,10 +47,10 @@
 		var settings = getDefaultEditorSettings();
 
 		if ( id && tinyMCEPreInit.mceInit.hasOwnProperty( id ) ) {
-			settings.tinymce = tinyMCEPreInit.mceInit[id];
+			settings.tinymce = tinyMCEPreInit.mceInit[ id ];
 		}
 		if ( id && window.quicktags && tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) {
-			settings.quicktags = tinyMCEPreInit.qtInit[id];
+			settings.quicktags = tinyMCEPreInit.qtInit[ id ];
 		}
 
 		return settings;
@@ -78,6 +73,12 @@
 	 * @param $el Current cloned textarea
 	 */
 	function getOriginalId( $el ) {
+		// Existing editors.
+		var id = $el.attr( 'id' );
+		if ( tinyMCEPreInit.mceInit[ id ] ) {
+			return id;
+		}
+
 		var $clone = $el.closest( '.rwmb-clone' ),
 			currentId = $clone.find( '.rwmb-wysiwyg' ).attr( 'id' );
 
@@ -99,10 +100,10 @@
 	function updateDom( $wrapper, id ) {
 		// Wrapper div and media buttons
 		$wrapper.attr( 'id', 'wp-' + id + '-wrap' )
-		        .find( '.mce-container' ).remove().end()               // Remove rendered tinyMCE editor
-		        .find( '.wp-editor-tools' ).attr( 'id', 'wp-' + id + '-editor-tools' )
-		        .find( '.wp-media-buttons' ).attr( 'id', 'wp-' + id + '-media-buttons' )
-		        .find( 'button' ).data( 'editor', id ).attr( 'data-editor', id );
+			.find( '.mce-container' ).remove().end() // Remove rendered tinyMCE editor
+			.find( '.wp-editor-tools' ).attr( 'id', 'wp-' + id + '-editor-tools' )
+			.find( '.wp-media-buttons' ).attr( 'id', 'wp-' + id + '-media-buttons' )
+			.find( 'button' ).data( 'editor', id ).attr( 'data-editor', id );
 
 		// Set default active mode.
 		$wrapper.removeClass( 'html-active tmce-active' );
@@ -110,15 +111,15 @@
 
 		// Editor tabs
 		$wrapper.find( '.switch-tmce' )
-		        .attr( 'id', id + 'tmce' )
-		        .data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id ).end()
-		        .find( '.switch-html' )
-		        .attr( 'id', id + 'html' )
-		        .data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id );
+			.attr( 'id', id + 'tmce' )
+			.data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id ).end()
+			.find( '.switch-html' )
+			.attr( 'id', id + 'html' )
+			.data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id );
 
 		// Quick tags
 		$wrapper.find( '.wp-editor-container' ).attr( 'id', 'wp-' + id + '-editor-container' )
-		        .find( '.quicktags-toolbar' ).attr( 'id', 'qt_' + id + '_toolbar' ).html( '' );
+			.find( '.quicktags-toolbar' ).attr( 'id', 'qt_' + id + '_toolbar' ).html( '' );
 	}
 
 	/**
@@ -127,10 +128,10 @@
 	 * https://github.com/WordPress/gutenberg/issues/7176
 	 */
 	function ensureSave() {
-		if ( ! wp.data || ! wp.data.hasOwnProperty( 'subscribe' ) || ! window.tinyMCE ) {
+		if ( !wp.data || !wp.data.hasOwnProperty( 'subscribe' ) || !window.tinyMCE ) {
 			return;
 		}
-		wp.data.subscribe( function() {
+		wp.data.subscribe( function () {
 			var editor = wp.data.hasOwnProperty( 'select' ) ? wp.data.select( 'core/editor' ) : {};
 
 			if ( editor && editor.isSavingPost && editor.isSavingPost() ) {
@@ -143,11 +144,18 @@
 		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
+	// Force re-render editors. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
+	$( function () {
+		setTimeout( function () {
+			$( '.rwmb-wysiwyg' ).each( transform );
+		}, 0 );
+	} );
+
 	ensureSave();
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
 		.on( 'mb_init_editors', init )
-		.on( 'clone', '.rwmb-wysiwyg', function() {
+		.on( 'clone', '.rwmb-wysiwyg', function () {
 			/*
 			 * Transform a textarea to an editor is a heavy task.
 			 * Moving it to the end of task queue with setTimeout makes cloning faster.
