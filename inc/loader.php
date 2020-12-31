@@ -114,7 +114,11 @@ class RWMB_Loader {
 			$about = new RWMB_About( $update_checker );
 			$about->init();
 
-			new RWMB_Dashboard( 'http://feeds.feedburner.com/metaboxio', 'https://metabox.io/blog/', 'Meta Box' );
+			new RWMB_Dashboard( 'http://feeds.feedburner.com/metaboxio', 'https://metabox.io/blog/', array(
+				'title'           => 'Meta Box',
+				'dismiss_tooltip' => esc_html__( 'Dismiss all Meta Box news', 'meta-box' ),
+				'dismiss_confirm' => esc_html__( 'Are you sure to dismiss all Meta Box news?', 'meta-box' ),
+			) );
 		}
 
 		// Public functions.
