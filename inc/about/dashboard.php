@@ -30,7 +30,7 @@ class RWMB_Dashboard {
 	public function add_news( $value ) {
 		$is_dismissed = get_user_meta( get_current_user_id(), $this->slug . '_dismiss_news', true );
 		if ( $is_dismissed ) {
-			return;
+			return $value;
 		}
 
 		ob_start();
@@ -42,10 +42,10 @@ class RWMB_Dashboard {
 
 	private function get_html() {
 		$cache_key = $this->slug . '-news';
-		// $output = get_transient( $cache_key );
-		// if ( false !== $output) {
-		// 	return $output;
-		// }
+		$output = get_transient( $cache_key );
+		if ( false !== $output) {
+			return $output;
+		}
 
 		$feeds = array(
 			$this->slug => array(
