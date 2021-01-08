@@ -34,15 +34,14 @@
 
 		// TinyMCE
 		if ( window.tinymce ) {
-			var editor = new tinymce.Editor( id, settings.tinymce, tinymce.EditorManager );
-			editor.render();
+			settings.tinymce.selector = '#' + id;
+			settings.tinymce.setup = function( editor ) {
+				editor.on( 'keyup change', function() {
+					$this.trigger( 'change' );
+				} );
+			}
 
-			editor.on( 'keyup change', function() {
-				editor.save();
-				$this.trigger( 'change' );
-			} );
-
-			renderedEditors.push( id );
+			tinymce.init( settings.tinymce );
 		}
 
 		// Quick tags
@@ -51,6 +50,8 @@
 			quicktags( settings.quicktags );
 			QTags._buttonsInit();
 		}
+
+		renderedEditors.push( id );
 	}
 
 	function addRequiredAttribute( $el ) {
