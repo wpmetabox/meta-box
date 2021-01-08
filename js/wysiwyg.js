@@ -40,6 +40,7 @@
 					$this.trigger( 'change' );
 				} );
 			}
+			delete settings.tinymce.content_css;
 
 			tinymce.init( settings.tinymce );
 		}
