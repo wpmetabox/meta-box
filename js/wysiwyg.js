@@ -22,6 +22,9 @@
 			$this.attr( 'id', id );
 		}
 
+		// Get current editor mode before updating the DOM.
+		var mode = $wrapper.hasClass( 'tmce-active' ) ? 'tmce' : 'html';
+
 		// Update the DOM
 		$this.show();
 		updateDom( $wrapper, id );
@@ -39,6 +42,12 @@
 					$this.trigger( 'change' );
 				} );
 			}
+
+			// Set editor mode after initializing.
+			settings.tinymce.init_instance_callback = function() {
+				switchEditors.go( id, mode );
+			}
+
 			delete settings.tinymce.content_css;
 
 			tinymce.init( settings.tinymce );
