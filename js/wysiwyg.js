@@ -144,12 +144,14 @@
 		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
-	// Force re-render editors. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
-	$( function() {
-		setTimeout( function() {
-			$( '.rwmb-wysiwyg' ).each( transform );
-		}, 0 );
-	} );
+	// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
+	if ( rwmb.isGutenberg ) {
+		$( function() {
+			setTimeout( function() {
+				$( '.rwmb-wysiwyg' ).each( transform );
+			}, 0 );
+		} );
+	}
 
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
