@@ -35,6 +35,7 @@
 			settings.tinymce.selector = '#' + id;
 			settings.tinymce.setup = function( editor ) {
 				editor.on( 'keyup change', function() {
+					editor.save(); // Required for live validation.
 					$this.trigger( 'change' );
 				} );
 			}
@@ -51,12 +52,6 @@
 		}
 
 		renderedEditors.push( id );
-	}
-
-	function addRequiredAttribute() {
-		if ( this.classList.contains( 'rwmb-wysiwyg-required' ) ) {
-			this.setAttribute( 'required', true );
-		}
 	}
 
 	function getEditorSettings( id ) {
@@ -89,12 +84,6 @@
 	 * @param $el Current cloned textarea
 	 */
 	function getOriginalId( $el ) {
-		// Existing editors.
-		var id = $el.attr( 'id' );
-		if ( tinyMCEPreInit.mceInit[ id ] ) {
-			return id;
-		}
-
 		var $clone = $el.closest( '.rwmb-clone' ),
 			currentId = $clone.find( '.rwmb-wysiwyg' ).attr( 'id' );
 
@@ -142,9 +131,44 @@
 		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
+	/**
+	 * Add required attribute for validation.
+	 *
+	 * this = textarea element.
+	 */
+	function addRequiredAttribute() {
+		if ( this.classList.contains( 'rwmb-wysiwyg-required' ) ) {
+			this.setAttribute( 'required', true );
+		}
+	}
+
+	/**
+	 * Setup events for the classic editor to make live validation work.
+	 *
+	 * When change:
+	 * - Save content to textarea for live validation.
+	 * - Trigger change event for compatibility.
+	 *
+	 * this = textarea element.
+	 */
+	function setupEvents() {
+		if ( ! window.tinymce ) {
+			return;
+		}
+		var editor = tinymce.get( this.id );
+		if ( ! editor ) {
+			return;
+		}
+		editor.on( 'keyup change', function( editor ) {
+			editor.save(); // Required for live validation.
+			$( this ).trigger( 'change' );
+		} );
+	}
+
 	$( function() {
 		var $editors = $( '.rwmb-wysiwyg' );
 		$editors.each( addRequiredAttribute );
+		$editors.each( setupEvents );
 
 		// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
 		if ( rwmb.isGutenberg ) {
