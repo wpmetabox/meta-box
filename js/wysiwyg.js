@@ -1,8 +1,6 @@
 ( function( $, wp, window, rwmb ) {
 	'use strict';
 
-	var renderedEditors = [];
-
 	/**
 	 * Transform textarea into wysiwyg editor.
 	 */
@@ -11,10 +9,6 @@
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
 			id = $this.attr( 'id' ),
 			isInBlock = $this.closest( '.wp-block' ).length > 0;
-
-		if ( renderedEditors.includes( id ) ) {
-			return;
-		}
 
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
@@ -59,8 +53,6 @@
 			quicktags( settings.quicktags );
 			QTags._buttonsInit();
 		}
-
-		renderedEditors.push( id );
 	}
 
 	function getEditorSettings( id ) {
