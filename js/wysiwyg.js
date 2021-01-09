@@ -42,6 +42,7 @@
 				switchEditors.go( id, mode );
 			}
 
+			// Remove content_css to speedup.
 			delete settings.tinymce.content_css;
 
 			tinymce.init( settings.tinymce );

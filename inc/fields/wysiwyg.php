@@ -10,13 +10,6 @@
  */
 class RWMB_Wysiwyg_Field extends RWMB_Field {
 	/**
-	 * Array of cloneable editors.
-	 *
-	 * @var array
-	 */
-	protected static $cloneable_editors = array();
-
-	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
@@ -57,7 +50,19 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 			$options['editor_class'] .= ' rwmb-wysiwyg-required';
 		}
 
+		// Remove content_css to speedup.
+		$callback = function( $mceInit ) {
+			unset( $mceInit['content_css'] );
+			return $mceInit;
+		};
+
+		add_filter( 'teeny_mce_before_init', $callback );
+		add_filter( 'tiny_mce_before_init', $callback );
+
 		wp_editor( $meta, $attributes['id'], $options );
+
+		remove_filter( 'teeny_mce_before_init', $callback );
+		remove_filter( 'tiny_mce_before_init', $callback );
 
 		return ob_get_clean();
 	}
