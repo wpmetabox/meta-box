@@ -16,8 +16,6 @@
 			return;
 		}
 
-		addRequiredAttribute( $this );
-
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
 			id = id + '_' + rwmb.uniqid();
@@ -55,9 +53,9 @@
 		renderedEditors.push( id );
 	}
 
-	function addRequiredAttribute( $el ) {
-		if ( $el.hasClass( 'rwmb-wysiwyg-required' ) ) {
-			$el.prop( 'required', true );
+	function addRequiredAttribute() {
+		if ( this.classList.contains( 'rwmb-wysiwyg-required' ) ) {
+			this.setAttribute( 'required', true );
 		}
 	}
 
@@ -144,14 +142,17 @@
 		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
-	// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
-	if ( rwmb.isGutenberg ) {
-		$( function() {
+	$( function() {
+		var $editors = $( '.rwmb-wysiwyg' );
+		$editors.each( addRequiredAttribute );
+
+		// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
+		if ( rwmb.isGutenberg ) {
 			setTimeout( function() {
-				$( '.rwmb-wysiwyg' ).each( transform );
+				$editors.each( transform );
 			}, 0 );
-		} );
-	}
+		}
+	} );
 
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
