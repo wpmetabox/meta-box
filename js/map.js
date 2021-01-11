@@ -25,7 +25,7 @@
 		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
 			this.canvas = this.$canvas[0];
-			this.$coordinate = this.$container.find( '.rwmb-map-coordinate' );
+			this.$coordinate = this.$container.find( '.rwmb-map' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
