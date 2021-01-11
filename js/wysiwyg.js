@@ -24,7 +24,7 @@
 		updateDom( $wrapper, id );
 
 		// Get id of the original editor to get its tinyMCE and quick tags settings
-		var originalId = getOriginalId( $this ),
+		var originalId = getOriginalId( this ),
 			settings = getEditorSettings( originalId );
 
 		// TinyMCE
@@ -41,9 +41,6 @@
 			settings.tinymce.init_instance_callback = function() {
 				switchEditors.go( id, mode );
 			}
-
-			// Remove content_css to speedup.
-			delete settings.tinymce.content_css;
 
 			tinymce.init( settings.tinymce );
 		}
@@ -83,20 +80,10 @@
 	/**
 	 * Get original ID of the textarea
 	 * The ID will be used to reference to tinyMCE and quick tags settings
-	 * @param $el Current cloned textarea
+	 * @param el Current cloned textarea
 	 */
-	function getOriginalId( $el ) {
-		var $clone = $el.closest( '.rwmb-clone' ),
-			currentId = $clone.find( '.rwmb-wysiwyg' ).attr( 'id' );
-
-		if ( /_\d+$/.test( currentId ) ) {
-			currentId = currentId.replace( /_\d+$/, '' );
-		}
-		if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
-			return currentId;
-		}
-
-		return '';
+	function getOriginalId( el ) {
+		return el.closest( '.rwmb-clone' ).querySelector( '.rwmb-wysiwyg-id' ).dataset.id;
 	}
 
 	/**
