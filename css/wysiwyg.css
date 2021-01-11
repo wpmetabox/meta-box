@@ -16,6 +16,6 @@
 }
 
 /* Fix fullscreen mode still shows admin menu */
-.mce-fullscreen {
+div.mce-fullscreen {
 	z-index: 999999;
 }
