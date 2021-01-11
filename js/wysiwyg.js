@@ -83,7 +83,7 @@
 	 * @param el Current cloned textarea
 	 */
 	function getOriginalId( el ) {
-		return el.closest( '.rwmb-clone' ).querySelector( '.rwmb-wysiwyg-id' ).dataset.id;
+		return el.closest( '.rwmb-input' ).querySelector( '.rwmb-wysiwyg-id' ).dataset.id;
 	}
 
 	/**
