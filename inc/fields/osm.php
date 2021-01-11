@@ -45,14 +45,16 @@ class RWMB_OSM_Field extends RWMB_Field {
 			esc_attr( $address )
 		);
 
+		$attributes = self::get_attributes( $field, $meta );
+		$attributes['type'] = 'hidden';
+
 		$html .= sprintf(
 			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s" data-language="%s"></div>
-			<input type="hidden" name="%s" class="rwmb-osm-coordinate" value="%s">',
+			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
 			esc_attr( $field['language'] ),
-			esc_attr( $field['field_name'] ),
-			esc_attr( $meta )
+			self::render_attributes( $attributes )
 		);
 
 		$html .= '</div>';

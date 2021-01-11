@@ -28,7 +28,7 @@
 		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
 			this.canvas = this.$canvas[0];
-			this.$coordinate = this.$container.find( '.rwmb-osm-coordinate' );
+			this.$coordinate = this.$container.find( '.rwmb-osm' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
