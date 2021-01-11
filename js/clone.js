@@ -231,7 +231,7 @@
 				// Make the placeholder has the same height as dragged item
 				ui.placeholder.height( ui.item.outerHeight() );
 			},
-			update: function( event, ui ) {
+			stop: function( event, ui ) {
 				ui.item.trigger( 'mb_init_editors' );
 				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
