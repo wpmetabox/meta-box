@@ -40,7 +40,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,[class|="rwmb"]:visible)',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]:visible)',
 				errorPlacement: function( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
