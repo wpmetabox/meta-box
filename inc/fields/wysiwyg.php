@@ -10,13 +10,6 @@
  */
 class RWMB_Wysiwyg_Field extends RWMB_Field {
 	/**
-	 * Array of cloneable editors.
-	 *
-	 * @var array
-	 */
-	protected static $cloneable_editors = array();
-
-	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
@@ -58,6 +51,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		}
 
 		wp_editor( $meta, $attributes['id'], $options );
+		echo '<script class="rwmb-wysiwyg-id" type="text/html" data-id="', esc_attr( $attributes['id'] ), '"></script>';
 
 		return ob_get_clean();
 	}

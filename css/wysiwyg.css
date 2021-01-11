@@ -14,3 +14,8 @@
 .block-editor .wp-editor-wrap {
 	box-sizing: content-box;
 }
+
+/* Fix fullscreen mode still shows admin menu */
+div.mce-fullscreen {
+	z-index: 999999;
+}

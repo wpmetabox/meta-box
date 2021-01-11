@@ -230,22 +230,9 @@
 			start: function ( event, ui ) {
 				// Make the placeholder has the same height as dragged item
 				ui.placeholder.height( ui.item.outerHeight() );
-
-				// Fixed WYSIWYG field blank when inside a sortable, cloneable group.
-				// https://stackoverflow.com/a/25667486/371240
-				if ( window.tinymce ) {
-					ui.item.find( '.rwmb-wysiwyg' ).each( function () {
-						tinymce.execCommand( 'mceRemoveEditor', false, this.id );
-					} );
-				}
 			},
-			update: function( event, ui ) {
-				if ( window.tinymce ) {
-					ui.item.find( '.rwmb-wysiwyg' ).each( function () {
-						tinymce.execCommand( 'mceAddEditor', true, this.id );
-					} );
-				}
-
+			stop: function( event, ui ) {
+				ui.item.trigger( 'mb_init_editors' );
 				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
 		} );
