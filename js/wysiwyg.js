@@ -161,9 +161,10 @@
 		if ( ! editor ) {
 			return;
 		}
-		editor.on( 'keyup change', function( editor ) {
+		var $this = $( this );
+		editor.on( 'keyup change', function() {
 			editor.save(); // Required for live validation.
-			$( this ).trigger( 'change' );
+			$this.trigger( 'change' );
 		} );
 	}
 
