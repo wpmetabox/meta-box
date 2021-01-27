@@ -72,8 +72,9 @@ class RWMB_Map_Field extends RWMB_Field {
 			esc_attr( $address )
 		);
 
-		$attributes = self::get_attributes( $field, $meta );
-		$attributes['type'] = 'hidden';
+		$attributes          = self::get_attributes( $field, $meta );
+		$attributes['type']  = 'hidden';
+		$attributes['value'] = $meta;
 
 		$html .= sprintf(
 			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"></div>
