@@ -1,10 +1,10 @@
 === Meta Box - WordPress Custom Fields Framework ===
 Contributors: elightup, metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: https://metabox.io/pricing/
-Tags: meta-box, custom fields, custom field, meta, meta-boxes, admin, advanced, custom, edit, field, file, image, magic fields, post type, post types, more fields, Post, repeater, simple fields, text, textarea, type, cms, fields post
+Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
 Requires PHP: 5.3
-Tested up to: 5.6
+Tested up to: 5.6.1`
 Stable tag: 5.3.8
 License: GPLv2 or later
 
