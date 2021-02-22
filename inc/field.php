@@ -436,7 +436,7 @@ abstract class RWMB_Field {
 				$value = wp_json_encode( $value );
 			}
 
-			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
+			$output .= sprintf( ' %s="%s"', $key, esc_attr( $value ) );
 		}
 
 		return $output;
