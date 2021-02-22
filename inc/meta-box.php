@@ -411,9 +411,15 @@ class RW_Meta_Box {
 			if ( false === $value ) {
 				continue;
 			}
+
+			$single = ! $field['multiple'];
+			if ( $field['clone'] ) {
+				$single = ! $field['clone_as_multiple'];
+			}
+
 			if (
-				( ! $field['multiple'] && '' !== $value )
-				|| ( $field['multiple'] && is_array( $value ) && array() !== $value )
+				( $single && '' !== $value )
+				|| ( ! $single && is_array( $value ) && array() !== $value )
 			) {
 				return true;
 			}
