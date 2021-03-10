@@ -50,10 +50,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		'TT' => 'A',
 	);
 
-	/**
-	 * Register scripts and styles.
-	 */
-	public static function admin_register_scripts() {
+	public static function register_assets() {
 		// jQueryUI base theme: https://github.com/jquery/jquery-ui/tree/1.12.1/themes/base
 		$url = RWMB_CSS_URL . 'jqueryui';
 		wp_register_style( 'jquery-ui-core', "$url/core.css", [], '1.12.1' );
@@ -68,14 +65,14 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 
 		// Scripts.
 		$url = RWMB_JS_URL . 'jqueryui';
-		wp_register_script( 'jquery-ui-timepicker', "$url/jquery-ui-timepicker-addon.min.js", array( 'jquery-ui-datepicker', 'jquery-ui-slider' ), '1.5.0', true );
-		wp_register_script( 'jquery-ui-timepicker-i18n', "$url/jquery-ui-timepicker-addon-i18n.min.js", array( 'jquery-ui-timepicker' ), '1.5.0', true );
+		wp_register_script( 'jquery-ui-timepicker', "$url/jquery-ui-timepicker-addon.min.js", ['jquery-ui-datepicker', 'jquery-ui-slider'], '1.6.3', true );
+		wp_register_script( 'jquery-ui-timepicker-i18n', "$url/jquery-ui-timepicker-addon-i18n.min.js", ['jquery-ui-timepicker'], '1.6.3', true );
 
-		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', array( 'jquery-ui-datepicker', 'jquery-ui-timepicker-i18n', 'underscore' ), RWMB_VER, true );
-		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', array( 'jquery-ui-datepicker', 'underscore' ), RWMB_VER, true );
-		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', array( 'jquery-ui-timepicker-i18n' ), RWMB_VER, true );
+		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', ['jquery-ui-datepicker', 'jquery-ui-timepicker-i18n', 'underscore'], RWMB_VER, true );
+		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', ['jquery-ui-datepicker', 'underscore'], RWMB_VER, true );
+		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', ['jquery-ui-timepicker-i18n'], RWMB_VER, true );
 
-		$handles      = array( 'datetime', 'time' );
+		$handles      = ['datetime', 'time'];
 		$locale       = str_replace( '_', '-', get_locale() );
 		$locale_short = substr( $locale, 0, 2 );
 		$data         = array(
@@ -91,7 +88,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		self::admin_register_scripts();
+		self::register_assets();
 		wp_enqueue_style( 'jquery-ui-timepicker' );
 		wp_enqueue_script( 'rwmb-datetime' );
 	}
