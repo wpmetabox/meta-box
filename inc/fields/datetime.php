@@ -211,10 +211,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		$field = wp_parse_args(
 			$field,
 			array(
-				'timestamp'   => false,
-				'inline'      => false,
-				'js_options'  => array(),
-				'save_format' => '',
+				'timestamp'    => false,
+				'inline'       => false,
+				'js_options'   => array(),
+				'save_format'  => '',
+				'autocomplete' => 'off',
 			)
 		);
 
