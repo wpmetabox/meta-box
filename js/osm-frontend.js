@@ -1,14 +1,13 @@
 jQuery( function( $ ) {
 	'use strict';
 
-	var osmTileLayer = L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	} );
-
 	/**
 	 * Display Open Street Map
 	 */
 	function displayMap() {
+		var osmTileLayer = L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		} );
 		var options = $( this ).data( 'osm_options' ),
 			mapOptions = options.js_options,
 			center = L.latLng( options.latitude, options.longitude ),
