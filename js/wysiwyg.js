@@ -1,4 +1,4 @@
-( function ( $, wp, window, rwmb ) {
+( function( $, wp, window, rwmb ) {
 	'use strict';
 
 	/**
@@ -10,34 +10,39 @@
 			id = $this.attr( 'id' ),
 			isInBlock = $this.closest( '.wp-block' ).length > 0;
 
-		// Ignore existing editor.
-		if ( ! isInBlock && tinyMCEPreInit.mceInit[id] ) {
-			return;
-		}
-
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
 			id = id + '_' + rwmb.uniqid();
 			$this.attr( 'id', id );
 		}
 
+		// Get current editor mode before updating the DOM.
+		var mode = $wrapper.hasClass( 'tmce-active' ) ? 'tmce' : 'html';
+
 		// Update the DOM
 		$this.show();
 		updateDom( $wrapper, id );
 
 		// Get id of the original editor to get its tinyMCE and quick tags settings
-		var originalId = getOriginalId( $this ),
+		var originalId = getOriginalId( this ),
 			settings = getEditorSettings( originalId );
 
 		// TinyMCE
 		if ( window.tinymce ) {
-			var editor = new tinymce.Editor(id, settings.tinymce, tinymce.EditorManager);
-			editor.render();
+			settings.tinymce.selector = '#' + id;
+			settings.tinymce.setup = function( editor ) {
+				editor.on( 'keyup change', function() {
+					editor.save(); // Required for live validation.
+					$this.trigger( 'change' );
+				} );
+			}
 
-			editor.on( 'keyup change', function() {
-				editor.save();
-				$this.trigger( 'change' );
-			} );
+			// Set editor mode after initializing.
+			settings.tinymce.init_instance_callback = function() {
+				switchEditors.go( id, mode );
+			}
+
+			tinymce.init( settings.tinymce );
 		}
 
 		// Quick tags
@@ -52,10 +57,10 @@
 		var settings = getDefaultEditorSettings();
 
 		if ( id && tinyMCEPreInit.mceInit.hasOwnProperty( id ) ) {
-			settings.tinymce = tinyMCEPreInit.mceInit[id];
+			settings.tinymce = tinyMCEPreInit.mceInit[ id ];
 		}
 		if ( id && window.quicktags && tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) {
-			settings.quicktags = tinyMCEPreInit.qtInit[id];
+			settings.quicktags = tinyMCEPreInit.qtInit[ id ];
 		}
 
 		return settings;
@@ -75,20 +80,10 @@
 	/**
 	 * Get original ID of the textarea
 	 * The ID will be used to reference to tinyMCE and quick tags settings
-	 * @param $el Current cloned textarea
+	 * @param el Current cloned textarea
 	 */
-	function getOriginalId( $el ) {
-		var $clone = $el.closest( '.rwmb-clone' ),
-			currentId = $clone.find( '.rwmb-wysiwyg' ).attr( 'id' );
-
-		if ( /_\d+$/.test( currentId ) ) {
-			currentId = currentId.replace( /_\d+$/, '' );
-		}
-		if ( tinyMCEPreInit.mceInit.hasOwnProperty( currentId ) || tinyMCEPreInit.qtInit.hasOwnProperty( currentId ) ) {
-			return currentId;
-		}
-
-		return '';
+	function getOriginalId( el ) {
+		return el.closest( '.rwmb-input' ).querySelector( '.rwmb-wysiwyg-id' ).dataset.id;
 	}
 
 	/**
@@ -99,10 +94,10 @@
 	function updateDom( $wrapper, id ) {
 		// Wrapper div and media buttons
 		$wrapper.attr( 'id', 'wp-' + id + '-wrap' )
-		        .find( '.mce-container' ).remove().end()               // Remove rendered tinyMCE editor
-		        .find( '.wp-editor-tools' ).attr( 'id', 'wp-' + id + '-editor-tools' )
-		        .find( '.wp-media-buttons' ).attr( 'id', 'wp-' + id + '-media-buttons' )
-		        .find( 'button' ).data( 'editor', id ).attr( 'data-editor', id );
+			.find( '.mce-container' ).remove().end() // Remove rendered tinyMCE editor
+			.find( '.wp-editor-tools' ).attr( 'id', 'wp-' + id + '-editor-tools' )
+			.find( '.wp-media-buttons' ).attr( 'id', 'wp-' + id + '-media-buttons' )
+			.find( 'button' ).data( 'editor', id ).attr( 'data-editor', id );
 
 		// Set default active mode.
 		$wrapper.removeClass( 'html-active tmce-active' );
@@ -110,40 +105,69 @@
 
 		// Editor tabs
 		$wrapper.find( '.switch-tmce' )
-		        .attr( 'id', id + 'tmce' )
-		        .data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id ).end()
-		        .find( '.switch-html' )
-		        .attr( 'id', id + 'html' )
-		        .data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id );
+			.attr( 'id', id + 'tmce' )
+			.data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id ).end()
+			.find( '.switch-html' )
+			.attr( 'id', id + 'html' )
+			.data( 'wp-editor-id', id ).attr( 'data-wp-editor-id', id );
 
 		// Quick tags
 		$wrapper.find( '.wp-editor-container' ).attr( 'id', 'wp-' + id + '-editor-container' )
-		        .find( '.quicktags-toolbar' ).attr( 'id', 'qt_' + id + '_toolbar' ).html( '' );
-	}
-
-	/**
-	 * Handles updating tiny mce instances when saving a gutenberg post.
-	 * https://metabox.io/support/topic/data-are-not-saved-into-the-database/
-	 * https://github.com/WordPress/gutenberg/issues/7176
-	 */
-	function ensureSave() {
-		if ( ! wp.data || ! wp.data.hasOwnProperty( 'subscribe' ) || ! window.tinyMCE ) {
-			return;
-		}
-		wp.data.subscribe( function() {
-			var editor = wp.data.hasOwnProperty( 'select' ) ? wp.data.select( 'core/editor' ) : {};
-
-			if ( editor && editor.isSavingPost && editor.isSavingPost() ) {
-				window.tinyMCE.triggerSave();
-			}
-		} );
+			.find( '.quicktags-toolbar' ).attr( 'id', 'qt_' + id + '_toolbar' ).html( '' );
 	}
 
 	function init( e ) {
 		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
-	ensureSave();
+	/**
+	 * Add required attribute for validation.
+	 *
+	 * this = textarea element.
+	 */
+	function addRequiredAttribute() {
+		if ( this.classList.contains( 'rwmb-wysiwyg-required' ) ) {
+			this.setAttribute( 'required', true );
+		}
+	}
+
+	/**
+	 * Setup events for the classic editor to make live validation work.
+	 *
+	 * When change:
+	 * - Save content to textarea for live validation.
+	 * - Trigger change event for compatibility.
+	 *
+	 * this = textarea element.
+	 */
+	function setupEvents() {
+		if ( ! window.tinymce ) {
+			return;
+		}
+		var editor = tinymce.get( this.id );
+		if ( ! editor ) {
+			return;
+		}
+		var $this = $( this );
+		editor.on( 'keyup change', function() {
+			editor.save(); // Required for live validation.
+			$this.trigger( 'change' );
+		} );
+	}
+
+	$( function() {
+		var $editors = $( '.rwmb-wysiwyg' );
+		$editors.each( addRequiredAttribute );
+		$editors.each( setupEvents );
+
+		// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
+		if ( rwmb.isGutenberg ) {
+			setTimeout( function() {
+				$editors.each( transform );
+			}, 0 );
+		}
+	} );
+
 	rwmb.$document
 		.on( 'mb_blocks_edit', init )
 		.on( 'mb_init_editors', init )

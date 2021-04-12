@@ -61,7 +61,11 @@ class RWMB_Media_Modal {
 			$form_field['value'] = $meta;
 
 			$field['field_name'] = 'attachments[' . $post->ID . '][' . $field['field_name'] . ']';
-			$form_field['html']  = RWMB_Field::call( $field, 'html', $meta );
+
+			ob_start();
+			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
+			RWMB_Field::call( 'show', $field, false );
+			$form_field['html'] = ob_get_clean();
 
 			$form_fields[ $field['id'] ] = $form_field;
 		}

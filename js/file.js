@@ -136,7 +136,7 @@
 		$uploaded.each( file.sort );
 		$uploaded.each( file.updateVisibility );
 
-		$el.find( '.rwmb-file-wrapper' ).each( file.setRequired );
+		$el.find( '.rwmb-file-wrapper, .rwmb-image-wrapper' ).each( file.setRequired );
 	}
 
 	rwmb.$document

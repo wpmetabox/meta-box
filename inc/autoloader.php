@@ -55,7 +55,11 @@ class RWMB_Autoloader {
 			if ( $dir['suffix'] && strlen( $file ) > strlen( $dir['suffix'] ) ) {
 				$file = substr( $file, 0, - strlen( $dir['suffix'] ) );
 			}
-			$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
+			if ( function_exists( 'mb_strtolower' ) && function_exists( 'mb_detect_encoding' )  ) {
+				$file = mb_strtolower( str_replace( '_', '-', $file ), mb_detect_encoding( $file ) ) . '.php';
+			} else {
+				$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
+			}
 			$file = $dir['dir'] . $file;
 			$this->require_file( $file );
 		}

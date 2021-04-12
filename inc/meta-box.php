@@ -339,11 +339,13 @@ class RW_Meta_Box {
 	 * @return array $meta_box Normalized meta box.
 	 */
 	public static function normalize( $meta_box ) {
+		$default_title = __( 'Meta Box Title', 'meta-box' );
 		// Set default values for meta box.
 		$meta_box = wp_parse_args(
 			$meta_box,
 			array(
-				'id'             => sanitize_title( $meta_box['title'] ),
+				'title'          => $default_title,
+				'id'             => ! empty( $meta_box['title'] ) ? sanitize_title( $meta_box['title'] ) : sanitize_title( $default_title ),
 				'context'        => 'normal',
 				'priority'       => 'high',
 				'post_types'     => 'post',
@@ -409,9 +411,15 @@ class RW_Meta_Box {
 			if ( false === $value ) {
 				continue;
 			}
+
+			$single = ! $field['multiple'];
+			if ( $field['clone'] ) {
+				$single = ! $field['clone_as_multiple'];
+			}
+
 			if (
-				( ! $field['multiple'] && '' !== $value )
-				|| ( $field['multiple'] && is_array( $value ) && array() !== $value )
+				( $single && '' !== $value )
+				|| ( ! $single && is_array( $value ) && array() !== $value )
 			) {
 				return true;
 			}

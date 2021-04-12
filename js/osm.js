@@ -28,7 +28,7 @@
 		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
 			this.canvas = this.$canvas[0];
-			this.$coordinate = this.$container.find( '.rwmb-osm-coordinate' );
+			this.$coordinate = this.$container.find( '.rwmb-osm' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
@@ -131,20 +131,14 @@
 				return;
 			}
 
-			// If Meta Box Geo Location installed. Do not run autocomplete.
-			if ( $( '.rwmb-geo-binding' ).length ) {
-				var geocodeAddress = that.geocodeAddress.bind( that );
-				$address.on( 'selected_address', geocodeAddress );
-				return false;
-			}
-
 			$address.autocomplete( {
 				source: function ( request, response ) {
 					$.get( 'https://nominatim.openstreetmap.org/search', {
 						format: 'json',
 						q: request.term,
 						countrycodes: that.$canvas.data( 'region' ),
-						"accept-language": that.$canvas.data( 'language' )
+						"accept-language": that.$canvas.data( 'language' ),
+						addressdetails: 1
 					}, function( results ) {
 						if ( ! results.length ) {
 							response( [ {
@@ -155,6 +149,7 @@
 						}
 						response( results.map( function ( item ) {
 							return {
+								address: item.address,
 								label: item.display_name,
 								value: item.display_name,
 								latitude: item.lat,
@@ -169,6 +164,8 @@
 					that.map.panTo( latLng );
 					that.marker.setLatLng( latLng );
 					that.updateCoordinate( latLng );
+
+					$address.trigger( 'selected_address', [ui.item] );
 				}
 			} );
 		},

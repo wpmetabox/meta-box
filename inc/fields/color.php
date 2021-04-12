@@ -74,7 +74,8 @@ class RWMB_Color_Field extends RWMB_Text_Field {
 		$attributes['type'] = 'text';
 
 		if ( $field['alpha_channel'] ) {
-			$attributes['data-alpha'] = 'true';
+			$attributes['data-alpha-enabled']    = 'true';
+			$attributes['data-alpha-color-type'] = 'hex';
 		}
 
 		return $attributes;

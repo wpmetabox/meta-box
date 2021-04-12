@@ -1,4 +1,4 @@
-( function ( $, rwmb, i18n ) {
+( function( $, rwmb, i18n ) {
 	'use strict';
 
 	class Validation {
@@ -22,15 +22,15 @@
 		}
 
 		showAsterisks() {
-			this.validationElements.each( function () {
+			this.validationElements.each( function() {
 				var data = $( this ).data( 'validation' );
 
-				$.each( data.rules, function ( k, v ) {
-					if ( ! v['required'] ) {
+				$.each( data.rules, function( k, v ) {
+					if ( !v[ 'required' ] ) {
 						return;
 					}
 					var $el = $( '[name="' + k + '"]' );
-					if ( ! $el.length ) {
+					if ( !$el.length ) {
 						return;
 					}
 					$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
@@ -40,7 +40,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,[class|="rwmb"]:visible)',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]:visible)',
 				errorPlacement: function( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
@@ -51,7 +51,7 @@
 
 			// Gather all validation rules.
 			var that = this;
-			this.validationElements.each( function () {
+			this.validationElements.each( function() {
 				$.extend( true, that.settings, $( this ).data( 'validation' ) );
 			} );
 		}
@@ -82,12 +82,17 @@
 				savePost = editor.savePost; // Reference original method.
 
 			// Change the editor method.
-			editor.savePost = function() {
+			editor.savePost = function( object ) {
+				// Bypass the validation when previewing in Gutenberg.
+				if ( typeof object === 'object' && object.isPreview ) {
+					savePost( object );
+					return;
+				}
 				that.$form.validate( that.settings );
 
 				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
 				if ( that.$form.valid() ) {
-					savePost();
+					savePost( object );
 				}
 			};
 		}
@@ -124,8 +129,8 @@
 		});
 
 		// Edit post, edit term, edit user, front-end form.
-		var $forms = $('#post, #edittag, #your-profile, .rwmb-form');
-		$forms.each( function () {
+		var $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+		$forms.each( function() {
 			var form = new Validation( this );
 			form.init();
 		} );

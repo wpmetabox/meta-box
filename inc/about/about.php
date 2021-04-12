@@ -30,7 +30,7 @@ class RWMB_About {
 	 */
 	public function init() {
 		// Add links to about page in the plugin action links.
-		add_filter( 'plugin_action_links_meta-box/meta-box.php', array( $this, 'plugin_links' ) );
+		add_filter( 'plugin_action_links_meta-box/meta-box.php', array( $this, 'plugin_links' ), 20 );
 
 		// Add a shared top-level admin menu and Dashboard page. Use priority 5 to show Dashboard at the top.
 		add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
@@ -52,6 +52,9 @@ class RWMB_About {
 	 */
 	public function plugin_links( $links ) {
 		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'About', 'meta-box' ) . '</a>';
+		if ( ! $this->update_checker->has_extensions() ) {
+			$links[] = '<a href="https://metabox.io/pricing/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
+		}
 		return $links;
 	}
 
@@ -125,7 +128,7 @@ class RWMB_About {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<?php
-						include __DIR__ . '/sections/newsletter.php';
+						include __DIR__ . '/sections/products.php';
 						if ( ! $this->update_checker->has_extensions() ) {
 							include __DIR__ . '/sections/upgrade.php';
 						}

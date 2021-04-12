@@ -150,8 +150,9 @@ class RWMB_Sanitizer {
 	 * @return string|array
 	 */
 	private function sanitize_choice( $value, $field ) {
-		$options = $field['options'];
-		return is_array( $value ) ? array_intersect( $value, array_keys( $options ) ) : ( isset( $options[ $value ] ) ? $value : '' );
+		$options = RWMB_Choice_Field::transform_options( $field['options'] );
+		$options = wp_list_pluck( $options, 'value' );
+		return is_array( $value ) ? array_intersect( $value, $options ) : ( in_array( $value, $options ) ? $value : '' );
 	}
 
 	/**

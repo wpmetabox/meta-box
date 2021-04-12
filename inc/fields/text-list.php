@@ -29,16 +29,20 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 			return '';
 		}
 		$html  = array();
-		$input = '<label><span class="rwmb-text-list-label">%s</span> <input type="text" class="rwmb-text-list" name="%s" value="%s" placeholder="%s"></label>';
+		$input = '<label><span class="rwmb-text-list-label">%s</span> <input %s></label>';
+
+		$attributes = self::get_attributes( $field, $meta );
+		$attributes['type'] = 'text';
 
 		$count = 0;
 		foreach ( $field['options'] as $placeholder => $label ) {
+			$attributes['value'] = isset( $meta[ $count ] ) ? esc_attr( $meta[ $count ] ) : '';
+			$attributes['placeholder'] = $placeholder;
+
 			$html[] = sprintf(
 				$input,
 				$label,
-				$field['field_name'],
-				isset( $meta[ $count ] ) ? esc_attr( $meta[ $count ] ) : '',
-				esc_attr( $placeholder )
+				self::render_attributes( $attributes )
 			);
 			$count ++;
 		}

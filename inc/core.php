@@ -36,7 +36,6 @@ class RWMB_Core {
 	 */
 	public function plugin_links( $links ) {
 		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
-		$links[] = '<a href="https://metabox.io/pricing/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
 		return $links;
 	}
 

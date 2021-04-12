@@ -101,6 +101,7 @@
 p.rwmb-error {
 	color: #dc3232;
 	margin: 2px 0 5px;
+	clear: both;
 }
 input.rwmb-error.rwmb-error,
 textarea.rwmb-error,
@@ -170,7 +171,8 @@ select.rwmb-error {
 	padding-right: 0;
 }
 .postbox.rwmb-seamless .hndle,
-.postbox.rwmb-seamless .handlediv {
+.postbox.rwmb-seamless .handlediv,
+.postbox.rwmb-seamless .postbox-header {
 	display: none;
 }
 .rwmb-seamless .rwmb-clone {

@@ -10,13 +10,6 @@
  */
 class RWMB_Wysiwyg_Field extends RWMB_Field {
 	/**
-	 * Array of cloneable editors.
-	 *
-	 * @var array
-	 */
-	protected static $cloneable_editors = array();
-
-	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
@@ -49,11 +42,16 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		// Using output buffering because wp_editor() echos directly.
 		ob_start();
 
-		$field['options']['textarea_name'] = $field['field_name'];
-		$attributes                        = self::get_attributes( $field );
+		$attributes = self::get_attributes( $field );
 
-		// Use new wp_editor() since WP 3.3.
-		wp_editor( $meta, $attributes['id'], $field['options'] );
+		$options = $field['options'];
+		$options['textarea_name'] = $field['field_name'];
+		if ( ! empty( $attributes['required'] ) ) {
+			$options['editor_class'] .= ' rwmb-wysiwyg-required';
+		}
+
+		wp_editor( $meta, $attributes['id'], $options );
+		echo '<script class="rwmb-wysiwyg-id" type="text/html" data-id="', esc_attr( $attributes['id'] ), '"></script>';
 
 		return ob_get_clean();
 	}

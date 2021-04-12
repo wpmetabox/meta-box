@@ -13,7 +13,7 @@ class RWMB_Date_Field extends RWMB_Datetime_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		parent::admin_register_scripts();
+		parent::register_assets();
 		wp_enqueue_style( 'rwmb-date' );
 		wp_enqueue_script( 'rwmb-date' );
 	}
