@@ -125,7 +125,7 @@
 				// Skip validation - only saving, not publishing
 				$(this).attr('formnovalidate', 'true');
 			}
-		  $(this).attr('clicked', 'true');
+			$(this).attr('clicked', 'true');
 		});
 
 		// Edit post, edit term, edit user, front-end form.
