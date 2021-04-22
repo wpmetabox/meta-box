@@ -189,6 +189,7 @@ class RWMB_Update_Checker {
 			$args,
 			array(
 				'api_key' => $this->option->get_api_key(),
+				'url'     => home_url(),
 			)
 		);
 		$args = array_filter( $args );
