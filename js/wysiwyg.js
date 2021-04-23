@@ -8,7 +8,7 @@
 		var $this = $( this ),
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
 			id = $this.attr( 'id' ),
-			isInBlock = $this.closest( '.wp-block' ).length > 0;
+			isInBlock = $this.closest( '.wp-block, .components-panel' ).length > 0;
 
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
