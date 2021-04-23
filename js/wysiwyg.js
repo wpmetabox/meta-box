@@ -42,6 +42,7 @@
 				switchEditors.go( id, mode );
 			}
 
+			tinymce.remove( '#' + id );
 			tinymce.init( settings.tinymce );
 		}
 
