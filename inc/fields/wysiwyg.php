@@ -15,7 +15,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_editor();
 		wp_enqueue_style( 'rwmb-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', ['jquery', 'rwmb'], RWMB_VER, true );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		}
 
 		wp_editor( $meta, $attributes['id'], $options );
-		echo '<script class="rwmb-wysiwyg-id" type="text/html" data-id="', esc_attr( $attributes['id'] ), '"></script>';
+		echo '<script class="rwmb-wysiwyg-id" type="text/html" data-id="', esc_attr( $attributes['id'] ), '" data-options="', esc_attr( wp_json_encode( $options ) ), '"></script>';
 
 		return ob_get_clean();
 	}
