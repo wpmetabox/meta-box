@@ -20,4 +20,5 @@
 	<a target="_blank" class="button" href="https://docs.metabox.io?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Documentation', 'meta-box' ); ?></a>
 	<a target="_blank" class="button" href="https://metabox.io/support/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Support', 'meta-box' ); ?></a>
 	<a target="_blank" class="button" href="http://facebook.com/groups/metaboxusers"><?php esc_html_e( 'Facebook Group', 'meta-box' ); ?></a>
+	<a target="_blank" class="button" href="https://www.youtube.com/c/MetaBoxWP"><?php esc_html_e( 'Youtube Channel', 'meta-box' ); ?></a>
 </p>
