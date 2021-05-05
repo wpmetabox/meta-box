@@ -146,8 +146,10 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 			} elseif ( is_string( $new ) ) {
 				
 				if ( true === self::is_valid_timestamp( $new ) ) {
+					//client use timestamp value to update in Rest API
 					return $new;
 				} else {
+					//client use date value
 					return strtotime( $new );
 				}
 			}
