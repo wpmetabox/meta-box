@@ -88,6 +88,9 @@ class RWMB_Loader {
 		$core = new RWMB_Core();
 		$core->init();
 
+		$shortcode = new RWMB_Shortcode();
+		$shortcode->init();
+
 		// Validation module.
 		new RWMB_Validation();
 

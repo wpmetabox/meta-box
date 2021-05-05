@@ -277,62 +277,6 @@ if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
 	}
 }
 
-if ( ! function_exists( 'rwmb_meta_shortcode' ) ) {
-	/**
-	 * Shortcode to display meta value.
-	 *
-	 * @param array $atts Shortcode attributes, same as rwmb_meta() function, but has more "meta_key" parameter.
-	 *
-	 * @return string
-	 */
-	function rwmb_meta_shortcode( $atts ) {
-		$atts = wp_parse_args(
-			$atts,
-			array(
-				'id'        => '',
-				'object_id' => null,
-				'attribute' => '',
-			)
-		);
-		RWMB_Helpers_Array::change_key( $atts, 'post_id', 'object_id' );
-		RWMB_Helpers_Array::change_key( $atts, 'meta_key', 'id' );
-
-		if ( empty( $atts['id'] ) ) {
-			return '';
-		}
-
-		$field_id  = $atts['id'];
-		$object_id = $atts['object_id'];
-		unset( $atts['id'], $atts['object_id'] );
-
-		$attribute = $atts['attribute'];
-		if ( ! $attribute ) {
-			return rwmb_the_value( $field_id, $atts, $object_id, false );
-		}
-
-		$value = rwmb_get_value( $field_id, $atts, $object_id );
-
-		if ( ! is_array( $value ) && ! is_object( $value ) ) {
-			return $value;
-		}
-
-		if ( is_object( $value ) ) {
-			return $value->$attribute;
-		}
-
-		if ( isset( $value[ $attribute ] ) ) {
-			return $value[ $attribute ];
-		}
-
-		$value = wp_list_pluck( $value, $attribute );
-		$value = implode( ',', array_filter( $value ) );
-
-		return $value;
-	}
-
-	add_shortcode( 'rwmb_meta', 'rwmb_meta_shortcode' );
-}
-
 if ( ! function_exists( 'rwmb_get_registry' ) ) {
 	/**
 	 * Get the registry by type.
