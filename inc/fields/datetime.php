@@ -143,9 +143,13 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		if ( $field['timestamp'] ) {
 			if ( is_array( $new ) ) {
 				return $new['timestamp'];
-			}
-			elseif( is_string( $new ) ) {
-				return strtotime( $new );
+			} elseif ( is_string( $new ) ) {
+				
+				if ( true === self::is_valid_timestamp( $new ) ) {
+					return $new;
+				} else {
+					return strtotime( $new );
+				}
 			}
 		}
 
@@ -155,6 +159,12 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		}
 
 		return $new;
+	}
+	public static function is_valid_timestamp( $timestamp )
+	{
+	    return ( ( string ) ( int ) $timestamp === $timestamp )
+	        && ( $timestamp <= PHP_INT_MAX )
+	        && ( $timestamp >= ~PHP_INT_MAX );
 	}
 
 	/**
