@@ -142,17 +142,11 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	public static function value( $new, $old, $post_id, $field ) {
 		if ( $field['timestamp'] ) {
 			if ( is_array( $new ) ) {
-				return $new['timestamp'];
-			} elseif ( is_string( $new ) ) {
-				
-				if ( true === self::is_valid_timestamp( $new ) ) {
-					//client use timestamp value to update in Rest API
-					return $new;
-				} else {
-					//client use date value
-					return strtotime( $new );
-				}
+			    return $new['timestamp'];
+			} elseif ( ! is_numeric( $new ) ) {
+			    return strtotime( $new );
 			}
+			return $new;
 		}
 
 		if ( $field['save_format'] ) {
@@ -161,12 +155,6 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 		}
 
 		return $new;
-	}
-	public static function is_valid_timestamp( $timestamp )
-	{
-	    return ( ( string ) ( int ) $timestamp === $timestamp )
-	        && ( $timestamp <= PHP_INT_MAX )
-	        && ( $timestamp >= ~PHP_INT_MAX );
 	}
 
 	/**
