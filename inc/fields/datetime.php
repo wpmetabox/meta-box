@@ -142,9 +142,9 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 	public static function value( $new, $old, $post_id, $field ) {
 		if ( $field['timestamp'] ) {
 			if ( is_array( $new ) ) {
-			    return $new['timestamp'];
+				return $new['timestamp'];
 			} elseif ( ! is_numeric( $new ) ) {
-			    return strtotime( $new );
+				return strtotime( $new );
 			}
 			return $new;
 		}
