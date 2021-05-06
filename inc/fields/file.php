@@ -348,16 +348,14 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args(
-			$field,
-			array(
-				'std'              => array(),
-				'force_delete'     => false,
-				'max_file_uploads' => 0,
-				'mime_type'        => '',
-				'upload_dir'       => '',
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'std'                      => [],
+			'force_delete'             => false,
+			'max_file_uploads'         => 0,
+			'mime_type'                => '',
+			'upload_dir'               => '',
+			'unique_filename_callback' => null,
+		] );
 
 		$field['multiple']   = true;
 		$field['input_name'] = "_file_{$field['id']}";
@@ -491,7 +489,11 @@ class RWMB_File_Field extends RWMB_Field {
 
 		// Let WordPress handle upload to the custom directory.
 		add_filter( 'upload_dir', $filter_upload_dir );
-		$file_info = wp_handle_upload( $file, array( 'test_form' => false ) );
+		$overrides = [
+			'test_form'                => false,
+			'unique_filename_callback' => $field['unique_filename_callback'],
+		];
+		$file_info = wp_handle_upload( $file, $overrides );
 		remove_filter( 'upload_dir', $filter_upload_dir );
 
 		return empty( $file_info['url'] ) ? null : $file_info['url'];
