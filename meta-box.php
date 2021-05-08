@@ -3,7 +3,7 @@
  * Plugin Name: Meta Box
  * Plugin URI:  https://metabox.io
  * Description: Create custom meta boxes and custom fields in WordPress.
- * Version:     5.3.10
+ * Version:     5.4.0
  * Author:      MetaBox.io
  * Author URI:  https://metabox.io
  * License:     GPL2+
@@ -20,8 +20,8 @@ if ( defined( 'ABSPATH' ) && ! defined( 'RWMB_VER' ) ) {
 	 * Display notice for old PHP version.
 	 */
 	function rwmb_check_php_version() {
-		if ( version_compare( phpversion(), '5.3', '<' ) ) {
-			die( esc_html__( 'Meta Box requires PHP version 5.3+. Please contact your host to upgrade.', 'meta-box' ) );
+		if ( version_compare( phpversion(), '5.6', '<' ) ) {
+			die( esc_html__( 'Meta Box requires PHP version 5.6+. Please contact your host to upgrade.', 'meta-box' ) );
 		}
 	}
 
