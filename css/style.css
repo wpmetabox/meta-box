@@ -29,7 +29,7 @@
 }
 .rwmb-input input,
 .rwmb-input select {
-	max-width: 99%;
+	max-width: 100%;
 }
 
 /* 75% if field has label, 100% if no label */

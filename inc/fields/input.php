@@ -26,24 +26,19 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function html( $meta, $field ) {
 		$output = '';
 
-		$wrapper_class = 'rwmb-input-group';
-		if ( version_compare( get_bloginfo( 'version' ), '5.3', '>=' ) ) {
-			$wrapper_class .= ' rwmb-input-dark';
-		}
-
 		if ( $field['prepend'] || $field['append'] ) {
-			$output = "<div class='$wrapper_class'>";
+			$output = '<div class="rwmb-input-group">';
 		}
 
 		if ( $field['prepend'] ) {
-			$output .= '<span class="rwmb-input-group-prepend">' . esc_html( $field['prepend'] ) . '</span>';
+			$output .= '<span class="rwmb-input-group-text">' . esc_html( $field['prepend'] ) . '</span>';
 		}
 
 		$attributes = self::call( 'get_attributes', $field, $meta );
 		$output    .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
 
 		if ( $field['append'] ) {
-			$output .= '<span class="rwmb-input-group-append">' . esc_html( $field['append'] ) . '</span>';
+			$output .= '<span class="rwmb-input-group-text">' . esc_html( $field['append'] ) . '</span>';
 		}
 
 		if ( $field['prepend'] || $field['append'] ) {
