@@ -53,9 +53,9 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 		$field['js_options'] = wp_parse_args(
 			$field['js_options'],
 			array(
-				'allowClear'  => true,
-				'width'       => 'none',
-				'placeholder' => $field['placeholder'],
+				'allowClear'        => true,
+				'dropdownAutoWidth' => true,
+				'placeholder'       => $field['placeholder'],
 			)
 		);
 

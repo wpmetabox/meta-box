@@ -49,21 +49,17 @@
 	function init( e ) {
 		var $select = $( e.target ).find( '.rwmb-select-tree > select' );
 
-		$select.each( setInitialRequiredProp );
-		if ( isSelect2Available() ) {
-			$select.select2();
-		}
-	}
+		$select.each ( setInitialRequiredProp );
+		$select.each( function() {
+			const $this = $( this ),
+				options = $this.data( 'options' );
 
-	function isSelect2Available() {
-		return !!$.fn.select2;
+			$this.select2( options );
+		} );
 	}
 
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'change', '.rwmb-select-tree > select', toggleTree );
-
-	if ( isSelect2Available() ) {
-		rwmb.$document.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
-	}
+		.on( 'change', '.rwmb-select-tree > select', toggleTree )
+		.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
 } )( jQuery, rwmb );

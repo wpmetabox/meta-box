@@ -8,7 +8,7 @@
 /**
  * Select tree field class.
  */
-class RWMB_Select_Tree_Field extends RWMB_Select_Field {
+class RWMB_Select_Tree_Field extends RWMB_Select_Advanced_Field {
 	/**
 	 * Get field HTML.
 	 *
