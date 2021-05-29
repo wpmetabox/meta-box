@@ -47,14 +47,23 @@
 	}
 
 	function init( e ) {
-		var $el = $( e.target );
+		var $select = $( e.target ).find( '.rwmb-select-tree > select' );
 
-		$el.find( '.rwmb-select-tree > select' ).select2();
-		$el.find( '.rwmb-select-tree > select' ).each( setInitialRequiredProp );
+		$select.each( setInitialRequiredProp );
+		if ( isSelect2Available() ) {
+			$select.select2();
+		}
+	}
+
+	function isSelect2Available() {
+		return !!$.fn.select2;
 	}
 
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'change', '.rwmb-select-tree > select', toggleTree )
-		.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
+		.on( 'change', '.rwmb-select-tree > select', toggleTree );
+
+	if ( isSelect2Available() ) {
+		rwmb.$document.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
+	}
 } )( jQuery, rwmb );
