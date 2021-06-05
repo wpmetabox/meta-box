@@ -132,7 +132,7 @@ select.rwmb-error {
 #side-sortables .rwmb-input input:not([type="checkbox"]):not([type="radio"]),
 #side-sortables .rwmb-input-group,
 #side-sortables .rwmb-input select,
-#side-sortables .rwmb-field .select2-container,
+#side-sortables .rwmb-input .select2-container,
 #side-sortables .rwmb-input textarea {
 	width: 100% !important;
 	min-width: auto;
