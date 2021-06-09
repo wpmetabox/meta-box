@@ -233,6 +233,12 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 				'separator'       => ' ',
 				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
 				'showButtonPanel' => true,
+				'changeYear'      => true,
+				'yearRange'       => '-100:+100',
+				'changeMonth'     => true,
+				'showButtonPanel' => true,
+				'controlType'     => 'select',
+				'oneLine'         => true,
 			)
 		);
 
