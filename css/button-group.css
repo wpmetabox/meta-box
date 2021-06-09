@@ -1,5 +1,6 @@
 .rwmb-button-input-list {
 	margin: 0;
+	display:  inline-block;
 }
 .rwmb-button-input-list li {
 	margin-bottom: 0;
@@ -9,7 +10,7 @@
 	display: none;
 }
 .rwmb-button-input-list li label {
-	display: inline-block;
+	display: block;
 	border: #ccc solid 1px;
 	position: relative;
 	z-index: 1;
