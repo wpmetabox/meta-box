@@ -31,14 +31,14 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		}
 
 		if ( $field['prepend'] ) {
-			$output .= '<span class="rwmb-input-group-text">' . esc_html( $field['prepend'] ) . '</span>';
+			$output .= '<span class="rwmb-input-group-text">' . $field['prepend'] . '</span>';
 		}
 
 		$attributes = self::call( 'get_attributes', $field, $meta );
 		$output    .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
 
 		if ( $field['append'] ) {
-			$output .= '<span class="rwmb-input-group-text">' . esc_html( $field['append'] ) . '</span>';
+			$output .= '<span class="rwmb-input-group-text">' . $field['append']. '</span>';
 		}
 
 		if ( $field['prepend'] || $field['append'] ) {
