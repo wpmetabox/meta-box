@@ -136,7 +136,6 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function get_uploaded_files( $files, $field ) {
-		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 		$output        = '';
 
@@ -148,10 +147,9 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return sprintf(
-			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
+			'<ul class="rwmb-files" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
 			$delete_nonce,
-			$reorder_nonce,
 			$field['force_delete'] ? 1 : 0,
 			$field['max_file_uploads'],
 			$field['mime_type'],
@@ -173,39 +171,38 @@ class RWMB_File_Field extends RWMB_Field {
 		$attributes  = self::get_attributes( $field, $file );
 
 		if ( ! $file ) {
-			return;
+			return '';
 		}
 
 		if ( $field['upload_dir'] ) {
 			$data = self::file_info_custom_dir( $file, $field );
 		} else {
-			$data      = array(
-				'icon'      => wp_get_attachment_image( $file, array( 60, 60 ), true ),
+			$data      = [
+				'icon'      => wp_get_attachment_image( $file, [48, 64], true ),
 				'name'      => basename( get_attached_file( $file ) ),
 				'url'       => wp_get_attachment_url( $file ),
 				'title'     => get_the_title( $file ),
 				'edit_link' => '',
-			);
+			];
 			$edit_link = get_edit_post_link( $file );
 			if ( $edit_link ) {
-				$data['edit_link'] = sprintf( '<a href="%s" class="rwmb-file-edit" target="_blank"><span class="dashicons dashicons-edit"></span>%s</a>', $edit_link, $i18n_edit );
+				$data['edit_link'] = sprintf( '<a href="%s" class="rwmb-file-edit" target="_blank">%s</a>', $edit_link, $i18n_edit );
 			}
 		}
 
 		return sprintf(
 			'<li class="rwmb-file">
-				<div class="rwmb-file-icon"><a href="%s" target="_blank">%s</a></div>
+				<div class="rwmb-file-icon">%s</div>
 				<div class="rwmb-file-info">
 					<a href="%s" target="_blank" class="rwmb-file-title">%s</a>
-					<p class="rwmb-file-name">%s</p>
-					<p class="rwmb-file-actions">
+					<div class="rwmb-file-name">%s</div>
+					<div class="rwmb-file-actions">
 						%s
-						<a href="#" class="rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span>%s</a>
-					</p>
+						<a href="#" class="rwmb-file-delete" data-attachment_id="%s">%s</a>
+					</div>
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			$data['url'],
 			$data['icon'],
 			$data['url'],
 			$data['title'],

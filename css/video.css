@@ -1,16 +1,10 @@
 .rwmb-video-item {
 	position: relative;
 	float: left;
-	padding: 8px;
-	margin: 0;
-	box-sizing: border-box;
+	margin: 0 12px 12px 0;
+	list-style: none;
 	width: 300px;
-}
-
-.rwmb-video-item .rwmb-media-preview {
-	width: 100%;
-	float: none;
-	background: #eee;
+	box-sizing: border-box;
 }
 
 .rwmb-video-item video {
@@ -19,6 +13,5 @@
 }
 
 .rwmb-video-item .rwmb-media-info {
-	margin-left: 0;
-	padding: 10px 0;
+	margin-top: 12px;
 }
