@@ -136,7 +136,6 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function get_uploaded_files( $files, $field ) {
-		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 		$output        = '';
 
@@ -148,10 +147,9 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return sprintf(
-			'<ul class="rwmb-files" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
+			'<ul class="rwmb-files" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
 			$delete_nonce,
-			$reorder_nonce,
 			$field['force_delete'] ? 1 : 0,
 			$field['max_file_uploads'],
 			$field['mime_type'],
