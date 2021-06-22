@@ -1,27 +1,12 @@
-.rwmb-image-wrapper .rwmb-files:empty {
-	display: none;
-}
-.rwmb-image-wrapper .rwmb-files:not(:empty) {
-	display: block;
-	margin: -8px 0 0 -8px;
-	overflow: hidden;
-}
-/* Re-add WP core UI style to make sure frontend works */
 .rwmb-image-item {
 	position: relative;
 	float: left;
-	padding: 8px;
-	margin: 0;
-	color: #444;
-	cursor: pointer;
+	margin: 0 12px 12px 0;
 	list-style: none;
-	text-align: center;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 	width: 25%;
 	box-sizing: border-box;
+	border: 1px solid rgba(0, 0, 0, .07);
+	cursor: move;
 }
 .rwmb-image-item.thumbnail {
 	width: 150px;
@@ -32,12 +17,16 @@
 .rwmb-image-item.large {
 	width: 1024px;
 }
+.rwmb-image-item img {
+	max-width: 100%;
+	height: auto;
+}
 
 .rwmb-image-actions {
 	position: absolute;
 	z-index: 2;
-	right: 12px;
-	top: 12px;
+	right: 8px;
+	top: 8px;
 	opacity: 0;
 	transition: opacity .2s;
 	color: #fff;
@@ -47,13 +36,17 @@
 	color: inherit;
 	text-decoration: none;
 }
+.rwmb-image-actions a:hover {
+	color: #fff;
+	opacity: .8;
+}
 .rwmb-image-overlay {
 	position: absolute;
 	z-index: 1;
-	top: 8px;
-	bottom: 8px;
-	left: 8px;
-	right: 8px;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	background: #000;
 	opacity: 0;
 	transition: opacity .2s;
