@@ -1,5 +1,6 @@
 .rwmb-media-list {
 	margin: 0;
+	overflow: hidden;
 }
 .rwmb-media-item {
 	display: flex;

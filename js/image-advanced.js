@@ -12,7 +12,7 @@
 			this.list = new MediaList( {
 				controller: this.controller,
 				itemView: MediaItem.extend( {
-					className: 'rwmb-image-item attachment',
+					className: 'rwmb-image-item',
 					template: wp.template( 'rwmb-image-item' ),
 					initialize: function( models, options ) {
 						MediaItem.prototype.initialize.call( this, models, options );

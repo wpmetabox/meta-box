@@ -20,6 +20,7 @@
 .rwmb-image-item img {
 	max-width: 100%;
 	height: auto;
+	display: block;
 }
 
 .rwmb-image-actions {
@@ -56,6 +57,9 @@
 }
 .rwmb-image-item:hover .rwmb-image-overlay {
 	opacity: .6;
+}
+.rwmb-image-item .rwmb-edit-media:after {
+	display: none;
 }
 
 @media (max-width: 767px) {

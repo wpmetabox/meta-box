@@ -20,6 +20,7 @@
 .rwmb-file-icon img {
 	max-width: 48px;
 	max-height: 64px;
+	display: block;
 }
 .rwmb-file-title {
 	font-weight: 600;
