@@ -44,12 +44,6 @@
 .rwmb-file-delete {
 	color: #b32d2e;
 }
-.rwmb-file-actions .dashicons {
-	font-size: 1em;
-	width: 1em;
-	height: 1em;
-	vertical-align: middle;
-}
 .rwmb-file-input {
 	width: 100%;
 }

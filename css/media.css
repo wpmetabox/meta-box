@@ -1,46 +1,48 @@
-.rwmb-media-list:empty {
-	display: none;
+.rwmb-media-list {
+	margin: 0;
 }
-.rwmb-media-list:not(:empty) {
-	display: block;
-	margin: -8px 0 0 -8px;
-	overflow: hidden;
+.rwmb-media-item {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 12px;
+	background: #fff;
+	cursor: move;
 }
-.rwmb-media-item.attachment {
-	float: none;
-	text-align: left;
-	width: auto;
-	overflow: hidden;
+.rwmb-media-icon {
+	min-width: 48px;
+	min-height: 64px;
+	margin-right: 8px;
+	border: 1px solid rgba(0, 0, 0, .07);
+	display: flex;
+	align-items: center;
 }
-.rwmb-media-preview {
-	width: 60px;
-	float: left;
-	position: relative;
-}
-.rwmb-media-info {
-	margin-left: 65px;
+.rwmb-media-icon img {
+	max-width: 48px;
+	max-height: 64px;
 }
 .rwmb-media-title {
-	font-weight: bold;
+	font-weight: 600;
 	text-decoration: none;
 }
 .rwmb-media-name {
-	margin: 0 0 4px;
+	margin: 2px 0 6px;
+	white-space: nowrap;
 }
 .rwmb-media-actions {
-	margin: 0;
+	font-size: 11px;
 }
 .rwmb-edit-media,
 .rwmb-remove-media {
-	font-size: 11px;
 	color: inherit;
 	text-decoration: none;
 }
-.rwmb-media-actions .dashicons {
-	font-size: 1em;
-	width: 1em;
-	height: 1em;
-	vertical-align: middle;
+.rwmb-edit-media:after {
+	content: "|";
+	color: #dcdcde;
+	margin: 0 6px;
+}
+.rwmb-remove-media {
+	color: #b32d2e;
 }
 
 /* Add more button */
