@@ -13,6 +13,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
+		parent::admin_enqueue_scripts();
+
 		wp_enqueue_media();
 		if ( ! is_admin() ) {
 			wp_register_script( 'media-grid', includes_url( 'js/media-grid.min.js' ), array( 'media-editor' ), '4.9.7', true );

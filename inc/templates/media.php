@@ -1,6 +1,6 @@
 <script id="tmpl-rwmb-media-item" type="text/html">
 	<input type="hidden" name="{{{ data.controller.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
-	<div class="rwmb-media-icon">
+	<div class="rwmb-file-icon">
 		<# if ( 'image' === data.type && data.sizes ) { #>
 			<# if ( data.sizes.thumbnail ) { #>
 				<img src="{{{ data.sizes.thumbnail.url }}}">
@@ -15,16 +15,16 @@
 			<# } #>
 		<# } #>
 	</div>
-	<div class="rwmb-media-info">
-		<a href="{{{ data.url }}}" class="rwmb-media-title" target="_blank">
+	<div class="rwmb-file-info">
+		<a href="{{{ data.url }}}" class="rwmb-file-title" target="_blank">
 			<# if( data.title ) { #>
 				{{{ data.title }}}
 			<# } else { #>
 				{{{ i18nRwmbMedia.noTitle }}}
 			<# } #>
 		</a>
-		<div class="rwmb-media-name">{{{ data.filename }}}</div>
-		<div class="rwmb-media-actions">
+		<div class="rwmb-file-name">{{{ data.filename }}}</div>
+		<div class="rwmb-file-actions">
 			<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
 				{{{ i18nRwmbMedia.edit }}}
 			</a>
