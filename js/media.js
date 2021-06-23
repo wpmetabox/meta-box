@@ -411,7 +411,7 @@
 	 */
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName: 'li',
-		className: 'rwmb-media-item',
+		className: 'rwmb-file',
 		template: wp.template( 'rwmb-media-item' ),
 		initialize: function ( options ) {
 			this.controller = options.controller;

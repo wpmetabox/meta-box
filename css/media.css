@@ -2,36 +2,6 @@
 	margin: 0;
 	overflow: hidden;
 }
-.rwmb-media-item {
-	display: flex;
-	align-items: flex-start;
-	margin-bottom: 12px;
-	background: #fff;
-	cursor: move;
-}
-.rwmb-media-icon {
-	min-width: 48px;
-	min-height: 64px;
-	margin-right: 8px;
-	border: 1px solid rgba(0, 0, 0, .07);
-	display: flex;
-	align-items: center;
-}
-.rwmb-media-icon img {
-	max-width: 48px;
-	max-height: 64px;
-}
-.rwmb-media-title {
-	font-weight: 600;
-	text-decoration: none;
-}
-.rwmb-media-name {
-	margin: 2px 0 6px;
-	white-space: nowrap;
-}
-.rwmb-media-actions {
-	font-size: 11px;
-}
 .rwmb-edit-media,
 .rwmb-remove-media {
 	color: inherit;
@@ -44,10 +14,4 @@
 }
 .rwmb-remove-media {
 	color: #b32d2e;
-}
-
-/* Add more button */
-.rwmb-media-view .rwmb-add-media {
-	padding-left: 5px;
-	margin-right: 5px;
 }
