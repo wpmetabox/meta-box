@@ -15,14 +15,14 @@
 		<# } #>
 	<# } #>
 	<div class="rwmb-media-info">
-		<a href="{{{ data.url }}}" class="rwmb-media-title" target="_blank">
+		<a href="{{{ data.url }}}" class="rwmb-file-title" target="_blank">
 			<# if( data.title ) { #>
 				{{{ data.title }}}
 			<# } else { #>
 				{{{ i18nRwmbMedia.noTitle }}}
 			<# } #>
 		</a>
-		<div class="rwmb-media-name">{{{ data.filename }}}</div>
+		<div class="rwmb-file-name">{{{ data.filename }}}</div>
 		<div class="rwmb-media-actions">
 			<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
 				{{{ i18nRwmbMedia.edit }}}
