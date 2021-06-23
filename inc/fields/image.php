@@ -36,8 +36,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		}
 
 		return sprintf(
-			'<li class="rwmb-image-item %s">
-				%s
+			'<li class="rwmb-image-item">
+				<div class="rwmb-file-icon">%s</div>
 				<div class="rwmb-image-overlay"></div>
 				<div class="rwmb-image-actions">
 					%s
@@ -45,7 +45,6 @@ class RWMB_Image_Field extends RWMB_File_Field {
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			$field['image_size'],
 			wp_get_attachment_image( $file, $field['image_size'] ),
 			$edit_link,
 			$file,
