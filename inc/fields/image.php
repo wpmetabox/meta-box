@@ -50,7 +50,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			$file,
 			$attributes['name'],
 			$index,
-			$file,
+			$file
 		);
 	}
 
