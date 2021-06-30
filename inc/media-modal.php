@@ -28,6 +28,8 @@ class RWMB_Media_Modal {
 		add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
 
 		add_filter( 'rwmb_show', array( $this, 'is_in_normal_mode' ), 10, 2 );
+
+		add_action( 'wp_enqueue_media', array( $this, 'enqueue_media_js' ) );
 	}
 
 	/**
@@ -118,5 +120,12 @@ class RWMB_Media_Modal {
 	 */
 	protected function is_in_modal( $meta_box ) {
 		return in_array( 'attachment', $meta_box['post_types'], true ) && ! empty( $meta_box['media_modal'] );
+	}
+
+	public function enqueue_media_js() {
+		ob_start();
+		wp_editor( '', '' );
+		ob_get_clean();
+		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media-modal.js', array( 'jquery' ), RWMB_VER, true );
 	}
 }
