@@ -43,7 +43,6 @@ class RWMB_Text_Field extends RWMB_Input_Field {
 		$attributes = wp_parse_args(
 			$attributes,
 			array(
-				'size'        => $field['size'],
 				'maxlength'   => $field['maxlength'],
 				'pattern'     => $field['pattern'],
 				'placeholder' => $field['placeholder'],

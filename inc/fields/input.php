@@ -60,7 +60,6 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 			$field,
 			array(
 				'autocomplete' => false,
-				'size'         => 30,
 				'datalist'     => false,
 				'readonly'     => false,
 				'prepend'      => '',
@@ -97,7 +96,6 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 				'value'        => $value,
 				'placeholder'  => $field['placeholder'],
 				'type'         => $field['type'],
-				'size'         => $field['size'],
 			)
 		);
 
