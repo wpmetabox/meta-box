@@ -118,9 +118,12 @@
 	display: inline-block;
 }
 .ui-timepicker-div .ui-slider-access button {
-    padding: 0 5px;
+    padding: 0 8px;
     margin: 0 2px;
     border-radius: 4px;
+}
+.ui-timepicker-div .ui-slider-access button span.ui-button-icon{
+	display: inline;
 }
 /* Other Datepicker Color Schemes */
 /* Blue */
