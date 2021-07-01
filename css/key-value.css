@@ -1,0 +1,10 @@
+.rwmb-key_value-clone {
+	display: flex;
+	align-items: center;
+}
+.rwmb-key_value-clone input {
+	flex: 1;
+}
+.rwmb-key_value-clone .remove-clone {
+	position: static;
+}
