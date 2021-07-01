@@ -9,6 +9,11 @@
 	margin-right: 5px;
 }
 
+.rwmb-background-row .rwmb-file_input {
+	width: auto;
+	flex: 1;
+}
+
 .rwmb-background-wrapper .wp-picker-container {
 	position: relative;
 	display: inline-block;
