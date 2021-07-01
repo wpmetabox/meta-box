@@ -260,4 +260,6 @@
 	rwmb.cloneIndex = cloneIndex;
 	rwmb.cloneValue = cloneValue;
 	rwmb.sortClones = sortClones;
+	rwmb.toggleRemoveButtons = toggleRemoveButtons;
+	rwmb.toggleAddButton = toggleAddButton;
 } )( jQuery, rwmb );
