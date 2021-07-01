@@ -34,7 +34,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
 			$html[]                      = sprintf( $tpl, $label, parent::html( $value, $field ) );
 		}
 
-		$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
+		$out = '<fieldset>' . ( $field['desc'] ? '<legend>' . $field['desc'] . '</legend>' : '' ) . implode( ' ', $html ) . '</fieldset>';
 
 		return $out;
 	}
