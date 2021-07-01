@@ -238,7 +238,7 @@ class RWMB_Datetime_Field extends RWMB_Text_Field {
 				'yearRange'       => '-100:+100',
 				'changeMonth'     => true,
 				'showButtonPanel' => true,
-				'controlType'     => 'slider',
+				'controlType'     => 'select', // select or slider
 				'oneLine'         => true,
 				'addSliderAccess' => true,
 				'sliderAccessArgs' => [
