@@ -113,6 +113,15 @@
 	opacity: 1;
 	color: #999;
 }
+/* timepicker button */
+.ui-timepicker-div .ui-slider-access {
+	display: inline-block;
+}
+.ui-timepicker-div .ui-slider-access button {
+    padding: 0 5px;
+    margin: 0 2px;
+    border-radius: 4px;
+}
 /* Other Datepicker Color Schemes */
 /* Blue */
 .admin-color-blue .ui-datepicker .ui-datepicker-header,
