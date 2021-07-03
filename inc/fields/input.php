@@ -98,6 +98,9 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 				'type'         => $field['type'],
 			)
 		);
+		if ( isset( $field['size'] ) ) {
+			$attributes['size'] = $field['size'];
+		}
 
 		return $attributes;
 	}

@@ -21,7 +21,6 @@ class RWMB_Text_Field extends RWMB_Input_Field {
 		$field = wp_parse_args(
 			$field,
 			array(
-				'size'      => 30,
 				'maxlength' => false,
 				'pattern'   => false,
 			)
