@@ -62,6 +62,8 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 				'autocomplete' => false,
 				'datalist'     => false,
 				'readonly'     => false,
+				'maxlength'    => false,
+				'pattern'      => false,
 				'prepend'      => '',
 				'append'       => '',
 			)

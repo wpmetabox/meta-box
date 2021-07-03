@@ -8,7 +8,7 @@
 /**
  * Fieldset text class.
  */
-class RWMB_Fieldset_Text_Field extends RWMB_Text_Field {
+class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	/**
 	 * Enqueue field scripts and styles.
 	 */

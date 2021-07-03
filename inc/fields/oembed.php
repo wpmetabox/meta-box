@@ -8,7 +8,7 @@
 /**
  * OEmbed field class.
  */
-class RWMB_OEmbed_Field extends RWMB_Text_Field {
+class RWMB_OEmbed_Field extends RWMB_Input_Field {
 	/**
 	 * Normalize parameters for field.
 	 *

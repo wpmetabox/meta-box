@@ -8,7 +8,7 @@
 /**
  * Datetime field class.
  */
-class RWMB_Datetime_Field extends RWMB_Text_Field {
+class RWMB_Datetime_Field extends RWMB_Input_Field {
 	/**
 	 * Translate date format from jQuery UI date picker to PHP date().
 	 * It's used to store timestamp value of the field.

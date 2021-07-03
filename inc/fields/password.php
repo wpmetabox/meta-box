@@ -8,7 +8,7 @@
 /**
  * Password field class.
  */
-class RWMB_Password_Field extends RWMB_Text_Field {
+class RWMB_Password_Field extends RWMB_Input_Field {
 	/**
 	 * Store secured password in the database.
 	 *

@@ -8,7 +8,7 @@
 /**
  * Color field class.
  */
-class RWMB_Color_Field extends RWMB_Text_Field {
+class RWMB_Color_Field extends RWMB_Input_Field {
 	/**
 	 * Enqueue scripts and styles.
 	 */
