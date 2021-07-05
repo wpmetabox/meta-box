@@ -6,6 +6,7 @@
 .rwmb-text_list-non-cloneable > .rwmb-input > label,
 .rwmb-text_list-clone > label {
 	margin: 0 10px 10px 0;
+	flex: 1;
 }
 .rwmb-text_list-non-cloneable > .rwmb-input > label:last-child,
 .rwmb-text_list-clone > label:last-child {
@@ -15,5 +16,5 @@
 .rwmb-text-list-label {
 	font-weight: 600;
 	display: block;
-	margin-bottom: 5px;
+	margin-bottom: 3px;
 }

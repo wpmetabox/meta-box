@@ -2,23 +2,19 @@
 -------------------------------------------------------------- */
 
 /* Clearfix for field */
-.rwmb-field:after {
-	content: " ";
-	display: table;
-	clear: both;
+.rwmb-field {
+	display: flex;
 }
 .rwmb-field:not(:last-of-type) {
 	margin: 0 0 12px;
 }
-.rwmb-label,
-.rwmb-input {
-	vertical-align: top;
-	float: left;
-	box-sizing: border-box;
-}
 .rwmb-label {
 	width: 25%;
 }
+.rwmb-input {
+	flex: 1;
+}
+
 .rwmb-label > label {
 	font-weight: 600;
 }
@@ -27,20 +23,21 @@
 	font-weight: bold;
 	margin-left: 3px;
 }
-.rwmb-input input,
-.rwmb-input select {
-	max-width: 100%;
-}
 
-/* 75% if field has label, 100% if no label */
-.rwmb-input {
-	width: 100%;
-}
-.rwmb-label ~ .rwmb-input {
-	width: 75%;
-}
 .rwmb-input h4 {
 	margin: 0;
+}
+.rwmb-input input:not([size]),
+.rwmb-input-group,
+.rwmb-input select,
+.rwmb-input .select2-container,
+.rwmb-input textarea {
+	width: 100%;
+}
+.rwmb-input input[type="checkbox"],
+.rwmb-input input[type="radio"],
+.rwmb-input input[type="button"] {
+	width: auto;
 }
 .rwmb-textarea {
 	resize: vertical;
@@ -80,7 +77,7 @@
 	box-shadow: none;
 }
 .rwmb-button.add-clone {
-	margin-top: 5px;
+	margin-top: 4px;
 }
 .rwmb-clone-icon {
 	cursor: move;
@@ -100,7 +97,7 @@
 /* jQuery validation */
 p.rwmb-error {
 	color: #dc3232;
-	margin: 2px 0 5px;
+	margin: 4px 0;
 	clear: both;
 }
 input.rwmb-error.rwmb-error,
@@ -127,34 +124,23 @@ select.rwmb-error {
 	width: 100%;
 }
 #side-sortables .rwmb-label {
-	margin-bottom: 3px;
-}
-#side-sortables .rwmb-input input:not([type="checkbox"]):not([type="radio"]),
-#side-sortables .rwmb-input-group,
-#side-sortables .rwmb-input select,
-#side-sortables .rwmb-input .select2-container,
-#side-sortables .rwmb-input textarea {
-	width: 100% !important;
-	min-width: auto;
+	margin-bottom: 4px;
 }
 
 /* Mobile style */
 @media (max-width: 1023px) {
-	.rwmb-label,
-	.rwmb-label ~ .rwmb-input {
-		width: 100%;
+	.rwmb-field {
+		flex-direction: column;
 	}
 	.rwmb-label {
-		margin-bottom: 3px;
-	}
-	.rwmb-input input,
-	.rwmb-input select {
 		width: 100%;
-		max-width: 100%;
+		margin-bottom: 4px;
 	}
-	.rwmb-input input[type="checkbox"],
-	.rwmb-input input[type="radio"] {
-		width: auto;
+}
+@media (max-width: 782px) {
+	.rwmb-input input[type="radio"],
+	.rwmb-input input[type="checkbox"] {
+		width: 1.5625em;
 	}
 }
 

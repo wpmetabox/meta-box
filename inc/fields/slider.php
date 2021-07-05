@@ -33,7 +33,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 	public static function html( $meta, $field ) {
 		$attributes = self::call( 'get_attributes', $field, $meta );
 		return sprintf(
-			'<div class="clearfix">
+			'<div class="rwmb-slider-inner">
 				<div class="rwmb-slider-ui" id="%s" data-options="%s"></div>
 				<span class="rwmb-slider-label">%s<span>%s</span>%s</span>
 				<input type="hidden" value="%s" %s>

@@ -55,9 +55,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		// This field doesn't store field values, so it doesn't have "name" attribute.
 		// The value(s) of the field is store in hidden input(s). See below.
 		$html = sprintf(
-			'<input type="text" class="rwmb-autocomplete-search" size="%s">
+			'<input type="text" class="rwmb-autocomplete-search">
 			<input type="hidden" name="%s" class="rwmb-autocomplete" data-options="%s" disabled>',
-			esc_attr( $field['size'] ),
 			esc_attr( $field['field_name'] ),
 			esc_attr( $options )
 		);
@@ -104,22 +103,5 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		$html .= '</div>'; // .rwmb-autocomplete-results.
 
 		return $html;
-	}
-
-	/**
-	 * Normalize parameters for field.
-	 *
-	 * @param array $field Field parameters.
-	 * @return array
-	 */
-	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
-		$field = wp_parse_args(
-			$field,
-			array(
-				'size' => 30,
-			)
-		);
-		return $field;
 	}
 }

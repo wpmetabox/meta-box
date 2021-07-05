@@ -17,9 +17,14 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$output  = parent::html( $meta, $field );
-		$output .= sprintf( '<span class="rwmb-output">%s</span>', $meta );
-		return $output;
+		return sprintf(
+			'<div class="rwmb-range-inner">
+				%s
+				<span class="rwmb-range-output">%s</span>
+			</div>',
+			parent::html( $meta, $field ),
+			$meta
+		);
 	}
 
 	/**

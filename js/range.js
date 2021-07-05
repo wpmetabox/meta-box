@@ -6,7 +6,7 @@
 	 */
 	function update() {
 		var $this = $( this ),
-			$output = $this.siblings( '.rwmb-output' );
+			$output = $this.siblings( '.rwmb-range-output' );
 
 		$this.on( 'input propertychange change', function () {
 			$output.html( $this.val() );

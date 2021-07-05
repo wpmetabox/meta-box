@@ -56,6 +56,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 				'allowClear'        => true,
 				'dropdownAutoWidth' => true,
 				'placeholder'       => $field['placeholder'],
+				'width'             => 'style',
 			)
 		);
 
