@@ -1,9 +1,17 @@
+.rwmb-range-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.rwmb-range {
+	flex: 1;
+}
 .rwmb-range.rwmb-range,
 .rwmb-range.rwmb-range:hover {
 	vertical-align: middle;
 	padding: 0;
 	border: none;
 }
-.rwmb-output {
+.rwmb-range-output {
 	margin-left: 8px;
 }
