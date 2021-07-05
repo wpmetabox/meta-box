@@ -255,4 +255,11 @@
 		.on( 'mb_ready', init )
 		.on( 'click', '.add-clone', addClone )
 		.on( 'click', '.remove-clone', removeClone );
+
+	// Export for use outside.
+	rwmb.cloneIndex = cloneIndex;
+	rwmb.cloneValue = cloneValue;
+	rwmb.sortClones = sortClones;
+	rwmb.toggleRemoveButtons = toggleRemoveButtons;
+	rwmb.toggleAddButton = toggleAddButton;
 } )( jQuery, rwmb );
