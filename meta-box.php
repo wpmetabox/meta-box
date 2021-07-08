@@ -3,7 +3,7 @@
  * Plugin Name: Meta Box
  * Plugin URI:  https://metabox.io
  * Description: Create custom meta boxes and custom fields in WordPress.
- * Version:     5.4.5
+ * Version:     5.4.6
  * Author:      MetaBox.io
  * Author URI:  https://metabox.io
  * License:     GPL2+
@@ -18,22 +18,3 @@ if ( defined( 'ABSPATH' ) && ! defined( 'RWMB_VER' ) ) {
 	$rwmb_loader = new RWMB_Loader();
 	$rwmb_loader->init();
 }
-
-add_filter( 'rwmb_meta_boxes', function( $meta_boxes ) {
-	$meta_boxes[] = [
-		'title'  => 'Test',
-		'id' => 'te',
-		'fields' => [
-			[
-				'type' => 'heading',
-				'name' => 'My name is a headering',
-			],
-			[
-				'type' => 'heading',
-				'name' => 'My name is a headering',
-				'desc' => 'adsffaw elakhw flakwehf ',
-			],
-		],
-	];
-	return $meta_boxes;
-} );
