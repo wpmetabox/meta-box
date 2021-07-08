@@ -1,6 +1,6 @@
-/* =Styles for 'heading' field
--------------------------------------------------------------- */
-
+.rwmb-heading-wrapper {
+	display: block;
+}
 .rwmb-heading-wrapper h4 {
 	display: block;
 	font-size: .75rem;
