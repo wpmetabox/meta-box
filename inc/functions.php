@@ -71,6 +71,7 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 			$args,
 			array(
 				'object_type' => 'post',
+				'type'        => '',
 			)
 		);
 
@@ -81,7 +82,7 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 		 * @var string     Object type.
 		 * @var string|int Object id.
 		 */
-		$type = apply_filters( 'rwmb_meta_type', '', $args['object_type'], $object_id );
+		$type = apply_filters( 'rwmb_meta_type', $args['type'], $args['object_type'], $object_id );
 		if ( ! $type ) {
 			$type = get_post_type( $object_id );
 		}
