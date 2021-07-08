@@ -56,9 +56,6 @@ abstract class RWMB_Field {
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
-		if ( 'hidden' === $field['type'] ) {
-			$classes .= ' hidden';
-		}
 		if ( ! empty( $field['required'] ) ) {
 			$classes .= ' required';
 		}

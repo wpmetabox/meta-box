@@ -118,7 +118,6 @@ select.rwmb-error {
 
 /* Styles for 'side' meta boxes
 -------------------------------------------------------------- */
-
 #side-sortables .rwmb-field {
 	flex-direction: column;
 }
@@ -170,4 +169,7 @@ select.rwmb-error {
 .postarea {
 	position: relative;
 	z-index: 0;
+}
+.rwmb-hidden-wrapper {
+	display: none;
 }
