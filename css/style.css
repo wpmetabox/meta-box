@@ -119,11 +119,11 @@ select.rwmb-error {
 /* Styles for 'side' meta boxes
 -------------------------------------------------------------- */
 
-#side-sortables .rwmb-label,
-#side-sortables .rwmb-input {
-	width: 100%;
+#side-sortables .rwmb-field {
+	flex-direction: column;
 }
 #side-sortables .rwmb-label {
+	width: 100%;
 	margin-bottom: 4px;
 }
 
