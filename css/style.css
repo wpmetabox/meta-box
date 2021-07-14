@@ -140,7 +140,7 @@ select.rwmb-error {
 	}
 	.rwmb-input input[type="radio"],
 	.rwmb-input input[type="checkbox"] {
-		width: 1.5625em;
+		width: 1.5625rem;
 	}
 }
 
