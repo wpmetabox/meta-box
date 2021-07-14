@@ -35,7 +35,9 @@
 	width: 100%;
 }
 .rwmb-input input[type="checkbox"],
-.rwmb-input input[type="radio"],
+.rwmb-input input[type="radio"] {
+	width: 1em;
+}
 .rwmb-input input[type="button"] {
 	width: auto;
 }
@@ -127,7 +129,7 @@ select.rwmb-error {
 }
 
 /* Mobile style */
-@media (max-width: 1023px) {
+@media (max-width: 782px) {
 	.rwmb-field {
 		flex-direction: column;
 	}
@@ -135,8 +137,6 @@ select.rwmb-error {
 		width: 100%;
 		margin-bottom: 4px;
 	}
-}
-@media (max-width: 782px) {
 	.rwmb-input input[type="radio"],
 	.rwmb-input input[type="checkbox"] {
 		width: 1.5625em;
