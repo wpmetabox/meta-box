@@ -49,6 +49,7 @@
 .rwmb-clone {
 	min-height: 24px;
 	margin-bottom: 12px;
+	padding-right: 24px;
 	position: relative;
 	clear: both;
 	background: #fff;
