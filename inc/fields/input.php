@@ -95,6 +95,8 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 				'autocomplete' => $field['autocomplete'],
 				'list'         => $field['datalist'] ? $field['datalist']['id'] : false,
 				'readonly'     => $field['readonly'],
+				'maxlength'    => $field['maxlength'],
+				'pattern'      => $field['pattern'],
 				'value'        => $value,
 				'placeholder'  => $field['placeholder'],
 				'type'         => $field['type'],
