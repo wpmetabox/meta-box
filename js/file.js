@@ -49,6 +49,7 @@
 			action: 'rwmb_delete_file',
 			_ajax_nonce: $uploaded.data( 'delete_nonce' ),
 			field_id: $uploaded.data( 'field_id' ),
+			field_name: $uploaded.data( 'field_name' ),
 			object_type: $metaBox.data( 'object-type' ),
 			object_id: $metaBox.data( 'object-id' ),
 			attachment_id: $this.data( 'attachment_id' )

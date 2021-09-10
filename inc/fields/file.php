@@ -50,16 +50,26 @@ class RWMB_File_Field extends RWMB_Field {
 		$request = rwmb_request();
 
 		$field_id = $request->filter_post( 'field_id', FILTER_SANITIZE_STRING );
+		$type = false !== strpos( $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ), '[' ) ? 'child' : 'top';
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
+
+		if ( 'child' === $type ) {
+			$field_name = 'avatars[avatar_here]';
+			$field_group = explode('[', $field_name);
+			$field_id = $field_group[0];
+		}
 
 		// Make sure the file to delete is in the custom field.
 		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id', FILTER_SANITIZE_STRING );
 		$object_type = $request->filter_post( 'object_type', FILTER_SANITIZE_STRING );
-		$field       = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
+		$field = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
+
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
-		if ( ! in_array( $attachment, $field_value ) ) {
+
+		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) ||
+			 ( 'child' === $type && ! in_array( $attachment, $field_value[ $request->filter_post( 'field_id', FILTER_SANITIZE_STRING ) ] ) ) ) {
 			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
 		}
 
@@ -147,8 +157,9 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return sprintf(
-			'<ul class="rwmb-files" data-field_id="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
+			'<ul class="rwmb-files file-hereeee" data-field_id="%s" data-field_name="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
+			$field['field_name'],
 			$delete_nonce,
 			$field['force_delete'] ? 1 : 0,
 			$field['max_file_uploads'],
