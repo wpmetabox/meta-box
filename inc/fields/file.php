@@ -54,8 +54,7 @@ class RWMB_File_Field extends RWMB_Field {
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 		if ( 'child' === $type ) {
-			$field_name = 'avatars[avatar_here]';
-			$field_group = explode('[', $field_name);
+			$field_group = explode( '[', $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ) );
 			$field_id = $field_group[0];
 		}
 
