@@ -93,8 +93,8 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( array_key_exists( $key_search, $field_value ) ) {
 			return $field_value[ $key_search ];
 	    }
-	    foreach ( $field_value as $key => $element) {
-	        if (is_array( $element ) ) {
+	    foreach ( $field_value as $key => $element ) {
+	        if ( is_array( $element ) ) {
 	            if ( self::get_sub_values( $element, $key_search ) ) {
 	                return $element[ $key_search ];
 	            }
