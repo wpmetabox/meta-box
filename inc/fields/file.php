@@ -48,30 +48,26 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function ajax_delete_file() {
 		$request = rwmb_request();
-
 		$field_id = $request->filter_post( 'field_id', FILTER_SANITIZE_STRING );
 		$type = false !== strpos( $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ), '[' ) ? 'child' : 'top';
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 		if ( 'child' === $type ) {
 			$field_group = explode( '[', $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ) );
-			$field_id = $field_group[0];
+			$field_id = $field_group[0]; //this is top parent field_id
 		}
-
 		// Make sure the file to delete is in the custom field.
 		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id', FILTER_SANITIZE_STRING );
 		$object_type = $request->filter_post( 'object_type', FILTER_SANITIZE_STRING );
 		$field = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
-
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
 
-		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) ||
-			 ( 'child' === $type && ! in_array( $attachment, $field_value[ $request->filter_post( 'field_id', FILTER_SANITIZE_STRING ) ] ) ) ) {
+		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) || 
+			 ( 'child' === $type && ! in_array( $attachment,  self::get_sub_values( $field_value, $request->filter_post( 'field_id', FILTER_SANITIZE_STRING ) ) ) ) ) {
 			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
 		}
-
 		// Delete the file.
 		if ( is_numeric( $attachment ) ) {
 			$result = wp_delete_attachment( $attachment );
@@ -84,6 +80,27 @@ class RWMB_File_Field extends RWMB_Field {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
+	}
+
+	/**
+	 * Recursively get values for sub-fields and sub-groups.
+	 *
+	 * @param  array $field_value  List of parent fields value.
+	 * @param  int   $key_search Nub field name.
+	 * @return array
+	 */
+	protected static function get_sub_values( $field_value, $key_search ) {
+		if ( array_key_exists( $key_search, $field_value ) ) {
+			return $field_value[ $key_search ];
+	    }
+	    foreach ( $field_value as $key => $element) {
+	        if (is_array( $element ) ) {
+	            if ( self::get_sub_values( $element, $key_search ) ) {
+	                return $element[ $key_search ];
+	            }
+	        }
+	    }
+	    return false;
 	}
 
 	/**
