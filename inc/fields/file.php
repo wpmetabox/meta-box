@@ -92,15 +92,17 @@ class RWMB_File_Field extends RWMB_Field {
 	protected static function get_sub_values( $field_value, $key_search ) {
 		if ( array_key_exists( $key_search, $field_value ) ) {
 			return $field_value[ $key_search ];
-	    }
-	    foreach ( $field_value as $key => $element ) {
-	        if ( is_array( $element ) ) {
-	            if ( self::get_sub_values( $element, $key_search ) ) {
-	                return $element[ $key_search ];
-	            }
-	        }
-	    }
-	    return false;
+		}
+
+		foreach ( $field_value as $key => $element ) {
+			if( !is_array( $element ) ) {
+				continue;
+			}
+			if ( self::get_sub_values( $element, $key_search ) ) {
+				return $element[ $key_search ];
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -173,7 +175,7 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return sprintf(
-			'<ul class="rwmb-files file-hereeee" data-field_id="%s" data-field_name="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
+			'<ul class="rwmb-files" data-field_id="%s" data-field_name="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
 			$field['field_name'],
 			$delete_nonce,
