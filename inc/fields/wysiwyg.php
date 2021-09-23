@@ -57,16 +57,6 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Escape meta for field output.
-	 *
-	 * @param mixed $meta Meta value.
-	 * @return mixed
-	 */
-	public static function esc_meta( $meta ) {
-		return $meta;
-	}
-
-	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.

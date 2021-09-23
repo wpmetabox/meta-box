@@ -76,20 +76,6 @@ class RWMB_Key_Value_Field extends RWMB_Input_Field {
 	}
 
 	/**
-	 * Escape meta for field output.
-	 *
-	 * @param mixed $meta Meta value.
-	 *
-	 * @return mixed
-	 */
-	public static function esc_meta( $meta ) {
-		foreach ( (array) $meta as $k => $pairs ) {
-			$meta[ $k ] = array_map( 'esc_attr', (array) $pairs );
-		}
-		return $meta;
-	}
-
-	/**
 	 * Sanitize field value.
 	 *
 	 * @param mixed $new     The submitted meta value.

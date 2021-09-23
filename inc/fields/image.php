@@ -47,10 +47,10 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			</li>',
 			wp_get_attachment_image( $file, $field['image_size'] ),
 			$edit_link,
-			$file,
-			$attributes['name'],
-			$index,
-			$file
+			esc_attr( $file ),
+			esc_attr( $attributes['name'] ),
+			esc_attr( $index ),
+			esc_attr( $file )
 		);
 	}
 

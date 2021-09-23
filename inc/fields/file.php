@@ -64,7 +64,7 @@ class RWMB_File_Field extends RWMB_Field {
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
 
-		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) || 
+		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) ||
 			 ( 'child' === $type && ! in_array( $attachment,  self::get_sub_values( $field_value, $request->filter_post( 'field_id', FILTER_SANITIZE_STRING ) ) ) ) ) {
 			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
 		}
@@ -233,15 +233,15 @@ class RWMB_File_Field extends RWMB_Field {
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
 			$data['icon'],
-			$data['url'],
-			$data['title'],
-			$data['name'],
+			esc_url( $data['url'] ),
+			esc_html( $data['title'] ),
+			esc_html( $data['name'] ),
 			$data['edit_link'],
-			$file,
-			$i18n_delete,
-			$attributes['name'],
-			$index,
-			$file
+			esc_attr( $file ),
+			esc_html( $i18n_delete ),
+			esc_attr( $attributes['name'] ),
+			esc_attr( $index ),
+			esc_attr( $file )
 		);
 	}
 

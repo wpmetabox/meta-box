@@ -43,13 +43,6 @@ class RWMB_Select_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Don't escape value because it's escaped in the select walker class.
-	 */
-	public static function esc_meta( $meta ) {
-		return $meta;
-	}
-
-	/**
 	 * Normalize parameters for field.
 	 *
 	 * @param array $field Field parameters.

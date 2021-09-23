@@ -227,21 +227,7 @@ abstract class RWMB_Field {
 			$meta = RWMB_Helpers_Array::ensure( $meta );
 		}
 
-		// Escape attributes.
-		$meta = self::call( $field, 'esc_meta', $meta );
-
 		return $meta;
-	}
-
-	/**
-	 * Escape meta for field output.
-	 *
-	 * @param mixed $meta Meta value.
-	 *
-	 * @return mixed
-	 */
-	public static function esc_meta( $meta ) {
-		return is_array( $meta ) ? array_map( __METHOD__, $meta ) : esc_attr( $meta );
 	}
 
 	/**
