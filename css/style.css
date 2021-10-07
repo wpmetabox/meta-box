@@ -151,7 +151,7 @@ select.rwmb-error {
 	border: none;
 	box-shadow: none;
 }
-.rwmb-seamless .inside {
+.rwmb-seamless .inside.inside {
 	padding-left: 0;
 	padding-right: 0;
 }
