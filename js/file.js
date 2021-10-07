@@ -18,7 +18,7 @@
 		$clone.insertBefore( this ).val( '' );
 
 		var $fieldInput = $this.closest( '.rwmb-input' );
-		file.updateVisibility.call( $fieldInput.find( '.rwmb-uploaded' ) );
+		file.updateVisibility.call( $fieldInput.find( '.rwmb-files' ) );
 		file.setRequired.call( $fieldInput );
 	};
 
@@ -33,7 +33,7 @@
 
 		var $this = $( this ),
 			$item = $this.closest( 'li' ),
-			$uploaded = $this.closest( '.rwmb-uploaded' ),
+			$uploaded = $this.closest( '.rwmb-files' ),
 			$metaBox = $uploaded.closest( '.rwmb-meta-box' );
 
 		$item.remove();
@@ -49,6 +49,7 @@
 			action: 'rwmb_delete_file',
 			_ajax_nonce: $uploaded.data( 'delete_nonce' ),
 			field_id: $uploaded.data( 'field_id' ),
+			field_name: $uploaded.data( 'field_name' ),
 			object_type: $metaBox.data( 'object-type' ),
 			object_id: $metaBox.data( 'object-id' ),
 			attachment_id: $this.data( 'attachment_id' )
@@ -100,7 +101,7 @@
 	file.resetClone = function() {
 		var $this = $( this ),
 			$clone = $this.closest( '.rwmb-clone' ),
-			$list = $clone.find( '.rwmb-uploaded' ),
+			$list = $clone.find( '.rwmb-files' ),
 			$key = $clone.find( '.rwmb-file-index' ),
 			inputName = '_file_' + rwmb.uniqid();
 
@@ -115,7 +116,7 @@
 	// Set 'required' attribute. 'this' is the wrapper field input.
 	file.setRequired = function() {
 		var $this = $( this ),
-			$uploaded = $this.find( '.rwmb-uploaded' ),
+			$uploaded = $this.find( '.rwmb-files' ),
 			$inputs = $this.find( '.rwmb-file-new input' );
 		$inputs.prop( 'required', false );
 
@@ -131,7 +132,7 @@
 
 	function init( e ) {
 		var $el = $( e.target ),
-			$uploaded = $el.find( '.rwmb-uploaded' );
+			$uploaded = $el.find( '.rwmb-files' );
 
 		$uploaded.each( file.sort );
 		$uploaded.each( file.updateVisibility );

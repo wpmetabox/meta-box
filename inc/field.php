@@ -56,9 +56,6 @@ abstract class RWMB_Field {
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
-		if ( 'hidden' === $field['type'] ) {
-			$classes .= ' hidden';
-		}
 		if ( ! empty( $field['required'] ) ) {
 			$classes .= ' required';
 		}
@@ -230,21 +227,7 @@ abstract class RWMB_Field {
 			$meta = RWMB_Helpers_Array::ensure( $meta );
 		}
 
-		// Escape attributes.
-		$meta = self::call( $field, 'esc_meta', $meta );
-
 		return $meta;
-	}
-
-	/**
-	 * Escape meta for field output.
-	 *
-	 * @param mixed $meta Meta value.
-	 *
-	 * @return mixed
-	 */
-	public static function esc_meta( $meta ) {
-		return is_array( $meta ) ? array_map( __METHOD__, $meta ) : esc_attr( $meta );
 	}
 
 	/**

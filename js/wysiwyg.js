@@ -8,7 +8,7 @@
 		var $this = $( this ),
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
 			id = $this.attr( 'id' ),
-			isInBlock = $this.closest( '.wp-block' ).length > 0;
+			isInBlock = $this.closest( '.wp-block, .components-panel' ).length > 0;
 
 		// Update the ID attribute if the editor is in a new block.
 		if ( isInBlock ) {
@@ -25,7 +25,8 @@
 
 		// Get id of the original editor to get its tinyMCE and quick tags settings
 		var originalId = getOriginalId( this ),
-			settings = getEditorSettings( originalId );
+			settings = getEditorSettings( originalId ),
+			customSettings = $this.closest( '.rwmb-input' ).find( '.rwmb-wysiwyg-id' ).data( 'options' );
 
 		// TinyMCE
 		if ( window.tinymce ) {
@@ -35,20 +36,21 @@
 					editor.save(); // Required for live validation.
 					$this.trigger( 'change' );
 				} );
-			}
+			};
 
 			// Set editor mode after initializing.
 			settings.tinymce.init_instance_callback = function() {
 				switchEditors.go( id, mode );
-			}
+			};
 
-			tinymce.init( settings.tinymce );
+			tinymce.remove( '#' + id );
+			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
 		}
 
 		// Quick tags
 		if ( window.quicktags ) {
 			settings.quicktags.id = id;
-			quicktags( settings.quicktags );
+			quicktags( $.extend( settings.quicktags, customSettings.quicktags ) );
 			QTags._buttonsInit();
 		}
 	}
@@ -141,11 +143,11 @@
 	 * this = textarea element.
 	 */
 	function setupEvents() {
-		if ( ! window.tinymce ) {
+		if ( !window.tinymce ) {
 			return;
 		}
 		var editor = tinymce.get( this.id );
-		if ( ! editor ) {
+		if ( !editor ) {
 			return;
 		}
 		var $this = $( this );

@@ -36,28 +36,21 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		}
 
 		return sprintf(
-			'<li class="rwmb-image-item attachment %s">
-				<input type="hidden" name="%s[%s]" value="%s">
-				<div class="attachment-preview">
-					<div class="thumbnail">
-						<div class="centered">
-							%s
-						</div>
-					</div>
-				</div>
+			'<li class="rwmb-image-item">
+				<div class="rwmb-file-icon">%s</div>
 				<div class="rwmb-image-overlay"></div>
 				<div class="rwmb-image-actions">
 					%s
 					<a href="#" class="rwmb-image-delete rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span></a>
 				</div>
+				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			esc_attr( $field['image_size'] ),
-			$attributes['name'],
-			$index,
-			$file,
 			wp_get_attachment_image( $file, $field['image_size'] ),
 			$edit_link,
-			$file
+			esc_attr( $file ),
+			esc_attr( $attributes['name'] ),
+			esc_attr( $index ),
+			esc_attr( $file )
 		);
 	}
 

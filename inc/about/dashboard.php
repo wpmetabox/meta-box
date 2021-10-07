@@ -29,6 +29,7 @@ class RWMB_Dashboard {
 
 	public function add_news( $value ) {
 		$is_dismissed = get_user_meta( get_current_user_id(), $this->slug . '_dismiss_news', true );
+		$is_dismissed = apply_filters( 'rwmb_dismiss_dashboard_widget', $is_dismissed );
 		if ( $is_dismissed ) {
 			return $value;
 		}

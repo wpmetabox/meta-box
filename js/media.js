@@ -211,6 +211,10 @@
 			// Sort items using helper 'clone' to prevent trigger click on the image, which means reselect.
 			this.$el.sortable( {
 				helper : 'clone',
+				start: function ( event, ui ) {
+					ui.placeholder.height( ui.helper.outerHeight() );
+					ui.placeholder.width( ui.helper.outerWidth() );
+				},
 				update: function( event, ui ) {
 					ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 				}
@@ -407,7 +411,7 @@
 	 */
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName: 'li',
-		className: 'rwmb-media-item attachment',
+		className: 'rwmb-file',
 		template: wp.template( 'rwmb-media-item' ),
 		initialize: function ( options ) {
 			this.controller = options.controller;

@@ -18,7 +18,7 @@ class RWMB_Loader {
 	 */
 	protected function constants() {
 		// Script version, used to add version for scripts and styles.
-		define( 'RWMB_VER', '5.3.9' );
+		define( 'RWMB_VER', '5.4.7' );
 
 		list( $path, $url ) = self::get_path( dirname( dirname( __FILE__ ) ) );
 
@@ -87,6 +87,9 @@ class RWMB_Loader {
 		// Plugin core.
 		$core = new RWMB_Core();
 		$core->init();
+
+		$shortcode = new RWMB_Shortcode();
+		$shortcode->init();
 
 		// Validation module.
 		new RWMB_Validation();

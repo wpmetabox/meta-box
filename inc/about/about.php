@@ -119,7 +119,11 @@ class RWMB_About {
 							<?php
 							include __DIR__ . '/sections/welcome.php';
 							include __DIR__ . '/sections/tabs.php';
-							include __DIR__ . '/sections/getting-started.php';
+							if ( $this->update_checker->has_extensions() ) {
+								include __DIR__ . '/sections/getting-started-pro.php';
+							} else {
+								include __DIR__ . '/sections/getting-started.php';
+							}
 							include __DIR__ . '/sections/extensions.php';
 							include __DIR__ . '/sections/support.php';
 							do_action( 'rwmb_about_tabs_content' );

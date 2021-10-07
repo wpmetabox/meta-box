@@ -48,21 +48,26 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function ajax_delete_file() {
 		$request = rwmb_request();
-
 		$field_id = $request->filter_post( 'field_id', FILTER_SANITIZE_STRING );
+		$type = false !== strpos( $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ), '[' ) ? 'child' : 'top';
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
+		if ( 'child' === $type ) {
+			$field_group = explode( '[', $request->filter_post( 'field_name', FILTER_SANITIZE_STRING ) );
+			$field_id = $field_group[0]; //this is top parent field_id
+		}
 		// Make sure the file to delete is in the custom field.
 		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id', FILTER_SANITIZE_STRING );
 		$object_type = $request->filter_post( 'object_type', FILTER_SANITIZE_STRING );
-		$field       = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
+		$field = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
 		$field_value = self::raw_meta( $object_id, $field );
 		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
-		if ( ! in_array( $attachment, $field_value ) ) {
+
+		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) ||
+			 ( 'child' === $type && ! in_array( $attachment,  self::get_sub_values( $field_value, $request->filter_post( 'field_id', FILTER_SANITIZE_STRING ) ) ) ) ) {
 			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
 		}
-
 		// Delete the file.
 		if ( is_numeric( $attachment ) ) {
 			$result = wp_delete_attachment( $attachment );
@@ -75,6 +80,29 @@ class RWMB_File_Field extends RWMB_Field {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
+	}
+
+	/**
+	 * Recursively get values for sub-fields and sub-groups.
+	 *
+	 * @param  array $field_value  List of parent fields value.
+	 * @param  int   $key_search Nub field name.
+	 * @return array
+	 */
+	protected static function get_sub_values( $field_value, $key_search ) {
+		if ( array_key_exists( $key_search, $field_value ) ) {
+			return $field_value[ $key_search ];
+		}
+
+		foreach ( $field_value as $key => $element ) {
+			if( !is_array( $element ) ) {
+				continue;
+			}
+			if ( self::get_sub_values( $element, $key_search ) ) {
+				return $element[ $key_search ];
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -136,7 +164,6 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string
 	 */
 	protected static function get_uploaded_files( $files, $field ) {
-		$reorder_nonce = wp_create_nonce( "rwmb-reorder-files_{$field['id']}" );
 		$delete_nonce  = wp_create_nonce( "rwmb-delete-file_{$field['id']}" );
 		$output        = '';
 
@@ -148,10 +175,10 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return sprintf(
-			'<ul class="rwmb-uploaded" data-field_id="%s" data-delete_nonce="%s" data-reorder_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
+			'<ul class="rwmb-files" data-field_id="%s" data-field_name="%s" data-delete_nonce="%s" data-force_delete="%s" data-max_file_uploads="%s" data-mime_type="%s">%s</ul>',
 			$field['id'],
+			$field['field_name'],
 			$delete_nonce,
-			$reorder_nonce,
 			$field['force_delete'] ? 1 : 0,
 			$field['max_file_uploads'],
 			$field['mime_type'],
@@ -173,49 +200,48 @@ class RWMB_File_Field extends RWMB_Field {
 		$attributes  = self::get_attributes( $field, $file );
 
 		if ( ! $file ) {
-			return;
+			return '';
 		}
 
 		if ( $field['upload_dir'] ) {
 			$data = self::file_info_custom_dir( $file, $field );
 		} else {
-			$data      = array(
-				'icon'      => wp_get_attachment_image( $file, array( 60, 60 ), true ),
+			$data      = [
+				'icon'      => wp_get_attachment_image( $file, [48, 64], true ),
 				'name'      => basename( get_attached_file( $file ) ),
 				'url'       => wp_get_attachment_url( $file ),
 				'title'     => get_the_title( $file ),
 				'edit_link' => '',
-			);
+			];
 			$edit_link = get_edit_post_link( $file );
 			if ( $edit_link ) {
-				$data['edit_link'] = sprintf( '<a href="%s" class="rwmb-file-edit" target="_blank"><span class="dashicons dashicons-edit"></span>%s</a>', $edit_link, $i18n_edit );
+				$data['edit_link'] = sprintf( '<a href="%s" class="rwmb-file-edit" target="_blank">%s</a>', $edit_link, $i18n_edit );
 			}
 		}
 
 		return sprintf(
 			'<li class="rwmb-file">
-				<div class="rwmb-file-icon"><a href="%s" target="_blank">%s</a></div>
+				<div class="rwmb-file-icon">%s</div>
 				<div class="rwmb-file-info">
 					<a href="%s" target="_blank" class="rwmb-file-title">%s</a>
-					<p class="rwmb-file-name">%s</p>
-					<p class="rwmb-file-actions">
+					<div class="rwmb-file-name">%s</div>
+					<div class="rwmb-file-actions">
 						%s
-						<a href="#" class="rwmb-file-delete" data-attachment_id="%s"><span class="dashicons dashicons-no-alt"></span>%s</a>
-					</p>
+						<a href="#" class="rwmb-file-delete" data-attachment_id="%s">%s</a>
+					</div>
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			$data['url'],
 			$data['icon'],
-			$data['url'],
-			$data['title'],
-			$data['name'],
+			esc_url( $data['url'] ),
+			esc_html( $data['title'] ),
+			esc_html( $data['name'] ),
 			$data['edit_link'],
-			$file,
-			$i18n_delete,
-			$attributes['name'],
-			$index,
-			$file
+			esc_attr( $file ),
+			esc_html( $i18n_delete ),
+			esc_attr( $attributes['name'] ),
+			esc_attr( $index ),
+			esc_attr( $file )
 		);
 	}
 
@@ -348,16 +374,14 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args(
-			$field,
-			array(
-				'std'              => array(),
-				'force_delete'     => false,
-				'max_file_uploads' => 0,
-				'mime_type'        => '',
-				'upload_dir'       => '',
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'std'                      => [],
+			'force_delete'             => false,
+			'max_file_uploads'         => 0,
+			'mime_type'                => '',
+			'upload_dir'               => '',
+			'unique_filename_callback' => null,
+		] );
 
 		$field['multiple']   = true;
 		$field['input_name'] = "_file_{$field['id']}";
@@ -491,7 +515,11 @@ class RWMB_File_Field extends RWMB_Field {
 
 		// Let WordPress handle upload to the custom directory.
 		add_filter( 'upload_dir', $filter_upload_dir );
-		$file_info = wp_handle_upload( $file, array( 'test_form' => false ) );
+		$overrides = [
+			'test_form'                => false,
+			'unique_filename_callback' => $field['unique_filename_callback'],
+		];
+		$file_info = wp_handle_upload( $file, $overrides );
 		remove_filter( 'upload_dir', $filter_upload_dir );
 
 		return empty( $file_info['url'] ) ? null : $file_info['url'];

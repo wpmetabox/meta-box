@@ -93,6 +93,10 @@ class RWMB_Update_Checker {
 			'meta-box-show-hide',
 			'meta-box-tabs',
 			'meta-box-template',
+
+			'mb-favorite-posts',
+			'mb-testimonials',
+			'mb-user-avatar',
 		);
 		$plugins    = get_plugins();
 		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
@@ -189,6 +193,7 @@ class RWMB_Update_Checker {
 			$args,
 			array(
 				'api_key' => $this->option->get_api_key(),
+				'url'     => home_url(),
 			)
 		);
 		$args = array_filter( $args );
