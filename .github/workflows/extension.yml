@@ -1,6 +1,19 @@
 name: Reusable workflow for releasing Meta Box extensions
 on:
   workflow_call:
+    secrets:
+      SSH_KEY:
+        require: true
+      SSH_KNOWN_HOSTS:
+        require: true
+      SSH_USERNAME:
+        require: true
+      SERVER_IP:
+        require: true
+      DOWNLOADS_DIR:
+        require: true
+      SLACK_WEBHOOK:
+        require: true
 jobs:
   release:
     name: Release to Meta Box website
