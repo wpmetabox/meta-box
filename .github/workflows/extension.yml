@@ -3,17 +3,17 @@ on:
   workflow_call:
     secrets:
       SSH_KEY:
-        require: true
+        required: true
       SSH_KNOWN_HOSTS:
-        require: true
+        required: true
       SSH_USERNAME:
-        require: true
+        required: true
       SERVER_IP:
-        require: true
+        required: true
       DOWNLOADS_DIR:
-        require: true
+        required: true
       SLACK_WEBHOOK:
-        require: true
+        required: true
 jobs:
   release:
     name: Release to Meta Box website
