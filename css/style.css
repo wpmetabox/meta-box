@@ -34,12 +34,6 @@
 .rwmb-input textarea:not([cols]) {
 	width: 100%;
 }
-.rwmb-input textarea.large-text{
-   width: unset;
-}
-.rwmb-input textarea:not([cols]).large-text{
-   width: 99%;
-}
 .rwmb-input input[type="checkbox"],
 .rwmb-input input[type="radio"] {
 	width: 1em;
