@@ -38,7 +38,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 			$field,
 			array(
 				'autocomplete' => false,
-				'cols'         => 60,
+				'cols'         => false,
 				'rows'         => 3,
 				'maxlength'    => false,
 				'wrap'         => false,
@@ -71,7 +71,6 @@ class RWMB_Textarea_Field extends RWMB_Field {
 				'placeholder'  => $field['placeholder'],
 			)
 		);
-		$attributes['class'] .= ' large-text';
 
 		return $attributes;
 	}
