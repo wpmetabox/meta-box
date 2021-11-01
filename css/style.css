@@ -41,6 +41,10 @@
 .rwmb-input input[type="button"] {
 	width: auto;
 }
+.rwmb-input input,
+.rwmb-input textarea {
+	max-width: 100%;
+}
 .rwmb-textarea {
 	resize: vertical;
 }
