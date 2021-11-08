@@ -288,7 +288,7 @@ class RWMB_File_Field extends RWMB_Field {
 		$new = array_filter( (array) $new );
 
 		$count = self::transform( $input );
-		for ( $i = 0; $i <= $count; $i ++ ) {
+		for ( $i = 0; $i < $count; $i ++ ) {
 			$attachment = self::handle_upload( "{$input}_{$i}", $post_id, $field );
 			if ( $attachment && ! is_wp_error( $attachment ) ) {
 				$new[] = $attachment;

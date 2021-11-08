@@ -31,7 +31,7 @@
 .rwmb-input-group,
 .rwmb-input select,
 .rwmb-input .select2-container,
-.rwmb-input textarea {
+.rwmb-input textarea:not([cols]) {
 	width: 100%;
 }
 .rwmb-input input[type="checkbox"],
@@ -40,6 +40,10 @@
 }
 .rwmb-input input[type="button"] {
 	width: auto;
+}
+.rwmb-input input,
+.rwmb-input textarea {
+	max-width: 100%;
 }
 .rwmb-textarea {
 	resize: vertical;

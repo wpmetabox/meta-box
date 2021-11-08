@@ -1,0 +1,35 @@
+name: Reusable workflow for releasing Meta Box extensions
+on:
+  workflow_call:
+    secrets:
+      SSH_KEY:
+        required: true
+      SSH_KNOWN_HOSTS:
+        required: true
+      SSH_USERNAME:
+        required: true
+      SERVER_IP:
+        required: true
+      DOWNLOADS_DIR:
+        required: true
+      SLACK_WEBHOOK:
+        required: true
+jobs:
+  release:
+    name: Release to Meta Box website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create zip, upload and notify Slack
+        run: |
+          name=$(basename -s .git $(git config --get remote.origin.url))
+          git archive -o $name.zip --prefix=$name/ HEAD
+          rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}
+          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          curl -X POST --data-urlencode "payload={\"channel\": \"#meta-box\", \"username\": \"Bot\", \"text\": \"New version $tag for $name has been just released!\", \"icon_emoji\": \":tada:\"}" ${{ secrets.SLACK_WEBHOOK }}
