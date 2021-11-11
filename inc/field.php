@@ -105,10 +105,12 @@ abstract class RWMB_Field {
 			);
 		}
 
+		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
 
 		$input_open = sprintf(
-			'<div class="rwmb-input"%s>',
+			'<div class="rwmb-input" %s %s>',
+			$data_min_clone,
 			$data_max_clone
 		);
 
@@ -339,6 +341,7 @@ abstract class RWMB_Field {
 				'save_field'        => true,
 
 				'clone'             => false,
+				'min_clone'         => 0,
 				'max_clone'         => 0,
 				'sort_clone'        => false,
 				'add_button'        => __( '+ Add more', 'meta-box' ),
