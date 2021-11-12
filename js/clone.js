@@ -160,7 +160,7 @@
 		var $clones = $container.children( '.rwmb-clone' ),
 		    minClone = 1;
 	
-		if($container.data( 'min-clone' )){
+		if( $container.data( 'min-clone' ) ){
 			minClone = parseInt( $container.data( 'min-clone' ) );
 		}
 		$clones.children( '.remove-clone' ).toggle( $clones.length > minClone );
