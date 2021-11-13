@@ -1,0 +1,26 @@
+name: Reusable workflow for releasing free Meta Box extensions on WordPress.org
+on:
+  workflow_call:
+    secrets:
+      SVN_USERNAME:
+        required: true
+      SVN_PASSWORD:
+        required: true
+      SLACK_WEBHOOK:
+        required: true
+jobs:
+  release:
+    name: Release to WordPress.org
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: 10up/action-wordpress-plugin-deploy@master
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+      - name: Notify Slack
+        run: |
+          name=$(basename -s .git $(git config --get remote.origin.url))
+          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          curl -X POST --data-urlencode "payload={\"channel\": \"#meta-box\", \"username\": \"Bot\", \"text\": \"New version $tag for $name has been just released!\", \"icon_emoji\": \":tada:\"}" ${{ secrets.SLACK_WEBHOOK }}
