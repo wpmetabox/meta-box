@@ -548,9 +548,6 @@ abstract class RWMB_Field {
 
 	/**
 	 * Call a method of a field.
-	 * This should be replaced by static::$method( $args ) in PHP 5.3.
-	 *
-	 * @return mixed
 	 */
 	public static function call() {
 		$args = func_get_args();
@@ -561,7 +558,9 @@ abstract class RWMB_Field {
 		if ( is_string( $check ) ) {
 			$method = array_shift( $args );
 			$field  = reset( $args ); // Keep field as 1st param.
-		} else {
+		}
+		// Params: field, method name, other params.
+		else {
 			$field  = array_shift( $args );
 			$method = array_shift( $args );
 
@@ -573,7 +572,12 @@ abstract class RWMB_Field {
 			}
 		}
 
-		return call_user_func_array( array( RWMB_Helpers_Field::get_class( $field ), $method ), $args );
+		$class = RWMB_Helpers_Field::get_class( $field );
+		if ( method_exists( $class, $method ) ) {
+			return call_user_func_array( array( $class, $method ), $args );
+		} else {
+			_deprecated_function( "$class::$method", '5.4.8' );
+		}
 	}
 
 	/**
