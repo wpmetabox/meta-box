@@ -48,6 +48,13 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 */
 	public static function transform_options( $options ) {
 		$transformed = array();
+
+		// Use callback: function_name format.
+		if ( count( $options ) === 1 && array_keys($options) === ['callback'] ) {
+			$callback = $options['callback'];
+			$options = is_callable( $callback ) ? call_user_func( $callback ) : array();
+		}
+
 		$options     = (array) $options;
 		foreach ( $options as $value => $label ) {
 			$option = is_array( $label ) ? $label : array(
