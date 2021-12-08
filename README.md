@@ -1,4 +1,5 @@
 # Meta Box - WordPress Custom Fields Framework
+# New line
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wpmetabox/meta-box/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wpmetabox/meta-box/?branch=master)
 ![Total Downloads](https://img.shields.io/wordpress/plugin/dt/meta-box.svg)
