@@ -36,6 +36,11 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 			)
 		);
 
+		// Use callback: function_name format from Meta Box Builder.
+		if ( isset( $field['_callback'] ) && is_callable( $field['_callback'] ) ) {
+			$field['options'] = call_user_func( $field['_callback'] );
+		}
+
 		return $field;
 	}
 
