@@ -42,7 +42,8 @@
 	width: auto;
 }
 .rwmb-input input,
-.rwmb-input textarea {
+.rwmb-input textarea,
+.rwmb-input select {
 	max-width: 100%;
 }
 .rwmb-textarea {
