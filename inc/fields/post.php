@@ -178,25 +178,24 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 *
 	 * @link https://developer.wordpress.org/reference/hooks/posts_search/
 	 */
-	public static function search_by_title( $search, &$wp_query ) {
+	public static function search_by_title( $search, $wp_query ) {
 		global $wpdb;
 		if ( empty( $search ) ) {
 			return $search;
 		}
-		$q         = $wp_query->query_vars;
-		$n         = ! empty( $q['exact'] ) ? '' : '%';
-		$search    = '';
-		$searchand = '';
+		$q      = $wp_query->query_vars;
+		$n      = ! empty( $q['exact'] ) ? '' : '%';
+		$search = array();
 		foreach ( (array) $q['search_terms'] as $term ) {
-			$term      = esc_sql( $wpdb->esc_like( $term ) );
-			$search   .= "{$searchand}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
-			$searchand = ' AND ';
+			$term     = esc_sql( $wpdb->esc_like( $term ) );
+			$search[] = "($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
 		}
-		if ( ! empty( $search ) ) {
-			$search = " AND ({$search}) ";
-			if ( ! is_user_logged_in() ) {
-				$search .= " AND ($wpdb->posts.post_password = '') ";
-			}
+		if ( empty( $search ) ) {
+			return $search;
+		}
+		$search = ' AND (' . implode( ' AND ', $search ) . ') ';
+		if ( ! is_user_logged_in() ) {
+			$search .= " AND ($wpdb->posts.post_password = '') ";
 		}
 		return $search;
 	}
