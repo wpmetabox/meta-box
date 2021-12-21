@@ -81,7 +81,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$field = wp_parse_args(
 			$field,
 			array(
-				'placeholder'   => __( 'Select an user', 'meta-box' ),
+				'placeholder'   => __( 'Select a user', 'meta-box' ),
 				'query_args'    => array(),
 				'display_field' => 'display_name',
 			)
