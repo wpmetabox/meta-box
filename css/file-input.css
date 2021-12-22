@@ -10,3 +10,8 @@
 .rwmb-file-input-inner .button {
 	margin: 0;
 }
+.rwmb-file-input-image {
+	width: 150px;
+	height: 150px;
+	margin-top: 5px;
+}

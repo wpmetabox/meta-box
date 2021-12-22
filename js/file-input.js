@@ -24,16 +24,22 @@
 
 		// Handle selection
 		frame.on( 'select', function () {
-			var url = frame.state().get( 'selection' ).first().toJSON().url;
+			var url             = frame.state().get( 'selection' ).first().toJSON().url;
+			var fileType        =  url.split( '.' ).pop().toLowerCase();
+			var validImageTypes = [ 'gif', 'jpeg', 'png', 'jpg' ];
 			$el.siblings( 'input' ).val( url ).trigger( 'change' ).siblings( 'a' ).removeClass( 'hidden' );
-			$el.closest('.rwmb-file-input-inner' ).siblings( '.rwmb-background-image' ).removeClass( 'hidden' ).html( '<img src="'+ url +'">' ) ;
+			if ( validImageTypes.includes( fileType ) ) {
+				$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).removeClass( 'hidden' ).html( '<img src="'+ url +'">' ) ;
+			} else {
+				$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'hidden' );
+			}
 		} );
 	}
 
 	function clearSelection( e ) {
 		e.preventDefault();
 		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' ).trigger( 'change' );
-		$( this ).closest('.rwmb-file-input-inner').siblings('.rwmb-background-image').addClass( 'hidden' );
+		$( this ).closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'hidden' );
 	}
 
 	function hideRemoveButtonWhenCloning() {

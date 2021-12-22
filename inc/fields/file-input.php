@@ -35,16 +35,23 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field, $meta );
+		$file_ext   = strtolower( end( explode( '.', $meta ) ) );
+		$expensions = [ "jpeg", "jpg", "png", "gif" ];
 		return sprintf(
 			'<div class="rwmb-file-input-inner">
 				<input %s>
 				<a href="#" class="rwmb-file-input-select button">%s</a>
 				<a href="#" class="rwmb-file-input-remove button %s">%s</a>
+			</div>
+			<div class="rwmb-file-input-image %s">
+				<img src="%s">
 			</div>',
 			self::render_attributes( $attributes ),
 			esc_html__( 'Select', 'meta-box' ),
 			$meta ? '' : 'hidden',
-			esc_html__( 'Remove', 'meta-box' )
+			esc_html__( 'Remove', 'meta-box' ),
+			( !in_array( $file_ext, $expensions ) || empty( $meta ) ) ? 'hidden' : '',
+			$meta,
 		);
 	}
 

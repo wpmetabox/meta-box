@@ -75,9 +75,7 @@ class RWMB_Background_Field extends RWMB_Field {
 				'placeholder' => __( 'Background Image', 'meta-box' ),
 			)
 		);
-		$hidden  = empty( $meta['image'] ) ? 'hidden' : '';
 		$output .= RWMB_File_Input_Field::html( $meta['image'], $image );
-		$output .= '<div class="rwmb-background-image'.' '.$hidden.'"><img src="'.$meta['image'].'"></div>';
 
 		$output .= '</div><!-- .rwmb-background-row -->';
 		$output .= '<div class="rwmb-background-row">';
