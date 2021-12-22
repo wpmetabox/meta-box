@@ -20,3 +20,9 @@
 	margin-bottom: 5px;
 	max-width: 100%;
 }
+
+.rwmb-background-row .rwmb-background-image {
+	width: 150px;
+	height: 150px;
+	margin-top: 5px;
+}
