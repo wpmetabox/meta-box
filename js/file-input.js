@@ -26,12 +26,14 @@
 		frame.on( 'select', function () {
 			var url = frame.state().get( 'selection' ).first().toJSON().url;
 			$el.siblings( 'input' ).val( url ).trigger( 'change' ).siblings( 'a' ).removeClass( 'hidden' );
+			$el.closest('.rwmb-file-input-inner' ).siblings( '.rwb-background-image' ).removeClass( 'hidden' ).html( '<img src="'+ url +'" />' ).css({ 'width': '150px', 'height': '150px', 'margin-top': '5px' });
 		} );
 	}
 
 	function clearSelection( e ) {
 		e.preventDefault();
 		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' ).trigger( 'change' );
+		$( this ).closest('.rwmb-file-input-inner').siblings('.rwb-background-image').addClass( 'hidden' );
 	}
 
 	function hideRemoveButtonWhenCloning() {

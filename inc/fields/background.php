@@ -76,6 +76,7 @@ class RWMB_Background_Field extends RWMB_Field {
 			)
 		);
 		$output .= RWMB_File_Input_Field::html( $meta['image'], $image );
+		$output .= '<div class="rwb-background-image"></div>';
 
 		$output .= '</div><!-- .rwmb-background-row -->';
 		$output .= '<div class="rwmb-background-row">';
