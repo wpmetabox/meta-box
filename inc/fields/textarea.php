@@ -41,6 +41,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 				'cols'         => false,
 				'rows'         => 3,
 				'maxlength'    => false,
+				'minlength'    => false,
 				'wrap'         => false,
 				'readonly'     => false,
 			)
@@ -66,6 +67,7 @@ class RWMB_Textarea_Field extends RWMB_Field {
 				'cols'         => $field['cols'],
 				'rows'         => $field['rows'],
 				'maxlength'    => $field['maxlength'],
+				'minlength'    => $field['minlength'],
 				'wrap'         => $field['wrap'],
 				'readonly'     => $field['readonly'],
 				'placeholder'  => $field['placeholder'],
