@@ -31,12 +31,14 @@
 
 	function changeValueInput( e ) {
 		e.preventDefault();
-		var $el             = $( this );
-		var url             = $el.val();
-		var fileType        = url.split( '.' ).pop().toLowerCase();
-		var validImageTypes = [ 'gif', 'jpeg', 'png', 'jpg' ];
-		if ( validImageTypes.includes( fileType ) ) {
-			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).removeClass( 'rwmb-file-input-hidden-image' ).html( '<img src="'+ url +'">' ) ;
+		var $el = $( this ),
+			url = $el.val(),
+			fileType = url.split( '.' ).pop().toLowerCase(),
+			imageTypes = [ 'gif', 'jpeg', 'png', 'jpg' ],
+			validImageTypes = imageTypes.includes( fileType );
+
+		if ( validImageTypes ) {
+			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).removeClass( 'rwmb-file-input-hidden-image' ).find( 'img' ).attr( 'src', url );
 		} else {
 			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'rwmb-file-input-hidden-image' );
 		}
