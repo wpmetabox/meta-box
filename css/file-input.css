@@ -13,7 +13,7 @@
 .rwmb-file-input-image {
 	width: 150px;
 	height: auto;
-	margin-top: 5px;
+	margin-bottom: 4px;
 }
 .rwmb-file-input-image img{
 	max-width: 100%;
