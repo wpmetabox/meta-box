@@ -12,8 +12,12 @@
 }
 .rwmb-file-input-image {
 	width: 150px;
-	height: 150px;
+	height: auto;
 	margin-top: 5px;
+}
+.rwmb-file-input-image img{
+	max-width: 100%;
+	height: auto;
 }
 .rwmb-file-input-hidden{
 	display: none;
