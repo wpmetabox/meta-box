@@ -38,16 +38,16 @@
 			validImageTypes = imageTypes.includes( fileType );
 
 		if ( validImageTypes ) {
-			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).removeClass( 'rwmb-file-input-hidden-image' ).find( 'img' ).attr( 'src', url );
+			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).removeClass( 'rwmb-file-input-hidden' ).find( 'img' ).attr( 'src', url );
 		} else {
-			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'rwmb-file-input-hidden-image' );
+			$el.closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'rwmb-file-input-hidden' );
 		}
 	}
 
 	function clearSelection( e ) {
 		e.preventDefault();
 		$( this ).addClass( 'hidden' ).siblings( 'input' ).val( '' ).trigger( 'change' );
-		$( this ).closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'rwmb-file-input-hidden-image' );
+		$( this ).closest( '.rwmb-file-input-inner' ).siblings( '.rwmb-file-input-image' ).addClass( 'rwmb-file-input-hidden' );
 	}
 
 	function hideRemoveButtonWhenCloning() {
