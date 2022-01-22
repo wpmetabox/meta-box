@@ -63,7 +63,7 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 * @return int
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$new = intval( $new );
+		$new = floatval( $new );
 		$min = intval( $field['min'] );
 		$max = intval( $field['max'] );
 
