@@ -288,6 +288,10 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
+		if ( empty( $value ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<a href="%s" title="%s">%s</a>',
 			// @codingStandardsIgnoreLine
