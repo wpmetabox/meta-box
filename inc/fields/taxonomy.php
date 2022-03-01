@@ -280,10 +280,10 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
-	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
-	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 * @param array        $field   Field parameters.
+	 * @param object|array $value   The value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param ?int         $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
@@ -292,13 +292,20 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		return sprintf(
-			'<a href="%s" title="%s">%s</a>',
-			// @codingStandardsIgnoreLine
-			esc_url( get_term_link( $value ) ),
-			esc_attr( $value->name ),
-			esc_html( $value->name )
-		);
+		$link = isset( $args['link'] ) ? $args['link'] : 'view';
+		$text = $value->name;
+
+		if ( false === $link ) {
+			return $text;
+		}
+		if ( 'view' === $link ) {
+			$url = get_term_link( $value );
+		}
+		if ( 'edit' === $link ) {
+			$url = get_edit_term_link( $value );
+		}
+
+		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
 	}
 
 	/**

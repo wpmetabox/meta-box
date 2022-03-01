@@ -220,24 +220,31 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
-	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
-	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param int|null $post_id Post ID. null for current post. Optional.
+	 * @param array  $field   Field parameters.
+	 * @param string $value   The value.
+	 * @param array  $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param ?int   $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		return ! $value ? '' : sprintf(
-			'<a href="%s" title="%s">%s</a>',
-			esc_url( get_permalink( $value ) ),
-			the_title_attribute(
-				array(
-					'post' => $value,
-					'echo' => false,
-				)
-			),
-			get_the_title( $value )
-		);
+		if ( empty( $value ) ) {
+			return '';
+		}
+
+		$link = isset( $args['link'] ) ? $args['link'] : 'view';
+		$text = get_the_title( $value );
+
+		if ( false === $link ) {
+			return $text;
+		}
+		if ( 'view' === $link ) {
+			$url = get_permalink( $value );
+		}
+		if ( 'edit' === $link ) {
+			$url = get_edit_post_link( $value );
+		}
+
+		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), wp_kses_post( $text ) );
 	}
 }

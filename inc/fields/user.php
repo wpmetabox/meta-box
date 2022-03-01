@@ -166,8 +166,25 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		$display_field = $field['display_field'];
+		if ( empty( $value ) ) {
+			return '';
+		}
+
+		$link          = isset( $args['link'] ) ? $args['link'] : 'view';
 		$user          = get_userdata( $value );
-		return '<a href="' . esc_url( get_author_posts_url( $value ) ) . '">' . esc_html( $user->$display_field ) . '</a>';
+		$display_field = $field['display_field'];
+		$text          = $user->$display_field;
+
+		if ( false === $link ) {
+			return $text;
+		}
+		if ( 'view' === $link ) {
+			$url = get_author_posts_url( $value );
+		}
+		if ( 'edit' === $link ) {
+			$url = get_edit_user_link( $value );
+		}
+
+		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
 	}
 }
