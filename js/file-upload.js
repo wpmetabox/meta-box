@@ -4,6 +4,7 @@
 	var views = rwmb.views = rwmb.views || {},
 		MediaField = views.MediaField,
 		FileUploadField, UploadButton;
+	var submitBtn = rwmb.$document.find( rwmb.submitBtn );
 
 	FileUploadField = views.FileUploadField = MediaField.extend( {
 		createAddButton: function () {
@@ -81,14 +82,15 @@
 		if ( view ) {
 			return;
 		}
-
 		view = new FileUploadField( { input: this } );
 
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
 
 		// Init uploader after view is inserted to make wp.Uploader works.
+		submitBtn.attr('disabled', true);
 		view.addButton.initUploader();
+		submitBtn.attr('disabled', false);
 
 		$this.data( 'view', view );
 	}
