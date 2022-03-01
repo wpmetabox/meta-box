@@ -33,14 +33,14 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$term = $request->filter_post( 'term', FILTER_SANITIZE_STRING );
+		$term = (string) $request->filter_post( 'term' );
 		if ( $term ) {
 			$field['query_args']['search'] = "*{$term}*";
 		}
 
 		// Pagination.
 		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
-		if ( $limit && 'query:append' === $request->filter_post( '_type', FILTER_SANITIZE_STRING ) ) {
+		if ( $limit && 'query:append' === $request->filter_post( '_type' ) ) {
 			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
 

@@ -32,10 +32,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$field['_original_id'] = $field['id'];
 
 		// Search.
-		$field['query_args']['s'] = $request->filter_post( 'term', FILTER_SANITIZE_STRING );
+		$field['query_args']['s'] = $request->filter_post( 'term' );
 
 		// Pagination.
-		if ( 'query:append' === $request->filter_post( '_type', FILTER_SANITIZE_STRING ) ) {
+		if ( 'query:append' === $request->filter_post( '_type' ) ) {
 			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
 
