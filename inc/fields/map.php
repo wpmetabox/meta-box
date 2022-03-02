@@ -153,6 +153,114 @@ class RWMB_Map_Field extends RWMB_Field {
 		return self::render_map( $value, $args );
 	}
 
+    /**
+     * Return attributes of field
+     * 
+     * @param array $keys
+     * @param array $fields
+     * @return array or false
+     */
+    private static function get_map_field($keys = array(), $fields = array()) {
+        if (empty($keys))
+            return false;
+
+        $key = array_shift($keys);
+        if ($fields['id'] == $key && $fields['type'] != 'group')
+            return $fields;
+
+        if ($fields['id'] == $key && $fields['type'] == 'group') {
+            foreach ($fields['fields'] as $field) {
+                $attrs = self::get_map_field($keys, $field);
+                if ($attrs) {
+                    return $attrs;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return value field
+     * 
+     * @param array $keys
+     * @param array $fields
+     * @return string or false
+     */
+    private static function get_map_value($keys = array(), $fields = array()) {
+        if (empty($keys))
+            return false;
+
+        if (count($keys) == 1)
+            return $fields;
+
+        array_shift($keys);
+        while ($key = array_shift($keys)) {
+            $fields = &$fields[$key];
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Render a map in the frontend by field.
+     * 
+     * @param array $args Additional arguments for the map.
+     * @return string HTML output of the field
+     */
+    public static function render_map_by_field($args = array()) {
+
+        $args = wp_parse_args(
+                $args,
+                array(
+                    /*
+                     * id field or id group by dot
+                     * id_field
+                     * id_group.id_field
+                     * id_group_1.id_group_2.id_field
+                     */
+                    'field' => '',
+                    'object_type' => 'post', // if use setting page, 'object_type' => 'setting'
+                    'option_name' => ''
+                )
+        );
+
+        if (empty($args['field'])) {
+            return '';
+        }
+
+        $field = $args['field'];
+        $option_name = $args['option_name'];
+
+        unset($args['field']);
+        unset($args['option_name']);
+
+        if (strpos($field, '.') !== false) {
+            $fields = explode('.', $field);
+        } else {
+            $fields[] = $field;
+        }
+
+        $fieldAttributes = !empty($option_name) ?
+                rwmb_get_field_settings($fields[0], $args, $option_name) :
+                rwmb_get_field_settings($fields[0], $args);
+
+        $fieldValues = !empty($option_name) ?
+                rwmb_meta($fields[0], $args, $option_name) :
+                rwmb_meta($fields[0], $args);
+
+        //Get value location from field
+        $location = self::get_map_value($fields, $fieldValues);
+        //Get Attribute from field
+        $attrs = self::get_map_field($fields, $fieldAttributes);
+
+        return self::render_map($location, [
+                    'language' => $attrs['language'],
+                    'region' => $attrs['region'],
+                    'api_key' => $attrs['api_key'],
+        ]);
+    }    
+    
 	/**
 	 * Render a map in the frontend.
 	 *
