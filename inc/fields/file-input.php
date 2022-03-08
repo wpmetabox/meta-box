@@ -51,7 +51,7 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 			self::render_attributes( $attributes ),
 			esc_html__( 'Select', 'meta-box' ),
 			$meta ? '' : 'hidden',
-			esc_html__( 'Remove', 'meta-box' ),
+			esc_html__( 'Remove', 'meta-box' )
 		);
 	}
 
