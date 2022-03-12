@@ -2,9 +2,15 @@
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
+		isGutenberg = rwmb.isGutenberg,
 		MediaField = views.MediaField,
 		FileUploadField, UploadButton;
-	var submitBtn = rwmb.$document.find( rwmb.submitBtn );
+
+	var submitFrontendBtn = rwmb.$document.find( 'button[name="rwmb_submit"]' );
+	var isFrontend = ( submitFrontendBtn.length > 0 );
+
+	var classicEditorBtn = rwmb.$document.find( '#publishing-action input#publish' );
+	var isClassicEditor = ( classicEditorBtn.length > 0 );
 
 	FileUploadField = views.FileUploadField = MediaField.extend( {
 		createAddButton: function () {
@@ -87,10 +93,27 @@
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
 
+		if ( isFrontend ) {
+			submitFrontendBtn.attr( 'disabled', true );
+		}
+		if ( isClassicEditor ) {
+			classicEditorBtn.attr( 'disabled', true );
+		}
+		if ( isGutenberg ) {
+			wp.data.dispatch( 'core/editor' ).lockPostSaving( 'uploading-file' );
+		}
 		// Init uploader after view is inserted to make wp.Uploader works.
-		submitBtn.attr('disabled', true);
 		view.addButton.initUploader();
-		submitBtn.attr('disabled', false);
+
+		if ( isFrontend ) {
+			submitFrontendBtn.attr( 'disabled', false );
+		}
+		if ( isClassicEditor ) {
+			classicEditorBtn.attr( 'disabled', false );
+		}
+		if ( isGutenberg ) {
+			wp.data.dispatch( 'core/editor' ).unlockPostSaving( 'uploading-file' );
+		}
 
 		$this.data( 'view', view );
 	}

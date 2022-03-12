@@ -10,9 +10,6 @@ window.rwmb = window.rwmb || {};
 	// Detect Gutenberg.
 	rwmb.isGutenberg = document.body.classList.contains( 'block-editor-page' );
 
-	// Submit button
-	rwmb.submitBtn = 'button[name="rwmb_submit"]';
-
 	// Generate unique ID.
 	rwmb.uniqid = function uniqid() {
 		return Math.random().toString( 36 ).substr( 2 );
