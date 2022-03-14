@@ -4,13 +4,8 @@
 	var views = rwmb.views = rwmb.views || {},
 		isGutenberg = rwmb.isGutenberg,
 		MediaField = views.MediaField,
-		FileUploadField, UploadButton;
-
-	var submitFrontendBtn = rwmb.$document.find( 'button[name="rwmb_submit"]' );
-	var isFrontend = ( submitFrontendBtn.length > 0 );
-
-	var classicEditorBtn = rwmb.$document.find( '#publishing-action input#publish' );
-	var isClassicEditor = ( classicEditorBtn.length > 0 );
+		FileUploadField, UploadButton,
+		$submitButtons = rwmb.$document.find( 'button[name="rwmb_submit"], #publish' );
 
 	FileUploadField = views.FileUploadField = MediaField.extend( {
 		createAddButton: function () {
@@ -93,26 +88,18 @@
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
 
-		if ( isFrontend ) {
-			submitFrontendBtn.attr( 'disabled', true );
-		}
-		if ( isClassicEditor ) {
-			classicEditorBtn.attr( 'disabled', true );
-		}
-		if ( isGutenberg ) {
+		if ( rwmb.isGutenberg ) {
 			wp.data.dispatch( 'core/editor' ).lockPostSaving( 'uploading-file' );
+		} else {
+			$submitButtons.attr( 'disabled', true );
 		}
 		// Init uploader after view is inserted to make wp.Uploader works.
 		view.addButton.initUploader();
 
-		if ( isFrontend ) {
-			submitFrontendBtn.attr( 'disabled', false );
-		}
-		if ( isClassicEditor ) {
-			classicEditorBtn.attr( 'disabled', false );
-		}
-		if ( isGutenberg ) {
+		if ( rwmb.isGutenberg ) {
 			wp.data.dispatch( 'core/editor' ).unlockPostSaving( 'uploading-file' );
+		} else {
+			$submitButtons.attr( 'disabled', false );
 		}
 
 		$this.data( 'view', view );
