@@ -2,7 +2,6 @@
 	'use strict';
 
 	var views = rwmb.views = rwmb.views || {},
-		isGutenberg = rwmb.isGutenberg,
 		MediaField = views.MediaField,
 		FileUploadField, UploadButton,
 		$submitButtons = rwmb.$document.find( 'button[name="rwmb_submit"], #publish' );
