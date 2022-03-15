@@ -1,13 +1,7 @@
 /* global google, jQuery */
 
-( function( $ ) {
+( function( $, document ) {
 	'use strict';
-
-    $.fn.blockMap = function( ) {
-        return $( this )
-                .find( ".rwmb-map-canvas" )
-                .each( displayMap )
-    }
     
 	/**
 	 * Callback function for Google Maps Lazy Load library to display map
@@ -84,4 +78,10 @@
 
 	// Loop through all map instances and display them
 	$( '.rwmb-map-canvas' ).each( displayMap );
-} )( jQuery );
+    
+    $( document ).on( 'mb_blocks_preview', function( e ) {
+        $( e.target )
+                .find( ".rwmb-map-canvas" )
+                .each( displayMap );
+    } );    
+} )( jQuery, document );
