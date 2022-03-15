@@ -1,8 +1,14 @@
 /* global google, jQuery */
 
-jQuery( function ( $ ) {
+( function( $ ) {
 	'use strict';
 
+    $.fn.blockMap = function( ) {
+        return $( this )
+                .find( ".rwmb-map-canvas" )
+                .each( displayMap )
+    }
+    
 	/**
 	 * Callback function for Google Maps Lazy Load library to display map
 	 *
@@ -78,4 +84,4 @@ jQuery( function ( $ ) {
 
 	// Loop through all map instances and display them
 	$( '.rwmb-map-canvas' ).each( displayMap );
-} );
+} )( jQuery );
