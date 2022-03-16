@@ -33,7 +33,7 @@
 		},
 
 		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
-		initUploader: function () {
+		initUploader: function ( $this ) {
 			var self = this,
 				extensions = this.getExtensions().join( ',' ),
 				maxFileSize = this.controller.get( 'maxFileSize' ),
@@ -60,6 +60,7 @@
 				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
 			}
 			this.uploader.uploader.setOption( 'filters', filters );
+			$this.data( 'uploader', this.uploader );
 		},
 
 		getExtensions: function () {
@@ -87,19 +88,8 @@
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
 
-		if ( rwmb.isGutenberg ) {
-			wp.data.dispatch( 'core/editor' ).lockPostSaving( 'uploading-file' );
-		} else {
-			$submitButtons.attr( 'disabled', true );
-		}
 		// Init uploader after view is inserted to make wp.Uploader works.
-		view.addButton.initUploader();
-
-		if ( rwmb.isGutenberg ) {
-			wp.data.dispatch( 'core/editor' ).unlockPostSaving( 'uploading-file' );
-		} else {
-			$submitButtons.attr( 'disabled', false );
-		}
+		view.addButton.initUploader( $this );
 
 		$this.data( 'view', view );
 	}
