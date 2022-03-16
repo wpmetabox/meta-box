@@ -3,8 +3,7 @@
 
 	var views = rwmb.views = rwmb.views || {},
 		MediaField = views.MediaField,
-		FileUploadField, UploadButton,
-		$submitButtons = rwmb.$document.find( 'button[name="rwmb_submit"], #publish' );
+		FileUploadField, UploadButton;
 
 	FileUploadField = views.FileUploadField = MediaField.extend( {
 		createAddButton: function () {
@@ -33,7 +32,7 @@
 		},
 
 		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
-		initUploader: function ( $this ) {
+		initUploader: function () {
 			var self = this,
 				extensions = this.getExtensions().join( ',' ),
 				maxFileSize = this.controller.get( 'maxFileSize' ),
@@ -60,7 +59,7 @@
 				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
 			}
 			this.uploader.uploader.setOption( 'filters', filters );
-			$this.data( 'uploader', this.uploader );
+			this.$el.data( 'uploader', this.uploader );
 		},
 
 		getExtensions: function () {
