@@ -62,10 +62,8 @@ class RWMB_File_Field extends RWMB_Field {
 		$object_type = (string) $request->filter_post( 'object_type' );
 		$field = rwmb_get_field_settings( $field_id, array( 'object_type' => $object_type ), $object_id );
 		$field_value = self::raw_meta( $object_id, $field );
-		$field_value = $field['clone'] ? call_user_func_array( 'array_merge', $field_value ) : $field_value;
 
-		if ( ( 'child' !== $type && ! in_array( $attachment, $field_value ) ) ||
-			 ( 'child' === $type && ! in_array( $attachment,  self::get_sub_values( $field_value, $request->filter_post( 'field_id' ) ) ) ) ) {
+		if ( ! self::in_array_r( $attachment, $field_value ) ) {
 			wp_send_json_error( __( 'Error: Invalid file', 'meta-box' ) );
 		}
 		// Delete the file.
@@ -83,23 +81,14 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Recursively get values for sub-fields and sub-groups.
+	 * Recursively search needle in haystack
 	 *
-	 * @param  array $field_value  List of parent fields value.
-	 * @param  int   $key_search Nub field name.
-	 * @return array
+	 * @return boolean
 	 */
-	protected static function get_sub_values( $field_value, $key_search ) {
-		if ( array_key_exists( $key_search, $field_value ) ) {
-			return $field_value[ $key_search ];
-		}
-
-		foreach ( $field_value as $key => $element ) {
-			if( !is_array( $element ) ) {
-				continue;
-			}
-			if ( self::get_sub_values( $element, $key_search ) ) {
-				return $element[ $key_search ];
+	protected static function in_array_r( $needle, $haystack, $strict = false ) {
+		foreach ( $haystack as $item ) {
+			if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && self::in_array_r( $needle, $item, $strict ) ) ) {
+					return true;
 			}
 		}
 		return false;
