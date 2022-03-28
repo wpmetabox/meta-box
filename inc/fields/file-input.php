@@ -35,7 +35,8 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 	 */
 	public static function html( $meta, $field ) {
 		$attributes = self::get_attributes( $field, $meta );
-		$file_ext   = strtolower( end( explode( '.', $meta ) ) );
+		$meta_array = explode( '.', $meta );
+		$file_ext   = strtolower( end( $meta_array ) );
 		$extensions = [ 'jpeg', 'jpg', 'png', 'gif' ];
 		return sprintf(
 			'<div class="rwmb-file-input-image %s">
