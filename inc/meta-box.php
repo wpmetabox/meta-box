@@ -239,12 +239,14 @@ class RW_Meta_Box {
 		$saved = $this->is_saved();
 
 		// Container.
+		$custom_table = isset( $this->meta_box[ 'storage_type' ] ) ? $this->meta_box[ 'table' ] : '';
 		printf(
-			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s" data-custom-table="%s">',
 			esc_attr( trim( "rwmb-meta-box {$this->class}" ) ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type ),
-			esc_attr( $this->object_id )
+			esc_attr( $this->object_id ),
+			esc_attr( $custom_table )
 		);
 
 		wp_nonce_field( "rwmb-save-{$this->id}", "nonce_{$this->id}" );
