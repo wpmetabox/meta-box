@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.3
 Requires PHP: 5.6
-Tested up to: 5.9.1
-Stable tag: 5.6.1
+Tested up to: 5.9.2
+Stable tag: 5.6.2
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -167,6 +167,12 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.6.2 - 2022-04-01 =
+- Fix map not showing in block preview
+- Fix deleting images in cloneable groups
+- Fix PHP notice for file_upload field
+- Expose the uploader for file_upload/image_upload so developers can work on that. For example: disable the submit button when uploading files.
 
 = 5.6.1 - 2022-03-08 =
 - Fix compatibility for PHP < 7.3
