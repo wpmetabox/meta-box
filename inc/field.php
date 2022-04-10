@@ -93,12 +93,13 @@ abstract class RWMB_Field {
 	public static function begin_html( $meta, $field ) {
 		$field_label = '';
 		if ( $field['name'] ) {
+			// Change "for" attribute in label
 			$field_label = sprintf(
 				'<div class="rwmb-label">
 					<label for="%s">%s%s</label>
 					%s
 				</div>',
-				esc_attr( $field['id'] ),
+				( isset( $field['attributes']['id'] ) ) ? esc_attr( $field['attributes']['id'] ) : esc_attr( $field['id'] ),
 				$field['name'],
 				$field['required'] || ! empty( $field['attributes']['required'] ) ? '<span class="rwmb-required">*</span>' : '',
 				self::label_description( $field )
