@@ -27,6 +27,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			array(
 				'key'      => $field['api_key'],
 				'language' => $field['language'],
+				'libraries' => 'places'
 			),
 			'https://maps.google.com/maps/api/js'
 		);
