@@ -164,7 +164,7 @@
 					} );
 				},
 				select: function ( event, ui ) {
-					geocoder.geocode({ 
+					geocoder.geocode( { 
 			            'placeId': ui.item.placeid
 			        }, 
 			        function( responses, status ) {
@@ -174,7 +174,7 @@
 							that.marker.setPosition( latLng );
 							that.updateCoordinate( latLng );
 			            }
-			        });
+			        } );
 				}
 			} );
 		},
