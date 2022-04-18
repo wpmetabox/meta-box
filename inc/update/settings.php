@@ -109,20 +109,17 @@ class RWMB_Update_Settings {
 						<td>
 							<?php
 							$messages = array(
-								// Translators: %1$s - URL to the pricing page.
-								'invalid' => __( 'Your license key is <b>invalid</b>. Please update your license key or <a href="%1$s" target="_blank">get a new one here</a>.', 'meta-box' ),
-								// Translators: %1$s - URL to the pricing page.
-								'error'   => __( 'Your license key is <b>invalid</b>. Please update your license key or <a href="%1$s" target="_blank">get a new one here</a>.', 'meta-box' ),
-								// Translators: %2$s - URL to the My Account page.
-								'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%2$s" target="_blank">renew your license</a>.', 'meta-box' ),
-								'active'  => __( 'Your license key is <b>active</b>.', 'meta-box' ),
+								'invalid' => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
+								'error'   => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
+								'expired' => __( 'Your license key is <b style="color: #d63638">expired</b>.', 'meta-box' ),
+								'active'  => __( 'Your license key is <b style="color: #00a32a">active</b>.', 'meta-box' ),
 							);
 							$status   = $this->option->get_license_status();
-							$api_key  = in_array( $status, array( 'expired', 'active' ), true ) ? '********************************' : $this->option->get( 'api_key' );
+							$api_key  = $this->option->get( 'api_key' );
 							?>
 							<input class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $api_key ); ?>" type="password">
 							<?php if ( isset( $messages[ $status ] ) ) : ?>
-								<p class="description"><?php echo wp_kses_post( sprintf( $messages[ $status ], 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) ); ?></p>
+								<p class="description"><?php echo wp_kses_post( $messages[ $status ] ); ?></p>
 							<?php endif; ?>
 						</td>
 					</tr>
