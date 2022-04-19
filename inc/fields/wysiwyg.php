@@ -52,7 +52,8 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 
 		wp_editor( $meta, $attributes['id'], $options );
 		echo '<script class="rwmb-wysiwyg-id" type="text/html" data-id="', esc_attr( $attributes['id'] ), '" data-options="', esc_attr( wp_json_encode( $options ) ), '"></script>';
-
+		echo '<script>rwmb.$document.trigger( \'mb_init_editors\' );</script>';
+		
 		return ob_get_clean();
 	}
 
