@@ -215,7 +215,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$taxonomy = reset( $field['taxonomy'] );
 		$term     = wp_insert_term( $term, $taxonomy );
-
+		if ( is_wp_error( $term ) ) {
+			return null;
+		}
 		return isset( $term['term_id'] ) ? $term['term_id'] : null;
 	}
 
