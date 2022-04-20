@@ -106,7 +106,12 @@ class RWMB_Media_Modal {
 	 * @return bool
 	 */
 	public function is_in_normal_mode( $show, $meta_box ) {
-		return $show && ! $this->is_in_modal( $meta_box );
+		global $pagenow;
+		if ( $pagenow != 'post.php' ) {
+			return $show && $this->is_in_modal( $meta_box );
+		} else {
+			return $show && ! $this->is_in_modal( $meta_box );
+		}
 	}
 
 	/**

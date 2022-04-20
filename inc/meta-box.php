@@ -142,7 +142,7 @@ class RW_Meta_Box {
 	 * Enqueue common scripts and styles.
 	 */
 	public function enqueue() {
-		if ( is_admin() && ! $this->is_edit_screen() ) {
+		if ( is_admin() && ! $this->is_edit_screen() && ! get_current_screen( 'upload' ) ) {
 			return;
 		}
 
