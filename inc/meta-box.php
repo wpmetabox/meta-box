@@ -68,7 +68,9 @@ class RW_Meta_Box {
 
 		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
-		$this->global_hooks();
+		if ( $this->is_shown_enqueue() ) {
+			$this->global_hooks();
+		}
 
 		if ( $this->is_shown() ) {
 			$this->object_hooks();
@@ -102,6 +104,17 @@ class RW_Meta_Box {
 		return apply_filters( "rwmb_show_{$this->id}", $show, $this->meta_box );
 	}
 
+	// Check show enqueue if is media-modal
+	public function is_shown_enqueue() {
+		$show = apply_filters( 'rwmb_show', true, $this->meta_box );
+
+		if( $this->meta_box['media_modal'] == true ) {
+			$show = apply_filters( 'rwmb_show_enqueue', true, $this->meta_box );
+		}
+
+		return apply_filters( "rwmb_show_{$this->id}", $show, $this->meta_box );
+	}
+	
 	/**
 	 * Add global hooks.
 	 */

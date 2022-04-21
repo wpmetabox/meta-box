@@ -28,6 +28,7 @@ class RWMB_Media_Modal {
 		add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
 
 		add_filter( 'rwmb_show', array( $this, 'is_in_normal_mode' ), 10, 2 );
+		add_filter( 'rwmb_show_enqueue', array( $this, 'is_in_modal_mode' ), 10, 2 );
 	}
 
 	/**
@@ -107,6 +108,10 @@ class RWMB_Media_Modal {
 	 */
 	public function is_in_normal_mode( $show, $meta_box ) {
 		return $show && ! $this->is_in_modal( $meta_box );
+	}
+
+	public function is_in_modal_mode( $show, $meta_box ) {
+		return $show && $this->is_in_modal( $meta_box );
 	}
 
 	/**
