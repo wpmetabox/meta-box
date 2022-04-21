@@ -68,8 +68,9 @@ class RW_Meta_Box {
 
 		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
+		$this->global_hooks();
+
 		if ( $this->is_shown() ) {
-			$this->global_hooks();
 			$this->object_hooks();
 		}
 	}
@@ -440,7 +441,7 @@ class RW_Meta_Box {
 			$screen = get_current_screen();
 		}
 
-		return 'post' === $screen->base && in_array( $screen->post_type, $this->post_types, true );
+		return in_array( $screen->base, array( 'post', 'upload' ), true ) && in_array( $screen->post_type, $this->post_types, true );
 	}
 
 	/**
