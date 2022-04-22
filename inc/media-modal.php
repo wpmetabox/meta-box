@@ -106,8 +106,18 @@ class RWMB_Media_Modal {
 	 * @return bool
 	 */
 	public function is_in_normal_mode( $show, $meta_box ) {
+		if ( ! $show ) {
+			return $show;
+		}
+
+		// Show the meta box in the modal on Media screen.
 		global $pagenow;
-		return $show && ( ( $pagenow == 'upload.php' && $this->is_in_modal( $meta_box ) ) || ! $this->is_in_modal( $meta_box ) );
+		if ( $pagenow === 'upload.php' ) {
+			return $this->is_in_modal( $meta_box );
+		}
+
+		// Show the meta box only if not in the modal on the post edit screen.
+		return ! $this->is_in_modal( $meta_box );
 	}
 
 	/**
