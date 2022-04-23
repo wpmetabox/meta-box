@@ -64,7 +64,12 @@ class RWMB_Media_Modal {
 
 			ob_start();
 			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
-			RWMB_Field::call( 'show', $field, false );
+			
+			if ( null === $this->object_id ) {
+				$this->object_id = $post->ID;
+			}
+			$saved = $this->is_saved();
+			RWMB_Field::call( 'show', $field, $saved, $post->ID );
 			$form_field['html'] = ob_get_clean();
 
 			$form_fields[ $field['id'] ] = $form_field;
@@ -95,6 +100,39 @@ class RWMB_Media_Modal {
 		}
 
 		return $post;
+	}
+	
+	/**
+	 * Check if meta box is saved before.
+	 * This helps saving empty value in meta fields (text, check box, etc.) and set the correct default values.
+	 *
+	 * @return bool
+	 */
+	public function is_saved() {
+		foreach ( $this->fields as $field ) {
+			if ( empty( $field['id'] ) ) {
+				continue;
+			}
+
+			$value = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
+			if ( false === $value ) {
+				continue;
+			}
+
+			$single = ! $field['multiple'];
+			if ( $field['clone'] ) {
+				$single = ! $field['clone_as_multiple'];
+			}
+
+			if (
+				( $single && '' !== $value )
+				|| ( ! $single && is_array( $value ) && array() !== $value )
+			) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
