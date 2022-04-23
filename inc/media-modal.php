@@ -65,7 +65,7 @@ class RWMB_Media_Modal {
 			ob_start();
 			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
 			
-			if ( null === $this->object_id ) {
+			if ( ! isset( $this->object_id ) || null === $this->object_id ) {
 				$this->object_id = $post->ID;
 			}
 			$saved = $this->is_saved();
