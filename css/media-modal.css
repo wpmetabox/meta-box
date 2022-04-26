@@ -1,0 +1,18 @@
+/* CSS fixes
+--------------------------------------------------------------*/
+#post-body-content table.compat-attachment-fields, 
+#post-body-content table.compat-attachment-fields > tbody, 
+#post-body-content table.compat-attachment-fields tbody > tr, 
+#post-body-content table.compat-attachment-fields tbody > tr > th,
+#post-body-content table.compat-attachment-fields tbody > tr > td,
+#post-body-content table.compat-attachment-fields tbody > tr > td input,
+#post-body-content table.compat-attachment-fields tbody > tr > td textarea {
+	display: block;
+	width: 100%;
+}
+#post-body-content table.compat-attachment-fields tbody > tr {
+	margin: 1em 0;
+}
+#post-body-content table.compat-attachment-fields tbody > tr > th.label span {
+	font-weight: 600;
+}
