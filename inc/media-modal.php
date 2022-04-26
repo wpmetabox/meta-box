@@ -36,7 +36,9 @@ class RWMB_Media_Modal {
 	 * Enqueue common scripts and styles.
 	 */
 	public function enqueue() {
-		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', array(), RWMB_VER );		
+		if( $this->is_edit_attachment_screen() ) {
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', array(), RWMB_VER );
+		}
 	}
 
 	/**
@@ -73,10 +75,6 @@ class RWMB_Media_Modal {
 
 			ob_start();
 			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
-
-			if ( ! isset( $this->object_id ) || null === $this->object_id ) {
-				$this->object_id = $post->ID;
-			}
 			
 			RWMB_Field::call( 'show', $field, true, $post->ID );
 			$form_field['html'] = ob_get_clean();
@@ -143,5 +141,19 @@ class RWMB_Media_Modal {
 	 */
 	protected function is_in_modal( $meta_box ) {
 		return in_array( 'attachment', $meta_box['post_types'], true ) && ! empty( $meta_box['media_modal'] );
+	}
+	
+	/**
+	 * Check if we're on the attachment edit screen.
+	 *
+	 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
+	 *
+	 * @return bool
+	 */
+	public function is_edit_attachment_screen( $screen = null ) {
+		if ( ! ( $screen instanceof WP_Screen ) ) {
+			$screen = get_current_screen();
+		}
+		return in_array( $screen->post_type, array( 'attachment' ), true );
 	}
 }
