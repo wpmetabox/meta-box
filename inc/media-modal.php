@@ -36,7 +36,7 @@ class RWMB_Media_Modal {
 	 * Enqueue common scripts and styles.
 	 */
 	public function enqueue() {
-		if( get_current_screen()->post_type === "attachment" ) {
+		if ( get_current_screen()->post_type === "attachment" ) {
 			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', array(), RWMB_VER );
 		}
 	}
