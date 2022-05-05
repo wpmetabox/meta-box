@@ -1,77 +1,34 @@
 <?php
-/**
- * The main update logic for updating Meta Box extensions.
- *
- * @package Meta Box
- */
-
-/**
- * The update checker class for Meta Box extensions
- *
- * @package Meta Box
- */
 class RWMB_Update_Checker {
-	/**
-	 * Update API endpoint URL.
-	 *
-	 * @var string
-	 */
-	private $api_url = 'https://metabox.io/index.php';
-
-	/**
-	 * The update option object.
-	 *
-	 * @var object
-	 */
+	private $api_url = 'https://metabox.io/wp-json/buse2/updater/';
 	private $option;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param object $option  Update option object.
-	 */
 	public function __construct( $option ) {
 		$this->option = $option;
 	}
 
-	/**
-	 * Add hooks to check plugin updates.
-	 */
 	public function init() {
-		add_action( 'init', array( $this, 'enable_update' ), 1 );
+		add_action( 'init', [ $this, 'enable_update' ], 1 );
 	}
 
-	/**
-	 * Enable update checker when premium extensions are installed.
-	 */
 	public function enable_update() {
 		if ( $this->has_extensions() ) {
-			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_updates' ) );
-			add_filter( 'plugins_api', array( $this, 'get_info' ), 10, 3 );
+			add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'check_updates' ] );
+			add_filter( 'plugins_api', [ $this, 'get_info' ], 10, 3 );
 		}
 	}
 
-	/**
-	 * Check if any premium extension is installed.
-	 *
-	 * @return bool
-	 */
 	public function has_extensions() {
 		$extensions = $this->get_extensions();
 		return ! empty( $extensions );
 	}
 
-	/**
-	 * Get installed premium extensions.
-	 *
-	 * @return array Array of extension slugs.
-	 */
 	public function get_extensions() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$extensions = array(
+		$extensions = [
 			'mb-admin-columns',
 			'mb-blocks',
 			'mb-core',
@@ -97,7 +54,7 @@ class RWMB_Update_Checker {
 			'mb-favorite-posts',
 			'mb-testimonials',
 			'mb-user-avatar',
-		);
+		];
 		$plugins    = get_plugins();
 		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
 
@@ -123,10 +80,10 @@ class RWMB_Update_Checker {
 
 		// Make sure to send remote request once.
 		if ( null === $response ) {
-			$response = $this->request( array( 'action' => 'check_updates' ) );
+			$response = $this->request( 'plugins' );
 		}
 
-		if ( false === $response ) {
+		if ( empty( $response ) ) {
 			return $data;
 		}
 
@@ -134,24 +91,22 @@ class RWMB_Update_Checker {
 			$data = new stdClass;
 		}
 		if ( ! isset( $data->response ) ) {
-			$data->response = array();
+			$data->response = [];
 		}
 
-		$plugins = array_filter( $response['data'], array( $this, 'has_update' ) );
+		$plugins = array_filter( $response['data'], [ $this, 'has_update' ] );
 		foreach ( $plugins as $plugin ) {
-			if ( empty( $plugin->package ) ) {
-				$plugin->upgrade_notice = __( 'UPDATE UNAVAILABLE! Please enter a valid license key to enable automatic updates.', 'meta-box' );
+			if ( empty( $plugin['package'] ) ) {
+				$plugin['upgrade_notice'] = __( 'UPDATE UNAVAILABLE! Please enter a valid license key to enable automatic updates.', 'meta-box' );
 			}
 
-			$data->response[ $plugin->plugin ] = $plugin;
+			$data->response[ $plugin['plugin'] ] = (object) $plugin;
 		}
 
-		$this->option->update(
-			array(
-				'status'  => $response['status'],
-				'plugins' => array_keys( $plugins ),
-			)
-		);
+		$this->option->update( [
+			'status'  => $response['status'],
+			'plugins' => array_keys( $plugins ),
+		] );
 
 		return $data;
 	}
@@ -166,55 +121,58 @@ class RWMB_Update_Checker {
 	 * @return mixed
 	 */
 	public function get_info( $data, $action, $args ) {
-		$plugins = $this->option->get( 'plugins', array() );
+		$plugins = $this->option->get( 'plugins', [] );
 		if ( 'plugin_information' !== $action || ! isset( $args->slug ) || ! in_array( $args->slug, $plugins, true ) ) {
 			return $data;
 		}
 
-		$response = $this->request(
-			array(
-				'action'  => 'get_info',
-				'product' => $args->slug,
-			)
-		);
-
-		return false === $response ? $data : $response['data'];
+		$response = $this->request( 'plugin', [ 'product' => $args->slug ] );
+		return $response ? (object) $response['data'] : $data;
 	}
 
-	/**
-	 * Send request to remote host
-	 *
-	 * @param array|string $args Query arguments.
-	 *
-	 * @return mixed
-	 */
-	public function request( $args = '' ) {
-		$args = wp_parse_args(
-			$args,
-			array(
-				'api_key' => $this->option->get_api_key(),
-				'url'     => home_url(),
-			)
-		);
+	public function request( $endpoint, $args = [] ) {
+		$args = wp_parse_args( $args, [
+			'key' => $this->option->get_api_key(),
+			'url' => home_url(),
+		] );
 		$args = array_filter( $args );
 
-		$request  = wp_remote_get( add_query_arg( $args, $this->api_url ) );
+		// Get from cache first.
+		$data      = compact( 'endpoint', 'args' );
+		$cache_key = 'meta_box_' . md5( serialize( $data ) );
+		if ( $this->option->is_network_activated() ) {
+			$cache = get_site_transient( $cache_key );
+		} else {
+			$cache = get_transient( $cache_key );
+		}
+		if ( $cache ) {
+			return $cache;
+		}
+
+		$url      = $this->api_url . $endpoint;
+		$request  = wp_remote_get( add_query_arg( $args, $url ) );
 		$response = wp_remote_retrieve_body( $request );
-		$response = $response ? @unserialize( $response ) : false;
+		$response = json_decode( $response, true );
+
+		// Cache requests.
+		if ( $this->option->is_network_activated() ) {
+			set_site_transient( $cache_key, $response, DAY_IN_SECONDS );
+		} else {
+			set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		}
 
 		return $response;
 	}
 
-	/**
-	 * Check if a plugin has an update to a new version.
-	 *
-	 * @param object $plugin_data The plugin update data.
-	 *
-	 * @return bool
-	 */
-	private function has_update( $plugin_data ) {
+	private function has_update( $remote_plugin_data ) {
+		$slug    = $remote_plugin_data['plugin'];
 		$plugins = get_plugins();
 
-		return isset( $plugins[ $plugin_data->plugin ] ) && version_compare( $plugins[ $plugin_data->plugin ]['Version'], $plugin_data->new_version, '<' );
+		if ( empty( $plugins[ $slug ] ) ) {
+			return false;
+		}
+
+		$plugin = $plugins[ $slug ];
+		return version_compare( $plugin['Version'], $remote_plugin_data['new_version'], '<' );
 	}
 }
