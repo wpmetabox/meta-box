@@ -136,11 +136,30 @@ class RWMB_Update_Checker {
 			'url' => home_url(),
 		] );
 		$args = array_filter( $args );
-		$url  = $this->api_url . $endpoint;
 
+		// Get from cache first.
+		$data      = compact( 'endpoint', 'args' );
+		$cache_key = 'meta_box_' . md5( serialize( $data ) );
+		if ( $this->option->is_network_activated() ) {
+			$cache = get_site_transient( $cache_key );
+		} else {
+			$cache = get_transient( $cache_key );
+		}
+		if ( $cache ) {
+			return $cache;
+		}
+
+		$url      = $this->api_url . $endpoint;
 		$request  = wp_remote_get( add_query_arg( $args, $url ) );
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode( $response, true );
+
+		// Cache requests.
+		if ( $this->option->is_network_activated() ) {
+			set_site_transient( $cache_key, $response, DAY_IN_SECONDS );
+		} else {
+			set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		}
 
 		return $response;
 	}
