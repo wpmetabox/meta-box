@@ -1,53 +1,19 @@
 <?php
-/**
- * This class handles plugin settings, including adding settings page, show fields, save settings
- *
- * @package Meta Box
- */
-
-/**
- * Meta Box Update Settings class
- *
- * @package Meta Box
- */
 class RWMB_Update_Settings {
-	/**
-	 * The update option object.
-	 *
-	 * @var object
-	 */
 	private $option;
-
-	/**
-	 * The update checker object
-	 *
-	 * @var object
-	 */
 	private $checker;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param object $checker Update checker object.
-	 * @param object $option  Update option object.
-	 */
 	public function __construct( $checker, $option ) {
 		$this->checker = $checker;
 		$this->option  = $option;
 	}
 
-	/**
-	 * Add hooks to create the settings page.
-	 */
 	public function init() {
 		// Whether to enable Meta Box menu. Priority 1 makes sure it runs before adding Meta Box menu.
 		$admin_menu_hook = $this->option->is_network_activated() ? 'network_admin_menu' : 'admin_menu';
-		add_action( $admin_menu_hook, array( $this, 'enable_menu' ), 1 );
+		add_action( $admin_menu_hook, [ $this, 'enable_menu' ], 1 );
 	}
 
-	/**
-	 * Enable Meta Box menu when a premium extension is installed.
-	 */
 	public function enable_menu() {
 		if ( ! $this->checker->has_extensions() ) {
 			return;
@@ -60,12 +26,9 @@ class RWMB_Update_Settings {
 
 		// Add submenu. Priority 90 makes it the last sub-menu item.
 		$admin_menu_hook = $this->option->is_network_activated() ? 'network_admin_menu' : 'admin_menu';
-		add_action( $admin_menu_hook, array( $this, 'add_settings_page' ), 90 );
+		add_action( $admin_menu_hook, [ $this, 'add_settings_page' ], 90 );
 	}
 
-	/**
-	 * Add settings page.
-	 */
 	public function add_settings_page() {
 		$parent     = $this->option->is_network_activated() ? 'settings.php' : 'meta-box';
 		$capability = $this->option->is_network_activated() ? 'manage_network_options' : 'manage_options';
@@ -76,14 +39,11 @@ class RWMB_Update_Settings {
 			$title,
 			$capability,
 			'meta-box-updater',
-			array( $this, 'render' )
+			[ $this, 'render' ]
 		);
-		add_action( "load-{$page_hook}", array( $this, 'save' ) );
+		add_action( "load-{$page_hook}", [ $this, 'save' ] );
 	}
 
-	/**
-	 * Render the content of settings page.
-	 */
 	public function render() {
 		?>
 		<div class="wrap">
@@ -108,12 +68,12 @@ class RWMB_Update_Settings {
 						<th scope="row"><?php esc_html_e( 'License Key', 'meta-box' ); ?></th>
 						<td>
 							<?php
-							$messages = array(
+							$messages = [
 								'invalid' => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
 								'error'   => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
 								'expired' => __( 'Your license key is <b style="color: #d63638">expired</b>.', 'meta-box' ),
 								'active'  => __( 'Your license key is <b style="color: #00a32a">active</b>.', 'meta-box' ),
-							);
+							];
 							$status   = $this->option->get_license_status();
 							$api_key  = $this->option->get( 'api_key' );
 							?>
@@ -131,9 +91,6 @@ class RWMB_Update_Settings {
 		<?php
 	}
 
-	/**
-	 * Save update settings.
-	 */
 	public function save() {
 		$request = rwmb_request();
 		if ( ! $request->post( 'submit' ) ) {
@@ -141,16 +98,23 @@ class RWMB_Update_Settings {
 		}
 		check_admin_referer( 'meta-box' );
 
-		$option           = $request->post( 'meta_box_updater', array() );
-		$option           = (array) $option;
-		$option['status'] = 'active';
+		$option = (array) $request->post( 'meta_box_updater', [] );
 
-		$args           = $option;
-		$args['action'] = 'check_license';
-		$response       = $this->checker->request( $args );
-		$status         = isset( $response['status'] ) ? $response['status'] : 'invalid';
+		// Do nothing if license key remains the same.
+		$prev_key = $this->option->get_api_key();
+		if ( isset( $option['api_key'] ) && $option['api_key'] === $prev_key ) {
+			return;
+		}
 
-		if ( false === $response ) {
+		$status   = 'invalid';
+		$response = null;
+		if ( isset( $option['api_key'] ) ) {
+			$args     = [ 'key' => $option['api_key'] ];
+			$response = $this->checker->request( 'status', $args );
+			$status   = isset( $response['status'] ) ? $response['status'] : 'invalid';
+		}
+
+		if ( empty( $response ) ) {
 			add_settings_error( '', 'mb-error', __( 'Something wrong with the connection to metabox.io. Please try again later.', 'meta-box' ) );
 		} elseif ( 'active' === $status ) {
 			add_settings_error( '', 'mb-success', __( 'Your license is activated.', 'meta-box' ), 'updated' );
