@@ -1,6 +1,6 @@
 <?php
 class RWMB_Update_Checker {
-	private $api_url = 'http://mbio.test/wp-json/buse2/updater/';
+	private $api_url = 'https://metabox.io/wp-json/buse2/updater/';
 	private $option;
 
 	public function __construct( $option ) {
