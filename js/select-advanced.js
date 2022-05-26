@@ -41,7 +41,7 @@
 				var items = response.data.items.map( function( item ) {
 					return {
 						id: item.value,
-						text: item.label,
+						text: _.unescape( item.label ),
 					}
 				} );
 
