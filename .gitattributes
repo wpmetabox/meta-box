@@ -6,11 +6,15 @@
 Thumbs.db export-ignore
 
 tests export-ignore
+
 .github export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
-*.json export-ignore
+
+phpcs.xml export-ignore
 gulpfile.js export-ignore
+
+*.json export-ignore
 *.md export-ignore
 
 js/validation export-ignore
