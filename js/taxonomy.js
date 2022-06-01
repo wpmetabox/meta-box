@@ -6,11 +6,11 @@
 		this.nextElementSibling.classList.toggle( 'rwmb-hidden' );
 	}
 
-    function focusOutInput( ) {
-        const required = $(this).val() == '';
-        $(this).closest('.rwmb-input').find(rwmb.inputSelectors).rules('add', {
+    function focusOutInput() {
+        const required = $( this ).val( ) == '';
+        $( this ).closest( '.rwmb-input' ).find( rwmb.inputSelectors ).rules( 'add', {
             required
-        });
+        } );
     }
 
     rwmb.$document.on( 'blur', '.rwmb-taxonomy-add-form input', focusOutInput );
