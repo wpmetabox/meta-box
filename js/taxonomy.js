@@ -11,6 +11,7 @@
         $( this ).closest( '.rwmb-input' ).find( rwmb.inputSelectors ).rules( 'add', {
             required
         } );
+        $( this ).closest( '.rwmb-input' ).find( rwmb.inputSelectors ).removeClass( 'rwmb-error' );
     }
 
     rwmb.$document.on( 'blur', '.rwmb-taxonomy-add-form input', focusOutInput );
