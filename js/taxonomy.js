@@ -15,19 +15,18 @@
     }
 
     var saved = true;
-    wp.data.subscribe(function () {
-        if (wp.data.select('core/editor').isSavingPost()) {
+    wp.data.subscribe( function ( ) {
+        if ( wp.data.select( 'core/editor' ).isSavingPost( ) ) {
             saved = false;
         } else {
-            if (!saved) {
+            if ( !saved ) {
                 saved = true;
-                setTimeout(() => {
-                    window.location.reload(true);
-                }, 2000);
+                setTimeout( ( ) => {
+                    window.location.reload( true );
+                }, 2000 );
             }
-
         }
-    });
+    } );
 
     rwmb.$document.on( 'blur', '.rwmb-taxonomy-add-form input', focusOutInput );
 	rwmb.$document.on( 'click', '.rwmb-taxonomy-add-button', toggleAddInput );
