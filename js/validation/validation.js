@@ -84,7 +84,9 @@
 				editor = wp.data.dispatch( 'core/editor' ),
 				savePost = editor.savePost; // Reference original method.
 
-            that.$form.validate( that.settings );
+            if( that.settings ) {
+                that.$form.validate( that.settings );
+            }
             
 			// Change the editor method.
 			editor.savePost = function( object ) {

@@ -329,7 +329,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 
 		$html = '
-		<div class="rwmb-taxonomy-add">
+		<div class="rwmb-taxonomy-add" data-ajax="%s" data-nonce="%s">
 			<button class="rwmb-taxonomy-add-button">%s</button>
 			<div class="rwmb-taxonomy-add-form rwmb-hidden">
 				<input type="text" name="%s_new" size="30" placeholder="%s">
@@ -338,6 +338,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$html = sprintf(
 			$html,
+			esc_html( json_encode( $field ) ),
+			wp_create_nonce( 'query' ),
 			esc_html( $taxonomy_object->labels->add_new_item ),
 			esc_attr( $field['id'] ),
 			esc_attr( $taxonomy_object->labels->new_item_name )
