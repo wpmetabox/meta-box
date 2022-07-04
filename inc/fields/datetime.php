@@ -232,7 +232,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 			array(
 				'timeFormat'      => 'HH:mm',
 				'separator'       => ' ',
-				'dateFormat'      => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
+				'dateFormat'      => empty( $field['save_format'] ) ? 'yy-mm-dd' : $field['save_format'],
 				'showButtonPanel' => true,
 				'changeYear'      => true,
 				'yearRange'       => '-100:+100',
