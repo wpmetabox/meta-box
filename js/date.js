@@ -8,7 +8,7 @@
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
+			$timestamp = $this.siblings( '.rwmb-datetime-timestamp ds-picker' ),
 			current = $this.val(),
 			$picker = $inline.length ? $inline : $this;
 

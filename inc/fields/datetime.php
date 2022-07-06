@@ -84,13 +84,13 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 			RWMB_Helpers_Field::localize_script_once( "rwmb-$handle", 'RWMB_' . ucfirst( $handle ), $data );
 		}
 	}
-
+   
 	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
 		self::register_assets();
-		wp_enqueue_style( 'jquery-ui-timepicker' );
+		wp_enqueue_style( 'jquery-ui-timepicker' ); 
 		wp_enqueue_script( 'rwmb-datetime' );
 	}
 
