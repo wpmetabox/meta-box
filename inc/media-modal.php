@@ -124,7 +124,7 @@ class RWMB_Media_Modal {
 
 		// Show the meta box in the modal on Media screen.
 		global $pagenow;
-		if ( $pagenow === 'upload.php' ) {
+		if ( $pagenow === 'upload.php' && isset( $meta_box['media_mode'] ) ) {
 			return $this->is_in_modal( $meta_box );
 		}
 
