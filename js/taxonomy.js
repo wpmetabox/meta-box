@@ -12,22 +12,6 @@
             required
         } );
         $( this ).closest( '.rwmb-input' ).find( rwmb.inputSelectors ).removeClass( 'rwmb-error' );
-    }   
-
-    if ( rwmb.isGutenberg ) {
-        var saved = true;
-        wp.data.subscribe(function () {
-            if (wp.data.select('core/editor').isSavingPost()) {
-                saved = false;
-            } else {
-                if (!saved) {
-                    saved = true;
-                    setTimeout(() => {
-                        window.location.reload(true);
-                    }, 2000);
-                }
-            }
-        });
     }
 
     rwmb.$document.on( 'blur', '.rwmb-taxonomy-add-form input', focusOutInput );
