@@ -6,7 +6,7 @@ class RWMB_Update_Settings {
 	public function __construct( $checker, $option ) {
 		$this->checker = $checker;
 		$this->option  = $option;
-		$this->fake_api_key  = "please_dont_steal_this_license_key";
+		$this->fake_api_key  = "Please do not steal this license key";
 	}
 
 	public function init() {
