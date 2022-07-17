@@ -6,7 +6,7 @@ class RWMB_Update_Settings {
 	public function __construct( $checker, $option ) {
 		$this->checker = $checker;
 		$this->option  = $option;
-		$this->please_dont_steal_this_license_key  = "********************";
+		$this->fake_api_key  = "please_dont_steal_this_license_key";
 	}
 
 	public function init() {
@@ -78,7 +78,7 @@ class RWMB_Update_Settings {
 							$status   = $this->option->get_license_status();
 							$api_key  = $this->option->get( 'api_key' );
 							if ( 'active' === $status ) {
-								$api_key = $this->please_dont_steal_this_license_key;
+								$api_key = $this->fake_api_key;
 							}
 							?>
 							<input class="regular-text" name="meta_box_updater[api_key]" value="<?php echo esc_attr( $api_key ); ?>" type="password">
@@ -109,7 +109,7 @@ class RWMB_Update_Settings {
 		if ( isset( $option['api_key'] ) && $option['api_key'] === $prev_key ) {
 			return;
 		}
-		if ( $this->please_dont_steal_this_license_key === $option['api_key'] ) {
+		if ( $this->fake_api_key === $option['api_key'] ) {
 			return;
 		}
 
