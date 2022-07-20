@@ -35,6 +35,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			$edit_link = sprintf( '<a href="%s" class="rwmb-image-edit" target="_blank"><span class="dashicons dashicons-edit"></span></a>', $edit_link );
 		}
 
+		$attachment_image = (is_numeric($file)) ? wp_get_attachment_image( $file, $field['image_size'] ) : '<img width="150" height="150" src="'.$file.'" alt="" />';
+
 		return sprintf(
 			'<li class="rwmb-image-item">
 				<div class="rwmb-file-icon">%s</div>
@@ -45,7 +47,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 				</div>
 				<input type="hidden" name="%s[%s]" value="%s">
 			</li>',
-			wp_get_attachment_image( $file, $field['image_size'] ),
+			$attachment_image,
 			$edit_link,
 			esc_attr( $file ),
 			esc_attr( $attributes['name'] ),
