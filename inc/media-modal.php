@@ -75,7 +75,7 @@ class RWMB_Media_Modal {
 
 			ob_start();
 			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
-			
+
 			RWMB_Field::call( 'show', $field, true, $post->ID );
 			$form_field['html'] = ob_get_clean();
 
@@ -123,8 +123,8 @@ class RWMB_Media_Modal {
 		}
 
 		// Show the meta box in the modal on Media screen.
-		global $pagenow;
-		if ( $pagenow === 'upload.php' ) {
+		global $hook_suffix;
+		if ( $hook_suffix === 'upload.php' ) {
 			return $this->is_in_modal( $meta_box );
 		}
 
