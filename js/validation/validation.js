@@ -84,14 +84,17 @@
 				editor = wp.data.dispatch( 'core/editor' ),
 				savePost = editor.savePost; // Reference original method.
 
+            if( that.settings ) {
+                that.$form.validate( that.settings );
+            }
+            
 			// Change the editor method.
 			editor.savePost = function( object ) {
 				// Bypass the validation when previewing in Gutenberg.
 				if ( typeof object === 'object' && object.isPreview ) {
 					savePost( object );
 					return;
-				}
-				that.$form.validate( that.settings );
+				}				
 
 				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
 				if ( that.$form.valid() ) {
