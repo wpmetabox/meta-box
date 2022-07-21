@@ -35,7 +35,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			$edit_link = sprintf( '<a href="%s" class="rwmb-image-edit" target="_blank"><span class="dashicons dashicons-edit"></span></a>', $edit_link );
 		}
 
-		$attachment_image = (is_numeric($file)) ? wp_get_attachment_image( $file, $field['image_size'] ) : '<img width="150" height="150" src="'.$file.'" alt="" />';
+		$attachment_image = is_numeric( $file ) ? wp_get_attachment_image( $file, $field['image_size'] ) : '<img width="150" height="150" src="' . esc_url( $file ) . '" alt="" />';
 
 		return sprintf(
 			'<li class="rwmb-image-item">
@@ -64,8 +64,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
-		$field = wp_parse_args(
+		$field               = parent::normalize( $field );
+		$field               = wp_parse_args(
 			$field,
 			array(
 				'image_size' => 'thumbnail',
@@ -160,7 +160,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			return $metadata;
 		}
 
-		$dir_url  = dirname( wp_get_attachment_url( $attachment_id ) );
+		$dir_url = dirname( wp_get_attachment_url( $attachment_id ) );
 		foreach ( $metadata['sizes'] as &$size ) {
 			$size['url'] = "{$dir_url}/{$size['file']}";
 		}
