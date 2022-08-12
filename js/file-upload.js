@@ -28,6 +28,17 @@
 			// Auto hide if you reach the max number of media
 			this.listenTo( this.controller, 'change:full', function () {
 				this.$el.toggle( ! this.controller.get( 'full' ) );
+				var file_wrap = this.$el.parents( '.rwmb-file_upload-wrapper' );
+				if ( file_wrap.hasClass( 'required' ) ){
+					file_wrap.addClass( 'el_required' );
+					file_wrap.removeClass( 'required' );
+					file_wrap.find( '.rwmb-file_upload' ).removeAttr( 'required' );
+				}
+				if ( file_wrap.hasClass( 'el_required' ) && file_wrap.find( '.rwmb-media-list' ).children().length > 0 ) {
+					file_wrap.addClass( 'required' );
+					file_wrap.removeClass( 'el_required' );
+					file_wrap.find( '.rwmb-file_upload' ).attr( 'required', '1' );
+				}
 			} );
 		},
 
