@@ -232,7 +232,7 @@ class RW_Meta_Box {
 	/**
 	 * Callback function to show fields in meta box
 	 */
-	public function show() {
+	public function show( $no_field = false ) {
 		if ( null === $this->object_id ) {
 			$this->object_id = $this->get_current_object_id();
 		}
@@ -256,7 +256,7 @@ class RW_Meta_Box {
 		do_action( "rwmb_before_{$this->id}", $this );
 
 		foreach ( $this->fields as $field ) {
-			RWMB_Field::call( 'show', $field, $saved, $this->object_id );
+			RWMB_Field::call( 'show', $field, $saved, $this->object_id, $no_field );
 		}
 
 		// Allow users to add custom code after meta box content.

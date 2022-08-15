@@ -33,7 +33,7 @@ abstract class RWMB_Field {
 	 * @param bool  $saved   Whether the meta box is saved at least once.
 	 * @param int   $post_id Post ID.
 	 */
-	public static function show( $field, $saved, $post_id = 0 ) {
+	public static function show( $field, $saved, $post_id = 0, $no_field = false ) {
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
@@ -61,7 +61,7 @@ abstract class RWMB_Field {
 		}
 
 		$outer_html = sprintf(
-			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
+			$no_field ? '<div class="%s">%s</div>' : $field['before'] . '<div class="%s">%s</div>' . $field['after'],
 			esc_attr( trim( $classes ) ),
 			$html
 		);

@@ -17,7 +17,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @param bool  $saved   Whether the meta box is saved at least once.
 	 * @param int   $post_id Post ID.
 	 */
-	public static function show( $field, $saved, $post_id = 0 ) {
+	public static function show( $field, $saved, $post_id = 0, $no_field = false ) {
 		// Get unique saved IDs for ajax fields.
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
