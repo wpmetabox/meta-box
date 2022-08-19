@@ -124,7 +124,17 @@ class RWMB_Loader {
 			) );
 		}
 
+		// Enable TinyMCE options
+		add_filter( 'tiny_mce_before_init', array( $this, 'mce_options' ), 10, 2 );
+
 		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';
+	}
+
+	/**
+	 * Enable wpautop through mce_options
+	 */
+	public function mce_options() {
+		wpautop( true );
 	}
 }
