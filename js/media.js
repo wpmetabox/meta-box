@@ -135,7 +135,7 @@
 				collection.reset();
 			} );
 
-			collection.on( 'add remove reset', _.debounce( function () {
+			collection.on( 'all', _.debounce( function() {
 				var ids = collection.pluck( 'id' ).join( ',' );
 				that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
 			}, 500 ) );
