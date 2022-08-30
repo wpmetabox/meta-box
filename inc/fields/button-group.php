@@ -30,7 +30,7 @@ class RWMB_Button_Group_Field extends RWMB_Choice_Field {
 
 		$output  = sprintf(
 			'<ul class="rwmb-button-input-list %s">',
-			$field['inline'] ? ' rwmb-inline' : ''
+			( $field['inline'] === false ) ? '' : 'rwmb-inline'
 		);
 		$output .= $walker->walk( $options, -1 );
 		$output .= '</ul>';
