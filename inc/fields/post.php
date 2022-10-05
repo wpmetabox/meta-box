@@ -82,7 +82,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$post_type        = reset( $field['post_type'] );
 			$post_type_object = get_post_type_object( $post_type );
 			if ( ! empty( $post_type_object ) ) {
-				// Translators: %s is the taxonomy singular label.
+				// Translators: %s is the post singular label.
 				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $post_type_object->labels->singular_name ) );
 			}
 		}
