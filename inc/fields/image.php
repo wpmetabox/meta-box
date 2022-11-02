@@ -15,7 +15,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_media();
-		wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', [], RWMB_VER );
 	}
 
 	/**
@@ -65,18 +65,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 */
 	public static function normalize( $field ) {
 		$field               = parent::normalize( $field );
-		$field               = wp_parse_args(
-			$field,
-			array(
-				'image_size' => 'thumbnail',
-			)
-		);
-		$field['attributes'] = wp_parse_args(
-			$field['attributes'],
-			array(
-				'accept' => 'image/*',
-			)
-		);
+		$field               = wp_parse_args( $field, [ 'image_size' => 'thumbnail' ] );
+		$field['attributes'] = wp_parse_args( $field['attributes'], [ 'accept' => 'image/*' ] );
 
 		return $field;
 	}
@@ -110,21 +100,19 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
-	public static function file_info( $file, $args = array(), $field = array() ) {
+	public static function file_info( $file, $args = [], $field = [] ) {
 		$path = get_attached_file( $file );
 		if ( ! $path ) {
 			return false;
 		}
 
-		$args       = wp_parse_args(
-			$args,
-			array(
-				'size' => 'thumbnail',
-			)
-		);
-		$image      = wp_get_attachment_image_src( $file, $args['size'] );
+		$args  = wp_parse_args( $args, [ 'size' => 'thumbnail' ] );
+		$image = wp_get_attachment_image_src( $file, $args['size'] );
+		if ( ! $image ) {
+			return false;
+		}
 		$attachment = get_post( $file );
-		$info       = array(
+		$info       = [
 			'ID'          => $file,
 			'name'        => basename( $path ),
 			'path'        => $path,
@@ -134,7 +122,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 			'caption'     => $attachment->post_excerpt,
 			'description' => $attachment->post_content,
 			'alt'         => get_post_meta( $file, '_wp_attachment_image_alt', true ),
-		);
+		];
 		if ( function_exists( 'wp_get_attachment_image_srcset' ) ) {
 			$info['srcset'] = wp_get_attachment_image_srcset( $file, $args['size'] );
 		}
