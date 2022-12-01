@@ -40,7 +40,7 @@ class RWMB_Validation {
 			'rwmb-validation',
 			'rwmbValidation',
 			array(
-				'message' => esc_html__( 'Please correct the errors highlighted below and try again.', 'meta-box' ),
+				'message' => esc_html( apply_filters( 'rwmb_validation_message_string', __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) ),
 			)
 		);
 	}
