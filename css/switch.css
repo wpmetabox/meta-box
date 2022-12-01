@@ -106,9 +106,17 @@
 	background-color: #a3b745;
 	box-shadow: 0 0 1px #a3b745;
 }
+.admin-color-light .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #04a4cc;
+	box-shadow: 0 0 1px #04a4cc;
+}
 .admin-color-midnight .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
 	background-color: #e14d43;
 	box-shadow: 0 0 1px #e14d43;
+}
+.admin-color-modern .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
+	background-color: #3858e9;
+	box-shadow: 0 0 1px #3858e9;
 }
 .admin-color-ocean .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider {
 	background-color: #9ebaa0;
