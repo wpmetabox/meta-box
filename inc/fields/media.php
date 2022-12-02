@@ -160,7 +160,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$attachments = array();
 		foreach ( $value as $media ) {
 			$media = wp_prepare_attachment_for_js( $media );
-			// Some themes/plugins add HTML, shortcodes to "compat" attrbute which break JSON validity.
+			// Some themes/plugins add HTML, shortcodes to "compat" attribute which break JSON validity.
 			if ( isset( $media['compat'] ) ) {
 				unset( $media['compat'] );
 			}
@@ -169,7 +169,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			}
 		}
 		$attachments                    = array_values( $attachments );
-		$attributes['data-attachments'] = json_encode( $attachments );
+		$attributes['data-attachments'] = wp_json_encode( $attachments );
 
 		return $attributes;
 	}
@@ -209,7 +209,14 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		$new = RWMB_Helpers_Array::from_csv( $new );
-		return array_filter( array_unique( array_map( 'absint', $new ) ) );
+		$new = array_filter( array_unique( array_map( 'absint', $new ) ) );
+
+		// Attach the uploaded images to the post if needed.
+		global $wpdb;
+		$ids = implode( ',', $new );
+		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET post_parent=%d WHERE post_parent=0 AND ID IN ($ids)", $post_id ) );
+
+		return $new;
 	}
 
 	/**
