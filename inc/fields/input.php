@@ -90,6 +90,14 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 			$attributes['size'] = $field['size'];
 		}
 
+		$id = $attributes['id'] ?: $field['id'];
+		if ( $field['name'] || $field['label_description'] ) {
+			$attributes['aria-labelledby'] = "$id-label";
+		}
+		if ( $field['desc'] ) {
+			$attributes['aria-describedby'] = "$id-description";
+		}
+
 		return $attributes;
 	}
 

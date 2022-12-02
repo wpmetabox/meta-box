@@ -49,7 +49,7 @@ abstract class RWMB_Field {
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = self::call( $field, 'end_html', $meta );
+		$end = static::end_html( $field );
 		$end = self::filter( 'end_html', $end, $field, $meta );
 
 		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
@@ -94,16 +94,20 @@ abstract class RWMB_Field {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
-		$label = ! $field['name'] ? '' : sprintf(
+		$label = $field['name'] ? sprintf(
 			'<label for="%s">%s%s</label>',
 			esc_attr( $id ),
 			$field['name'],
 			$required ? '<span class="rwmb-required">*</span>' : ''
-		);
+		) : '';
 
-		$label_description = static::label_description( $field );
+		$label .= static::label_description( $field );
 
-		$field_label = $label || $label_description ? '<div class="rwmb-label">' . $label . $label_description . '</div>' : '';
+		$label = $label ? sprintf(
+			'<div class="rwmb-label" id="%s-label">%s</div>',
+			esc_attr( $id ),
+			$label
+		) : '';
 
 		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
@@ -114,19 +118,14 @@ abstract class RWMB_Field {
 			$data_max_clone
 		);
 
-		return $field_label . $input_open;
+		return $label . $input_open;
 	}
 
 	/**
 	 * Show end HTML markup for fields.
-	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
 	 */
-	public static function end_html( $meta, $field ) {
-		return RWMB_Clone::add_clone_button( $field ) . self::call( 'input_description', $field ) . '</div>';
+	public static function end_html( array $field ) : string {
+		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
 	/**

@@ -1,19 +1,10 @@
 <?php
 /**
  * The heading field which displays a simple heading text.
- *
- * @package Meta Box
- */
-
-/**
- * Heading field class.
  */
 class RWMB_Heading_Field extends RWMB_Field {
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-heading', RWMB_CSS_URL . 'heading.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb-heading', RWMB_CSS_URL . 'heading.css', [], RWMB_VER );
 	}
 
 	/**
@@ -31,13 +22,8 @@ class RWMB_Heading_Field extends RWMB_Field {
 
 	/**
 	 * Show end HTML markup for fields.
-	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
 	 */
-	public static function end_html( $meta, $field ) {
+	public static function end_html( array $field ) : string {
 		return self::input_description( $field );
 	}
 }
