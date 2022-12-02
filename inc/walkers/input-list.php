@@ -11,7 +11,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	 * @param array  $args   An array of additional arguments.
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = [] ) {
-		$output .= '<ul class="rwmb-input-list">';
+		$output .= '<fieldset class="rwmb-input-list">';
 	}
 
 	/**
@@ -22,7 +22,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	 * @param array  $args   An array of additional arguments.
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = [] ) {
-		$output .= '</ul>';
+		$output .= '</fieldset>';
 	}
 
 	/**
@@ -38,22 +38,10 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 		$attributes = RWMB_Field::call( 'get_attributes', $this->field, $object->value );
 
 		$output .= sprintf(
-			'<li><label><input %s %s>%s</label>',
+			'<label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
 			checked( in_array( $object->value, $this->meta ), true, false ),
 			$object->label
 		);
-	}
-
-	/**
-	 * Ends the element output, if needed.
-	 *
-	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param object $object The data object.
-	 * @param int    $depth  Depth of the item.
-	 * @param array  $args   An array of additional arguments.
-	 */
-	public function end_el( &$output, $object, $depth = 0, $args = [] ) {
-		$output .= '</li>';
 	}
 }
