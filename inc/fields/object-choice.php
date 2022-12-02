@@ -1,12 +1,6 @@
 <?php
 /**
- * The object choice class which allows users to select specific objects in WordPress.
- *
- * @package Meta Box
- */
-
-/**
- * Abstract field to select an object: post, user, taxonomy, etc.
+ * The object choice class which allows users to select specific objects (post, user, taxonomy) in WordPress.
  */
 abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
@@ -19,15 +13,19 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 */
 	public static function show( $field, $saved, $post_id = 0 ) {
 		// Get unique saved IDs for ajax fields.
-		$meta = self::call( $field, 'meta', $post_id, $saved );
+		$meta = static::meta( $post_id, $saved, $field );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
 		$meta = array_unique( array_filter( array_map( 'absint', $meta ) ) );
 		sort( $meta );
 
-		$field['options'] = self::call( $field, 'query', $meta );
+		$field['options'] = static::query( $meta, $field );
 
 		parent::show( $field, $saved, $post_id );
+	}
+
+	public static function query( $meta, $field ) {
+		return [];
 	}
 
 	/**
@@ -38,10 +36,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html = call_user_func( array( self::get_type_class( $field ), 'html' ), $meta, $field );
+		$html = call_user_func( [ self::get_type_class( $field ), 'html' ], $meta, $field );
 
 		if ( $field['add_new'] ) {
-			$html .= self::call( 'add_new_form', $field );
+			$html .= static::add_new_form( $field );
 		}
 
 		return $html;
@@ -66,16 +64,13 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args(
-			$field,
-			array(
-				'flatten'    => true,
-				'query_args' => array(),
-				'field_type' => 'select_advanced',
-				'add_new'    => false,
-				'ajax'       => true,
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'flatten'    => true,
+			'query_args' => [],
+			'field_type' => 'select_advanced',
+			'add_new'    => false,
+			'ajax'       => true,
+		] );
 		if ( 'select_advanced' !== $field['field_type'] ) {
 			$field['ajax'] = false;
 		}
@@ -86,7 +81,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( 'radio_list' === $field['field_type'] ) {
 			$field['field_type'] = 'radio';
 		}
-		$field = call_user_func( array( self::get_type_class( $field ), 'normalize' ), $field );
+		$field = call_user_func( [ self::get_type_class( $field ), 'normalize' ], $field );
 
 		return $field;
 	}
@@ -102,22 +97,22 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		}
 
 		if ( empty( $field['js_options']['ajax'] ) ) {
-			$field['js_options']['ajax'] = array();
+			$field['js_options']['ajax'] = [];
 		}
 		$field['js_options']['ajax']      = wp_parse_args(
-			array(
+			[
 				'url' => admin_url( 'admin-ajax.php' ),
-			),
+			],
 			$field['js_options']['ajax']
 		);
-		$field['js_options']['ajax_data'] = array(
-			'field'    => array(
+		$field['js_options']['ajax_data'] = [
+			'field'    => [
 				'id'         => $field['id'],
 				'type'       => $field['type'],
 				'query_args' => $field['query_args'],
-			),
+			],
 			'_wpnonce' => wp_create_nonce( 'query' ),
-		);
+		];
 	}
 
 	/**
@@ -129,7 +124,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = call_user_func( array( self::get_type_class( $field ), 'get_attributes' ), $field, $value );
+		$attributes = call_user_func( [ self::get_type_class( $field ), 'get_attributes' ], $field, $value );
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$attributes['class'] .= ' rwmb-select_advanced';
 		} elseif ( 'select' === $field['field_type'] ) {
@@ -138,9 +133,6 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		return $attributes;
 	}
 
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
 		RWMB_Input_List_Field::admin_enqueue_scripts();
 		RWMB_Select_Field::admin_enqueue_scripts();
@@ -150,15 +142,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 
 	/**
 	 * Get correct rendering class for the field.
-	 *
-	 * @param array $field Field parameters.
-	 * @return string
 	 */
-	protected static function get_type_class( $field ) {
-		return RWMB_Helpers_Field::get_class(
-			array(
-				'type' => $field['field_type'],
-			)
-		);
+	protected static function get_type_class( array $field ) : string {
+		return RWMB_Helpers_Field::get_class( [ 'type' => $field['field_type'] ] );
 	}
 }
