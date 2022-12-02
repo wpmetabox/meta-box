@@ -91,20 +91,19 @@ abstract class RWMB_Field {
 	 * @return string
 	 */
 	public static function begin_html( $meta, $field ) {
-		$field_label = '';
-		if ( $field['name'] ) {
-			// Change "for" attribute in label
-			$field_label = sprintf(
-				'<div class="rwmb-label">
-					<label for="%s">%s%s</label>
-					%s
-				</div>',
-				( isset( $field['attributes']['id'] ) ) ? esc_attr( $field['attributes']['id'] ) : esc_attr( $field['id'] ),
-				$field['name'],
-				$field['required'] || ! empty( $field['attributes']['required'] ) ? '<span class="rwmb-required">*</span>' : '',
-				self::label_description( $field )
-			);
-		}
+		$id       = $field['attributes']['id'] ?? $field['id'];
+		$required = $field['required'] || ! empty( $field['attributes']['required'] );
+
+		$label = ! $field['name'] ? '' : sprintf(
+			'<label for="%s">%s%s</label>',
+			esc_attr( $id ),
+			$field['name'],
+			$required ? '<span class="rwmb-required">*</span>' : ''
+		);
+
+		$label_description = static::label_description( $field );
+
+		$field_label = $label || $label_description ? '<div class="rwmb-label">' . $label . $label_description . '</div>' : '';
 
 		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
