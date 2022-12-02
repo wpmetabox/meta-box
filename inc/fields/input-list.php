@@ -1,20 +1,11 @@
 <?php
 /**
  * The input list field which displays choices in a list of inputs.
- *
- * @package Meta Box
- */
-
-/**
- * Input list field class.
  */
 class RWMB_Input_List_Field extends RWMB_Choice_Field {
-	/**
-	 * Enqueue scripts and styles
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-input-list', RWMB_CSS_URL . 'input-list.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-input-list', RWMB_JS_URL . 'input-list.js', array(), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-input-list', RWMB_CSS_URL . 'input-list.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-input-list', RWMB_JS_URL . 'input-list.js', [], RWMB_VER, true );
 	}
 
 	/**
@@ -49,14 +40,11 @@ class RWMB_Input_List_Field extends RWMB_Choice_Field {
 		$field = $field['multiple'] ? RWMB_Multiple_Values_Field::normalize( $field ) : $field;
 		$field = RWMB_Input_Field::normalize( $field );
 		$field = parent::normalize( $field );
-		$field = wp_parse_args(
-			$field,
-			array(
-				'collapse'        => true,
-				'inline'          => null,
-				'select_all_none' => false,
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'collapse'        => true,
+			'inline'          => null,
+			'select_all_none' => false,
+		] );
 
 		$field['flatten'] = $field['multiple'] ? $field['flatten'] : true;
 		$field['inline']  = ! $field['multiple'] && ! isset( $field['inline'] ) ? true : $field['inline'];
