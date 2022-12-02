@@ -2,22 +2,17 @@
 	margin-top: 0;
 }
 .rwmb-input-list {
-	margin: 0;
 	line-height: 1.8;
 }
 .rwmb-input-list .rwmb-input-list {
 	margin-left: 20px;
 }
-.rwmb-input-list li {
-	list-style: none;
-	margin-bottom: 0;
+.rwmb-input-list > label {
+	display: block;
 }
 .rwmb-input-list.rwmb-inline {
 	line-height: inherit;
-}
-.rwmb-input-list.rwmb-inline li {
-	display: inline-block;
-}
-.rwmb-input-list.rwmb-inline li:not(:last-child) {
-	margin-right: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
 }

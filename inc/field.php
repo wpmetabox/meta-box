@@ -49,7 +49,7 @@ abstract class RWMB_Field {
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = self::call( $field, 'end_html', $meta );
+		$end = static::end_html( $field );
 		$end = self::filter( 'end_html', $end, $field, $meta );
 
 		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
@@ -94,16 +94,20 @@ abstract class RWMB_Field {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
-		$label = ! $field['name'] ? '' : sprintf(
+		$label = $field['name'] ? sprintf(
 			'<label for="%s">%s%s</label>',
 			esc_attr( $id ),
 			$field['name'],
 			$required ? '<span class="rwmb-required">*</span>' : ''
-		);
+		) : '';
 
-		$label_description = static::label_description( $field );
+		$label .= static::label_description( $field );
 
-		$field_label = $label || $label_description ? '<div class="rwmb-label">' . $label . $label_description . '</div>' : '';
+		$label = $label ? sprintf(
+			'<div class="rwmb-label" id="%s-label">%s</div>',
+			esc_attr( $id ),
+			$label
+		) : '';
 
 		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
@@ -114,19 +118,14 @@ abstract class RWMB_Field {
 			$data_max_clone
 		);
 
-		return $field_label . $input_open;
+		return $label . $input_open;
 	}
 
 	/**
 	 * Show end HTML markup for fields.
-	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
 	 */
-	public static function end_html( $meta, $field ) {
-		return RWMB_Clone::add_clone_button( $field ) . self::call( 'input_description', $field ) . '</div>';
+	public static function end_html( array $field ) : string {
+		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
 	/**
@@ -160,7 +159,7 @@ abstract class RWMB_Field {
 	 *
 	 * @return mixed
 	 */
-	public static function raw_meta( $object_id, $field, $args = array() ) {
+	public static function raw_meta( $object_id, $field, $args = [] ) {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
@@ -215,7 +214,7 @@ abstract class RWMB_Field {
 
 			// Ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
 			if ( empty( $meta ) ) {
-				$meta = array( '' );
+				$meta = [ '' ];
 			}
 
 			if ( $field['multiple'] ) {
@@ -223,7 +222,7 @@ abstract class RWMB_Field {
 
 				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
 				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'RWMB_Helpers_Array::ensure', $meta ) : array( $meta );
+				$meta = is_array( $first ) ? array_map( 'RWMB_Helpers_Array::ensure', $meta ) : [ $meta ];
 			}
 		} elseif ( $field['multiple'] ) {
 			$meta = RWMB_Helpers_Array::ensure( $meta );
@@ -318,45 +317,42 @@ abstract class RWMB_Field {
 	public static function normalize( $field ) {
 		// Quick define text fields with "name" attribute only.
 		if ( is_string( $field ) ) {
-			$field = array(
+			$field = [
 				'name' => $field,
 				'id'   => sanitize_key( $field ),
-			);
+			];
 		}
-		$field = wp_parse_args(
-			$field,
-			array(
-				'id'                => '',
-				'name'              => '',
-				'type'              => 'text',
-				'label_description' => '',
-				'multiple'          => false,
-				'std'               => '',
-				'desc'              => '',
-				'format'            => '',
-				'before'            => '',
-				'after'             => '',
-				'field_name'        => isset( $field['id'] ) ? $field['id'] : '',
-				'placeholder'       => '',
-				'save_field'        => true,
+		$field = wp_parse_args( $field, [
+			'id'                => '',
+			'name'              => '',
+			'type'              => 'text',
+			'label_description' => '',
+			'multiple'          => false,
+			'std'               => '',
+			'desc'              => '',
+			'format'            => '',
+			'before'            => '',
+			'after'             => '',
+			'field_name'        => $field['id'] ?? '',
+			'placeholder'       => '',
+			'save_field'        => true,
 
-				'clone'             => false,
-				'min_clone'         => 0,
-				'max_clone'         => 0,
-				'sort_clone'        => false,
-				'add_button'        => __( '+ Add more', 'meta-box' ),
-				'clone_default'     => false,
-				'clone_as_multiple' => false,
+			'clone'             => false,
+			'min_clone'         => 0,
+			'max_clone'         => 0,
+			'sort_clone'        => false,
+			'add_button'        => __( '+ Add more', 'meta-box' ),
+			'clone_default'     => false,
+			'clone_as_multiple' => false,
 
-				'class'             => '',
-				'disabled'          => false,
-				'required'          => false,
-				'autofocus'         => false,
-				'attributes'        => array(),
+			'class'             => '',
+			'disabled'          => false,
+			'required'          => false,
+			'autofocus'         => false,
+			'attributes'        => [],
 
-				'sanitize_callback' => null,
-			)
-		);
+			'sanitize_callback' => null,
+		] );
 
 		// Store the original ID to run correct filters for the clonable field.
 		if ( $field['clone'] ) {
@@ -364,13 +360,10 @@ abstract class RWMB_Field {
 		}
 
 		if ( $field['clone_default'] ) {
-			$field['attributes'] = wp_parse_args(
-				$field['attributes'],
-				array(
-					'data-default'       => $field['std'],
-					'data-clone-default' => 'true',
-				)
-			);
+			$field['attributes'] = wp_parse_args( $field['attributes'], [
+				'data-default'       => $field['std'],
+				'data-clone-default' => 'true',
+			] );
 		}
 
 		if ( 1 === $field['max_clone'] ) {
@@ -389,19 +382,24 @@ abstract class RWMB_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = wp_parse_args(
-			$field['attributes'],
-			array(
-				'disabled'  => $field['disabled'],
-				'autofocus' => $field['autofocus'],
-				'required'  => $field['required'],
-				'id'        => $field['id'],
-				'class'     => '',
-				'name'      => $field['field_name'],
-			)
-		);
+		$attributes = wp_parse_args( $field['attributes'], [
+			'disabled'  => $field['disabled'],
+			'autofocus' => $field['autofocus'],
+			'required'  => $field['required'],
+			'id'        => $field['id'],
+			'class'     => '',
+			'name'      => $field['field_name'],
+		] );
 
-		$attributes['class'] = trim( implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) ) );
+		$attributes['class'] = trim( implode( ' ', array_merge( [ "rwmb-{$field['type']}" ], (array) $attributes['class'] ) ) );
+
+		$id = $attributes['id'] ?: $field['id'];
+		if ( $field['name'] || $field['label_description'] ) {
+			$attributes['aria-labelledby'] = "$id-label";
+		}
+		if ( $field['desc'] ) {
+			$attributes['aria-describedby'] = "$id-description";
+		}
 
 		return $attributes;
 	}
@@ -443,7 +441,7 @@ abstract class RWMB_Field {
 	 *
 	 * @return mixed Field value
 	 */
-	public static function get_value( $field, $args = array(), $post_id = null ) {
+	public static function get_value( $field, $args = [], $post_id = null ) {
 		// Some fields does not have ID like heading, custom HTML, etc.
 		if ( empty( $field['id'] ) ) {
 			return '';
@@ -458,7 +456,7 @@ abstract class RWMB_Field {
 
 		// Make sure meta value is an array for cloneable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
-			$value = is_array( $value ) && $value ? $value : array();
+			$value = is_array( $value ) && $value ? $value : [];
 		}
 
 		return $value;
@@ -481,7 +479,7 @@ abstract class RWMB_Field {
 	 *
 	 * @return string HTML output of the field
 	 */
-	public static function the_value( $field, $args = array(), $post_id = null ) {
+	public static function the_value( $field, $args = [], $post_id = null ) {
 		$value = self::call( 'get_value', $field, $args, $post_id );
 
 		if ( false === $value ) {
@@ -569,7 +567,7 @@ abstract class RWMB_Field {
 
 			if ( 'raw_meta' === $method ) {
 				// Add field param after object id.
-				array_splice( $args, 1, 0, array( $field ) );
+				array_splice( $args, 1, 0, [ $field ] );
 			} else {
 				$args[] = $field; // Add field as last param.
 			}
@@ -577,10 +575,10 @@ abstract class RWMB_Field {
 
 		$class = RWMB_Helpers_Field::get_class( $field );
 		if ( method_exists( $class, $method ) ) {
-			return call_user_func_array( array( $class, $method ), $args );
-		} else {
-			_deprecated_function( "$class::$method", '5.4.8' );
+			return call_user_func_array( [ $class, $method ], $args );
 		}
+
+		_deprecated_function( esc_html( "$class::$method" ), '5.4.8' );
 	}
 
 	/**
@@ -601,10 +599,10 @@ abstract class RWMB_Field {
 		$field = array_shift( $args );
 
 		// List of filters.
-		$filters = array(
+		$filters = [
 			'rwmb_' . $name,
 			'rwmb_' . $field['type'] . '_' . $name,
-		);
+		];
 		if ( $field['id'] ) {
 			$field_id  = $field['clone'] ? $field['_original_id'] : $field['id'];
 			$filters[] = 'rwmb_' . $field_id . '_' . $name;
