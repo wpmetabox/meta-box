@@ -402,7 +402,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success.
 	 */
 	public static function file_info( $file, $args = [], $field = [] ) {
-		if ( $field['upload_dir'] ) {
+		if ( ! empty( $field['upload_dir'] ) ) {
 			return self::file_info_custom_dir( $file, $field );
 		}
 
