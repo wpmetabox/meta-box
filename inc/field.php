@@ -388,19 +388,24 @@ abstract class RWMB_Field {
 	 * @return array
 	 */
 	public static function get_attributes( $field, $value = null ) {
-		$attributes = wp_parse_args(
-			$field['attributes'],
-			array(
-				'disabled'  => $field['disabled'],
-				'autofocus' => $field['autofocus'],
-				'required'  => $field['required'],
-				'id'        => $field['id'],
-				'class'     => '',
-				'name'      => $field['field_name'],
-			)
-		);
+		$attributes = wp_parse_args( $field['attributes'], [
+			'disabled'  => $field['disabled'],
+			'autofocus' => $field['autofocus'],
+			'required'  => $field['required'],
+			'id'        => $field['id'],
+			'class'     => '',
+			'name'      => $field['field_name'],
+		] );
 
-		$attributes['class'] = trim( implode( ' ', array_merge( array( "rwmb-{$field['type']}" ), (array) $attributes['class'] ) ) );
+		$attributes['class'] = trim( implode( ' ', array_merge( [ "rwmb-{$field['type']}" ], (array) $attributes['class'] ) ) );
+
+		$id = $attributes['id'] ?: $field['id'];
+		if ( $field['name'] || $field['label_description'] ) {
+			$attributes['aria-labelledby'] = "$id-label";
+		}
+		if ( $field['desc'] ) {
+			$attributes['aria-describedby'] = "$id-description";
+		}
 
 		return $attributes;
 	}
