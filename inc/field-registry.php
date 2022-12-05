@@ -2,20 +2,10 @@
 /**
  * A registry for storing all fields.
  *
- * @link    https://designpatternsphp.readthedocs.io/en/latest/Structural/Registry/README.html
- * @package Meta Box
- */
-
-/**
- * Field registry class.
+ * @link https://designpatternsphp.readthedocs.io/en/latest/Structural/Registry/README.html
  */
 class RWMB_Field_Registry {
-	/**
-	 * Internal data storage.
-	 *
-	 * @var array
-	 */
-	private $data = array();
+	private $data = [];
 
 	/**
 	 * Add a single field to the registry.
@@ -24,16 +14,16 @@ class RWMB_Field_Registry {
 	 * @param string $type        Post type|Taxonomy|'user'|Setting page which the field belongs to.
 	 * @param string $object_type Object type which the field belongs to.
 	 */
-	public function add( $field, $type, $object_type = 'post' ) {
+	public function add( array $field, string $type, string $object_type = 'post' ) {
 		if ( ! isset( $field['id'] ) ) {
 			return;
 		}
 
 		if ( empty( $this->data[ $object_type ] ) ) {
-			$this->data[ $object_type ] = array();
+			$this->data[ $object_type ] = [];
 		}
 		if ( empty( $this->data[ $object_type ][ $type ] ) ) {
-			$this->data[ $object_type ][ $type ] = array();
+			$this->data[ $object_type ][ $type ] = [];
 		}
 		$this->data[ $object_type ][ $type ][ $field['id'] ] = $field;
 
@@ -50,7 +40,7 @@ class RWMB_Field_Registry {
 	 * @return bool|array False or field configuration.
 	 */
 	public function get( $id, $type, $object_type = 'post' ) {
-		return isset( $this->data[ $object_type ][ $type ][ $id ] ) ? $this->data[ $object_type ][ $type ][ $id ] : false;
+		return $this->data[ $object_type ][ $type ][ $id ] ?? false;
 	}
 
 	/**
@@ -60,7 +50,7 @@ class RWMB_Field_Registry {
 	 *
 	 * @return array List of fields.
 	 */
-	public function get_by_object_type( $object_type = 'post' ) {
-		return isset( $this->data[ $object_type ] ) ? $this->data[ $object_type ] : array();
+	public function get_by_object_type( string $object_type = 'post' ) : array {
+		return $this->data[ $object_type ] ?? [];
 	}
 }

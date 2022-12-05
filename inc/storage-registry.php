@@ -1,21 +1,9 @@
 <?php
 /**
  * Storage registry class
- *
- * @package Meta Box
- */
-
-/**
- * Class RWMB_Storage_Registry
  */
 class RWMB_Storage_Registry {
-
-	/**
-	 * List storage instances.
-	 *
-	 * @var array
-	 */
-	protected $storages = array();
+	protected $storages = [];
 
 	/**
 	 * Get storage instance.

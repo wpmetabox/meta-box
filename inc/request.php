@@ -5,33 +5,11 @@
  *
  * @link https://github.com/laravel/framework/blob/6.x/src/Illuminate/Http/Request.php
  * @link https://github.com/symfony/symfony/blob/4.4/src/Symfony/Component/HttpFoundation/ParameterBag.php
- *
- * @package Meta Box
- */
-
-/**
- * A very simple request class that handles form inputs.
- *
- * @package Meta Box
  */
 class RWMB_Request {
-	/**
-	 * GET data.
-	 *
-	 * @var array
-	 */
-	private $get_data = array();
+	private $get_data  = [];
+	private $post_data = [];
 
-	/**
-	 * POST data.
-	 *
-	 * @var array
-	 */
-	private $post_data = array();
-
-	/**
-	 * Constructor.
-	 */
 	public function __construct() {
 		// @codingStandardsIgnoreLine
 		$this->get_data  = $_GET;
@@ -39,44 +17,20 @@ class RWMB_Request {
 		$this->post_data = $_POST;
 	}
 
-	/**
-	 * Set GET data.
-	 *
-	 * @param array $get_data Data.
-	 */
-	public function set_get_data( $get_data ) {
-		$this->get_data = array_merge( $this->get_data, $get_data );
+	public function set_get_data( array $data ) {
+		$this->get_data = array_merge( $this->get_data, $data );
 	}
 
-	/**
-	 * Set POST data.
-	 *
-	 * @param array $post_data Data.
-	 */
-	public function set_post_data( $post_data ) {
-		$this->post_data = array_merge( $this->post_data, $post_data );
+	public function set_post_data( array $data ) {
+		$this->post_data = array_merge( $this->post_data, $data );
 	}
 
-	/**
-	 * Return a GET parameter by name.
-	 *
-	 * @param  string $name    Parameter name.
-	 * @param  mixed  $default Default value.
-	 * @return mixed
-	 */
-	public function get( $name, $default = null ) {
-		return isset( $this->get_data[ $name ] ) ? $this->get_data[ $name ] : $default;
+	public function get( string $name, $default = null ) {
+		return $this->get_data[ $name ] ?? $default;
 	}
 
-	/**
-	 * Return a POST parameter by name.
-	 *
-	 * @param  string $name    Parameter name.
-	 * @param  mixed  $default Default value.
-	 * @return mixed
-	 */
-	public function post( $name, $default = null ) {
-		return isset( $this->post_data[ $name ] ) ? $this->post_data[ $name ] : $default;
+	public function post( string $name, $default = null ) {
+		return $this->post_data[ $name ] ?? $default;
 	}
 
 	/**
@@ -88,7 +42,7 @@ class RWMB_Request {
 	 *
 	 * @return mixed
 	 */
-	public function filter_get( $name, $filter = FILTER_DEFAULT, $options = array() ) {
+	public function filter_get( string $name, $filter = FILTER_DEFAULT, $options = [] ) {
 		$value = $this->get( $name );
 		return filter_var( $value, $filter, $options );
 	}
@@ -102,7 +56,7 @@ class RWMB_Request {
 	 *
 	 * @return mixed
 	 */
-	public function filter_post( $name, $filter = FILTER_DEFAULT, $options = array() ) {
+	public function filter_post( string $name, $filter = FILTER_DEFAULT, $options = [] ) {
 		$value = $this->post( $name );
 		return filter_var( $value, $filter, $options );
 	}

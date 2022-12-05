@@ -1,12 +1,6 @@
 <?php
 /**
  * The WPML compatibility module, allowing all fields are translatable by WPML plugin.
- *
- * @package Meta Box
- */
-
-/**
- * WPML compatibility class
  */
 class RWMB_WPML {
 	/**
@@ -14,29 +8,23 @@ class RWMB_WPML {
 	 *
 	 * @var array
 	 */
-	protected $field_types = array( 'post', 'taxonomy_advanced' );
+	protected $field_types = [ 'post', 'taxonomy_advanced' ];
 
-	/**
-	 * Initialize.
-	 */
 	public function init() {
 		/**
 		 * Run before meta boxes are registered so it can modify fields.
 		 *
 		 * @see modify_field()
 		 */
-		add_action( 'init', array( $this, 'register_hooks' ), 9 );
+		add_action( 'init', [ $this, 'register_hooks' ], 9 );
 	}
 
-	/**
-	 * Register hooks.
-	 */
 	public function register_hooks() {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
 			return;
 		}
-		add_filter( 'wpml_duplicate_generic_string', array( $this, 'translate_ids' ), 10, 3 );
-		add_filter( 'rwmb_normalize_field', array( $this, 'modify_field' ) );
+		add_filter( 'wpml_duplicate_generic_string', [ $this, 'translate_ids' ], 10, 3 );
+		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
 	}
 
 	/**
@@ -67,7 +55,7 @@ class RWMB_WPML {
 		}
 
 		// Dealing with IDs stored as comma separated strings.
-		$translated_values = array();
+		$translated_values = [];
 		$values            = explode( ',', $value );
 
 		foreach ( $values as $v ) {
