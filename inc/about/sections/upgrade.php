@@ -1,11 +1,3 @@
-<?php
-/**
- * Upgrade notice
- *
- * @package Meta Box
- */
-
-?>
 <div class="upgrade">
 	<h3><span class="dashicons dashicons-awards"></span> <?php esc_html_e( 'Upgrade to Meta Box PRO', 'meta-box' ); ?></h3>
 	<p><?php esc_html_e( 'Please upgrade to the PRO plan to unlock more awesome features.', 'meta-box' ); ?></p>

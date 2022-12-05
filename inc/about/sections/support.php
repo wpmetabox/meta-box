@@ -1,11 +1,3 @@
-<?php
-/**
- * Support section.
- *
- * @package Meta Box
- */
-
-?>
 <div id="support" class="gt-tab-pane">
 	<p class="about-description">
 		<?php
