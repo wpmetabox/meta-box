@@ -3,24 +3,13 @@
  * Load plugin's files with check for installing it as a standalone plugin or
  * a module of a theme / plugin. If standalone plugin is already installed, it
  * will take higher priority.
- *
- * @package Meta Box
- */
-
-/**
- * Plugin loader class.
- *
- * @package Meta Box
  */
 class RWMB_Loader {
-	/**
-	 * Define plugin constants.
-	 */
 	protected function constants() {
 		// Script version, used to add version for scripts and styles.
-		define( 'RWMB_VER', '5.6.7' );
+		define( 'RWMB_VER', '5.6.8' );
 
-		list( $path, $url ) = self::get_path( dirname( dirname( __FILE__ ) ) );
+		list( $path, $url ) = self::get_path( dirname( __DIR__ ) );
 
 		// Plugin URLs, for fast enqueuing scripts and styles.
 		define( 'RWMB_URL', $url );
@@ -40,7 +29,7 @@ class RWMB_Loader {
 	 * @param string $path Base folder path.
 	 * @return array Path and URL.
 	 */
-	public static function get_path( $path = '' ) {
+	public static function get_path( string $path = '' ) : array {
 		// Plugin base path.
 		$path       = wp_normalize_path( untrailingslashit( $path ) );
 		$themes_dir = wp_normalize_path( untrailingslashit( dirname( get_stylesheet_directory() ) ) );
@@ -61,7 +50,7 @@ class RWMB_Loader {
 		$path = trailingslashit( $path );
 		$url  = trailingslashit( $url );
 
-		return array( $path, $url );
+		return [ $path, $url ];
 	}
 
 	/**
@@ -117,11 +106,11 @@ class RWMB_Loader {
 			$about = new RWMB_About( $update_checker );
 			$about->init();
 
-			new RWMB_Dashboard( 'http://feeds.feedburner.com/metaboxio', 'https://metabox.io/blog/', array(
+			new RWMB_Dashboard( 'http://feeds.feedburner.com/metaboxio', 'https://metabox.io/blog/', [
 				'title'           => 'Meta Box',
 				'dismiss_tooltip' => esc_html__( 'Dismiss all Meta Box news', 'meta-box' ),
 				'dismiss_confirm' => esc_html__( 'Are you sure to dismiss all Meta Box news?', 'meta-box' ),
-			) );
+			] );
 		}
 
 		// Public functions.
