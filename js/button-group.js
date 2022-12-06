@@ -32,11 +32,11 @@
 	}
 
 	function init( e ) {
-		$( e.target ).find( '.rwmb-button-input-list li' ).each( setActiveClass );
+		$( e.target ).find( '.rwmb-button-input-list label' ).each( setActiveClass );
 	}
 
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'click', '.rwmb-button-input-list li', clickHandler )
-		.on( 'clone', '.rwmb-button-input-list li', setActiveClass );
+		.on( 'click', '.rwmb-button-input-list label', clickHandler )
+		.on( 'clone', '.rwmb-button-input-list label', setActiveClass );
 } )( jQuery, rwmb );
