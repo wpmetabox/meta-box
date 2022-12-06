@@ -209,9 +209,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$meta = wp_get_object_terms( $object_id, $field['taxonomy'], [
 			'orderby' => 'term_order',
 		] );
-		if ( is_wp_error( $meta ) ) {
-			return '';
-		}
 		$meta = wp_list_pluck( $meta, 'term_id' );
 
 		return $field['multiple'] ? $meta : reset( $meta );
@@ -221,9 +218,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * Get the field value.
 	 * Return list of post term objects.
 	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Additional arguments.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 * @param  array $field   Field parameters.
+	 * @param  array $args    Additional arguments.
+	 * @param  ?int  $post_id Post ID.
 	 *
 	 * @return array List of post term objects.
 	 */
@@ -236,19 +233,19 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		] );
 
 		// Get single value if necessary.
-		if ( ! $field['clone'] && ! $field['multiple'] && is_array( $value ) ) {
+		if ( ! $field['clone'] && ! $field['multiple'] ) {
 			$value = reset( $value );
 		}
 		return $value;
 	}
 
 	/**
-	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
+	 * Format a single value for the helper functions.
 	 *
-	 * @param array        $field   Field parameters.
-	 * @param object|array $value   The value.
-	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param ?int         $post_id Post ID. null for current post. Optional.
+	 * @param array   $field   Field parameters.
+	 * @param WP_Term $value   The term object.
+	 * @param array   $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param ?int    $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
@@ -263,9 +260,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		if ( false === $link ) {
 			return $text;
 		}
-		if ( 'view' === $link ) {
-			$url = get_term_link( $value );
-		}
+		$url = get_term_link( $value );
 		if ( 'edit' === $link ) {
 			$url = get_edit_term_link( $value );
 		}

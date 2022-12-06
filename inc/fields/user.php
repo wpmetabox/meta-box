@@ -133,7 +133,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
+	 * @param int      $value   User ID.
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 *
@@ -152,9 +152,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		if ( false === $link ) {
 			return $text;
 		}
-		if ( 'view' === $link ) {
-			$url = get_author_posts_url( $value );
-		}
+		$url = get_author_posts_url( $value );
 		if ( 'edit' === $link ) {
 			$url = get_edit_user_link( $value );
 		}

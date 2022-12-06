@@ -36,7 +36,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 *
 	 * @param array $field   Field parameters.
 	 * @param array $args    Additional arguments.
-	 * @param null  $post_id Post ID.
+	 * @param ?int  $post_id Post ID.
 	 * @return mixed
 	 */
 	public static function get_value( $field, $args = [], $post_id = null ) {
@@ -60,7 +60,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
 	 * @param array    $field   Field parameters.
-	 * @param string   $value   The value.
+	 * @param array    $value   The value.
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param int|null $post_id Post ID. null for current post. Optional.
 	 *

@@ -120,8 +120,8 @@ class RWMB_Map_Field extends RWMB_Field {
 	/**
 	 * Render a map in the frontend.
 	 *
-	 * @param array $location The [latitude, longitude[, zoom]] location.
-	 * @param array $args     Additional arguments for the map.
+	 * @param string $location The "latitude,longitude[,zoom]" location.
+	 * @param array  $args     Additional arguments for the map.
 	 *
 	 * @return string
 	 */

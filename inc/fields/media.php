@@ -179,8 +179,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return array|mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
-		$new = RWMB_Helpers_Array::from_csv( $new );
-		$new = array_filter( array_unique( array_map( 'absint', $new ) ) );
+		$new = wp_parse_id_list( $new );
 
 		// Attach the uploaded images to the post if needed.
 		global $wpdb;

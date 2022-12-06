@@ -391,9 +391,9 @@ abstract class RWMB_Field {
 	 * Each field can extend this function and add more data to the returned value.
 	 * See specific field classes for details.
 	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 * @param  array $field   Field parameters.
+	 * @param  array $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param  ?int  $post_id Post ID.
 	 *
 	 * @return mixed Field value
 	 */
@@ -412,7 +412,7 @@ abstract class RWMB_Field {
 
 		// Make sure meta value is an array for cloneable and multiple fields.
 		if ( $field['clone'] || $field['multiple'] ) {
-			$value = is_array( $value ) && $value ? $value : [];
+			$value = is_array( $value ) && ! empty( $value ) ? $value : [];
 		}
 
 		return $value;

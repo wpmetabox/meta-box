@@ -219,11 +219,6 @@ class RWMB_Sanitizer {
 		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
 	}
 
-	/**
-	 * Sanitize map field.
-	 *
-	 * @param  mixed $value The submitted value.
-	 */
 	private function sanitize_map( $value ) : string {
 		$value                               = sanitize_text_field( $value );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
@@ -235,16 +230,8 @@ class RWMB_Sanitizer {
 		return "$latitude,$longitude,$zoom";
 	}
 
-	/**
-	 * Sanitize taxonomy advanced field.
-	 *
-	 * @param  mixed $value The submitted value.
-	 */
 	private function sanitize_taxonomy_advanced( $value ) : string {
-		$value = RWMB_Helpers_Array::from_csv( $value );
-		$value = array_filter( array_map( 'absint', $value ) );
-
-		return implode( ',', $value );
+		return implode( ',', wp_parse_id_list( $value ) );
 	}
 
 	private function sanitize_url( string $value ) : string {

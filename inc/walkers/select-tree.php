@@ -6,7 +6,7 @@ class RWMB_Walker_Select_Tree {
 	/**
 	 * Field settings.
 	 *
-	 * @var string
+	 * @var array
 	 */
 	public $field;
 

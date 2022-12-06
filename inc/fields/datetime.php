@@ -100,14 +100,16 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		$output = '';
 
 		if ( $field['timestamp'] ) {
-			$name    = $field['field_name'];
-			$field   = wp_parse_args( [ 'field_name' => $name . '[formatted]' ], $field );
-			$output .= sprintf(
+			$name      = $field['field_name'];
+			$field     = wp_parse_args( [ 'field_name' => $name . '[formatted]' ], $field );
+			$timestamp = $meta['timestamp'] ?? 0;
+			$output   .= sprintf(
 				'<input type="hidden" name="%s" class="rwmb-datetime-timestamp" value="%s">',
 				esc_attr( $name . '[timestamp]' ),
-				isset( $meta['timestamp'] ) ? intval( $meta['timestamp'] ) : ''
+				(int) $timestamp
 			);
-			$meta    = isset( $meta['formatted'] ) ? $meta['formatted'] : '';
+
+			$meta = $meta['formatted'] ?? '';
 		}
 
 		$output .= parent::html( $meta, $field );
@@ -173,10 +175,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 
 	/**
 	 * Format meta value if set 'timestamp'.
-	 *
-	 * @param  string $meta  The meta value.
-	 * @param  array  $field Field parameters.
-	 * @return array
 	 */
 	public static function from_timestamp( $meta, array $field ) : array {
 		return [
@@ -187,12 +185,8 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 
 	/**
 	 * Transform meta value from save format to the JS format.
-	 *
-	 * @param  string $meta  The meta value.
-	 * @param  array  $field Field parameters.
-	 * @return array
 	 */
-	public static function from_save_format( $meta, $field ) {
+	public static function from_save_format( $meta, array $field ) : string {
 		$date = DateTime::createFromFormat( $field['save_format'], $meta );
 		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}

@@ -4,7 +4,7 @@
  */
 abstract class RWMB_Input_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-input', RWMB_CSS_URL . 'input.css', '', RWMB_VER );
+		wp_enqueue_style( 'rwmb-input', RWMB_CSS_URL . 'input.css', [], RWMB_VER );
 	}
 
 	/**

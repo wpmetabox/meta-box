@@ -189,10 +189,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	/**
 	 * Format a single value for the helper functions. Sub-fields should overwrite this method if necessary.
 	 *
-	 * @param array  $field   Field parameters.
-	 * @param string $value   The value.
-	 * @param array  $args    Additional arguments. Rarely used. See specific fields for details.
-	 * @param ?int   $post_id Post ID. null for current post. Optional.
+	 * @param array $field   Field parameters.
+	 * @param int   $value   The value.
+	 * @param array $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param ?int  $post_id Post ID. null for current post. Optional.
 	 *
 	 * @return string
 	 */
@@ -207,9 +207,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		if ( false === $link ) {
 			return $text;
 		}
-		if ( 'view' === $link ) {
-			$url = get_permalink( $value );
-		}
+		$url = get_permalink( $value );
 		if ( 'edit' === $link ) {
 			$url = get_edit_post_link( $value );
 		}
