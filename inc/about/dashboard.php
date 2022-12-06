@@ -5,29 +5,23 @@ class RWMB_Dashboard {
 	private $translations;
 	private $slug;
 
-	public function __construct( $feed_url, $link, $translations ) {
+	public function __construct( string $feed_url, string $link, array $translations ) {
 		$this->feed_url     = $feed_url;
 		$this->link         = $link;
 		$this->translations = $translations;
 		$this->slug         = sanitize_title( $translations['title'] );
 
 		$transient_name = $this->get_transient_name();
-		add_filter( "transient_$transient_name", array( $this, 'add_news' ) );
-		add_action( "wp_ajax_{$this->slug}-dismiss-news", array( $this, 'ajax_dismiss' ) );
+		add_filter( "transient_$transient_name", [ $this, 'add_news' ] );
+		add_action( "wp_ajax_{$this->slug}-dismiss-news", [ $this, 'ajax_dismiss' ] );
 	}
 
-	private function get_transient_name() {
-		include ABSPATH . WPINC . '/version.php';
-		global $wp_version;
-
-		$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		$prefix = version_compare( $wp_version, '4.8', '>=') ? 'dash_v2_' : 'dash_';
-		$widget_id = 'dashboard_primary';
-
-		return version_compare( $wp_version, '4.3', '>=' ) ? $prefix . md5( "{$widget_id}_{$locale}" ) : 'dash_' . md5( $widget_id );
+	private function get_transient_name() : string {
+		$locale = get_user_locale();
+		return 'dash_v2_' . md5( "dashboard_primary_{$locale}" );
 	}
 
-	public function add_news( $value ) {
+	public function add_news( string $value ) : string {
 		$is_dismissed = get_user_meta( get_current_user_id(), $this->slug . '_dismiss_news', true );
 		$is_dismissed = apply_filters( 'rwmb_dismiss_dashboard_widget', $is_dismissed );
 		if ( $is_dismissed ) {
@@ -41,15 +35,15 @@ class RWMB_Dashboard {
 		return $value . $this->get_html() . $script;
 	}
 
-	private function get_html() {
+	private function get_html() : string {
 		$cache_key = $this->slug . '-news';
-		$output = get_transient( $cache_key );
-		if ( false !== $output) {
+		$output    = get_transient( $cache_key );
+		if ( false !== $output ) {
 			return $output;
 		}
 
-		$feeds = array(
-			$this->slug => array(
+		$feeds = [
+			$this->slug => [
 				'link'         => $this->link,
 				'url'          => $this->feed_url,
 				'title'        => $this->translations['title'],
@@ -57,13 +51,13 @@ class RWMB_Dashboard {
 				'show_summary' => 0,
 				'show_author'  => 0,
 				'show_date'    => 0,
-			)
-		);
+			],
+		];
 		ob_start();
 		wp_dashboard_primary_output( 'dashboard_primary', $feeds );
-		$output = ob_get_clean();
+		$output = (string) ob_get_clean();
 
-		$output = preg_replace( '/<a(.+?)>(.+?)<\/a>/i', '<a$1>' . esc_html( $this->translations['title'] ) . ': $2</a>', $output );
+		$output = (string) preg_replace( '/<a(.+?)>(.+?)<\/a>/i', '<a$1>' . esc_html( $this->translations['title'] ) . ': $2</a>', $output );
 		$output = str_replace( '<li>', '<li class="' . esc_attr( $this->slug ) . '-news-item"><a href="#" class="dashicons dashicons-no-alt" title="' . esc_attr( $this->translations['dismiss_tooltip'] ) . '" style="float: right; box-shadow: none; margin-left: 5px;"></a>', $output );
 
 		set_transient( $cache_key, $output, DAY_IN_SECONDS );
