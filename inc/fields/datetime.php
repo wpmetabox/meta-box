@@ -259,13 +259,9 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 
 	/**
 	 * Returns a date() compatible format string from the JavaScript format.
-	 *
 	 * @link http://www.php.net/manual/en/function.date.php
-	 * @param array $js_options JavaScript options.
-	 *
-	 * @return string
 	 */
-	protected static function get_php_format( $js_options ) {
+	protected static function get_php_format( array $js_options ) : string {
 		return strtr( $js_options['dateFormat'], self::$date_formats )
 		. $js_options['separator']
 		. strtr( $js_options['timeFormat'], self::$time_formats );

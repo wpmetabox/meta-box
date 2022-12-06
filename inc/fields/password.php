@@ -1,12 +1,6 @@
 <?php
 /**
  * The secured password field.
- *
- * @package Meta Box
- */
-
-/**
- * Password field class.
  */
 class RWMB_Password_Field extends RWMB_Input_Field {
 	/**

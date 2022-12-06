@@ -1,12 +1,6 @@
 <?php
 /**
  * The checkbox field.
- *
- * @package Meta Box
- */
-
-/**
- * Checkbox field class.
  */
 class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	/**
@@ -29,13 +23,7 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 		return $output;
 	}
 
-	/**
-	 * Do not show field description.
-	 *
-	 * @param array $field Field parameters.
-	 * @return string
-	 */
-	public static function input_description( $field ) {
+	protected static function input_description( array $field ) : string {
 		return '';
 	}
 

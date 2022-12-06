@@ -1,14 +1,6 @@
 <?php
 /**
  * This class handles getting and saving the updater option.
- *
- * @package Meta Box
- */
-
-/**
- * Meta Box Update Option class
- *
- * @package Meta Box
  */
 class RWMB_Update_Option {
 	/**
@@ -21,30 +13,22 @@ class RWMB_Update_Option {
 	/**
 	 * Get an option.
 	 *
-	 * @param string $name    Option name. Pass null to return the option array.
-	 * @param mixed  $default Default value.
+	 * @param ?string $name    Option name. Pass null to return the option array.
+	 * @param mixed   $default Default value.
 	 *
 	 * @return mixed Option value or option array.
 	 */
 	public function get( $name = null, $default = null ) {
 		$option = $this->is_network_activated() ? get_site_option( $this->option, [] ) : get_option( $this->option, [] );
 
-		return null === $name ? $option : ( isset( $option[ $name ] ) ? $option[ $name ] : $default );
+		return null === $name ? $option : ( $option[ $name ] ?? $default );
 	}
 
-	/**
-	 * Get the API key.
-	 *
-	 * @return string
-	 */
-	public function get_api_key() {
+	public function get_api_key() : string {
 		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->get( 'api_key' );
 	}
 
-	/**
-	 * Get license status.
-	 */
-	public function get_license_status() {
+	public function get_license_status() : string {
 		return $this->get_api_key() ? $this->get( 'status', 'active' ) : 'no_key';
 	}
 
@@ -64,12 +48,7 @@ class RWMB_Update_Option {
 		}
 	}
 
-	/**
-	 * Detect if the plugin is network activated in Multisite environment.
-	 *
-	 * @return bool
-	 */
-	public function is_network_activated() {
+	public function is_network_activated() : bool {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}

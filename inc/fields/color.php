@@ -1,26 +1,17 @@
 <?php
 /**
  * The color field which uses WordPress color picker to select a color.
- *
- * @package Meta Box
- */
-
-/**
- * Color field class.
  */
 class RWMB_Color_Field extends RWMB_Input_Field {
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', array( 'wp-color-picker' ), RWMB_VER );
+		wp_enqueue_style( 'rwmb-color', RWMB_CSS_URL . 'color.css', [ 'wp-color-picker' ], RWMB_VER );
 
-		$dependencies = array( 'wp-color-picker' );
+		$dependencies = [ 'wp-color-picker' ];
 		$args         = func_get_args();
 		$field        = reset( $args );
 		if ( ! empty( $field['alpha_channel'] ) ) {
-			wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), RWMB_VER, true );
-			$dependencies = array( 'wp-color-picker-alpha' );
+			wp_enqueue_script( 'wp-color-picker-alpha', RWMB_JS_URL . 'wp-color-picker-alpha/wp-color-picker-alpha.min.js', [ 'wp-color-picker' ], RWMB_VER, true );
+			$dependencies = [ 'wp-color-picker-alpha' ];
 		}
 		wp_enqueue_script( 'rwmb-color', RWMB_JS_URL . 'color.js', $dependencies, RWMB_VER, true );
 	}
@@ -33,22 +24,16 @@ class RWMB_Color_Field extends RWMB_Input_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args(
-			$field,
-			array(
-				'alpha_channel' => false,
-				'js_options'    => [],
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'alpha_channel' => false,
+			'js_options'    => [],
+		] );
 
-		$field['js_options'] = wp_parse_args(
-			$field['js_options'],
-			array(
-				'defaultColor' => false,
-				'hide'         => true,
-				'palettes'     => true,
-			)
-		);
+		$field['js_options'] = wp_parse_args( $field['js_options'], [
+			'defaultColor' => false,
+			'hide'         => true,
+			'palettes'     => true,
+		] );
 
 		$field = parent::normalize( $field );
 
@@ -65,12 +50,9 @@ class RWMB_Color_Field extends RWMB_Input_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes         = parent::get_attributes( $field, $value );
-		$attributes         = wp_parse_args(
-			$attributes,
-			array(
-				'data-options' => wp_json_encode( $field['js_options'] ),
-			)
-		);
+		$attributes         = wp_parse_args( $attributes, [
+			'data-options' => wp_json_encode( $field['js_options'] ),
+		] );
 		$attributes['type'] = 'text';
 
 		if ( $field['alpha_channel'] ) {

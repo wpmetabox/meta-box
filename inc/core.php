@@ -16,9 +16,6 @@ class RWMB_Core {
 		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/languages/' );
 	}
 
-	/**
-	 * Add links to Documentation in plugin's list of action links.
-	 */
 	public function plugin_links( array $links ) : array {
 		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
 		return $links;

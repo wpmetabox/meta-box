@@ -1,12 +1,6 @@
 <?php
 /**
  * Select tree walker for cascading select fields.
- *
- * @package Meta Box
- */
-
-/**
- * The select tree walker class.
  */
 class RWMB_Walker_Select_Tree {
 	/**
@@ -45,7 +39,7 @@ class RWMB_Walker_Select_Tree {
 		$children = [];
 
 		foreach ( $options as $option ) {
-			$parent                = isset( $option->parent ) ? $option->parent : 0;
+			$parent                = $option->parent ?? 0;
 			$children[ $parent ][] = $option;
 		}
 

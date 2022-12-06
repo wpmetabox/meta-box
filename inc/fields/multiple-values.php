@@ -7,12 +7,6 @@
  * meta value. Briefly:
  * - If field is cloneable, value is saved as a single entry in the database
  * - Otherwise value is saved as multiple entries
- *
- * @package Meta Box
- */
-
-/**
- * Multiple values field class.
  */
 abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	/**

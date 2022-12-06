@@ -1,12 +1,6 @@
 <?php
 /**
  * The oEmbed field which allows users to enter oEmbed URLs.
- *
- * @package Meta Box
- */
-
-/**
- * OEmbed field class.
  */
 class RWMB_OEmbed_Field extends RWMB_Input_Field {
 	/**
@@ -18,41 +12,26 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 
-		$field               = wp_parse_args(
-			$field,
-			array(
-				'not_available_string' => __( 'Embed HTML not available.', 'meta-box' ),
-			)
-		);
-		$field['attributes'] = wp_parse_args(
-			$field['attributes'],
-			array(
-				'data-not-available' => $field['not_available_string'],
-			)
-		);
+		$field               = wp_parse_args( $field, [
+			'not_available_string' => __( 'Embed HTML not available.', 'meta-box' ),
+		] );
+		$field['attributes'] = wp_parse_args( $field['attributes'], [
+			'data-not-available' => $field['not_available_string'],
+		] );
 
 		return $field;
 	}
 
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', '', RWMB_VER );
-		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', [ 'jquery', 'underscore' ], RWMB_VER, true );
 	}
 
-	/**
-	 * Add actions.
-	 */
 	public static function add_actions() {
-		add_action( 'wp_ajax_rwmb_get_embed', array( __CLASS__, 'wp_ajax_get_embed' ) );
+		add_action( 'wp_ajax_rwmb_get_embed', [ __CLASS__, 'ajax_get_embed' ] );
 	}
 
-	/**
-	 * Ajax callback for returning oEmbed HTML.
-	 */
-	public static function wp_ajax_get_embed() {
+	public static function ajax_get_embed() {
 		$request       = rwmb_request();
 		$url           = (string) $request->filter_post( 'url', FILTER_SANITIZE_URL );
 		$not_available = (string) $request->post( 'not_available' );

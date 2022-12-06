@@ -1,19 +1,10 @@
 <?php
 /**
  * The Button group.
- *
- * @package Meta Box
- */
-
-/**
- * Button group class.
  */
 class RWMB_Button_Group_Field extends RWMB_Choice_Field {
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-button-group', RWMB_CSS_URL . 'button-group.css', '', RWMB_VER );
+		wp_enqueue_style( 'rwmb-button-group', RWMB_CSS_URL . 'button-group.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-button-group', RWMB_JS_URL . 'button-group.js', [ 'rwmb' ], RWMB_VER, true );
 	}
 

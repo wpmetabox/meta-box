@@ -1,8 +1,6 @@
 <?php
 /**
  * Plugin public functions.
- *
- * @package Meta Box
  */
 
 if ( ! function_exists( 'rwmb_meta' ) ) {
@@ -26,7 +24,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 		if ( false === $field ) {
 			return apply_filters( 'rwmb_meta', rwmb_meta_legacy( $key, $args, $post_id ) );
 		}
-		$meta = in_array( $field['type'], array( 'oembed', 'map', 'osm' ), true ) ?
+		$meta = in_array( $field['type'], [ 'oembed', 'map', 'osm' ], true ) ?
 			rwmb_the_value( $key, $args, $post_id, false ) :
 			rwmb_get_value( $key, $args, $post_id );
 		return apply_filters( 'rwmb_meta', $meta, $key, $args, $post_id );
@@ -43,7 +41,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	 * @param array  $args      Array of arguments. Optional.
 	 */
 	function rwmb_set_meta( $object_id, $key, $value, $args = [] ) {
-		$args = wp_parse_args( $args );
+		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
 		if ( false === $field ) {
@@ -67,13 +65,10 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	 * @return array
 	 */
 	function rwmb_get_field_settings( $key, $args = [], $object_id = null ) {
-		$args = wp_parse_args(
-			$args,
-			array(
-				'object_type' => 'post',
-				'type'        => '',
-			)
-		);
+		$args = wp_parse_args( $args, [
+			'object_type' => 'post',
+			'type'        => '',
+		] );
 
 		/**
 		 * Filter meta type from object type and object id.
@@ -102,20 +97,17 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 	 * @return mixed
 	 */
 	function rwmb_meta_legacy( $key, $args = [], $post_id = null ) {
-		$args  = wp_parse_args(
-			$args,
-			array(
-				'type'     => 'text',
-				'multiple' => false,
-				'clone'    => false,
-			)
-		);
-		$field = array(
+		$args  = wp_parse_args( $args, [
+			'type'     => 'text',
+			'multiple' => false,
+			'clone'    => false,
+		] );
+		$field = [
 			'id'       => $key,
 			'type'     => $args['type'],
 			'clone'    => $args['clone'],
 			'multiple' => $args['multiple'],
-		);
+		];
 
 		$method = 'get_value';
 		switch ( $args['type'] ) {
@@ -218,8 +210,8 @@ if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
 	 * @return array
 	 */
 	function rwmb_get_object_fields( $type_or_id, $object_type = 'post' ) {
-		$meta_boxes = rwmb_get_registry( 'meta_box' )->get_by( array( 'object_type' => $object_type ) );
-		array_walk( $meta_boxes, 'rwmb_check_meta_box_supports', array( $object_type, $type_or_id ) );
+		$meta_boxes = rwmb_get_registry( 'meta_box' )->get_by( [ 'object_type' => $object_type ] );
+		array_walk( $meta_boxes, 'rwmb_check_meta_box_supports', [ $object_type, $type_or_id ] );
 		$meta_boxes = array_filter( $meta_boxes );
 
 		$fields = [];
@@ -255,7 +247,7 @@ if ( ! function_exists( 'rwmb_check_meta_box_supports' ) ) {
 				$type = $type_or_id;
 				if ( is_numeric( $type_or_id ) ) {
 					$term = get_term( $type_or_id );
-					$type = is_array( $term ) ? $term->taxonomy : null;
+					$type = is_wp_error( $term ) || ! $term ? null : $term->taxonomy;
 				}
 				$prop = 'taxonomies';
 				break;

@@ -1,12 +1,6 @@
 <?php
 /**
  * The select tree field.
- *
- * @package Meta Box
- */
-
-/**
- * Select tree field class.
  */
 class RWMB_Select_Tree_Field extends RWMB_Select_Advanced_Field {
 	/**
@@ -22,13 +16,10 @@ class RWMB_Select_Tree_Field extends RWMB_Select_Advanced_Field {
 		return $options ? $walker->walk( $options ) : '';
 	}
 
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-select-tree', RWMB_CSS_URL . 'select-tree.css', array( 'rwmb-select' ), RWMB_VER );
-		wp_enqueue_script( 'rwmb-select-tree', RWMB_JS_URL . 'select-tree.js', array( 'rwmb-select' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-select-tree', RWMB_CSS_URL . 'select-tree.css', [ 'rwmb-select' ], RWMB_VER );
+		wp_enqueue_script( 'rwmb-select-tree', RWMB_JS_URL . 'select-tree.js', [ 'rwmb-select' ], RWMB_VER, true );
 	}
 
 	/**

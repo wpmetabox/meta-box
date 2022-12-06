@@ -1,15 +1,8 @@
 <?php
 /**
- * Storage interface
- *
- * @package Meta Box
- */
-
-/**
- * Interface RWMB_Storage_Interface
+ * Storage interface.
  */
 interface RWMB_Storage_Interface {
-
 	/**
 	 * Get value from storage.
 	 *

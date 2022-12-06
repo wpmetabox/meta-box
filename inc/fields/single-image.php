@@ -1,12 +1,6 @@
 <?php
 /**
  * The advanced image upload field which uses WordPress media popup to upload and select images.
- *
- * @package Meta Box
- */
-
-/**
- * Image advanced field class.
  */
 class RWMB_Single_Image_Field extends RWMB_Image_Advanced_Field {
 	/**
@@ -22,13 +16,10 @@ class RWMB_Single_Image_Field extends RWMB_Image_Advanced_Field {
 
 		$field = parent::normalize( $field );
 
-		$field['attributes'] = wp_parse_args(
-			$field['attributes'],
-			array(
-				'class'             => '',
-				'data-single-image' => 1,
-			)
-		);
+		$field['attributes'] = wp_parse_args( $field['attributes'], [
+			'class'             => '',
+			'data-single-image' => 1,
+		] );
 
 		$field['attributes']['class'] .= ' rwmb-image_advanced';
 		$field['multiple']             = false;

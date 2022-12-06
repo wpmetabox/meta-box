@@ -2,12 +2,6 @@
 /**
  * Base walker.
  * Walkers must inherit this class and overwrite methods with its own.
- *
- * @package Meta Box
- */
-
-/**
- * Base walker class.
  */
 abstract class RWMB_Walker_Base extends Walker {
 	/**
@@ -31,10 +25,10 @@ abstract class RWMB_Walker_Base extends Walker {
 	 * @param mixed $meta  Meta value.
 	 */
 	public function __construct( $field, $meta ) {
-		$this->db_fields = array(
+		$this->db_fields = [
 			'id'     => 'value',
 			'parent' => 'parent',
-		);
+		];
 
 		$this->field = $field;
 		$this->meta  = (array) $meta;

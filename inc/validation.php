@@ -21,12 +21,8 @@ class RWMB_Validation {
 	public function enqueue() {
 		wp_enqueue_script( 'rwmb-validation', RWMB_JS_URL . 'validation.min.js', [ 'jquery', 'rwmb' ], RWMB_VER, true );
 
-		RWMB_Helpers_Field::localize_script_once(
-			'rwmb-validation',
-			'rwmbValidation',
-			[
-				'message' => esc_html( apply_filters( 'rwmb_validation_message_string', __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) ),
-			]
-		);
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-validation', 'rwmbValidation', [
+			'message' => esc_html( apply_filters( 'rwmb_validation_message_string', __( 'Please correct the errors highlighted below and try again.', 'meta-box' ) ) ),
+		] );
 	}
 }

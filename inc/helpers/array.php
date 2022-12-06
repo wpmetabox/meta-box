@@ -1,23 +1,13 @@
 <?php
 /**
  * Array helper functions.
- *
- * @package Meta Box
- */
-
-/**
- * Array helper class.
- *
- * @package Meta Box
  */
 class RWMB_Helpers_Array {
 	/**
 	 * New array map function that accepts more params than just values.
 	 * Params: array|item, callback, other params.
-	 *
-	 * @return array
 	 */
-	public static function map() {
+	public static function map() : array {
 		$args     = func_get_args();
 		$items    = array_shift( $args );
 		$callback = array_shift( $args );
@@ -39,10 +29,9 @@ class RWMB_Helpers_Array {
 	/**
 	 * Convert a comma separated string to array.
 	 *
-	 * @param string $csv Comma separated string.
-	 * @return array
+	 * @param string|array $csv Comma separated string.
 	 */
-	public static function from_csv( $csv ) {
+	public static function from_csv( $csv ) : array {
 		return is_array( $csv ) ? $csv : array_filter( array_map( 'trim', explode( ',', $csv . ',' ) ) );
 	}
 
@@ -62,13 +51,9 @@ class RWMB_Helpers_Array {
 
 	/**
 	 * Flatten an array.
-	 *
 	 * @link https://stackoverflow.com/a/1320156/371240
-	 *
-	 * @param  array $array Input array.
-	 * @return array
 	 */
-	public static function flatten( $array ) {
+	public static function flatten( array $array ) : array {
 		$return = [];
 		array_walk_recursive(
 			$array,
@@ -82,9 +67,8 @@ class RWMB_Helpers_Array {
 	/**
 	 * Ensure a variable is an array.
 	 * @param  mixed $input Input value.
-	 * @return array
 	 */
-	public static function ensure( $input ) {
+	public static function ensure( $input ) : array {
 		return (array) $input;
 	}
 }

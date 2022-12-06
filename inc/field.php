@@ -3,25 +3,11 @@
  * The field base class.
  * This is the parent class of all custom fields defined by the plugin, which defines all the common methods.
  * Fields must inherit this class and overwrite methods with its own.
- *
- * @package Meta Box
- */
-
-/**
- * The field base class.
  */
 abstract class RWMB_Field {
-	/**
-	 * Add actions.
-	 */
-	public static function add_actions() {
-	}
+	public static function add_actions() {}
 
-	/**
-	 * Enqueue scripts and styles.
-	 */
-	public static function admin_enqueue_scripts() {
-	}
+	public static function admin_enqueue_scripts() {}
 
 	/**
 	 * Show field HTML
@@ -33,11 +19,11 @@ abstract class RWMB_Field {
 	 * @param bool  $saved   Whether the meta box is saved at least once.
 	 * @param int   $post_id Post ID.
 	 */
-	public static function show( $field, $saved, $post_id = 0 ) {
+	public static function show( array $field, bool $saved, $post_id = 0 ) {
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
-		$begin = self::call( $field, 'begin_html', $meta );
+		$begin = static::begin_html( $field );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
 		// Separate code for cloneable and non-cloneable fields to make easy to maintain.
@@ -82,15 +68,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	/**
-	 * Show begin HTML markup for fields.
-	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
-	 */
-	public static function begin_html( $meta, $field ) {
+	protected static function begin_html( array $field ) : string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -121,31 +99,16 @@ abstract class RWMB_Field {
 		return $label . $input_open;
 	}
 
-	/**
-	 * Show end HTML markup for fields.
-	 */
-	public static function end_html( array $field ) : string {
+	protected static function end_html( array $field ) : string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	/**
-	 * Display field label description.
-	 *
-	 * @param array $field Field parameters.
-	 * @return string
-	 */
-	protected static function label_description( $field ) {
+	protected static function label_description( array $field ) : string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	/**
-	 * Display field description.
-	 *
-	 * @param array $field Field parameters.
-	 * @return string
-	 */
-	protected static function input_description( $field ) {
+	protected static function input_description( array $field ) : string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -238,7 +201,7 @@ abstract class RWMB_Field {
 	 * @param int   $object_id The object ID.
 	 * @param array $field     The field settings.
 	 */
-	public static function process_value( $value, $object_id, $field ) {
+	public static function process_value( $value, $object_id, array $field ) {
 		$old_value = self::call( $field, 'raw_meta', $object_id );
 
 		// Allow field class change the value.
@@ -404,14 +367,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	/**
-	 * Renders an attribute array into an html attributes string.
-	 *
-	 * @param array $attributes HTML attributes.
-	 *
-	 * @return string
-	 */
-	public static function render_attributes( $attributes ) {
+	public static function render_attributes( array $attributes ) : string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );

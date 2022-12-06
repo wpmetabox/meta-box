@@ -1,21 +1,12 @@
 <?php
 /**
  * The advanced image upload field which uses WordPress media popup to upload and select images.
- *
- * @package Meta Box
- */
-
-/**
- * Image advanced field class.
  */
 class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
-	/**
-	 * Enqueue scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		RWMB_Image_Field::admin_enqueue_scripts();
-		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', array( 'rwmb-media' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-image-advanced', RWMB_JS_URL . 'image-advanced.js', [ 'rwmb-media' ], RWMB_VER, true );
 	}
 
 	/**
@@ -27,21 +18,15 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 */
 	public static function normalize( $field ) {
 		$field['mime_type'] = 'image';
-		$field              = wp_parse_args(
-			$field,
-			array(
-				'image_size' => 'thumbnail',
-			)
-		);
+		$field              = wp_parse_args( $field, [
+			'image_size' => 'thumbnail',
+		] );
 
 		$field = parent::normalize( $field );
 
-		$field['js_options'] = wp_parse_args(
-			$field['js_options'],
-			array(
-				'imageSize' => $field['image_size'],
-			)
-		);
+		$field['js_options'] = wp_parse_args( $field['js_options'], [
+			'imageSize' => $field['image_size'],
+		] );
 
 		return $field;
 	}

@@ -1,12 +1,6 @@
 <?php
 /**
  * The custom HTML field which allows users to output any kind of content to the meta box.
- *
- * @package Meta Box
- */
-
-/**
- * Custom HTML field class.
  */
 class RWMB_Custom_Html_Field extends RWMB_Field {
 	/**
@@ -20,7 +14,7 @@ class RWMB_Custom_Html_Field extends RWMB_Field {
 	public static function html( $meta, $field ) {
 		$html = ! empty( $field['std'] ) ? $field['std'] : '';
 		if ( ! empty( $field['callback'] ) && is_callable( $field['callback'] ) ) {
-			$html = call_user_func_array( $field['callback'], array( $meta, $field ) );
+			$html = call_user_func_array( $field['callback'], [ $meta, $field ] );
 		}
 		return $html;
 	}

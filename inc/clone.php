@@ -3,22 +3,9 @@
  * The clone module, allowing users to clone (duplicate) fields.
  */
 class RWMB_Clone {
-	/**
-	 * Get clone field HTML.
-	 *
-	 * @param mixed $meta  The meta value.
-	 * @param array $field The field parameters.
-	 *
-	 * @return string
-	 */
-	public static function html( $meta, $field ) {
+	public static function html( array $meta, array $field ) : string {
 		$field_html = '';
 
-		/**
-		 * Note: $meta must contain value so that the foreach loop runs!
-		 *
-		 * @see meta()
-		 */
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
@@ -73,7 +60,7 @@ class RWMB_Clone {
 	 *
 	 * @return mixed
 	 */
-	public static function value( $new, $old, $object_id, $field ) {
+	public static function value( $new, $old, $object_id, array $field ) {
 		if ( ! is_array( $new ) ) {
 			$new = [];
 		}

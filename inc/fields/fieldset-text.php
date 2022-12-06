@@ -1,19 +1,10 @@
 <?php
 /**
  * The text fieldset field, which allows users to enter content for a list of text fields.
- *
- * @package Meta Box
- */
-
-/**
- * Fieldset text class.
  */
 class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
-	/**
-	 * Enqueue field scripts and styles.
-	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-fieldset-text', RWMB_CSS_URL . 'fieldset-text.css', '', RWMB_VER );
+		wp_enqueue_style( 'rwmb-fieldset-text', RWMB_CSS_URL . 'fieldset-text.css', [], RWMB_VER );
 	}
 
 	/**
@@ -39,25 +30,11 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		return $out;
 	}
 
-	/**
-	 * Do not show field description.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
-	 */
-	public static function input_description( $field ) {
+	protected static function input_description( array $field ) : string {
 		return '';
 	}
 
-	/**
-	 * Do not show field description.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
-	 */
-	public static function label_description( $field ) {
+	protected static function label_description( array $field ) : string {
 		return '';
 	}
 

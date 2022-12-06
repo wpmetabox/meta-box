@@ -20,18 +20,10 @@ class RWMB_Autoloader {
 		];
 	}
 
-	/**
-	 * Register autoloader for plugin classes.
-	 */
 	public function register() {
 		spl_autoload_register( [ $this, 'autoload' ] );
 	}
 
-	/**
-	 * Autoload classes.
-	 *
-	 * @param string $class Class name.
-	 */
 	public function autoload( string $class ) {
 		foreach ( $this->dirs as $dir ) {
 			if (
@@ -50,11 +42,11 @@ class RWMB_Autoloader {
 				$file = strtolower( str_replace( '_', '-', $file ) ) . '.php';
 			}
 			$file = $dir['dir'] . $file;
-			$this->require_file( $file );
+			$this->require( $file );
 		}
 	}
 
-	protected function require_file( $file ) {
+	private function require( string $file ) {
 		if ( file_exists( $file ) ) {
 			require_once $file;
 		}

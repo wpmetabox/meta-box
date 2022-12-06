@@ -7,22 +7,11 @@ class RWMB_Divider_Field extends RWMB_Field {
 		wp_enqueue_style( 'rwmb-divider', RWMB_CSS_URL . 'divider.css', [], RWMB_VER );
 	}
 
-	/**
-	 * Show begin HTML markup for fields.
-	 *
-	 * @param mixed $meta  Meta value.
-	 * @param array $field Field parameters.
-	 *
-	 * @return string
-	 */
-	public static function begin_html( $meta, $field ) {
+	protected static function begin_html( array $field ) : string {
 		$attributes = empty( $field['id'] ) ? '' : " id='{$field['id']}'";
 		return "<hr$attributes>";
 	}
 
-	/**
-	 * Show end HTML markup for fields.
-	 */
 	public static function end_html( array $field ) : string {
 		return '';
 	}
