@@ -71,7 +71,7 @@ class RWMB_Core {
 		}
 	}
 
-	public function render_meta_boxes_for_context( WP_Post $post ) {
+	public function render_meta_boxes_for_context( $post ) {
 		$hook    = current_filter();
 		$context = 'edit_form_top' === $hook ? 'form_top' : substr( $hook, 10 );
 		do_meta_boxes( null, $context, $post );
