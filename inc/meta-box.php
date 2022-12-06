@@ -85,7 +85,7 @@ class RW_Meta_Box {
 
 	/**
 	 * Specific hooks for meta box object. Default is 'post'.
-	 * This should be extended in sub-classes to support meta fields for terms, user, settings pages, etc.
+	 * This should be extended in subclasses to support meta fields for terms, user, settings pages, etc.
 	 */
 	protected function object_hooks() {
 		// Add meta box.
@@ -267,7 +267,7 @@ class RW_Meta_Box {
 			&& wp_verify_nonce( $nonce, "rwmb-save-{$this->id}" );
 	}
 
-	public static function normalize( array $meta_box ) : array {
+	public static function normalize( $meta_box ) {
 		$default_title = __( 'Meta Box Title', 'meta-box' );
 		$meta_box      = wp_parse_args( $meta_box, [
 			'title'          => $default_title,
@@ -313,7 +313,7 @@ class RW_Meta_Box {
 
 	/**
 	 * Check if meta box is saved before.
-	 * This helps saving empty value in meta fields (text, check box, etc.) and set the correct default values.
+	 * This helps to save empty value in meta fields (text, check box, etc.) and set the correct default values.
 	 */
 	public function is_saved() : bool {
 		foreach ( $this->fields as $field ) {
@@ -347,7 +347,7 @@ class RW_Meta_Box {
 	 *
 	 * @param ?WP_Screen $screen Screen object.
 	 */
-	public function is_edit_screen( $screen = null ) : bool {
+	public function is_edit_screen( $screen = null ) {
 		if ( ! ( $screen instanceof WP_Screen ) ) {
 			$screen = get_current_screen();
 		}
@@ -403,6 +403,6 @@ class RW_Meta_Box {
 		}
 		$parent = wp_is_post_revision( $object_id );
 
-		return $parent ? $parent : $object_id;
+		return $parent ?: $object_id;
 	}
 }
