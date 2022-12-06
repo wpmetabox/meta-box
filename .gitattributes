@@ -12,6 +12,7 @@ tests export-ignore
 .gitignore export-ignore
 
 phpcs.xml export-ignore
+phpstan.neon export-ignore
 gulpfile.js export-ignore
 
 *.json export-ignore
