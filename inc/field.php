@@ -53,7 +53,7 @@ abstract class RWMB_Field {
 		);
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
-		echo $outer_html; // WPCS: XSS OK.
+		echo $outer_html; // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 	/**
@@ -515,9 +515,8 @@ abstract class RWMB_Field {
 		if ( is_string( $check ) ) {
 			$method = array_shift( $args );
 			$field  = reset( $args ); // Keep field as 1st param.
-		}
-		// Params: field, method name, other params.
-		else {
+		} else {
+			// Params: field, method name, other params.
 			$field  = array_shift( $args );
 			$method = array_shift( $args );
 

@@ -193,7 +193,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 		$output = apply_filters( 'rwmb_the_value', $output, $field, $args, $post_id );
 
 		if ( $echo ) {
-			echo $output; // WPCS: XSS OK.
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput
 		}
 
 		return $output;
