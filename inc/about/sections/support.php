@@ -3,7 +3,7 @@
 		<?php
 		$allowed_html = array(
 			'a' => array(
-				'href' => array(),
+				'href' => [],
 			),
 		);
 		// Translators: %s - link to documentation.

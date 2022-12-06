@@ -41,7 +41,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		$options = $field['options'];
 
 		if ( is_array( $field['options'] ) ) {
-			$options = array();
+			$options = [];
 			foreach ( $field['options'] as $value => $label ) {
 				$options[] = array(
 					'value' => $value,

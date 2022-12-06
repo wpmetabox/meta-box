@@ -37,7 +37,7 @@ class RWMB_Color_Field extends RWMB_Input_Field {
 			$field,
 			array(
 				'alpha_channel' => false,
-				'js_options'    => array(),
+				'js_options'    => [],
 			)
 		);
 

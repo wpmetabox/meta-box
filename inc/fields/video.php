@@ -49,7 +49,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
-	public static function file_info( $file_id, $args = array(), $field = array() ) {
+	public static function file_info( $file_id, $args = [], $field = [] ) {
 		if ( ! get_attached_file( $file_id ) ) {
 			return false;
 		}
@@ -65,7 +65,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 			'description' => $attachment->post_content,
 		);
 
-		$data['meta'] = array();
+		$data['meta'] = [];
 		$meta         = wp_get_attachment_metadata( $attachment->ID );
 		if ( ! empty( $meta ) ) {
 			foreach ( wp_get_attachment_id3_keys( $attachment ) as $key => $label ) {

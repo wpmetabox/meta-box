@@ -28,7 +28,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 		if ( empty( $field['options'] ) ) {
 			return '';
 		}
-		$html  = array();
+		$html  = [];
 		$input = '<label><span class="rwmb-text-list-label">%s</span> <input %s></label>';
 
 		$attributes = self::get_attributes( $field, $meta );
@@ -78,7 +78,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		$filtered = array_filter( $new );
-		return count( $filtered ) ? $new : array();
+		return count( $filtered ) ? $new : [];
 	}
 
 	/**

@@ -146,9 +146,9 @@ class RW_Meta_Box {
 			return;
 		}
 
-		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'style.css', [], RWMB_VER );
 		if ( is_rtl() ) {
-			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', array(), RWMB_VER );
+			wp_enqueue_style( 'rwmb-rtl', RWMB_CSS_URL . 'style-rtl.css', [], RWMB_VER );
 		}
 
 		wp_enqueue_script( 'rwmb', RWMB_JS_URL . 'script.js', array( 'jquery' ), RWMB_VER, true );
@@ -301,7 +301,7 @@ class RW_Meta_Box {
 	 */
 	public function save_field( $field ) {
 		$single  = $field['clone'] || ! $field['multiple'];
-		$default = $single ? '' : array();
+		$default = $single ? '' : [];
 		$old     = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 		$new     = rwmb_request()->post( $field['id'], $default );
 		$new     = RWMB_Field::process_value( $new, $this->object_id, $field );
@@ -353,7 +353,7 @@ class RW_Meta_Box {
 				'default_hidden' => false,
 				'style'          => 'default',
 				'class'          => '',
-				'fields'         => array(),
+				'fields'         => [],
 			)
 		);
 
@@ -419,7 +419,7 @@ class RW_Meta_Box {
 
 			if (
 				( $single && '' !== $value )
-				|| ( ! $single && is_array( $value ) && array() !== $value )
+				|| ( ! $single && is_array( $value ) && [] !== $value )
 			) {
 				return true;
 			}

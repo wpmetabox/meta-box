@@ -20,7 +20,7 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 	 * @param array  $args              An array of additional arguments.
 	 * @param int    $current_object_id ID of the current item.
 	 */
-	public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
+	public function start_el( &$output, $object, $depth = 0, $args = [], $current_object_id = 0 ) {
 		$indent = str_repeat( '&nbsp;', $depth * 4 );
 
 		$output .= sprintf(

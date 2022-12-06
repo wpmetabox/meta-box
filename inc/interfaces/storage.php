@@ -18,5 +18,5 @@ interface RWMB_Storage_Interface {
 	 * @param  array  $args      Custom arguments..
 	 * @return mixed
 	 */
-	public function get( $object_id, $name, $args = array() );
+	public function get( $object_id, $name, $args = [] );
 }

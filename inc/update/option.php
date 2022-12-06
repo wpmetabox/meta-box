@@ -27,7 +27,7 @@ class RWMB_Update_Option {
 	 * @return mixed Option value or option array.
 	 */
 	public function get( $name = null, $default = null ) {
-		$option = $this->is_network_activated() ? get_site_option( $this->option, array() ) : get_option( $this->option, array() );
+		$option = $this->is_network_activated() ? get_site_option( $this->option, [] ) : get_option( $this->option, [] );
 
 		return null === $name ? $option : ( isset( $option[ $name ] ) ? $option[ $name ] : $default );
 	}

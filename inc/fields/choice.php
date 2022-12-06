@@ -32,7 +32,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 			$field,
 			array(
 				'flatten' => true,
-				'options' => array(),
+				'options' => [],
 			)
 		);
 
@@ -52,7 +52,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return array
 	 */
 	public static function transform_options( $options ) {
-		$transformed = array();
+		$transformed = [];
 		$options     = (array) $options;
 		foreach ( $options as $value => $label ) {
 			$option = is_array( $label ) ? $label : array(

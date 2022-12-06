@@ -10,7 +10,7 @@
  */
 class RWMB_Key_Value_Field extends RWMB_Input_Field {
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-key-value', RWMB_CSS_URL . 'key-value.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb-key-value', RWMB_CSS_URL . 'key-value.css', [], RWMB_VER );
 	}
 
 	/**

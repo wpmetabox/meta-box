@@ -76,7 +76,7 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 		 * @see  WP_Embed::shortcode()
 		 * @see  wp_embed_defaults()
 		 */
-		$args = array();
+		$args = [];
 		if ( is_admin() ) {
 			$args['width'] = 360;
 		}

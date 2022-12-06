@@ -15,7 +15,7 @@ if ( ! function_exists( 'rwmb_meta' ) ) {
 	 *
 	 * @return mixed
 	 */
-	function rwmb_meta( $key, $args = array(), $post_id = null ) {
+	function rwmb_meta( $key, $args = [], $post_id = null ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $post_id );
 
@@ -42,7 +42,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	 * @param string $value     Meta value. Required.
 	 * @param array  $args      Array of arguments. Optional.
 	 */
-	function rwmb_set_meta( $object_id, $key, $value, $args = array() ) {
+	function rwmb_set_meta( $object_id, $key, $value, $args = [] ) {
 		$args = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
@@ -66,7 +66,7 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	 *
 	 * @return array
 	 */
-	function rwmb_get_field_settings( $key, $args = array(), $object_id = null ) {
+	function rwmb_get_field_settings( $key, $args = [], $object_id = null ) {
 		$args = wp_parse_args(
 			$args,
 			array(
@@ -101,7 +101,7 @@ if ( ! function_exists( 'rwmb_meta_legacy' ) ) {
 	 *
 	 * @return mixed
 	 */
-	function rwmb_meta_legacy( $key, $args = array(), $post_id = null ) {
+	function rwmb_meta_legacy( $key, $args = [], $post_id = null ) {
 		$args  = wp_parse_args(
 			$args,
 			array(
@@ -146,7 +146,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 *
 	 * @return mixed false if field doesn't exist. Field value otherwise.
 	 */
-	function rwmb_get_value( $field_id, $args = array(), $post_id = null ) {
+	function rwmb_get_value( $field_id, $args = [], $post_id = null ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
@@ -179,7 +179,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 *
 	 * @return string
 	 */
-	function rwmb_the_value( $field_id, $args = array(), $post_id = null, $echo = true ) {
+	function rwmb_the_value( $field_id, $args = [], $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
@@ -222,7 +222,7 @@ if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
 		array_walk( $meta_boxes, 'rwmb_check_meta_box_supports', array( $object_type, $type_or_id ) );
 		$meta_boxes = array_filter( $meta_boxes );
 
-		$fields = array();
+		$fields = [];
 		foreach ( $meta_boxes as $meta_box ) {
 			foreach ( $meta_box->fields as $field ) {
 				$fields[ $field['id'] ] = $field;
@@ -288,7 +288,7 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 	 * @return object
 	 */
 	function rwmb_get_registry( $type ) {
-		static $data = array();
+		static $data = [];
 
 		$class = 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Registry';
 		if ( ! isset( $data[ $type ] ) ) {

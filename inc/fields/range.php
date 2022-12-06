@@ -31,8 +31,8 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 * Enqueue styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-range', RWMB_JS_URL . 'range.js', array(), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-range', RWMB_JS_URL . 'range.js', [], RWMB_VER, true );
 	}
 
 	/**

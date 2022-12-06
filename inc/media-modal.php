@@ -15,7 +15,7 @@ class RWMB_Media_Modal {
 	 *
 	 * @var array
 	 */
-	protected $fields = array();
+	protected $fields = [];
 
 	/**
 	 * Initialize.
@@ -37,7 +37,7 @@ class RWMB_Media_Modal {
 	 */
 	public function enqueue() {
 		if ( get_current_screen()->post_type === 'attachment' ) {
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', array(), RWMB_VER );
+			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', [], RWMB_VER );
 		}
 	}
 

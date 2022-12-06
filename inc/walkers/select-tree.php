@@ -42,7 +42,7 @@ class RWMB_Walker_Select_Tree {
 	 * @return string
 	 */
 	public function walk( $options ) {
-		$children = array();
+		$children = [];
 
 		foreach ( $options as $option ) {
 			$parent                = isset( $option->parent ) ? $option->parent : 0;

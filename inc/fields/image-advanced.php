@@ -54,7 +54,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 * @param null  $post_id Post ID.
 	 * @return mixed
 	 */
-	public static function get_value( $field, $args = array(), $post_id = null ) {
+	public static function get_value( $field, $args = [], $post_id = null ) {
 		return RWMB_Image_Field::get_value( $field, $args, $post_id );
 	}
 
@@ -67,7 +67,7 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 *
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
-	public static function file_info( $file, $args = array(), $field = array() ) {
+	public static function file_info( $file, $args = [], $field = [] ) {
 		return RWMB_Image_Field::file_info( $file, $args, $field );
 	}
 

@@ -25,7 +25,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html = array();
+		$html = [];
 		$tpl  = '<p><label>%s</label> %s</p>';
 
 		foreach ( $field['options'] as $key => $label ) {

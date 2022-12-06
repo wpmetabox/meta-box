@@ -13,7 +13,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', array(), RWMB_VER );
+		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', [], RWMB_VER );
 
 		/**
 		 * Since June 2016, Google Maps requires a valid API key.
@@ -38,7 +38,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 * @link https://developers.google.com/maps/documentation/javascript/libraries
 		 */
 		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
-		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), RWMB_VER, true );
+		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), [], RWMB_VER, true );
 		wp_enqueue_script(
 			'rwmb-map',
 			RWMB_JS_URL . 'map.js',
@@ -127,7 +127,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return mixed Array(latitude, longitude, zoom)
 	 */
-	public static function get_value( $field, $args = array(), $post_id = null ) {
+	public static function get_value( $field, $args = [], $post_id = null ) {
 		$value                               = parent::get_value( $field, $args, $post_id );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 		return compact( 'latitude', 'longitude', 'zoom' );
@@ -143,7 +143,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return string HTML output of the field
 	 */
-	public static function the_value( $field, $args = array(), $post_id = null ) {
+	public static function the_value( $field, $args = [], $post_id = null ) {
 		$value = parent::get_value( $field, $args, $post_id );
 		$args  = wp_parse_args(
 			$args,
@@ -162,7 +162,7 @@ class RWMB_Map_Field extends RWMB_Field {
 	 *
 	 * @return string
 	 */
-	public static function render_map( $location, $args = array() ) {
+	public static function render_map( $location, $args = [] ) {
 		list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
 		if ( ! $latitude || ! $longitude ) {
 			return '';
@@ -178,7 +178,7 @@ class RWMB_Map_Field extends RWMB_Field {
 				'marker'       => true, // Display marker?
 				'marker_title' => '', // Marker title, when hover.
 				'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
-				'js_options'   => array(),
+				'js_options'   => [],
 				'zoom'         => $zoom,
 
 				// Default API key, required by Google Maps since June 2016.
@@ -194,7 +194,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		 * @link https://developers.google.com/maps/documentation/javascript/libraries
 		 */
 		$google_maps_url = apply_filters( 'rwmb_google_maps_url', $google_maps_url );
-		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), array(), RWMB_VER, true );
+		wp_register_script( 'google-maps', esc_url_raw( $google_maps_url ), [], RWMB_VER, true );
 		wp_enqueue_script( 'rwmb-map-frontend', RWMB_JS_URL . 'map-frontend.js', array( 'google-maps', 'jquery' ), RWMB_VER, true );
 
 		/*

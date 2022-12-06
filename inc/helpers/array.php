@@ -69,7 +69,7 @@ class RWMB_Helpers_Array {
 	 * @return array
 	 */
 	public static function flatten( $array ) {
-		$return = array();
+		$return = [];
 		array_walk_recursive(
 			$array,
 			function( $a ) use ( &$return ) {
