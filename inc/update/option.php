@@ -25,7 +25,7 @@ class RWMB_Update_Option {
 	}
 
 	public function get_api_key() : string {
-		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->get( 'api_key' );
+		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->get( 'api_key', '' );
 	}
 
 	public function get_license_status() : string {
