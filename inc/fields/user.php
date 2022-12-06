@@ -1,26 +1,14 @@
 <?php
 /**
  * The user select field.
- *
- * @package Meta Box
- */
-
-/**
- * User field class.
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
-	/**
-	 * Add actions.
-	 */
 	public static function add_actions() {
-		add_action( 'wp_ajax_rwmb_get_users', array( __CLASS__, 'ajax_get_users' ) );
-		add_action( 'wp_ajax_nopriv_rwmb_get_users', array( __CLASS__, 'ajax_get_users' ) );
-		add_action( 'clean_user_cache', array( __CLASS__, 'update_cache' ) );
+		add_action( 'wp_ajax_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
+		add_action( 'wp_ajax_nopriv_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
+		add_action( 'clean_user_cache', [ __CLASS__, 'update_cache' ] );
 	}
 
-	/**
-	 * Query users via ajax.
-	 */
 	public static function ajax_get_users() {
 		check_ajax_referer( 'query' );
 
@@ -39,7 +27,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Pagination.
-		$limit = isset( $field['query_args']['number'] ) ? (int) $field['query_args']['number'] : 0;
+		$limit = $field['query_args']['number'] ?? 0;
+		$limit = (int) $limit;
 		if ( $limit && 'query:append' === $request->filter_post( '_type' ) ) {
 			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
@@ -48,7 +37,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
-		$data = array( 'items' => $items );
+		$data = [ 'items' => $items ];
 
 		// More items for pagination.
 		if ( $limit && count( $items ) === $limit ) {
@@ -78,25 +67,19 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		// Set default field args.
-		$field = wp_parse_args(
-			$field,
-			array(
-				'placeholder'   => __( 'Select a user', 'meta-box' ),
-				'query_args'    => array(),
-				'display_field' => 'display_name',
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'placeholder'   => __( 'Select a user', 'meta-box' ),
+			'query_args'    => [],
+			'display_field' => 'display_name',
+		] );
 
 		$field = parent::normalize( $field );
 
 		// Set default query args.
 		$limit               = $field['ajax'] ? 10 : 0;
-		$field['query_args'] = wp_parse_args(
-			$field['query_args'],
-			array(
-				'number' => $limit,
-			)
-		);
+		$field['query_args'] = wp_parse_args( $field['query_args'], [
+			'number' => $limit,
+		] );
 
 		parent::set_ajax_params( $field );
 
@@ -107,22 +90,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	/**
-	 * Query users for field options.
-	 *
-	 * @param  array $meta  Saved meta value.
-	 * @param  array $field Field settings.
-	 * @return array        Field options array.
-	 */
-	public static function query( $meta, $field ) {
+	protected static function query( $meta, array $field ) : array {
 		$display_field = $field['display_field'];
-		$args          = wp_parse_args(
-			$field['query_args'],
-			array(
-				'orderby' => $display_field,
-				'order'   => 'asc',
-			)
-		);
+		$args          = wp_parse_args( $field['query_args'], [
+			'orderby' => $display_field,
+			'order'   => 'asc',
+		] );
 
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
@@ -139,14 +112,15 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		$users   = get_users( $args );
-		$options = array();
+		$options = [];
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ? $user->$display_field : __( '(No title)', 'meta-box' );
 			$label = self::filter( 'choice_label', $label, $field, $user );
-			$options[ $user->ID ] = array(
+
+			$options[ $user->ID ] = [
 				'value' => $user->ID,
 				'label' => $label,
-			);
+			];
 		}
 
 		// Cache the query.
@@ -170,7 +144,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$link          = isset( $args['link'] ) ? $args['link'] : 'view';
+		$link          = $args['link'] ?? 'view';
 		$user          = get_userdata( $value );
 		$display_field = $field['display_field'];
 		$text          = $user->$display_field;

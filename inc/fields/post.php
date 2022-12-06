@@ -1,25 +1,13 @@
 <?php
 /**
  * The post field which allows users to select existing posts.
- *
- * @package Meta Box
- */
-
-/**
- * Post field class.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
-	/**
-	 * Add ajax actions callback.
-	 */
 	public static function add_actions() {
-		add_action( 'wp_ajax_rwmb_get_posts', array( __CLASS__, 'ajax_get_posts' ) );
-		add_action( 'wp_ajax_nopriv_rwmb_get_posts', array( __CLASS__, 'ajax_get_posts' ) );
+		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
+		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 	}
 
-	/**
-	 * Query posts via ajax.
-	 */
 	public static function ajax_get_posts() {
 		check_ajax_referer( 'query' );
 
@@ -43,7 +31,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
-		$data = array( 'items' => $items );
+		$data = [ 'items' => $items ];
 
 		// More items for pagination.
 		$limit = (int) $field['query_args']['posts_per_page'];
@@ -61,14 +49,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = wp_parse_args(
-			$field,
-			array(
-				'post_type'  => 'post',
-				'parent'     => false,
-				'query_args' => array(),
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'post_type'  => 'post',
+			'parent'     => false,
+			'query_args' => [],
+		] );
 
 		$field['post_type'] = (array) $field['post_type'];
 
@@ -86,12 +71,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				$placeholder = sprintf( __( 'Select a %s', 'meta-box' ), strtolower( $post_type_object->labels->singular_name ) );
 			}
 		}
-		$field = wp_parse_args(
-			$field,
-			array(
-				'placeholder' => $placeholder,
-			)
-		);
+		$field = wp_parse_args( $field, [
+			'placeholder' => $placeholder,
+		] );
 
 		// Set parent option, which will change field name to `parent_id` to save as post parent.
 		if ( $field['parent'] ) {
@@ -103,36 +85,23 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		// Set default query args.
 		$posts_per_page      = $field['ajax'] ? 10 : -1;
-		$field['query_args'] = wp_parse_args(
-			$field['query_args'],
-			array(
-				'post_type'      => $field['post_type'],
-				'post_status'    => 'publish',
-				'posts_per_page' => $posts_per_page,
-			)
-		);
+		$field['query_args'] = wp_parse_args( $field['query_args'], [
+			'post_type'      => $field['post_type'],
+			'post_status'    => 'publish',
+			'posts_per_page' => $posts_per_page,
+		] );
 
 		parent::set_ajax_params( $field );
 
 		return $field;
 	}
 
-	/**
-	 * Query posts for field options.
-	 *
-	 * @param  array $meta  Saved meta value.
-	 * @param  array $field Field settings.
-	 * @return array        Field options array.
-	 */
-	public static function query( $meta, $field ) {
-		$args = wp_parse_args(
-			$field['query_args'],
-			array(
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			)
-		);
+	protected static function query( $meta, array $field ) : array {
+		$args = wp_parse_args( $field['query_args'], [
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		] );
 
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
@@ -155,15 +124,15 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query = new WP_Query( $args );
 		remove_filter( 'posts_search', [ __CLASS__, 'search_by_title' ] );
 
-		$options = array();
+		$options = [];
 		foreach ( $query->posts as $post ) {
 			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
 			$label                = self::filter( 'choice_label', $label, $field, $post );
-			$options[ $post->ID ] = array(
+			$options[ $post->ID ] = [
 				'value'  => $post->ID,
 				'label'  => $label,
 				'parent' => $post->post_parent,
-			);
+			];
 		}
 
 		// Cache the query.
@@ -185,7 +154,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		}
 		$q      = $wp_query->query_vars;
 		$n      = ! empty( $q['exact'] ) ? '' : '%';
-		$search = array();
+		$search = [];
 		foreach ( (array) $q['search_terms'] as $term ) {
 			$term     = esc_sql( $wpdb->esc_like( $term ) );
 			$search[] = "($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
@@ -232,7 +201,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$link = isset( $args['link'] ) ? $args['link'] : 'view';
+		$link = $args['link'] ?? 'view';
 		$text = get_the_title( $value );
 
 		if ( false === $link ) {
