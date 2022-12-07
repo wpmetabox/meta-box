@@ -7,7 +7,7 @@ class RWMB_Helpers_Array {
 	 * New array map function that accepts more params than just values.
 	 * Params: array|item, callback, other params.
 	 */
-	public static function map() : array {
+	public static function map() {
 		$args     = func_get_args();
 		$items    = array_shift( $args );
 		$callback = array_shift( $args );
