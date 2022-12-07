@@ -16,11 +16,11 @@ class RWMB_File_Field extends RWMB_Field {
 	}
 
 	public static function add_actions() {
-		add_action( 'post_edit_form_tag', [ __CLASS__, 'add_form_enctype' ] );
+		add_action( 'post_edit_form_tag', [ __CLASS__, 'post_edit_form_tag' ] );
 		add_action( 'wp_ajax_rwmb_delete_file', [ __CLASS__, 'ajax_delete_file' ] );
 	}
 
-	public static function add_form_enctype() {
+	public static function post_edit_form_tag() {
 		echo ' enctype="multipart/form-data"';
 	}
 
