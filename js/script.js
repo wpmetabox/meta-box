@@ -11,13 +11,12 @@ window.rwmb = window.rwmb || {};
 	rwmb.isGutenberg = document.body.classList.contains( 'block-editor-page' );
 
 	// Generate unique ID.
-	rwmb.uniqid = function uniqid() {
-		return Math.random().toString( 36 ).substr( 2 );
-	}
+	rwmb.uniqid = () => Math.random().toString( 36 ).substr( 2 );
 
 	// Trigger a custom ready event for all scripts to hook to.
 	// Used for static DOM and dynamic DOM (loaded in MB Blocks extension for Gutenberg).
 	rwmb.$document = $( document );
+
 	$( function() {
 		rwmb.$document.trigger( 'mb_ready' );
 	} );
