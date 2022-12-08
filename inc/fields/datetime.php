@@ -45,12 +45,12 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	];
 
 	public static function register_assets() {
-		// jQueryUI base theme: https://github.com/jquery/jquery-ui/tree/1.12.1/themes/base
+		// jQueryUI base theme: https://github.com/jquery/jquery-ui/tree/1.13.2/themes/base
 		$url = RWMB_CSS_URL . 'jqueryui';
-		wp_register_style( 'jquery-ui-core', "$url/core.css", [], '1.12.1' );
-		wp_register_style( 'jquery-ui-theme', "$url/theme.css", [], '1.12.1' );
-		wp_register_style( 'jquery-ui-datepicker', "$url/datepicker.css", [ 'jquery-ui-core', 'jquery-ui-theme' ], '1.12.1' );
-		wp_register_style( 'jquery-ui-slider', "$url/slider.css", [ 'jquery-ui-core', 'jquery-ui-theme' ], '1.12.1' );
+		wp_register_style( 'jquery-ui-core', "$url/core.css", [], '1.13.2' );
+		wp_register_style( 'jquery-ui-theme', "$url/theme.css", [], '1.13.2' );
+		wp_register_style( 'jquery-ui-datepicker', "$url/datepicker.css", [ 'jquery-ui-core', 'jquery-ui-theme' ], '1.13.2' );
+		wp_register_style( 'jquery-ui-slider', "$url/slider.css", [ 'jquery-ui-core', 'jquery-ui-theme' ], '1.13.2' );
 
 		// jQueryUI timepicker addon: https://github.com/trentrichardson/jQuery-Timepicker-Addon
 		wp_register_style( 'jquery-ui-timepicker', "$url/jquery-ui-timepicker-addon.min.css", [ 'rwmb-date', 'jquery-ui-slider' ], '1.6.3' );
