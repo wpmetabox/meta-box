@@ -211,7 +211,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		$field['js_options'] = wp_parse_args( $field['js_options'], [
 			'timeFormat'       => 'HH:mm',
 			'separator'        => ' ',
-			'dateFormat'       => empty( $field['format'] ) ? 'yy-mm-dd' : $field['format'],
+			'dateFormat'       => $field['format'] ?? 'yy-mm-dd',
 			'showButtonPanel'  => true,
 			'changeYear'       => true,
 			'yearRange'        => '-100:+100',
