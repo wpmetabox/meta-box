@@ -7,7 +7,7 @@
 class RWMB_Loader {
 	protected function constants() {
 		// Script version, used to add version for scripts and styles.
-		define( 'RWMB_VER', '5.6.12' );
+		define( 'RWMB_VER', '5.6.13' );
 
 		list( $path, $url ) = self::get_path( dirname( __DIR__ ) );
 
@@ -25,7 +25,7 @@ class RWMB_Loader {
 	 * Get plugin base path and URL.
 	 * The method is static and can be used in extensions.
 	 *
-	 * @link http://www.deluxeblogtips.com/2013/07/get-url-of-php-file-in-wordpress.html
+	 * @link https://deluxeblogtips.com/get-url-of-php-file-in-wordpress/
 	 * @param string $path Base folder path.
 	 * @return array Path and URL.
 	 */
