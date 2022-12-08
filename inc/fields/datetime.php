@@ -63,9 +63,9 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		wp_register_script( 'jquery-ui-timepicker-slider', "$url/jquery-ui-sliderAccess.js", [ 'jquery-ui-datepicker', 'jquery-ui-slider' ], '0.3', true );
 		wp_register_script( 'jquery-ui-timepicker-i18n', "$url/jquery-ui-timepicker-addon-i18n.min.js", [ 'jquery-ui-timepicker' ], '1.6.3', true );
 
-		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', [ 'jquery-ui-datepicker', 'jquery-ui-timepicker-i18n', 'underscore', 'jquery-ui-button', 'jquery-ui-timepicker-slider' ], RWMB_VER, true );
-		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', [ 'jquery-ui-datepicker', 'underscore' ], RWMB_VER, true );
-		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', [ 'jquery-ui-timepicker-i18n', 'jquery-ui-button', 'jquery-ui-timepicker-slider' ], RWMB_VER, true );
+		wp_register_script( 'rwmb-datetime', RWMB_JS_URL . 'datetime.js', [ 'jquery-ui-datepicker', 'jquery-ui-timepicker-i18n', 'underscore', 'jquery-ui-button', 'jquery-ui-timepicker-slider', 'rwmb' ], RWMB_VER, true );
+		wp_register_script( 'rwmb-date', RWMB_JS_URL . 'date.js', [ 'jquery-ui-datepicker', 'underscore', 'rwmb' ], RWMB_VER, true );
+		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', [ 'jquery-ui-timepicker-i18n', 'jquery-ui-button', 'jquery-ui-timepicker-slider', 'rwmb' ], RWMB_VER, true );
 
 		$handles      = [ 'datetime', 'time' ];
 		$locale       = str_replace( '_', '-', get_locale() );
