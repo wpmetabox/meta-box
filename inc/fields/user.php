@@ -97,6 +97,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'order'   => 'asc',
 		] );
 
+		$meta = wp_parse_id_list( (array) $meta );
+
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
 			$args['include'] = $meta;

@@ -113,6 +113,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			'update_term_meta_cache' => false,
 		] );
 
+		$meta = wp_parse_id_list( (array) $meta );
+
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
 			$args['include'] = $meta;

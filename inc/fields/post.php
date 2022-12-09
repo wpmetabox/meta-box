@@ -103,6 +103,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'update_post_term_cache' => false,
 		] );
 
+		$meta = wp_parse_id_list( (array) $meta );
+
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
 			$args['posts_per_page'] = count( $meta );
