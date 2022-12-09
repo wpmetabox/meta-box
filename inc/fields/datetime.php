@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 /**
  * The date and time picker field which allows users to select both date and time via jQueryUI datetime picker.
  */
@@ -163,11 +165,11 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		$meta = parent::meta( $post_id, $saved, $field );
 
 		if ( $field['timestamp'] ) {
-			return RWMB_Helpers_Array::map( $meta, __CLASS__ . '::from_timestamp', $field );
+			return Arr::map( $meta, __CLASS__ . '::from_timestamp', $field );
 		}
 
 		if ( $field['save_format'] && $meta ) {
-			return RWMB_Helpers_Array::map( $meta, __CLASS__ . '::from_save_format', $field );
+			return Arr::map( $meta, __CLASS__ . '::from_save_format', $field );
 		}
 
 		return $meta;

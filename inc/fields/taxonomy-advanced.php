@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 /**
  * Taxonomy advanced field which saves terms' IDs in the post meta in CSV format.
  */
@@ -49,7 +51,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return $field['multiple'] ? [] : '';
 		}
 
-		$meta = RWMB_Helpers_Array::map( $meta, 'wp_parse_id_list' );
+		$meta = Arr::map( $meta, 'wp_parse_id_list' );
 		$meta = array_filter( $meta );
 
 		return $meta;

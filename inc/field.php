@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 /**
  * The field base class.
  * This is the parent class of all custom fields defined by the plugin, which defines all the common methods.
@@ -173,7 +175,7 @@ abstract class RWMB_Field {
 		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $meta;
 
 		if ( $field['clone'] ) {
-			$meta = RWMB_Helpers_Array::ensure( $meta );
+			$meta = Arr::ensure( $meta );
 
 			// Ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
 			if ( empty( $meta ) ) {
@@ -185,10 +187,10 @@ abstract class RWMB_Field {
 
 				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
 				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'RWMB_Helpers_Array::ensure', $meta ) : [ $meta ];
+				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
 			}
 		} elseif ( $field['multiple'] ) {
-			$meta = RWMB_Helpers_Array::ensure( $meta );
+			$meta = Arr::ensure( $meta );
 		}
 
 		return $meta;

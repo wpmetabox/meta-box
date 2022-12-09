@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 /**
  * The object choice class which allows users to select specific objects (post, user, taxonomy) in WordPress.
  */
@@ -15,7 +17,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		// Get unique saved IDs for ajax fields.
 		$meta = static::meta( $post_id, $saved, $field );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
-		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
+		$meta = Arr::flatten( (array) $meta );
 		$meta = array_filter( wp_parse_id_list( $meta ) );
 		sort( $meta );
 
