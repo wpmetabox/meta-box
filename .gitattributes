@@ -19,3 +19,4 @@ gulpfile.js export-ignore
 *.md export-ignore
 
 js/validation export-ignore
+composer.lock export-ignore
