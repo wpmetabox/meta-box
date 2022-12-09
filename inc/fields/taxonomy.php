@@ -106,7 +106,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	protected static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ) : array {
 		$args = wp_parse_args( $field['query_args'], [
 			'hide_empty'             => false,
 			'count'                  => false,

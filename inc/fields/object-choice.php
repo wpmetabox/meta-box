@@ -24,7 +24,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		parent::show( $field, $saved, $post_id );
 	}
 
-	abstract protected static function query( $meta, array $field ) : array;
+	abstract public static function query( $meta, array $field ) : array;
 
 	/**
 	 * Get field HTML.

@@ -90,7 +90,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	protected static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ) : array {
 		$display_field = $field['display_field'];
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
