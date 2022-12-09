@@ -16,7 +16,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		$meta = static::meta( $post_id, $saved, $field );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 		$meta = RWMB_Helpers_Array::flatten( (array) $meta );
-		$meta = array_unique( array_filter( array_map( 'absint', $meta ) ) );
+		$meta = array_filter( wp_parse_id_list( $meta ) );
 		sort( $meta );
 
 		$field['options'] = static::query( $meta, $field );

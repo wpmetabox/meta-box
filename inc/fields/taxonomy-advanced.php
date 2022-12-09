@@ -49,7 +49,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return $field['multiple'] ? [] : '';
 		}
 
-		$meta = $field['clone'] ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
+		$meta = RWMB_Helpers_Array::map( $meta, 'wp_parse_id_list' );
 		$meta = array_filter( $meta );
 
 		return $meta;
