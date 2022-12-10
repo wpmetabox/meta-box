@@ -1,10 +1,12 @@
 <?php
-class RWMB_Update_Settings {
+namespace MetaBox\Updater;
+
+class Settings {
 	private $option;
 	private $checker;
 	private $fake_api_key;
 
-	public function __construct( $checker, $option ) {
+	public function __construct( Checker $checker, Option $option ) {
 		$this->checker      = $checker;
 		$this->option       = $option;
 		$this->fake_api_key = 'Please do not steal this license key';

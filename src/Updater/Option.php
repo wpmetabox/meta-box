@@ -1,8 +1,10 @@
 <?php
+namespace MetaBox\Updater;
+
 /**
  * This class handles getting and saving the updater option.
  */
-class RWMB_Update_Option {
+class Option {
 	/**
 	 * Option name.
 	 *
