@@ -5,8 +5,6 @@ class Arr {
 	/**
 	 * New array map function that accepts more params than just values.
 	 * Params: array|item, callback, other params.
-	 *
-	 * @return array
 	 */
 	public static function map() {
 		$args     = func_get_args();
@@ -30,10 +28,9 @@ class Arr {
 	/**
 	 * Convert a comma separated string to array.
 	 *
-	 * @param string $csv Comma separated string.
-	 * @return array
+	 * @param array|string $csv Comma separated string.
 	 */
-	public static function from_csv( $csv ) {
+	public static function from_csv( $csv ) : array {
 		return is_array( $csv ) ? $csv : array_filter( array_map( 'trim', explode( ',', $csv . ',' ) ) );
 	}
 
@@ -53,23 +50,17 @@ class Arr {
 
 	/**
 	 * Ensure a variable is an array.
-	 * @param  mixed $input Input value.
-	 * @return array
 	 */
-	public static function ensure( $input ) {
+	public static function ensure( $input ) : array {
 		return (array) $input;
 	}
 
 	/**
 	 * Flatten an array.
-	 *
 	 * @link https://stackoverflow.com/a/1320156/371240
-	 *
-	 * @param  array $array Input array.
-	 * @return array
 	 */
-	public static function flatten( $array ) {
-		$return = array();
+	public static function flatten( array $array ) : array {
+		$return = [];
 		array_walk_recursive(
 			$array,
 			function( $a ) use ( &$return ) {
@@ -80,20 +71,20 @@ class Arr {
 	}
 
 	/**
-	 * Convert flatten collection (with dot notation) to multiple dimmensionals array
+	 * Convert flatten collection (with dot notation) to multiple dimensional array
 	 *
-	 * @param  collection $collection Collection to be flatten
+	 * @param  collection $collection Collection to be flatten.
 	 * @return array
 	 */
 	public static function unflatten( $collection ) {
 		$collection = (array) $collection;
-		$output = [];
+		$output     = [];
 
 		foreach ( $collection as $key => $value ) {
 			self::set( $output, $key, $value );
 
 			if ( is_array( $value ) && ! strpos( $key, '.' ) ) {
-				$nested = self::unflatten( $value );
+				$nested         = self::unflatten( $value );
 				$output[ $key ] = $nested;
 			}
 		}
@@ -106,7 +97,8 @@ class Arr {
 	 */
 	public static function set( &$array, $key, $value ) {
 		if ( is_null( $key ) ) {
-			return $array = $value;
+			$array = $value;
+			return $array;
 		}
 
 		// Do not parse email value.
