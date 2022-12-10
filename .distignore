@@ -22,7 +22,3 @@ README.md
 tests
 css/scss
 js/validation
-
-vendor/composer/LICENSE
-vendor/meta-box/.git
-vendor/meta-box/composer.json
