@@ -22,13 +22,9 @@
       "role": "Developer"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/wpmetabox/support.git"
+  "autoload": {
+    "psr-4": {
+      "MetaBox\\": "src/"
     }
-  ],
-  "require": {
-    "meta-box/support": "dev-master"
   }
 }
