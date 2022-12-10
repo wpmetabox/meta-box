@@ -21,5 +21,10 @@
       "homepage": "https://metabox.io",
       "role": "Developer"
     }
-  ]
+  ],
+  "autoload": {
+    "psr-4": {
+      "MetaBox\\": "src/"
+    }
+  }
 }

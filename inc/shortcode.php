@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 class RWMB_Shortcode {
 	public function init() {
 		add_shortcode( 'rwmb_meta', [ $this, 'register_shortcode' ] );
@@ -11,8 +13,8 @@ class RWMB_Shortcode {
 			'attribute'         => '',
 			'render_shortcodes' => 'true',
 		] );
-		RWMB_Helpers_Array::change_key( $atts, 'post_id', 'object_id' );
-		RWMB_Helpers_Array::change_key( $atts, 'meta_key', 'id' );
+		Arr::change_key( $atts, 'post_id', 'object_id' );
+		Arr::change_key( $atts, 'meta_key', 'id' );
 
 		if ( empty( $atts['id'] ) ) {
 			return '';

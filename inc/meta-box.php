@@ -1,4 +1,6 @@
 <?php
+use MetaBox\Support\Arr;
+
 /**
  * A class to rapid develop meta boxes for custom & built in content types
  *
@@ -286,10 +288,10 @@ class RW_Meta_Box {
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions.
 		 * @since 4.4.1
 		 */
-		RWMB_Helpers_Array::change_key( $meta_box, 'pages', 'post_types' );
+		Arr::change_key( $meta_box, 'pages', 'post_types' );
 
 		// Make sure the post type is an array and is sanitized.
-		$meta_box['post_types'] = array_map( 'sanitize_key', RWMB_Helpers_Array::from_csv( $meta_box['post_types'] ) );
+		$meta_box['post_types'] = array_map( 'sanitize_key', Arr::from_csv( $meta_box['post_types'] ) );
 
 		return $meta_box;
 	}
