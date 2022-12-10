@@ -1,9 +1,13 @@
 <?php
-class RWMB_Update_Checker {
+namespace MetaBox\Updater;
+
+use stdClass;
+
+class Checker {
 	private $api_url = 'https://metabox.io/wp-json/buse2/updater/';
 	private $option;
 
-	public function __construct( $option ) {
+	public function __construct( Option $option ) {
 		$this->option = $option;
 	}
 

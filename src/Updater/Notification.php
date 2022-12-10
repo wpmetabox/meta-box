@@ -1,13 +1,11 @@
 <?php
+namespace MetaBox\Updater;
+
 /**
  * This class notifies users to enter or update license key.
  */
-class RWMB_Update_Notification {
-	/**
-	 * The update option object.
-	 *
-	 * @var object
-	 */
+class Notification {
+	private $checker;
 	private $option;
 
 	/**
@@ -17,20 +15,8 @@ class RWMB_Update_Notification {
 	 */
 	private $settings_page;
 
-	/**
-	 * The update checker object.
-	 *
-	 * @var object
-	 */
-	private $checker;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param object $checker Update checker object.
-	 * @param object $option  Update option object.
-	 */
-	public function __construct( $checker, $option ) {
+	public function __construct( Checker $checker, Option $option ) {
 		$this->checker = $checker;
 		$this->option  = $option;
 
@@ -153,7 +139,7 @@ class RWMB_Update_Notification {
 	 * Auto re-enable the notification every 2 weeks after it's dismissed.
 	 */
 	private function is_dismissed() : bool {
-		$time = $this->option->get( 'notification_dismissed_time' );
+		$time = $this->option->get( 'notification_dismissed_time', 0 );
 
 		return $this->option->get( 'notification_dismissed' ) && time() - $time < 14 * DAY_IN_SECONDS;
 	}
