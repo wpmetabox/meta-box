@@ -317,7 +317,7 @@ class RW_Meta_Box {
 	 * Check if meta box is saved before.
 	 * This helps to save empty value in meta fields (text, check box, etc.) and set the correct default values.
 	 */
-	public function is_saved() : bool {
+	public function is_saved() {
 		foreach ( $this->fields as $field ) {
 			if ( empty( $field['id'] ) ) {
 				continue;
