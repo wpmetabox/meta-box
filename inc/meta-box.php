@@ -291,7 +291,7 @@ class RW_Meta_Box {
 		Arr::change_key( $meta_box, 'pages', 'post_types' );
 
 		// Make sure the post type is an array and is sanitized.
-		$meta_box['post_types'] = array_map( 'sanitize_key', Arr::from_csv( $meta_box['post_types'] ) );
+		$meta_box['post_types'] = array_filter( array_map( 'sanitize_key', Arr::from_csv( $meta_box['post_types'] ) ) );
 
 		return $meta_box;
 	}
