@@ -113,6 +113,11 @@ body {
 	color: inherit;
 	border: none;
 }
+.ui-datepicker select.ui-datepicker-month option,
+.ui-datepicker select.ui-datepicker-year option {
+	color: #3c434a;
+	background: #fff;
+}
 
 /* Button pane */
 .ui-datepicker .ui-datepicker-buttonpane button {
