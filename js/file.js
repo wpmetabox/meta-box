@@ -106,7 +106,10 @@
 			inputName = '_file_' + rwmb.uniqid();
 
 		$list.empty();
-		$clone.find( '.rwmb-file-input' ).attr( 'name', inputName + '[]' ).not( ':first' ).remove();
+
+		$clone.find( '.rwmb-file-new' ).each( function() {
+			$( this ).find( '.rwmb-file-input' ).attr( 'name', inputName + '[]' ).not( ':first' ).remove();
+		} );
 
 		$key.val( inputName );
 
