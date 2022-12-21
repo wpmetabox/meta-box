@@ -176,10 +176,14 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @param int   $post_id The post ID.
 	 * @param array $field   The field parameters.
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
 		$new = wp_parse_id_list( $new );
+
+		if ( empty( $new ) ) {
+			return [];
+		}
 
 		// Attach the uploaded images to the post if needed.
 		global $wpdb;
