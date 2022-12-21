@@ -1,10 +1,13 @@
+.rwmb-image_advanced-wrapper .rwmb-media-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
 .rwmb-image-item {
 	position: relative;
-	float: left;
-	margin: 0 12px 12px 0;
-	list-style: none;
-	box-sizing: border-box;
 	cursor: move;
+	margin: 0;
 }
 .rwmb-image-item .rwmb-file-icon {
 	width: 150px;
