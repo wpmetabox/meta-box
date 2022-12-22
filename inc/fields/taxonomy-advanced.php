@@ -1,6 +1,4 @@
 <?php
-use MetaBox\Support\Arr;
-
 /**
  * Taxonomy advanced field which saves terms' IDs in the post meta in CSV format.
  */
@@ -51,7 +49,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return $field['multiple'] ? [] : '';
 		}
 
-		$meta = Arr::map( $meta, 'wp_parse_id_list' );
+		$meta = $field['clone'] ? array_map( 'wp_parse_id_list', $meta ) : wp_parse_id_list( $meta );
 		$meta = array_filter( $meta );
 
 		return $meta;
