@@ -60,7 +60,10 @@ class RWMB_Loader {
 		$this->constants();
 
 		// PSR-4 autoload.
-		require dirname( __DIR__ ) . '/vendor/autoload.php';
+		$psr4_autoload = dirname( __DIR__ ) . '/vendor/autoload.php';
+		if ( file_exists( $psr4_autoload ) ) {
+			require $psr4_autoload;
+		}
 
 		// Register autoload for classes.
 		require_once RWMB_INC_DIR . 'autoloader.php';
