@@ -26,6 +26,9 @@ class RWMB_Core {
 		$registry = rwmb_get_registry( 'meta_box' );
 
 		foreach ( $configs as $config ) {
+			if ( ! is_array( $config ) || empty( $config ) ) {
+				continue;
+			}
 			$meta_box = $registry->make( $config );
 			$meta_box->register_fields();
 		}
