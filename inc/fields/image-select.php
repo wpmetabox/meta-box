@@ -16,8 +16,8 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html = [];
-		$meta = (array) $meta;
+		$html    = [];
+		$meta    = (array) $meta;
 		foreach ( $field['options'] as $value => $image ) {
 			$attributes = self::get_attributes( $field, $value );
 			$html[]     = sprintf(
@@ -39,6 +39,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field                = parent::normalize( $field );
+		$field['options']     = $field['options'] ?? [];
 		$field['field_name'] .= $field['multiple'] ? '[]' : '';
 
 		return $field;
