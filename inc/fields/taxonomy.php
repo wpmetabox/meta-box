@@ -330,7 +330,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$html = '
 		<div class="rwmb-taxonomy-add">
-			<button class="rwmb-taxonomy-add-button">%s</button>
+			<button class="rwmb-taxonomy-add-button" data-url="%s">%s</button>
 			<div class="rwmb-taxonomy-add-form rwmb-hidden">
 				<input type="text" name="%s_new" size="30" placeholder="%s">
 			</div>
@@ -338,6 +338,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$html = sprintf(
 			$html,
+			get_admin_url( null, 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
 			esc_html( $taxonomy_object->labels->add_new_item ),
 			esc_attr( $field['id'] ),
 			esc_attr( $taxonomy_object->labels->new_item_name )
@@ -352,7 +353,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', array(), RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'rwmb-modal' ), RWMB_VER, true );
 
 		// Field is the 1st param.
 		$args  = func_get_args();

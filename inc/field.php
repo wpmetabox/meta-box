@@ -18,6 +18,12 @@ abstract class RWMB_Field {
 	}
 
 	/**
+	 * Enqueue scripts and styles for frontend.
+	 */	
+	public static function mb_enqueue_scripts(){		
+	}
+
+	/**
 	 * Enqueue scripts and styles.
 	 */
 	public static function admin_enqueue_scripts() {

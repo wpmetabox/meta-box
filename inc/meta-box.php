@@ -104,8 +104,9 @@ class RW_Meta_Box {
 	/**
 	 * Add global hooks.
 	 */
-	protected function global_hooks() {
+	protected function global_hooks() {		
 		// Enqueue common styles and scripts.
+		add_action( 'wp_enqueue_scripts', array( $this, 'mb_enqueue' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		// Add additional actions for fields.
@@ -136,6 +137,16 @@ class RW_Meta_Box {
 				add_action( "save_post_{$post_type}", array( $this, 'save_post' ) );
 			}
 		}
+	}
+
+	/**
+	 * Enqueue common scripts and styles for frontend.
+	 */
+	public function mb_enqueue(){
+		// Enqueue scripts and styles for fields.
+		foreach ( $this->fields as $field ) {
+			RWMB_Field::call( $field, 'mb_enqueue_scripts' );
+		}		
 	}
 
 	/**
