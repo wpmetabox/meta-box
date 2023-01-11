@@ -133,15 +133,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$attributes['class'] .= ' rwmb-media';
 
 		// Add attachment details.
-		$attachments = [];
-		foreach ( $value as $media ) {
-			$media = wp_prepare_attachment_for_js( $media );
-
-			if ( ! empty( $media ) ) {
-				$attachments[] = $media;
-			}
-		}
-		$attachments                    = array_values( $attachments );
+		$attachments                    = array_values( array_filter( array_map( 'wp_prepare_attachment_for_js', $value ) ) );
 		$attributes['data-attachments'] = wp_json_encode( $attachments );
 
 		return $attributes;
