@@ -136,10 +136,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$attachments = [];
 		foreach ( $value as $media ) {
 			$media = wp_prepare_attachment_for_js( $media );
-			// Some themes/plugins add HTML, shortcodes to "compat" attribute which break JSON validity.
-			if ( isset( $media['compat'] ) ) {
-				unset( $media['compat'] );
-			}
+
 			if ( ! empty( $media ) ) {
 				$attachments[] = $media;
 			}
