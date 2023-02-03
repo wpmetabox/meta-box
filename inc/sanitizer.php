@@ -216,7 +216,7 @@ class RWMB_Sanitizer {
 	 * @return float|string
 	 */
 	private function sanitize_datetime( $value, $field ) {
-		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
+		return $field['timestamp'] ? (float) $value : sanitize_text_field( $value );
 	}
 
 	private function sanitize_map( $value ) : string {
