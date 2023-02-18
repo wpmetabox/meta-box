@@ -8,6 +8,14 @@
 		var $this = $( this );
 
 		function triggerChange() {
+			let mode = $this.data( 'options' )['mode'];
+			if ( null !== mode && 'hex' !== mode  ) {
+				var colorClass = new Color( $this.iris('option', 'color') );
+				var color = colorClass.toCSS( mode );
+
+				$this.val( color );
+			}
+
 			$this.trigger( 'color:change' ).trigger( 'mb_change' );
 		}
 

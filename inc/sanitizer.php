@@ -112,7 +112,11 @@ class RWMB_Sanitizer {
 	}
 
 	private function sanitize_color( string $value ) : string {
-		if ( false === strpos( $value, 'rgba' ) ) {
+		if ( false !== strpos( $value, 'hsl' ) ) {
+			return  wp_unslash( $value );
+		}
+
+		if ( false === strpos( $value, 'rgb' ) ) {
 			return sanitize_hex_color( $value );
 		}
 
@@ -120,8 +124,13 @@ class RWMB_Sanitizer {
 		$red   = '';
 		$green = '';
 		$blue  = '';
-		$alpha = '';
-		sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+		$alpha = 1;
+
+		if ( false !== strpos( $value, 'rgba' ) ) {
+			sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+		} else {
+			sscanf( $value, 'rgb(%d,%d,%d)', $red, $green, $blue );
+		}
 
 		return 'rgba(' . $red . ',' . $green . ',' . $blue . ',' . $alpha . ')';
 	}
