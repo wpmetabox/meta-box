@@ -126,6 +126,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 
 		self::enqueue_map_assets();
 		wp_enqueue_script( 'rwmb-osm-frontend', RWMB_JS_URL . 'osm-frontend.js', [ 'jquery', 'leaflet' ], RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-osm-frontend', RWMB_CSS_URL . 'osm-frontend.css', [], RWMB_VER );
 
 		/*
 		 * More Open Street Map options
