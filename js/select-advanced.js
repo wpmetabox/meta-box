@@ -4,6 +4,12 @@
 	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
 	var cache = {};
 
+	$.fn.rwmbTransform = function () {
+		const arrSelect = [ this ];
+		cache = {};
+		$.each( arrSelect, transform );
+	};	
+
 	/**
 	 * Reorder selected values in correct order that they were selected.
 	 * @param $select2 jQuery element of the select2.
