@@ -5,7 +5,7 @@ Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta b
 Requires at least: 4.8
 Requires PHP: 7.0
 Tested up to: 6.1.1
-Stable tag: 5.6.15
+Stable tag: 5.6.17
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -132,10 +132,11 @@ We provide regularly updated, and extensive documentation as well as  tutorials 
 
 Here are a few guides to quickly get you started with Meta Box and creating your own WordPress custom fields:
 
-- [Quick Start Guide](https://docs.metabox.io/quick-start/)
-- [Creating Meta Boxes](https://docs.metabox.io/creating-meta-boxes/)
-- [Field Settings](https://docs.metabox.io/field-settings/)
-- [Displaying Fields](https://docs.metabox.io/displaying-fields/)
+- [Introduction](https://docs.metabox.io/introduction/)
+- [Custom post types](https://docs.metabox.io/custom-post-types/)
+- [Custom fields](https://docs.metabox.io/custom-fields/)
+- [Field settings](https://docs.metabox.io/field-settings/)
+- [Displaying fields](https://docs.metabox.io/displaying-fields-with-code/)
 
 Check out more on the [Meta Box Documentation](https://docs.metabox.io/) page.
 
@@ -145,6 +146,7 @@ If you love this plugin, please try our other great products:
 
 - [Slim SEO](https://wpslimseo.com): A lightweight and full-featured SEO plugin for WordPress
 - [Slim SEO Schema](https://wpslimseo.com/slim-seo-schema/): The best schema plugin for WordPress
+- [Slim SEO Link Manager](https://wpslimseo.com/slim-seo-link-manager/): Build internal links easier in WordPress
 - [Auto Listings](https://wpautolistings.com): The car sale and dealership plugin for WordPress
 - [GretaThemes](https://gretathemes.com): Beautiful and easy to use WordPress themes
 
@@ -176,6 +178,23 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.6.17 - 2023-02-27 =
+- Use icon for file types like PDF in the file fields. Credit Eric Celeste.
+- Add `mb_field_id` in query variable args for `post` field for developers to detect this kind of query. Credit Eric Celeste.
+- Fix CSS for marker position for OSM field on the front end
+- Fix color picker mode HSL not working
+- Fix custom fields for media modal not working with custom tables
+- Fix sanitizing date timestamp before Jan 01 1970
+
+= 5.6.16 - 2023-01-29 =
+- Fix multiple `file` fields in cloneable groups not cloning properly
+- Fix custom fields not showing up in media modal
+- Fix warning when image select field not having options
+- Fix autoload file not found when the whole WordPress site is managed by Composer
+- Fix `taxonomy_advanced` not displaying selected values in sub groups
+- Fix CSS for files in settings pages with `no-box` style
+- Add a type-safe check for meta box settings
 
 = 5.6.15 - 2022-12-21 =
 - Remove empty post types from meta box settings

@@ -54,7 +54,7 @@
 			object_id: $metaBox.data( 'object-id' ),
 			attachment_id: $this.data( 'attachment_id' )
 		}, function ( response ) {
-			if ( ! response.success ) {
+			if ( !response.success ) {
 				alert( response.data );
 			}
 		}, 'json' );
@@ -71,7 +71,7 @@
 				ui.placeholder.height( ui.helper.outerHeight() );
 				ui.placeholder.width( ui.helper.outerWidth() );
 			},
-			update: function( event, ui ) {
+			update: function ( event, ui ) {
 				ui.item.find( rwmb.inputSelectors ).first().trigger( 'mb_change' );
 			}
 		} );
@@ -98,26 +98,25 @@
 	};
 
 	// Reset field when cloning.
-	file.resetClone = function() {
+	file.resetClone = function () {
 		var $this = $( this ),
 			$clone = $this.closest( '.rwmb-clone' ),
-			$list = $clone.find( '.rwmb-files' ),
-			$key = $clone.find( '.rwmb-file-index' ),
-			inputName = '_file_' + rwmb.uniqid();
+			$list = $clone.find( '.rwmb-files' );
 
 		$list.empty();
 
-		$clone.find( '.rwmb-file-new' ).each( function() {
+		$clone.find( '.rwmb-file-new' ).each( function () {
+			var inputName = '_file_' + rwmb.uniqid(),
+				$key = $( this ).siblings( '.rwmb-file-index' );
 			$( this ).find( '.rwmb-file-input' ).attr( 'name', inputName + '[]' ).not( ':first' ).remove();
+			$key.val( inputName );
 		} );
-
-		$key.val( inputName );
 
 		file.updateVisibility.call( $list );
 	};
 
 	// Set 'required' attribute. 'this' is the wrapper field input.
-	file.setRequired = function() {
+	file.setRequired = function () {
 		var $this = $( this ),
 			$uploaded = $this.find( '.rwmb-files' ),
 			$inputs = $this.find( '.rwmb-file-new input' );

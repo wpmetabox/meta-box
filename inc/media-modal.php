@@ -61,6 +61,10 @@ class RWMB_Media_Modal {
 			$field['name'] = ''; // Don't show field label as it's already handled by WordPress.
 
 			RWMB_Field::call( 'show', $field, true, $post->ID );
+
+			// For MB Custom Table to flush data from the cache to the database.
+			do_action( 'rwmb_flush_data', $post->ID, $field, [] );
+
 			$form_field['html'] = ob_get_clean();
 
 			$form_fields[ $field['id'] ] = $form_field;
@@ -88,6 +92,9 @@ class RWMB_Media_Modal {
 
 			// Call defined method to save meta value, if there's no methods, call common one.
 			RWMB_Field::call( $field, 'save', $new, $old, $post['ID'] );
+
+			// For MB Custom Table to flush data from the cache to the database.
+			do_action( 'rwmb_flush_data', $post['ID'], $field, [] );
 		}
 
 		return $post;

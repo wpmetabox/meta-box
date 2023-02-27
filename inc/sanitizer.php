@@ -97,7 +97,7 @@ class RWMB_Sanitizer {
 	 * @link https://github.com/rilwis/meta-box/issues/6
 	 * @param string $value Checkbox value.
 	 */
-	private function sanitize_checkbox( $value ) : int {
+	private function sanitize_checkbox( $value ): int {
 		return (int) ! empty( $value );
 	}
 
@@ -111,8 +111,12 @@ class RWMB_Sanitizer {
 		return is_numeric( $value ) ? $value : '';
 	}
 
-	private function sanitize_color( string $value ) : string {
-		if ( false === strpos( $value, 'rgba' ) ) {
+	private function sanitize_color( string $value ): string {
+		if ( false !== strpos( $value, 'hsl' ) ) {
+			return wp_unslash( $value );
+		}
+
+		if ( false === strpos( $value, 'rgb' ) ) {
 			return sanitize_hex_color( $value );
 		}
 
@@ -120,8 +124,13 @@ class RWMB_Sanitizer {
 		$red   = '';
 		$green = '';
 		$blue  = '';
-		$alpha = '';
-		sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+		$alpha = 1;
+
+		if ( false !== strpos( $value, 'rgba' ) ) {
+			sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+		} else {
+			sscanf( $value, 'rgb(%d,%d,%d)', $red, $green, $blue );
+		}
 
 		return 'rgba(' . $red . ',' . $green . ',' . $blue . ',' . $alpha . ')';
 	}
@@ -216,10 +225,10 @@ class RWMB_Sanitizer {
 	 * @return float|string
 	 */
 	private function sanitize_datetime( $value, $field ) {
-		return $field['timestamp'] ? floor( abs( (float) $value ) ) : sanitize_text_field( $value );
+		return $field['timestamp'] ? (float) $value : sanitize_text_field( $value );
 	}
 
-	private function sanitize_map( $value ) : string {
+	private function sanitize_map( $value ): string {
 		$value                               = sanitize_text_field( $value );
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 
@@ -230,11 +239,11 @@ class RWMB_Sanitizer {
 		return "$latitude,$longitude,$zoom";
 	}
 
-	private function sanitize_taxonomy_advanced( $value ) : string {
+	private function sanitize_taxonomy_advanced( $value ): string {
 		return implode( ',', wp_parse_id_list( $value ) );
 	}
 
-	private function sanitize_url( string $value ) : string {
+	private function sanitize_url( string $value ): string {
 		return esc_url_raw( $value );
 	}
 }

@@ -37,7 +37,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	 *
 	 * @param int    $object_id Object ID. Required.
 	 * @param string $key       Meta key. Required.
-	 * @param string $value     Meta value. Required.
+	 * @param mixed  $value     Meta value. Required.
 	 * @param array  $args      Array of arguments. Optional.
 	 */
 	function rwmb_set_meta( $object_id, $key, $value, $args = [] ) {
@@ -50,7 +50,11 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 
 		$old = RWMB_Field::call( $field, 'raw_meta', $object_id );
 		$new = RWMB_Field::process_value( $value, $object_id, $field );
+
 		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
+
+		// For MB Custom Table to flush data from the cache to the database.
+		do_action( 'rwmb_flush_data', $object_id, $field, $args );
 	}
 }
 

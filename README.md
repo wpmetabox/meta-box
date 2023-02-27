@@ -126,10 +126,11 @@ We provide regularly updated, and extensive documentation as well as  tutorials 
 
 Here are a few guides to quickly get you started with Meta Box and creating your own WordPress custom fields:
 
-- [Quick Start Guide](https://docs.metabox.io/quick-start/)
-- [Creating Meta Boxes](https://docs.metabox.io/creating-meta-boxes/)
-- [Field Settings](https://docs.metabox.io/field-settings/)
-- [Displaying Fields](https://docs.metabox.io/displaying-fields/)
+- [Introduction](https://docs.metabox.io/introduction/)
+- [Custom post types](https://docs.metabox.io/custom-post-types/)
+- [Custom fields](https://docs.metabox.io/custom-fields/)
+- [Field settings](https://docs.metabox.io/field-settings/)
+- [Displaying fields](https://docs.metabox.io/displaying-fields-with-code/)
 
 Check out more on the [Meta Box Documentation](https://docs.metabox.io/) page.
 
@@ -148,7 +149,7 @@ Manually
 1. Upload `meta-box` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-To getting started with the plugin, please read the [Quick Start Guide](https://docs.metabox.io/quick-start/).
+[Get started here](https://docs.metabox.io/introduction/).
 
 ## Contributors
 
@@ -164,4 +165,4 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 
 ## Changelog
 
-[See full changelog here](https://github.com/wpmetabox/meta-box/blob/master/CHANGELOG.md).
+[See full changelog here](https://metabox.io/changelog/).

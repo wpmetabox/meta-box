@@ -101,6 +101,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
+			'mb_field_id'            => $field['id'],
 		] );
 
 		$meta = wp_parse_id_list( (array) $meta );
