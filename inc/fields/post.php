@@ -219,7 +219,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function add_new_form( $field ) {
-		if ( 1 !== count( $field['post_type'] ) ) {
+		if ( 0 === count( $field['post_type'] ) ) {
 			return '';
 		}
 
