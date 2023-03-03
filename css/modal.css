@@ -46,3 +46,13 @@ body.rwmb-modal-show .interface-interface-skeleton__sidebar {
     right: 15px;
     cursor: pointer;
 }
+
+.rwmb-modal-add-button {
+    margin-top: 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #0073aa;
+    text-decoration: underline;
+    cursor: pointer;
+}

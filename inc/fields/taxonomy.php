@@ -290,7 +290,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		$html = '
 		<div class="rwmb-taxonomy-add">
-			<button class="rwmb-taxonomy-add-button" data-url="%s">%s</button>
+			<button class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s">%s</button>
 			<div class="rwmb-taxonomy-add-form rwmb-hidden">
 				<input type="text" name="%s_new" size="30" placeholder="%s">
 			</div>

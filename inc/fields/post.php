@@ -217,4 +217,34 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), wp_kses_post( $text ) );
 	}
+
+	public static function add_new_form( $field ) {
+		if ( 1 !== count( $field['post_type'] ) ) {
+			return '';
+		}
+
+		$post_type = reset( $field['post_type'] );
+		if ( false === post_type_exists( $post_type ) ) {
+			return '';
+		}
+
+		$html = '
+		<div class="rwmb-post-add">
+			<button class="rwmb-post-add-button rwmb-modal-add-button" data-url="%s">%s</button>
+		</div>';
+		$html = sprintf(
+			$html,
+			get_admin_url( null, $post_type === 'post' ? 'post-new.php' : 'post-new.php?post_type=' . $post_type ),
+			esc_html( 'Add New Post' )
+		);
+
+		return $html;
+	}
+
+	public static function admin_enqueue_scripts() {
+		parent::admin_enqueue_scripts();
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', array(), RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', array( 'jquery' ), RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-post', RWMB_JS_URL . 'post.js', array( 'jquery', 'rwmb-modal' ), RWMB_VER, true );
+	}
 }

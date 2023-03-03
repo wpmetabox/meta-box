@@ -4,7 +4,10 @@
     const defaultOptions = {
         warapper: '<div class="rwmb-modal"><div class="rwmb-modal-title"><span>HEADER</span><i class="rwmb-modal-close"></i></div><div class="rwmb-modal-content"></div></div>',
         markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{0}" border="0"></iframe>',
-        markupOverlay: '<div class="rwmb-modal-overlay"></div>'
+        markupOverlay: '<div class="rwmb-modal-overlay"></div>',
+        removeElement: '',
+        removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end',
+        callback: null
     };
 
     $.fn.rwmbModal = function ( options = {} ) {
@@ -19,18 +22,25 @@
 
         const rwmb_input = $( this ).closest( '.rwmb-input' );        
 
-        $( this ).on( 'click', function ( e ) {            
+        $( this ).on( 'click', function ( e ) {
             $( '.rwmb-modal .rwmb-modal-title span' ).html( $( this ).html() );
             $( '.rwmb-modal .rwmb-modal-content' ).html( options.markupIframe.format( $( this ).data( 'url' ) ) );
             $( '#rwmb-modal-iframe' ).on( 'load', function () {
-                $( this ).contents().find( '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links' ).remove();
+                $( this ).contents().find( options.removeElementDefault ).remove(); 
+                if ( options.removeElement !== ''){
+                    $( this ).contents().find( options.removeElement ).remove();
+                }                
+                $( this ).contents().find( '.rwmb-modal-add-button' ).parent().remove();
+
                 $( this ).contents().find( 'a' ).on( 'click', function ( e ) {
                     e.preventDefault();
                     return false;
                 } );
-                const head = $( this ).contents().find( 'head' );
-                const css = '<style>#wpcontent{margin-left: 0;}</style>';
-                $( head ).append( css );
+
+                if ( options.callback !== null && typeof options.callback === 'function') {
+                    options.callback( $( this ).contents() );
+                }
+
                 $( 'body' ).addClass( 'rwmb-modal-show' );
                 $( '.rwmb-modal-overlay' ).fadeIn( 'medium' );
                 $( '.rwmb-modal' ).fadeIn( 'medium' );
@@ -63,4 +73,5 @@
             } );
         };
     }    
+ 
 } )( jQuery, rwmb );
