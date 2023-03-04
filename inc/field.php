@@ -9,12 +9,6 @@ use MetaBox\Support\Arr;
 abstract class RWMB_Field {
 	public static function add_actions() {}
 
-	/**
-	 * Enqueue scripts and styles for frontend.
-	 */	
-	public static function mb_enqueue_scripts(){		
-	}
-
 	public static function admin_enqueue_scripts() {}
 
 	/**
