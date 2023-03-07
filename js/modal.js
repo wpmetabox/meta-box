@@ -1,9 +1,17 @@
 ( function( $, rwmb ) {
 	'use strict';
 
+	const $body = $( 'body' );
+
 	const defaultOptions = {
-		wrapper: '<div class="rwmb-modal"><div class="rwmb-modal-title"><span>HEADER</span><i class="rwmb-modal-close"></i></div><div class="rwmb-modal-content"></div></div>',
-		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{0}" border="0"></iframe>',
+		wrapper: `<div class="rwmb-modal">
+			<div class="rwmb-modal-title">
+				<h2></h2>
+				<button type="button" class="rwmb-modal-close">&times;</button>
+			</div>
+			<div class="rwmb-modal-content"></div>
+		</div>`,
+		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{URL}" border="0"></iframe>',
 		markupOverlay: '<div class="rwmb-modal-overlay"></div>',
 		removeElement: '',
 		removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end',
@@ -20,13 +28,15 @@
 			return;
 		}
 
-		const rwmb_input = $( this ).closest( '.rwmb-input' );
+		const $this = $( this ),
+			$modal = $( '.rwmb-modal' ),
+			$input = $this.closest( '.rwmb-input' );
 
-		$( this ).on( 'click', function( e ) {
-			$( '.rwmb-modal .rwmb-modal-title span' ).html( $( this ).html() );
-			$( '.rwmb-modal .rwmb-modal-content' ).html( options.markupIframe.format( $( this ).data( 'url' ) ) );
+		$this.on( 'click', function( e ) {
+			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
+			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
 			$( '#rwmb-modal-iframe' ).on( 'load', function() {
-				let $contents = $( this ).contents();
+				const $contents = $( this ).contents();
 				$contents.find( options.removeElementDefault ).remove();
 				if ( options.removeElement !== '' ) {
 					$contents.find( options.removeElement ).remove();
@@ -42,35 +52,22 @@
 					options.callback( $contents );
 				}
 
-				$( 'body' ).addClass( 'rwmb-modal-show' );
+				$body.addClass( 'rwmb-modal-show' );
 				$( '.rwmb-modal-overlay' ).fadeIn( 'medium' );
-				$( '.rwmb-modal' ).fadeIn( 'medium' );
+				$modal.fadeIn( 'medium' );
 			} );
 
 			$( '.rwmb-modal-close' ).on( 'click', function() {
-				$( '.rwmb-modal' ).fadeOut( 'medium' );
+				$modal.fadeOut( 'medium' );
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
-				$( 'body' ).removeClass( 'rwmb-modal-show' );
-				rwmb_input.find( '> *[data-options]' ).rwmbTransform();
+				$body.removeClass( 'rwmb-modal-show' );
+				$input.find( '> *[data-options]' ).rwmbTransform();
 			} );
 		} );
 	};
 
 	if ( $( '.rwmb-modal' ).length === 0 ) {
-		$( 'body' ).append( defaultOptions.wrapper );
-		$( 'body' ).append( defaultOptions.markupOverlay );
+		$body.append( defaultOptions.wrapper )
+			.append( defaultOptions.markupOverlay );
 	}
-
-	if ( !String.prototype.format ) {
-		String.prototype.format = function() {
-			var args = arguments;
-			return this.replace( /{(\d+)}/g, function( match, number ) {
-				return typeof args[ number ] != 'undefined'
-					? args[ number ]
-					: match
-					;
-			} );
-		};
-	}
-
 } )( jQuery, rwmb );
