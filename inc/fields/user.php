@@ -90,7 +90,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		$display_field = $field['display_field'];
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
@@ -162,26 +162,18 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
 	}
 
-	public static function add_new_form( $field ) {
-
-		$html = '
-		<div class="rwmb-user-add">
-			<button class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</button>
-		</div>';
-
-		$html = sprintf(
-			$html,
-			get_admin_url( null, 'user-new.php' ),
-			esc_html( 'Add New User' )
+	public static function add_new_form( array $field ): string {
+		return sprintf(
+			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
+			admin_url( 'user-new.php' ),
+			esc_html__( 'Add New User', 'meta-box' )
 		);
-
-		return $html;
 	}
 
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', array( 'jquery' ), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-user', RWMB_JS_URL . 'user.js', array( 'jquery', 'rwmb-modal' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-user', RWMB_JS_URL . 'user.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
 	}
 }

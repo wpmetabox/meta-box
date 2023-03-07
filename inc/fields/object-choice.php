@@ -45,13 +45,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		return $html;
 	}
 
-	/**
-	 * Render "Add New" form
-	 *
-	 * @param array $field Field settings.
-	 * @return string
-	 */
-	public static function add_new_form( $field ) {
+	public static function add_new_form( array $field ): string {
 		return '';
 	}
 

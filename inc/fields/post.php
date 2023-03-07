@@ -96,7 +96,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		$args = wp_parse_args( $field['query_args'], [
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
@@ -218,33 +218,29 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), wp_kses_post( $text ) );
 	}
 
-	public static function add_new_form( $field ) {
-		if ( 0 === count( $field['post_type'] ) ) {
+	public static function add_new_form( array $field ): string {
+		if ( 1 !== count( $field['post_type'] ) ) {
 			return '';
 		}
 
 		$post_type = reset( $field['post_type'] );
-		if ( false === post_type_exists( $post_type ) ) {
+		if ( ! post_type_exists( $post_type ) ) {
 			return '';
 		}
 
-		$html = '
-		<div class="rwmb-post-add">
-			<button class="rwmb-post-add-button rwmb-modal-add-button" data-url="%s">%s</button>
-		</div>';
-		$html = sprintf(
-			$html,
-			get_admin_url( null, $post_type === 'post' ? 'post-new.php' : 'post-new.php?post_type=' . $post_type ),
-			esc_html( 'Add New Post' )
-		);
+		$post_type_object = get_post_type_object( $post_type );
 
-		return $html;
+		return sprintf(
+			'<a href="#" class="rwmb-post-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
+			admin_url( $post_type === 'post' ? 'post-new.php' : 'post-new.php?post_type=' . $post_type ),
+			esc_html( $post_type_object->labels->add_new_item )
+		);
 	}
 
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', array( 'jquery' ), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-post', RWMB_JS_URL . 'post.js', array( 'jquery', 'rwmb-modal' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-post', RWMB_JS_URL . 'post.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
 	}
 }

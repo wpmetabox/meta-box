@@ -106,7 +106,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		$args = wp_parse_args( $field['query_args'], [
 			'hide_empty'             => false,
 			'count'                  => false,
@@ -270,13 +270,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
 	}
 
-	/**
-	 * Render "Add New" form
-	 *
-	 * @param array $field Field settings.
-	 * @return string
-	 */
-	public static function add_new_form( $field ) {
+	public static function add_new_form( array $field ): string {
 		// Only add new term if field has only one taxonomy.
 		if ( 1 !== count( $field['taxonomy'] ) ) {
 			return '';
@@ -288,31 +282,20 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$html = '
-		<div class="rwmb-taxonomy-add">
-			<button class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s">%s</button>
-			<div class="rwmb-taxonomy-add-form rwmb-hidden">
-				<input type="text" name="%s_new" size="30" placeholder="%s">
-			</div>
-		</div>';
-
-		$html = sprintf(
-			$html,
-			get_admin_url( null, 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
+		return sprintf(
+			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
+			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
 			esc_html( $taxonomy_object->labels->add_new_item ),
 			esc_attr( $field['id'] ),
 			esc_attr( $taxonomy_object->labels->new_item_name )
 		);
-
-		return $html;
 	}
 
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', array(), RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', array( 'jquery' ), RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'jquery', 'rwmb-modal' ), RWMB_VER, true );
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
 
 		// Field is the 1st param.
 		$args  = func_get_args();
@@ -335,7 +318,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 	}
 
-	protected static function get_taxonomy_singular_name( array $field ) : string {
+	protected static function get_taxonomy_singular_name( array $field ): string {
 		if ( 1 !== count( $field['taxonomy'] ) ) {
 			return '';
 		}
