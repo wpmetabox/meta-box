@@ -236,11 +236,4 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			esc_html( $post_type_object->labels->add_new_item )
 		);
 	}
-
-	public static function admin_enqueue_scripts() {
-		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-post', RWMB_JS_URL . 'post.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
-	}
 }

@@ -169,11 +169,4 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			esc_html__( 'Add New User', 'meta-box' )
 		);
 	}
-
-	public static function admin_enqueue_scripts() {
-		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-user', RWMB_JS_URL . 'user.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
-	}
 }

@@ -6,6 +6,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
+
+		// Field is the 1st param.
+		$field = func_get_arg( 0 );
+		add_action( 'admin_head', function() use ( $field ) {
+			self::remove_default_meta_box( $field );
+		} );
 	}
 
 	public static function ajax_get_terms() {
@@ -291,25 +297,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		);
 	}
 
-	public static function admin_enqueue_scripts() {
-		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
-		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
-		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
-
-		// Field is the 1st param.
-		$args  = func_get_args();
-		$field = $args[0];
-		self::remove_default_meta_box( $field );
-	}
-
-	/**
-	 * Remove default WordPress taxonomy meta box.
-	 *
-	 * @param array $field Field settings.
-	 */
-	protected static function remove_default_meta_box( $field ) {
-		if ( empty( $field['remove_default'] ) || ! is_admin() || ! function_exists( 'remove_meta_box' ) ) {
+	protected static function remove_default_meta_box( array $field ) {
+		if ( empty( $field['remove_default'] ) || ! function_exists( 'remove_meta_box' ) ) {
 			return;
 		}
 		foreach ( $field['taxonomy'] as $taxonomy ) {
