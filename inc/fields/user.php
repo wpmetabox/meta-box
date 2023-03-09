@@ -163,6 +163,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function add_new_form( array $field ): string {
+		if ( ! current_user_can( 'edit_users' ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
 			admin_url( 'user-new.php' ),

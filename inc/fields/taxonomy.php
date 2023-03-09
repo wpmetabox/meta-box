@@ -277,6 +277,10 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function add_new_form( array $field ): string {
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			return '';
+		}
+
 		// Only add new term if field has only one taxonomy.
 		if ( 1 !== count( $field['taxonomy'] ) ) {
 			return '';
