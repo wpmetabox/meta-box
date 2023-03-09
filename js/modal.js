@@ -42,6 +42,11 @@
 					$contents.find( options.removeElement ).remove();
 				}
 				$contents.find( '.rwmb-modal-add-button' ).parent().remove();
+				
+				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
+				if ( $contents.find( 'html.interface-interface-skeleton__html-container' ).length > 0 ) {
+					$modal.find( '.rwmb-modal-title' ).css( 'background-color', '#ffffff' );
+				}
 
 				$contents.find( 'a' ).on( 'click', function( e ) {
 					e.preventDefault();
