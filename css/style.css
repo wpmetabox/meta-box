@@ -33,6 +33,7 @@
 .rwmb-input .select2-container,
 .rwmb-input textarea:not([cols]) {
 	width: 100%;
+	box-sizing: border-box;
 }
 .rwmb-input input[type="checkbox"],
 .rwmb-input input[type="radio"] {
