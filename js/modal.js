@@ -32,7 +32,9 @@
 			$modal = $( '.rwmb-modal' ),
 			$input = $this.closest( '.rwmb-input' );
 
-		$this.on( 'click', function( e ) {
+		$this.on( 'click', function ( e ) {
+			e.preventDefault();
+			
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
 			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
 			$( '#rwmb-modal-iframe' ).on( 'load', function() {
@@ -42,7 +44,7 @@
 					$contents.find( options.removeElement ).remove();
 				}
 				$contents.find( '.rwmb-modal-add-button' ).parent().remove();
-				
+
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
 				if ( $contents.find( 'html.interface-interface-skeleton__html-container' ).length > 0 ) {
 					$modal.find( '.rwmb-modal-title' ).css( 'background-color', '#ffffff' );
