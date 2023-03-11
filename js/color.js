@@ -8,12 +8,15 @@
 		const $this = $( this );
 		const mode = $this.data( 'options' )[ 'mode' ];
 
-		function triggerChange() {
+		function initChange() {
 			if ( null !== mode && 'hex' !== mode ) {
 				const color = new Color( $this.iris( 'option', 'color' ) );
 				$this.val( color.toCSS( mode ) );
 			}
+			triggerChange();
+		}
 
+		function triggerChange() {
 			$this.trigger( 'color:change' ).trigger( 'mb_change' );
 		}
 
@@ -22,7 +25,7 @@
 			options = $.extend(
 				{
 					change: function() {
-						setTimeout( triggerChange, 20 );
+						setTimeout( initChange, 20 );
 					},
 					clear: function() {
 						setTimeout( triggerChange, 20 );
