@@ -1,10 +1,10 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
-	$.fn.transformSuccess = function ( data ) {
+	function transformSuccess( event, data ) {
 		// No select
 		if ( $( this ).find( '.rwmb-select' ).length === 0 ) {
-			return;
+			return true;
 		}
 
 		const $select = $( this ).find( '.rwmb-select' );
@@ -36,5 +36,7 @@
 		$select.val( selected ).trigger( 'change' );
 	};
 
-	rwmb.$document.on( 'click', '.rwmb-select-all-none a', toggleAll );
+	rwmb.$document
+		.on( 'click', '.rwmb-select-all-none a', toggleAll )
+		.on( 'transformSuccess', '.rwmb-input', transformSuccess );
 } )( jQuery, rwmb );

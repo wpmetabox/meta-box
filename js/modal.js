@@ -25,7 +25,7 @@
 				data,
 				success: function ( res ) { 
 					if ( res.success === true ) {
-						$input.transformSuccess( res.data );	
+						$input.trigger( 'transformSuccess', [ res.data ] );
 					}					
 				 }
 			} );
