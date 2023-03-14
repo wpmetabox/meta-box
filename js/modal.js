@@ -4,7 +4,7 @@
 	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
 	const cache = {};
 
-	function transform( options ) {
+	function transform( $input, options ) {
 
 		if ( options.ajax_data ) {
 			var actions = {
@@ -17,14 +17,17 @@
 				...options.ajax_data,
 				action: actions[ options.ajax_data.field.type ]				
 			};
-			console.log( data );
 
 			return $.ajax( {
 				url: options.ajax.url,
 				type: 'post',
 				dataType: 'json',
 				data,
-				success: function ( res ) { console.log(res) }
+				success: function ( res ) { 
+					if ( res.success === true ) {
+						$input.transformSuccess( res.data );	
+					}					
+				 }
 			} );
 		}
 	}
@@ -103,7 +106,7 @@
 					if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
 						$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
 					} else {
-						transform( $input.find( '> *[data-options]' ).data( 'options' ) )	
+						transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) )	
 					}					
 				}				
 			} );

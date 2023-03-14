@@ -1,6 +1,24 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
+	$.fn.transformSuccess = function ( data ) {
+		// No select
+		if ( $( this ).find( '.rwmb-select' ).length === 0 ) {
+			return;
+		}
+
+		const $select = $( this ).find( '.rwmb-select' );
+		$select.find( 'option[value!=""]' ).remove();
+		// No data		
+		if ( data.items.length === 0 ) {
+			return;
+		}
+
+		$.each( data.items, function ( index, option ) {
+			$select.append( $( '<option>' ).val( option.value ).text( option.label ) );
+		} );
+	};		
+
 	function toggleAll( e ) {
 		e.preventDefault();
 
