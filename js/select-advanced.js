@@ -4,7 +4,11 @@
 	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
 	var cache = {};
 
-	$.fn.rwmbTransform = function () {
+	var select2_type = 'select-advanced';
+
+	$.fn.rwmbTransform = function ( type ) {
+		select2_type = type ?? 'select-advanced';
+
 		const arrSelect = [ this ];
 		cache = {};
 		$.each( arrSelect, transform );
@@ -32,8 +36,8 @@
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = $this.data( 'options' );
-
+			options = select2_type === 'select-tree' ? $this.parent().next().data( 'options' ) : $this.data( 'options' );
+		
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
@@ -95,7 +99,7 @@
 				} ).then( success ).fail( failure );
 		   };
 		}
-
+		
 		$this.show().select2( options );
 
 		if ( ! $this.attr( 'multiple' ) ) {

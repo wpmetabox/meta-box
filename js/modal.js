@@ -1,6 +1,34 @@
 ( function( $, rwmb ) {
 	'use strict';
 
+	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
+	const cache = {};
+
+	function transform( options ) {
+
+		if ( options.ajax_data ) {
+			var actions = {
+				'post': 'rwmb_get_posts',
+				'taxonomy': 'rwmb_get_terms',
+				'taxonomy_advanced': 'rwmb_get_terms',
+				'user': 'rwmb_get_users'
+			};
+			const data = {
+				...options.ajax_data,
+				action: actions[ options.ajax_data.field.type ]				
+			};
+			console.log( data );
+
+			return $.ajax( {
+				url: options.ajax.url,
+				type: 'post',
+				dataType: 'json',
+				data,
+				success: function ( res ) { console.log(res) }
+			} );
+		}
+	}
+
 	const $body = $( 'body' );
 
 	const defaultOptions = {
@@ -68,7 +96,16 @@
 				$modal.fadeOut( 'medium' );
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
 				$body.removeClass( 'rwmb-modal-show' );
-				$input.find( '> *[data-options]' ).rwmbTransform();
+				// $input.find( '> *[data-options]' ).rwmbTransform();
+				if ( $input.find( '> *[data-options]' ).length > 1 ) {
+					$input.find( '> *[data-options]:first' ).rwmbTransform( );
+				} else {
+					if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
+						$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
+					} else {
+						transform( $input.find( '> *[data-options]' ).data( 'options' ) )	
+					}					
+				}				
 			} );
 		} );
 	};
