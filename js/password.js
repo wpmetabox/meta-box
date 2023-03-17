@@ -2,11 +2,11 @@
     'use strict';
 
     function toggle() {
-        const $this = $( this ).siblings( 'input' );
+        const $this = $( this ).parent().siblings( 'input' );
         $this.attr( 'type', $this.attr( 'type' ) === 'password' ? 'text' : 'password' );
-        $( this ).html( $this.attr( 'type' ) === 'password' ? '<span class="show-icon"></span>' : '<span class="hide-icon"></span>' );
+        $( this ).attr( 'class', $this.attr( 'type' ) === 'password' ? 'password-icon show-icon' : 'password-icon hide-icon' );
     }
 
     rwmb.$document
-        .on( 'click', '.toggle-password', toggle );
+        .on( 'click', '.password-icon', toggle );
 } )( jQuery, rwmb );

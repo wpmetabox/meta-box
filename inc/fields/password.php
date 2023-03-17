@@ -16,30 +16,8 @@ class RWMB_Password_Field extends RWMB_Input_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$output = '';
-
-		if ( $field['prepend'] || $field['append'] ) {
-			$output = '<div class="rwmb-input-group">';
-		}
-
-		if ( $field['prepend'] ) {
-			$output .= '<span class="rwmb-input-group-text">' . $field['prepend'] . '</span>';
-		}
-		$output .= '<div class="password-input-container">';
-
-		$attributes = static::get_attributes( $field, $meta );
-		$output    .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
-
-		$output .= '<button type="button" class="toggle-password"><span class="show-icon"></span></button></div>';
-
-		if ( $field['append'] ) {
-			$output .= '<span class="rwmb-input-group-text">' . $field['append'] . '</span>';
-		}
-
-		if ( $field['prepend'] || $field['append'] ) {
-			$output .= '</div>';
-		}
-
+		$field['append'] .= '<i class="password-icon show-icon"></i>';
+		$output           = parent::html( $meta, $field );
 		return $output;
 	}
 
