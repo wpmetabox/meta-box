@@ -7,9 +7,10 @@
 	function transform() {
 		const $this = $( this );
 		const mode = $this.data( 'options' )[ 'mode' ];
+		const alpha = $this.data( 'alpha-enabled' );
 
 		function initChange() {
-			if ( null !== mode && 'hex' !== mode ) {
+			if ( null !== mode && 'hex' !== mode && !alpha ) {
 				const color = new Color( $this.iris( 'option', 'color' ) );
 				$this.val( color.toCSS( mode ) );
 			}
