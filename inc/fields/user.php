@@ -163,7 +163,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function add_new_form( array $field ): string {
-		if ( ! current_user_can( 'edit_users' ) ) {
+		if ( ! current_user_can( 'create_users' ) ) {
 			return '';
 		}
 
@@ -175,7 +175,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return sprintf(
 			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
 			admin_url( 'user-new.php' ),
-			json_encode( $field['js_options'] ),
+			wp_json_encode( $field['js_options'] ),
 			esc_html__( 'Add New User', 'meta-box' )
 		);
 	}

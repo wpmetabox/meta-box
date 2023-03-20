@@ -277,7 +277,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function add_new_form( array $field ): string {
-		if ( ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
 			return '';
 		}
 
@@ -296,11 +296,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			$field['ajax'] = true;
 			self::set_ajax_params( $field );
 		}
-		
+
 		return sprintf(
 			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
 			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
-			json_encode( $field['js_options'] ),
+			wp_json_encode( $field['js_options'] ),
 			esc_html( $taxonomy_object->labels->add_new_item )
 		);
 	}

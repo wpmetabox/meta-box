@@ -242,7 +242,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return sprintf(
 			'<a href="#" class="rwmb-post-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
 			admin_url( $post_type === 'post' ? 'post-new.php' : 'post-new.php?post_type=' . $post_type ),
-			json_encode( $field['js_options'] ),
+			wp_json_encode( $field['js_options'] ),
 			esc_html( $post_type_object->labels->add_new_item )
 		);
 	}
