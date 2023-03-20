@@ -10,20 +10,20 @@
 		const $checkboxList = $( this ).find( '.rwmb-input-list' );
 		const $checkboxClone = $checkboxList.find( 'label:first input' ).clone();
 		const $selected = $checkboxList.find( 'input:checked' ).val();
-		
-		$checkboxList.find( 'label' ).remove();
+
+		$checkboxList.find( 'li' ).remove();
 		// No data		
 		if ( data.items.length === 0 ) {
 			return;
 		}
 
 		$.each( data.items, function ( index, option ) {
-		    $checkboxList.append( $( '<label>' ).html(
+			$checkboxList.append( $( '<li>' ).html( $( '<label>' ).html(
 				$checkboxClone.val( option.value )
 					.attr( 'checked', Boolean( option.value == $selected ) )
 					.prop( 'outerHTML' ) +
-				option.label
-		    ) );
+				( typeof option.label === 'object' ? option.label.nickname[ 0 ] : option.label )
+			) ) );
 		} );
 	};
 
@@ -50,7 +50,7 @@
 
 		$this.parent().siblings( '.rwmb-input-list' ).find( 'input' ).prop( 'checked', checked ).trigger( 'change' );
 
-		checked = ! checked;
+		checked = !checked;
 		$this.data( 'checked', checked );
 	}
 
