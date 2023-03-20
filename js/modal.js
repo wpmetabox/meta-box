@@ -15,7 +15,7 @@
 			};
 			const data = {
 				...options.ajax_data,
-				action: actions[ options.ajax_data.field.type ]				
+				action: actions[ options.ajax_data.field.type ]
 			};
 
 			return $.ajax( {
@@ -23,10 +23,10 @@
 				type: 'post',
 				dataType: 'json',
 				data,
-				success: function ( res ) { 
+				success: function ( res ) {
 					if ( res.success === true ) {
 						$input.trigger( 'transformSuccess', [ res.data ] );
-					}					
+					}
 				 }
 			} );
 		}
@@ -65,26 +65,26 @@
 
 		$this.on( 'click', function ( e ) {
 			e.preventDefault();
-			
+
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
 			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
 			$( '#rwmb-modal-iframe' ).on( 'load', function() {
 				const $contents = $( this ).contents();
-				$contents.find( options.removeElementDefault ).remove();
 				if ( options.removeElement !== '' ) {
 					$contents.find( options.removeElement ).remove();
 				}
-				$contents.find( '.rwmb-modal-add-button' ).parent().remove();
 
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
-				if ( $contents.find( 'html.interface-interface-skeleton__html-container' ).length > 0 ) {
-					$modal.find( '.rwmb-modal-title' ).css( 'background-color', '#ffffff' );
+				if ( $contents.find( 'body' ).hasClass( 'block-editor-page' ) ) {
+					$modal.find( '.rwmb-modal-title' ).css( 'background-color', '#fff' );
 				}
 
-				$contents.find( 'a' ).on( 'click', function( e ) {
-					e.preventDefault();
-					return false;
-				} );
+				$contents
+					.find( options.removeElementDefault ).remove().end()
+					.find( '.rwmb-modal-add-button' ).parent().remove();
+				$contents.find( 'html' ).css( 'padding-top', 0 ).end()
+					.find( '#wpcontent' ).css( 'margin-left', 0 ).end()
+					.find( 'a' ).on( 'click', e => e.preventDefault() );
 
 				if ( options.callback !== null && typeof options.callback === 'function' ) {
 					options.callback( $contents );
@@ -106,9 +106,9 @@
 					if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
 						$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
 					} else {
-						transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) )	
-					}					
-				}				
+						transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) )
+					}
+				}
 			} );
 		} );
 	};

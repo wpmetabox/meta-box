@@ -34,7 +34,7 @@ body.rwmb-modal-show .interface-interface-skeleton__sidebar {
 }
 
 .rwmb-modal-title {
-	background-color: #F0F0F1;
+	background: #f0f0f1;
 	border-bottom: 1px solid #c3c4c7;
 	position: relative;
 }
