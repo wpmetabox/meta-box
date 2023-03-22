@@ -1,5 +1,5 @@
-.rwmb-select-tree {
-	display: inline-block;
+.rwmb-select-tree .rwmb-select-tree {
+	margin-top: 6px;
 }
 
 .rwmb-select-tree.hidden {
