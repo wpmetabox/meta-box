@@ -8,22 +8,25 @@
 		}
 
 		const $checkboxList = $( this ).find( '.rwmb-input-list' );
-		const $checkboxClone = $checkboxList.find( 'label:first input' ).clone();
+		const $checkboxClone = $checkboxList.find( '> *:first' ).clone();
+		const $inputClone = $checkboxClone.find( 'input' ).clone();		
 		const $selected = $checkboxList.find( 'input:checked' ).val();
 
-		$checkboxList.find( 'li' ).remove();
+		$checkboxList.empty();
+
 		// No data		
 		if ( data.items.length === 0 ) {
 			return;
 		}
 
 		$.each( data.items, function ( index, option ) {
-			$checkboxList.append( $( '<li>' ).html( $( '<label>' ).html(
-				$checkboxClone.val( option.value )
+			$checkboxClone.find( 'input' ).parent().empty().html(
+				$inputClone.val( option.value )
 					.attr( 'checked', Boolean( option.value == $selected ) )
-					.prop( 'outerHTML' ) +
-				( typeof option.label === 'object' ? option.label.nickname[ 0 ] : option.label )
-			) ) );
+					.prop( 'outerHTML' ) + option.label				
+			);
+
+			$checkboxList.append( $checkboxClone.prop( 'outerHTML' ) );
 		} );
 	};
 

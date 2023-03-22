@@ -168,8 +168,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		if ( false === $field['ajax'] ) {
-			$field['ajax'] = true;
+			$field['ajax']          = true;			
 			self::set_ajax_params( $field );
+			$field['js_options']['ajax_data']['field']['display_field'] = 'display_name';
 		}
 
 		return sprintf(
