@@ -6,6 +6,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
+
+		// Field is the 1st param.
+		$field = func_get_arg( 0 );
+		add_action( 'admin_head', function() use ( $field ) {
+			self::remove_default_meta_box( $field );
+		} );
 	}
 
 	public static function ajax_get_terms() {
@@ -106,7 +112,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		$args = wp_parse_args( $field['query_args'], [
 			'hide_empty'             => false,
 			'count'                  => false,
@@ -270,13 +276,11 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
 	}
 
-	/**
-	 * Render "Add New" form
-	 *
-	 * @param array $field Field settings.
-	 * @return string
-	 */
-	public static function add_new_form( $field ) {
+	public static function add_new_form( array $field ): string {
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return '';
+		}
+
 		// Only add new term if field has only one taxonomy.
 		if ( 1 !== count( $field['taxonomy'] ) ) {
 			return '';
@@ -288,42 +292,21 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$html = '
-		<div class="rwmb-taxonomy-add">
-			<button class="rwmb-taxonomy-add-button">%s</button>
-			<div class="rwmb-taxonomy-add-form rwmb-hidden">
-				<input type="text" name="%s_new" size="30" placeholder="%s">
-			</div>
-		</div>';
+		if ( false === $field['ajax'] ) {
+			$field['ajax'] = true;
+			self::set_ajax_params( $field );
+		}
 
-		$html = sprintf(
-			$html,
-			esc_html( $taxonomy_object->labels->add_new_item ),
-			esc_attr( $field['id'] ),
-			esc_attr( $taxonomy_object->labels->new_item_name )
+		return sprintf(
+			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
+			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
+			wp_json_encode( $field['js_options'] ),
+			esc_html( $taxonomy_object->labels->add_new_item )
 		);
-
-		return $html;
 	}
 
-	public static function admin_enqueue_scripts() {
-		parent::admin_enqueue_scripts();
-		wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', [], RWMB_VER );
-		wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', [ 'jquery' ], RWMB_VER, true );
-
-		// Field is the 1st param.
-		$args  = func_get_args();
-		$field = $args[0];
-		self::remove_default_meta_box( $field );
-	}
-
-	/**
-	 * Remove default WordPress taxonomy meta box.
-	 *
-	 * @param array $field Field settings.
-	 */
-	protected static function remove_default_meta_box( $field ) {
-		if ( empty( $field['remove_default'] ) || ! is_admin() || ! function_exists( 'remove_meta_box' ) ) {
+	protected static function remove_default_meta_box( array $field ) {
+		if ( empty( $field['remove_default'] ) || ! function_exists( 'remove_meta_box' ) ) {
 			return;
 		}
 		foreach ( $field['taxonomy'] as $taxonomy ) {
@@ -332,7 +315,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 	}
 
-	protected static function get_taxonomy_singular_name( array $field ) : string {
+	protected static function get_taxonomy_singular_name( array $field ): string {
 		if ( 1 !== count( $field['taxonomy'] ) ) {
 			return '';
 		}

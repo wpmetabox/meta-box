@@ -45,13 +45,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		return $html;
 	}
 
-	/**
-	 * Render "Add New" form
-	 *
-	 * @param array $field Field settings.
-	 * @return string
-	 */
-	public static function add_new_form( $field ) {
+	public static function add_new_form( array $field ): string {
 		return '';
 	}
 
@@ -138,6 +132,16 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		RWMB_Select_Field::admin_enqueue_scripts();
 		RWMB_Select_Tree_Field::admin_enqueue_scripts();
 		RWMB_Select_Advanced_Field::admin_enqueue_scripts();
+
+		// Field is the 1st param.
+		$field = func_get_arg( 0 );
+		if ( empty( $field['add_new'] ) ) {
+			return;
+		}
+
+		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
+		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
+		wp_enqueue_script( "rwmb-{$field['type']}", RWMB_JS_URL . "{$field['type']}.js", [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
 	}
 
 	/**

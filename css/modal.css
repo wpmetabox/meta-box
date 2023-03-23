@@ -1,0 +1,70 @@
+.rwmb-modal-add-button {
+	display: inline-block;
+	margin-top: 6px;
+}
+
+body.rwmb-modal-show,
+body.rwmb-modal-show .interface-interface-skeleton__sidebar {
+	overflow: hidden;
+}
+
+/* Mimic style of media modal */
+.rwmb-modal {
+	position: fixed;
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
+	z-index: 160000;
+	overflow: hidden;
+	display: none;
+}
+
+.rwmb-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	min-height: 360px;
+	background: #000;
+	opacity: 0.7;
+	z-index: 159900;
+	display: none;
+}
+
+.rwmb-modal-title {
+	background: #f0f0f1;
+	border-bottom: 1px solid #c3c4c7;
+	position: relative;
+}
+
+.rwmb-modal-title h2 {
+	font-size: 22px;
+	line-height: 50px;
+	padding: 0 20px;
+	margin: 0;
+}
+
+.rwmb-modal-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50px;
+	height: 50px;
+	font-size: 22px;
+	line-height: 50px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	color: #646970;
+	z-index: 1000;
+	cursor: pointer;
+	outline: none;
+	transition: color .1s ease-in-out;
+}
+.rwmb-modal-close:hover,
+.rwmb-modal-close:active {
+	color: #135e96;
+}
