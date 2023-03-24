@@ -63,7 +63,7 @@
 			$modal = $( '.rwmb-modal' ),
 			$input = $this.closest( '.rwmb-input' );
 
-		$this.on( 'click', function ( e ) {
+		$( $input ).on( 'click', '.rwmb-modal-add-button', function ( e ) {
 			e.preventDefault();
 
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
