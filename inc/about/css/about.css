@@ -194,3 +194,9 @@
 	width: 100%;
 	height: 100%;
 }
+#getting-started .tutorial a {
+	font-size: 32px;
+	font-weight: 400;
+	color:#32373c;
+	text-decoration: unset;
+}
