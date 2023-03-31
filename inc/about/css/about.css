@@ -194,3 +194,41 @@
 	width: 100%;
 	height: 100%;
 }
+#getting-started .tutorial a {
+	font-size: 32px;
+	font-weight: 600;
+	color:#32373c;
+	text-decoration: unset;
+}
+#getting-started .tutorial a:hover {
+	color: #2271b1;
+}
+.tutorial-items{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 15px 30px;
+	margin-top: 30px;
+}
+@media (max-width: 767px) {
+	.tutorial-items{
+		grid-template-columns: repeat(1, 1fr);
+		gap: 15px 0px;
+	}
+}
+.tutorial-items a{
+	font-size: 20px;
+	font-weight: 500;
+	color:#32373c;
+	text-decoration: unset;
+}
+.tutorial-items a:hover{
+	color:#2271b1;
+}
+.tutorial-items a span{
+	margin-right: 5px;
+}
+.tutorial-items a p{
+	font-size: 14px;
+	font-weight: 400;
+	color:#32373c;
+}
