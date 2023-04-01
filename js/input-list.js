@@ -9,9 +9,16 @@
 
 		const $checkboxList = $( this ).find( '.rwmb-input-list' );
 		const $checkboxClone = $checkboxList.find( '> *:first' ).clone();
-		const $inputClone = $checkboxClone.find( 'input' ).clone();		
-		const $selected = $checkboxList.find( 'input:checked' ).val();
-
+		const $inputClone = $checkboxClone.find( 'input' ).clone();
+		let $selected = $checkboxList.find( 'input:checked' ).length === 0 ?
+			[ $checkboxList.find( 'input:checked' ).val() ] :
+			[ ...$( 'input:checked' ).map( ( k, v ) => parseInt( v.value ) ) ];
+		
+		if ( $checkboxList.attr( 'data-selected' ) ) {
+			$selected = ( $inputClone.attr( 'type' ) === 'radio' ) ? [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] :
+				( $selected ? [ ...$selected, parseInt( $checkboxList.attr( 'data-selected' ) ) ] : [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] );
+		}
+		
 		$checkboxList.empty();
 
 		// No data		
@@ -22,8 +29,8 @@
 		$.each( data.items, function ( index, option ) {
 			$checkboxClone.find( 'input' ).parent().empty().html(
 				$inputClone.val( option.value )
-					.attr( 'checked', Boolean( option.value == $selected ) )
-					.prop( 'outerHTML' ) + option.label				
+					.attr( 'checked', $selected.includes( option.value ) )
+					.prop( 'outerHTML' ) + option.label
 			);
 
 			$checkboxList.append( $checkboxClone.prop( 'outerHTML' ) );

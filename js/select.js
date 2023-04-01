@@ -8,6 +8,8 @@
 		}
 
 		const $select = $( this ).find( '.rwmb-select' );
+		const $selected = $select.data( 'selected' );
+
 		$select.find( 'option[value!=""]' ).remove();
 		// No data		
 		if ( data.items.length === 0 ) {
@@ -15,8 +17,14 @@
 		}
 
 		$.each( data.items, function ( index, option ) {
-			$select.append( $( '<option>' ).val( option.value ).text( option.label ) );
+			$select.append( $( '<option>', {
+				value: option.value,
+				text: option.label,
+				selected: true
+			} ));
 		} );
+
+		$select.val( $selected );
 	};		
 
 	function toggleAll( e ) {
