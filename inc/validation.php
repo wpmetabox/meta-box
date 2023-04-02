@@ -13,20 +13,27 @@ class RWMB_Validation {
 	 * The rules are outputted in [data-validation] attribute of an hidden <script> and will be converted into JSON by JS.
 	 */
 	public function rules( RW_Meta_Box $object ) {
-		if ( ! empty( $object->meta_box['validation'] ) ) {
-			// Add prefix for validation
-			$prefix = $object->meta_box['prefix'];
-			foreach ( $object->meta_box['validation'] as &$rules ) {
-				$rules = array_combine(
-					array_map( function( $key ) use ( $prefix ) {
-						return $prefix . $key;
-					}, array_keys( $rules )),
-					$rules
-				);
-			}
-
-			echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+		if ( empty( $object->meta_box['validation'] ) ) {
+			return;
 		}
+
+		if ( empty( $prefix ) ) {
+			echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+			return;
+		}
+
+		// Add prefix for validation
+		$prefix = $object->meta_box['prefix'];
+
+		foreach ( $object->meta_box['validation'] as &$rules ) {
+			$rules = array_combine(
+				array_map( function( $key ) use ( $prefix ) {
+					return $prefix . $key;
+				}, array_keys( $rules )),
+				$rules
+			);
+		}
+		echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
 	}
 
 	public function enqueue() {
