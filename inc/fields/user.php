@@ -37,6 +37,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
+		$items = apply_filters( 'rwmb_ajax_get_users', $items, $field, $request );
+
 		$data = [ 'items' => $items ];
 
 		// More items for pagination.
@@ -168,7 +170,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		if ( false === $field['ajax'] ) {
-			$field['ajax']          = true;			
+			$field['ajax']          = true;
 			self::set_ajax_params( $field );
 			$field['js_options']['ajax_data']['field']['display_field'] = 'display_name';
 		}

@@ -40,6 +40,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
+		$items = apply_filters( 'rwmb_ajax_get_terms', $items, $field, $request );
+
 		$data = [ 'items' => $items ];
 
 		// More items for pagination.

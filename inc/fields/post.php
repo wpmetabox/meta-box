@@ -31,9 +31,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
-		// Apply the 'rwmb_ajax_results' filter
-		$items = apply_filters( 'rwmb_ajax_results', $items, $field, $request );
-		
+		$items = apply_filters( 'rwmb_ajax_get_posts', $items, $field, $request );
+
 		$data = [ 'items' => $items ];
 
 		// More items for pagination.
