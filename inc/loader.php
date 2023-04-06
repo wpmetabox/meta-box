@@ -108,6 +108,9 @@ class RWMB_Loader {
 		$update_notification = new \MetaBox\Updater\Notification( $update_checker, $update_option );
 		$update_notification->init();
 
+		// Block Register
+		new \MetaBox\Block\Register;
+
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );
 			$about->init();
