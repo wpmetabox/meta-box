@@ -14,8 +14,6 @@
 				if ( $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
 					let url = $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
 					this.$postId = url.substr( url.indexOf( "=" ) + 1 );
-					// Clear Interval
-					clearInterval( time_check );
 				}
 			}, 2000 );
 
