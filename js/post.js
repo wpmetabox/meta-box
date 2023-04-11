@@ -10,14 +10,14 @@
 				return;
 			}
 
-			const time_check = setInterval( () => {
+			setTimeout( () => {
 				if ( $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
 					let url = $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
 					this.$postId = url.substr( url.indexOf( "=" ) + 1 );
 					// Clear Interval
 					clearInterval( time_check );
 				}
-			}, 200 );
+			}, 2000 );
 
 			setTimeout( () => {
 				const $ui = $modal.find( '.interface-interface-skeleton' );
@@ -30,7 +30,7 @@
 		},
 		closeModalCallback: function ( $modal, $input ) {
 			const $postTitle = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
-			
+
 			if ( !this.$postId || !$postTitle || $postTitle !== '' ) {
 				return;
 			}
@@ -48,8 +48,8 @@
 					text: $postTitle,
 					selected: true
 				} ) );
-				
-				return;				
+
+				return;
 			}
 
 			//Input List ( checkbox or Radio )
