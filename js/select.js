@@ -8,7 +8,7 @@
 		}
 
 		const $select = $( this ).find( '.rwmb-select' );
-		const $selected = $select.data( 'selected' );
+		const $selected = $select.attr( 'data-selected' );
 
 		$select.find( 'option[value!=""]' ).remove();
 		// No data		
@@ -21,11 +21,11 @@
 				value: option.value,
 				text: option.label,
 				selected: true
-			} ));
+			} ) );
 		} );
 
 		$select.val( $selected );
-	};		
+	};
 
 	function toggleAll( e ) {
 		e.preventDefault();

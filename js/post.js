@@ -29,7 +29,7 @@
 		closeModalCallback: function ( $modal, $input ) {
 			const $postTitle = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
 
-			if ( !this.$postId || !$postTitle || $postTitle !== '' ) {
+			if ( !this.$postId || !$postTitle || $postTitle === '' ) {
 				return;
 			}
 
