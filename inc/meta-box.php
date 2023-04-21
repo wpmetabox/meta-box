@@ -104,7 +104,7 @@ class RW_Meta_Box {
 				add_action( 'edit_attachment', [ $this, 'save_post' ] );
 				add_action( 'add_attachment', [ $this, 'save_post' ] );
 			} else {
-				add_action( "save_post_{$post_type}", [ $this, 'save_post' ] );
+				add_action( "save_post", [ $this, 'save_post' ] );
 			}
 		}
 	}
