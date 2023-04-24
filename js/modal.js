@@ -63,9 +63,9 @@
 
 		const $this = $( this ),
 			$modal = $( '.rwmb-modal' ),
-			$input = $this.closest( '.rwmb-input' );
-		
-		$input.on( 'click', '.rwmb-modal-add-button', function ( e ) {
+			$input = $this.closest( '.rwmb-clone' ) ? $this.closest( '.rwmb-clone' ) : $this.closest( '.rwmb-input' );
+
+		$this.closest( '.rwmb-input' ).on( 'click', '.rwmb-modal-add-button', function ( e ) {
 			e.preventDefault();
 
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
@@ -103,8 +103,8 @@
 
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
-				}				
-				
+				}
+
 				$modal.fadeOut( 'medium' );
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
 				$body.removeClass( 'rwmb-modal-show' );
@@ -117,7 +117,7 @@
 					} else {
 						transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) );
 					}
-				}			
+				}
 			} );
 		} );
 	};
