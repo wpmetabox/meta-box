@@ -8,7 +8,6 @@
 #post-body-content table.compat-attachment-fields tbody > tr > td input,
 #post-body-content table.compat-attachment-fields tbody > tr > td textarea {
 	display: block;
-	width: 100%;
 }
 #post-body-content table.compat-attachment-fields tbody > tr {
 	margin: 1em 0;
