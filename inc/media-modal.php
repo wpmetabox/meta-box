@@ -24,7 +24,7 @@ class RWMB_Media_Modal {
 
 	public function enqueue() {
 		if ( get_current_screen()->post_type === 'attachment' ) {
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', [], RWMB_VER );
+			wp_enqueue_style( 'rwmb-media-modal', RWMB_CSS_URL . 'media-modal.css', [], RWMB_VER );
 		}
 	}
 
@@ -100,7 +100,7 @@ class RWMB_Media_Modal {
 		return $post;
 	}
 
-	public function is_in_normal_mode( bool $show, array $meta_box ) : bool {
+	public function is_in_normal_mode( bool $show, array $meta_box ): bool {
 		if ( ! $show ) {
 			return $show;
 		}
@@ -115,7 +115,7 @@ class RWMB_Media_Modal {
 		return ! $this->is_in_modal( $meta_box );
 	}
 
-	private function is_in_modal( array $meta_box ) : bool {
+	private function is_in_modal( array $meta_box ): bool {
 		return in_array( 'attachment', $meta_box['post_types'], true ) && ! empty( $meta_box['media_modal'] );
 	}
 }
