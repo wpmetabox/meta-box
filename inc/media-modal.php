@@ -14,18 +14,8 @@ class RWMB_Media_Modal {
 		// Meta boxes are registered at priority 20, so we use 30 to capture them all.
 		add_action( 'init', [ $this, 'get_fields' ], 30 );
 
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
-
 		add_filter( 'attachment_fields_to_edit', [ $this, 'add_fields' ], 11, 2 );
 		add_filter( 'attachment_fields_to_save', [ $this, 'save_fields' ], 11, 2 );
-
-		add_filter( 'rwmb_show', [ $this, 'is_in_normal_mode' ], 10, 2 );
-	}
-
-	public function enqueue() {
-		if ( get_current_screen()->post_type === 'attachment' ) {
-			wp_enqueue_style( 'rwmb', RWMB_CSS_URL . 'media-modal.css', [], RWMB_VER );
-		}
 	}
 
 	public function get_fields() {
@@ -46,6 +36,10 @@ class RWMB_Media_Modal {
 	 * @return mixed
 	 */
 	public function add_fields( $form_fields, WP_Post $post ) {
+		if ( $this->is_attachment_edit_screen() ) {
+			return $form_fields;
+		}
+
 		foreach ( $this->fields as $field ) {
 			$form_field          = $field;
 			$form_field['label'] = $field['name'];
@@ -100,22 +94,11 @@ class RWMB_Media_Modal {
 		return $post;
 	}
 
-	public function is_in_normal_mode( bool $show, array $meta_box ) : bool {
-		if ( ! $show ) {
-			return $show;
-		}
-
-		// Show the meta box in the modal on Media screen.
-		global $hook_suffix;
-		if ( $hook_suffix === 'upload.php' ) {
-			return $this->is_in_modal( $meta_box );
-		}
-
-		// Show the meta box only if not in the modal on the post edit screen.
-		return ! $this->is_in_modal( $meta_box );
+	private function is_in_modal( array $meta_box ): bool {
+		return in_array( 'attachment', $meta_box['post_types'], true ) && ! empty( $meta_box['media_modal'] );
 	}
 
-	private function is_in_modal( array $meta_box ) : bool {
-		return in_array( 'attachment', $meta_box['post_types'], true ) && ! empty( $meta_box['media_modal'] );
+	private function is_attachment_edit_screen(): bool {
+		return get_current_screen()->id === 'attachment';
 	}
 }
