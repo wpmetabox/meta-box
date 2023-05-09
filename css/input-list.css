@@ -16,3 +16,11 @@
 	flex-wrap: wrap;
 	gap: 20px;
 }
+
+/* Media modal */
+.attachment-details .compat-attachment-fields .rwmb-input-list > label > input {
+	margin: 0 0.25rem 0 0;
+}
+.compat-attachment-fields .rwmb-input-list.rwmb-inline {
+	gap: 10px;
+}
