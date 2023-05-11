@@ -63,7 +63,7 @@
 
 		const $this = $( this ),
 			$modal = $( '.rwmb-modal' ),
-			$input = $this.closest( '.rwmb-clone' ) ? $this.closest( '.rwmb-clone' ) : $this.closest( '.rwmb-input' );
+			$input = $this.closest( '.rwmb-clone' ).length > 0 ? $this.closest( '.rwmb-clone' ) : $this.closest( '.rwmb-input' );
 
 		$this.closest( '.rwmb-input' ).on( 'click', '.rwmb-modal-add-button', function ( e ) {
 			e.preventDefault();
