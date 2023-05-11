@@ -81,6 +81,7 @@
 	font-size: 11px;
 	position: relative;
 	z-index: 20;
+	line-height: 18px;
 }
 
 .rwmb-switch-on {
