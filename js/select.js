@@ -2,8 +2,7 @@
 	'use strict';
 
 	function transformSuccess( event, data ) {
-
-		// No select
+		// No select.
 		if ( $( event.target ).find( '.rwmb-select' ).length === 0 ) {
 			return true;
 		}
@@ -12,7 +11,8 @@
 		const $selected = $select.attr( 'data-selected' );
 
 		$select.find( 'option[value!=""]' ).remove();
-		// No data		
+
+		// No data.
 		if ( data.items.length === 0 ) {
 			return;
 		}

@@ -5,31 +5,32 @@
 	const cache = {};
 
 	function transform( $input, options ) {
-
-		if ( options.ajax_data ) {
-			var actions = {
-				'post': 'rwmb_get_posts',
-				'taxonomy': 'rwmb_get_terms',
-				'taxonomy_advanced': 'rwmb_get_terms',
-				'user': 'rwmb_get_users'
-			};
-			const data = {
-				...options.ajax_data,
-				action: actions[ options.ajax_data.field.type ]
-			};
-
-			return $.ajax( {
-				url: options.ajax.url,
-				type: 'post',
-				dataType: 'json',
-				data,
-				success: function ( res ) {
-					if ( res.success === true ) {
-						$input.trigger( 'transformSuccess', [ res.data ] );
-					}
-				}
-			} );
+		if ( !options.ajax_data ) {
+			return;
 		}
+
+		const actions = {
+			'post': 'rwmb_get_posts',
+			'taxonomy': 'rwmb_get_terms',
+			'taxonomy_advanced': 'rwmb_get_terms',
+			'user': 'rwmb_get_users'
+		};
+		const data = {
+			...options.ajax_data,
+			action: actions[ options.ajax_data.field.type ]
+		};
+
+		return $.ajax( {
+			url: options.ajax.url,
+			type: 'post',
+			dataType: 'json',
+			data,
+			success: function ( res ) {
+				if ( res.success === true ) {
+					$input.trigger( 'transformSuccess', [ res.data ] );
+				}
+			}
+		} );
 	}
 
 	const $body = $( 'body' );
@@ -111,22 +112,22 @@
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
 				$body.removeClass( 'rwmb-modal-show' );
 
-				//Select Advance: 2 data-options - one is the select adavance, one is a tag <a>
+				// Select advanced: 2 data-options - one is the select advanced, one is the <a> tag.
 				if ( $input.find( '> *[data-options]' ).length > 1 ) {
 					$input.find( '> *[data-options]:first' ).rwmbTransform();
 					return;
 				}
 
-				//Select Tree
+				// Select tree
 				if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
 					$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
 					return;
 				}
 
-				//Select, radio, checkbox list
+				// Select, radio, checkbox list
 				transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) );
 
-				//clear event after close modal
+				// Clear event after close modal.
 				$( this ).off( event );
 			} );
 		} );

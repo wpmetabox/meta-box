@@ -22,6 +22,7 @@
                     return;
                 }
 
+				// Select advanced, select tree, select.
                 if ( $input.find( '> *[data-options]' ).length > 1 || $input.find( '.rwmb-select-tree, .rwmb-select' ).length > 0 ) {
                     $input.find( 'select' ).attr( 'data-selected', this.$userId );
                     $input.find( 'select :selected' ).removeAttr( 'selected' );
@@ -39,7 +40,7 @@
                     return;
                 }
 
-                //Input List ( checkbox or Radio )
+				// Input list (checkbox list or radio).
                 if ( $input.find( '.rwmb-input-list' ).length > 0 ) {
                     $input.find( '.rwmb-input-list' ).attr( 'data-selected', this.$userId );
                 }
