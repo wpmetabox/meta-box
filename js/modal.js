@@ -65,7 +65,7 @@
 			$modal = $( '.rwmb-modal' ),
 			$input = $this.closest( '.rwmb-clone' ).length > 0 ? $this.closest( '.rwmb-clone' ) : $this.closest( '.rwmb-input' );
 
-		$this.closest( '.rwmb-input' ).on( 'click', '.rwmb-modal-add-button', function ( e ) {
+		$this.click( function ( e ) {
 			e.preventDefault();
 
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
@@ -97,9 +97,11 @@
 				$body.addClass( 'rwmb-modal-show' );
 				$( '.rwmb-modal-overlay' ).fadeIn( 'medium' );
 				$modal.fadeIn( 'medium' );
+
+				return false;
 			} );
 
-			$( '.rwmb-modal-close' ).on( 'click', function () {
+			$( '.rwmb-modal-close' ).on( 'click', function ( event ) {
 
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
@@ -108,16 +110,24 @@
 				$modal.fadeOut( 'medium' );
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
 				$body.removeClass( 'rwmb-modal-show' );
-				// $input.find( '> *[data-options]' ).rwmbTransform();
+
+				//Select Advance: 2 data-options - one is the select adavance, one is a tag <a>
 				if ( $input.find( '> *[data-options]' ).length > 1 ) {
 					$input.find( '> *[data-options]:first' ).rwmbTransform();
-				} else {
-					if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
-						$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
-					} else {
-						transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) );
-					}
+					return;
 				}
+
+				//Select Tree
+				if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
+					$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
+					return;
+				}
+
+				//Select, radio, checkbox list
+				transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) );
+
+				//clear event after close modal
+				$( this ).off( event );
 			} );
 		} );
 	};
@@ -126,4 +136,5 @@
 		$body.append( defaultOptions.wrapper )
 			.append( defaultOptions.markupOverlay );
 	}
+
 } )( jQuery, rwmb );

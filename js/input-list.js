@@ -3,22 +3,22 @@
 
 	function transformSuccess( event, data ) {
 		// No select
-		if ( $( this ).find( '.rwmb-input-list' ).length === 0 ) {
+		if ( $( event.target ).find( '.rwmb-input-list' ).length === 0 ) {
 			return true;
 		}
 
-		const $checkboxList = $( this ).find( '.rwmb-input-list' );
+		const $checkboxList = $( event.target ).find( '.rwmb-input-list' );
 		const $checkboxClone = $checkboxList.find( '> *:first' ).clone();
 		const $inputClone = $checkboxClone.find( 'input' ).clone();
 		let $selected = $checkboxList.find( 'input:checked' ).length === 0 ?
 			[ $checkboxList.find( 'input:checked' ).val() ] :
 			[ ...$( 'input:checked' ).map( ( k, v ) => parseInt( v.value ) ) ];
-		
+
 		if ( $checkboxList.attr( 'data-selected' ) ) {
 			$selected = ( $inputClone.attr( 'type' ) === 'radio' ) ? [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] :
 				( $selected ? [ ...$selected, parseInt( $checkboxList.attr( 'data-selected' ) ) ] : [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] );
 		}
-		
+
 		$checkboxList.empty();
 
 		// No data		
@@ -73,5 +73,5 @@
 		.on( 'change', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', toggleTree )
 		.on( 'clone', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', toggleTree )
 		.on( 'click', '.rwmb-input-list-select-all-none', toggleAll )
-		.on( 'transformSuccess', '.rwmb-input', transformSuccess );;
+		.on( 'transformSuccess', transformSuccess );;
 } )( jQuery, rwmb );

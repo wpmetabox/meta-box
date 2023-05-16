@@ -2,12 +2,13 @@
 	'use strict';
 
 	function transformSuccess( event, data ) {
+
 		// No select
-		if ( $( this ).find( '.rwmb-select' ).length === 0 ) {
+		if ( $( event.target ).find( '.rwmb-select' ).length === 0 ) {
 			return true;
 		}
 
-		const $select = $( this ).find( '.rwmb-select' );
+		const $select = $( event.target ).find( '.rwmb-select' );
 		const $selected = $select.attr( 'data-selected' );
 
 		$select.find( 'option[value!=""]' ).remove();
@@ -46,5 +47,5 @@
 
 	rwmb.$document
 		.on( 'click', '.rwmb-select-all-none a', toggleAll )
-		.on( 'transformSuccess', '.rwmb-input', transformSuccess );
+		.on( 'transformSuccess', transformSuccess );
 } )( jQuery, rwmb );
