@@ -2,34 +2,39 @@
 	'use strict';
 
 	function transformSuccess( event, data ) {
-		// No select
-		if ( $( event.target ).find( '.rwmb-input-list' ).length === 0 ) {
+		// No inputs.
+		const $checkboxList = $( event.target ).find( '.rwmb-input-list' );
+		if ( $checkboxList.length === 0 ) {
 			return true;
 		}
 
-		const $checkboxList = $( event.target ).find( '.rwmb-input-list' );
-		const $checkboxClone = $checkboxList.find( '> *:first' ).clone();
-		const $inputClone = $checkboxClone.find( 'input' ).clone();
-		let $selected = $checkboxList.find( 'input:checked' ).length === 0 ?
-			[ $checkboxList.find( 'input:checked' ).val() ] :
-			[ ...$( 'input:checked' ).map( ( k, v ) => parseInt( v.value ) ) ];
-
-		if ( $checkboxList.attr( 'data-selected' ) ) {
-			$selected = ( $inputClone.attr( 'type' ) === 'radio' ) ? [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] :
-				( $selected ? [ ...$selected, parseInt( $checkboxList.attr( 'data-selected' ) ) ] : [ parseInt( $checkboxList.attr( 'data-selected' ) ) ] );
-		}
-
-		$checkboxList.empty();
-
-		// No data		
+		// No data.
 		if ( data.items.length === 0 ) {
 			return;
 		}
 
+		const $checkboxClone = $checkboxList.find( '> *:first' ).clone();
+		const $inputClone = $checkboxClone.find( 'input' ).clone();
+		let selected = $checkboxList.find( 'input:checked' ).length === 0 ?
+			[ $checkboxList.find( 'input:checked' ).val() ] :
+			[ ...$( 'input:checked' ).map( ( k, v ) => parseInt( v.value ) ) ];
+
+		if ( $checkboxList.attr( 'data-selected' ) ) {
+			selected = $inputClone.attr( 'type' ) === 'radio'
+				? [ parseInt( $checkboxList.attr( 'data-selected' ) ) ]
+				: (
+					selected
+						? [ ...selected, parseInt( $checkboxList.attr( 'data-selected' ) ) ]
+						: [ parseInt( $checkboxList.attr( 'data-selected' ) ) ]
+				);
+		}
+
+		$checkboxList.empty();
+
 		$.each( data.items, function ( index, option ) {
 			$checkboxClone.find( 'input' ).parent().empty().html(
 				$inputClone.val( option.value )
-					.attr( 'checked', $selected.includes( option.value ) )
+					.attr( 'checked', selected.includes( option.value ) )
 					.prop( 'outerHTML' ) + option.label
 			);
 

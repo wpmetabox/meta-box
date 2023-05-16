@@ -3,29 +3,28 @@
 
 	function transformSuccess( event, data ) {
 		// No select.
-		if ( $( event.target ).find( '.rwmb-select' ).length === 0 ) {
-			return true;
-		}
-
 		const $select = $( event.target ).find( '.rwmb-select' );
-		const $selected = $select.attr( 'data-selected' );
-
-		$select.find( 'option[value!=""]' ).remove();
+		if ( $select.length === 0 ) {
+			return;
+		}
 
 		// No data.
 		if ( data.items.length === 0 ) {
 			return;
 		}
 
+		const selected = $select.attr( 'data-selected' );
+
+		$select.find( 'option[value!=""]' ).remove();
+
 		$.each( data.items, function ( index, option ) {
 			$select.append( $( '<option>', {
 				value: option.value,
-				text: option.label,
-				selected: true
+				text: option.label
 			} ) );
 		} );
 
-		$select.val( $selected );
+		$select.val( selected );
 	};
 
 	function toggleAll( e ) {
