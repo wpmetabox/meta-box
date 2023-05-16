@@ -63,8 +63,12 @@
 		}
 
 		const $this = $( this ),
-			$modal = $( '.rwmb-modal' ),
-			$input = $this.closest( '.rwmb-clone' ).length > 0 ? $this.closest( '.rwmb-clone' ) : $this.closest( '.rwmb-input' );
+			$modal = $( '.rwmb-modal' );
+
+		let $input = $this.closest( '.rwmb-input' );
+		if ( $input.find( '.rwmb-clone' ).length > 0 && $this.closest( '.rwmb-clone' ).length > 0 ) {
+			$input = $this.closest( '.rwmb-clone' );
+		}
 
 		$this.click( function ( e ) {
 			e.preventDefault();
