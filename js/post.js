@@ -5,18 +5,17 @@
 		const $this = $( this );
 
 		$this.rwmbModal( {
-			$postId: null,
 			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
 			callback: function ( $modal ) {
 				if ( !this.isBlockEditor ) {
-					this.$postId = $modal.find( '#post_ID' ).val();
+					this.$objectId = $modal.find( '#post_ID' ).val();
 					return;
 				}
 
 				setTimeout( () => {
 					if ( $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
 						let url = $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
-						this.$postId = url.substr( url.indexOf( "=" ) + 1 );
+						this.$objectId = url.substr( url.indexOf( "=" ) + 1 );
 					}
 				}, 2000 );
 
@@ -30,35 +29,7 @@
 				}, 500 );
 			},
 			closeModalCallback: function ( $modal, $input ) {
-				const $postTitle = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
-
-				if ( !this.$postId || !$postTitle || $postTitle === '' ) {
-					return;
-				}
-
-				// Select advanced, select tree, select.
-				if ( $input.find( '> *[data-options]' ).length > 1 || $input.find( '.rwmb-select-tree, .rwmb-select' ).length > 0 ) {
-
-					$input.find( 'select' ).attr( 'data-selected', this.$postId );
-					$input.find( 'select :selected' ).removeAttr( 'selected' );
-
-					if ( $input.find( '.rwmb-select' ).length > 0 ) {
-						return;
-					}
-
-					$input.find( 'select' ).prepend( $( '<option>', {
-						value: this.$postId,
-						text: $postTitle,
-						selected: true
-					} ) );
-
-					return;
-				}
-
-				// Input list (checkbox list or radio).
-				if ( $input.find( '.rwmb-input-list' ).length > 0 ) {
-					$input.find( '.rwmb-input-list' ).attr( 'data-selected', this.$postId );
-				}
+				this.$objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
 			}
 		} );
 	}

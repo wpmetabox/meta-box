@@ -1,38 +1,6 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
-	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
-	const cache = {};
-
-	function transform( $input, options ) {
-		if ( !options.ajax_data ) {
-			return;
-		}
-
-		const actions = {
-			'post': 'rwmb_get_posts',
-			'taxonomy': 'rwmb_get_terms',
-			'taxonomy_advanced': 'rwmb_get_terms',
-			'user': 'rwmb_get_users'
-		};
-		const data = {
-			...options.ajax_data,
-			action: actions[ options.ajax_data.field.type ]
-		};
-
-		return $.ajax( {
-			url: options.ajax.url,
-			type: 'post',
-			dataType: 'json',
-			data,
-			success: function ( res ) {
-				if ( res.success === true ) {
-					$input.trigger( 'transformSuccess', [ res.data ] );
-				}
-			}
-		} );
-	}
-
 	const $body = $( 'body' );
 
 	const defaultOptions = {
@@ -49,7 +17,9 @@
 		removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end',
 		callback: null,
 		closeModalCallback: null,
-		isBlockEditor: false
+		isBlockEditor: false,
+		$objectId: null,
+		$objectDisplay: null
 	};
 
 	$.fn.rwmbModal = function ( options = {} ) {
@@ -107,7 +77,7 @@
 			} );
 
 			$( '.rwmb-modal-close' ).on( 'click', function ( event ) {
-
+				console.log( event );
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
 				}
@@ -116,20 +86,72 @@
 				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
 				$body.removeClass( 'rwmb-modal-show' );
 
+				// If not add new
+				if ( !options.$objectId || !options.$objectDisplay || options.$objectDisplay === '' ) {
+					$( this ).off( event );
+					return;
+				}
+
 				// Select advanced: 2 data-options - one is the select advanced, one is the <a> tag.
 				if ( $input.find( '> *[data-options]' ).length > 1 ) {
+					$input.find( 'select' ).attr( 'data-selected', options.$objectId );
+					$input.find( 'select :selected' ).removeAttr( 'selected' );
+
+					$input.find( 'select' ).prepend( $( '<option>', {
+						value: options.$objectId,
+						text: options.$objectDisplay,
+						selected: true
+					} ) );
+
 					$input.find( '> *[data-options]:first' ).rwmbTransform();
+
+					$( this ).off( event );
 					return;
 				}
 
 				// Select tree
 				if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
+					$input.find( '.rwmb-select-tree' ).find( 'select' ).attr( 'data-selected', options.$objectId );
+					$input.find( '.rwmb-select-tree' ).find( 'select :selected' ).removeAttr( 'selected' );
+
+					$input.find( '.rwmb-select-tree' ).find( 'select' ).prepend( $( '<option>', {
+						value: options.$objectId,
+						text: options.$objectDisplay,
+						selected: true
+					} ) );
+
 					$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
+
+					$( this ).off( event );
 					return;
 				}
 
-				// Select, radio, checkbox list
-				transform( $input, $input.find( '> *[data-options]' ).data( 'options' ) );
+				//Select
+				if ( $input.find( '.rwmb-select' ).length > 0 ) {
+					$input.find( '.rwmb-select' ).find( 'select' ).attr( 'data-selected', options.$objectId );
+					$input.find( 'select' ).prepend( $( '<option>', {
+						value: options.$objectId,
+						text: options.$objectDisplay,
+						selected: true
+					} ) );
+
+					$( this ).off( event );
+					return;
+				}
+
+				//radio list, checkbox list, checkbox tree
+				$input.find( '.rwmb-input-list' ).attr( 'data-selected', options.$objectId );
+
+				const $inputListClone = $input.find( '.rwmb-input-list' ).find( '> *:first' ).clone();
+				const $inputClone = $inputListClone.find( 'input' ).clone();
+
+				$inputListClone.find( 'input' ).parent().empty().html(
+					$inputClone.val( options.$objectId )
+						.attr( 'checked', true )
+						.prop( 'outerHTML' ) + options.$objectDisplay
+				);
+
+				$input.find( '.rwmb-input-list' ).prepend( $inputListClone.prop( 'outerHTML' ) );
 
 				// Clear event after close modal.
 				$( this ).off( event );

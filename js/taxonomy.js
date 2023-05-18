@@ -5,40 +5,11 @@
         const $this = $( this );
 
         $this.rwmbModal( {
-            $taxId: null,
-            $taxName: null,
             removeElement: '.form-wrap > h2',
             closeModalCallback: function ( $modal, $input ) {
                 if ( $modal.find( '#the-list tr:first td:eq(0) .row-actions' ).length > 0 ) {
-                    this.$taxId = parseInt( $modal.find( '#the-list tr:first' ).attr( 'id' ).split( '-' )[ 1 ] );
-                    this.$taxName = $modal.find( '#the-list tr:first td:eq(0) strong a' ).text();
-                }
-
-                if ( !this.$taxId ) {
-                    return;
-                }
-
-				// Select advanced, select tree, select.
-                if ( $input.find( '> *[data-options]' ).length > 1 || $input.find( '.rwmb-select-tree, .rwmb-select' ).length > 0 ) {
-                    $input.find( 'select' ).attr( 'data-selected', this.$taxId );
-                    $input.find( 'select :selected' ).removeAttr( 'selected' );
-
-                    if ( $input.find( '.rwmb-select' ).length > 0 ) {
-                        return;
-                    }
-
-                    $input.find( 'select' ).prepend( $( '<option>', {
-                        value: this.$taxId,
-                        text: this.$taxName,
-                        selected: true
-                    } ) );
-
-                    return;
-                }
-
-				// Input list (checkbox list or radio).
-                if ( $input.find( '.rwmb-input-list' ).length > 0 ) {
-                    $input.find( '.rwmb-input-list' ).attr( 'data-selected', this.$taxId );
+                    this.$objectId = parseInt( $modal.find( '#the-list tr:first' ).attr( 'id' ).split( '-' )[ 1 ] );
+                    this.$objectDisplay = $modal.find( '#the-list tr:first td:eq(0) strong a' ).text();
                 }
             }
         } );
