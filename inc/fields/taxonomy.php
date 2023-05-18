@@ -292,15 +292,9 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		if ( false === $field['ajax'] ) {
-			$field['ajax'] = true;
-			self::set_ajax_params( $field );
-		}
-
 		return sprintf(
-			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
+			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
 			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
-			wp_json_encode( $field['js_options'] ),
 			esc_html( $taxonomy_object->labels->add_new_item )
 		);
 	}

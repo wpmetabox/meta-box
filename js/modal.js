@@ -116,8 +116,6 @@
 						selected: true
 					} ) );
 
-					$select.rwmbTransform( 'select-tree' );
-
 					$( this ).off( event );
 					return;
 				}

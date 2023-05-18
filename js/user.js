@@ -13,7 +13,9 @@
                 if ( $modal.find( '#wpbody-content .wrap form input[name="_wp_http_referer"]' ).length > 0 ) {
                     const urlParams = new URLSearchParams( $modal.find( '#wpbody-content .wrap form input[name="_wp_http_referer"]' ).val() );
                     this.$objectId = parseInt( urlParams.get( 'id' ) );
-                    this.$objectDisplay = $modal.find( `#the-list tr[id="user-${ this.$objectId }"] .column-name` ).text();
+                    this.$objectDisplay = $modal.find( `#the-list tr[id="user-${ this.$objectId }"] .column-name` ).text() !== '—Unknown' ?
+                        $modal.find( `#the-list tr[id="user-${ this.$objectId }"] .column-name` ).text() :
+                        $modal.find( `#the-list tr[id="user-${ this.$objectId }"] .column-username strong a` ).text();
                 }
             }
         } );
