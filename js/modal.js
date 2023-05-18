@@ -77,7 +77,6 @@
 			} );
 
 			$( '.rwmb-modal-close' ).on( 'click', function ( event ) {
-				console.log( event );
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
 				}
@@ -87,49 +86,46 @@
 				$body.removeClass( 'rwmb-modal-show' );
 
 				// If not add new
-				if ( !options.$objectId || !options.$objectDisplay || options.$objectDisplay === '' ) {
+				if ( !options.$objectId || !options.$objectDisplay ) {
 					$( this ).off( event );
 					return;
 				}
 
 				// Select advanced: 2 data-options - one is the select advanced, one is the <a> tag.
 				if ( $input.find( '> *[data-options]' ).length > 1 ) {
-					$input.find( 'select' ).attr( 'data-selected', options.$objectId );
-					$input.find( 'select :selected' ).removeAttr( 'selected' );
-
-					$input.find( 'select' ).prepend( $( '<option>', {
+					const $select = $input.find( 'select' );
+					$select.attr( 'data-selected', options.$objectId ).prepend( $( '<option>', {
 						value: options.$objectId,
 						text: options.$objectDisplay,
 						selected: true
 					} ) );
 
-					$input.find( '> *[data-options]:first' ).rwmbTransform();
+					$select.rwmbTransform();
 
 					$( this ).off( event );
 					return;
 				}
 
 				// Select tree
-				if ( $input.find( '.rwmb-select-tree' ).length > 0 ) {
-					$input.find( '.rwmb-select-tree' ).find( 'select' ).attr( 'data-selected', options.$objectId );
-					$input.find( '.rwmb-select-tree' ).find( 'select :selected' ).removeAttr( 'selected' );
-
-					$input.find( '.rwmb-select-tree' ).find( 'select' ).prepend( $( '<option>', {
+				const $selectTree = $input.find( '.rwmb-select-tree' );
+				if ( $selectTree.length > 0 ) {
+					const $select = $selectTree.find( 'select' );
+					$select.attr( 'data-selected', options.$objectId ).prepend( $( '<option>', {
 						value: options.$objectId,
 						text: options.$objectDisplay,
 						selected: true
 					} ) );
 
-					$input.find( '*[data-options]:first' ).rwmbTransform( 'select-tree' );
+					$select.rwmbTransform( 'select-tree' );
 
 					$( this ).off( event );
 					return;
 				}
 
-				//Select
-				if ( $input.find( '.rwmb-select' ).length > 0 ) {
-					$input.find( '.rwmb-select' ).find( 'select' ).attr( 'data-selected', options.$objectId );
-					$input.find( 'select' ).prepend( $( '<option>', {
+				// Select
+				const $select = $input.find( '.rwmb-select' );
+				if ( $select.length > 0 ) {
+					$select.prepend( $( '<option>', {
 						value: options.$objectId,
 						text: options.$objectDisplay,
 						selected: true
@@ -139,19 +135,17 @@
 					return;
 				}
 
-				//radio list, checkbox list, checkbox tree
-				$input.find( '.rwmb-input-list' ).attr( 'data-selected', options.$objectId );
+				// Radio, checkbox list, checkbox tree
+				const $inputList = $input.find( '.rwmb-input-list' ),
+					$labelClone = $inputList.find( '> label:first' ).clone(),
+					$inputClone = $labelClone.find( 'input' ).clone();
 
-				const $inputListClone = $input.find( '.rwmb-input-list' ).find( '> *:first' ).clone();
-				const $inputClone = $inputListClone.find( 'input' ).clone();
-
-				$inputListClone.find( 'input' ).parent().empty().html(
+				$labelClone.html(
 					$inputClone.val( options.$objectId )
 						.attr( 'checked', true )
 						.prop( 'outerHTML' ) + options.$objectDisplay
 				);
-
-				$input.find( '.rwmb-input-list' ).prepend( $inputListClone.prop( 'outerHTML' ) );
+				$inputList.prepend( $labelClone );
 
 				// Clear event after close modal.
 				$( this ).off( event );
