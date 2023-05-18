@@ -29,17 +29,13 @@ class RWMB_Validation {
 		foreach ( $object->meta_box['validation'] as &$rules ) {
 			$rules = array_combine(
 				array_map( function( $key ) use ( $fields, $prefix ) {
-					$id = $prefix . $key;
-
-					$field = array_filter( $fields, function( $field ) use ( $id ) {
-						return $field['id'] === $id;
-					} );
-
-					if ( count( $field ) === 0 || ( count( $field ) > 0 && ! isset( $field[0]['input_name'] ) ) ) {
+					$id  = $prefix . $key;
+					$key = array_search( $id, array_column( $fields, 'id' ) );
+					if ( $key === false ) {
 						return $id;
 					}
 
-					return empty( $field[0]['multiple'] ) ? $field[0]['input_name'] : $field[0]['input_name'] . '[]';
+					return empty( $fields[ $key ]['multiple'] ) ? $fields[ $key ]['input_name'] : $fields[ $key ]['input_name'] . '[]';
 				}, array_keys( $rules )),
 				$rules
 			);
