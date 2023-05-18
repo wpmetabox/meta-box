@@ -102,13 +102,13 @@
 			}
 		},
 		clear: function() {
-			var $field = $( this ),
+			const $field = $( this ),
 				type = $field.attr( 'type' );
 
 			if ( 'radio' === type || 'checkbox' === type ) {
 				$field.prop( 'checked', false );
-			} else if ( 'select' === type ) {
-				$field.prop( 'selectedIndex', - 1 );
+			} else if ( $field.is( 'select' ) ) {
+				$field.prop( 'selectedIndex', 0 );
 			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
 				$field.val( '' );
 			}
@@ -159,7 +159,7 @@
 
 		var $clones = $container.children( '.rwmb-clone' ),
 		    minClone = 1;
-	
+
 		if ( $container.data( 'min-clone' ) ) {
 			minClone = parseInt( $container.data( 'min-clone' ) );
 		}
