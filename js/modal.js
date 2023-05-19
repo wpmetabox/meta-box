@@ -91,37 +91,8 @@
 					return;
 				}
 
-				// Select advanced: 2 data-options - one is the select advanced, one is the <a> tag.
-				if ( $input.find( '> *[data-options]' ).length > 1 ) {
-					const $select = $input.find( 'select' );
-					$select.attr( 'data-selected', options.$objectId ).prepend( $( '<option>', {
-						value: options.$objectId,
-						text: options.$objectDisplay,
-						selected: true
-					} ) );
-
-					$select.rwmbTransform();
-
-					$( this ).off( event );
-					return;
-				}
-
-				// Select tree
-				const $selectTree = $input.find( '.rwmb-select-tree' );
-				if ( $selectTree.length > 0 ) {
-					const $select = $selectTree.find( 'select' );
-					$select.attr( 'data-selected', options.$objectId ).prepend( $( '<option>', {
-						value: options.$objectId,
-						text: options.$objectDisplay,
-						selected: true
-					} ) );
-
-					$( this ).off( event );
-					return;
-				}
-
-				// Select
-				const $select = $input.find( '.rwmb-select' );
+				// Select, select advanced, select tree.
+				const $select = $input.find( 'select' );
 				if ( $select.length > 0 ) {
 					$select.prepend( $( '<option>', {
 						value: options.$objectId,
