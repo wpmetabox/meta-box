@@ -169,16 +169,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		if ( false === $field['ajax'] ) {
-			$field['ajax']          = true;
-			self::set_ajax_params( $field );
-			$field['js_options']['ajax_data']['field']['display_field'] = 'display_name';
-		}
-
 		return sprintf(
-			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
+			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
 			admin_url( 'user-new.php' ),
-			wp_json_encode( $field['js_options'] ),
 			esc_html__( 'Add New User', 'meta-box' )
 		);
 	}

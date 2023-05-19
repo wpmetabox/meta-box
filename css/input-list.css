@@ -14,7 +14,7 @@
 	line-height: inherit;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 20px;
+	gap: 6px 12px;
 }
 
 /* Media modal */

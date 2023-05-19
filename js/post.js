@@ -1,24 +1,48 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
-	$( '.rwmb-post-add-button' ).rwmbModal( {
-		removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
-		callback: function( $modal ) {
-			const isBlockEditor = $modal.find( 'body' ).hasClass( 'block-editor-page' );
+	function addNew() {
+		const $this = $( this );
 
-			if ( !isBlockEditor ) {
-				return;
+		$this.rwmbModal( {
+			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
+			callback: function ( $modal ) {
+				if ( !this.isBlockEditor ) {
+					this.$objectId = $modal.find( '#post_ID' ).val();
+					return;
+				}
+
+				setTimeout( () => {
+					if ( $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
+						let url = $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
+						this.$objectId = url.substr( url.indexOf( "=" ) + 1 );
+					}
+				}, 2000 );
+
+				setTimeout( () => {
+					const $ui = $modal.find( '.interface-interface-skeleton' );
+					$ui.css( {
+						left: 0,
+						top: 0
+					} );
+					$ui.find( '.interface-interface-skeleton__editor' ).css( 'overflow', 'scroll' );
+				}, 500 );
+			},
+			closeModalCallback: function ( $modal, $input ) {
+				this.$objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
 			}
+		} );
+	}
 
-			setTimeout( () => {
-				const $ui = $modal.find( '.interface-interface-skeleton' );
-				$ui.css( {
-					left: 0,
-					top: 0
-				} );
-				$ui.find( '.interface-interface-skeleton__editor' ).css( 'overflow', 'scroll' );
-			}, 500 );
-		}
-	} );
+	function init( e ) {
+		const wrapper = e.target || e;
+		$( wrapper ).find( '.rwmb-post-add-button' ).each( addNew );
+	}
+
+	rwmb.$document
+		.on( 'mb_ready', init )
+		.on( 'clone', function ( e ) {
+			init( $( e.target ).parent() );
+		} );
 
 } )( jQuery, rwmb );
