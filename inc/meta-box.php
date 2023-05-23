@@ -333,10 +333,10 @@ class RW_Meta_Box {
 				$single = ! $field['clone_as_multiple'];
 			}
 
-			if (
-				( $single && '' !== $value && ! is_array( $value ) )
-				|| ( ! $single && is_array( $value ) && [] !== $value )
-			) {
+			if ( ( $single && '' !== $value ) || ( ! $single && is_array( $value ) && [] !== $value ) ) {
+				if ( isset( $field['relationship'] ) && is_array( $value ) && count( $value ) && empty( $value[0] ) ) {
+					return false;
+				}
 				return true;
 			}
 		}
