@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 4.8
 Requires PHP: 7.0
-Tested up to: 6.1.1
-Stable tag: 5.6.18
+Tested up to: 6.2.2
+Stable tag: 5.7.0
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -178,6 +178,24 @@ To getting started with the plugin, please read the [Quick Start Guide](https://
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.7.0 - 2023-05-23 =
+
+**Highlights:**
+
+Add `add_new` option (bool) for `post`, `taxonomy`, `taxonomy_advanced` and `user` fields, allowing users to add new posts, terms or users without leaving the edit screen. The add new action is done in a popup in the current edit screen, where you can set all the necessary data for the new item.
+
+This option improves the existing option for `taxonomy`, and now works for `post` and `user` fields as well. It also works with cloneable fields and all field types (`select_advanced`, `select`, `checkbox_list`, `radio` and even `select_tree` and `checkbox_tree`).
+
+Other changes:
+
+- Add `rwmb_ajax_get_*` hook for filtering ajax results for getting posts, terms and users
+- Register "Meta Box" block category for other extensions to use
+- Update style for input list, select tree and switch label
+- Fix not setting default value for relationships
+- Fix meta box style in the media modal
+- Fix missing underscore dependency for `select_advanced`
+- Fix conflict with Beaver Builder
 
 = 5.6.18 - 2023-03-21 =
 - Fix select dropdown overflowing in the Gutenberg sidebar
