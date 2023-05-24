@@ -46,6 +46,7 @@
 .rwmb-input textarea,
 .rwmb-input select {
 	max-width: 100%;
+	margin-inline: 0;
 }
 .rwmb-textarea {
 	resize: vertical;
