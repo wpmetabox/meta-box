@@ -334,7 +334,7 @@ class RW_Meta_Box {
 			}
 
 			if (
-				( $single && '' !== $value && ! is_array( $value ) )
+				( $single && '' !== $value )
 				|| ( ! $single && is_array( $value ) && [] !== $value )
 			) {
 				return true;
