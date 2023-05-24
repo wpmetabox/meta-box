@@ -136,10 +136,10 @@ class Checker {
 
 	public function request( $endpoint, $args = [] ) {
 		$args = wp_parse_args( $args, [
-			'key' => $this->option->get_api_key(),
-			'url' => home_url(),
+			'key'   => $this->option->get_api_key(),
+			'url'   => home_url(),
+			'force' => false,
 		] );
-		$args = array_filter( $args );
 
 		// Get from cache first.
 		$data      = compact( 'endpoint', 'args' );
@@ -149,7 +149,7 @@ class Checker {
 		} else {
 			$cache = get_transient( $cache_key );
 		}
-		if ( $cache ) {
+		if ( ! $args['force'] && $cache ) {
 			return $cache;
 		}
 

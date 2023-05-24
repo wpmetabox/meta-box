@@ -111,9 +111,12 @@ class Settings {
 		$status   = 'invalid';
 		$response = null;
 		if ( isset( $option['api_key'] ) ) {
-			$args     = [ 'key' => $option['api_key'] ];
+			$args     = [
+				'key'   => $option['api_key'],
+				'force' => true,
+			];
 			$response = $this->checker->request( 'status', $args );
-			$status   = isset( $response['status'] ) ? $response['status'] : 'invalid';
+			$status   = $response['status'] ?? 'invalid';
 		}
 
 		if ( empty( $response ) ) {
