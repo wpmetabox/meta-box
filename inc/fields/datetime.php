@@ -164,11 +164,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	public static function meta( $post_id, $saved, $field ) {
 		$meta = parent::meta( $post_id, $saved, $field );
 
-		if ( $field['js_options']['dateFormat'] ) {
-			$date = new DateTime( $meta );
-			return $date->format( $field['js_options']['dateFormat'] );
-		}
-
 		if ( $field['timestamp'] ) {
 			return Arr::map( $meta, __CLASS__ . '::from_timestamp', $field );
 		}
