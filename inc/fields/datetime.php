@@ -189,8 +189,22 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Transform meta value from save format to the JS format.
 	 */
 	public static function from_save_format( $meta, array $field ) : string {
-		$date = DateTime::createFromFormat( $field['save_format'], $meta );
-		return false === $date ? $meta : $date->format( $field['php_format'] );
+		$from_format  = static::get_from_format( $field['save_format'] );
+		$date         = DateTime::createFromFormat( $from_format, $meta );
+
+		return false  === $date ? $meta : $date->format( static::get_php_format( $field['js_options'] ) );
+	}
+
+	protected static function get_from_format( string $save_format ) : string {
+		$format     = $save_format;
+
+		if ( 'c'  === $save_format ) {
+			$format = DateTimeInterface::ISO8601;
+		} elseif ( 'r'  === $save_format ) {
+			$format = DateTimeInterface::RFC2822;
+		}
+
+		return $format;
 	}
 
 	/**

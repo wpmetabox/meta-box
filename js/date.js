@@ -30,13 +30,6 @@
 			};
 		}
 
-		if ( null !== options.dateFormat && 'yy-mm-dd' !== options.dateFormat ) {
-			// 'yy-mm-dd' is default date format
-			let formatCurrent = moment( current ).format( options.dateFormat );
-			$picker.val( formatCurrent );
-			$this.trigger( 'change' );
-		}
-
 		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datepicker( options );
 			return;
