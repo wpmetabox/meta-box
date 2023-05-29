@@ -178,7 +178,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	/**
 	 * Format meta value if set 'timestamp'.
 	 */
-	public static function from_timestamp( $meta, array $field ) : array {
+	public static function from_timestamp( $meta, array $field ): array {
 		return [
 			'timestamp' => $meta ?: null,
 			'formatted' => $meta ? gmdate( $field['php_format'], intval( $meta ) ) : '',
@@ -188,7 +188,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	/**
 	 * Transform meta value from save format to the JS format.
 	 */
-	public static function from_save_format( $meta, array $field ) : string {
+	public static function from_save_format( $meta, array $field ): string {
 		$date = DateTime::createFromFormat( $field['save_format'], $meta );
 		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}
@@ -232,6 +232,14 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 
 		$field['php_format'] = static::get_php_format( $field['js_options'] );
 
+		// Fix save format: DateTime::createFromFormat() doesn't work with 'c' and 'r' formats, even though they're listed in the php.net/date docs.
+		if ( $field['save_format'] === 'c' ) {
+			$field['save_format'] = DateTimeInterface::ATOM;
+		}
+		if ( $field['save_format'] === 'r' ) {
+			$field['save_format'] = DateTimeInterface::RFC2822;
+		}
+
 		$field = parent::normalize( $field );
 
 		return $field;
@@ -257,7 +265,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Returns a date() compatible format string from the JavaScript format.
 	 * @link http://www.php.net/manual/en/function.date.php
 	 */
-	protected static function get_php_format( array $js_options ) : string {
+	protected static function get_php_format( array $js_options ): string {
 		return strtr( $js_options['dateFormat'], self::$date_formats )
 		. $js_options['separator']
 		. strtr( $js_options['timeFormat'], self::$time_formats );
