@@ -1,4 +1,4 @@
-( function( $, rwmb, i18n ) {
+( function ( $, rwmb, i18n ) {
 	'use strict';
 
 	class Validation {
@@ -13,7 +13,7 @@
 			this.$form
 				// Update underlying textarea before submit.
 				// Don't use submitHandler() because form can be submitted via Ajax on the front end.
-				.on( 'submit', function() {
+				.on( 'submit', function () {
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
@@ -22,10 +22,10 @@
 		}
 
 		showAsterisks() {
-			this.validationElements.each( function() {
+			this.validationElements.each( function () {
 				var data = $( this ).data( 'validation' );
 
-				$.each( data.rules, function( k, v ) {
+				$.each( data.rules, function ( k, v ) {
 					if ( !v[ 'required' ] ) {
 						return;
 					}
@@ -41,7 +41,7 @@
 		getSettings() {
 			this.settings = {
 				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"])',
-				errorPlacement: function( error, element ) {
+				errorPlacement: function ( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
 				errorClass: 'rwmb-error',
@@ -51,7 +51,7 @@
 
 			// Gather all validation rules.
 			var that = this;
-			this.validationElements.each( function() {
+			this.validationElements.each( function () {
 				$.extend( true, that.settings, $( this ).data( 'validation' ) );
 			} );
 		}
@@ -59,12 +59,12 @@
 		invalidHandler() {
 			this.showMessage();
 			// Group field will automatically expand and show an error warning when collapsing
-			for ( var i = 0; i<this.$form.data( 'validator' ).errorList.length; i++ ){
-				$( '#' + this.$form.data( 'validator' ).errorList[i].element.id ).closest( '.rwmb-group-collapsed' ).removeClass( 'rwmb-group-collapsed' );
+			for ( var i = 0; i < this.$form.data( 'validator' ).errorList.length; i++ ) {
+				$( '#' + this.$form.data( 'validator' ).errorList[ i ].element.id ).closest( '.rwmb-group-collapsed' ).removeClass( 'rwmb-group-collapsed' );
 			}
 			// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
 			var that = this;
-			setTimeout( function() {
+			setTimeout( function () {
 				that.$form.trigger( 'after_validate' );
 			}, 200 );
 		}
@@ -84,12 +84,12 @@
 				editor = wp.data.dispatch( 'core/editor' ),
 				savePost = editor.savePost; // Reference original method.
 
-            if( that.settings ) {
-                that.$form.validate( that.settings );
-            }
+			if ( that.settings ) {
+				that.$form.validate( that.settings );
+			}
 
 			// Change the editor method.
-			editor.savePost = function( object ) {
+			editor.savePost = function ( object ) {
 				// Bypass the validation when previewing in Gutenberg.
 				if ( typeof object === 'object' && object.isPreview ) {
 					savePost( object );
@@ -112,7 +112,7 @@
 	};
 
 	// Run on document ready.
-	$( function() {
+	function init() {
 		if ( rwmb.isGutenberg ) {
 			var advanced = new GutenbergValidation( '.metabox-location-advanced' ),
 				normal = new GutenbergValidation( '.metabox-location-normal' ),
@@ -126,9 +126,13 @@
 
 		// Edit post, edit term, edit user, front-end form.
 		var $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
-		$forms.each( function() {
+		$forms.each( function () {
 			var form = new Validation( this );
 			form.init();
 		} );
-	} );
+	};
+
+	rwmb.$document
+		.on( 'mb_ready', init );
+	// .on( 'clone', '.rwmb-file-input', file.resetClone );
 } )( jQuery, rwmb, rwmbValidation );

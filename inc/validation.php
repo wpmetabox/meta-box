@@ -17,25 +17,30 @@ class RWMB_Validation {
 			return;
 		}
 
-		// Add prefix for validation
-		$prefix = $object->meta_box['prefix'];
+		// Get prefix
+		$prefix = $object->meta_box['prefix'] ?? '';
 
-		if ( empty( $prefix ) ) {
-			echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
-			return;
-		}
-
+		// Add prefix for validation if have
 		$fields = $object->meta_box['fields'];
 		foreach ( $object->meta_box['validation'] as &$rules ) {
 			$rules = array_combine(
 				array_map( function( $key ) use ( $fields, $prefix ) {
-					$id  = $prefix . $key;
-					$key = array_search( $id, array_column( $fields, 'id' ) );
-					if ( $key === false ) {
+					$id          = $prefix . $key;
+					$index_field = array_search( $id, array_column( $fields, 'id' ) );
+
+					if ( $index_field === false ) {
 						return $id;
 					}
 
-					return empty( $fields[ $key ]['multiple'] ) ? $fields[ $key ]['input_name'] : $fields[ $key ]['input_name'] . '[]';
+					if ( $fields[ $index_field ]['clone'] && ! in_array( $fields[ $index_field ]['type'], [ 'file', 'image' ], true ) ) {
+						return $id . '[0]';
+					}
+
+					if ( ! isset( $fields[ $index_field ]['input_name'] ) ) {
+						return $id;
+					}
+
+					return empty( $fields[ $index_field ]['multiple'] ) ? $fields[ $index_field ]['input_name'] : $fields[ $index_field ]['input_name'] . '[]';
 				}, array_keys( $rules )),
 				$rules
 			);
