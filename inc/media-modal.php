@@ -99,6 +99,12 @@ class RWMB_Media_Modal {
 	}
 
 	private function is_attachment_edit_screen(): bool {
-		return get_current_screen()->id === 'attachment';
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+
+		return $screen && $screen->id === 'attachment';
 	}
 }
