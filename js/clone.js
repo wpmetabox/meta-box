@@ -95,7 +95,7 @@
 			} else if ( $field.hasClass( 'rwmb-checkbox_list' ) ) {
 				var value = $field.val();
 				$field.prop( 'checked', Array.isArray( defaultValue ) ? -1 !== defaultValue.indexOf( value ) : value == defaultValue );
-			} else if ( 'select' === type ) {
+			} else if ( $field.is( 'select' ) ) {
 				$field.find( 'option[value="' + defaultValue + '"]' ).prop( 'selected', true );
 			} else if ( ! $field.hasClass( 'rwmb-hidden' ) ) {
 				$field.val( defaultValue );
