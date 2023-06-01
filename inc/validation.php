@@ -32,15 +32,11 @@ class RWMB_Validation {
 						return $id;
 					}
 
-					if ( $fields[ $index_field ]['clone'] && ! in_array( $fields[ $index_field ]['type'], [ 'file', 'image' ], true ) ) {
-						return $id . '[0]';
+					if ( in_array( $fields[ $index_field ]['type'], [ 'file', 'image' ], true ) ) {
+						return $fields[ $index_field ]['clone'] ? $fields[ $index_field ]['index_name'] : $fields[ $index_field ]['input_name'];
 					}
 
-					if ( ! isset( $fields[ $index_field ]['input_name'] ) ) {
-						return $id;
-					}
-
-					return empty( $fields[ $index_field ]['multiple'] ) ? $fields[ $index_field ]['input_name'] : $fields[ $index_field ]['input_name'] . '[]';
+					return $id;
 				}, array_keys( $rules )),
 				$rules
 			);

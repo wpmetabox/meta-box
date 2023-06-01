@@ -113,6 +113,49 @@
 
 	// Run on document ready.
 	function init() {
+		// Overwrite function staticRules
+		$.validator.staticRules = function ( element ) {
+			var rules = {},
+				validator = $.data( element.form, "validator" );
+
+			// Not rules validate
+			if ( validator.settings.rules === null || Object.keys( validator.settings.rules ).length === 0 ) {
+				return rules;
+			}
+
+			// Field hidden not valid
+			if ( element.type === 'hidden' ) {
+				return rules;
+			}
+			// Get basename of input name
+			const $nameInput = element.name.match( /^(.+?)(?:\[\d+\]|(?:\[\]))?$/ );
+
+			// Validate Input type file and have clone
+			if ( element.type === 'file' && $( element ).closest( '.rwmb-clone' ).length > 0 ) {
+				const $input = $( element ).closest( '.rwmb-input' );
+				const $nameInputClone = $input.find( '*[value="' + $nameInput[ 1 ] + '"]' ).attr( 'name' ).match( /^(.+?)(?:\[\d+\]|(?:\[\]))?$/ );
+				if ( validator.settings.rules[ $nameInputClone[ 1 ] ] ) {
+					// Set message for element					
+					validator.settings.messages[ element.name ] = validator.settings.messages[ $nameInputClone[ 1 ] ];
+					// Set Rule for element
+					return $.validator.normalizeRule( validator.settings.rules[ $nameInputClone[ 1 ] ] ) || {};
+				}
+
+				return rules;
+			}
+
+			// Validate other input
+			const inputNameList = $( element.form ).find( '*[name^="' + $nameInput[ 1 ] + '"]' );
+			if ( inputNameList.length > 0 ) {
+				// Set message for element					
+				validator.settings.messages[ element.name ] = validator.settings.messages[ $nameInput[ 1 ] ];
+				// Set Rule for element
+				return $.validator.normalizeRule( validator.settings.rules[ $nameInput[ 1 ] ] ) || {};
+			}
+
+			return rules;
+		};
+
 		if ( rwmb.isGutenberg ) {
 			var advanced = new GutenbergValidation( '.metabox-location-advanced' ),
 				normal = new GutenbergValidation( '.metabox-location-normal' ),
@@ -134,5 +177,5 @@
 
 	rwmb.$document
 		.on( 'mb_ready', init );
-	// .on( 'clone', '.rwmb-file-input', file.resetClone );
+
 } )( jQuery, rwmb, rwmbValidation );
