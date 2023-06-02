@@ -6,12 +6,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_terms', [ __CLASS__, 'ajax_get_terms' ] );
-
-		// Field is the 1st param.
-		$field = func_get_arg( 0 );
-		add_action( 'admin_head', function() use ( $field ) {
-			self::remove_default_meta_box( $field );
-		} );
 	}
 
 	public static function ajax_get_terms() {
@@ -299,6 +293,12 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
 			esc_html( $taxonomy_object->labels->add_new_item )
 		);
+	}
+
+	public static function admin_enqueue_scripts() {
+		$field = func_get_arg( 0 );
+		parent::admin_enqueue_scripts( $field );
+		static::remove_default_meta_box( $field );
 	}
 
 	protected static function remove_default_meta_box( array $field ) {
