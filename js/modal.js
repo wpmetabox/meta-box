@@ -105,7 +105,7 @@
 				}
 
 				// Radio, checkbox list, checkbox tree
-				const $inputList = $input.find( '.rwmb-input-list' ),
+				const $inputList = $input.find( '.rwmb-input-list:first' ),
 					$labelClone = $inputList.find( '> label:first' ).clone(),
 					$inputClone = $labelClone.find( 'input' ).clone();
 
@@ -117,6 +117,8 @@
 				$inputList.prepend( $labelClone );
 
 				// Clear event after close modal.
+				options.$objectId = null;
+				options.$objectDisplay = null;
 				$( this ).off( event );
 			} );
 		} );
