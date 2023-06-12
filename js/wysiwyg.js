@@ -44,7 +44,10 @@
 			};
 
 			tinymce.remove( '#' + id );
-			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
+			const $indexInputClone = $this.attr( 'name' ).match( /\[(\d+)\]/ );
+			if ( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone && $indexInputClone[ 1 ] > 0 ) {
+				tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
+			}
 		}
 
 		// Quick tags
@@ -167,6 +170,10 @@
 			setTimeout( function() {
 				$editors.each( transform );
 			}, 0 );
+
+			setTimeout( function () {
+				$( '.wp-switch-editor.switch-tmce' ).trigger( 'click' ).trigger( 'click' );
+			}, 500 );			
 		}
 	} );
 
