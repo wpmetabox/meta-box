@@ -27,7 +27,7 @@ class RWMB_File_Field extends RWMB_Field {
 	public static function ajax_delete_file() {
 		$request  = rwmb_request();
 		$field_id = (string) $request->filter_post( 'field_id' );
-		$type     = false !== strpos( $request->filter_post( 'field_name' ), '[' ) ? 'child' : 'top';
+		$type     = str_contains( $request->filter_post( 'field_name' ), '[' ) ? 'child' : 'top';
 		check_ajax_referer( "rwmb-delete-file_{$field_id}" );
 
 		if ( 'child' === $type ) {
@@ -466,7 +466,7 @@ class RWMB_File_Field extends RWMB_Field {
 		// Make sure upload dir is inside WordPress.
 		$upload_dir = wp_normalize_path( untrailingslashit( $field['upload_dir'] ) );
 		$root       = wp_normalize_path( untrailingslashit( ABSPATH ) );
-		if ( 0 !== strpos( $upload_dir, $root ) ) {
+		if ( ! str_starts_with( $upload_dir, $root ) ) {
 			return;
 		}
 

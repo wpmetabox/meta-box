@@ -2,7 +2,7 @@
 Contributors: elightup, metabox, rilwis, fitwp, f-j-kaiser, funkatronic, PerWiklander, ruanmer, Omnicia
 Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
-Requires at least: 4.8
+Requires at least: 5.9
 Requires PHP: 7.0
 Tested up to: 6.2.2
 Stable tag: 5.7.2
