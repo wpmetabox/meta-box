@@ -42,7 +42,7 @@
 .rwmb-input input[type="button"] {
 	width: auto;
 }
-.rwmb-input input,
+.rwmb-input input:not([type="checkbox"]):not([type="radio"]),
 .rwmb-input textarea,
 .rwmb-input select {
 	max-width: 100%;
