@@ -44,8 +44,17 @@
 			};
 
 			tinymce.remove( '#' + id );
+
+			/**
+			 * Check if input is one of these cases
+			 * Not a cloneable field
+			 * Cloneable field in block
+			 * Cloneable field with clones
+			 */
 			const $indexInputClone = $this.attr( 'name' ).match( /\[(\d+)\]/ );
-			if ( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone && $indexInputClone[ 1 ] > 0 ) {
+			if ( !$indexInputClone 
+				|| ( $indexInputClone && isInBlock )
+				|| ( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone && $indexInputClone[ 1 ] > 0 ) ) {
 				tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
 			}
 		}
