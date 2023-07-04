@@ -110,6 +110,8 @@ class RWMB_Loader {
 
 		// Block Register
 		new \MetaBox\Block\Register();
+		// Oxygen Register
+		new \MetaBox\Oxygen\Register;
 
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );
