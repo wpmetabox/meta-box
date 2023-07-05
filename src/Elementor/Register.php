@@ -10,7 +10,7 @@ class Register {
 		\Elementor\Plugin::instance()->elements_manager->add_category(
 			'metabox',
 			[
-				'title' => esc_html__( 'Meta Box', 'mb-frontend-submission' ),
+				'title' => esc_html__( 'Meta Box', 'meta-box' ),
 				'icon'  => 'fa fa-m',
 			]
 		);
