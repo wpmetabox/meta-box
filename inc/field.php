@@ -258,7 +258,9 @@ abstract class RWMB_Field {
 			&& in_array( $field['save_format'], [ 'Y-m-d\TH:i:sP', 'D, d M Y H:i:s O' ], true ) ) {
 			$timezone = wp_timezone_string();
 
-			if ( ( false !== strpos( $timezone, '+' ) ) && ( false !== strpos( $new, '+' ) ) ) {
+			if ( ( ( false !== strpos( $timezone, '+' ) ) && ( false !== strpos( $new, '+' ) ) )
+				|| ( ( false !== strpos( $timezone, '-' ) ) && ( false !== strpos( $new, '-' ) ) ) ) {
+
 				if ( 'Y-m-d\TH:i:sP' === $field['save_format'] ) {
 					$new = substr( $new, 0, -6 ) . $timezone;
 				}
