@@ -110,6 +110,10 @@ class RWMB_Loader {
 
 		// Block Register
 		new \MetaBox\Block\Register();
+		// Elementor Register
+		new \MetaBox\Elementor\Register();
+		// Brick Register
+		new \MetaBox\Bricks\Register();
 
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );
