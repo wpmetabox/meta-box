@@ -165,7 +165,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		return $new;
 	}
 
-	protected function save_details( $new, $format, $field ) {
+	protected static function save_details( $new, $format, $field ) {
 	    $date = DateTime::createFromFormat( $format, $new );
 		if ( false ===  $date ) {
 			$date = DateTime::createFromFormat( $field['php_format'], $new );
