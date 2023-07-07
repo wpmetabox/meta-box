@@ -153,6 +153,45 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	}
 
 	/**
+	 * Save meta value.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 */
+	public static function save( $new, $old, $post_id, $field ) {
+		if ( empty( $field['id'] ) || ! $field['save_field'] ) {
+			return;
+		}
+		$timezone = wp_timezone_string();
+
+		/**
+		 * Fix save formats 'c' and 'r' to full Date/Time and Timezone, reference in:
+		 * https://www.php.net/manual/en/datetime.format.php
+		 * https://www.php.net/manual/en/class.datetimeinterface.php
+		 */
+		if ( $field['save_format'] === 'c' ) {
+			$new  = self::save_details( $new, $timezone, 'Y-m-d\\TH:i:sP', $field );
+		}
+		if ( $field['save_format'] === 'r' ) {
+			$new  = self::save_details( $new, $timezone, 'D, d M Y H:i:s O', $field );
+		}
+
+		RWMB_Field::save( $new, $old, $post_id, $field );
+	}
+
+	public function save_details( $new, $timezone, $format, $field ) {
+	    $date = DateTime::createFromFormat( $format, $new );
+		if ( false ===  $date ) {
+			$date = DateTime::createFromFormat( $field['php_format'], $new );
+		}
+		$date->setTimeZone( new DateTimeZone( $timezone ) );
+
+		return $date->format( $format ) ?: $new ;
+	}
+
+	/**
 	 * Get meta value.
 	 *
 	 * @param int   $post_id The post ID.
@@ -233,12 +272,12 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		$field['php_format'] = static::get_php_format( $field['js_options'] );
 
 		// Fix save format: DateTime::createFromFormat() doesn't work with 'c' and 'r' formats, even though they're listed in the php.net/date docs.
-		if ( $field['save_format'] === 'c' ) {
-			$field['save_format'] = DateTimeInterface::ATOM;
-		}
-		if ( $field['save_format'] === 'r' ) {
-			$field['save_format'] = DateTimeInterface::RFC2822;
-		}
+		// if ( $field['save_format'] === 'c' ) {
+		// 	$field['save_format'] = 'Y-m-d\\TH:i:sP';
+		// }
+		// if ( $field['save_format'] === 'r' ) {
+		// 	$field['save_format'] = DateTimeInterface::RFC2822;
+		// }
 
 		$field = parent::normalize( $field );
 

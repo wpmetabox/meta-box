@@ -253,31 +253,6 @@ abstract class RWMB_Field {
 			return;
 		}
 
-		// Edit timezone value when setup save_format is "c" or "r"
-		if ( in_array( $field['type'], [ 'date', 'datetime' ], true )
-			&& in_array( $field['save_format'], [ 'Y-m-d\TH:i:sP', 'D, d M Y H:i:s O' ], true ) ) {
-			$timezone = wp_timezone_string();
-
-			if ( ( ( false !== strpos( $timezone, '+' ) ) && ( false !== strpos( $new, '+' ) ) )
-				|| ( ( false !== strpos( $timezone, '-' ) ) && ( false !== strpos( $new, '-' ) ) ) ) {
-
-				if ( 'Y-m-d\TH:i:sP' === $field['save_format'] ) {
-					$new = substr( $new, 0, -6 ) . $timezone;
-				}
-
-				if ( 'D, d M Y H:i:s O' === $field['save_format'] ) {
-					$new = substr( $new, 0, -5 ) . $timezone;
-				}
-			} else {
-				$date = DateTime::createFromFormat( $field['save_format'], $new );
-				if ( empty( $date ) ) {
-					$date = DateTime::createFromFormat( $field['php_format'], $new );
-				}
-				$date->setTimeZone( new DateTimeZone( $timezone ) );
-				$new = $date->format( $field['save_format'] );
-			}
-		}
-
 		// If field is cloneable AND not force to save as multiple rows, value is saved as a single row in the database.
 		if ( $field['clone'] && ! $field['clone_as_multiple'] ) {
 			$storage->update( $post_id, $name, $new );
