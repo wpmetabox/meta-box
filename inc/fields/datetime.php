@@ -145,36 +145,31 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		}
 
 		if ( $field['save_format'] ) {
-			$format = (  $field['save_format'] == 'c' ? 'Y-m-d\\TH:i:sP' : ( $field['save_format'] == 'r' ? 'D, d M Y H:i:s O' : $field['php_format'] ) );
-			$date = DateTime::createFromFormat( $format, $new );
-			if ( false === $date ) {
-				$date = DateTime::createFromFormat( $field['php_format'], $new );
-			}
-
-			if ( ! in_array( $field['save_format'], [ 'c', 'r' ] ) ) {
-				$new  = false === $date ? $new : $date->format( $field['save_format'] );
+			$date = DateTime::createFromFormat( $field['php_format'], $new );
+			if ( $date === false ) {
+				return $new;
 			}
 
 			/**
-			 * Fix save formats 'c' and 'r' to full Date/Time and Timezone, reference in:
+			 * Fix 'c' and 'r' formats not containing WordPress timezone.
 			 *
 			 * @link https://www.php.net/manual/en/datetime.format.php
 			 * @link https://www.php.net/manual/en/class.datetimeinterface.php
 			 */
-			if ( 'c' === $field['save_format'] ) {
-				$new  = self::save_details( $new, $format, $date );
+			if ( in_array( $field['save_format'], ['c', 'r'], true ) ) {
+				$date->setTimeZone( new DateTimeZone( wp_timezone_string() ) );
 			}
-			if ( 'r' === $field['save_format'] ) {
-				$new  = self::save_details( $new, $format, $date );
-			}
+
+			$formats = [
+				'c' => 'Y-m-d\\TH:i:sP',
+				'r' => 'D, d M Y H:i:s O',
+			];
+			$format = $formats[ $field['save_format'] ] ?? $field['save_format'];
+
+			$new = $date->format( $format ) ?: $new;
 		}
 
 		return $new;
-	}
-
-	protected static function save_details( $new, $format, $date ) {
-		$date->setTimeZone( new DateTimeZone( wp_timezone_string() ) );
-		return $date->format( $format ) ?: $new ;
 	}
 
 	/**
