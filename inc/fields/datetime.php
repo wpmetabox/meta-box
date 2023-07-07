@@ -144,34 +144,36 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 			return $new;
 		}
 
-		if ( $field['save_format'] && ! in_array( $field['save_format'], [ 'c', 'r' ] ) ) {
-			$date = DateTime::createFromFormat( $field['php_format'], $new );
-			$new  = false === $date ? $new : $date->format( $field['save_format'] );
-		}
+		if ( $field['save_format'] ) {
+			$format = (  $field['save_format'] == 'c' ? 'Y-m-d\\TH:i:sP' : ( $field['save_format'] == 'r' ? 'D, d M Y H:i:s O' : $field['php_format'] ) );
+			$date = DateTime::createFromFormat( $format, $new );
+			if ( false === $date ) {
+				$date = DateTime::createFromFormat( $field['php_format'], $new );
+			}
 
-		/**
-		 * Fix save formats 'c' and 'r' to full Date/Time and Timezone, reference in:
-		 *
-		 * @link https://www.php.net/manual/en/datetime.format.php
-		 * @link https://www.php.net/manual/en/class.datetimeinterface.php
-		 */
-		if ( $field['save_format'] && ( 'c' === $field['save_format'] ) ) {
-			$new  = self::save_details( $new, 'Y-m-d\\TH:i:sP', $field );
-		}
-		if ( $field['save_format'] && ( 'r' === $field['save_format'] ) ) {
-			$new  = self::save_details( $new, 'D, d M Y H:i:s O', $field );
+			if ( ! in_array( $field['save_format'], [ 'c', 'r' ] ) ) {
+				$new  = false === $date ? $new : $date->format( $field['save_format'] );
+			}
+
+			/**
+			 * Fix save formats 'c' and 'r' to full Date/Time and Timezone, reference in:
+			 *
+			 * @link https://www.php.net/manual/en/datetime.format.php
+			 * @link https://www.php.net/manual/en/class.datetimeinterface.php
+			 */
+			if ( 'c' === $field['save_format'] ) {
+				$new  = self::save_details( $new, $format, $date );
+			}
+			if ( 'r' === $field['save_format'] ) {
+				$new  = self::save_details( $new, $format, $date );
+			}
 		}
 
 		return $new;
 	}
 
-	protected static function save_details( $new, $format, $field ) {
-	    $date = DateTime::createFromFormat( $format, $new );
-		if ( false ===  $date ) {
-			$date = DateTime::createFromFormat( $field['php_format'], $new );
-		}
+	protected static function save_details( $new, $format, $date ) {
 		$date->setTimeZone( new DateTimeZone( wp_timezone_string() ) );
-
 		return $date->format( $format ) ?: $new ;
 	}
 
