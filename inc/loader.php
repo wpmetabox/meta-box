@@ -108,8 +108,11 @@ class RWMB_Loader {
 		$update_notification = new \MetaBox\Updater\Notification( $update_checker, $update_option );
 		$update_notification->init();
 
-		// Block Register
+		// Register categories for page builders.
 		new \MetaBox\Block\Register();
+		new \MetaBox\Oxygen\Register();
+		new \MetaBox\Elementor\Register();
+		new \MetaBox\Bricks\Register();
 
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );

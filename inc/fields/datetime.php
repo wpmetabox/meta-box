@@ -145,8 +145,10 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		}
 
 		if ( $field['save_format'] ) {
-			$date = DateTime::createFromFormat( $field['php_format'], $new );
-			$new  = false === $date ? $new : $date->format( $field['save_format'] );
+			// Fix 'c' and 'r' formats not containing WordPress timezone.
+			$timezone = in_array( $field['save_format'], ['c', 'r'], true ) ? new DateTimeZone( wp_timezone_string() ) : null;
+			$date     = DateTime::createFromFormat( $field['php_format'], $new, $timezone );
+			return $date === false ? $new : $date->format( $field['save_format'] );
 		}
 
 		return $new;
@@ -231,14 +233,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		}
 
 		$field['php_format'] = static::get_php_format( $field['js_options'] );
-
-		// Fix save format: DateTime::createFromFormat() doesn't work with 'c' and 'r' formats, even though they're listed in the php.net/date docs.
-		if ( $field['save_format'] === 'c' ) {
-			$field['save_format'] = DateTimeInterface::ATOM;
-		}
-		if ( $field['save_format'] === 'r' ) {
-			$field['save_format'] = DateTimeInterface::RFC2822;
-		}
 
 		$field = parent::normalize( $field );
 
