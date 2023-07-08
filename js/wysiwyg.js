@@ -52,9 +52,15 @@
 			 * Cloneable field with clones
 			 */
 			const $indexInputClone = $this.attr( 'name' ).match( /\[(\d+)\]/ );
-			if ( !$indexInputClone 
-				|| ( $indexInputClone && isInBlock )
-				|| ( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone && $indexInputClone[ 1 ] > 0 ) ) {
+			let init = false;
+			if ( !$indexInputClone ) {
+				init = true;
+			} else {
+				init = isInBlock ? true :
+						( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone[ 1 ] > 0 ) ? true : false;
+			}
+
+			if ( init ) {
 				tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
 			}
 		}
