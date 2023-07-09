@@ -146,7 +146,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 
 		if ( $field['save_format'] ) {
 			// Fix 'c' and 'r' formats not containing WordPress timezone.
-			$timezone = in_array( $field['save_format'], ['c', 'r'], true ) ? new DateTimeZone( wp_timezone_string() ) : null;
+			$timezone = in_array( $field['save_format'], [ 'c', 'r' ], true ) ? wp_timezone() : null;
 			$date     = DateTime::createFromFormat( $field['php_format'], $new, $timezone );
 			return $date === false ? $new : $date->format( $field['save_format'] );
 		}
