@@ -147,7 +147,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		if ( $field['save_format'] ) {
 			// Fix 'c' and 'r' formats not containing WordPress timezone.
 			$timezone = in_array( $field['save_format'], [ 'c', 'r' ], true ) ? wp_timezone() : null;
-			$date     = DateTime::createFromFormat( $field['php_format'], $new, $timezone );
+			$date     = DateTimeImmutable::createFromFormat( $field['php_format'], $new, $timezone );
 			return $date === false ? $new : $date->format( $field['save_format'] );
 		}
 
@@ -191,7 +191,17 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Transform meta value from save format to the JS format.
 	 */
 	public static function from_save_format( $meta, array $field ): string {
-		$date = DateTime::createFromFormat( $field['save_format'], $meta );
+		$formats = array_merge(
+			[
+				$field['save_format'] => $field['save_format'],
+			],
+			[
+				'c' => DateTimeInterface::ATOM,
+				'r' => DateTimeInterface::RFC2822,
+			]
+		);
+		$format  = $formats[ $field['save_format'] ];
+		$date    = DateTimeImmutable::createFromFormat( $format, $meta );
 		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}
 
