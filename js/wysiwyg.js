@@ -44,25 +44,7 @@
 			};
 
 			tinymce.remove( '#' + id );
-
-			/**
-			 * Check if input is one of these cases
-			 * Not a cloneable field
-			 * Cloneable field in block
-			 * Cloneable field with clones
-			 */
-			const $indexInputClone = $this.attr( 'name' ).match( /\[(\d+)\]/ );
-			let init = false;
-			if ( !$indexInputClone ) {
-				init = true;
-			} else {
-				init = isInBlock ? true :
-						( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone[ 1 ] > 0 ) ? true : false;
-			}
-
-			if ( init ) {
-				tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
-			}
+			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
 		}
 
 		// Quick tags
@@ -185,10 +167,6 @@
 			setTimeout( function() {
 				$editors.each( transform );
 			}, 0 );
-
-			setTimeout( function () {
-				$( '.wp-switch-editor.switch-tmce' ).trigger( 'click' ).trigger( 'click' );
-			}, 500 );			
 		}
 	} );
 
