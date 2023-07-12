@@ -44,10 +44,7 @@
 			};
 
 			tinymce.remove( '#' + id );
-			const $indexInputClone = $this.attr( 'name' ).match( /\[(\d+)\]/ );
-			if ( $this.closest( '.rwmb-clone' ).length > 0 && $indexInputClone && $indexInputClone[ 1 ] > 0 ) {
-				tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
-			}
+			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
 		}
 
 		// Quick tags
@@ -167,13 +164,7 @@
 
 		// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
 		if ( rwmb.isGutenberg ) {
-			setTimeout( function() {
-				$editors.each( transform );
-			}, 0 );
-
-			setTimeout( function () {
-				$( '.wp-switch-editor.switch-tmce' ).trigger( 'click' ).trigger( 'click' );
-			}, 500 );			
+			setTimeout( () => $editors.each( transform ), 200 );
 		}
 	} );
 
@@ -185,6 +176,6 @@
 			 * Transform a textarea to an editor is a heavy task.
 			 * Moving it to the end of task queue with setTimeout makes cloning faster.
 			 */
-			setTimeout( transform.bind( this ), 0 );
+			setTimeout( transform.bind( this ), 200 );
 		} );
 } )( jQuery, wp, window, rwmb );
