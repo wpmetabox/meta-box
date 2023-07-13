@@ -21,7 +21,7 @@
 			var map = this.map;
 			setTimeout( function() {
 				map.invalidateSize();
-			}, 0 );
+			}, 200 );
 		},
 
 		// Initialize DOM elements
