@@ -41,6 +41,11 @@
 	opacity: 0;
 	transition: opacity .2s;
 }
+.rwmb-image-description{
+	text-align: center;
+	max-width: 150px;
+	overflow: hidden;
+}
 .rwmb-image-item:hover .rwmb-image-actions {
 	opacity: 1;
 }
