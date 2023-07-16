@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) || die ?>
+
 <script id="tmpl-rwmb-upload-area" type="text/html">
 	<div class="rwmb-upload-inside">
 		<h3>{{{ i18nRwmbMedia.uploadInstructions }}}</h3>
