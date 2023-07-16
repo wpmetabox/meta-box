@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 use MetaBox\Support\Arr;
 
 /**

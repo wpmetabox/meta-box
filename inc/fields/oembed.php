@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The oEmbed field which allows users to enter oEmbed URLs.
  */

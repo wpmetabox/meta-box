@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * Taxonomy advanced field which saves terms' IDs in the post meta in CSV format.
  */

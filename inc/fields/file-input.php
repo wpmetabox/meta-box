@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The file input field which allows users to enter a file URL or select it from the Media Library.
  */

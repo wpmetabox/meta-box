@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The custom HTML field which allows users to output any kind of content to the meta box.
  */
