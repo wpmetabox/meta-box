@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) || die ?>
+
 <div id="getting-started" class="gt-tab-pane gt-is-active">
 	<p class="about-description"><?php esc_html_e( 'Please follow this video tutorial to get started with Meta Box and extensions:', 'meta-box' ); ?></p>
 	<div class="youtube-video-container">
