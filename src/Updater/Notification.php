@@ -57,6 +57,9 @@ class Notification {
 	}
 
 	public function dismiss() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
 		check_ajax_referer( 'dismiss', 'nonce' );
 
 		$this->option->update( [

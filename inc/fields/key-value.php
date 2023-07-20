@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The key-value field which allows users to add pairs of keys and values.
  */

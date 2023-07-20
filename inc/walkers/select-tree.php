@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * Select tree walker for cascading select fields.
  */

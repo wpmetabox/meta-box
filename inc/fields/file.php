@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The file upload file which allows users to upload files via the default HTML <input type="file">.
  */

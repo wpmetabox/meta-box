@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The text fieldset field, which allows users to enter content for a list of text fields.
  */

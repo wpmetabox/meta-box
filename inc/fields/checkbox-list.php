@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The checkbox list field which shows a list of choices and allow users to select multiple options.
  */

@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) || die ?>
+
 <div class="postbox">
 	<h3 class="hndle">
 		<span><?php esc_html_e( 'Our WordPress Products', 'meta-box' ) ?></span>

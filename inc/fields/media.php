@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * Media field class which users WordPress media popup to upload and select files.
  */

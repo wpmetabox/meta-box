@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The taxonomy field which aims to replace the built-in WordPress taxonomy UI with more options.
  */

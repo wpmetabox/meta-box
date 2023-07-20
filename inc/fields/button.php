@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The button field. Simply displays a HTML button which might be used for JavaScript actions.
  */

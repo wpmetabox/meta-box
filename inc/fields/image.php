@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The image field which uploads images via HTML <input type="file">.
  */

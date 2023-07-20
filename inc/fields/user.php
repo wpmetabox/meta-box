@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The user select field.
  */
@@ -97,6 +99,17 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
 			'order'   => 'asc',
+			'fields'  => [
+				'ID',
+				'user_login',
+				'user_pass',
+				'user_nicename',
+				'user_email',
+				'user_url',
+				'user_registered',
+				'user_status',
+				'display_name',
+			],
 		] );
 
 		$meta = wp_parse_id_list( (array) $meta );
