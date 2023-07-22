@@ -205,7 +205,9 @@ abstract class RWMB_Field {
 	 */
 	public static function process_value( $value, $object_id, array $field ) {
 		$old_value = self::call( $field, 'raw_meta', $object_id );
-
+		if ( is_array( $old_value ) && $old_value[0] ) {
+			$old_value = $old_value[0];
+		}
 		// Allow field class change the value.
 		if ( $field['clone'] ) {
 			$value = RWMB_Clone::value( $value, $old_value, $object_id, $field );
@@ -213,7 +215,7 @@ abstract class RWMB_Field {
 			$value = self::call( $field, 'value', $value, $old_value, $object_id );
 			$value = self::filter( 'sanitize', $value, $field, $old_value, $object_id );
 		}
-		$value = self::filter( 'value', $value, $field, $old_value, $object_id );
+		$value     = self::filter( 'value', $value, $field, $old_value, $object_id );
 
 		return $value;
 	}
