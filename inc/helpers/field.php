@@ -22,6 +22,7 @@ class RWMB_Helpers_Field {
 	public static function get_class( $field ) : string {
 		$type  = self::get_type( $field );
 		$class = 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Field';
+		$class = apply_filters( 'rwmb_field_class', $class, $type );
 		return class_exists( $class ) ? $class : 'RWMB_Input_Field';
 	}
 
