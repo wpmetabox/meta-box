@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * Video field which uses WordPress media popup to upload and select video.
  */

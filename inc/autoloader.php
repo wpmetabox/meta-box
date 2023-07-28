@@ -24,15 +24,15 @@ class RWMB_Autoloader {
 		spl_autoload_register( [ $this, 'autoload' ] );
 	}
 
-	public function autoload( string $class ) {
+	public function autoload( string $class_name ) {
 		foreach ( $this->dirs as $dir ) {
 			if (
-				( $dir['prefix'] && 0 !== strpos( $class, $dir['prefix'] ) )
-				|| ( $dir['suffix'] && substr( $class, - strlen( $dir['suffix'] ) ) !== $dir['suffix'] )
+				( $dir['prefix'] && ! str_starts_with( $class_name, $dir['prefix'] ) )
+				|| ( $dir['suffix'] && ! str_ends_with( $class_name, $dir['suffix'] ) )
 			) {
 				continue;
 			}
-			$file = substr( $class, strlen( $dir['prefix'] ) );
+			$file = substr( $class_name, strlen( $dir['prefix'] ) );
 			if ( $dir['suffix'] && strlen( $file ) > strlen( $dir['suffix'] ) ) {
 				$file = substr( $file, 0, - strlen( $dir['suffix'] ) );
 			}

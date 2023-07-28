@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) || die ?>
+
 <div id="getting-started" class="gt-tab-pane gt-is-active">
 	<div class="two">
 		<div class="col">

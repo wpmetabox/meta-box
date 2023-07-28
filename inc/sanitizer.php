@@ -112,11 +112,11 @@ class RWMB_Sanitizer {
 	}
 
 	private function sanitize_color( string $value ): string {
-		if ( false !== strpos( $value, 'hsl' ) ) {
+		if ( str_contains( $value, 'hsl' ) ) {
 			return wp_unslash( $value );
 		}
 
-		if ( false === strpos( $value, 'rgb' ) ) {
+		if ( ! str_contains( $value, 'rgb' ) ) {
 			return sanitize_hex_color( $value );
 		}
 
@@ -126,7 +126,7 @@ class RWMB_Sanitizer {
 		$blue  = '';
 		$alpha = 1;
 
-		if ( false !== strpos( $value, 'rgba' ) ) {
+		if ( str_contains( $value, 'rgba' ) ) {
 			sscanf( $value, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
 		} else {
 			sscanf( $value, 'rgb(%d,%d,%d)', $red, $green, $blue );

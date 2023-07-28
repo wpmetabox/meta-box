@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The oEmbed field which allows users to enter oEmbed URLs.
  */
@@ -24,7 +26,10 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', [], RWMB_VER );
-		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', [ 'jquery', 'underscore' ], RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', [ 'jquery', 'underscore', 'rwmb' ], RWMB_VER, true );
+		wp_localize_script( 'rwmb-oembed', 'rwmbOembed', [
+			'nonce' => wp_create_nonce( 'oembed_get' ),
+		] );
 	}
 
 	public static function add_actions() {
@@ -32,6 +37,8 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 	}
 
 	public static function ajax_get_embed() {
+		check_ajax_referer( 'oembed_get' );
+
 		$request       = rwmb_request();
 		$url           = (string) $request->filter_post( 'url', FILTER_SANITIZE_URL );
 		$not_available = (string) $request->post( 'not_available' );

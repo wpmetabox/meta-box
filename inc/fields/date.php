@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The date picker field, which uses built-in jQueryUI date picker widget.
  */

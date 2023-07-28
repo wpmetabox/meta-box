@@ -4,23 +4,13 @@
 	// Cache ajax requests: https://github.com/select2/select2/issues/110#issuecomment-419247158
 	var cache = {};
 
-	var select2_type = 'select-advanced';
-
-	$.fn.rwmbTransform = function ( type ) {
-		select2_type = type ?? 'select-advanced';
-
-		const arrSelect = [ this ];
-		cache = {};
-		$.each( arrSelect, transform );
-	};	
-
 	/**
 	 * Reorder selected values in correct order that they were selected.
 	 * @param $select2 jQuery element of the select2.
 	 */
 	function reorderSelected( $select2 ) {
 		var selected = $select2.data( 'selected' );
-		if ( ! selected ) {
+		if ( !selected ) {
 			return;
 		}
 		selected.forEach( function ( value ) {
@@ -36,28 +26,28 @@
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = select2_type === 'select-tree' ? $this.parent().next().data( 'options' ) : $this.data( 'options' );
-		
+			options = $this.data( 'options' );
+
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
 
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';
-			options.ajax.data = function( params ) {
+			options.ajax.data = function ( params ) {
 				return Object.assign( options.ajax_data, params );
 			};
 			options.ajax.processResults = function ( response ) {
-				var items = response.data.items.map( function( item ) {
+				var items = response.data.items.map( function ( item ) {
 					return {
 						id: item.value,
 						text: _.unescape( item.label ),
-					}
+					};
 				} );
 
 				var results = {
 					results: items
-				}
+				};
 				if ( response.data.hasOwnProperty( 'more' ) ) {
 					results.pagination = { more: true };
 				}
@@ -74,35 +64,35 @@
 				var data = $.extend( true, {}, params.data );
 				delete data.field.id;
 				delete data.action;
-				if ( ! data.term ) {
+				if ( !data.term ) {
 					delete data.term;
 				}
 
 				var key = JSON.stringify( data );
-				if ( cache[key] ) {
-					success( cache[key] );
+				if ( cache[ key ] ) {
+					success( cache[ key ] );
 					return;
 				}
 
 				var actions = {
-					'post'             : 'rwmb_get_posts',
-					'taxonomy'         : 'rwmb_get_terms',
+					'post': 'rwmb_get_posts',
+					'taxonomy': 'rwmb_get_terms',
 					'taxonomy_advanced': 'rwmb_get_terms',
-					'user'             : 'rwmb_get_users'
+					'user': 'rwmb_get_users'
 				};
 				params.data.action = actions[ params.data.field.type ];
 				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {
-					cache[key] = data;
+					cache[ key ] = data;
 					return data;
 				} ).then( success ).fail( failure );
-		   };
+			};
 		}
-		
+
 		$this.show().select2( options );
 
-		if ( ! $this.attr( 'multiple' ) ) {
+		if ( !$this.attr( 'multiple' ) ) {
 			return;
 		}
 

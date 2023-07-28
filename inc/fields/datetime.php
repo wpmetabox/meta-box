@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 use MetaBox\Support\Arr;
 
 /**
@@ -145,8 +147,10 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		}
 
 		if ( $field['save_format'] ) {
-			$date = DateTime::createFromFormat( $field['php_format'], $new );
-			$new  = false === $date ? $new : $date->format( $field['save_format'] );
+			// Fix 'c' and 'r' formats not containing WordPress timezone.
+			$timezone = in_array( $field['save_format'], [ 'c', 'r' ], true ) ? wp_timezone() : null;
+			$date     = DateTimeImmutable::createFromFormat( $field['php_format'], $new, $timezone );
+			return $date === false ? $new : $date->format( $field['save_format'] );
 		}
 
 		return $new;
@@ -178,7 +182,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	/**
 	 * Format meta value if set 'timestamp'.
 	 */
-	public static function from_timestamp( $meta, array $field ) : array {
+	public static function from_timestamp( $meta, array $field ): array {
 		return [
 			'timestamp' => $meta ?: null,
 			'formatted' => $meta ? gmdate( $field['php_format'], intval( $meta ) ) : '',
@@ -188,8 +192,18 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	/**
 	 * Transform meta value from save format to the JS format.
 	 */
-	public static function from_save_format( $meta, array $field ) : string {
-		$date = DateTime::createFromFormat( $field['save_format'], $meta );
+	public static function from_save_format( $meta, array $field ): string {
+		$formats = array_merge(
+			[
+				$field['save_format'] => $field['save_format'],
+			],
+			[
+				'c' => DateTimeInterface::ATOM,
+				'r' => DateTimeInterface::RFC2822,
+			]
+		);
+		$format  = $formats[ $field['save_format'] ];
+		$date    = DateTimeImmutable::createFromFormat( $format, $meta );
 		return false === $date ? $meta : $date->format( $field['php_format'] );
 	}
 
@@ -257,7 +271,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Returns a date() compatible format string from the JavaScript format.
 	 * @link http://www.php.net/manual/en/function.date.php
 	 */
-	protected static function get_php_format( array $js_options ) : string {
+	protected static function get_php_format( array $js_options ): string {
 		return strtr( $js_options['dateFormat'], self::$date_formats )
 		. $js_options['separator']
 		. strtr( $js_options['timeFormat'], self::$time_formats );

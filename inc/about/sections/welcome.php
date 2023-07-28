@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) || die ?>
+
 <h1>
 	<?php
 	$plugin_data = get_plugin_data( RWMB_DIR . 'meta-box.php', false, false );

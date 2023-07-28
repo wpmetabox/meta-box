@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The image select field which behaves similar to the radio field but uses images as options.
  */

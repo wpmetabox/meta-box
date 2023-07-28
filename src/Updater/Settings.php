@@ -104,18 +104,19 @@ class Settings {
 
 		$option = (array) $request->post( 'meta_box_updater', [] );
 
-		// Do nothing if license key remains the same.
-		$prev_key = $this->option->get_api_key();
-		if ( isset( $option['api_key'] ) && in_array( $option['api_key'], [ $prev_key, $this->fake_api_key ], true ) ) {
+		if ( isset( $option['api_key'] ) && $option['api_key'] === $this->fake_api_key ) {
 			return;
 		}
 
 		$status   = 'invalid';
 		$response = null;
 		if ( isset( $option['api_key'] ) ) {
-			$args     = [ 'key' => $option['api_key'] ];
+			$args     = [
+				'key'   => $option['api_key'],
+				'force' => true,
+			];
 			$response = $this->checker->request( 'status', $args );
-			$status   = isset( $response['status'] ) ? $response['status'] : 'invalid';
+			$status   = $response['status'] ?? 'invalid';
 		}
 
 		if ( empty( $response ) ) {

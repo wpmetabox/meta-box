@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The file upload field which allows users to drag and drop files to upload.
  */

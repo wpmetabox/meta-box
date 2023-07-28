@@ -7,7 +7,7 @@
 class RWMB_Loader {
 	protected function constants() {
 		// Script version, used to add version for scripts and styles.
-		define( 'RWMB_VER', '5.6.18' );
+		define( 'RWMB_VER', '5.7.4' );
 
 		list( $path, $url ) = self::get_path( dirname( __DIR__ ) );
 
@@ -29,7 +29,7 @@ class RWMB_Loader {
 	 * @param string $path Base folder path.
 	 * @return array Path and URL.
 	 */
-	public static function get_path( string $path = '' ) : array {
+	public static function get_path( string $path = '' ): array {
 		// Plugin base path.
 		$path       = wp_normalize_path( untrailingslashit( $path ) );
 		$themes_dir = wp_normalize_path( untrailingslashit( dirname( get_stylesheet_directory() ) ) );
@@ -39,9 +39,9 @@ class RWMB_Loader {
 
 		// Included into themes.
 		if (
-			0 !== strpos( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
-			&& 0 !== strpos( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
-			&& 0 === strpos( $path, $themes_dir )
+			! str_starts_with( $path, wp_normalize_path( WP_PLUGIN_DIR ) )
+			&& ! str_starts_with( $path, wp_normalize_path( WPMU_PLUGIN_DIR ) )
+			&& str_starts_with( $path, $themes_dir )
 		) {
 			$themes_url = untrailingslashit( dirname( get_stylesheet_directory_uri() ) );
 			$url        = str_replace( $themes_dir, $themes_url, $path );
@@ -108,8 +108,11 @@ class RWMB_Loader {
 		$update_notification = new \MetaBox\Updater\Notification( $update_checker, $update_option );
 		$update_notification->init();
 
-		// Block Register
-		new \MetaBox\Block\Register;
+		// Register categories for page builders.
+		new \MetaBox\Block\Register();
+		new \MetaBox\Oxygen\Register();
+		new \MetaBox\Elementor\Register();
+		new \MetaBox\Bricks\Register();
 
 		if ( is_admin() ) {
 			$about = new RWMB_About( $update_checker );

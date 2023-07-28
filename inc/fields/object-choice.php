@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 use MetaBox\Support\Arr;
 
 /**
@@ -13,7 +15,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	 * @param bool  $saved   Whether the meta box is saved at least once.
 	 * @param int   $post_id Post ID.
 	 */
-	public static function show( $field, $saved, $post_id = 0 ) {
+	public static function show( array $field, bool $saved, $post_id = 0 ) {
 		// Get unique saved IDs for ajax fields.
 		$meta = static::meta( $post_id, $saved, $field );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
@@ -141,7 +143,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 
 		wp_enqueue_style( 'rwmb-modal', RWMB_CSS_URL . 'modal.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-modal', RWMB_JS_URL . 'modal.js', [ 'jquery' ], RWMB_VER, true );
-		wp_enqueue_script( "rwmb-{$field['type']}", RWMB_JS_URL . "{$field['type']}.js", [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
+
+		$type = $field['type'] === 'taxonomy_advanced' ? 'taxonomy' : $field['type'];
+		wp_enqueue_script( "rwmb-$type", RWMB_JS_URL . "$type.js", [ 'jquery', 'rwmb-modal' ], RWMB_VER, true );
 	}
 
 	/**

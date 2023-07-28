@@ -164,9 +164,7 @@
 
 		// Force re-render editors in Gutenberg. Use setTimeOut to run after all other code. Bug occurs in WP 5.6.
 		if ( rwmb.isGutenberg ) {
-			setTimeout( function() {
-				$editors.each( transform );
-			}, 0 );
+			setTimeout( () => $editors.each( transform ), 200 );
 		}
 	} );
 
@@ -178,6 +176,6 @@
 			 * Transform a textarea to an editor is a heavy task.
 			 * Moving it to the end of task queue with setTimeout makes cloning faster.
 			 */
-			setTimeout( transform.bind( this ), 0 );
+			setTimeout( transform.bind( this ), 200 );
 		} );
 } )( jQuery, wp, window, rwmb );

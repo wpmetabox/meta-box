@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * Base walker.
  * Walkers must inherit this class and overwrite methods with its own.

@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The advanced image upload field which uses WordPress media popup to upload and select images.
  */

@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * The user select field.
  */
@@ -97,6 +99,17 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
 			'order'   => 'asc',
+			'fields'  => [
+				'ID',
+				'user_login',
+				'user_pass',
+				'user_nicename',
+				'user_email',
+				'user_url',
+				'user_registered',
+				'user_status',
+				'display_name',
+			],
 		] );
 
 		$meta = wp_parse_id_list( (array) $meta );
@@ -169,16 +182,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		if ( false === $field['ajax'] ) {
-			$field['ajax']          = true;
-			self::set_ajax_params( $field );
-			$field['js_options']['ajax_data']['field']['display_field'] = 'display_name';
-		}
-
 		return sprintf(
-			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s" data-options=\'%s\'>%s</a>',
+			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
 			admin_url( 'user-new.php' ),
-			wp_json_encode( $field['js_options'] ),
 			esc_html__( 'Add New User', 'meta-box' )
 		);
 	}

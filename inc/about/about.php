@@ -34,7 +34,7 @@ class RWMB_About {
 		add_action( 'activated_plugin', [ $this, 'redirect' ], 10, 2 );
 	}
 
-	public function plugin_links( array $links ) : array {
+	public function plugin_links( array $links ): array {
 		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'About', 'meta-box' ) . '</a>';
 		if ( ! $this->update_checker->has_extensions() ) {
 			$links[] = '<a href="https://metabox.io/pricing/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
@@ -133,23 +133,23 @@ class RWMB_About {
 		die;
 	}
 
-	private function get_menu_link() : string {
+	private function get_menu_link(): string {
 		$menu = $this->has_menu() ? 'admin.php?page=meta-box' : $this->get_parent_menu() . '?page=meta-box';
 		return admin_url( $menu );
 	}
 
-	private function get_parent_menu() : string {
+	private function get_parent_menu(): string {
 		return 'plugins.php';
 	}
 
-	private function has_menu() : bool {
+	private function has_menu(): bool {
 		return apply_filters( 'rwmb_admin_menu', false );
 	}
 
-	private function is_bundled() : bool {
+	private function is_bundled(): bool {
 		// @codingStandardsIgnoreLine
 		foreach ( $_REQUEST as $key => $value ) {
-			if ( false !== strpos( $key, 'tgmpa' ) || ( ! is_array( $value ) && false !== strpos( $value, 'tgmpa' ) ) ) {
+			if ( str_contains( $key, 'tgmpa' ) || ( is_string( $value ) && str_contains( $value, 'tgmpa' ) ) ) {
 				return true;
 			}
 		}

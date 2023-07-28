@@ -49,7 +49,7 @@ class RWMB_WPML {
 		$object_type = 'taxonomy_advanced' === $field['type'] ? $field['taxonomy'] : $field['post_type'];
 
 		// Translating values, whether are stored as comma separated strings or not.
-		if ( false === strpos( $value, ',' ) ) {
+		if ( ! str_contains( $value, ',' ) ) {
 			$value = apply_filters( 'wpml_object_id', $value, $object_type, true, $target_language );
 			return $value;
 		}

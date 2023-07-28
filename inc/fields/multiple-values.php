@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die;
+
 /**
  * This class implements common methods used in fields which have multiple values
  * like checkbox list, autocomplete, etc.
