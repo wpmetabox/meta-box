@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install PHP dependencies
         run: composer install
-      - name: Setup permission for Git
-        run: git config --global safe.directory '*'
+      - name: Setup permissions for Git
+        run: git config --global --add safe.directory /github/workspace
       - uses: 10up/action-wordpress-plugin-deploy@master
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
