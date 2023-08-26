@@ -6,6 +6,7 @@
 
         $this.rwmbModal( {
             removeElement: '.form-wrap > h2',
+            rightBlock: [ '.search-box', '#col-right' ],
             closeModalCallback: function ( $modal, $input ) {
                 if ( $modal.find( '#the-list tr:first td:eq(0) .row-actions' ).length > 0 ) {
                     this.$objectId = parseInt( $modal.find( '#the-list tr:first' ).attr( 'id' ).split( '-' )[ 1 ] );
