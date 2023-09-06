@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 5.9
 Requires PHP: 7.0
-Tested up to: 6.2.2
-Stable tag: 5.7.4
+Tested up to: 6.3
+Stable tag: 5.7.5
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -152,7 +152,7 @@ If you like this plugin, you might also like our other WordPress products:
 - [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - The best plugin to add schemas (structured data, rich snippets) to WordPress.
 - [Slim SEO Link Manager](https://wpslimseo.com/products/slim-seo-link-manager/) - Build internal link easier in WordPress with real-time reports.
 - [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
-- [Auto Listings](https://wpautolistings.com): The car sale and dealership plugin for WordPress
+- [Auto Listings](https://wpautolistings.com) - The car sale and dealership plugin for WordPress
 
 == Installation ==
 
@@ -174,6 +174,15 @@ If you like this plugin, you might also like our other WordPress products:
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.7.5 - 2023-08-10 =
+- Improve security (#1518). Thanks Patchstack for helping us.
+- Add jQuery validation i18n (#1525)
+- Fix media button not show in WordPress 6.3 when Elementor is activated
+- Fix OSM not display properly
+- Update leaflet to 1.9.4
+- Update jQuery Validation to 1.19.5
+- Make field class filterable with filter `rwmb_field_class`, accept 2 parameters `$class` and `$field_type`.
 
 = 5.7.4 - 2023-07-18 =
 - Datetime: set the same timezone the same as in WordPress when 'save_format' is 'c' or 'r' (#1515)

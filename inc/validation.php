@@ -24,7 +24,7 @@ class RWMB_Validation {
 		$fields = $object->meta_box['fields'];
 		foreach ( $object->meta_box['validation'] as &$rules ) {
 			$rules = array_combine(
-				array_map( function( $key ) use ( $fields, $prefix ) {
+				array_map( function ( $key ) use ( $fields, $prefix ) {
 					$id          = $prefix . $key;
 					$index_field = array_search( $id, array_column( $fields, 'id' ) );
 
