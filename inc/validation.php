@@ -12,37 +12,37 @@ class RWMB_Validation {
 	 * Output validation rules of each meta box.
 	 * The rules are outputted in [data-validation] attribute of an hidden <script> and will be converted into JSON by JS.
 	 */
-	public function rules( RW_Meta_Box $object ) {
-		if ( empty( $object->meta_box['validation'] ) ) {
+	public function rules( RW_Meta_Box $meta_box_object ) {
+		if ( empty( $meta_box_object->meta_box['validation'] ) ) {
 			return;
 		}
 
-		// Get prefix
-		$prefix = $object->meta_box['prefix'] ?? '';
+		// Get field ID prefix from the builder.
+		$prefix = $meta_box_object->meta_box['prefix'] ?? '';
 
-		// Add prefix for validation if have
-		$fields = $object->meta_box['fields'];
-		foreach ( $object->meta_box['validation'] as &$rules ) {
+		// Add prefix for validation rules.
+		$fields = $meta_box_object->meta_box['fields'];
+		foreach ( $meta_box_object->meta_box['validation'] as &$rules ) {
 			$rules = array_combine(
 				array_map( function ( $key ) use ( $fields, $prefix ) {
-					$id          = $prefix . $key;
-					$index_field = array_search( $id, array_column( $fields, 'id' ) );
+					$id    = $prefix . $key;
+					$index = array_search( $id, array_column( $fields, 'id' ), true );
 
-					if ( $index_field === false ) {
+					if ( $index === false ) {
 						return $id;
 					}
 
-					if ( in_array( $fields[ $index_field ]['type'], [ 'file', 'image' ], true ) ) {
-						return $fields[ $index_field ]['clone'] ? $fields[ $index_field ]['index_name'] : $fields[ $index_field ]['input_name'];
+					if ( in_array( $fields[ $index ]['type'], [ 'file', 'image' ], true ) ) {
+						return $fields[ $index ]['clone'] ? $fields[ $index ]['index_name'] : $fields[ $index ]['input_name'];
 					}
 
 					return $id;
-				}, array_keys( $rules )),
+				}, array_keys( $rules ) ),
 				$rules
 			);
 		}
 
-		echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $object->meta_box['validation'] ) ) . '"></script>';
+		echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $meta_box_object->meta_box['validation'] ) ) . '"></script>';
 	}
 
 	public function enqueue() {
