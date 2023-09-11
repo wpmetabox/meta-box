@@ -46,7 +46,9 @@ class RWMB_Validation {
 	}
 
 	public function enqueue() {
-		wp_enqueue_script( 'rwmb-validation', RWMB_JS_URL . 'validation.min.js', [ 'jquery', 'rwmb' ], RWMB_VER, true );
+		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'validation/jquery.validate.js', [ 'jquery' ], '1.19.5', true );
+		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'validation/additional-methods.js', [ 'jquery-validation' ], '1.19.5', true );
+		wp_enqueue_script( 'rwmb-validation', RWMB_JS_URL . 'validation/validation.js', [ 'jquery-validation-additional-methods', 'rwmb' ], RWMB_VER, true );
 
 		$locale       = determine_locale();
 		$locale_short = substr( $locale, 0, 2 );
