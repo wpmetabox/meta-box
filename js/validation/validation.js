@@ -58,6 +58,63 @@
 	}
 
 	/**
+	 * Fix validation not working for cloneable files or fields in groups.
+	 */
+	$.validator.staticRules = function( element ) {
+		let rules = {},
+			validator = $.data( element.form, "validator" );
+
+		// No rules.
+		if ( validator.settings.rules === null || Object.keys( validator.settings.rules ).length === 0 ) {
+			return rules;
+		}
+
+		// Do not validate hidden fields.
+		if ( element.type === 'hidden' ) {
+			return rules;
+		}
+
+		let key = getValidationKey( element.name );
+
+		/**
+		 * Cloneable files or files in groups.
+		 * Input name is transformed into format `_file_{unique_id}`
+		 * There is also a hidden input with name `_index_{field_id}` with value `_file_{unique_id}`
+		 *
+		 * In this case, `key` is always `_file_{unique_id}`
+		 *
+		 * Note that for cloneable files, validation rule is set for `_index_{field_id}`. For files in groups, validation rule is still `{field_id}`.
+		 */
+		if ( element.type === 'file' && ( $( element ).closest( '.rwmb-clone' ).length > 0 || $( element ).closest( '.rwmb-group-wrapper' ).length > 0 ) ) {
+			const $input = $( element ).closest( '.rwmb-input' );
+			const $indexInput = $input.find( '*[value="' + key + '"]' );
+
+			key = getValidationKey( $indexInput.attr( 'name' ) );
+
+			// Remove prefix `_index_` from input name when in groups.
+			if ( !validator.settings.rules[ key ] && key.includes( '_index_' ) ) {
+				key = key.slice( 7 );
+			}
+
+			if ( validator.settings.rules[ key ] ) {
+				// Set message for element.
+				validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
+				// Set rule for element.
+				return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
+			}
+
+			return rules;
+		}
+
+		// For normal fields and fields in groups: set rules by their field IDs (validation keys).
+
+		// Set message for element.
+		validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
+		// Set rule for element.
+		return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
+	};
+
+	/**
 	 * Make jQuery Validation works with multiple inputs with same names.
 	 * Need for file, image fields where users can upload multiple files with same input names.
 	 *
@@ -189,60 +246,6 @@
 
 	// Run on document ready.
 	function init() {
-		$.validator.staticRules = function( element ) {
-			let rules = {},
-				validator = $.data( element.form, "validator" );
-
-			// No rules.
-			if ( validator.settings.rules === null || Object.keys( validator.settings.rules ).length === 0 ) {
-				return rules;
-			}
-
-			// Do not validate hidden fields.
-			if ( element.type === 'hidden' ) {
-				return rules;
-			}
-
-			let key = getValidationKey( element.name );
-
-			/**
-			 * Cloneable files or files in groups.
-			 * Input name is transformed into format `_file_{unique_id}`
-			 * There is also a hidden input with name `_index_{field_id}` with value `_file_{unique_id}`
-			 *
-			 * In this case, `key` is always `_file_{unique_id}`
-			 *
-			 * Note that for cloneable files, validation rule is set for `_index_{field_id}`. For files in groups, validation rule is still `{field_id}`.
-			 */
-			if ( element.type === 'file' && ( $( element ).closest( '.rwmb-clone' ).length > 0 || $( element ).closest( '.rwmb-group-wrapper' ).length > 0 ) ) {
-				const $input = $( element ).closest( '.rwmb-input' );
-				const $indexInput = $input.find( '*[value="' + key + '"]' );
-
-				key = getValidationKey( $indexInput.attr( 'name' ) );
-
-				// Remove prefix `_index_` from input name when in groups.
-				if ( !validator.settings.rules[ key ] && key.includes( '_index_' ) ) {
-					key = key.slice( 7 );
-				}
-
-				if ( validator.settings.rules[ key ] ) {
-					// Set message for element.
-					validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
-					// Set rule for element.
-					return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
-				}
-
-				return rules;
-			}
-
-			// For normal fields and fields in groups: set rules by their field IDs (validation keys).
-
-			// Set message for element.
-			validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
-			// Set rule for element.
-			return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
-		};
-
 		if ( rwmb.isGutenberg ) {
 			var advanced = new GutenbergValidation( '.metabox-location-advanced' ),
 				normal = new GutenbergValidation( '.metabox-location-normal' ),
