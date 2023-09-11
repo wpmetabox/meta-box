@@ -156,17 +156,19 @@
 
 		showAsterisks() {
 			this.validationElements.each( function() {
-				var data = $( this ).data( 'validation' );
+				const data = $( this ).data( 'validation' );
 
 				$.each( data.rules, function( k, v ) {
 					if ( !v[ 'required' ] ) {
 						return;
 					}
-					var $el = $( '[name="' + k + '"]' );
+					let $el = $( '[name="' + k + '"]' );
 					if ( !$el.length ) {
-						return;
+						$el = $( '[name*="[' + k + ']"]' ); // Subfields in groups.
 					}
-					$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
+					if ( $el.length ) {
+						$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
+					}
 				} );
 			} );
 		}
