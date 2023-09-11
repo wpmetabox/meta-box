@@ -1,6 +1,26 @@
 ( function( $, rwmb, i18n ) {
     'use strict';
 
+    /**
+     * Make jQuery Validation works with multiple inputs with same names.
+     * Need for file, image fields where users can upload multiple files with same input names.
+     *
+     * @link https://stackoverflow.com/q/931687/371240
+     */
+    $.validator.prototype.checkForm = function() {
+        this.prepareForm();
+        for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
+            if ( this.findByName( elements[ i ].name ).length !== undefined && this.findByName( elements[ i ].name ).length > 1 ) {
+                for ( var cnt = 0; cnt < this.findByName( elements[ i ].name ).length; cnt++ ) {
+                    this.check( this.findByName( elements[ i ].name )[ cnt ] );
+                }
+            } else {
+                this.check( elements[ i ] );
+            }
+        }
+        return this.valid();
+    };
+
     class Validation {
         constructor( formSelector ) {
             this.$form = $( formSelector );
