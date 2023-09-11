@@ -128,6 +128,9 @@
 		var $inputs = $clone.find( rwmb.inputSelectors );
 		$inputs.each( cloneValue.clear );
 
+		// Remove validation errors.
+		$clone.find( '.rwmb-error' ).remove();
+
 		// Insert clone.
 		$clone.insertAfter( $last );
 
