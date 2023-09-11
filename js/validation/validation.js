@@ -2,39 +2,37 @@
 	'use strict';
 
 	/**
-	 * Extract the parts from an input's name attribute. Returns an array:
-	 * - The 1st value is the whole input name, without the last `[]`
-	 * - The 2nd value is the last field ID.
+	 * Extract the validation key from an input's name attribute. Usually it's the field ID, but sometimes (like for `file`), it's the field's input name.
 	 *
-	 * field[]    => [field, field]      // Fields with multiple values: file, checkbox list, etc.
-	 * field[1]   => [field[1], field]   // Cloneable fields
-	 * field[1][] => [field[1], field]   // Cloneable fields with multiple values: file, checkbox list, etc.
+	 * field[]    => field   // Fields with multiple values: file, checkbox list, etc.
+	 * field[1]   => field   // Cloneable fields
+	 * field[1][] => field   // Cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[field][]    => [group[field], field]      // Group with fields with multiple values: file, checkbox list, etc.
-	 * group[field][1]   => [group[field][1], field]   // Group with cloneable fields
-	 * group[field][1][] => [group[field][1], field]   // Group with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[field][]    => field  // Group with fields with multiple values: file, checkbox list, etc.
+	 * group[field][1]   => field  // Group with cloneable fields
+	 * group[field][1][] => field  // Group with cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[1][field][]    => [group[1][field], field]      // Cloneable group with fields with multiple values: file, checkbox list, etc.
-	 * group[1][field][1]   => [group[1][field][1], field]   // Cloneable group with cloneable fields
-	 * group[1][field][1][] => [group[1][field][1], field]   // Cloneable group with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[1][field][]    => field  // Cloneable group with fields with multiple values: file, checkbox list, etc.
+	 * group[1][field][1]   => field  // Cloneable group with cloneable fields
+	 * group[1][field][1][] => field  // Cloneable group with cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[subgroup][field][]    => [group[subgroup][field], field]      // Subgroup with fields with multiple values: file, checkbox list, etc.
-	 * group[subgroup][field][1]   => [group[subgroup][field][1], field]   // Subgroup with cloneable fields
-	 * group[subgroup][field][1][] => [group[subgroup][field][1], field]   // Subgroup with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[subgroup][field][]    => field  // Subgroup with fields with multiple values: file, checkbox list, etc.
+	 * group[subgroup][field][1]   => field  // Subgroup with cloneable fields
+	 * group[subgroup][field][1][] => field  // Subgroup with cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[subgroup][1][field][]    => [group[subgroup][1][field], field]      // Cloneable subgroup with fields with multiple values: file, checkbox list, etc.
-	 * group[subgroup][1][field][1]   => [group[subgroup][1][field][1], field]   // Cloneable subgroup with cloneable fields
-	 * group[subgroup][1][field][1][] => [group[subgroup][1][field][1], field]   // Cloneable subgroup with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[subgroup][1][field][]    => field  // Cloneable subgroup with fields with multiple values: file, checkbox list, etc.
+	 * group[subgroup][1][field][1]   => field  // Cloneable subgroup with cloneable fields
+	 * group[subgroup][1][field][1][] => field  // Cloneable subgroup with cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[1][subgroup][field][]    => [group[1][subgroup][field], field]      // Cloneable group with subgroup with fields with multiple values: file, checkbox list, etc.
-	 * group[1][subgroup][field][1]   => [group[1][subgroup][field][1], field]   // Cloneable group with subgroup with cloneable fields
-	 * group[1][subgroup][field][1][] => [group[1][subgroup][field][1], field]   // Cloneable group with subgroup with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[1][subgroup][field][]    => field  // Cloneable group with subgroup with fields with multiple values: file, checkbox list, etc.
+	 * group[1][subgroup][field][1]   => field  // Cloneable group with subgroup with cloneable fields
+	 * group[1][subgroup][field][1][] => field  // Cloneable group with subgroup with cloneable fields with multiple values: file, checkbox list, etc.
 	 *
-	 * group[1][subgroup][1][field][]    => [group[1][subgroup][1][field], field]      // Cloneable group with cloneable subgroup with fields with multiple values: file, checkbox list, etc.
-	 * group[1][subgroup][1][field][1]   => [group[1][subgroup][1][field][1], field]   // Cloneable group with cloneable subgroup with cloneable fields
-	 * group[1][subgroup][1][field][1][] => [group[1][subgroup][1][field][1], field]   // Cloneable group with cloneable subgroup with cloneable fields with multiple values: file, checkbox list, etc.
+	 * group[1][subgroup][1][field][]    => field  // Cloneable group with cloneable subgroup with fields with multiple values: file, checkbox list, etc.
+	 * group[1][subgroup][1][field][1]   => field  // Cloneable group with cloneable subgroup with cloneable fields
+	 * group[1][subgroup][1][field][1][] => field  // Cloneable group with cloneable subgroup with cloneable fields with multiple values: file, checkbox list, etc.
 	 */
-	const extractNameParts = name => {
+	const getValidationKey = name => {
 		// Detect name parts in format of anything[] or anything[1].
 		let parts = name.match( /^(.+?)(?:\[\d+\]|(?:\[\]))?$/ );
 
@@ -56,7 +54,7 @@
 			parts[ 1 ] = isNaN( resultArray[ resultArray.length - 1 ] ) ? resultArray[ resultArray.length - 1 ] : resultArray[ resultArray.length - 2 ];
 		}
 
-		return parts;
+		return parts.pop();
 	}
 
 	/**
@@ -205,33 +203,33 @@
 				return rules;
 			}
 
-			let nameParts = extractNameParts( element.name );
+			let key = getValidationKey( element.name );
 
 			/**
-			 * Get validation keys for cloneable files or files in groups.
+			 * Cloneable files or files in groups.
 			 * Input name is transformed into format `_file_{unique_id}`
 			 * There is also a hidden input with name `_index_{field_id}` with value `_file_{unique_id}`
 			 *
-			 * In this case, `nameParts` is always `[_file_{unique_id}, _file_{unique_id}]`
+			 * In this case, `key` is always `_file_{unique_id}`
 			 *
 			 * Note that for cloneable files, validation rule is set for `_index_{field_id}`. For files in groups, validation rule is still `{field_id}`.
 			 */
 			if ( element.type === 'file' && ( $( element ).closest( '.rwmb-clone' ).length > 0 || $( element ).closest( '.rwmb-group-wrapper' ).length > 0 ) ) {
 				const $input = $( element ).closest( '.rwmb-input' );
-				const $indexInput = $input.find( '*[value="' + nameParts[ 1 ] + '"]' );
+				const $indexInput = $input.find( '*[value="' + key + '"]' );
 
-				nameParts = extractNameParts( $indexInput.attr( 'name' ) );
+				key = getValidationKey( $indexInput.attr( 'name' ) );
 
 				// Remove prefix `_index_` from input name when in groups.
-				if ( !validator.settings.rules[ nameParts[ 1 ] ] && nameParts[ 1 ].includes( '_index_' ) ) {
-					nameParts[ 1 ] = nameParts[ 1 ].slice( 7 );
+				if ( !validator.settings.rules[ key ] && key.includes( '_index_' ) ) {
+					key = key.slice( 7 );
 				}
 
-				if ( validator.settings.rules[ nameParts[ 1 ] ] ) {
+				if ( validator.settings.rules[ key ] ) {
 					// Set message for element.
-					validator.settings.messages[ element.name ] = validator.settings.messages[ nameParts[ 1 ] ];
+					validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
 					// Set rule for element.
-					return $.validator.normalizeRule( validator.settings.rules[ nameParts[ 1 ] ] ) || {};
+					return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
 				}
 
 				return rules;
@@ -240,9 +238,9 @@
 			// For normal fields and fields in groups: set rules by their field IDs (validation keys).
 
 			// Set message for element.
-			validator.settings.messages[ element.name ] = validator.settings.messages[ nameParts[ 1 ] ];
+			validator.settings.messages[ element.name ] = validator.settings.messages[ key ];
 			// Set rule for element.
-			return $.validator.normalizeRule( validator.settings.rules[ nameParts[ 1 ] ] ) || {};
+			return $.validator.normalizeRule( validator.settings.rules[ key ] ) || {};
 		};
 
 		if ( rwmb.isGutenberg ) {
