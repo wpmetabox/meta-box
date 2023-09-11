@@ -55,7 +55,7 @@ class RWMB_Validation {
 		$locale       = file_exists( RWMB_DIR . "js/validation/i18n/messages_$locale.js" ) ? $locale : $locale_short;
 
 		if ( file_exists( RWMB_DIR . "js/validation/i18n/messages_$locale.js" ) ) {
-			wp_enqueue_script( 'rwmb-validation-i18n', RWMB_JS_URL . "validation/i18n/messages_$locale.js", [ 'rwmb-validation' ], RWMB_VER, true );
+			wp_enqueue_script( 'jquery-validation-i18n', RWMB_JS_URL . "validation/i18n/messages_$locale.js", [ 'jquery-validation-additional-methods' ], '1.19.5', true );
 		}
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-validation', 'rwmbValidation', [
