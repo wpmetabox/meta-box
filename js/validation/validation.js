@@ -237,20 +237,12 @@
 				return rules;
 			}
 
-			// Validate for subfields in groups.
-			const inputNameList = $( element.form ).find( '*[name^="' + nameParts[ 1 ] + '"]' );
-			if ( inputNameList.length > 0 ) {
-				// Set message for element
-				validator.settings.messages[ element.name ] = validator.settings.messages[ nameParts[ 1 ] ];
-				// Set Rule for element
-				return $.validator.normalizeRule( validator.settings.rules[ nameParts[ 1 ] ] ) || {};
-			}
+			// For normal fields and fields in groups: set rules by their field IDs (validation keys).
 
-			if ( validator.settings.rules ) {
-				return $.validator.normalizeRule( validator.settings.rules[ element.name ] ) || {};
-			}
-
-			return rules;
+			// Set message for element.
+			validator.settings.messages[ element.name ] = validator.settings.messages[ nameParts[ 1 ] ];
+			// Set rule for element.
+			return $.validator.normalizeRule( validator.settings.rules[ nameParts[ 1 ] ] ) || {};
 		};
 
 		if ( rwmb.isGutenberg ) {
