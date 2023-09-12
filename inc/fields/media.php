@@ -32,8 +32,14 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	public static function add_actions() {
-		add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
-		add_action( 'wp_footer', [ get_called_class(), 'print_templates' ] );
+		global $wp_customize;
+
+		if ( isset( $wp_customize ) ) {
+			add_action( 'print_media_templates', [ get_called_class(), 'print_templates' ] );
+		} else {
+			add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
+			add_action( 'wp_footer', [ get_called_class(), 'print_templates' ] );
+		}
 	}
 
 	/**
