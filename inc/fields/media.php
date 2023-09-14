@@ -32,9 +32,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	public static function add_actions() {
-		global $wp_customize;
-
-		if ( isset( $wp_customize ) ) {
+		if ( is_customize_preview() ) {
 			add_action( 'print_media_templates', [ get_called_class(), 'print_templates' ] );
 		} else {
 			add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
