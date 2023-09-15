@@ -31,9 +31,6 @@
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
-		$this.on( 'select2:open', function () {
-			$( '.select2-container--open .select2-dropdown' ).css( 'top', $( document.body ).offset().top + 'px' );
-		} );
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';
 			options.ajax.data = function ( params ) {
@@ -108,6 +105,22 @@
 			var option = $this.children( '[value="' + event.params.data.id + '"]' );
 			option.detach();
 			$this.append( option ).trigger( 'change' );
+		} );
+
+		if ( $( "#wpadminbar" ).length === 0 ) {
+			return;
+		}
+
+		$this.on( 'select2:open', function () {
+			if ( $( this ).next().hasClass( 'select2-container--above' ) ) {
+				var regex = /\/(wp-admin|admin)\//;
+				if ( regex.test( window.location.href ) ) {
+					$( 'body > .select2-container--open .select2-dropdown--above' ).css( 'top', 0 );
+					return;
+				}
+
+				$( 'body > .select2-container:last-child > .select2-dropdown' ).css( 'top', $( document.body ).offset().top );
+			}
 		} );
 	}
 
