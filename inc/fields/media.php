@@ -31,6 +31,12 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		] );
 	}
 
+	public static function add_actions() {
+		// Print HTML templates for Customizer.
+		// Must called here instead of inside html() because content of the field is injected via JavaScript.
+		add_action( 'customize_controls_print_footer_scripts', [ get_called_class(), 'print_templates' ] );
+	}
+
 	/**
 	 * Get meta value.
 	 *
