@@ -48,7 +48,9 @@
 			$( '#rwmb-modal-iframe' ).on( 'load', function () {
 				const $contents = $( this ).contents();
 				options.isBlockEditor = $contents.find( 'body' ).hasClass( 'block-editor-page' );
-				$contents.find( options.removeElement ).remove();
+				if ( options.removeElement !== '' ) {
+					$contents.find( options.removeElement ).remove();
+				}
 
 				if ( options.rightBlock !== null ) {
 					if ( Array.isArray( options.rightBlock ) ) {
