@@ -291,8 +291,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		}
 
 		return sprintf(
-			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-hide_right_block="%d" data-url="%s">%s</a>',
-			$field['hide_terms_right_block'] ?? 0,
+			'<a href="#" class="rwmb-taxonomy-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
 			admin_url( 'edit-tags.php?taxonomy=' . $taxonomy_object->name ),
 			esc_html( $taxonomy_object->labels->add_new_item )
 		);

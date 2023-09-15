@@ -50,8 +50,7 @@
 				options.isBlockEditor = $contents.find( 'body' ).hasClass( 'block-editor-page' );
 				$contents.find( options.removeElement ).remove();
 
-				var hide_right_block = $this.data( 'hide_right_block' );
-				if ( hide_right_block == 1 && options.rightBlock !== '' ) {
+				if ( options.rightBlock !== null ) {
 					if ( Array.isArray( options.rightBlock ) ) {
 						options.rightBlock.forEach( function( element ) {
 							$contents.find( element ).remove();
