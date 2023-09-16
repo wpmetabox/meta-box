@@ -9,8 +9,9 @@
             callback: function ( $modal, $modalContent ) {
                 $modalContent.find( '#col-right' ).css( 'display', 'none' );
                 $modalContent.find( '.search-box' ).css( 'display', 'none' );
+                $modalContent.find( '#wpbody' ).css( 'padding-top', 0 );
                 $modal.css( {
-                    'width': '35%',
+                    'max-width': '480px',
                     'margin': 'auto',
                 } );
             },
