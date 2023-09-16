@@ -6,8 +6,8 @@
 
         $this.rwmbModal( {
             removeElement: '#add-new-user',
-            callback: function ( $modal ) {
-                $modal.find( '#add-new-user' ).next().next().remove();
+            callback: function ( $modal, $modalContent ) {
+                $modalContent.find( '#add-new-user' ).next().next().remove();
             },
             closeModalCallback: function ( $modal, $input ) {
                 if ( $modal.find( '#wpbody-content .wrap form input[name="_wp_http_referer"]' ).length > 0 ) {

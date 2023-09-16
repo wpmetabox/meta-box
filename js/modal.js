@@ -61,11 +61,6 @@
 					} else {
 						$contents.find( options.rightBlock ).css( 'display', 'none' );
 					}
-					if ( $this.data( 'url' ).includes( 'taxonomy=' ) ) {
-						$modal.css( 'width', '35%' );
-						$modal.css( 'margin-left', 'auto' );
-						$modal.css( 'margin-right', 'auto' );
-					}
 				}
 
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
@@ -81,7 +76,7 @@
 					.find( 'a' ).on( 'click', e => e.preventDefault() );
 
 				if ( options.callback !== null && typeof options.callback === 'function' ) {
-					options.callback( $contents );
+					options.callback( $modal, $contents );
 				}
 
 				$body.addClass( 'rwmb-modal-show' );
