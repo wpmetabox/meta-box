@@ -66,7 +66,7 @@
 					.find( 'a' ).on( 'click', e => e.preventDefault() );
 
 				if ( options.callback !== null && typeof options.callback === 'function' ) {
-					options.callback( $contents );
+					options.callback( $modal, $contents );
 				}
 
 				$body.addClass( 'rwmb-modal-show' );

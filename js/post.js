@@ -6,21 +6,21 @@
 
 		$this.rwmbModal( {
 			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
-			callback: function ( $modal ) {
+			callback: function ( $modal, $modalContent ) {
 				if ( !this.isBlockEditor ) {
-					this.$objectId = $modal.find( '#post_ID' ).val();
+					this.$objectId = $modalContent.find( '#post_ID' ).val();
 					return;
 				}
 
 				setTimeout( () => {
-					if ( $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
-						let url = $modal.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
+					if ( $modalContent.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
+						let url = $modalContent.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
 						this.$objectId = url.substr( url.indexOf( "=" ) + 1 );
 					}
 				}, 2000 );
 
 				setTimeout( () => {
-					const $ui = $modal.find( '.interface-interface-skeleton' );
+					const $ui = $modalContent.find( '.interface-interface-skeleton' );
 					$ui.css( {
 						left: 0,
 						top: 0
