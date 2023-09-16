@@ -119,7 +119,7 @@
 		}
 
 		if ( $( e.target ).next().hasClass( 'select2-container--above' ) ) {
-			if ( rwmbSelect2.isAdmin === 1 ) {
+			if ( rwmbSelect2.isAdmin == 1 ) {
 				$( 'body > .select2-container--open .select2-dropdown--above' ).css( 'top', 0 );
 				return;
 			}
