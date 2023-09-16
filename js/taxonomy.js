@@ -11,7 +11,7 @@
                 $modal.css( {
                     'width': '35%',
                     'margin': 'auto',
-                });
+                } );
             },
             closeModalCallback: function ( $modal, $input ) {
                 if ( $modal.find( '#the-list tr:first td:eq(0) .row-actions' ).length > 0 ) {
