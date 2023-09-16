@@ -53,16 +53,6 @@
 					$contents.find( options.removeElement ).remove();
 				}
 
-				if ( options.rightBlock ) {
-					if ( Array.isArray( options.rightBlock ) ) {
-						options.rightBlock.forEach( function( element ) {
-							$contents.find( element ).css( 'display', 'none' );
-						} );
-					} else {
-						$contents.find( options.rightBlock ).css( 'display', 'none' );
-					}
-				}
-
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
 				if ( options.isBlockEditor ) {
 					$modal.find( '.rwmb-modal-title' ).css( 'background-color', '#fff' );

@@ -6,8 +6,9 @@
 
         $this.rwmbModal( {
             removeElement: '.form-wrap > h2',
-            rightBlock: [ '#col-right', '.search-box' ],
             callback: function ( $modal, $modalContent ) {
+                $modalContent.find( '#col-right' ).css( 'display', 'none' );
+                $modalContent.find( '.search-box' ).css( 'display', 'none' );
                 $modal.css( {
                     'width': '35%',
                     'margin': 'auto',
