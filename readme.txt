@@ -4,7 +4,7 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 5.9
 Requires PHP: 7.0
-Tested up to: 6.3
+Tested up to: 6.3.1
 Stable tag: 5.7.5
 License: GPLv2 or later
 
@@ -147,12 +147,12 @@ Check out more on the [Meta Box Documentation](https://docs.metabox.io/) page.
 
 If you like this plugin, you might also like our other WordPress products:
 
-- [Meta Box](https://metabox.io) - The most powerful WordPress plugin for creating custom post types and custom fields.
+- [Meta Box](https://metabox.io) - A powerful WordPress plugin for creating custom post types and custom fields.
 - [Slim SEO](https://wpslimseo.com) - A fast, lightweight and full-featured SEO plugin for WordPress with minimal configuration.
-- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - The best plugin to add schemas (structured data, rich snippets) to WordPress.
+- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - An advanced, powerful and flexible plugin to add schemas to WordPress.
 - [Slim SEO Link Manager](https://wpslimseo.com/products/slim-seo-link-manager/) - Build internal link easier in WordPress with real-time reports.
 - [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
-- [Auto Listings](https://wpautolistings.com) - The car sale and dealership plugin for WordPress
+- [Auto Listings](https://wpautolistings.com) - A car sale and dealership plugin for WordPress.
 
 == Installation ==
 

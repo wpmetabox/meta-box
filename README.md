@@ -167,9 +167,9 @@ Check out more on the [Meta Box Documentation](https://docs.metabox.io/) page.
 
 If you like this plugin, you might also like our other WordPress products:
 
-- [Meta Box](https://metabox.io) - The most powerful WordPress plugin for creating custom post types and custom fields.
+- [Meta Box](https://metabox.io) - A powerful WordPress plugin for creating custom post types and custom fields.
 - [Slim SEO](https://wpslimseo.com) - A fast, lightweight and full-featured SEO plugin for WordPress with minimal configuration.
-- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - The best plugin to add schemas (structured data, rich snippets) to WordPress.
+- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - An advanced, powerful and flexible plugin to add schemas to WordPress.
 - [Slim SEO Link Manager](https://wpslimseo.com/products/slim-seo-link-manager/) - Build internal link easier in WordPress with real-time reports.
 - [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
-- [Auto Listings](https://wpautolistings.com) - The car sale and dealership plugin for WordPress
+- [Auto Listings](https://wpautolistings.com) - A car sale and dealership plugin for WordPress.
