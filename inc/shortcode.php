@@ -4,6 +4,10 @@ use MetaBox\Support\Arr;
 class RWMB_Shortcode {
 	public function init() {
 		add_shortcode( 'rwmb_meta', [ $this, 'register_shortcode' ] );
+
+		global $wp_embed;
+		remove_shortcode( 'embed' );
+		add_shortcode( 'embed', [ $wp_embed, 'shortcode' ] );
 	}
 
 	public function register_shortcode( $atts ) {
