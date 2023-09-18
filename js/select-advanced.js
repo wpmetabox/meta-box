@@ -113,7 +113,21 @@
 		$( e.target ).find( '.rwmb-select_advanced' ).each( transform );
 	}
 
+	function fixDropdownPosition( e ) {
+		if ( $( "#wpadminbar" ).length === 0 ) {
+			return;
+		}
+
+		if ( rwmbSelect2.isAdmin == 1 ) {
+			$( 'body > .select2-container--open .select2-dropdown--above' ).css( 'top', 0 );
+			return;
+		}
+
+		$( 'body > .select2-container:last-child > .select2-dropdown' ).css( 'top', $( document.body ).offset().top );
+	};
+
 	rwmb.$document
 		.on( 'mb_ready', init )
-		.on( 'clone', '.rwmb-select_advanced', transform );
+		.on( 'clone', '.rwmb-select_advanced', transform )
+		.on( 'select2:open', fixDropdownPosition );
 } )( jQuery, rwmb );

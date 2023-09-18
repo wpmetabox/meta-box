@@ -24,6 +24,9 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 		}
 
 		wp_enqueue_script( 'rwmb-select-advanced', RWMB_JS_URL . 'select-advanced.js', $dependencies, RWMB_VER, true );
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-select-advanced', 'rwmbSelect2', [
+			'isAdmin' => is_admin(),
+		]);
 	}
 
 	/**
