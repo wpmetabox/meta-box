@@ -113,7 +113,7 @@
 		$( e.target ).find( '.rwmb-select_advanced' ).each( transform );
 	}
 
-	function select2Open( e ) {
+	function fixDropdownPosition( e ) {
 		if ( $( "#wpadminbar" ).length === 0 ) {
 			return;
 		}
@@ -129,5 +129,5 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-select_advanced', transform )
-		.on( 'select2:open', select2Open );
+		.on( 'select2:open', fixDropdownPosition );
 } )( jQuery, rwmb );
