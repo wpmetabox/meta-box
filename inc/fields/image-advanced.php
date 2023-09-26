@@ -77,6 +77,6 @@ class RWMB_Image_Advanced_Field extends RWMB_Media_Field {
 	 */
 	public static function print_templates() {
 		parent::print_templates();
-		require_once RWMB_INC_DIR . 'templates/image-advanced.php';
+		require RWMB_INC_DIR . 'templates/image-advanced.php';
 	}
 }

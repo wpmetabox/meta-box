@@ -29,13 +29,10 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			'or'                 => apply_filters( 'rwmb_media_or_string', _x( 'or', 'media', 'meta-box' ) ),
 			'uploadInstructions' => apply_filters( 'rwmb_media_upload_instructions_string', _x( 'Drop files here to upload', 'media', 'meta-box' ) ),
 		] );
+	}
 
-		// Print HTML templates for Customizer.
-		add_action( 'customize_controls_print_footer_scripts', [ get_called_class(), 'print_templates' ] );
-
-		// Print HTML templates. Runs only when the field is outputted.
-		add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
-		add_action( 'wp_footer', [ get_called_class(), 'print_templates' ] );
+	public static function add_actions() {
+		add_action( 'print_media_templates', [ get_called_class(), 'print_templates' ] );
 	}
 
 	/**
@@ -212,6 +209,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * Template for media item.
 	 */
 	public static function print_templates() {
-		require_once RWMB_INC_DIR . 'templates/media.php';
+		require RWMB_INC_DIR . 'templates/media.php';
 	}
 }
