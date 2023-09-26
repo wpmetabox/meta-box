@@ -32,7 +32,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	public static function add_actions() {
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && ! is_plugin_active( 'mb-frontend-submission/mb-frontend-submission.php' ) ) {
 			return;
 		}
 
