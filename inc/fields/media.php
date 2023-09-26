@@ -35,6 +35,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		// Print HTML templates for Customizer.
 		// Must called here instead of inside html() because content of the field is injected via JavaScript.
 		add_action( 'customize_controls_print_footer_scripts', [ get_called_class(), 'print_templates' ] );
+
+		// Must called here instead of inside html() because when creating a custom block, the field is outputed via Ajax.
 		add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
 	}
 
