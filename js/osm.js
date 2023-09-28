@@ -32,25 +32,32 @@
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
-		// Initialize map elements
-		initMapElements: function () {
-			var defaultLoc = this.$canvas.data( 'default-loc' ),
-				latLng;
-
-			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, -6.258860];
-			latLng = L.latLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map.
-
-			this.map = L.map( this.canvas, {
-				center: latLng,
-				zoom: 14
-			} );
-
+		initMapElements: function() {
+			this.map = L.map( this.canvas, { zoom: 14 } );
 			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			} ).addTo( this.map );
-			this.marker = L.marker( latLng, {
-				draggable: true
-			} ).addTo( this.map );
+
+			const setCenter = location => {
+				this.map.panTo( location );
+				this.marker = L.marker( location, {
+					draggable: true
+				} ).addTo( this.map );
+			}
+
+			let defaultLoc = this.$canvas.data( 'default-loc' );
+			const dublin = [ 53.346881, -6.258860 ];
+
+			// If no default location and no saved location, try to load current user location with fallback to Dublin.
+			if ( !defaultLoc && !this.$coordinate.val() ) {
+				this.map.locate( { setView: true } )
+					.on( 'locationfound', e => setCenter( e.latlng ) )
+					.on( 'locationerror', () => setCenter( dublin ) )
+			}
+
+			// Load default location with fallback to Dublin.
+			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : dublin;
+			setCenter( defaultLoc );
 		},
 
 		// Initialize marker position
