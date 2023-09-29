@@ -1,15 +1,15 @@
-( function( $, L, rwmb, i18n ) {
+( function ( $, L, rwmb, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
-	var OsmField = function( $container ) {
+	var OsmField = function ( $container ) {
 		this.$container = $container;
 	};
 
 	// Use prototype for better performance
 	OsmField.prototype = {
 		// Initialize everything
-		init: function() {
+		init: function () {
 			this.initDomElements();
 			this.initMapElements();
 
@@ -19,20 +19,20 @@
 
 			// Make sure the map is displayed fully.
 			var map = this.map;
-			setTimeout( function() {
+			setTimeout( function () {
 				map.invalidateSize();
 			}, 200 );
 		},
 
 		// Initialize DOM elements
-		initDomElements: function() {
+		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
 			this.canvas = this.$canvas[ 0 ];
 			this.$coordinate = this.$container.find( '.rwmb-osm' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
-		setCenter: function( location ) {
+		setCenter: function ( location ) {
 			this.map.panTo( location );
 			if ( this.marker ) {
 				this.marker.setLatLng( location );
@@ -44,7 +44,7 @@
 			} ).addTo( this.map );
 		},
 
-		initMapElements: function() {
+		initMapElements: function () {
 			this.map = L.map( this.canvas, { zoom: 14 } );
 			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -56,7 +56,7 @@
 			}
 
 			// Load default location if it's set.
-			let defaultLoc = this.$canvas.data( 'default-loc' );
+			const defaultLoc = this.$canvas.data( 'default-loc' );
 			if ( defaultLoc ) {
 				return this.setCenter( defaultLoc.split( ',' ) );
 			}
@@ -66,12 +66,12 @@
 			this.setCenter( dublin );
 
 			// Try to load current user location. Note that Geolocation API works only on HTTPS.
-			if ( location.protocol.includes( 'https' ) ) {
+			if ( location.protocol.includes( 'https' ) && navigator.geolocation ) {
 				this.map.locate( { setView: true } ).on( 'locationfound', e => this.setCenter( e.latlng ) );
 			}
 		},
 
-		initMarkerPosition: function() {
+		initMarkerPosition: function () {
 			const coordinate = this.$coordinate.val();
 
 			if ( coordinate ) {
@@ -86,7 +86,7 @@
 		},
 
 		// Add event listeners for 'click' & 'drag'
-		addListeners: function() {
+		addListeners: function () {
 			var that = this;
 
 			/*
@@ -95,7 +95,7 @@
 			 */
 			if ( this.addressField.split( ',' ).length > 1 ) {
 				var geocodeAddress = that.geocodeAddress.bind( that );
-				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+				var addressFields = this.addressField.split( ',' ).forEach( function ( part ) {
 					var $field = that.findAddressField( part );
 					if ( null !== $field ) {
 						$field.on( 'change', geocodeAddress );
@@ -103,16 +103,16 @@
 				} );
 			}
 
-			this.map.on( 'click', function( event ) {
+			this.map.on( 'click', function ( event ) {
 				that.marker.setLatLng( event.latlng );
 				that.updateCoordinate( event.latlng );
 			} );
 
-			this.map.on( 'zoom', function() {
+			this.map.on( 'zoom', function () {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			this.marker.on( 'drag', function() {
+			this.marker.on( 'drag', function () {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
@@ -126,7 +126,7 @@
 			$( '.meta-box-sortables' ).on( 'sortstop', refresh );
 		},
 
-		refresh: function() {
+		refresh: function () {
 			if ( !this.map ) {
 				return;
 			}
@@ -135,7 +135,7 @@
 		},
 
 		// Autocomplete address
-		autocomplete: function() {
+		autocomplete: function () {
 			var that = this,
 				$address = this.getAddressField();
 
@@ -144,14 +144,14 @@
 			}
 
 			$address.autocomplete( {
-				source: function( request, response ) {
+				source: function ( request, response ) {
 					$.get( 'https://nominatim.openstreetmap.org/search', {
 						format: 'json',
 						q: request.term,
 						countrycodes: that.$canvas.data( 'region' ),
 						"accept-language": that.$canvas.data( 'language' ),
 						addressdetails: 1
-					}, function( results ) {
+					}, function ( results ) {
 						if ( !results.length ) {
 							response( [ {
 								value: '',
@@ -159,7 +159,7 @@
 							} ] );
 							return;
 						}
-						response( results.map( function( item ) {
+						response( results.map( function ( item ) {
 							return {
 								address: item.address,
 								label: item.display_name,
@@ -170,7 +170,7 @@
 						} ) );
 					}, 'json' );
 				},
-				select: function( event, ui ) {
+				select: function ( event, ui ) {
 					const latLng = L.latLng( ui.item.latitude, ui.item.longitude );
 
 					that.setCenter( latLng );
@@ -182,13 +182,13 @@
 		},
 
 		// Update coordinate to input field
-		updateCoordinate: function( latLng ) {
+		updateCoordinate: function ( latLng ) {
 			var zoom = this.map.getZoom();
 			this.$coordinate.val( latLng.lat + ',' + latLng.lng + ',' + zoom ).trigger( 'change' );
 		},
 
 		// Find coordinates by address
-		geocodeAddress: function( notify ) {
+		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
 			if ( !address ) {
@@ -204,7 +204,7 @@
 				limit: 1,
 				countrycodes: that.$canvas.data( 'region' ),
 				"accept-language": that.$canvas.data( 'language' )
-			}, function( result ) {
+			}, function ( result ) {
 				if ( result.length !== 1 ) {
 					if ( notify ) {
 						alert( i18n.no_results_string );
@@ -218,7 +218,7 @@
 		},
 
 		// Get the address field.
-		getAddressField: function() {
+		getAddressField: function () {
 			// No address field or more than 1 address fields, ignore
 			if ( !this.addressField || this.addressField.split( ',' ).length > 1 ) {
 				return null;
@@ -227,11 +227,11 @@
 		},
 
 		// Get the address value for geocoding.
-		getAddress: function() {
+		getAddress: function () {
 			var that = this;
 
 			return this.addressField.split( ',' )
-				.map( function( part ) {
+				.map( function ( part ) {
 					part = that.findAddressField( part );
 					return null === part ? '' : part.val();
 				} )
@@ -239,7 +239,7 @@
 		},
 
 		// Find address field based on its name attribute. Auto search inside groups when needed.
-		findAddressField: function( fieldName ) {
+		findAddressField: function ( fieldName ) {
 			// Not in a group.
 			var $address = $( 'input[name="' + fieldName + '"]' );
 			if ( $address.length ) {
