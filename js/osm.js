@@ -2,14 +2,14 @@
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
-	var OsmField = function ( $container ) {
+	var OsmField = function( $container ) {
 		this.$container = $container;
 	};
 
 	// Use prototype for better performance
 	OsmField.prototype = {
 		// Initialize everything
-		init: function () {
+		init: function() {
 			this.initDomElements();
 			this.initMapElements();
 
@@ -25,11 +25,23 @@
 		},
 
 		// Initialize DOM elements
-		initDomElements: function () {
+		initDomElements: function() {
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
-			this.canvas = this.$canvas[0];
+			this.canvas = this.$canvas[ 0 ];
 			this.$coordinate = this.$container.find( '.rwmb-osm' );
 			this.addressField = this.$container.data( 'address-field' );
+		},
+
+		setCenter: function( location ) {
+			this.map.panTo( location );
+			if ( this.marker ) {
+				this.marker.setLatLng( location );
+				return;
+			}
+
+			this.marker = L.marker( location, {
+				draggable: true
+			} ).addTo( this.map );
 		},
 
 		initMapElements: function() {
@@ -38,42 +50,35 @@
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			} ).addTo( this.map );
 
-			const setCenter = location => {
-				this.map.panTo( location );
-				this.marker = L.marker( location, {
-					draggable: true
-				} ).addTo( this.map );
+			// If there is a saved location, don't set the default location.
+			if ( this.$coordinate.val() ) {
+				return;
 			}
 
+			// Load default location if it's set.
 			let defaultLoc = this.$canvas.data( 'default-loc' );
-			const dublin = [ 53.346881, -6.258860 ];
-
-			// If no default location and no saved location, try to load current user location with fallback to Dublin.
-			if ( !defaultLoc && !this.$coordinate.val() ) {
-				this.map.locate( { setView: true } )
-					.on( 'locationfound', e => setCenter( e.latlng ) )
-					.on( 'locationerror', () => setCenter( dublin ) )
+			if ( defaultLoc ) {
+				return this.setCenter( defaultLoc.split( ',' ) );
 			}
 
-			// Load default location with fallback to Dublin.
-			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : dublin;
-			setCenter( defaultLoc );
+			// Set default location to Dublin as a start.
+			const dublin = [ 53.346881, -6.258860 ];
+			this.setCenter( dublin );
+
+			// Try to load current user location. Note that Geolocation API works only on HTTPS.
+			if ( location.protocol.includes( 'https' ) ) {
+				this.map.locate( { setView: true } ).on( 'locationfound', e => this.setCenter( e.latlng ) );
+			}
 		},
 
-		// Initialize marker position
-		initMarkerPosition: function () {
-			var coordinate = this.$coordinate.val(),
-				location,
-				zoom;
+		initMarkerPosition: function() {
+			const coordinate = this.$coordinate.val();
 
 			if ( coordinate ) {
-				location = coordinate.split( ',' );
-				var latLng = L.latLng( location[0], location[1] );
-				this.marker.setLatLng( latLng );
+				const location = coordinate.split( ',' );
+				this.setCenter( location );
 
-				zoom = location.length > 2 ? parseInt( location[2], 10 ) : 14;
-
-				this.map.panTo( latLng );
+				const zoom = location.length > 2 ? parseInt( location[ 2 ], 10 ) : 14;
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
 				this.geocodeAddress( false );
@@ -81,7 +86,7 @@
 		},
 
 		// Add event listeners for 'click' & 'drag'
-		addListeners: function () {
+		addListeners: function() {
 			var that = this;
 
 			/*
@@ -98,16 +103,16 @@
 				} );
 			}
 
-			this.map.on( 'click', function ( event ) {
+			this.map.on( 'click', function( event ) {
 				that.marker.setLatLng( event.latlng );
 				that.updateCoordinate( event.latlng );
 			} );
 
-			this.map.on( 'zoom', function () {
+			this.map.on( 'zoom', function() {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
-			this.marker.on( 'drag', function () {
+			this.marker.on( 'drag', function() {
 				that.updateCoordinate( that.marker.getLatLng() );
 			} );
 
@@ -121,8 +126,8 @@
 			$( '.meta-box-sortables' ).on( 'sortstop', refresh );
 		},
 
-		refresh: function () {
-			if ( ! this.map ) {
+		refresh: function() {
+			if ( !this.map ) {
 				return;
 			}
 			this.map.invalidateSize();
@@ -130,7 +135,7 @@
 		},
 
 		// Autocomplete address
-		autocomplete: function () {
+		autocomplete: function() {
 			var that = this,
 				$address = this.getAddressField();
 
@@ -139,7 +144,7 @@
 			}
 
 			$address.autocomplete( {
-				source: function ( request, response ) {
+				source: function( request, response ) {
 					$.get( 'https://nominatim.openstreetmap.org/search', {
 						format: 'json',
 						q: request.term,
@@ -147,14 +152,14 @@
 						"accept-language": that.$canvas.data( 'language' ),
 						addressdetails: 1
 					}, function( results ) {
-						if ( ! results.length ) {
+						if ( !results.length ) {
 							response( [ {
 								value: '',
 								label: i18n.no_results_string
 							} ] );
 							return;
 						}
-						response( results.map( function ( item ) {
+						response( results.map( function( item ) {
 							return {
 								address: item.address,
 								label: item.display_name,
@@ -165,29 +170,28 @@
 						} ) );
 					}, 'json' );
 				},
-				select: function ( event, ui ) {
-					var latLng = L.latLng( ui.item.latitude, ui.item.longitude );
+				select: function( event, ui ) {
+					const latLng = L.latLng( ui.item.latitude, ui.item.longitude );
 
-					that.map.panTo( latLng );
-					that.marker.setLatLng( latLng );
+					that.setCenter( latLng );
 					that.updateCoordinate( latLng );
 
-					$address.trigger( 'selected_address', [ui.item] );
+					$address.trigger( 'selected_address', [ ui.item ] );
 				}
 			} );
 		},
 
 		// Update coordinate to input field
-		updateCoordinate: function ( latLng ) {
+		updateCoordinate: function( latLng ) {
 			var zoom = this.map.getZoom();
 			this.$coordinate.val( latLng.lat + ',' + latLng.lng + ',' + zoom ).trigger( 'change' );
 		},
 
 		// Find coordinates by address
-		geocodeAddress: function ( notify ) {
+		geocodeAddress: function( notify ) {
 			var address = this.getAddress(),
 				that = this;
-			if ( ! address ) {
+			if ( !address ) {
 				return;
 			}
 
@@ -207,9 +211,8 @@
 					}
 					return;
 				}
-				var latLng = L.latLng( result[0].lat, result[0].lon );
-				that.map.panTo( latLng );
-				that.marker.setLatLng( latLng );
+				var latLng = L.latLng( result[ 0 ].lat, result[ 0 ].lon );
+				that.setCenter( latLng );
 				that.updateCoordinate( latLng );
 			}, 'json' );
 		},
@@ -217,7 +220,7 @@
 		// Get the address field.
 		getAddressField: function() {
 			// No address field or more than 1 address fields, ignore
-			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
+			if ( !this.addressField || this.addressField.split( ',' ).length > 1 ) {
 				return null;
 			}
 			return this.findAddressField( this.addressField );
@@ -238,7 +241,7 @@
 		// Find address field based on its name attribute. Auto search inside groups when needed.
 		findAddressField: function( fieldName ) {
 			// Not in a group.
-			var $address = $( 'input[name="' + fieldName + '"]');
+			var $address = $( 'input[name="' + fieldName + '"]' );
 			if ( $address.length ) {
 				return $address;
 			}
