@@ -25,41 +25,65 @@
 		// Initialize DOM elements
 		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-map-canvas' );
-			this.canvas = this.$canvas[0];
+			this.canvas = this.$canvas[ 0 ];
 			this.$coordinate = this.$container.find( '.rwmb-map' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
-		// Initialize map elements
+		setCenter: function ( location ) {
+			if ( !( location instanceof google.maps.LatLng ) ) {
+				location = new google.maps.LatLng( parseFloat( location.lat ), parseFloat( location.lng ) );
+			}
+			this.map.setCenter( location );
+			if ( this.marker ) {
+				this.marker.setPosition( location );
+				return;
+			}
+
+			this.marker = new google.maps.Marker( {
+				position: location,
+				map: this.map,
+				draggable: true,
+			} );
+		},
+
 		initMapElements: function () {
-			var defaultLoc = this.$canvas.data( 'default-loc' ),
-				latLng;
-
-			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, - 6.258860];
-			latLng = new google.maps.LatLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map
-
 			this.map = new google.maps.Map( this.canvas, {
-				center: latLng,
 				zoom: 14,
 				streetViewControl: 0,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			} );
-			this.marker = new google.maps.Marker( {position: latLng, map: this.map, draggable: true} );
+
+			// If there is a saved location, don't set the default location.
+			if ( this.$coordinate.val() ) {
+				return;
+			}
+
+			// Load default location if it's set.
+			let defaultLoc = this.$canvas.data( 'default-loc' );
+			if ( defaultLoc ) {
+				const [ lat, lng ] = defaultLoc.split( ',' );
+				return this.setCenter( { lat, lng } );
+			}
+
+			// Set default location to Dublin as a start.
+			const dublin = { lat: 53.346881, lng: -6.258860 };
+			this.setCenter( dublin );
+
+			// Try to load current user location. Note that Geolocation API works only on HTTPS.
+			if ( location.protocol.includes( 'https' ) && navigator.geolocation ) {
+				navigator.geolocation.getCurrentPosition( position => this.setCenter( { lat: position.coords.latitude, lng: position.coords.longitude } ) );
+			}
 		},
 
-		// Initialize marker position
 		initMarkerPosition: function () {
-			var coordinate = this.$coordinate.val(),
-				location,
-				zoom;
+			const coordinate = this.$coordinate.val();
 
 			if ( coordinate ) {
-				location = coordinate.split( ',' );
-				this.marker.setPosition( new google.maps.LatLng( location[0], location[1] ) );
+				const location = coordinate.split( ',' );
+				this.setCenter( { lat: location[ 0 ], lng: location[ 1 ] } );
 
-				zoom = location.length > 2 ? parseInt( location[2], 10 ) : 14;
-
-				this.map.setCenter( this.marker.position );
+				const zoom = location.length > 2 ? parseInt( location[ 2 ], 10 ) : 14;
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
 				this.geocodeAddress( false );
@@ -76,7 +100,7 @@
 			 */
 			if ( this.addressField.split( ',' ).length > 1 ) {
 				var geocodeAddress = that.geocodeAddress.bind( that );
-				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+				var addressFields = this.addressField.split( ',' ).forEach( function ( part ) {
 					var $field = that.findAddressField( part );
 					if ( null !== $field ) {
 						$field.on( 'change', geocodeAddress );
@@ -111,7 +135,7 @@
 		},
 
 		refresh: function () {
-			if ( ! this.map ) {
+			if ( !this.map ) {
 				return;
 			}
 			var zoom = this.map.getZoom(),
@@ -142,12 +166,12 @@
 				source: function ( request, response ) {
 					// if add region only search in that region
 					var options = {
-						'input': request.term,					
+						'input': request.term,
 						'componentRestrictions': { country: that.$canvas.data( 'region' ) }
 					};
 					// Change Geocode to getPlacePredictions .
 					autocomplete.getPlacePredictions( options, function ( results ) {
-						if ( results == null || ! results.length ) {
+						if ( results == null || !results.length ) {
 							response( [ {
 								value: '',
 								label: i18n.no_results_string
@@ -164,17 +188,16 @@
 					} );
 				},
 				select: function ( event, ui ) {
-					geocoder.geocode( { 
-			            'placeId': ui.item.placeid
-			        }, 
-			        function( responses, status ) {
-			            if ( status == 'OK' ) {					            	
-			                var latLng = new google.maps.LatLng( responses[0].geometry.location.lat(), responses[0].geometry.location.lng() );
-							that.map.setCenter( latLng );
-							that.marker.setPosition( latLng );
-							that.updateCoordinate( latLng );
-			            }
-			        } );
+					geocoder.geocode( {
+						'placeId': ui.item.placeid
+					},
+						function ( responses, status ) {
+							if ( status == 'OK' ) {
+								const latLng = new google.maps.LatLng( responses[ 0 ].geometry.location.lat(), responses[ 0 ].geometry.location.lng() );
+								that.setCenter( latLng );
+								that.updateCoordinate( latLng );
+							}
+						} );
 				}
 			} );
 		},
@@ -189,41 +212,40 @@
 		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
-			if ( ! address ) {
+			if ( !address ) {
 				return;
 			}
 
 			if ( false !== notify ) {
 				notify = true;
 			}
-			geocoder.geocode( {'address': address}, function ( results, status ) {
+			geocoder.geocode( { 'address': address }, function ( results, status ) {
 				if ( status !== google.maps.GeocoderStatus.OK ) {
 					if ( notify ) {
 						alert( i18n.no_results_string );
 					}
 					return;
 				}
-				that.map.setCenter( results[0].geometry.location );
-				that.marker.setPosition( results[0].geometry.location );
-				that.updateCoordinate( results[0].geometry.location );
+				that.setCenter( results[ 0 ].geometry.location );
+				that.updateCoordinate( results[ 0 ].geometry.location );
 			} );
 		},
 
 		// Get the address field.
-		getAddressField: function() {
+		getAddressField: function () {
 			// No address field or more than 1 address fields, ignore
-			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
+			if ( !this.addressField || this.addressField.split( ',' ).length > 1 ) {
 				return null;
 			}
 			return this.findAddressField( this.addressField );
 		},
 
 		// Get the address value for geocoding.
-		getAddress: function() {
+		getAddress: function () {
 			var that = this;
 
 			return this.addressField.split( ',' )
-				.map( function( part ) {
+				.map( function ( part ) {
 					part = that.findAddressField( part );
 					return null === part ? '' : part.val();
 				} )
@@ -231,9 +253,9 @@
 		},
 
 		// Find address field based on its name attribute. Auto search inside groups when needed.
-		findAddressField: function( fieldName ) {
+		findAddressField: function ( fieldName ) {
 			// Not in a group.
-			var $address = $( 'input[name="' + fieldName + '"]');
+			var $address = $( 'input[name="' + fieldName + '"]' );
 			if ( $address.length ) {
 				return $address;
 			}

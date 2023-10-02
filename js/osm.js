@@ -1,4 +1,4 @@
-( function( $, L, rwmb, i18n ) {
+( function ( $, L, rwmb, i18n ) {
 	'use strict';
 
 	// Use function construction to store map & DOM elements separately for each instance
@@ -19,7 +19,7 @@
 
 			// Make sure the map is displayed fully.
 			var map = this.map;
-			setTimeout( function() {
+			setTimeout( function () {
 				map.invalidateSize();
 			}, 200 );
 		},
@@ -27,46 +27,58 @@
 		// Initialize DOM elements
 		initDomElements: function () {
 			this.$canvas = this.$container.find( '.rwmb-osm-canvas' );
-			this.canvas = this.$canvas[0];
+			this.canvas = this.$canvas[ 0 ];
 			this.$coordinate = this.$container.find( '.rwmb-osm' );
 			this.addressField = this.$container.data( 'address-field' );
 		},
 
-		// Initialize map elements
-		initMapElements: function () {
-			var defaultLoc = this.$canvas.data( 'default-loc' ),
-				latLng;
+		setCenter: function ( location ) {
+			this.map.panTo( location );
+			if ( this.marker ) {
+				this.marker.setLatLng( location );
+				return;
+			}
 
-			defaultLoc = defaultLoc ? defaultLoc.split( ',' ) : [53.346881, -6.258860];
-			latLng = L.latLng( defaultLoc[0], defaultLoc[1] ); // Initial position for map.
-
-			this.map = L.map( this.canvas, {
-				center: latLng,
-				zoom: 14
-			} );
-
-			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			} ).addTo( this.map );
-			this.marker = L.marker( latLng, {
+			this.marker = L.marker( location, {
 				draggable: true
 			} ).addTo( this.map );
 		},
 
-		// Initialize marker position
+		initMapElements: function () {
+			this.map = L.map( this.canvas, { zoom: 14 } );
+			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			} ).addTo( this.map );
+
+			// If there is a saved location, don't set the default location.
+			if ( this.$coordinate.val() ) {
+				return;
+			}
+
+			// Load default location if it's set.
+			const defaultLoc = this.$canvas.data( 'default-loc' );
+			if ( defaultLoc ) {
+				return this.setCenter( defaultLoc.split( ',' ) );
+			}
+
+			// Set default location to Dublin as a start.
+			const dublin = [ 53.346881, -6.258860 ];
+			this.setCenter( dublin );
+
+			// Try to load current user location. Note that Geolocation API works only on HTTPS.
+			if ( location.protocol.includes( 'https' ) && navigator.geolocation ) {
+				this.map.locate( { setView: true } ).on( 'locationfound', e => this.setCenter( e.latlng ) );
+			}
+		},
+
 		initMarkerPosition: function () {
-			var coordinate = this.$coordinate.val(),
-				location,
-				zoom;
+			const coordinate = this.$coordinate.val();
 
 			if ( coordinate ) {
-				location = coordinate.split( ',' );
-				var latLng = L.latLng( location[0], location[1] );
-				this.marker.setLatLng( latLng );
+				const location = coordinate.split( ',' );
+				this.setCenter( location );
 
-				zoom = location.length > 2 ? parseInt( location[2], 10 ) : 14;
-
-				this.map.panTo( latLng );
+				const zoom = location.length > 2 ? parseInt( location[ 2 ], 10 ) : 14;
 				this.map.setZoom( zoom );
 			} else if ( this.addressField ) {
 				this.geocodeAddress( false );
@@ -83,7 +95,7 @@
 			 */
 			if ( this.addressField.split( ',' ).length > 1 ) {
 				var geocodeAddress = that.geocodeAddress.bind( that );
-				var addressFields = this.addressField.split( ',' ).forEach( function( part ) {
+				var addressFields = this.addressField.split( ',' ).forEach( function ( part ) {
 					var $field = that.findAddressField( part );
 					if ( null !== $field ) {
 						$field.on( 'change', geocodeAddress );
@@ -115,7 +127,7 @@
 		},
 
 		refresh: function () {
-			if ( ! this.map ) {
+			if ( !this.map ) {
 				return;
 			}
 			this.map.invalidateSize();
@@ -139,8 +151,8 @@
 						countrycodes: that.$canvas.data( 'region' ),
 						"accept-language": that.$canvas.data( 'language' ),
 						addressdetails: 1
-					}, function( results ) {
-						if ( ! results.length ) {
+					}, function ( results ) {
+						if ( !results.length ) {
 							response( [ {
 								value: '',
 								label: i18n.no_results_string
@@ -159,13 +171,12 @@
 					}, 'json' );
 				},
 				select: function ( event, ui ) {
-					var latLng = L.latLng( ui.item.latitude, ui.item.longitude );
+					const latLng = L.latLng( ui.item.latitude, ui.item.longitude );
 
-					that.map.panTo( latLng );
-					that.marker.setLatLng( latLng );
+					that.setCenter( latLng );
 					that.updateCoordinate( latLng );
 
-					$address.trigger( 'selected_address', [ui.item] );
+					$address.trigger( 'selected_address', [ ui.item ] );
 				}
 			} );
 		},
@@ -180,7 +191,7 @@
 		geocodeAddress: function ( notify ) {
 			var address = this.getAddress(),
 				that = this;
-			if ( ! address ) {
+			if ( !address ) {
 				return;
 			}
 
@@ -193,35 +204,34 @@
 				limit: 1,
 				countrycodes: that.$canvas.data( 'region' ),
 				"accept-language": that.$canvas.data( 'language' )
-			}, function( result ) {
+			}, function ( result ) {
 				if ( result.length !== 1 ) {
 					if ( notify ) {
 						alert( i18n.no_results_string );
 					}
 					return;
 				}
-				var latLng = L.latLng( result[0].lat, result[0].lon );
-				that.map.panTo( latLng );
-				that.marker.setLatLng( latLng );
+				var latLng = L.latLng( result[ 0 ].lat, result[ 0 ].lon );
+				that.setCenter( latLng );
 				that.updateCoordinate( latLng );
 			}, 'json' );
 		},
 
 		// Get the address field.
-		getAddressField: function() {
+		getAddressField: function () {
 			// No address field or more than 1 address fields, ignore
-			if ( ! this.addressField || this.addressField.split( ',' ).length > 1 ) {
+			if ( !this.addressField || this.addressField.split( ',' ).length > 1 ) {
 				return null;
 			}
 			return this.findAddressField( this.addressField );
 		},
 
 		// Get the address value for geocoding.
-		getAddress: function() {
+		getAddress: function () {
 			var that = this;
 
 			return this.addressField.split( ',' )
-				.map( function( part ) {
+				.map( function ( part ) {
 					part = that.findAddressField( part );
 					return null === part ? '' : part.val();
 				} )
@@ -229,9 +239,9 @@
 		},
 
 		// Find address field based on its name attribute. Auto search inside groups when needed.
-		findAddressField: function( fieldName ) {
+		findAddressField: function ( fieldName ) {
 			// Not in a group.
-			var $address = $( 'input[name="' + fieldName + '"]');
+			var $address = $( 'input[name="' + fieldName + '"]' );
 			if ( $address.length ) {
 				return $address;
 			}
