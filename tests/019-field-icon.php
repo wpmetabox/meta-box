@@ -6,7 +6,7 @@ function your_prefix_function_name( $meta_boxes ) {
 
 	$meta_boxes[] = [
 		'title'  => __( 'Test field icon' ),
-		'id'     => 'Test Icon',
+		'id'     => 'test_icon',
 		'fields' => [
 			[
 				'name'     => __( 'Icon', 'your-text-domain' ),
