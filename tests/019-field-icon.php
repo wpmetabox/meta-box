@@ -11,15 +11,9 @@ function your_prefix_function_name( $meta_boxes ) {
 			[
 				'name'     => __( 'Icon', 'your-text-domain' ),
 				'id'       => $prefix . 'icon_sda545',
+				'placeholder' => 'Select Icon',
 				'type'     => 'icon',
-				'icon_set' => 'fontawesome',
-				'options'  => [
-					'fa-solid fa-user'             => __( 'fa-solid fa-user', 'your-text-domain' ),
-					'fa-solid fa-magnifying-glass' => __( 'fa-solid fa-magnifying-glass', 'your-text-domain' ),
-					'fa-brands fa-instagram'       => __( 'fa-brands fa-instagram', 'your-text-domain' ),
-					'fa-solid fa-music'            => __( 'fa-solid fa-music', 'your-text-domain' ),
-					'fa-solid fa-cloud'            => __( 'fa-solid fa-cloud', 'your-text-domain' ),
-				],
+				'icon_set' => 'fontawesome'
 			],
 		],
 	];

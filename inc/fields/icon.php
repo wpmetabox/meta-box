@@ -6,8 +6,6 @@ defined( 'ABSPATH' ) || die;
  */
 class RWMB_Icon_Field extends RWMB_Select_Field {
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_script( 'fontawesome-kit', 'https://kit.fontawesome.com/780364a977.js', array(), null, false );
-
 		wp_enqueue_style( 'rwmb-select2', RWMB_CSS_URL . 'select2/select2.css', [], '4.0.10' );
 		wp_register_script( 'rwmb-select2', RWMB_JS_URL . 'select2/select2.min.js', [ 'jquery' ], '4.0.10', true );
 
@@ -26,6 +24,46 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', $dependencies, RWMB_VER, true );
 	}
 
+	public static function add_actions() {
+		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/fontawesome.css', [], RWMB_VER );
+	}
+
+	public static function html( $meta, $field ) {
+		$attributes                  = static::get_attributes( $field, $meta );
+		$attributes['data-selected'] = $meta;
+		$walker                      = new RWMB_Walker_Select( $field, $meta );
+
+		$output = sprintf( '<select %s>', self::render_attributes( $attributes ) );
+
+		if ( ! $field['multiple'] && $field['placeholder'] ) {
+			$output .= '<option value="">' . esc_html( $field['placeholder'] ) . '</option>';
+		}
+
+		$options = self::get_list_fonts();
+		$output .= $walker->walk( $options, $field['flatten'] ? -1 : 0 );
+		$output .= '</select>';
+		$output .= parent::get_select_all_html( $field );
+		return $output;
+	}
+
+	private static function get_list_fonts() {
+		$icons    = json_decode( file_get_contents( RWMB_CSS_URL . 'fontawesome/icons.json' ), true );
+		$iconList = [];
+
+		foreach ( $icons as $key => $icon ) {
+			$obj        = new stdClass();
+			$obj->label = $icon['label'];
+			$iconStyle  = $icon['styles'];
+
+			$fontPrefix = $iconStyle[0] === 'brands' ? 'fab' : 'fas';
+			$obj->value = $fontPrefix . ' fa-' . htmlspecialchars( $iconStyle[0] ) . ' fa-' . $key;
+
+			$iconList[ $key ] = $obj;
+		}
+
+		return $iconList;
+	}
+
 	/**
 	 * Normalize parameters for field.
 	 *
@@ -37,7 +75,7 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
 			'js_options'  => [],
-			'placeholder' => __( 'Select an item', 'meta-box' ),
+			'placeholder' => __( 'Select an icon', 'meta-box' ),
 		] );
 
 		$field = parent::normalize( $field );
@@ -69,9 +107,6 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 			'icon_set'     => $field['icon_set'],
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		] );
-		if ( isset( $field['size'] ) ) {
-			$attributes['size'] = $field['size'];
-		}
 
 		return $attributes;
 	}
@@ -108,11 +143,11 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 			return '';
 		}
 		$output = sprintf(
-			'<i class="%s" id="%s"></i>',
+			'<i class="%s" id="%s" name="%s" type="%s"></i>',
 			$value,
 			$field['id'],
 			$field['name'],
-			$field['type']
+			$field['type'],
 		);
 		return $output;
 	}

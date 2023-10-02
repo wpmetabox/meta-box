@@ -1,4 +1,9 @@
+.rwmb-icon-wrapper .placeholder-icon {
+    display: flex;
+    align-items: center;
+}
+
 .rwmb-icon-wrapper i {
-    display: block;
-    font-size: 1.75rem;
+    display: flex;
+    font-size: 20px;
 }

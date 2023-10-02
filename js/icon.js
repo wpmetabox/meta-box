@@ -1,21 +1,12 @@
+/**
+ * Link: https://stackoverflow.com/questions/37386293/how-to-add-icon-in-select2
+ */
+
 ( function ( $, rwmb ) {
     'use strict';
 
-    function setIcon() {
-        var $this = $( this ),
-            $icon = $( this ).siblings( 'i' );
-        if ( $icon.length == 0 ) {
-            $icon = $( '<i></i><br>' );
-            $icon.attr( 'class', $this.val() );
-            $this.before( $icon );
-        } else {
-            $icon.attr( 'class', $this.val() );
-        }
-    }
-
     function init( e ) {
         $( e.target ).find( '.rwmb-icon' ).each( transform );
-        $( e.target ).find( '.rwmb-icon' ).each( setIcon );
     }
 
     /**
@@ -24,13 +15,30 @@
     function transform() {
         var $this = $( this ),
             options = $this.data( 'options' );
-        console.log( $this );
 
         $this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
         $this.siblings( '.select2-container' ).remove();
         $this.find( 'option' ).removeAttr( 'data-select2-id' );
 
-        $this.show().select2( options );
+        $this.show().select2( {
+            ...options,
+            templateResult: function ( option ) {
+                if ( !option.id ) {
+                    return option.text;
+                }
+
+                const $option = $( '<span><i class="' + option.id + '"></i> ' + option.text + '</span>' );
+                return $option;
+            },
+            templateSelection: function ( option ) {
+                if ( !option.id ) {
+                    return option.text;
+                }
+
+                const $option = $( '<div class="placeholder-icon"><i class="' + option.id + '"></i><div style="margin-left:5px">' + option.text + '</div></div>' );
+                return $option;
+            },
+        } );
 
         /**
          * Preserve the order that options are selected.
@@ -45,7 +53,6 @@
 
     rwmb.$document
         .on( 'mb_ready', init )
-        .on( 'change', '.rwmb-icon', setIcon )
         .on( 'clone', function ( e ) {
             init( $( e.target ).parent() );
         } );
