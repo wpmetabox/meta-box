@@ -47,21 +47,21 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 	}
 
 	private static function get_list_fonts() {
-		$icons    = json_decode( file_get_contents( RWMB_CSS_URL . 'fontawesome/icons.json' ), true );
-		$iconList = [];
+		$icons     = json_decode( file_get_contents( RWMB_CSS_DIR . 'fontawesome/icons.json' ), true );
+		$icon_list = [];
 
 		foreach ( $icons as $key => $icon ) {
 			$obj        = new stdClass();
 			$obj->label = $icon['label'];
-			$iconStyle  = $icon['styles'];
+			$icon_style = $icon['styles'];
 
-			$fontPrefix = $iconStyle[0] === 'brands' ? 'fab' : 'fas';
-			$obj->value = $fontPrefix . ' fa-' . htmlspecialchars( $iconStyle[0] ) . ' fa-' . $key;
+			$font_prefix = $icon_style[0] === 'brands' ? 'fab' : 'fas';
+			$obj->value  = $font_prefix . ' fa-' . $icon_style[0] . ' fa-' . $key;
 
-			$iconList[ $key ] = $obj;
+			$icon_list[ $key ] = $obj;
 		}
 
-		return $iconList;
+		return $icon_list;
 	}
 
 	/**
@@ -75,14 +75,13 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
 			'js_options'  => [],
+			'icon_set'    => 'fontawesome',
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
 		] );
 
 		$field = parent::normalize( $field );
 
 		$field['js_options'] = wp_parse_args( $field['js_options'], [
-			'type'              => 'icon',
-			'icon_set'          => 'fontawesome',
 			'allowClear'        => true,
 			'dropdownAutoWidth' => true,
 			'placeholder'       => $field['placeholder'],
@@ -103,52 +102,26 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, [
 			'value'        => $value,
-			'type'         => $field['type'],
-			'icon_set'     => $field['icon_set'],
 			'data-options' => wp_json_encode( $field['js_options'] ),
 		] );
 
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
-		$output = '';
-
-		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );
-		foreach ( $attributes as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$value = wp_json_encode( $value );
-			}
-
-			$output .= sprintf( ' %s="%s"', $key, esc_attr( $value ) );
-		}
-
-		return $output;
-	}
-
-		/**
-		 * Format value for the helper functions.
-		 *
-		 * @param array        $field   Field parameters.
-		 * @param string|array $value   The field meta value.
-		 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
-		 * @param int|null     $post_id Post ID. null for current post. Optional.
-		 *
-		 * @return string
-		 */
+	/**
+	 * Format value for the helper functions.
+	 *
+	 * @param array        $field   Field parameters.
+	 * @param string|array $value   The field meta value.
+	 * @param array        $args    Additional arguments. Rarely used. See specific fields for details.
+	 * @param int|null     $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return string
+	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
 
-		$value = parent::call( 'get_value', $field, $args, $post_id );
-		if ( ! ( $field['type'] == 'icon' ) ) {
-			return '';
-		}
-		$output = sprintf(
-			'<i class="%s" id="%s" name="%s" type="%s"></i>',
-			$value,
-			$field['id'],
-			$field['name'],
-			$field['type'],
-		);
+		$value  = parent::call( 'get_value', $field, $args, $post_id );
+		$output = sprintf( '<i class="%s"></i>', $value );
 		return $output;
 	}
 }

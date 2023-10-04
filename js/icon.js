@@ -27,7 +27,7 @@
                     return option.text;
                 }
 
-                const $option = $( '<span><i class="' + option.id + '"></i> ' + option.text + '</span>' );
+                const $option = $( '<span class="rwmb-icon-select"><i class="' + option.id + '"></i> ' + option.text + '</span>' );
                 return $option;
             },
             templateSelection: function ( option ) {
@@ -35,7 +35,7 @@
                     return option.text;
                 }
 
-                const $option = $( '<div class="placeholder-icon"><i class="' + option.id + '"></i><div style="margin-left:5px">' + option.text + '</div></div>' );
+                const $option = $( '<span class="rwmb-icon-selected"><i class="' + option.id + '"></i><span style="margin-left:5px">' + option.text + '</span></span>' );
                 return $option;
             },
         } );
