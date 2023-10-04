@@ -53,7 +53,5 @@
 
     rwmb.$document
         .on( 'mb_ready', init )
-        .on( 'clone', function ( e ) {
-            init( $( e.target ).parent() );
-        } );
+        .on( 'clone', '.rwmb-icon', transform );
 } )( jQuery, rwmb );
