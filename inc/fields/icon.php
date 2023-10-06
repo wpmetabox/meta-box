@@ -22,9 +22,11 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 
 		wp_enqueue_style( 'rwmb-icon', RWMB_CSS_URL . 'icon.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', $dependencies, RWMB_VER, true );
+
+		self::enqueue_style();
 	}
 
-	public static function add_actions() {
+	private static function enqueue_style() {
 		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/fontawesome.css', [], RWMB_VER );
 	}
 
@@ -119,6 +121,8 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
+		// Enqueue style for frontend
+		self::enqueue_style();
 
 		$value  = parent::call( 'get_value', $field, $args, $post_id );
 		$output = sprintf( '<i class="%s"></i>', $value );
