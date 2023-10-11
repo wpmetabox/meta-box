@@ -75,7 +75,6 @@ class RWMB_Icon_Field extends RWMB_Select_Field {
 	 * @return array
 	 */
 	public static function normalize( $field ) {
-		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
 			'js_options'  => [],
 			'icon_set'    => 'fontawesome',
