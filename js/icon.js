@@ -5,11 +5,13 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
+	const template = option => option.id ? $( `<span class="rwmb-icon-select"><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
+
 	function initIconField( event, options ) {
 		$( this ).select2( {
 			...options,
-			templateResult: option => !option.id ? option.text : $( `<span class="rwmb-icon-select"><i class="${option.id}"></i>${option.text}</span>` ),
-			templateSelection: option => !option.id ? option.text : $( `<span class="rwmb-icon-selected"><i class="${option.id}"></i>${option.text}</span>` ),
+			templateResult: template,
+			templateSelection: template,
 		} );
 	}
 

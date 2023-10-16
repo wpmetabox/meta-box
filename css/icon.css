@@ -1,9 +1,9 @@
-.rwmb-icon-wrapper .rwmb-icon-selected {
+.rwmb-icon-select {
     display: flex;
     align-items: center;
+    gap: 4px;
 }
 
-.rwmb-icon-wrapper i {
-    display: flex;
-    font-size: 20px;
+.rwmb-icon-select i {
+    width: 20px;
 }
