@@ -11,10 +11,10 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_enqueue_style( 'rwmb-icon', RWMB_CSS_URL . 'icon.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', [ 'rwmb-select2', 'rwmb-select', 'underscore' ], RWMB_VER, true );
 
-		self::enqueue_style();
+		self::enqueue_icon_font_style();
 	}
 
-	private static function enqueue_style() {
+	private static function enqueue_icon_font_style() {
 		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/all.min.css', [], RWMB_VER );
 	}
 
@@ -23,16 +23,10 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$icon_list = [];
 
 		foreach ( $icons as $key => $icon ) {
-			$icon_entry = [
+			$icon_list[] = [
 				'label' => $icon['label'],
+				'value' => "fa-{$icon['styles'][0]} fa-{$key}",
 			];
-			$icon_style = $icon['styles'];
-
-			// $font_prefix = $icon_style[0] === 'brands' ? 'fab' : 'fas';
-			$icon_entry['value'] = 'fa-' . $icon_style[0] . ' fa-' . $key;
-
-			// Append the icon entry to the $icon_list array
-			$icon_list[] = $icon_entry;
 		}
 		return $icon_list;
 	}
@@ -46,22 +40,12 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'js_options'  => [],
 			'icon_set'    => 'fontawesome',
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
+			'options'     => self::get_list_fonts(),
 		] );
 
 		$field = parent::normalize( $field );
-
-		$field['js_options'] = wp_parse_args( $field['js_options'], [
-			'allowClear'        => true,
-			'dropdownAutoWidth' => false,
-			'placeholder'       => $field['placeholder'],
-			'width'             => 'style',
-			'showIcon'          => true,
-		] );
-
-		$field['options'] = self::get_list_fonts();
 
 		return $field;
 	}
@@ -77,11 +61,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		// Enqueue style for frontend
-		self::enqueue_style();
+		self::enqueue_icon_font_style();
 
-		$value  = parent::call( 'get_value', $field, $args, $post_id );
-		$output = sprintf( '<i class="%s"></i>', $value );
-		return $output;
+		return sprintf( '<i class="%s"></i>', $value );
 	}
 }
