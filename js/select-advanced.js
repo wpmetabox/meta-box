@@ -90,9 +90,14 @@
 			};
 		}
 
-		$this.show().select2( options );
-		if ( options.showIcon && options.showIcon === true ) {
-			$this.trigger( 'format_icon', [ options ] );
+		$this.show();
+
+		if ( $this.hasClass( 'rwmb-icon' ) ) {
+			// Initialize select2 with icons for icon field.
+			$this.trigger( 'init_icon_field', [ options ] );
+		} else {
+			// Initialize select2 normally.
+			$this.select2( options );
 		}
 
 		if ( !$this.attr( 'multiple' ) ) {
