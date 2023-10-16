@@ -18,17 +18,27 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/all.min.css', [], RWMB_VER );
 	}
 
-	private static function get_list_fonts() {
-		$icons     = json_decode( file_get_contents( RWMB_CSS_DIR . 'fontawesome/icons.json' ), true );
-		$icon_list = [];
+	private static function get_icons() {
+		// Get from cache to prevent reading large files.
+		$icons = wp_cache_get( 'fontawesome-icons', 'meta-box-icon-field' );
+		if ( false !== $icons ) {
+			return $icons;
+		}
 
-		foreach ( $icons as $key => $icon ) {
-			$icon_list[] = [
+		$data  = json_decode( file_get_contents( RWMB_CSS_DIR . 'fontawesome/icons.json' ), true );
+		$icons = [];
+
+		foreach ( $data as $key => $icon ) {
+			$icons[] = [
 				'label' => $icon['label'],
 				'value' => "fa-{$icon['styles'][0]} fa-{$key}",
 			];
 		}
-		return $icon_list;
+
+		// Cache the result.
+		wp_cache_set( 'fontawesome-icons', $icons, 'meta-box-post-field' );
+
+		return $icons;
 	}
 
 	/**
@@ -42,7 +52,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$field = wp_parse_args( $field, [
 			'icon_set'    => 'fontawesome',
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
-			'options'     => self::get_list_fonts(),
+			'options'     => self::get_icons(),
 		] );
 
 		$field = parent::normalize( $field );
