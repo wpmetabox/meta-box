@@ -15,7 +15,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function enqueue_icon_font_style() {
-		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/all.min.css', ['6.4.2'], RWMB_VER );
+		wp_enqueue_style( 'fontawesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
 	}
 
 	private static function get_icons() {
@@ -25,7 +25,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return $icons;
 		}
 
-		$data  = json_decode( file_get_contents( RWMB_CSS_DIR . 'fontawesome/icons.json' ), true );
+		$data  = json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true );
 		$icons = [];
 
 		foreach ( $data as $key => $icon ) {
