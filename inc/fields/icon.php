@@ -11,34 +11,34 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_enqueue_style( 'rwmb-icon', RWMB_CSS_URL . 'icon.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', [ 'rwmb-select2', 'rwmb-select', 'underscore' ], RWMB_VER, true );
 
-		self::enqueue_icon_font_style();
+		self::enqueue_style();
 	}
 
-	private static function enqueue_icon_font_style() {
-		wp_enqueue_style( 'fontawesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
+	private static function enqueue_style() {
+		wp_enqueue_style( 'rwmb-fontawesome', RWMB_CSS_URL . 'fontawesome/all.min.css', [], RWMB_VER );
 	}
 
-	private static function get_icons() {
-		// Get from cache to prevent reading large files.
-		$icons = wp_cache_get( 'fontawesome-icons', 'meta-box-icon-field' );
-		if ( false !== $icons ) {
-			return $icons;
+	private static function get_list_fonts( $icon_json = null ) {
+
+		if ( $icon_json && ! file_exists( RWMB_CSS_DIR . 'fontawesome/icons.json' ) ) {
+			return [];
 		}
 
-		$data  = json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true );
-		$icons = [];
+		$icons = $icon_json ?
+		json_decode( file_get_contents( wp_normalize_path( $icon_json ) ), true ) :
+		json_decode( file_get_contents( RWMB_CSS_DIR . 'fontawesome/icons.json' ), true );
 
-		foreach ( $data as $key => $icon ) {
-			$icons[] = [
+		$icon_list = [];
+
+		foreach ( $icons as $key => $icon ) {
+			$icon_entry          = [
 				'label' => $icon['label'],
-				'value' => "fa-{$icon['styles'][0]} fa-{$key}",
 			];
+			$icon_entry['value'] = $icon_json ? $key : 'fa-' . $icon['styles'][0] . ' fa-' . $key;
+			// Append the icon entry to the $icon_list array
+			$icon_list[] = $icon_entry;
 		}
-
-		// Cache the result.
-		wp_cache_set( 'fontawesome-icons', $icons, 'meta-box-post-field' );
-
-		return $icons;
+		return $icon_list;
 	}
 
 	/**
@@ -50,13 +50,39 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'icon_set'    => 'fontawesome',
-			'placeholder' => __( 'Select an icon', 'meta-box' ),
-			'options'     => self::get_icons(),
+			'js_options'     => [],
+			'list_icon'      => [],
+			'icon_set'       => 'fontawesome',
+			'enqueue_script' => '',
+			'icon_json'      => '',
+			'placeholder'    => __( 'Select an icon', 'meta-box' ),
 		] );
+
+		$field['list_icon'] = array_merge( $field['list_icon'], [ 'fontawesome' ] );
 
 		$field = parent::normalize( $field );
 
+		$field['js_options'] = wp_parse_args( $field['js_options'], [
+			'allowClear'        => true,
+			'dropdownAutoWidth' => true,
+			'placeholder'       => $field['placeholder'],
+			'width'             => 'style',
+		] );
+
+		if ( $field['icon_set'] != 'fontawesome' ) {
+			$field['options'] = self::get_list_fonts( $field['icon_json'] );
+			if ( ! is_string( $field['enqueue_script'] ) ) {
+				add_action( 'admin_enqueue_scripts', $field['enqueue_script'] );
+				return $field;
+			}
+
+			add_action('admin_enqueue_scripts', function () use ( $field ) {
+				wp_enqueue_style( 'rwmb-custom-icon', $field['enqueue_script'], [], RWMB_VER );
+			});
+
+			return $field;
+		}
+		$field['options'] = self::get_list_fonts();
 		return $field;
 	}
 
@@ -71,8 +97,19 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		self::enqueue_icon_font_style();
+		// Enqueue style for frontend
+		if ( empty( $field['enqueue_script'] ) ) {
+			self::enqueue_style();
+			$value  = parent::call( 'get_value', $field, $args, $post_id );
+			$output = sprintf( '<i class="%s"></i>', $value );
+			return $output;
+		}
 
-		return sprintf( '<i class="%s"></i>', $value );
+		// Custom Icon
+		! is_string( $field['enqueue_script'] ) ? $field['enqueue_script']() : wp_enqueue_style( 'rwmb-custom-icon', $field['enqueue_script'], [], RWMB_VER );
+
+		$value  = parent::call( 'get_value', $field, $args, $post_id );
+		$output = sprintf( '<i class="%s"></i>', $value );
+		return $output;
 	}
 }
