@@ -44,9 +44,13 @@ class Notification {
 	}
 
 	public function notify() {
-		// Do not show notification on License page.
+		$excluded_screens = [
+			'meta-box_page_meta-box-updater',
+			'settings_page_meta-box-updater-network',
+			'meta-box_page_meta-box-aio',
+		];
 		$screen = get_current_screen();
-		if ( in_array( $screen->id, [ 'meta-box_page_meta-box-updater', 'settings_page_meta-box-updater-network' ], true ) ) {
+		if ( in_array( $screen->id, $excluded_screens, true ) ) {
 			return;
 		}
 
@@ -98,7 +102,7 @@ class Notification {
 		echo '<br><span style="width: 26px; height: 20px; display: inline-block;">&nbsp;</span>' . wp_kses_post( sprintf( $messages[ $status ], $this->settings_page, 'https://metabox.io/pricing/', 'https://metabox.io/my-account/' ) );
 	}
 
-	public function plugin_links( array $links ) : array {
+	public function plugin_links( array $links ): array {
 		$status = $this->option->get_license_status();
 		if ( 'active' === $status ) {
 			return $links;
