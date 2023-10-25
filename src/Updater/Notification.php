@@ -39,35 +39,8 @@ class Notification {
 			add_filter( "plugin_action_links_$file", [ $this, 'plugin_links' ], 20 );
 		}
 
-		// Show global update notification.
-		if ( $this->is_dismissed() ) {
-			return;
-		}
-
 		$admin_notices_hook = $this->option->is_network_activated() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $admin_notices_hook, [ $this, 'notify' ] );
-
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
-		add_action( 'wp_ajax_mb_dismiss_notification', [ $this, 'dismiss' ] );
-	}
-
-	public function enqueue() {
-		wp_enqueue_script( 'mb-notification', RWMB_JS_URL . 'notification.js', [ 'jquery' ], RWMB_VER, true );
-		wp_localize_script( 'mb-notification', 'MBNotification', [ 'nonce' => wp_create_nonce( 'dismiss' ) ] );
-	}
-
-	public function dismiss() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error();
-		}
-		check_ajax_referer( 'dismiss', 'nonce' );
-
-		$this->option->update( [
-			'notification_dismissed'      => 1,
-			'notification_dismissed_time' => time(),
-		] );
-
-		wp_send_json_success();
 	}
 
 	public function notify() {
@@ -135,15 +108,5 @@ class Notification {
 		$links[] = '<a href="' . esc_url( $this->settings_page ) . '" class="rwmb-activate-license" style="color: #39b54a; font-weight: bold">' . esc_html( $text ) . '</a>';
 
 		return $links;
-	}
-
-	/**
-	 * Check if the global notification is dismissed.
-	 * Auto re-enable the notification every 2 weeks after it's dismissed.
-	 */
-	private function is_dismissed() : bool {
-		$time = $this->option->get( 'notification_dismissed_time', 0 );
-
-		return $this->option->get( 'notification_dismissed' ) && time() - $time < 14 * DAY_IN_SECONDS;
 	}
 }
