@@ -11,24 +11,40 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_enqueue_style( 'rwmb-icon', RWMB_CSS_URL . 'icon.css', [], RWMB_VER );
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', [ 'rwmb-select2', 'rwmb-select', 'underscore' ], RWMB_VER, true );
 
-		self::enqueue_icon_font_style();
+		$args  = func_get_args();
+		$field = $args[0];
+		self::enqueue_icon_font_style( $field['enqueue_script'] );
 	}
 
-	private static function enqueue_icon_font_style() {
-		wp_enqueue_style( 'fontawesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
+	private static function enqueue_icon_font_style( $enqueue_script = null ) {
+		if ( empty( $enqueue_script ) ) {
+			wp_enqueue_style( 'fontawesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
+			return;
+		}
+
+		is_string( $enqueue_script ) ? wp_enqueue_style( 'rwmb-custom-icon', $enqueue_script, [], '6.4.2' ) : $enqueue_script();
 	}
 
-	private static function get_icons() {
+	private static function get_icons( $field ) {
 		// Get from cache to prevent reading large files.
 		$icons = wp_cache_get( 'fontawesome-icons', 'meta-box-icon-field' );
-		if ( false !== $icons ) {
+		if ( false !== $icons || ! file_exists( RWMB_DIR . 'css/fontawesome/icons.json' ) ) {
 			return $icons;
 		}
 
-		$data  = json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true );
+		$data  = empty( $field['icon_json'] ) ? json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true ) : json_decode( file_get_contents( $field['icon_json'] ), true );
 		$icons = [];
 
 		foreach ( $data as $key => $icon ) {
+			// use icon set other
+			if ( ! empty( $field['icon_json'] ) ) {
+				$icons[] = [
+					'label' => $icon['label'],
+					'value' => $key,
+				];
+				continue;
+			}
+
 			$icons[] = [
 				'label' => $icon['label'],
 				'value' => "fa-{$icon['styles'][0]} fa-{$key}",
@@ -50,12 +66,16 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'icon_set'    => 'fontawesome',
-			'placeholder' => __( 'Select an icon', 'meta-box' ),
-			'options'     => self::get_icons(),
+			'list_icon'      => [],
+			'icon_set'       => 'fontawesome',
+			'placeholder'    => __( 'Select an icon', 'meta-box' ),
+			'enqueue_script' => '',
+			'icon_json'      => '',
+			'options'        => self::get_icons( $field ),
 		] );
 
-		$field = parent::normalize( $field );
+		$field['list_icon'] = array_merge( $field['list_icon'], [ 'fontawesome' ] );
+		$field              = parent::normalize( $field );
 
 		return $field;
 	}
@@ -71,7 +91,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		self::enqueue_icon_font_style();
+		self::enqueue_icon_font_style( $field['enqueue_script'] );
 
 		return sprintf( '<i class="%s"></i>', $value );
 	}
