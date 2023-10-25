@@ -58,8 +58,8 @@ class Settings {
 				printf(
 					// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
 					wp_kses_post( __( 'To get the license key, visit the <a href="%1$s" target="_blank">My Account</a> page on metabox.io website. If you have not purchased any extension yet, please <a href="%2$s" target="_blank">get a new license here</a>.', 'meta-box' ) ),
-					'https://metabox.io/my-account/',
-					'https://metabox.io/pricing/'
+					'https://elu.to/mua',
+					'https://elu.to/mup'
 				);
 				?>
 			</p>
@@ -126,13 +126,13 @@ class Settings {
 		} elseif ( 'expired' === $status ) {
 			// Translators: %s - URL to the My Account page.
 			$message = __( 'License expired. Please renew on the <a href="%s" target="_blank">My Account</a> page on metabox.io website.', 'meta-box' );
-			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/' ) );
+			$message = wp_kses_post( sprintf( $message, 'https://elu.to/mua' ) );
 
 			add_settings_error( '', 'mb-expired', $message );
 		} else {
 			// Translators: %1$s - URL to the My Account page, %2$s - URL to the pricing page.
 			$message = __( 'Invalid license. Please <a href="%1$s" target="_blank">check again</a> or <a href="%2$s" target="_blank">get a new license here</a>.', 'meta-box' );
-			$message = wp_kses_post( sprintf( $message, 'https://metabox.io/my-account/', 'https://metabox.io/pricing/' ) );
+			$message = wp_kses_post( sprintf( $message, 'https://elu.to/mua', 'https://mup' ) );
 
 			add_settings_error( '', 'mb-invalid', $message );
 		}
