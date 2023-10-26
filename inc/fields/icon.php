@@ -22,7 +22,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return;
 		}
 
-		is_string( $enqueue_script ) ? wp_enqueue_style( 'rwmb-custom-icon', $enqueue_script, [], '6.4.2' ) : $enqueue_script();
+		if( is_string( $enqueue_script ) ){
+			wp_enqueue_style('rwmb-custom-icon', $enqueue_script, [], '6.4.2');
+		}else{
+			$enqueue_script();
+		}
 	}
 
 	private static function get_icons( $field ) {
@@ -32,7 +36,17 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return $icons;
 		}
 
-		$data  = empty( $field['icon_json'] ) ? json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true ) : json_decode( file_get_contents( $field['icon_json'] ), true );
+		$data = wp_cache_get( 'fontawesome-icons', 'meta-box-icon-field-' . $field['icon_set'] );
+		if ( false === $data ) {
+			if ( empty( $field['icon_json'] ) ) {
+				$data = json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true );
+			} else {
+				$data = json_decode( file_get_contents( $field['icon_json'] ), true );
+			}
+
+			wp_cache_set( 'fontawesome-icons', $data, 'meta-box-post-field-' . $field['icon_set'] );
+		}
+
 		$icons = [];
 
 		foreach ( $data as $key => $icon ) {
