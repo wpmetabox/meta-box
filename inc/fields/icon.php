@@ -93,8 +93,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			];
 		}
 
-		f( $icons );
-
 		// Cache the result.
 		wp_cache_set( $cache_key, $icons, 'meta-box-post-field' );
 		return $icons;
@@ -108,10 +106,10 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'placeholder'    => __( 'Select an icon', 'meta-box' ),
-			'icon_style' => '',
-			'icon_set'       => 'fontawesome-free',
-			'icon_file'      => RWMB_DIR . 'css/fontawesome/icons.json',
+			'placeholder' => __( 'Select an icon', 'meta-box' ),
+			'icon_style'  => '',
+			'icon_set'    => 'fontawesome-free',
+			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
 		] );
 
 		$field['options'] = self::get_icons( $field );
