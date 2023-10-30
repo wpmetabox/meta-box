@@ -81,6 +81,36 @@ function field_custom_icon( $meta_boxes ) {
 				// enqueue_script by link css
 				'enqueue_script' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
+            [
+				'name'           => __( 'Icon custom with Input type 1 options', 'your-text-domain' ),
+				'id'             => $prefix . 'icon_custom_type_1_opt',
+				'placeholder'    => 'Select Icon',
+				'type'           => 'icon',
+				'icon_set'       => 'Line Awesome',
+				'icon_json'      => RWMB_DIR . 'tests/assets/line-awesome-type-1.text',
+				// enqueue_script by link css
+				'enqueue_script' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+			],
+            [
+				'name'           => __( 'Icon custom with Input type 2 options', 'your-text-domain' ),
+				'id'             => $prefix . 'icon_custom_type_2_opt',
+				'placeholder'    => 'Select Icon',
+				'type'           => 'icon',
+				'icon_set'       => 'Line Awesome',
+				'icon_json'      => RWMB_DIR . 'tests/assets/line-awesome-type-2.json',
+				// enqueue_script by link css
+				'enqueue_script' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+			],
+            [
+				'name'           => __( 'Icon custom with Input type 3 options', 'your-text-domain' ),
+				'id'             => $prefix . 'icon_custom_type_3_opt',
+				'placeholder'    => 'Select Icon',
+				'type'           => 'icon',
+				'icon_set'       => 'Line Awesome',
+				'icon_json'      => RWMB_DIR . 'tests/assets/line-awesome-type-3.json',
+				// enqueue_script by link css
+				'enqueue_script' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+			],
 		],
 	];
 

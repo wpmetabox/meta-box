@@ -22,9 +22,9 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return;
 		}
 
-		if( is_string( $enqueue_script ) ){
-			wp_enqueue_style('rwmb-custom-icon', $enqueue_script, [], '6.4.2');
-		}else{
+		if ( is_string( $enqueue_script ) ) {
+			wp_enqueue_style( 'rwmb-custom-icon', $enqueue_script, [], '6.4.2' );
+		} else {
 			$enqueue_script();
 		}
 	}
@@ -41,24 +41,49 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			if ( empty( $field['icon_json'] ) ) {
 				$data = json_decode( file_get_contents( RWMB_DIR . 'css/fontawesome/icons.json' ), true );
 			} else {
-				$data = json_decode( file_get_contents( $field['icon_json'] ), true );
+				$data = file_get_contents( $field['icon_json'] );
+				if ( json_decode( $data ) ) {
+					$data = json_decode( $data, true );
+				} else {
+					$data = explode( "\n", $data );
+					$data = array_map( 'trim', $data );
+				}
 			}
-
 			wp_cache_set( 'fontawesome-icons', $data, 'meta-box-post-field-' . $field['icon_set'] );
 		}
 
 		$icons = [];
-
 		foreach ( $data as $key => $icon ) {
 			// use icon set other
 			if ( ! empty( $field['icon_json'] ) ) {
-				$icons[] = [
-					'label' => $icon['label'],
-					'value' => $key,
+				// case all string
+				if ( is_string( $icon ) && is_numeric( $key ) ) {
+					$icons[ $icon ] = [
+						'label' => $icon,
+						'svg'   => '',
+					];
+					continue;
+				}
+				// case key : string
+				if ( is_string( $icon ) ) {
+					$label         = str_contains( $icon, '<svg' ) ? $key : $icon;
+					$svg           = str_contains( $icon, '<svg' ) ? $icon : '';
+					$icons[ $key ] = [
+						'label' => $label,
+						'svg'   => $svg,
+					];
+					continue;
+				}
+				// case key : object()
+				$label         = empty( $icon['label'] ) ? $key : $icon['label'];
+				$svg           = empty( $icon['svg'] ) ? '' : $icon['svg'];
+				$icons[ $key ] = [
+					'label' => $label,
+					'svg'   => $svg,
 				];
 				continue;
 			}
-
+			// fontawesome default
 			$icons[] = [
 				'label' => $icon['label'],
 				'value' => "fa-{$icon['styles'][0]} fa-{$key}",
@@ -67,7 +92,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		// Cache the result.
 		wp_cache_set( 'fontawesome-icons', $icons, 'meta-box-post-field' );
-
 		return $icons;
 	}
 
@@ -85,8 +109,23 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'placeholder'    => __( 'Select an icon', 'meta-box' ),
 			'enqueue_script' => '',
 			'icon_json'      => '',
-			'options'        => self::get_icons( $field ),
+			'options'        => [],
 		] );
+
+		$list_icons = wp_cache_get( 'fontawesome-icons', 'meta-box-icon-field-options-' . $field['icon_set'] );
+		if (false === $list_icons) {
+			$list_icons = self::get_icons( $field );
+			wp_cache_set( 'fontawesome-icons', $list_icons, 'meta-box-post-field-options-' . $field['icon_set'] );
+		}
+
+		if ( ! empty( $list_icons ) ) {
+			foreach ( $list_icons as $k => $v ) {
+				$field['options'][] = [
+					'label' => empty( $v['label'] ) ? $k : $v['label'],
+					'value' => empty( $v['svg'] ) ? $k : $v['svg'],
+				];
+			}
+		}				
 
 		$field['list_icon'] = array_merge( $field['list_icon'], [ 'fontawesome' ] );
 		$field              = parent::normalize( $field );

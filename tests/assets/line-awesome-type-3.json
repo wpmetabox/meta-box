@@ -1,0 +1,13 @@
+{
+  "las la-redo": {
+    "label": "Redo"
+  },
+  "las la-play": {
+    "svg": "<svg...1>"
+  },
+  "las la-random": {},
+  "las la-bus": {
+    "label": "Bus",
+    "svg": "<svg...2>"
+  }
+}
