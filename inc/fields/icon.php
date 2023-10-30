@@ -17,8 +17,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function enqueue_icon_font_style( array $field ) {
-		if ( $field['icon_set'] === 'fontawesome-free' ) {
-			wp_enqueue_style( 'fontawesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
+		if ( $field['icon_set'] === 'font-awesome-free' ) {
+			wp_enqueue_style( 'font-awesome-free', RWMB_CSS_URL . 'fontawesome/all.min.css', [], '6.4.2' );
 			return;
 		}
 
@@ -52,7 +52,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
 			// Default: FontAwesome
-			if ( $field['icon_set'] === 'fontawesome-free' ) {
+			if ( $field['icon_set'] === 'font-awesome-free' ) {
 				$icons[] = [
 					'value' => "fa-{$icon['styles'][0]} fa-{$key}",
 					'label' => $icon['label'],
@@ -108,7 +108,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$field = wp_parse_args( $field, [
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
 			'icon_style'  => '',
-			'icon_set'    => 'fontawesome-free',
+			'icon_set'    => 'font-awesome-free',
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
 		] );
 
