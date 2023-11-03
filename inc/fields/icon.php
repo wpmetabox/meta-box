@@ -5,6 +5,8 @@ defined( 'ABSPATH' ) || die;
  * The icon field.
  */
 class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
+	const CACHE_GROUP = 'meta-box-icon-field';
+
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 
@@ -32,7 +34,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	private static function get_icons( $field ) {
 		// Get from cache to prevent reading large files.
 		$cache_key = "{$field['icon_set']}-icons";
-		$icons     = wp_cache_get( $cache_key, 'meta-box-icon-field' );
+		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
 		if ( false !== $icons ) {
 			return $icons;
 		}
@@ -94,7 +96,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		// Cache the result.
-		wp_cache_set( $cache_key, $icons, 'meta-box-post-field' );
+		wp_cache_set( $cache_key, $icons, self::CACHE_GROUP );
 		return $icons;
 	}
 
