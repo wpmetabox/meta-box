@@ -110,6 +110,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_style'  => '',
 			'icon_set'    => 'font-awesome-free',
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
+            'svg_output'  => false,
+			'svg_dir'     => '',
 		] );
 
 		$field['options'] = self::get_icons( $field );
@@ -130,8 +132,31 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		self::enqueue_icon_font_style( $field );
-
-		return sprintf( '<i class="%s"></i>', $value );
+		// Render not svg
+		if ( ! isset( $field['svg_output'] ) || empty( $field['svg_output'] ) ) {
+			self::enqueue_icon_font_style( $field['enqueue_script'] );
+			return sprintf( '<i class="%s"></i>', $value );
+		}
+		// Render svg
+		if ( $field['icon_set'] === 'font-awesome-free' ) {
+			$pattern = '/fa-(brands|solid|regular) fa-(.*)/';
+			preg_match( $pattern, $value, $matches );
+			// if have exist svg file
+			$svg = file_get_contents( RWMB_CSS_URL . 'fontawesome/svgs/' . $matches[1] . '/' . $matches[2] . '.svg' );
+			return $svg;
+		}
+		// Render svg with path svg_dir
+		if ( ! empty( $field['svg_dir'] ) ) {
+			if ( file_exists( $field['svg_dir'] . $value . '.svg' ) ) {
+				$svg = file_get_contents( $field['svg_dir'] . $value . '.svg' );
+				return $svg;
+			}
+		} else {
+			// Render svg from svg key
+			$key = array_search( $value, array_column( $field['options'], 'value' ) );
+			if ( $key !== false ) {
+				return $field['options'][ $key ]['svg'];
+			}
+		}
 	}
 }

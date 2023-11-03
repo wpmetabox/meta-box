@@ -15,6 +15,14 @@ function field_icon( $meta_boxes ) {
 				'type'        => 'icon',
 				'icon_set'    => 'font-awesome-free',
 			],
+            [
+				'name'        => __( 'Icon with svg ouput', 'your-text-domain' ),
+				'id'          => $prefix . 'icon_svg_sda545',
+				'placeholder' => 'Select svg Icon',
+				'type'        => 'icon',
+				'icon_set'    => 'font-awesome-free',
+				'svg_output'  => true,
+			],
 			[
 				'name'        => __( 'Icon Clone', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_clone',
@@ -105,6 +113,29 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_set'       => 'line-awesome-5',
 				'icon_file'      => RWMB_DIR . 'tests/assets/line-awesome-type-3.json',
 				'icon_style'     => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+			],
+            [
+				'name'           => __( 'Icon custom with svg ouput type 1', 'your-text-domain' ),
+				'id'             => $prefix . 'icon_custom_svg_type_1',
+				'placeholder'    => 'Select Icon',
+				'type'           => 'icon',
+				'icon_set'       => 'line-awesome-6',
+				'icon_file'      => RWMB_DIR . 'tests/assets/line-awesome-svg-1.json',
+				// enqueue_script by link css
+				'icon_style' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+				'svg_output'     => true,
+			],
+			[
+				'name'           => __( 'Icon custom with svg ouput type 2', 'your-text-domain' ),
+				'id'             => $prefix . 'icon_custom_svg_type_2',
+				'placeholder'    => 'Select Icon',
+				'type'           => 'icon',
+				'icon_set'       => 'line-awesome-7',
+				'icon_file'      => RWMB_DIR . 'tests/assets/line-awesome-svg-2.json',
+				// enqueue_script by link css
+				'icon_style' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+				'svg_output'     => true,
+				'svg_dir'        => RWMB_DIR . 'tests/assets/svg/',
 			],
 		],
 	];
