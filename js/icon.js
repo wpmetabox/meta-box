@@ -5,7 +5,14 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
-	const template = option => option.id ? $( `<span class="rwmb-icon-select"><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
+	const template = option => {
+		// Format if label have svg
+		if ( ( option.text ).includes( '<svg' ) ) {
+			return $( `<span class="rwmb-icon-select">${ option.text }</span>` );
+		}
+
+		return option.id ? $( `<span class="rwmb-icon-select"><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
+	};
 
 	function initIconField( event, options ) {
 		$( this ).select2( {
