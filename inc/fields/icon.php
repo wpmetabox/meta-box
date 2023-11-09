@@ -116,7 +116,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
     
     private static function get_options( $field ) {
 
-		$icons = self::get_icons($field);
+		$icons = self::get_icons( $field );
 
 		$options = [];
 		foreach ( $icons as $key => $icon ) {
@@ -142,7 +142,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 				'label' => $icon['label'],
 			];
 		}
-		
+
 		return $options;
 	}
 
