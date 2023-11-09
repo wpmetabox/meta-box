@@ -21,7 +21,6 @@ function field_icon( $meta_boxes ) {
 				'placeholder' => 'Select svg Icon',
 				'type'        => 'icon',
 				'icon_set'    => 'font-awesome-free',
-				'svg_output'  => true,
 			],
 			[
 				'name'        => __( 'Icon Clone', 'your-text-domain' ),
@@ -128,7 +127,6 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_file'      => RWMB_DIR . 'tests/assets/line-awesome-svg-1.json',
 				// icon_style by link css
 				'icon_style' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
-				'svg_output'     => true,
 			],
 			[
 				'name'           => __( 'Icon custom with svg ouput type 2', 'your-text-domain' ),
@@ -139,7 +137,6 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_file'      => RWMB_DIR . 'tests/assets/line-awesome-svg-2.json',
 				// icon_style by link css
 				'icon_style' => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
-				'svg_output'     => true,
 				'svg_dir'        => RWMB_DIR . 'tests/assets/svg/',
 			],
 		],
