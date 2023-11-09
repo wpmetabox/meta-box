@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || die;
  */
 class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	const CACHE_GROUP = 'meta-box-icon-field';
-    
+
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 
@@ -99,22 +99,22 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_cache_set( $cache_key, $icons, self::CACHE_GROUP );
 		return $icons;
 	}
-    
+
 	/**
 	 * get_svg_raw
-	 * 
+	 *
 	 * @param mixed $field
 	 * @param mixed $value
 	 * @return bool|string
 	 */
-    private static function get_svg_raw( $field, $value ) {
+	private static function get_svg_raw( $field, $value ) {
 		// Replace trailing slash
 		$file = trailingslashit( $field['svg_dir'] ) . $value . '.svg';
 		// Return svg raw if have
 		return file_exists( $file ) ? file_get_contents( $file ) : '';
 	}
-    
-    private static function get_options( $field ) {
+
+	private static function get_options( $field ) {
 
 		$icons = self::get_icons( $field );
 
@@ -160,8 +160,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
 			'svg_dir'     => '',
 		] );
-		
-        $field['options'] = self::get_options( $field );
+
+		$field['options'] = self::get_options( $field );
 
 		$field = parent::normalize( $field );
 
