@@ -14,33 +14,37 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', [ 'rwmb-select2', 'rwmb-select', 'underscore' ], RWMB_VER, true );
 
 		$args  = func_get_args();
-		$field = $args[0];
+		$field = $args[ 0 ];
 		self::enqueue_icon_font_style( $field );
 	}
 
-	private static function enqueue_icon_font_style( array $field ) {
-		// if set svg dir
-		if ( ! empty( $field['svg_dir'] ) ) {
+	private static function enqueue_icon_font_style( array $field ): void {
+		// Use SVG instead of CSS.
+		if ( $field[ 'icon_dir' ] ) {
 			return;
 		}
 
-		if ( is_string( $field['icon_style'] ) ) {
-			wp_enqueue_style( $field['icon_set'], $field['icon_style'], [], RWMB_VER );
-		} else {
-			$field['icon_style']();
+		if ( is_string( $field[ 'icon_style' ] ) ) {
+			wp_enqueue_style( $field[ 'icon_set' ], $field[ 'icon_style' ], [], RWMB_VER );
+		} elseif ( is_callable( $field[ 'icon_style' ] ) ) {
+			$field[ 'icon_style' ]();
 		}
 	}
 
-	private static function get_icons( $field ) {
+	private static function get_icons( array $field ): array {
+		if ( ! file_exists( $field[ 'icon_file' ] ) ) {
+			return [];
+		}
+
 		// Get from cache to prevent reading large files.
-		$cache_key = $field['svg_dir'] ? "{$field['icon_set']}-icons-svg" : "{$field['icon_set']}-icons";
+		$cache_key = $field[ 'icon_dir' ] ? "{$field[ 'icon_set' ]}-icons-svg" : "{$field[ 'icon_set' ]}-icons";
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
 		if ( false !== $icons ) {
 			return $icons;
 		}
 
 		// Get icon from a JSON or a text file.
-		$data    = file_get_contents( $field['icon_file'] );
+		$data    = file_get_contents( $field[ 'icon_file' ] );
 		$decoded = json_decode( $data, true );
 		if ( JSON_ERROR_NONE === json_last_error() ) {
 			$data = $decoded;
@@ -54,11 +58,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
 			// Default: FontAwesome
-			if ( $field['icon_set'] === 'font-awesome-free' ) {
+			if ( $field[ 'icon_set' ] === 'font-awesome-free' ) {
 				$icons[] = [
-					'value' => "fa-{$icon['styles'][0]} fa-{$key}",
-					'label' => $icon['label'],
-					'svg'   => $icon['svg'][ $icon['styles'][0] ]['raw'],
+					'value' => "fa-{$icon[ 'styles' ][ 0 ]} fa-{$key}",
+					'label' => $icon[ 'label' ],
+					'svg'   => $icon[ 'svg' ][ $icon[ 'styles' ][ 0 ] ][ 'raw' ],
 				];
 				continue;
 			}
@@ -86,8 +90,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			}
 
 			// JSON file: "icon-class": { "label": "Label", "svg": "<svg...>" }
-			$label   = empty( $icon['label'] ) ? $key : $icon['label'];
-			$svg     = empty( $icon['svg'] ) ? '' : $icon['svg'];
+			$label   = empty( $icon[ 'label' ] ) ? $key : $icon[ 'label' ];
+			$svg     = empty( $icon[ 'svg' ] ) ? '' : $icon[ 'svg' ];
 			$icons[] = [
 				'value' => $key,
 				'label' => $label,
@@ -100,46 +104,21 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return $icons;
 	}
 
-	/**
-	 * get_svg_raw
-	 *
-	 * @param mixed $field
-	 * @param mixed $value
-	 * @return bool|string
-	 */
-	private static function get_svg_raw( $field, $value ) {
-		// Replace trailing slash
-		$file = trailingslashit( $field['svg_dir'] ) . $value . '.svg';
-		// Return svg raw if have
+	private static function get_svg( array $field, string $value ): string {
+		$file = trailingslashit( $field[ 'icon_dir' ] ) . $value . '.svg';
 		return file_exists( $file ) ? file_get_contents( $file ) : '';
 	}
 
-	private static function get_options( $field ) {
-
+	private static function get_options( array $field ): array {
 		$icons = self::get_icons( $field );
 
 		$options = [];
-		foreach ( $icons as $key => $icon ) {
-			// Case with svg_dir
-			if ( ! empty( $field['svg_dir'] ) ) {
-				$options[] = [
-					'value' => $icon['value'],
-					'label' => self::get_svg_raw( $field, $icon['value'] ) . $icon['label'],
-				];
-				continue;
-			}
-			// Case without svg_dir
-			if ( ! empty( $icon['svg'] ) ) {
-				$options[] = [
-					'value' => $icon['value'],
-					'label' => $icon['svg'] . $icon['label'],
-				];
-				continue;
-			}
-			// Case with empty svg
+		foreach ( $icons as $icon ) {
+			$svg = $field[ 'icon_dir' ] ? self::get_svg( $field, $icon[ 'value' ] ) : $icon[ 'svg' ];
+
 			$options[] = [
-				'value' => $icon['value'],
-				'label' => $icon['label'],
+				'value' => $icon[ 'value' ],
+				'label' => $svg . $icon[ 'label' ],
 			];
 		}
 
@@ -158,10 +137,10 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_style'  => '',
 			'icon_set'    => 'font-awesome-free',
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
-			'svg_dir'     => '',
+			'icon_dir'    => '',
 		] );
 
-		$field['options'] = self::get_options( $field );
+		$field[ 'options' ] = self::get_options( $field );
 
 		$field = parent::normalize( $field );
 
@@ -179,24 +158,24 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
-		// Render svg with path svg_dir.
-		if ( ! empty( $field['svg_dir'] ) ) {
-			return self::get_svg_raw( $field, $value );
+		// SVG from file.
+		if ( $field[ 'icon_dir' ] ) {
+			return self::get_svg( $field, $value );
 		}
-		// Render svg without path svg_dir.
-		$key = array_search( $value, array_column( $field['options'], 'value' ) );
-		if ( false !== $key ) {
-			// Render svg from options.
-			if ( strpos( $field['options'][ $key ]['label'], '<svg' ) === 0 ) {
-				// Remove the label only output the svg
-				$label    = $field['options'][ $key ]['label'];
-				$position = strpos( $label, '</svg>' );
-				$svg      = substr( $label, 0, $position + strlen( '</svg>' ) );
-				return $svg;
-			}
-			// Render with class and use css.
-			self::enqueue_icon_font_style( $field );
-			return sprintf( '<i class="%s"></i>', $value );
+
+		$icons = self::get_icons( $field );
+		$key   = array_search( $value, array_column( $icons, 'value' ) );
+		if ( false === $key ) {
+			return '';
 		}
+
+		// Embed SVG.
+		if ( $icons[ $key ][ 'svg' ] ) {
+			return $icons[ $key ][ 'svg' ];
+		}
+
+		// Render with class and use css.
+		self::enqueue_icon_font_style( $field );
+		return sprintf( '<span class="%s"></span>', $value );
 	}
 }
