@@ -15,14 +15,6 @@ function field_icon( $meta_boxes ) {
 				'type'        => 'icon',
 				'icon_set'    => 'font-awesome-free',
 			],
-            [
-				'name'           => __( 'Icon font awesome pro', 'your-text-domain' ),
-				'id'             => $prefix . 'icon_fontawesome_pro',
-				'placeholder'    => 'Select Icon',
-				'type'           => 'icon',
-				'icon_set'       => 'font-awesome-pro',
-				'icon_file'      => RWMB_DIR . 'tests/assets/icons.json',
-			],
 			[
 				'name'        => __( 'Icon Clone', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_clone',
