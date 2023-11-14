@@ -59,26 +59,27 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		foreach ( $data as $key => $icon ) {
 			// Default: FontAwesome
 			if ( $field[ 'icon_set' ] === 'font-awesome-free' ) {
+				$style =$icon[ 'styles' ][ 0 ];
 				$icons[] = [
-					'value' => "fa-{$icon[ 'styles' ][ 0 ]} fa-{$key}",
+					'value' => "fa-{$style} fa-{$key}",
 					'label' => $icon[ 'label' ],
-					'svg'   => $icon[ 'svg' ][ $icon[ 'styles' ][ 0 ] ][ 'raw' ],
+					'svg'   => $icon[ 'svg' ][ $style ][ 'raw' ],
 				];
 				continue;
 			}
 
 			// FontAwesome Pro
 			if ( $field[ 'icon_set' ] === 'font-awesome-pro' ) {
-				foreach ( $icon[ 'styles' ] as $k ){
+				foreach ( $icon[ 'styles' ] as $style ) {
 					$icons[] = [
-						'value' => "fa-{$k} fa-{$key}",
-						'label' => $icon[ 'label' ] . " ({$k})",
-						'svg'   => $icon[ 'svg' ][ $k ][ 'raw' ],
+						'value' => "fa-{$style} fa-{$key}",
+						'label' => "{$icon[ 'label' ]} ({$style})",
+						'svg'   => $icon[ 'svg' ][ $style ][ 'raw' ],
 					];
 				}
 				continue;
 			}
-            
+
 			// Text file: each icon on a line.
 			if ( is_string( $icon ) && is_numeric( $key ) ) {
 				$icons[] = [
