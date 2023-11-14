@@ -59,7 +59,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		foreach ( $data as $key => $icon ) {
 			// Default: FontAwesome
 			if ( $field[ 'icon_set' ] === 'font-awesome-free' ) {
-				$style =$icon[ 'styles' ][ 0 ];
+				$style   = $icon[ 'styles' ][ 0 ];
 				$icons[] = [
 					'value' => "fa-{$style} fa-{$key}",
 					'label' => $icon[ 'label' ],
