@@ -1,11 +1,11 @@
 .rwmb-icon-select {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
 }
 
 .rwmb-icon-select i {
-    width: 20px;
+    width: 16px;
 }
 
 .rwmb-icon-select svg {
