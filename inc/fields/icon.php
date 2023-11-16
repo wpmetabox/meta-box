@@ -24,10 +24,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return;
 		}
 
-		if ( is_string( $field[ 'icon_style' ] ) ) {
-			wp_enqueue_style( $field[ 'icon_set' ], $field[ 'icon_style' ], [], RWMB_VER );
-		} elseif ( is_callable( $field[ 'icon_style' ] ) ) {
-			$field[ 'icon_style' ]();
+		if ( is_string( $field[ 'icon_css' ] ) ) {
+			$handle = md5( $field[ 'icon_css' ] );
+			wp_enqueue_style( $handle, $field[ 'icon_css' ], [], RWMB_VER );
+		} elseif ( is_callable( $field[ 'icon_css' ] ) ) {
+			$field[ 'icon_css' ]();
 		}
 	}
 
@@ -37,7 +38,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		// Get from cache to prevent reading large files.
-		$cache_key = $field[ 'icon_dir' ] ? "{$field[ 'icon_set' ]}-icons-svg" : "{$field[ 'icon_set' ]}-icons";
+		$params = [
+			'icon_file' => $field['icon_file'],
+			'icon_dir'  => $field['icon_dir'],
+		];
+		$cache_key = md5( serialize( $params ) ) . '-icons';
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
 		if ( false !== $icons ) {
 			return $icons;
@@ -147,7 +152,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
-			'icon_style'  => '',
+			'icon_css'    => '',
 			'icon_set'    => 'font-awesome-free',
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
 			'icon_dir'    => '',
