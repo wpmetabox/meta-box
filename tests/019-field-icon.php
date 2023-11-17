@@ -115,7 +115,7 @@ function field_custom_icon( $meta_boxes ) {
 				'id'          => $prefix . 'icon_custom_svg_type_2',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
-                'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome-svg-2.json',
+                'icon_file'   => RWMB_DIR . 'tests/assets/icons.json',
 				'icon_dir'    => RWMB_DIR . 'tests/assets/svg/',
 			],
             [
