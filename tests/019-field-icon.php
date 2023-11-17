@@ -123,7 +123,6 @@ function field_custom_icon( $meta_boxes ) {
 				'id'          => $prefix . 'icon_custom_without_file',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
-				'icon_file'   => '',
 				'icon_dir'    => RWMB_DIR . 'tests/assets/svg/',
 			],
 		],
