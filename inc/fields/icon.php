@@ -32,9 +32,35 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 	}
 
+	private static function get_list_svg( string $folder ): array {
+		$return = [];
+		$files  = array_diff( scandir( $folder ), array( '..', '.' ) );
+
+		if ( count( $files ) === 0 ) {
+			return $return;
+		}
+
+		foreach ( $files as $file ) {
+			// Check if extension file svg
+			if ( strtolower( substr( $file, -4 ) ) === '.svg' ) {
+				$return[] = $file;
+			}
+		}
+
+		return $return;
+	}
+
 	private static function get_icons( array $field ): array {
-		if ( ! file_exists( $field['icon_file'] ) ) {
+
+		if ( ! file_exists( $field['icon_file'] ) && ! is_dir( $field['icon_dir'] ) ) {
 			return [];
+		}
+
+		if ( ! file_exists( $field['icon_file'] ) && is_dir( $field['icon_dir'] ) ) {
+			$files = self::get_list_svg( $field['icon_dir'] );
+			if ( count( $files ) === 0 ) {
+				return [];
+			}
 		}
 
 		// Get from cache to prevent reading large files.
@@ -45,6 +71,29 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$cache_key = md5( serialize( $params ) ) . '-icons';
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
 		if ( false !== $icons ) {
+			return $icons;
+		}
+
+		// Reformat icons.
+		$icons = [];
+
+		if ( isset( $files ) ) {
+			foreach ( $files as $file ) {
+				// Check if the file ends with '.svg' (case-insensitive)
+				if ( strtolower( substr( $file, -4 ) ) === '.svg' ) {
+					// Get the filename without the extension
+					$filename = substr( $file, 0, -4 );
+					// Add the icon details to the $icons array
+					$icons[] = [
+						'value' => $filename,
+						'label' => $filename,
+						'svg'   => self::get_svg( $field, $filename ),
+					];
+				}
+			}
+
+			// Cache the result.
+			wp_cache_set( $cache_key, $icons, self::CACHE_GROUP );
 			return $icons;
 		}
 
@@ -59,8 +108,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			$data = array_map( 'trim', $data );
 		}
 
-		// Reformat icons.
-		$icons = [];
 		foreach ( $data as $key => $icon ) {
 			// Default: FontAwesome
 			if ( $field['icon_set'] === 'font-awesome-free' ) {
@@ -153,7 +200,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$field = wp_parse_args( $field, [
 			'placeholder' => __( 'Select an icon', 'meta-box' ),
 			'icon_css'    => '',
-			'icon_set'    => 'font-awesome-free',
+			'icon_set'    => 'custom',
 			'icon_file'   => RWMB_DIR . 'css/fontawesome/icons.json',
 			'icon_dir'    => '',
 		] );
