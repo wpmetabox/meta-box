@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 5.9
 Requires PHP: 7.0
-Tested up to: 6.3.2
-Stable tag: 5.8.2
+Tested up to: 6.4.1
+Stable tag: 5.9.0
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -174,6 +174,14 @@ If you like this plugin, you might also like our other WordPress products:
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.9.0 - 2023-11-22 =
+
+**Highlights:**
+
+Add new `icon` field type, which supports Font Awesome Free, Font Awesome Pro and custom icon set. Can be used with icon font with CSS file or with SVGs. See the [plugin docs](https://docs.metabox.io/fields/icon/) for how to use it.
+
+The `icon` field type will be added to the new version of Meta Box Builder soon, which will allow you to configure its settings with UI.
 
 = 5.8.2 - 2023-10-13 =
 - Google Maps & OSM: ask for current user location for the map if there is no saved location or no default location is set (#1537)

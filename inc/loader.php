@@ -7,7 +7,7 @@
 class RWMB_Loader {
 	protected function constants() {
 		// Script version, used to add version for scripts and styles.
-		define( 'RWMB_VER', '5.8.2' );
+		define( 'RWMB_VER', '5.9.0' );
 
 		list( $path, $url ) = self::get_path( dirname( __DIR__ ) );
 
