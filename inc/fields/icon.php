@@ -150,19 +150,19 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	private static function rebuild_path( &$field ) {
 
 		// Rebuild path for icon file
-		if ( ! empty( $field['icon_file'] ) && strpos( $field['icon_file'], ABSPATH ) === false ) {
+		if ( $field['icon_file'] && strpos( $field['icon_file'], ABSPATH ) === false ) {
 			$field['icon_file'] = trailingslashit( ABSPATH ) . ltrim( $field['icon_file'], '/' );
 			$field['icon_file'] = ABSPATH . $field['icon_file'];
 		}
 
 		// Rebuild path for icon dir
-		if ( ! empty( $field['icon_dir'] ) && strpos( $field['icon_dir'], ABSPATH ) === false ) {
+		if ( $field['icon_dir'] && strpos( $field['icon_dir'], ABSPATH ) === false ) {
 			$field['icon_dir'] = trailingslashit( ABSPATH ) . ltrim( $field['icon_dir'], '/' );
 			$field['icon_dir'] = ABSPATH . $field['icon_dir'];
 		}
 
 		// Rebuild path for icon css
-		if ( ! empty( $field['icon_css'] ) && is_string( $field['icon_css'] ) && strpos( $field['icon_css'], 'http' ) === false ) {
+		if ( $field['icon_css'] && is_string( $field['icon_css'] ) && strpos( $field['icon_css'], 'http' ) === false ) {
 			$field['icon_css'] = home_url( $field['icon_css'] );
 		}
 
