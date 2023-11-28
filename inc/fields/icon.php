@@ -150,7 +150,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	private static function rebuild_path( &$field ) {
 
 		// Rebuild path for icon file
-		if ( strpos( $field['icon_file'], ABSPATH ) === false ) {
+		if ( ! empty( $field['icon_file'] ) && strpos( $field['icon_file'], ABSPATH ) === false ) {
 			$field['icon_file'] = trailingslashit( ABSPATH ) . ltrim( $field['icon_file'], '/' );
 			$field['icon_file'] = ABSPATH . $field['icon_file'];
 		}
