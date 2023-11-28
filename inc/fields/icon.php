@@ -28,7 +28,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		strtolower( substr( $field['icon_file'], -4 ) ) === '.css' &&
 		! empty( $field['css_prefix'] ) &&
 		! empty( $field['base_class'] ) ) {
-			$handle   = md5( $field['icon_file'] );
+			$handle   = md5( $field['icon_css'] );
 			$css_path = get_home_url() . '/' . str_replace( ABSPATH, '', $field['icon_file'] );
 			wp_enqueue_style( $handle, $css_path, [], RWMB_VER );
 			return;
@@ -70,11 +70,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			$data = $decoded;
 		} elseif ( strtolower( substr( $field['icon_file'], -4 ) ) === '.css' && ! empty( $field['css_prefix'] ) ) {
 			// CSS file.
-			preg_match_all( '/\.(' . preg_quote( $field['css_prefix'], '/' ) . '[^\s:]+):before/', $data, $matches );
-			if ( empty( $matches[1] ) ) {
-				preg_match_all( '/\.(' . preg_quote( $field['css_prefix'], '/' ) . '[^\s:]+)/', $data, $matches );
-			}
-			$data = $matches[1];
+			$data = self::extract_class_form_file_css($data, $field['css_prefix']);
 		} else {
 			// Text file: each icon on a line.
 			$data = explode( "\n", $data );
@@ -152,6 +148,16 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		// Cache the result.
 		wp_cache_set( $cache_key, $icons, self::CACHE_GROUP );
 		return $icons;
+	}
+
+	private static function extract_class_form_file_css( string $data, string $prefix  ): array {		
+		preg_match_all( '/\.(' . preg_quote( $prefix, '/' ) . '[^\s:]+):before/', $data, $matches );
+
+		if ( empty( $matches[1] ) ) {
+			preg_match_all( '/\.(' . preg_quote( $prefix, '/' ) . '[^\s:]+)/', $data, $matches );
+		}
+
+		return $matches[1];
 	}
 
 	private static function get_icons_from_dir( string $dir ): array {
