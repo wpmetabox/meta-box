@@ -126,11 +126,11 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_dir'    => RWMB_DIR . 'tests/assets/svg/',
 			],
             [
-				'name'        => __( 'Icon custom with css file as icon_file', 'your-text-domain' ),
+				'name'        => __( 'Icon custom with css file as icon_css', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_custom_use_css_file_only',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
-				'icon_file'   => RWMB_DIR . 'tests/assets/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 				'css_prefix'  => 'la-',
 				'base_class'  => 'las',
 			],

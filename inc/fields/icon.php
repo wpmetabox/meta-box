@@ -24,16 +24,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return;
 		}
 
-		if ( file_exists( $field['icon_file'] ) &&
-		strtolower( substr( $field['icon_file'], -4 ) ) === '.css' &&
-		! empty( $field['css_prefix'] ) &&
-		! empty( $field['base_class'] ) ) {
-			$handle   = md5( $field['icon_css'] );
-			$css_path = get_home_url() . '/' . str_replace( ABSPATH, '', $field['icon_file'] );
-			wp_enqueue_style( $handle, $css_path, [], RWMB_VER );
-			return;
-		}
-
 		if ( is_string( $field['icon_css'] ) ) {
 			$handle = md5( $field['icon_css'] );
 			wp_enqueue_style( $handle, $field['icon_css'], [], RWMB_VER );
@@ -56,6 +46,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$params    = [
 			'icon_file' => $field['icon_file'],
 			'icon_dir'  => $field['icon_dir'],
+            'icon_css'  => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
 		];
 		$cache_key = md5( serialize( $params ) ) . '-icons';
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
@@ -66,11 +57,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		// Get icon from a JSON or a text file.
 		$data    = file_get_contents( $field['icon_file'] );
 		$decoded = json_decode( $data, true );
-		if ( JSON_ERROR_NONE === json_last_error() ) {
+		if ( JSON_ERROR_NONE === json_last_error() && ! $field['css_prefix'] ) {
 			$data = $decoded;
-		} elseif ( strtolower( substr( $field['icon_file'], -4 ) ) === '.css' && ! empty( $field['css_prefix'] ) ) {
+		} elseif ( $field['css_prefix'] ) {
 			// CSS file.
-			$data = self::extract_class_form_file_css($data, $field['css_prefix']);
+			$data = self::extract_class_form_file_css( file_get_contents( $field['icon_css'] ), $field['css_prefix'] );
 		} else {
 			// Text file: each icon on a line.
 			$data = explode( "\n", $data );
@@ -80,6 +71,16 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
+        	// Only using CSS file as icon_css
+			if ( $field['base_class'] ) {
+				$icons[] = [
+					'value' => $field['base_class'] . ' ' . $icon,
+					'label' => $field['base_class'] . ' ' . $icon,
+					'svg'   => '',
+				];
+				continue;
+			}
+            
 			// Default: FontAwesome
 			if ( $field['icon_set'] === 'font-awesome-free' ) {
 				$style   = $icon['styles'][0];
@@ -100,16 +101,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 						'svg'   => $icon['svg'][ $style ]['raw'],
 					];
 				}
-				continue;
-			}
-
-			// CSS file as icon_file
-			if ( ! empty( $field['base_class'] ) ) {
-				$icons[] = [
-					'value' => $field['base_class'] . ' ' . $icon,
-					'label' => $field['base_class'] . ' ' . $icon,
-					'svg'   => '',
-				];
 				continue;
 			}
 
@@ -214,6 +205,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_set'    => '',
 			'icon_file'   => '',
 			'icon_dir'    => '',
+            'css_prefix'  => '',
+            'base_class'  => '',
 		] );
 
 		// Font Awesome Pro.
