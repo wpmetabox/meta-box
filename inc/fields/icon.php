@@ -19,9 +19,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function enqueue_icon_font_style( array $field ): void {
-
-		self::rebuild_path( $field );
-
 		// Use SVG instead of CSS.
 		if ( $field['icon_dir'] ) {
 			return;
@@ -36,8 +33,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function get_icons( array $field ): array {
-
-		self::rebuild_path( $field );
 
 		if ( ! file_exists( $field['icon_file'] ) && ! is_dir( $field['icon_dir'] ) ) {
 			return [];
@@ -153,20 +148,20 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function rebuild_path( &$field ) {
-		$document_root = $_SERVER['DOCUMENT_ROOT'];
+
 		// Rebuild path for icon file
-		if ( ! empty( $field['icon_file'] ) && stripos( $field['icon_file'], $document_root ) === false ) {
-			$field['icon_file'] = $document_root . $field['icon_file'];
+		if ( ! empty( $field['icon_file'] ) && stripos( $field['icon_file'], ABSPATH ) === false ) {
+			$field['icon_file'] = ABSPATH . $field['icon_file'];
 		}
 
 		// Rebuild path for icon dir
-		if ( ! empty( $field['icon_dir'] ) && stripos( $field['icon_dir'], $document_root ) === false ) {
-			$field['icon_dir'] = $document_root . $field['icon_dir'];
+		if ( ! empty( $field['icon_dir'] ) && stripos( $field['icon_dir'], ABSPATH ) === false ) {
+			$field['icon_dir'] = ABSPATH . $field['icon_dir'];
 		}
 
 		// Rebuild path for icon css
-		if ( ! empty( $field['icon_css'] ) && is_string( $field['icon_css'] ) && strpos( $field['icon_css'], 'http' ) === false && strpos( $field['icon_css'], $document_root ) === false ) {
-			$field['icon_css'] = $document_root . $field['icon_css'];
+		if ( ! empty( $field['icon_css'] ) && is_string( $field['icon_css'] ) && strpos( $field['icon_css'], 'http' ) === false ) {
+			$field['icon_css'] = get_home_url() . $field['icon_css'];
 		}
 
 	}
@@ -206,6 +201,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_file'   => '',
 			'icon_dir'    => '',
 		] );
+
+		self::rebuild_path( $field );
 
 		// Font Awesome Pro.
 		if ( $field['icon_set'] === 'font-awesome-pro' ) {
