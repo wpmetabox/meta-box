@@ -160,7 +160,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		// Rebuild path for icon css
-		if ( $field['icon_css'] && is_string( $field['icon_css'] ) && ! filter_var( $field['icon_css'], FILTER_VALIDATE_URL ) ) {
+		if ( $field['icon_css'] && ! filter_var( $field['icon_css'], FILTER_VALIDATE_URL ) ) {
 			$field['icon_css'] = home_url( ltrim( $field['icon_css'], '/' ) );
 		}
 
