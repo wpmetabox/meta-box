@@ -38,7 +38,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		if ( ! file_exists( $field['icon_file'] ) && is_dir( $field['icon_dir'] ) ) {
-			return self::get_icons_from_dir( $field['icon_dir'] );
+			return self::parse_icon_dir( $field );
 		}
 
 		// Get from cache to prevent reading large files.
@@ -76,18 +76,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	private static function get_icon_file_data( array $field ): array {
 		// Get data from the CSS file.
 		if ( $field['icon_css'] && ! $field['icon_dir'] && ! $field['icon_file'] ) {
-			return self::extract_class_from_css( file_get_contents( $field['icon_css'] ) );
+			return self::parse_icon_css( $field );
 		}
 
 		// Get icon from a JSON or a text file.
-		$data    = file_get_contents( $field['icon_file'] );
-		$decoded = json_decode( $data, true );
-		if ( JSON_ERROR_NONE === json_last_error() ) {
-			return $decoded;
-		}
-
-		// Text file: each icon on a line.
-		return array_map( 'trim', explode( "\n", $data ) );
+		return self::parse_icon_file( $field );
 	}
 
 	private static function parse_icon_file( array $field ): array {
