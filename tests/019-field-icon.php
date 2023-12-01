@@ -131,8 +131,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
-				'css_prefix'  => 'la-',
-				'base_class'  => 'las',
+				'icon_base_class'  => 'las',
 			],
 		],
 	];

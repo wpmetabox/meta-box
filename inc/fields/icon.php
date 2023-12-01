@@ -34,7 +34,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 	private static function get_icons( array $field ): array {
 
-		if ( ! file_exists( $field['icon_file'] ) && ! is_dir( $field['icon_dir'] ) ) {
+		if ( ! file_exists( $field['icon_file'] ) && ! is_dir( $field['icon_dir'] ) && ! $field['icon_css'] ) {
 			return [];
 		}
 
@@ -46,7 +46,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$params    = [
 			'icon_file' => $field['icon_file'],
 			'icon_dir'  => $field['icon_dir'],
-            'icon_css'  => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
+			'icon_css'  => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
 		];
 		$cache_key = md5( serialize( $params ) ) . '-icons';
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
@@ -54,86 +54,19 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return $icons;
 		}
 
-		// Get icon from a JSON or a text file.
-		$data    = file_get_contents( $field['icon_file'] );
-		$decoded = json_decode( $data, true );
-		if ( JSON_ERROR_NONE === json_last_error() && ! $field['css_prefix'] ) {
-			$data = $decoded;
-		} elseif ( $field['css_prefix'] ) {
-			// CSS file.
-			$data = self::extract_class_form_file_css( file_get_contents( $field['icon_css'] ), $field['css_prefix'] );
-		} else {
-			// Text file: each icon on a line.
-			$data = explode( "\n", $data );
-			$data = array_map( 'trim', $data );
-		}
+		$data = self::get_data_icon( $field );
 
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
-        	// Only using CSS file as icon_css
-			if ( $field['base_class'] ) {
-				$icons[] = [
-					'value' => $field['base_class'] . ' ' . $icon,
-					'label' => $field['base_class'] . ' ' . $icon,
-					'svg'   => '',
-				];
-				continue;
-			}
-            
-			// Default: FontAwesome
-			if ( $field['icon_set'] === 'font-awesome-free' ) {
-				$style   = $icon['styles'][0];
-				$icons[] = [
-					'value' => "fa-{$style} fa-{$key}",
-					'label' => $icon['label'],
-					'svg'   => $icon['svg'][ $style ]['raw'],
-				];
-				continue;
-			}
+			$icon_list = self::get_icon( $field, $key, $icon );
 
-			// FontAwesome Pro
-			if ( $field['icon_set'] === 'font-awesome-pro' ) {
-				foreach ( $icon['styles'] as $style ) {
-					$icons[] = [
-						'value' => "fa-{$style} fa-{$key}",
-						'label' => "{$icon[ 'label' ]} ({$style})",
-						'svg'   => $icon['svg'][ $style ]['raw'],
-					];
-				}
+			if ( is_numeric( key( $icon_list ) ) ) {
+				$icons = array_merge( $icons, $icon_list );
 				continue;
-			}
 
-			// Text file: each icon on a line.
-			if ( is_string( $icon ) && is_numeric( $key ) ) {
-				$icons[] = [
-					'value' => $icon,
-					'label' => $icon,
-					'svg'   => '',
-				];
-				continue;
 			}
-
-			// JSON file: "icon-class": "Label" or "icon-class": "<svg...>".
-			if ( is_string( $icon ) ) {
-				$label   = str_contains( $icon, '<svg' ) ? $key : $icon;
-				$svg     = str_contains( $icon, '<svg' ) ? $icon : '';
-				$icons[] = [
-					'value' => $key,
-					'label' => $label,
-					'svg'   => $svg,
-				];
-				continue;
-			}
-
-			// JSON file: "icon-class": { "label": "Label", "svg": "<svg...>" }
-			$label   = empty( $icon['label'] ) ? $key : $icon['label'];
-			$svg     = empty( $icon['svg'] ) ? '' : $icon['svg'];
-			$icons[] = [
-				'value' => $key,
-				'label' => $label,
-				'svg'   => $svg,
-			];
+			$icons[] = $icon_list;
 		}
 
 		// Cache the result.
@@ -141,11 +74,104 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return $icons;
 	}
 
-	private static function extract_class_form_file_css( string $data, string $prefix  ): array {		
-		preg_match_all( '/\.(' . preg_quote( $prefix, '/' ) . '[^\s:]+):before/', $data, $matches );
+	private static function get_data_icon( array $field ): array {
+
+		// Get data from file css
+		if ( $field['icon_css'] && ! $field['icon_dir'] && ! $field['icon_file'] ) {
+			return self::extract_class_form_file_css( file_get_contents( $field['icon_css'] ) );
+		}
+
+		// Get icon from a JSON or a text file.
+		$data    = file_get_contents( $field['icon_file'] );
+		$decoded = json_decode( $data, true );
+		if ( JSON_ERROR_NONE === json_last_error() ) {
+			return $decoded;
+		}
+
+		// Text file: each icon on a line.
+		return array_map( 'trim', explode( "\n", $data ) );
+	}
+
+	/**
+	 * Get Icon
+	 * @param $field array
+	 * @param $key
+	 * @param $icon
+	 * @return ['value' => '', 'label' => '', 'svg' => ''] array
+	 */
+	private static function get_icon( array $field, $key, $icon ): array {
+			// Default: FontAwesome
+		if ( $field['icon_set'] === 'font-awesome-free' ) {
+			$style = $icon['styles'][0];
+			return [
+				'value' => "fa-{$style} fa-{$key}",
+				'label' => $icon['label'],
+				'svg'   => $icon['svg'][ $style ]['raw'],
+			];
+		}
+
+			// FontAwesome Pro
+		if ( $field['icon_set'] === 'font-awesome-pro' ) {
+			$icons = [];
+			foreach ( $icon['styles'] as $style ) {
+				$icons[] = [
+					'value' => "fa-{$style} fa-{$key}",
+					'label' => "{$icon[ 'label' ]} ({$style})",
+					'svg'   => $icon['svg'][ $style ]['raw'],
+				];
+			}
+			return $icons;
+		}
+
+		// Only using CSS file as icon_css
+		if ( $field['icon_css'] && ! $field['icon_dir'] && ! $field['icon_file'] ) {
+			return [
+				'value' => trim( $field['icon_base_class'] . ' ' . $icon ),
+				'label' => trim( $field['icon_base_class'] . ' ' . $icon ),
+				'svg'   => '',
+			];
+		}
+
+			// Text file: each icon on a line.
+		if ( is_string( $icon ) && is_numeric( $key ) ) {
+			return [
+				'value' => $icon,
+				'label' => $icon,
+				'svg'   => '',
+			];
+		}
+
+			// JSON file: "icon-class": "Label" or "icon-class": "<svg...>".
+		if ( is_string( $icon ) ) {
+			$label = str_contains( $icon, '<svg' ) ? $key : $icon;
+			$svg   = str_contains( $icon, '<svg' ) ? $icon : '';
+			return [
+				'value' => $key,
+				'label' => $label,
+				'svg'   => $svg,
+			];
+		}
+
+		// JSON file: "icon-class": { "label": "Label", "svg": "<svg...>" }
+		$label = empty( $icon['label'] ) ? $key : $icon['label'];
+		$svg   = empty( $icon['svg'] ) ? '' : $icon['svg'];
+		return [
+			'value' => $key,
+			'label' => $label,
+			'svg'   => $svg,
+		];
+	}
+
+	/**
+	 * Get class from css
+	 * @param $data string
+	 * @return $matches[1] array
+	 */
+	private static function extract_class_form_file_css( string $data ): array {
+		preg_match_all( '/\.([^\s:]+):before/', $data, $matches );
 
 		if ( empty( $matches[1] ) ) {
-			preg_match_all( '/\.(' . preg_quote( $prefix, '/' ) . '[^\s:]+)/', $data, $matches );
+			preg_match_all( '/\.([^\s:]+)/', $data, $matches );
 		}
 
 		return $matches[1];
@@ -200,19 +226,18 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'placeholder' => __( 'Select an icon', 'meta-box' ),
-			'icon_css'    => '',
-			'icon_set'    => '',
-			'icon_file'   => '',
-			'icon_dir'    => '',
-            'css_prefix'  => '',
-            'base_class'  => '',
+			'placeholder'     => __( 'Select an icon', 'meta-box' ),
+			'icon_css'        => '',
+			'icon_set'        => '',
+			'icon_file'       => '',
+			'icon_dir'        => '',
+			'icon_base_class' => '',
 		] );
 
 		// Font Awesome Pro.
 		if ( $field['icon_set'] === 'font-awesome-pro' ) {
 
-		} elseif ( $field['icon_file'] || $field['icon_dir'] ) {
+		} elseif ( $field['icon_file'] || $field['icon_dir'] || $field['icon_css'] ) {
 			// Custom icon set.
 			$field['icon_set'] = 'custom';
 		} else {
