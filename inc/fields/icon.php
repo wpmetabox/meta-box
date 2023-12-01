@@ -90,13 +90,52 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return array_map( 'trim', explode( "\n", $data ) );
 	}
 
-	/**
-	 * Get Icon
-	 * @param $field array
-	 * @param $key
-	 * @param $icon
-	 * @return ['value' => '', 'label' => '', 'svg' => ''] array
-	 */
+	private static function parse_icon_file( array $field ): array {
+		$data    = file_get_contents( $field['icon_file'] );
+		$decoded = json_decode( $data, true );
+
+		// JSON file.
+		if ( JSON_ERROR_NONE === json_last_error() ) {
+			return $decoded;
+		}
+
+		// Text file: each icon on a line.
+		return array_map( 'trim', explode( "\n", $data ) );
+	}
+
+	private static function parse_icon_css( array $field ): array {
+		$css = file_get_contents( $field['icon_css'] );
+
+		preg_match_all( '/\.([^\s:]+):before/', $css, $matches );
+
+		if ( empty( $matches[1] ) ) {
+			preg_match_all( '/\.([^\s:]+)/', $css, $matches );
+		}
+
+		return $matches[1];
+	}
+
+	private static function parse_icon_dir( array $field ): array {
+		$dir   = $field['icon_dir'];
+		$icons = [];
+		$files = array_diff( scandir( $dir ), array( '..', '.' ) );
+
+		foreach ( $files as $file ) {
+			if ( strtolower( substr( $file, -4 ) ) !== '.svg' ) {
+				continue;
+			}
+
+			$filename = substr( $file, 0, -4 );
+			$icons[]  = [
+				'value' => $filename,
+				'label' => $filename,
+				'svg'   => file_get_contents( "$dir/$file" ),
+			];
+		}
+
+		return $icons;
+	}
+
 	private static function get_icon( array $field, $key, $icon ): array {
 		// Default: FontAwesome
 		if ( $field['icon_set'] === 'font-awesome-free' ) {
@@ -158,36 +197,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'label' => $label,
 			'svg'   => $svg,
 		];
-	}
-
-	private static function extract_class_from_css( string $css ): array {
-		preg_match_all( '/\.([^\s:]+):before/', $css, $matches );
-
-		if ( empty( $matches[1] ) ) {
-			preg_match_all( '/\.([^\s:]+)/', $css, $matches );
-		}
-
-		return $matches[1];
-	}
-
-	private static function get_icons_from_dir( string $dir ): array {
-		$icons = [];
-		$files = array_diff( scandir( $dir ), array( '..', '.' ) );
-
-		foreach ( $files as $file ) {
-			if ( strtolower( substr( $file, -4 ) ) !== '.svg' ) {
-				continue;
-			}
-
-			$filename = substr( $file, 0, -4 );
-			$icons[]  = [
-				'value' => $filename,
-				'label' => $filename,
-				'svg'   => file_get_contents( "$dir/$file" ),
-			];
-		}
-
-		return $icons;
 	}
 
 	private static function get_svg( array $field, string $value ): string {
