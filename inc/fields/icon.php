@@ -33,14 +33,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function get_icons( array $field ): array {
-		if ( ! file_exists( $field['icon_file'] ) && ! is_dir( $field['icon_dir'] ) && ! $field['icon_css'] ) {
-			return [];
-		}
-
-		if ( ! file_exists( $field['icon_file'] ) && is_dir( $field['icon_dir'] ) ) {
-			return self::parse_icon_dir( $field );
-		}
-
 		// Get from cache to prevent reading large files.
 		$params    = [
 			'icon_file' => $field['icon_file'],
@@ -53,7 +45,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return $icons;
 		}
 
-		$data = self::get_icon_file_data( $field );
+		$data = self::parse_icon_data( $field );
 
 		// Reformat icons.
 		$icons = [];
@@ -73,17 +65,26 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return $icons;
 	}
 
-	private static function get_icon_file_data( array $field ): array {
-		// Get data from the CSS file.
-		if ( $field['icon_css'] && ! $field['icon_dir'] && ! $field['icon_file'] ) {
-			return self::parse_icon_css( $field );
+	private static function parse_icon_data( array $field ): array {
+		$keys = [
+			'icon_file',
+			'icon_css',
+			'icon_dir',
+		];
+		foreach ( $keys as $key ) {
+			if ( ! empty( $field[ $key ] ) ) {
+				return call_user_func( [ __CLASS__, "parse_$key" ], $field );
+			}
 		}
 
-		// Get icon from a JSON or a text file.
-		return self::parse_icon_file( $field );
+		return [];
 	}
 
 	private static function parse_icon_file( array $field ): array {
+		if ( ! file_exists( $field['icon_file'] ) ) {
+			return [];
+		}
+
 		$data    = file_get_contents( $field['icon_file'] );
 		$decoded = json_decode( $data, true );
 
@@ -97,7 +98,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function parse_icon_css( array $field ): array {
-		$css = file_get_contents( $field['icon_css'] );
+		$css = (string) file_get_contents( $field['icon_css'] );
 
 		preg_match_all( '/\.([^\s:]+):before/', $css, $matches );
 
@@ -109,9 +110,13 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function parse_icon_dir( array $field ): array {
-		$dir   = $field['icon_dir'];
+		$dir = $field['icon_dir'];
+		if ( ! is_dir( $dir ) ) {
+			return [];
+		}
+
 		$icons = [];
-		$files = array_diff( scandir( $dir ), array( '..', '.' ) );
+		$files = array_diff( scandir( $dir ), [ '..', '.' ] );
 
 		foreach ( $files as $file ) {
 			if ( strtolower( substr( $file, -4 ) ) !== '.svg' ) {
