@@ -117,18 +117,14 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		$icons = [];
-		$files = array_diff( scandir( $dir ), [ '..', '.' ] );
+		$files = glob( trailingslashit( $dir ) . '*.svg' );
 
 		foreach ( $files as $file ) {
-			if ( strtolower( substr( $file, -4 ) ) !== '.svg' ) {
-				continue;
-			}
-
-			$filename = substr( $file, 0, -4 );
+			$filename = substr( basename( $file ), 0, -4 );
 			$icons[]  = [
 				'value' => $filename,
 				'label' => $filename,
-				'svg'   => file_get_contents( "$dir/$file" ),
+				'svg'   => file_get_contents( $file ),
 			];
 		}
 
