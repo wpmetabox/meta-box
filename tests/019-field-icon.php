@@ -148,6 +148,14 @@ function field_custom_icon( $meta_boxes ) {
 				'type'        => 'icon',
 				'icon_dir'    => '/wp-content/plugins/meta-box/tests/assets/svg/',
 			],
+			[
+				'name'        => __( 'Icon custom with css file as icon_css', 'your-text-domain' ),
+				'id'          => $prefix . 'icon_custom_use_css_file_only',
+				'placeholder' => 'Select Icon',
+				'type'        => 'icon',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+				'icon_base_class'  => 'las',
+			],
 		],
 	];
 
