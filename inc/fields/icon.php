@@ -265,34 +265,24 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 *
 	 * @return string
 	 */
-	public static function format_value( $field, $values, $args, $post_id ) {
+	public static function format_single_value( $field, $value, $args, $post_id ) {
 		// SVG from file.
 		if ( $field['icon_dir'] ) {
-			return self::get_svg( $field, $values );
+			return self::get_svg( $field, $value );
 		}
 
-		$values = is_array( $values ) ? $values : [ $values ];
-		$icons  = self::get_icons( $field );
-		$output = '';
-
-		foreach ( $values as $value ) {
-			$key = array_search( $value, array_column( $icons, 'value' ) );
-			if ( false === $key ) {
-				continue;
-			}
-
-			// Embed SVG.
-			if ( $icons[ $key ]['svg'] ) {
-				$output .= $icons[ $key ]['svg'];
-				continue;
-			}
-
-			$output .= '<span class="' . $value . '"></span>';
+		$icons = self::get_icons( $field );
+		$key   = array_search( $value, array_column( $icons, 'value' ) );
+		if ( false === $key ) {
+			return '';
 		}
-
+		// Embed SVG.
+		if ( $icons[ $key ]['svg'] ) {
+			return $icons[ $key ]['svg'];
+		}
 		// Render with class and use css.
 		self::enqueue_icon_font_style( $field );
-		return $output;
+		return sprintf( '<span class="%s"></span>', $value );
 	}
 	private static function url_to_path( string $url ): string {
 		return str_starts_with( $url, home_url( '/' ) ) ? str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $url ) : '';
