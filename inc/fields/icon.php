@@ -18,7 +18,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		self::enqueue_icon_font_style( $field );
 	}
 
-	private static function enqueue_icon_font_style( array $field ): void {
+	public static function enqueue_icon_font_style( array $field ): void {
 		if ( is_string( $field['icon_css'] ) ) {
 			$handle = md5( $field['icon_css'] );
 			wp_enqueue_style( $handle, $field['icon_css'], [], RWMB_VER );
@@ -27,7 +27,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 	}
 
-	private static function get_icons( array $field ): array {
+	public static function get_icons( array $field ): array {
 		// Get from cache to prevent reading large files.
 		$params    = [
 			'icon_file' => $field['icon_file'],
@@ -41,12 +41,15 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		$data = self::parse_icon_data( $field );
-
+		if ( $field['icon_dir'] && file_exists( $field['icon_dir'] ) && ! $field['icon_file'] && ! $field['icon_css'] ) {
+			// Cache the result.
+			wp_cache_set( $cache_key, $data, self::CACHE_GROUP );
+			return $data;
+		}
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
 			$icon = self::normalize_icon( $field, $key, $icon );
-
 			if ( is_numeric( key( $icon ) ) ) {
 				$icons = array_merge( $icons, $icon );
 				continue;
@@ -54,7 +57,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 			$icons[] = $icon;
 		}
-
 		// Cache the result.
 		wp_cache_set( $cache_key, $icons, self::CACHE_GROUP );
 		return $icons;
@@ -230,7 +232,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		// Ensure absolute paths and URLs.
 		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
 		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
-		if ( is_string( $field['icon_css'] ) ) {
+		if ( $field['icon_css'] && is_string( $field['icon_css'] ) ) {
 			$field['icon_css'] = self::ensure_absolute_url( $field['icon_css'] );
 		}
 
@@ -263,26 +265,34 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 *
 	 * @return string
 	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
+	public static function format_value( $field, $values, $args, $post_id ) {
 		// SVG from file.
 		if ( $field['icon_dir'] ) {
-			return self::get_svg( $field, $value );
+			return self::get_svg( $field, $values );
 		}
 
-		$icons = self::get_icons( $field );
-		$key   = array_search( $value, array_column( $icons, 'value' ) );
-		if ( false === $key ) {
-			return '';
-		}
+		$values = is_array( $values ) ? $values : [ $values ];
+		$icons  = self::get_icons( $field );
+		$output = '';
 
-		// Embed SVG.
-		if ( $icons[ $key ]['svg'] ) {
-			return $icons[ $key ]['svg'];
+		foreach ( $values as $value ) {
+			$key = array_search( $value, array_column( $icons, 'value' ) );
+			if ( false === $key ) {
+				continue;
+			}
+
+			// Embed SVG.
+			if ( $icons[ $key ]['svg'] ) {
+				$output .= $icons[ $key ]['svg'];
+				continue;
+			}
+
+			$output .= '<span class="' . $value . '"></span>';
 		}
 
 		// Render with class and use css.
 		self::enqueue_icon_font_style( $field );
-		return sprintf( '<span class="%s"></span>', $value );
+		return $output;
 	}
 	private static function url_to_path( string $url ): string {
 		return str_starts_with( $url, home_url( '/' ) ) ? str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $url ) : '';
