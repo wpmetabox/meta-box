@@ -18,7 +18,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		self::enqueue_icon_font_style( $field );
 	}
 
-	public static function enqueue_icon_font_style( array $field ): void {
+	private static function enqueue_icon_font_style( array $field ): void {
 		if ( is_string( $field['icon_css'] ) ) {
 			$handle = md5( $field['icon_css'] );
 			wp_enqueue_style( $handle, $field['icon_css'], [], RWMB_VER );
@@ -27,7 +27,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 	}
 
-	public static function get_icons( array $field ): array {
+	private static function get_icons( array $field ): array {
 		// Get from cache to prevent reading large files.
 		$params    = [
 			'icon_file' => $field['icon_file'],
