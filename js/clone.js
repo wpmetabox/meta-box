@@ -71,6 +71,13 @@
 		 */
 		nextIndex: function ( $container ) {
 			var nextIndex = $container.data( 'next-index' );
+
+			// If we render cloneable fields via AJAX, the mb_ready event is not fired.
+			// so nextIndex is undefined. In this case, we get the next index from the number of existing clones.
+			if ( nextIndex === undefined ) {
+				nextIndex = $container.children( '.rwmb-clone' ).length;
+			}
+
 			$container.data( 'next-index', nextIndex + 1 );
 			return nextIndex;
 		}
