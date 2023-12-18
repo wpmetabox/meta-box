@@ -26,8 +26,8 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 			$meta = [ $meta ];
 		}
 
-        // Filter out empty values in case the array started with empty or 0 values
-        $meta = array_filter( $meta );
+		// Filter out empty values in case the array started with empty or 0 values
+		$meta = array_filter( $meta );
 
 		$field   = apply_filters( 'rwmb_autocomplete_field', $field, $meta );
 		$options = $field['options'];
