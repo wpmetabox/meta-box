@@ -175,7 +175,7 @@ If you like this plugin, you might also like our other WordPress products:
 
 == Changelog ==
 
-= 5.9.2 - 2023-12-25 =
+= 5.9.1 - 2023-12-25 =
 - Fix preview posts not working in the block editor in WP 6.4.
 - Icon field: allow to set relative path/URL for settings
 - Icon field: add support for scanning CSS file (`icon_css` setting) and parsing CSS class
