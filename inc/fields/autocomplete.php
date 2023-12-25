@@ -27,7 +27,9 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 		}
 
 		// Filter out empty values in case the array started with empty or 0 values
-		$meta = array_filter( $meta );
+		$meta = array_filter( $meta, function ( $index ) use ( $meta ) {
+			return $meta[ $index ] !== '';
+		}, ARRAY_FILTER_USE_KEY );
 
 		$field   = apply_filters( 'rwmb_autocomplete_field', $field, $meta );
 		$options = $field['options'];
@@ -36,7 +38,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 			$options = [];
 			foreach ( $field['options'] as $value => $label ) {
 				$options[] = [
-					'value' => $value,
+					'value' => (string) $value,
 					'label' => $label,
 				];
 			}
