@@ -41,7 +41,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		$data = self::parse_icon_data( $field );
-
+		if ( $field['icon_dir'] && file_exists( $field['icon_dir'] ) && ! $field['icon_file'] && ! $field['icon_css'] ) {
+			// Cache the result.
+			wp_cache_set( $cache_key, $data, self::CACHE_GROUP );
+			return $data;
+		}
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
@@ -227,13 +231,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_base_class' => '',
 		] );
 
-		// Ensure absolute paths and URLs.
-		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
-		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
-		if ( is_string( $field['icon_css'] ) ) {
-			$field['icon_css'] = self::ensure_absolute_url( $field['icon_css'] );
-		}
-
 		// Font Awesome Pro.
 		if ( $field['icon_set'] === 'font-awesome-pro' ) {
 
@@ -244,6 +241,13 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			// Font Awesome Free.
 			$field['icon_set']  = 'font-awesome-free';
 			$field['icon_file'] = RWMB_DIR . 'css/fontawesome/icons.json';
+		}
+        
+        // Ensure absolute paths and URLs.
+		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
+		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
+		if ( $field['icon_css'] && is_string( $field['icon_css'] ) ) {
+			$field['icon_css'] = self::ensure_absolute_url( $field['icon_css'] );
 		}
 
 		$field['options'] = self::get_options( $field );
@@ -263,7 +267,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 *
 	 * @return string
 	 */
-	public static function format_value( $field, $value, $args, $post_id ) {
+	public static function format_single_value( $field, $value, $args, $post_id ) {
 		// SVG from file.
 		if ( $field['icon_dir'] ) {
 			return self::get_svg( $field, $value );
