@@ -12,28 +12,32 @@ class RWMB_Validation {
 	 * Output validation rules of each meta box.
 	 * The rules are outputted in [data-validation] attribute of an hidden <script> and will be converted into JSON by JS.
 	 */
-	public function rules( RW_Meta_Box $meta_box_object ) {
-		if ( empty( $meta_box_object->meta_box['validation'] ) ) {
+	public function rules( RW_Meta_Box $meta_box ) {
+		$settings = $meta_box->meta_box;
+		if ( empty( $settings['validation'] ) ) {
 			return;
 		}
 
-		// Get field ID prefix from the builder.
-		$prefix = $meta_box_object->meta_box['prefix'] ?? '';
+		$prefix     = $settings['prefix'] ?? ''; // Get field ID prefix from the builder.
+		$fields     = $settings['fields'];
+		$validation = $settings['validation'];
+		$ids        = wp_list_pluck( $fields, 'id' ); // Don't use array_column() as it doesn't preserve keys.
 
 		// Add prefix for validation rules.
-		$fields = $meta_box_object->meta_box['fields'];
-		foreach ( $meta_box_object->meta_box['validation'] as &$rules ) {
+		foreach ( $validation as &$rules ) {
 			$rules = array_combine(
-				array_map( function ( $key ) use ( $fields, $prefix ) {
+				array_map( function ( $key ) use ( $fields, $prefix, $ids ) {
 					$id    = $prefix . $key;
-					$index = array_search( $id, array_column( $fields, 'id' ), true );
+					$index = array_search( $id, $ids, true );
 
 					if ( $index === false ) {
 						return $id;
 					}
 
-					if ( in_array( $fields[ $index ]['type'], [ 'file', 'image' ], true ) ) {
-						return $fields[ $index ]['clone'] ? $fields[ $index ]['index_name'] : $fields[ $index ]['input_name'];
+					$field = $fields[ $index ];
+
+					if ( in_array( $field['type'], [ 'file', 'image' ], true ) ) {
+						return $field['clone'] ? $field['index_name'] : $field['input_name'];
 					}
 
 					return $id;
@@ -42,7 +46,7 @@ class RWMB_Validation {
 			);
 		}
 
-		echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $meta_box_object->meta_box['validation'] ) ) . '"></script>';
+		echo '<script type="text/html" class="rwmb-validation" data-validation="' . esc_attr( wp_json_encode( $validation ) ) . '"></script>';
 	}
 
 	public function enqueue() {
