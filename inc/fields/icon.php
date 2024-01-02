@@ -230,7 +230,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		// Ensure absolute paths and URLs.
 		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
 		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
-		if ( is_string( $field['icon_css'] ) ) {
+		if ( is_string( $field['icon_css'] ) && $field['icon_css'] ) {
 			$field['icon_css'] = self::ensure_absolute_url( $field['icon_css'] );
 		}
 
