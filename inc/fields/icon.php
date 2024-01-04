@@ -289,8 +289,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	private static function ensure_absolute_path( string $path ): string {
-		if ( ! $path ) {
-			return '';
+		if ( ! $path || file_exists( $path ) ) {
+			return $path;
 		}
 
 		$root = wp_normalize_path( ABSPATH );
