@@ -50,8 +50,8 @@ class RWMB_Validation {
 	}
 
 	public function enqueue() {
-		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'validation/jquery.validate.js', [ 'jquery' ], '1.19.5', true );
-		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'validation/additional-methods.js', [ 'jquery-validation' ], '1.19.5', true );
+		wp_enqueue_script( 'jquery-validation', RWMB_JS_URL . 'validation/jquery.validate.js', [ 'jquery' ], '1.20.0', true );
+		wp_enqueue_script( 'jquery-validation-additional-methods', RWMB_JS_URL . 'validation/additional-methods.js', [ 'jquery-validation' ], '1.20.0', true );
 		wp_enqueue_script( 'rwmb-validation', RWMB_JS_URL . 'validation/validation.js', [ 'jquery-validation-additional-methods', 'rwmb' ], RWMB_VER, true );
 
 		$locale       = determine_locale();
@@ -59,7 +59,7 @@ class RWMB_Validation {
 		$locale       = file_exists( RWMB_DIR . "js/validation/i18n/messages_$locale.js" ) ? $locale : $locale_short;
 
 		if ( file_exists( RWMB_DIR . "js/validation/i18n/messages_$locale.js" ) ) {
-			wp_enqueue_script( 'jquery-validation-i18n', RWMB_JS_URL . "validation/i18n/messages_$locale.js", [ 'jquery-validation-additional-methods' ], '1.19.5', true );
+			wp_enqueue_script( 'jquery-validation-i18n', RWMB_JS_URL . "validation/i18n/messages_$locale.js", [ 'jquery-validation-additional-methods' ], '1.20.0', true );
 		}
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-validation', 'rwmbValidation', [
