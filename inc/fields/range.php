@@ -25,6 +25,7 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-range', RWMB_CSS_URL . 'range.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-range', 'path', RWMB_CSS_DIR . 'range.css' );
 		wp_enqueue_script( 'rwmb-range', RWMB_JS_URL . 'range.js', [], RWMB_VER, true );
 	}
 

@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Button_Group_Field extends RWMB_Choice_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-button-group', RWMB_CSS_URL . 'button-group.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-button-group', 'path', RWMB_CSS_DIR . 'button-group.css' );
 		wp_enqueue_script( 'rwmb-button-group', RWMB_JS_URL . 'button-group.js', [ 'rwmb' ], RWMB_VER, true );
 	}
 

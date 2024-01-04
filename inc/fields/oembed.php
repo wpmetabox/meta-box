@@ -26,6 +26,7 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-oembed', RWMB_CSS_URL . 'oembed.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-oembed', 'path', RWMB_CSS_DIR . 'oembed.css' );
 		wp_enqueue_script( 'rwmb-oembed', RWMB_JS_URL . 'oembed.js', [ 'jquery', 'underscore', 'rwmb' ], RWMB_VER, true );
 		wp_localize_script( 'rwmb-oembed', 'rwmbOembed', [
 			'nonce' => wp_create_nonce( 'oembed_get' ),

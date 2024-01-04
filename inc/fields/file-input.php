@@ -11,6 +11,7 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_media();
 		wp_enqueue_style( 'rwmb-file-input', RWMB_CSS_URL . 'file-input.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-file-input', 'path', RWMB_CSS_DIR . 'file-input.css' );
 		wp_enqueue_script( 'rwmb-file-input', RWMB_JS_URL . 'file-input.js', [ 'jquery' ], RWMB_VER, true );
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-file-input', 'rwmbFileInput', [
 			'frameTitle' => esc_html__( 'Select File', 'meta-box' ),

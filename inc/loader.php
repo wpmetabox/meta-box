@@ -19,6 +19,7 @@ class RWMB_Loader {
 		// Plugin paths, for including files.
 		define( 'RWMB_DIR', $path );
 		define( 'RWMB_INC_DIR', trailingslashit( RWMB_DIR . 'inc' ) );
+		define( 'RWMB_CSS_DIR', trailingslashit( RWMB_DIR . 'css' ) );
 	}
 
 	/**

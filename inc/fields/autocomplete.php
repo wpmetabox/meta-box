@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-autocomplete', RWMB_CSS_URL . 'autocomplete.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-autocomplete', 'path', RWMB_CSS_DIR . 'autocomplete.css' );
 		wp_enqueue_script( 'rwmb-autocomplete', RWMB_JS_URL . 'autocomplete.js', [ 'jquery-ui-autocomplete' ], RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-autocomplete', 'RWMB_Autocomplete', [

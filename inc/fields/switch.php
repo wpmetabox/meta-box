@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Switch_Field extends RWMB_Input_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-switch', RWMB_CSS_URL . 'switch.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-switch', 'path', RWMB_CSS_DIR . 'switch.css' );
 	}
 
 	/**

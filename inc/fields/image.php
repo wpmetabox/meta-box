@@ -9,6 +9,7 @@ class RWMB_Image_Field extends RWMB_File_Field {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_media();
 		wp_enqueue_style( 'rwmb-image', RWMB_CSS_URL . 'image.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-image', 'path', RWMB_CSS_DIR . 'image.css' );
 	}
 
 	/**

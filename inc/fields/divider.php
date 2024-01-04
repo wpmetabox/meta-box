@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Divider_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-divider', RWMB_CSS_URL . 'divider.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-divider', 'path', RWMB_CSS_DIR . 'divider.css' );
 	}
 
 	protected static function begin_html( array $field ) : string {

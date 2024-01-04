@@ -9,6 +9,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		self::enqueue_map_assets();
 
 		wp_enqueue_style( 'rwmb-osm', RWMB_CSS_URL . 'osm.css', [ 'leaflet' ], RWMB_VER );
+		wp_style_add_data( 'rwmb-osm', 'path', RWMB_CSS_DIR . 'osm.css' );
 		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', [ 'jquery', 'jquery-ui-autocomplete', 'leaflet' ], RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [
@@ -129,6 +130,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		self::enqueue_map_assets();
 		wp_enqueue_script( 'rwmb-osm-frontend', RWMB_JS_URL . 'osm-frontend.js', [ 'jquery', 'leaflet' ], RWMB_VER, true );
 		wp_enqueue_style( 'rwmb-osm-frontend', RWMB_CSS_URL . 'osm-frontend.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-osm-frontend', 'path', RWMB_CSS_DIR . 'osm-frontend.css' );
 
 		/*
 		 * More Open Street Map options
