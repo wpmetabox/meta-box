@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-text-list', RWMB_CSS_URL . 'text-list.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-text-list', 'path', RWMB_CSS_DIR . 'text-list.css' );
 	}
 
 	/**

@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Select_Field extends RWMB_Choice_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-select', RWMB_CSS_URL . 'select.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-select', 'path', RWMB_CSS_DIR . 'select.css' );
 		wp_enqueue_script( 'rwmb-select', RWMB_JS_URL . 'select.js', [ 'jquery' ], RWMB_VER, true );
 	}
 

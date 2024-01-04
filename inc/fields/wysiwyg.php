@@ -8,6 +8,7 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_editor();
 		wp_enqueue_style( 'rwmb-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-wysiwyg', 'path', RWMB_CSS_DIR . 'wysiwyg.css' );
 		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', [ 'jquery', 'rwmb' ], RWMB_VER, true );
 	}
 

@@ -11,6 +11,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		parent::admin_enqueue_scripts();
 
 		wp_enqueue_style( 'rwmb-icon', RWMB_CSS_URL . 'icon.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-icon', 'path', RWMB_CSS_DIR . 'icon.css' );
 		wp_enqueue_script( 'rwmb-icon', RWMB_JS_URL . 'icon.js', [ 'rwmb-select2', 'rwmb-select', 'underscore' ], RWMB_VER, true );
 
 		$args  = func_get_args();

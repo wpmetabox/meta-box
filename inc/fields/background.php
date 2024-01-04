@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Background_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-background', RWMB_CSS_URL . 'background.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-background', 'path', RWMB_CSS_DIR . 'background.css' );
 
 		$args  = func_get_args();
 		$field = reset( $args );

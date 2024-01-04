@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_Map_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-map', RWMB_CSS_URL . 'map.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-map', 'path', RWMB_CSS_DIR . 'map.css' );
 
 		$args            = func_get_args();
 		$field           = $args[0];

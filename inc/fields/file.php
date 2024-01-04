@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || die;
 class RWMB_File_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_style( 'rwmb-file', RWMB_CSS_URL . 'file.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-file', 'path', RWMB_CSS_DIR . 'file.css' );
 		wp_enqueue_script( 'rwmb-file', RWMB_JS_URL . 'file.js', [ 'jquery-ui-sortable' ], RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-file', 'rwmbFile', [
