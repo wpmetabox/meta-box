@@ -121,7 +121,8 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
-			$args['include'] = $meta;
+			$args['posts_per_page'] = count( $meta );
+			$args['include']        = $meta;
 		}
 
 		$terms = get_terms( $args );

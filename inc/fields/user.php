@@ -116,7 +116,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		// Query only selected items.
 		if ( ! empty( $field['ajax'] ) && ! empty( $meta ) ) {
-			$args['include'] = $meta;
+			$args['posts_per_page'] = count( $meta );
+			$args['include']        = $meta;
 		}
 
 		// Get from cache to prevent same queries.
