@@ -22,10 +22,18 @@ class RWMB_Shortcode {
 
 		$field_id  = $atts['id'];
 		$object_id = $atts['object_id'];
+		
 		unset( $atts['id'], $atts['object_id'] );
 
 		$value = $this->get_value( $field_id, $object_id, $atts );
 		$value = 'true' === $atts['render_shortcodes'] ? do_shortcode( $value ) : $value;
+
+		$secure = apply_filters( 'rwmb_meta_shortcode_secure', true, $field_id, $atts, $object_id );
+		$secure = apply_filters( "rwmb_meta_shortcode_secure_{$field_id}", $secure, $atts, $object_id );
+
+		if ( $secure ) {
+			$value = wp_kses_post( $value );
+		}
 
 		return $value;
 	}

@@ -142,7 +142,7 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 	 *
 	 * @return mixed false if field doesn't exist. Field value otherwise.
 	 */
-	function rwmb_get_value( $field_id, $args = [], $post_id = null) {
+	function rwmb_get_value( $field_id, $args = [], $post_id = null ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
@@ -160,16 +160,6 @@ if ( ! function_exists( 'rwmb_get_value' ) ) {
 		 */
 		$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
 
-		$secure_output = $args['secure'] ?? true;
-		$secure_output = apply_filters( 'rwmb_secure_output', $secure_output, $field, $args, $post_id );
-		$secure_output = apply_filters( "rwmb_secure_output_{$field['type']}", $secure_output, $field, $args, $post_id );
-		$secure_output = apply_filters( "rwmb_secure_output_{$field['id']}", $secure_output, $field, $args, $post_id );
-		$secure_output = filter_var( $secure_output, FILTER_VALIDATE_BOOLEAN );
-
-		if ( $secure_output ) {
-			$value = wp_kses_post( $value );
-		}
-
 		return $value;
 	}
 }
@@ -185,7 +175,7 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 	 *
 	 * @return string
 	 */
-	function rwmb_the_value( $field_id, $args = [], $post_id = null, $echo = true) {
+	function rwmb_the_value( $field_id, $args = [], $post_id = null, $echo = true ) {
 		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
 
@@ -205,19 +195,9 @@ if ( ! function_exists( 'rwmb_the_value' ) ) {
 		 * @param int|null $post_id Post ID. null for current post. Optional.
 		 */
 		$output = apply_filters( 'rwmb_the_value', $output, $field, $args, $post_id );
-		$secure_output = $args['secure'] ?? true;
-		
-		$secure_output = apply_filters( 'rwmb_secure_output', $secure_output, $field, $args, $post_id );
-		$secure_output = apply_filters( "rwmb_secure_output_{$field['type']}", $secure_output, $field, $args, $post_id );
-		$secure_output = apply_filters( "rwmb_secure_output_{$field['id']}", $secure_output, $field, $args, $post_id );
-		$secure_output = filter_var( $secure_output, FILTER_VALIDATE_BOOLEAN );
-
-		if ( $secure_output ) {
-			$output = wp_kses_post( $output );
-		}
 
 		if ( $echo ) {
-			echo $output;
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput
 		}
 
 		return $output;
