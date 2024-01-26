@@ -36,7 +36,7 @@ class RWMB_Media_Modal {
 	 * @return mixed
 	 */
 	public function add_fields( $form_fields, WP_Post $post ) {
-		if ( is_null( $post ) || $this->is_attachment_edit_screen() ) {
+		if ( ( false === get_post_status( $post ) ) || $this->is_attachment_edit_screen() ) {
 			return $form_fields;
 		}
 
