@@ -1609,29 +1609,34 @@ $.extend( $.validator, {
 			}
 			previous.originalMessage = previous.originalMessage || this.settings.messages[ element.name ][ method ];
 			this.settings.messages[ element.name ][ method ] = previous.message;
-
+			
 			param = typeof param === "string" && { url: param } || param;
 			optionDataString = $.param( $.extend( { data: value }, param.data ) );
+
 			if ( previous.old === optionDataString ) {
 				return previous.valid;
 			}
 
 			previous.old = optionDataString;
 			validator = this;
+
 			this.startRequest( element );
 			data = {};
 			data[ element.name ] = value;
+
 			$.ajax( $.extend( true, {
 				mode: "abort",
 				port: this.elementAjaxPort( element ),
 				dataType: "json",
 				data: data,
 				context: validator.currentForm,
-				success: function( response ) {
-					var valid = response === true || response === "true",
+				complete: ( jqXHR ) => {
+					let response = jqXHR.responseText;
+					let valid = response === true || response === "true",
 						errors, message, submitted;
-
+					
 					validator.settings.messages[ element.name ][ method ] = previous.originalMessage;
+					
 					if ( valid ) {
 						submitted = validator.formSubmitted;
 						validator.toHide = validator.errorsFor( element );
@@ -1646,10 +1651,12 @@ $.extend( $.validator, {
 						validator.invalid[ element.name ] = true;
 						validator.showErrors( errors );
 					}
+					
 					previous.valid = valid;
 					validator.stopRequest( element, valid );
 				}
 			}, param ) );
+
 			return "pending";
 		}
 	}
