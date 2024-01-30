@@ -109,6 +109,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			],
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		];
+
+		if ( isset( $field['display_meta_field'] ) ) {
+			$field['js_options']['ajax_data']['field']['display_meta_field'] = $field['display_meta_field'];
+		}
 	}
 
 	/**

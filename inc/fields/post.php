@@ -133,7 +133,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$options = [];
 		foreach ( $query->posts as $post ) {
-			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
+			$label = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
+			if ( isset( $field['display_meta_field'] ) ) {
+				$display_meta_field = get_post_meta( $post->ID, $field['display_meta_field'], true );
+				$label              = ! empty( $display_meta_field ) ? $display_meta_field : __( '(No meta)', 'meta-box' );
+			}
 			$label                = self::filter( 'choice_label', $label, $field, $post );
 			$options[ $post->ID ] = [
 				'value'  => $post->ID,

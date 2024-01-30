@@ -133,6 +133,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$options = [];
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ? $user->$display_field : __( '(No title)', 'meta-box' );
+			if ( isset( $field['display_meta_field'] ) ) {
+				$display_meta_field = get_user_meta( $user->ID, $field['display_meta_field'], true );
+				$label              = ! empty( $display_meta_field ) ? $display_meta_field : __( '(No meta)', 'meta-box' );
+			}
 			$label = self::filter( 'choice_label', $label, $field, $user );
 
 			$options[ $user->ID ] = [

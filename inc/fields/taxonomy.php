@@ -132,6 +132,10 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		$options = [];
 		foreach ( $terms as $term ) {
 			$label = $term->name ? $term->name : __( '(No title)', 'meta-box' );
+			if ( isset( $field['display_meta_field'] ) ) {
+				$display_meta_field = get_term_meta( $term->term_id, $field['display_meta_field'], true );
+				$label              = ! empty( $display_meta_field ) ? $display_meta_field : __( '(No meta)', 'meta-box' );
+			}
 			$label = self::filter( 'choice_label', $label, $field, $term );
 
 			$options[ $term->term_id ] = [
