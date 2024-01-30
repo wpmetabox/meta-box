@@ -3,7 +3,7 @@
 <div id="extensions" class="gt-tab-pane">
 	<p class="about-description">
 		<?php esc_html_e( 'Extend custom fields in WordPress well beyond what others would ever consider ordinary!', 'meta-box' ); ?><br>
-		<?php esc_html_e( 'Save over 80% with our extensions bundles.', 'meta-box' ); ?> <a target="_blank" href="https://metabox.io/pricing/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'View Bundles', 'meta-box' ); ?> &rarr;</a>
+		<?php esc_html_e( 'Save over 80% with our extensions bundles.', 'meta-box' ); ?> <a target="_blank" href="https://metabox.io/pricing/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'View Bundles', 'meta-box' ); ?> &rarr;</a>
 	</p>
 	<div class="extensions wp-clearfix">
 		<div class="extension">
@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/custom-post-type/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Free Download', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/custom-post-type/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Free Download', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-builder/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-builder/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-group/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-group/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-settings-page/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-settings-page/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-conditional-logic/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/meta-box-conditional-logic/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-user-profile/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-user-profile/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-frontend-submission/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-frontend-submission/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-custom-table/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-custom-table/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Learn More', 'meta-box' ); ?></a>
 			</div>
 		</div>
 		<div class="extension">
@@ -111,9 +111,9 @@
 				</div>
 			</div>
 			<div class="extension-action">
-				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-relationships/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Free Download', 'meta-box' ); ?></a>
+				<a class="button" target="_blank" href="https://metabox.io/plugins/mb-relationships/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Free Download', 'meta-box' ); ?></a>
 			</div>
 		</div>
 	</div>
-	<a href="https://metabox.io/plugins/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'View all extensions', 'meta-box' ); ?> &rarr;</a>
+	<a href="https://metabox.io/plugins/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'View all extensions', 'meta-box' ); ?> &rarr;</a>
 </div>

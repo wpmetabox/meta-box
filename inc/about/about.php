@@ -37,7 +37,7 @@ class RWMB_About {
 	public function plugin_links( array $links ): array {
 		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'About', 'meta-box' ) . '</a>';
 		if ( ! $this->update_checker->has_extensions() ) {
-			$links[] = '<a href="https://metabox.io/pricing/" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
+			$links[] = '<a href="https://elu.to/mpp" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
 		}
 		return $links;
 	}

@@ -9,7 +9,7 @@
 			],
 		];
 		// Translators: %s - link to documentation.
-		echo wp_kses( sprintf( __( 'Still need help with Meta Box? We offer excellent support for you. But don\'t forget to check our <a href="%s">documentation</a> first.', 'meta-box' ), 'https://docs.metabox.io?utm_source=WordPress&utm_medium=link&utm_campaign=plugin' ), $allowed_html );
+		echo wp_kses( sprintf( __( 'Still need help with Meta Box? We offer excellent support for you. But don\'t forget to check our <a href="%s">documentation</a> first.', 'meta-box' ), 'https://docs.metabox.io?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box' ), $allowed_html );
 		?>
 	</p>
 	<div class="two">
@@ -23,7 +23,7 @@
 		<div class="col">
 			<h3><?php esc_html_e( 'Premium Support', 'meta-box' ); ?></h3>
 			<p><?php esc_html_e( 'For users that have bought premium extensions, the support is provided in the Meta Box Support forum. Any question will be answered with technical details within 24 hours.', 'meta-box' ); ?><p>
-			<p><a class="button" target="_blank" href="https://metabox.io/support/?utm_source=WordPress&utm_medium=link&utm_campaign=plugin"><?php esc_html_e( 'Go to support forum', 'meta-box' ); ?> &rarr;</a></p>
+			<p><a class="button" target="_blank" href="https://support.metabox.io/?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box"><?php esc_html_e( 'Go to support forum', 'meta-box' ); ?> &rarr;</a></p>
 		</div>
 	</div>
 </div>
