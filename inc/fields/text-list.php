@@ -38,7 +38,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 				$label,
 				self::render_attributes( $attributes )
 			);
-			$count ++;
+			++$count;
 		}
 
 		return implode( ' ', $html );
@@ -114,6 +114,11 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
+
+		if ( isset( $args['mb_view'] ) && $args['mb_view'] === true ) {
+			return $value;
+		}
+
 		$output = '<tr>';
 		foreach ( $value as $subvalue ) {
 			$output .= "<td>$subvalue</td>";
