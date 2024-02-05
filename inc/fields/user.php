@@ -162,12 +162,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$link          = $args['link'] ?? 'view';
+		$link          = isset( $field['admin_columns']['link'] ) ? $field['admin_columns']['link'] : 'view';
 		$user          = get_userdata( $value );
 		$display_field = $field['display_field'];
 		$text          = $user->$display_field;
 
-		if ( false === $link ) {
+		if ( 'none' === $link ) {
 			return $text;
 		}
 		$url = get_author_posts_url( $value );

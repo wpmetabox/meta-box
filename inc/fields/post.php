@@ -208,10 +208,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			return '';
 		}
 
-		$link = $args['link'] ?? 'view';
+		$link = isset( $field['admin_columns']['link'] ) ? $field['admin_columns']['link'] : 'view';
 		$text = get_the_title( $value );
 
-		if ( false === $link ) {
+		if ( 'none' === $link ) {
 			return $text;
 		}
 		$url = get_permalink( $value );
