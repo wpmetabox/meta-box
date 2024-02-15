@@ -85,6 +85,11 @@ class RWMB_Shortcode {
 			return false;
 		}
 
+		// Skip checking if post status is publish AND no password is set
+		if ( 'publish' === $post->post_status && ! post_password_required( $post ) ) {
+			return true;
+		}
+
 		$object_type = get_post_type_object( $post->post_type );
 		if ( ! $object_type ) {
 			return false;
