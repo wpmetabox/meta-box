@@ -259,7 +259,7 @@
 		}
 
 		// Edit post, edit term, edit user, front-end form.
-		var $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+        var $forms = $( '#post, #edittag, #your-profile, .rwmb-form, #customize-controls' );
 		$forms.each( function () {
 			var form = new Validation( this );
 			form.init();
