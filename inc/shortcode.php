@@ -39,6 +39,16 @@ class RWMB_Shortcode {
 	}
 
 	private function get_value( $field_id, $object_id, $atts ) {
+		// If we pass object_id via shortcode, we need to make sure current user 
+		// has permission to view the object
+		if ( ! is_null ( $object_id ) ) {
+			$has_object_permission = $this->check_object_permission( $object_id, $atts );
+			
+			if ( ! $has_object_permission ) {
+				return null;
+			}
+		}
+
 		$attribute = $atts['attribute'];
 		if ( ! $attribute ) {
 			return rwmb_the_value( $field_id, $atts, $object_id, false );
@@ -62,5 +72,31 @@ class RWMB_Shortcode {
 		$value = implode( ',', array_filter( $value ) );
 
 		return $value;
+	}
+
+	private function check_object_permission( $object_id, $atts ) {
+		// Skip checking if object_type is not post
+		if ( isset( $atts['object_type'] ) && $atts['object_type'] !== 'post' ) {
+			return true;
+		}
+
+		$post = get_post( $object_id );
+		if ( ! $post ) {
+			return false;
+		}
+
+		// Skip checking if post status is publish AND no password is set
+		if ( 'publish' === $post->post_status && ! post_password_required( $post ) ) {
+			return true;
+		}
+
+		$object_type = get_post_type_object( $post->post_type );
+		if ( ! $object_type ) {
+			return false;
+		}
+
+		$read_post = $object_type->cap->read_post;
+
+		return current_user_can( $read_post, $object_id );
 	}
 }
