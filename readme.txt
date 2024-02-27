@@ -175,6 +175,9 @@ If you like this plugin, you might also like our other WordPress products:
 
 == Changelog ==
 
+= 5.9.4 - 2024-02-27 =
+- Fix security issue when users set object id in the helper functions where they don't have permission to view (such as private posts)
+
 = 5.9.3 - 2024-02-02 =
 
 **Highlights:**
