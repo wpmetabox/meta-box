@@ -169,11 +169,9 @@ If you like this plugin, you might also like our other WordPress products:
 
 Fix security issue of the output shortcode `[rwmb_meta]` not escaping. Users can disable escaping (to revert the previous behavior) by adding this snippet:
 
-```php
-add_filter( 'rwmb_meta_shortcode_secure', '__return_false' );
+`add_filter( 'rwmb_meta_shortcode_secure', '__return_false' );
 // or
-add_filter( 'rwmb_meta_shortcode_secure_{$field_id}', '__return_false' );
-```
+add_filter( 'rwmb_meta_shortcode_secure_{$field_id}', '__return_false' );`
 
 Other changes:
 - Fix compatibility with PHP 8.3
