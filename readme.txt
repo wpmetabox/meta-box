@@ -174,6 +174,7 @@ Fix security issue of the output shortcode `[rwmb_meta]` not escaping. Users can
 add_filter( 'rwmb_meta_shortcode_secure_{$field_id}', '__return_false' );`
 
 Other changes:
+
 - Fix compatibility with PHP 8.3
 - Fix not showing more than 10 saved users or terms
 
