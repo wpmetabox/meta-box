@@ -1,103 +1,166 @@
 ( function ( $, wp, rwmb ) {
-	'use strict';
+    'use strict';
 
-	var views = rwmb.views = rwmb.views || {},
-		MediaField = views.MediaField,
-		FileUploadField, UploadButton;
+    var views = rwmb.views = rwmb.views || {},
+        MediaField = views.MediaField,
+        FileUploadField, UploadButton;
 
-	FileUploadField = views.FileUploadField = MediaField.extend( {
-		createAddButton: function () {
-			this.addButton = new UploadButton( {controller: this.controller} );
-		}
-	} );
+    FileUploadField = views.FileUploadField = MediaField.extend( {
+        createAddButton: function () {
+            this.addButton = new UploadButton( { controller: this.controller } );
+        }
+    } );
 
-	UploadButton = views.UploadButton = Backbone.View.extend( {
-		className: 'rwmb-upload-area',
-		tagName: 'div',
-		template: wp.template( 'rwmb-upload-area' ),
-		render: function () {
-			this.$el.html( this.template( {} ) );
-			return this;
-		},
+    UploadButton = views.UploadButton = Backbone.View.extend( {
+        className: 'rwmb-upload-area',
+        tagName: 'div',
+        template: wp.template( 'rwmb-upload-area' ),
+        render: function () {
+            this.$el.html( this.template( {} ) );
+            return this;
+        },
 
-		initialize: function ( options ) {
-			this.controller = options.controller;
-			this.el.id = _.uniqueId( 'rwmb-upload-area-' );
-			this.render();
+        initialize: function ( options ) {
+            this.controller = options.controller;
+            this.el.id = _.uniqueId( 'rwmb-upload-area-' );
+            this.render();
 
-			// Auto hide if you reach the max number of media
-			this.listenTo( this.controller, 'change:full', function () {
-				this.$el.toggle( ! this.controller.get( 'full' ) );
-			} );
-		},
+            // Auto hide if you reach the max number of media
+            this.listenTo( this.controller, 'change:full', function () {
+                this.$el.toggle( !this.controller.get( 'full' ) );
+            } );
+        },
 
-		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
-		initUploader: function ( $this ) {
-			var self = this,
-				extensions = this.getExtensions().join( ',' ),
-				maxFileSize = this.controller.get( 'maxFileSize' ),
-				options = {
-					container: this.el,
-					dropzone: this.el,
-					browser: this.$( '.rwmb-browse-button' ),
-					params: {
-						post_id : $( '#post_ID' ).val()
-					},
-					added: function( attachment ) {
-						self.controller.get( 'items' ).add( [attachment] );
-					}
-				};
+        // Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
+        initUploader: function ( $this ) {
+            var self = this,
+                $input = $this.closest( '.rwmb-input' ),
+                $process = $input.find( '.rwmb-media-view .rwmb-media-progress' ),
+                extensions = this.getExtensions().join( ',' ),
+                maxFileSize = this.controller.get( 'maxFileSize' ),
+                options = {
+                    container: this.el,
+                    dropzone: this.el,
+                    browser: this.$( '.rwmb-browse-button' ),
+                    params: {
+                        post_id: $( '#post_ID' ).val()
+                    },
+                    added: function ( attachment ) {
+                        self.controller.get( 'items' ).add( [ attachment ] );
+                    }
+                };
 
-			// Initialize the plupload instance.
-			this.uploader = new wp.Uploader( options );
+            // Initialize the plupload instance.
+            this.uploader = new wp.Uploader( options );
 
-			var filters = this.uploader.uploader.getOption( 'filters' );
-			if ( maxFileSize ) {
-				filters.max_file_size = maxFileSize;
-			}
-			if ( extensions ) {
-				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
-			}
-			this.uploader.uploader.setOption( 'filters', filters );
-			$this.data( 'uploader', this.uploader );
-		},
+            var filters = this.uploader.uploader.getOption( 'filters' );
+            if ( maxFileSize ) {
+                filters.max_file_size = maxFileSize;
+            }
+            if ( extensions ) {
+                filters.mime_types = [ { title: i18nRwmbMedia.select, extensions: extensions } ];
+            }
+            this.uploader.uploader.setOption( 'filters', filters );
 
-		getExtensions: function () {
-			var mimeTypes = this.controller.get( 'mimeType' ).split( ',' ),
-				exts = [];
+            this.uploader.uploader.bind( 'FilesAdded', function ( up, files ) {
+                $.each( files, function ( i, file ) {
+                    $process.append( '<div id="' + file.id + '" class="progress"><div class="progress-bar"></div><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
+                } );
+            } );
 
-			_.each( mimeTypes, function ( current, index ) {
-				if ( i18nRwmbMedia.extensions[current] ) {
-					exts = exts.concat( i18nRwmbMedia.extensions[current] );
-				}
-			} );
-			return exts;
-		}
-	} );
+            this.uploader.uploader.bind( 'UploadProgress', function ( up, file ) {
+                $process.find( '#' + file.id + ' .progress-bar' ).width( file.percent + '%' );
+                $process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - ' + file.percent + '%' );
+            } );
 
-	function initFileUpload() {
-		var $this = $( this ),
-			view = $this.data( 'view' );
+            this.uploader.uploader.bind( 'FileUploaded', function ( up, file, res ) {
+                console.log( "DONE: ", up, file, res );
+                $process.find( '#' + file.id ).fadeOut( "slow" ).remove();
+            } );
 
-		if ( view ) {
-			return;
-		}
-		view = new FileUploadField( { input: this } );
+            this.uploader.uploader.bind( 'Error', function ( up, err ) {
 
-		$this.siblings( '.rwmb-media-view' ).remove();
-		$this.after( view.el );
+                if ( $input.find( '.rwmb-error' ).length === 0 ) {
+                    $input.append( '<p class="rwmb-error"></p>' );
+                }
+                const $error = $input.find( '.rwmb-error' ).empty().show();
 
-		// Init uploader after view is inserted to make wp.Uploader works.
-		view.addButton.initUploader( $this );
+                // File size error
+                if ( err.code === -600 ) {
+                    $error.text( 'Your file is larger than the maximum shown below. Please upload files smaller than this.' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
 
-		$this.data( 'view', view );
-	}
+                // File extension error
+                if ( err.code === -601 ) {
+                    $error.text( 'Sorry! ' + err.file.type + ' is not supported. Please upload JPG or PNG files only.</div>' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
 
-	function init( e ) {
-		$( e.target ).find( '.rwmb-file_upload' ).each( initFileUpload );
-	}
+                // File dimensions error
+                if ( err.code === -702 ) {
+                    $error.text( 'Sorry! Your image dimensions are a bit small? Please upload an image with larger dimensions.</div>' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
 
-	rwmb.$document
-		.on( 'mb_ready', init )
-		.on( 'clone', '.rwmb-file_upload', initFileUpload )
+                // Default error
+                $error.text( 'Sorry! Something isn\'t right with this file ? Please try a different one ?</div >' );
+                setTimeout( function () {
+                    $error.fadeOut( "slow" );
+                }, 5000 );
+            } );
+
+            $this.data( 'uploader', this.uploader );
+        },
+
+        getExtensions: function () {
+            var mimeTypes = this.controller.get( 'mimeType' ).split( ',' ),
+                exts = [];
+
+            _.each( mimeTypes, function ( current, index ) {
+                if ( i18nRwmbMedia.extensions[ current ] ) {
+                    exts = exts.concat( i18nRwmbMedia.extensions[ current ] );
+                }
+            } );
+            return exts;
+        }
+    } );
+
+    function initFileUpload() {
+        var $this = $( this ),
+            view = $this.data( 'view' );
+
+        if ( view ) {
+            return;
+        }
+        view = new FileUploadField( { input: this } );
+
+        $this.siblings( '.rwmb-media-view' ).remove();
+        $this.after( view.el );
+
+        // Init progress
+        view.$el.find( '.rwmb-media-list' ).after( '<div class="rwmb-media-progress"></div>' );
+
+        // Init uploader after view is inserted to make wp.Uploader works.
+        view.addButton.initUploader( $this );
+
+        $this.data( 'view', view );
+    }
+
+    function init( e ) {
+        $( e.target ).find( '.rwmb-file_upload' ).each( initFileUpload );
+    }
+
+    rwmb.$document
+        .on( 'mb_ready', init )
+        .on( 'clone', '.rwmb-file_upload', initFileUpload );
 } )( jQuery, wp, rwmb );
