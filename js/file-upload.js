@@ -33,7 +33,9 @@
 
 		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
 		initUploader: function ( $this ) {
-			var self = this,
+            var self = this,
+                $input = $this.closest( '.rwmb-input' ),
+                $process = $input.find( '.rwmb-media-view .rwmb-media-progress' ),                
 				extensions = this.getExtensions().join( ',' ),
 				maxFileSize = this.controller.get( 'maxFileSize' ),
 				options = {
@@ -58,7 +60,64 @@
 			if ( extensions ) {
 				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
 			}
-			this.uploader.uploader.setOption( 'filters', filters );
+            this.uploader.uploader.setOption( 'filters', filters );
+            
+            this.uploader.uploader.bind( 'FilesAdded', function ( up, files ) {
+                $.each( files, function ( i, file ) {
+                    $process.append( '<div id="' + file.id + '" class="progress"><div class="progress-bar"></div><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
+                } );
+            } );
+
+            this.uploader.uploader.bind( 'UploadProgress', function ( up, file ) {
+                $process.find( '#' + file.id + ' .progress-bar' ).width( file.percent + '%' );
+                $process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - ' + file.percent + '%' );
+            } );
+
+            this.uploader.uploader.bind( 'FileUploaded', function ( up, file, res ) {
+                $process.find( '#' + file.id ).fadeOut( "slow" ).remove();
+            } );
+
+            this.uploader.uploader.bind( 'Error', function ( up, err ) {
+
+                if ( $input.find( '.rwmb-error' ).length === 0 ) {
+                    $input.append( '<p class="rwmb-error"></p>' );
+                }
+                const $error = $input.find( '.rwmb-error' ).empty().show();
+
+                // File size error
+                if ( err.code === -600 ) {
+                    $error.text( 'Your file is larger than the maximum shown below. Please upload files smaller than this.' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
+
+                // File extension error
+                if ( err.code === -601 ) {
+                    $error.text( 'Sorry! ' + err.file.type + ' is not supported. Please upload JPG or PNG files only.</div>' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
+
+                // File dimensions error
+                if ( err.code === -702 ) {
+                    $error.text( 'Sorry! Your image dimensions are a bit small? Please upload an image with larger dimensions.</div>' );
+                    setTimeout( function () {
+                        $error.fadeOut( "slow" );
+                    }, 5000 );
+                    return;
+                }
+
+                // Default error
+                $error.text( 'Sorry! Something isn\'t right with this file ? Please try a different one ?</div >' );
+                setTimeout( function () {
+                    $error.fadeOut( "slow" );
+                }, 5000 );
+            } );
+
 			$this.data( 'uploader', this.uploader );
 		},
 
@@ -86,6 +145,9 @@
 
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
+
+        // Init progress
+        view.$el.find( '.rwmb-media-list' ).after( '<div class="rwmb-media-progress"></div>' );        
 
 		// Init uploader after view is inserted to make wp.Uploader works.
 		view.addButton.initUploader( $this );
