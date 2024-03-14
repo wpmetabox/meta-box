@@ -157,7 +157,12 @@
 		$( e.target ).find( '.rwmb-file_upload' ).each( initFileUpload );
 	}
 
-	rwmb.$document
-		.on( 'mb_ready', init )
-		.on( 'clone', '.rwmb-file_upload', initFileUpload )
+    function removeFile( e ) {
+        $( '.rwmb-media-progress #' + $( this ).data( 'file_id' ) ).remove();
+    }
+
+    rwmb.$document
+        .on( 'mb_ready', init )
+        .on( 'clone', '.rwmb-file_upload', initFileUpload )
+        .on( 'click', '.rwmb-file-actions .rwmb-remove-media', removeFile );
 } )( jQuery, wp, rwmb );
