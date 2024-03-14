@@ -145,10 +145,8 @@
 
 		$this.siblings( '.rwmb-media-view' ).remove();
 		$this.after( view.el );
-
         // Init progress
-        view.$el.find( '.rwmb-media-list' ).after( '<div class="rwmb-media-progress"></div>' );        
-
+        view.$el.find( '.rwmb-media-list' ).after( '<div class="rwmb-media-progress"></div>' );
 		// Init uploader after view is inserted to make wp.Uploader works.
 		view.addButton.initUploader( $this );
 
