@@ -77,9 +77,9 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 		/**
 		 * Filter meta type from object type and object id.
 		 *
-		 * @var string     Meta type, default is post type name.
-		 * @var string     Object type.
-		 * @var string|int Object id.
+		 * @var string       Meta type, default is post type name.
+		 * @var string       Object type.
+		 * @var ?string|?int Object id.
 		 */
 		$type = apply_filters( 'rwmb_meta_type', $args['type'], $args['object_type'], $object_id );
 		if ( ! $type ) {
