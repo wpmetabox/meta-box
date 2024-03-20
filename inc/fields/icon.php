@@ -43,6 +43,12 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		$data = self::parse_icon_data( $field );
 
+		if ( $field['icon_dir'] ) {
+			// Cache the result.
+			wp_cache_set( $cache_key, $data, self::CACHE_GROUP );
+			return $data;
+		}
+
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
