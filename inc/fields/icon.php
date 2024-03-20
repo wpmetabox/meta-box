@@ -43,12 +43,6 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		$data = self::parse_icon_data( $field );
 
-		if ( $field['icon_dir'] ) {
-			// Cache the result.
-			wp_cache_set( $cache_key, $data, self::CACHE_GROUP );
-			return $data;
-		}
-
 		// Reformat icons.
 		$icons = [];
 		foreach ( $data as $key => $icon ) {
@@ -162,14 +156,12 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return $icons;
 		}
 
-		// JSON file: "icon-class": { "label": "Label", "svg": "<svg...>" }
+		// JSON file: "icon-class": { "label": "Label", "svg": "<svg...>" } or from `icon_dir`.
 		if ( is_array( $icon ) ) {
-			$label = empty( $icon['label'] ) ? $key : $icon['label'];
-			$svg   = empty( $icon['svg'] ) ? '' : $icon['svg'];
 			return [
-				'value' => $key,
-				'label' => $label,
-				'svg'   => $svg,
+				'value' => $icon['value'] ?? $key,
+				'label' => $icon['label'] ?? $key,
+				'svg'   => $icon['svg'] ?? '',
 			];
 		}
 
