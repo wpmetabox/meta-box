@@ -22,4 +22,12 @@ class RWMB_Time_Field extends RWMB_Datetime_Field {
 		$field['js_options']['timeFormat'] = empty( $field['format'] ) ? $field['js_options']['timeFormat'] : $field['format'];
 		return $field;
 	}
+
+	/**
+	 * Returns a date() compatible format string from the JavaScript format.
+	 * @link http://www.php.net/manual/en/function.date.php
+	 */
+	protected static function get_php_format( array $js_options ): string {
+		return strtr( $js_options['timeFormat'], self::$time_formats );
+	}
 }
