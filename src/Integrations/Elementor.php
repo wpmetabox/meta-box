@@ -1,7 +1,7 @@
 <?php
-namespace MetaBox\Elementor;
+namespace MetaBox\Integrations;
 
-class Register {
+class Elementor {
 	public function __construct() {
 		add_action( 'elementor/elements/categories_registered', [ $this, 'add_metabox_category' ] );
 	}

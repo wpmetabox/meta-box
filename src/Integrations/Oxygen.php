@@ -1,7 +1,7 @@
 <?php
-namespace MetaBox\Oxygen;
+namespace MetaBox\Integrations;
 
-class Register {
+class Oxygen {
 
 	public function __construct() {
 		add_action( 'oxygen_add_plus_sections', [ $this, 'add_metabox_category' ] );
