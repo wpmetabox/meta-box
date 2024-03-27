@@ -1,7 +1,7 @@
 <?php
-namespace MetaBox\Bricks;
+namespace MetaBox\Integrations;
 
-class Register {
+class Bricks {
 	public function __construct() {
 		add_filter( 'bricks/builder/i18n', [ $this, 'i18n' ] );
 	}

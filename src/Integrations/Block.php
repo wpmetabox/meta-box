@@ -1,7 +1,7 @@
 <?php
-namespace MetaBox\Block;
+namespace MetaBox\Integrations;
 
-class Register {
+class Block {
 	public function __construct() {
 		add_filter( 'block_categories_all', [ $this, 'register_block_category' ] );
 	}
