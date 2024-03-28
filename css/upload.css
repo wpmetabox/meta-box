@@ -15,3 +15,38 @@
 .rwmb-upload-inside p {
 	margin: .5em 0;
 }
+.rwmb-media-progress{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.rwmb-media-progress .progress{
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    background-color: #606061;
+    color: #fff;
+    transition: width 0.6s ease;
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 20px;
+    line-height: 20px;
+}
+.rwmb-media-progress .progress .progress-bar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #0d6efd;
+    transition: width 0.6s ease;
+    width: 0;
+}
+
+.rwmb-media-progress .progress .progress-label {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    color: #fff;
+}
