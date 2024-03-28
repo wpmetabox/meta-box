@@ -29,6 +29,15 @@
 			this.listenTo( this.controller, 'change:full', function () {
 				this.$el.toggle( ! this.controller.get( 'full' ) );
 			} );
+
+			this.collection = this.controller.get( 'items' );
+			this.listenTo( this.collection, 'remove', function ( item ) {
+				if ( item.get( 'file' ) !== undefined ) {
+					this.uploader.uploader.removeFile( item.get( 'file' ) );
+				}
+				const totalFiles = parseInt( this.uploader.uploader.getOption( 'totalFiles' ) );
+				this.uploader.uploader.setOption( 'totalFiles', totalFiles - 1 );
+			} );			
 		},
 
 		// Initializes plupload using code from wp.Uploader (wp-includes/js/plupload/wp-plupload.js)
@@ -38,6 +47,7 @@
                 $process = $input.find( '.rwmb-media-view .rwmb-media-progress' ),                
 				extensions = this.getExtensions().join( ',' ),
 				maxFileSize = this.controller.get( 'maxFileSize' ),
+				maxFiles = parseInt( this.controller.get( 'maxFiles' ) ),
 				options = {
 					container: this.el,
 					dropzone: this.el,
@@ -60,12 +70,22 @@
 			if ( extensions ) {
 				filters.mime_types = [{title: i18nRwmbMedia.select, extensions: extensions}];
 			}
-            this.uploader.uploader.setOption( 'filters', filters );
+			this.uploader.uploader.setOption( 'filters', filters );
+			this.uploader.uploader.setOption( 'totalFiles', 0 );
             
             this.uploader.uploader.bind( 'FilesAdded', function ( up, files ) {
-                $.each( files, function ( i, file ) {
-                    $process.append( '<div id="' + file.id + '" class="progress"><div class="progress-bar"></div><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
-                } );
+				const $this = this,
+					totalFiles = parseInt( $this.getOption( 'totalFiles' ) );
+
+				$.each( files, function ( i, file ) {
+					if ( maxFiles !== 0 && i >= maxFiles - totalFiles ) {
+						up.removeFile( files[ i ] );
+						return;
+					}
+
+					$process.append( '<div id="' + file.id + '" class="progress"><div class="progress-bar"></div><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
+					$this.setOption( 'totalFiles', parseInt( $this.getOption( 'totalFiles' ) ) + 1 );
+				} );
             } );
 
             this.uploader.uploader.bind( 'UploadProgress', function ( up, file ) {
@@ -95,7 +115,7 @@
 
                 // File extension error
                 if ( err.code === -601 ) {
-                    $error.text( 'Sorry! ' + err.file.type + ' is not supported. Please upload JPG or PNG files only.</div>' );
+                    $error.text( 'Sorry! ' + err.file.type + ' is not supported. Please upload JPG or PNG files only.' );
                     setTimeout( function () {
                         $error.fadeOut( "slow" );
                     }, 5000 );
@@ -104,7 +124,7 @@
 
                 // File dimensions error
                 if ( err.code === -702 ) {
-                    $error.text( 'Sorry! Your image dimensions are a bit small? Please upload an image with larger dimensions.</div>' );
+                    $error.text( 'Sorry! Your image dimensions are a bit small? Please upload an image with larger dimensions.' );
                     setTimeout( function () {
                         $error.fadeOut( "slow" );
                     }, 5000 );
@@ -112,7 +132,7 @@
                 }
 
                 // Default error
-                $error.text( 'Sorry! Something isn\'t right with this file ? Please try a different one ?</div >' );
+                $error.text( 'Sorry! Something isn\'t right with this file ? Please try a different one ?' );
                 setTimeout( function () {
                     $error.fadeOut( "slow" );
                 }, 5000 );
