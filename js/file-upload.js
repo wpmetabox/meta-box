@@ -104,41 +104,13 @@
 
                 if ( $input.find( '.rwmb-error' ).length === 0 ) {
                     $input.append( '<p class="rwmb-error"></p>' );
-                }
-                const $error = $input.find( '.rwmb-error' ).empty().show();
-
-                // File size error
-                if ( err.code === -600 ) {
-                    $error.text( 'Your file is larger than the maximum shown below. Please upload files smaller than this.' );
-                    setTimeout( function () {
-                        $error.fadeOut( "slow" );
-                    }, 5000 );
-                    return;
-                }
-
-                // File extension error
-                if ( err.code === -601 ) {
-                    $error.text( 'Sorry! ' + err.file.type + ' is not supported. Please upload JPG or PNG files only.' );
-                    setTimeout( function () {
-                        $error.fadeOut( "slow" );
-                    }, 5000 );
-                    return;
-                }
-
-                // File dimensions error
-                if ( err.code === -702 ) {
-                    $error.text( 'Sorry! Your image dimensions are a bit small? Please upload an image with larger dimensions.' );
-                    setTimeout( function () {
-                        $error.fadeOut( "slow" );
-                    }, 5000 );
-                    return;
-                }
-
-                // Default error
-                $error.text( 'Sorry! Something isn\'t right with this file ? Please try a different one ?' );
-                setTimeout( function () {
-                    $error.fadeOut( "slow" );
-                }, 5000 );
+				}
+				
+				const $error = $input.find( '.rwmb-error' ).empty().show();
+				$error.text( err.message );
+				setTimeout( function () {
+					$error.fadeOut( "slow" );
+				}, 5000 );
             } );
 
 			$this.data( 'uploader', this.uploader );
