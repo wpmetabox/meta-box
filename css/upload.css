@@ -1,52 +1,44 @@
 .rwmb-upload-area {
-	height: 200px;
-	border: 4px dashed #ddd;
-	display: flex;
+    height: 200px;
+    border: 4px dashed #ddd;
+    display: flex;
     align-items: center;
     justify-content: center;
-	text-align: center;
+    text-align: center;
 }
+
 .rwmb-upload-inside h3 {
-	font-size: 20px;
-	line-height: 1.4;
-	font-weight: 400;
-	margin: 0;
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 400;
+    margin: 0;
 }
+
 .rwmb-upload-inside p {
-	margin: .5em 0;
+    margin: .5em 0;
 }
-.rwmb-media-progress{
+
+.rwmb-media-progress {
     gap: 10px;
     display: flex;
     flex-direction: column;
 }
-.rwmb-media-progress .progress{
+
+.rwmb-media-progress .progress {
     position: relative;
-    display: flex;
-    overflow: hidden;
-    background-color: #606061;
-    color: #fff;
-    transition: width 0.6s ease;
-    font-size: 13px;
-    border-radius: 8px;
-    min-height: 20px;
-    line-height: 20px;
+    height: 35px;
 }
-.rwmb-media-progress .progress .progress-bar{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-    text-align: center;
-    white-space: nowrap;
-    background-color: #0d6efd;
-    transition: width 0.6s ease;
-    width: 0;
+
+.rwmb-media-progress .progress progress {
+    width: 100%;
+    height: 35px;
+    position: absolute;
 }
 
 .rwmb-media-progress .progress .progress-label {
     width: 100%;
     position: absolute;
     text-align: center;
-    color: #fff;
+    font-size: 15px;
+    line-height: 35px;
 }

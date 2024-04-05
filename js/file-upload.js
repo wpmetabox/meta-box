@@ -83,13 +83,13 @@
 						return;
 					}
 
-					$process.append( '<div id="' + file.id + '" class="progress"><div class="progress-bar"></div><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
+					$process.append( '<div id="' + file.id + '" class="progress"><progress value="0" max="100"></progress><span class="progress-label">' + file.name + ' - ' + file.percent + '%</span></div>' );
 					$this.setOption( 'totalFiles', parseInt( $this.getOption( 'totalFiles' ) ) + 1 );
 				} );
             } );
 
             this.uploader.uploader.bind( 'UploadProgress', function ( up, file ) {
-                $process.find( '#' + file.id + ' .progress-bar' ).width( file.percent + '%' );
+				$process.find( '#' + file.id + ' progress' ).attr( 'value', file.percent );
                 $process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - ' + file.percent + '%' );
             } );
 
