@@ -89,11 +89,14 @@
             } );
 
             this.uploader.uploader.bind( 'UploadProgress', function ( up, file ) {
-				$process.find( '#' + file.id + ' progress' ).attr( 'value', file.percent );
-                $process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - ' + file.percent + '%' );
+				const filePercent = file.percent === 100 ? 99 : file.percent;
+				$process.find( '#' + file.id + ' progress' ).attr( 'value', filePercent );
+				$process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - ' + filePercent + '%' );
             } );
 
-            this.uploader.uploader.bind( 'FileUploaded', function ( up, file, res ) {
+			this.uploader.uploader.bind( 'FileUploaded', function ( up, file, res ) {
+				$process.find( '#' + file.id + ' progress' ).attr( 'value', 100 );
+				$process.find( '#' + file.id + ' .progress-label' ).text( file.name + ' - 100%' );				
                 $process.find( '#' + file.id ).fadeOut( "slow" ).remove();
             } );
 
