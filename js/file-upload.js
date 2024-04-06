@@ -92,8 +92,8 @@
 
 			const setWidth = ( file, value ) => $process.find( `#${ file.id }` ).attr( 'aria-valuenow', value ).css( '--value', value ).text( `${ file.name } - ${ value }%` );
 
-			this.uploader.uploader.bind( 'UploadProgress', ( up, file ) => setWidth( file, Math.min( file.percent, 99 ) ) );
-			this.uploader.uploader.bind( 'FileUploaded', ( up, file ) => setWidth( file, 100 ).addClass( 'rwmb-progress--completed' ).fadeOut( 'slow', function () {
+			this.uploader.uploader.bind( 'UploadProgress', ( up, file ) => setWidth( file, file.percent ).addClass( file.percent === 100 ? 'rwmb-progress--completed' : '' ) );
+			this.uploader.uploader.bind( 'FileUploaded', ( up, file ) => $process.find( `#${ file.id }` ).fadeOut( 'slow', function () {
 				$( this ).remove();
 			} ) );
 
