@@ -1,3 +1,6 @@
+body .rwmb-switch-label{
+	--wp-admin-theme-color: initial;
+}
 .rwmb-switch-label {
 	position: relative;
 	display: inline-block;
