@@ -30,9 +30,15 @@
 			<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
 				{{{ i18nRwmbMedia.edit }}}
 			</a>
+			<# if( data.file ) { #>
+			<a href="#" class="rwmb-remove-media" data-file_id="{{{ data.file.id }}}" title="{{{ i18nRwmbMedia.remove }}}">
+				{{{ i18nRwmbMedia.remove }}}
+			</a>
+			<# } else { #>
 			<a href="#" class="rwmb-remove-media" title="{{{ i18nRwmbMedia.remove }}}">
 				{{{ i18nRwmbMedia.remove }}}
 			</a>
+			<# } #>
 		</div>
 	</div>
 </script>

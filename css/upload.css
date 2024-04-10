@@ -2,16 +2,67 @@
 	height: 200px;
 	border: 4px dashed #ddd;
 	display: flex;
-    align-items: center;
-    justify-content: center;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
 }
+
 .rwmb-upload-inside h3 {
 	font-size: 20px;
 	line-height: 1.4;
 	font-weight: 400;
 	margin: 0;
 }
+
 .rwmb-upload-inside p {
 	margin: .5em 0;
+}
+
+/* Progress bar */
+.rwmb-progress {
+	--height: 16px;
+
+	margin-bottom: 12px;
+
+	position: relative;
+	z-index: 1;
+
+	border-radius: 99px;
+	background-color: #ddd;
+
+	height: var(--height);
+	line-height: var(--height);
+	color: #fff;
+	font-size: 11px;
+	text-align: center;
+}
+
+.rwmb-progress:before {
+	display: block;
+	content: "";
+
+	position: absolute;
+	width: calc(var(--value) * 1%);
+	height: 100%;
+	z-index: -1;
+
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+	background-size: 16px 16px;
+	background-color: var(--wp-admin-theme-color, #2271b1);
+	border-radius: 99px 0 0 99px;
+}
+
+.rwmb-progress--completed:before {
+	border-radius: 99px;
+	animation: progress 1s linear infinite;
+}
+
+@keyframes progress {
+	0% {
+		background-position: 0 0;
+	}
+
+	100% {
+		background-position: 16px 0px;
+	}
 }
