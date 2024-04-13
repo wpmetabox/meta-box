@@ -70,35 +70,23 @@ class RWMB_OSM_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get the field value.
-	 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
-	 * of the field saved in the database, while this function returns more meaningful value of the field.
-	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Not used for this field.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return mixed Array(latitude, longitude, zoom)
+	 * Format value before render map
+	 * @param mixed $field
+	 * @param mixed $value
+	 * @param mixed $args
+	 * @param mixed $post_id
+	 * @return string
 	 */
-	public static function get_value( $field, $args = [], $post_id = null ) {
-		$value                               = parent::get_value( $field, $args, $post_id );
-		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
-		return compact( 'latitude', 'longitude', 'zoom' );
-	}
+	public static function format_value( $field, $value, $args, $post_id ): string {
+		if ( ! $field['clone'] ) {
+			return self::render_map( $value, $args );
+		}
 
-	/**
-	 * Output the field value.
-	 * Display Open Street Map using Leaflet
-	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Additional arguments for the map.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string HTML output of the field
-	 */
-	public static function the_value( $field, $args = [], $post_id = null ) {
-		$value = parent::get_value( $field, $args, $post_id );
-		return self::render_map( $value, $args );
+		$output = '';
+		foreach ( $value as $clone ) {
+			$output .= self::render_map( $clone, $args );
+		}
+		return $output;
 	}
 
 	/**
