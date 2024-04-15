@@ -5,6 +5,9 @@
 .rwmb-field {
 	display: flex;
 }
+.rwmb-field[data-visible="visible"] {
+	display: flex !important;
+}
 .rwmb-field:not(:last-of-type) {
 	margin: 0 0 12px;
 }
