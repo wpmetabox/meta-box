@@ -70,6 +70,26 @@ class RWMB_OSM_Field extends RWMB_Field {
 	}
 
 	/**
+	 * Get the field value.
+	 * The difference between this function and 'meta' function is 'meta' function always returns the escaped value
+	 * of the field saved in the database, while this function returns more meaningful value of the field.
+	 *
+	 * @param  array    $field   Field parameters.
+	 * @param  array    $args    Not used for this field.
+	 * @param  int|null $post_id Post ID. null for current post. Optional.
+	 *
+	 * @return mixed Array(latitude, longitude, zoom)
+	 */
+	public static function get_value( $field, $args = [], $post_id = null ) {
+		$value = parent::get_value( $field, $args, $post_id );
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
+		return compact( 'latitude', 'longitude', 'zoom' );
+	}
+
+	/**
 	 * Format value before render map
 	 * @param mixed $field
 	 * @param mixed $value
@@ -77,16 +97,8 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 * @param mixed $post_id
 	 * @return string
 	 */
-	public static function format_value( $field, $value, $args, $post_id ): string {
-		if ( ! $field['clone'] ) {
-			return self::render_map( $value, $args );
-		}
-
-		$output = '';
-		foreach ( $value as $clone ) {
-			$output .= self::render_map( $clone, $args );
-		}
-		return $output;
+	public static function format_single_value( $field, $value, $args, $post_id ): string {
+		return self::render_map( $value, $args );
 	}
 
 	/**

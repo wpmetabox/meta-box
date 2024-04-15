@@ -98,23 +98,23 @@ class RWMB_Map_Field extends RWMB_Field {
 	 */
 	public static function get_value( $field, $args = [], $post_id = null ) {
 		$value                               = parent::get_value( $field, $args, $post_id );
+		if ( is_array( $value ) ) {
+			return $value;
+		}
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 		return compact( 'latitude', 'longitude', 'zoom' );
 	}
 
 	/**
-	 * Output the field value.
-	 * Display Google maps.
-	 *
-	 * @param  array    $field   Field parameters.
-	 * @param  array    $args    Additional arguments for the map.
-	 * @param  int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string HTML output of the field
+	 * Format value before render map
+	 * @param mixed $field
+	 * @param mixed $value
+	 * @param mixed $args
+	 * @param mixed $post_id
+	 * @return string
 	 */
-	public static function the_value( $field, $args = [], $post_id = null ) {
-		$value = parent::get_value( $field, $args, $post_id );
-		$args  = wp_parse_args( $args, [
+	public static function format_single_value( $field, $value, $args, $post_id ): string {
+		$args = wp_parse_args( $args, [
 			'api_key' => $field['api_key'] ?? '',
 		] );
 		return self::render_map( $value, $args );
