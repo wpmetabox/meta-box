@@ -139,12 +139,13 @@ class RWMB_Map_Field extends RWMB_Field {
         // For compatibility with previous version, or within groups.
 		if ( is_string( $location ) ) {
 			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
-			if ( ! $latitude || ! $longitude ) {
-				return '';
-			}
 		} else {
 			extract( $location );
 		}
+
+        if ( ! $latitude || ! $longitude ) {
+            return '';
+        }
 
 		$args = wp_parse_args( $args, [
 			'latitude'     => $latitude,
