@@ -97,10 +97,17 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * @return mixed Array(latitude, longitude, zoom)
 	 */
 	public static function get_value( $field, $args = [], $post_id = null ) {
-		$value                               = parent::get_value( $field, $args, $post_id );
+		$value = parent::get_value( $field, $args, $post_id );
+
 		if ( is_array( $value ) ) {
-			return $value;
+			$location = [];
+			foreach ( $value as $clone ) {
+				list( $latitude, $longitude, $zoom ) = explode( ',', $clone . ',,' );
+				$location[]                            = compact( 'latitude', 'longitude', 'zoom' );
+			}
+			return $location;
 		}
+
 		list( $latitude, $longitude, $zoom ) = explode( ',', $value . ',,' );
 		return compact( 'latitude', 'longitude', 'zoom' );
 	}
@@ -129,9 +136,14 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function render_map( $location, $args = [] ) {
-		list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
-		if ( ! $latitude || ! $longitude ) {
-			return '';
+        // For compatibility with previous version, or within groups.
+		if ( is_string( $location ) ) {
+			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
+			if ( ! $latitude || ! $longitude ) {
+				return '';
+			}
+		} else {
+			extract( $location );
 		}
 
 		$args = wp_parse_args( $args, [
