@@ -150,9 +150,9 @@ class RW_Meta_Box {
 	}
 
 	private function is_gutenberg_screen() : bool {
-		global $pagenow;
+		$screen = get_current_screen();
 
-		return in_array( $pagenow, ['site-editor.php', 'widgets.php'] );
+		return in_array( $screen->base, [ 'site-editor', 'widgets' ] );
 	}
 
 	/**
