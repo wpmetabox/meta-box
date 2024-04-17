@@ -110,7 +110,7 @@ class RW_Meta_Box {
 	}
 
 	public function enqueue() {
-		if ( is_admin() && ! $this->is_edit_screen() ) {
+		if ( is_admin() && ! $this->is_edit_screen() && ! $this->is_gutenberg_screen() ) {
 			return;
 		}
 
@@ -147,6 +147,12 @@ class RW_Meta_Box {
 		 * @param RW_Meta_Box $object Meta Box object
 		 */
 		do_action( 'rwmb_enqueue_scripts', $this );
+	}
+
+	private function is_gutenberg_screen() : bool {
+		global $pagenow;
+
+		return in_array( $pagenow, ['site-editor.php', 'widgets.php'] );
 	}
 
 	/**
