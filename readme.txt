@@ -163,6 +163,7 @@ If you like this plugin, you might also like our other WordPress products:
 = 5.9.6 - 2024-04-17 =
 - Add progress bar for field `file_upload`
 - Force returned value of sanitize color to string
+- Enqueue assets for FSE and widget (with block editor) screens
 - Fix jumping layout for Meta Box Conditional Logic
 - Fix errors when using cloneable map/osm fields
 
