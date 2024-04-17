@@ -216,8 +216,13 @@
 	class GutenbergValidation extends Validation {
 		init() {
 			var that = this,
-				editor = wp.data.dispatch( 'core/editor' ),
-				savePost = editor.savePost; // Reference original method.
+				editor = wp.data.dispatch( 'core/editor' );
+			
+			if ( ! editor ) {
+				return false;
+			}
+
+			const savePost = editor.savePost; // Reference original method.
 
 			if ( that.settings ) {
 				that.$form.validate( that.settings );
