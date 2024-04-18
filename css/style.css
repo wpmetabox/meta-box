@@ -5,14 +5,6 @@
 .rwmb-field {
 	display: flex;
 }
-/**
-* FIX: [conditional logic] when toggled to show, it adds display: block; on
-* an element which was display: flex; - which breaks the layout.
-* Latching onto data-visible attribute to force flex.
-*/
-.rwmb-field[data-visible="visible"] {
-	display: flex !important;
-}
 .rwmb-field:not(:last-of-type) {
 	margin: 0 0 12px;
 }
