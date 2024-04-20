@@ -132,7 +132,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		remove_filter( 'posts_search', [ __CLASS__, 'search_by_title' ] );
 
 		$options = [];
+        $diff = [];
 		foreach ( $query->posts as $post ) {
+            $diff[] = $post->ID;
+
 			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
 			$label                = self::filter( 'choice_label', $label, $field, $post );
 			$options[ $post->ID ] = [
@@ -144,6 +147,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		// Cache the query.
 		wp_cache_set( $cache_key, $options, 'meta-box-post-field' );
+
+		if ( isset( $args['posts_per_page'] ) && $query->post_count < $args['posts_per_page'] ) {
+			global $post;
+            update_post_meta( $post->ID, $field['id'], $diff );
+		}
 
 		return $options;
 	}
