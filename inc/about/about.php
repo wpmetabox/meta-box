@@ -125,8 +125,9 @@ class RWMB_About {
 		$is_cli           = 'cli' === php_sapi_name();
 		$is_plugin        = 'meta-box/meta-box.php' === $plugin;
 		$is_bulk_activate = 'activate-selected' === rwmb_request()->post( 'action' ) && count( rwmb_request()->post( 'checked' ) ) > 1;
+		$is_doing_ajax    = defined( 'DOING_AJAX' ) && DOING_AJAX;
 
-		if ( ! $is_plugin || $network_wide || $is_cli || $is_bulk_activate || $this->is_bundled() ) {
+		if ( ! $is_plugin || $network_wide || $is_cli || $is_bulk_activate || $this->is_bundled() || $is_doing_ajax ) {
 			return;
 		}
 		wp_safe_redirect( $this->get_menu_link() );
