@@ -25,9 +25,6 @@ abstract class RWMB_Field {
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
-		$meta = self::remove_options_deleted( (array) $meta, $field );
-		$meta = self::array_filter_recursive( $meta );
-
 		$begin = static::begin_html( $field );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
@@ -59,53 +56,6 @@ abstract class RWMB_Field {
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html; // phpcs:ignore WordPress.Security.EscapeOutput
-	}
-
-    /**
-     * remove_options_deleted
-     * @param array $meta Meta value.
-     * @param array $field Field parameters.
-     * @return array
-     */
-	private static function remove_options_deleted( array $meta, array $field ): array {
-		if ( ! isset( $field['options'] ) || empty( $meta ) ) {
-			return $meta;
-		}
-
-		$options = array_keys( $field['options'] );
-		array_walk_recursive($meta, function ( &$value ) use ( $options ) {
-			if ( ! empty( $value ) && ! in_array( $value, $options ) ) {
-				$value = null;
-			}
-		});
-
-		return array_filter( $meta );
-	}
-
-	/**
-	 * array_filter_recursive
-	 * @link https://gist.github.com/benjamw/1690140
-	 * @param array
-	 * @param string optional callback function name
-	 * @param bool optional flag removal of empty arrays after filtering
-	 * @return array merged array
-	 */
-	private static function array_filter_recursive( array $array, callable $callback = null, bool $remove_empty_arrays = false ): array {
-		foreach ( $array as $key => & $value ) { // mind the reference
-			if ( is_array( $value ) ) {
-				$value = call_user_func_array( [ 'self', 'array_filter_recursive' ], array( $value, $callback, $remove_empty_arrays ) );
-				if ( $remove_empty_arrays && ! (bool) $value ) {
-					unset( $array[ $key ] );
-				}
-			} elseif ( ! is_null( $callback ) && ! $callback( $value ) ) {
-					unset( $array[ $key ] );
-			} elseif ( ! (bool) $value ) {
-				unset( $array[ $key ] );
-			}
-		}
-		unset( $value ); // kill the reference
-
-		return array_filter( $array );
 	}
 
 	/**
