@@ -25,6 +25,9 @@ abstract class RWMB_Field {
 		$meta = self::call( $field, 'meta', $post_id, $saved );
 		$meta = self::filter( 'field_meta', $meta, $field, $saved );
 
+		$meta = self::remove_options_deleted( (array) $meta, $field );
+		$meta = self::array_filter_recursive( $meta );
+
 		$begin = static::begin_html( $field );
 		$begin = self::filter( 'begin_html', $begin, $field, $meta );
 
@@ -58,6 +61,53 @@ abstract class RWMB_Field {
 		echo $outer_html; // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
+    /**
+     * remove_options_deleted
+     * @param array $meta Meta value.
+     * @param array $field Field parameters.
+     * @return array
+     */
+	private static function remove_options_deleted( array $meta, array $field ): array {
+		if ( ! isset( $field['options'] ) || empty( $meta ) ) {
+			return $meta;
+		}
+
+		$options = array_keys( $field['options'] );
+		array_walk_recursive($meta, function ( &$value ) use ( $options ) {
+			if ( ! empty( $value ) && ! in_array( $value, $options ) ) {
+				$value = null;
+			}
+		});
+
+		return array_filter( $meta );
+	}
+
+	/**
+	 * array_filter_recursive
+	 * @link https://gist.github.com/benjamw/1690140
+	 * @param array
+	 * @param string optional callback function name
+	 * @param bool optional flag removal of empty arrays after filtering
+	 * @return array merged array
+	 */
+	private static function array_filter_recursive( array $array, callable $callback = null, bool $remove_empty_arrays = false ): array {
+		foreach ( $array as $key => & $value ) { // mind the reference
+			if ( is_array( $value ) ) {
+				$value = call_user_func_array( [ 'self', 'array_filter_recursive' ], array( $value, $callback, $remove_empty_arrays ) );
+				if ( $remove_empty_arrays && ! (bool) $value ) {
+					unset( $array[ $key ] );
+				}
+			} elseif ( ! is_null( $callback ) && ! $callback( $value ) ) {
+					unset( $array[ $key ] );
+			} elseif ( ! (bool) $value ) {
+				unset( $array[ $key ] );
+			}
+		}
+		unset( $value ); // kill the reference
+
+		return array_filter( $array );
+	}
+
 	/**
 	 * Get field HTML.
 	 *
@@ -70,7 +120,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -101,16 +151,16 @@ abstract class RWMB_Field {
 		return $label . $input_open;
 	}
 
-	protected static function end_html( array $field ) : string {
+	protected static function end_html( array $field ): string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	protected static function label_description( array $field ) : string {
+	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -369,7 +419,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
+	public static function render_attributes( array $attributes ): string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );

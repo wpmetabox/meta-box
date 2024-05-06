@@ -8,9 +8,6 @@ class RWMB_Clone {
 
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
-			if ( isset( $sub_field['options'] ) && ! empty( $sub_meta ) && ! is_array( $sub_meta ) && ! isset( $sub_field['options'][ $sub_meta ] ) ) {
-				continue;
-			}
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 			if ( $index > 0 ) {
 				if ( isset( $sub_field['address_field'] ) ) {
