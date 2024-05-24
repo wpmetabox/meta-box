@@ -4,6 +4,9 @@
 	/**
 	 * Transform textarea into wysiwyg editor.
 	 */
+	var settingsCache = new WeakMap();
+	var initializedEditors = new WeakMap();
+
 	function transform() {
 		var $this = $( this ),
 			$wrapper = $this.closest( '.wp-editor-wrap' ),
@@ -20,22 +23,29 @@
 		var mode = $wrapper.hasClass( 'tmce-active' ) ? 'tmce' : 'html';
 
 		// Update the DOM
-		$this.show();
-		updateDom( $wrapper, id );
+		if (!$this.is(':visible')) {
+			$this.show();
+			updateDom($wrapper, id);
+		}
 
 		// Get id of the original editor to get its tinyMCE and quick tags settings
-		var originalId = getOriginalId( this ),
+		var originalId = getOriginalId( this );
+		var settings = settingsCache[originalId];
+
+		if (!settings) {
 			settings = getEditorSettings( originalId ),
-			customSettings = $this.closest( '.rwmb-input' ).find( '.rwmb-wysiwyg-id' ).data( 'options' );
+			settingsCache.set(originalId, settings);
+		}
+		var customSettings = $this.closest( '.rwmb-input' ).find( '.rwmb-wysiwyg-id' ).data( 'options' );
 
 		// TinyMCE
-		if ( window.tinymce ) {
+		if ( window.tinymce && !initializedEditors.get($this[0]) ) {
 			settings.tinymce.selector = '#' + id;
 			settings.tinymce.setup = function( editor ) {
-				editor.on( 'keyup change', function() {
+				editor.on( 'keyup change', debounce(function() {
 					editor.save(); // Required for live validation.
 					$this.trigger( 'change' );
-				} );
+				} , 300));
 			};
 
 			// Set editor mode after initializing.
@@ -45,15 +55,19 @@
 
 			tinymce.remove( '#' + id );
 			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
+			initializedEditors.set($this[0], true);
 		}
 
 		// Quick tags
-		if ( window.quicktags ) {
+		if ( window.quicktags && !initializedEditors.get($this[0]) ) {
 			settings.quicktags.id = id;
 			quicktags( $.extend( settings.quicktags, customSettings.quicktags ) );
 			QTags._buttonsInit();
+			initializedEditors.set($this[0], true);
 		}
 	}
+
+
 
 	function getEditorSettings( id ) {
 		var settings = getDefaultEditorSettings();
