@@ -1,10 +1,11 @@
 ( function( $, wp, window, rwmb ) {
 	'use strict';
 
+	let initializedEditors = {};
+
 	/**
 	 * Transform textarea into wysiwyg editor.
 	 */
-	var initializedEditors = {};
 
 	function transform() {
 		var $this = $( this ),
