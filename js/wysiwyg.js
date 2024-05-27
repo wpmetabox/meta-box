@@ -4,8 +4,7 @@
 	/**
 	 * Transform textarea into wysiwyg editor.
 	 */
-	var settingsCache = new WeakMap();
-	var initializedEditors = new WeakMap();
+	var initializedEditors = {};
 
 	function transform() {
 		var $this = $( this ),
@@ -19,33 +18,30 @@
 			$this.attr( 'id', id );
 		}
 
+		if (initializedEditors[id]) {
+			return;
+		}
+
 		// Get current editor mode before updating the DOM.
 		var mode = $wrapper.hasClass( 'tmce-active' ) ? 'tmce' : 'html';
 
 		// Update the DOM
-		if (!$this.is(':visible')) {
-			$this.show();
-			updateDom($wrapper, id);
-		}
+		$this.show();
+		updateDom( $wrapper, id );
 
 		// Get id of the original editor to get its tinyMCE and quick tags settings
-		var originalId = getOriginalId( this );
-		var settings = settingsCache[originalId];
-
-		if (!settings) {
+		var originalId = getOriginalId( this ),
 			settings = getEditorSettings( originalId ),
-			settingsCache.set(originalId, settings);
-		}
-		var customSettings = $this.closest( '.rwmb-input' ).find( '.rwmb-wysiwyg-id' ).data( 'options' );
+			customSettings = $this.closest( '.rwmb-input' ).find( '.rwmb-wysiwyg-id' ).data( 'options' );
 
 		// TinyMCE
-		if ( window.tinymce && !initializedEditors.get($this[0]) ) {
+		if ( window.tinymce ) {
 			settings.tinymce.selector = '#' + id;
 			settings.tinymce.setup = function( editor ) {
-				editor.on( 'keyup change', debounce(function() {
+				editor.on( 'keyup change', function() {
 					editor.save(); // Required for live validation.
 					$this.trigger( 'change' );
-				} , 300));
+				} );
 			};
 
 			// Set editor mode after initializing.
@@ -55,19 +51,17 @@
 
 			tinymce.remove( '#' + id );
 			tinymce.init( $.extend( settings.tinymce, customSettings.tinymce ) );
-			initializedEditors.set($this[0], true);
 		}
 
 		// Quick tags
-		if ( window.quicktags && !initializedEditors.get($this[0]) ) {
+		if ( window.quicktags ) {
 			settings.quicktags.id = id;
 			quicktags( $.extend( settings.quicktags, customSettings.quicktags ) );
 			QTags._buttonsInit();
-			initializedEditors.set($this[0], true);
 		}
+
+		initializedEditors[id] = true;
 	}
-
-
 
 	function getEditorSettings( id ) {
 		var settings = getDefaultEditorSettings();
