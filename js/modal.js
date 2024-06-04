@@ -1,4 +1,4 @@
-( function ( $, rwmb ) {
+( function ( $ ) {
 	'use strict';
 
 	const $body = $( 'body' );
@@ -129,4 +129,4 @@
 			.append( defaultOptions.markupOverlay );
 	}
 
-} )( jQuery, rwmb );
+} )( jQuery );
