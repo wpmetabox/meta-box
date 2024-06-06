@@ -1,4 +1,4 @@
-( $  => {
+( $ => {
 	'use strict';
 
 	const defaultOptions = {
@@ -29,7 +29,7 @@
 			return;
 		}
 
-        // $this is the button that opens the modal
+		// $this is the button that opens the modal
 		const $this = $( this ),
 			$modal = $( '.rwmb-modal' );
 
@@ -41,14 +41,14 @@
 		$this.click( function ( e ) {
 			e.preventDefault();
 
-            const dialog = document.getElementById( 'rwmb-modal' ); // New dialog element
-            // Show modal
-            dialog.showModal();
+			const dialog = document.getElementById( 'rwmb-modal' ); // New dialog element
+			// Show modal
+			dialog.showModal();
 
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
 			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
-			
-            $( '#rwmb-modal-iframe' ).on( 'load', function () {
+
+			$( '#rwmb-modal-iframe' ).on( 'load', function () {
 				const $contents = $( this ).contents();
 				options.isBlockEditor = $contents.find( 'body' ).hasClass( 'block-editor-page' );
 
@@ -73,12 +73,12 @@
 				return false;
 			} );
 
-            const closeModalHandler = function ( event ) {
+			const closeModalHandler = function ( event ) {
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
 				}
 
-                dialog.close();
+				dialog.close();
 
 				// If not add new
 				if ( !options.$objectId || !options.$objectDisplay ) {
@@ -117,23 +117,22 @@
 				$( this ).off( event );
 			};
 
-            // Close modal on click close button
+			// Close modal on click close button
 			$( '.rwmb-modal-close' ).on( 'click', closeModalHandler );
 
-            // Close modal on press ESC key
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    closeModalHandler(event);
-                }
-            });
+			// Close modal on press ESC key
+			document.addEventListener( 'keydown', ( event ) => {
+				if ( event.key === 'Escape' ) {
+					closeModalHandler( event );
+				}
+			} );
 
-            // Close modal on click outside
-            dialog.addEventListener('click', function(event) {
-                if (event.target === dialog) {
-                    closeModalHandler(event);
-                }
-            });
-
+			// Close modal on click outside
+			dialog.addEventListener( 'click', function ( event ) {
+				if ( event.target === dialog ) {
+					closeModalHandler( event );
+				}
+			} );
 		} );
 	};
 
