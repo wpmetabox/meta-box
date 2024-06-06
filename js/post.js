@@ -13,13 +13,6 @@
 				}
 
 				setTimeout( () => {
-					if ( $modalContent.find( '.edit-post-post-url .edit-post-post-url__toggle' ).length > 0 ) {
-						let url = $modalContent.find( '.edit-post-post-url .edit-post-post-url__toggle' ).text();
-						this.$objectId = url.substr( url.indexOf( "=" ) + 1 );
-					}
-				}, 2000 );
-
-				setTimeout( () => {
 					const $ui = $modalContent.find( '.interface-interface-skeleton' );
 					$ui.css( {
 						left: 0,
@@ -29,7 +22,8 @@
 				}, 500 );
 			},
 			closeModalCallback: function ( $modal, $input ) {
-				this.$objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( '.interface-interface-skeleton__editor h1.editor-post-title__input' ).text().trim();
+                this.$objectId = $modal.find( '#post_ID' ).val();
+				this.$objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( 'h1.editor-post-title' ).text();
 			}
 		} );
 	}
