@@ -14,14 +14,14 @@
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
 
-		options.onSelect = function () {
+		options.onSelect = function() {
 			$this.trigger( 'change' );
-		};
-		options.beforeShow = function ( i ) {
+		}
+		options.beforeShow = function( i ) {
 			if ( $( i ).prop( 'readonly' ) ) {
 				return false;
 			}
-		};
+		}
 
 		if ( $timestamp.length ) {
 			options.onClose = options.onSelect = function () {
@@ -35,7 +35,7 @@
 			}
 		} );
 
-		if ( !$inline.length ) {
+		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datepicker( options );
 			return;
 		}
@@ -43,7 +43,7 @@
 		options.altField = '#' + $this.attr( 'id' );
 		$this.on( 'keydown', _.debounce( function () {
 			// if val is empty, return to allow empty datepicker input.
-			if ( !$this.val() ) {
+			if ( ! $this.val() ) {
 				return;
 			}
 			$picker
