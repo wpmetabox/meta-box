@@ -29,6 +29,11 @@
 				$this.trigger( 'change' );
 			};
 		}
+		$this.on( 'change', function () {
+			if ( !$this.val() ) {
+				$timestamp.val( $this.val() );
+			}
+		} );
 
 		if ( ! $inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datetimepicker( options );
