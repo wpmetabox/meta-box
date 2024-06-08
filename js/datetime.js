@@ -28,6 +28,12 @@
 				$timestamp.val( getTimestamp( $picker.datetimepicker( 'getDate' ) ) );
 				$this.trigger( 'change' );
 			};
+
+			$this.on( 'change', () => {
+				if ( !$this.val() ) {
+					$timestamp.val( '' );
+				}
+			} );
 		}
 
 		if ( ! $inline.length ) {
