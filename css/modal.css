@@ -5,9 +5,9 @@
 
 /* Mimic style of media modal */
 .rwmb-modal {
-    width: 80%;
-    max-width: 800px;
+    width: 90%;
     padding: 0;
+    border: none;
 }
 
 .rwmb-modal::backdrop {

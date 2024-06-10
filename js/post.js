@@ -2,34 +2,25 @@
 	'use strict';
 
 	function addNew() {
-		const $this = $( this );
-
-		$this.rwmbModal( {
+		$( this ).rwmbModal( {
 			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
-			callback: function ( $modal, $modalContent ) {
-				if ( !this.isBlockEditor ) {
-					this.$objectId = $modalContent.find( '#post_ID' ).val();
-					return;
-				}
-
-				setTimeout( () => {
-					const $ui = $modalContent.find( '.interface-interface-skeleton' );
-					$ui.css( {
-						left: 0,
-						top: 0
-					} );
-					$ui.find( '.interface-interface-skeleton__editor' ).css( 'overflow', 'scroll' );
-				}, 500 );
-			},
 			closeModalCallback: function ( $modal, $input ) {
-                this.$objectId = $modal.find( '#post_ID' ).val();
-				this.$objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( 'h1.editor-post-title' ).text();
+                const objectId  = $modal.find( '#post_ID' ).val();
+                const objectDisplay = !this.isBlockEditor ? $modal.find( '#title' ).val() : $modal.find( 'h1.editor-post-title' ).text();
+
+                if ( !objectId ) {
+                    return;
+                }
+
+                this.$objectId = objectId;
+				this.$objectDisplay = objectDisplay;
 			}
 		} );
 	}
 
 	function init( e ) {
 		const wrapper = e.target || e;
+
 		$( wrapper ).find( '.rwmb-post-add-button' ).each( addNew );
 	}
 
