@@ -3,7 +3,7 @@
 
 	function toggleTree() {
 		var $this = $( this ),
-			$children = $this.closest( 'li' ).children( 'ul' );
+		$children = $this.closest( 'label' ).next( 'fieldset' );
 
 		if ( $this.is( ':checked' ) ) {
 			$children.removeClass( 'hidden' );
