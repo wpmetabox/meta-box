@@ -10,6 +10,8 @@
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
 			current = $this.val();
 
+		current = formatTime( current );
+
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
 
 		options.onSelect = function() {
@@ -33,6 +35,14 @@
 			.prop( 'id', '' )
 			.timepicker( options )
 			.timepicker( 'setTime', current );
+	}
+
+	function formatTime(time) {
+		let [hours, minutes] = time.split(':');
+
+		hours = hours.padStart(2, '0');
+
+		return `${hours}:${minutes}`;
 	}
 
 	// Set language if available
