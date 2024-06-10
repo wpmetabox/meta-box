@@ -1,20 +1,17 @@
-( function ( $, rwmb ) {
+( $ => {
 	'use strict';
 
-	const $body = $( 'body' );
-
 	const defaultOptions = {
-		wrapper: `<div class="rwmb-modal">
+		wrapper: `<dialog class="rwmb-modal" id="rwmb-modal">
 			<div class="rwmb-modal-title">
 				<h2></h2>
 				<button type="button" class="rwmb-modal-close">&times;</button>
 			</div>
 			<div class="rwmb-modal-content"></div>
-		</div>`,
+		</dialog>`,
 		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{URL}" border="0"></iframe>',
-		markupOverlay: '<div class="rwmb-modal-overlay"></div>',
 		removeElement: '',
-		removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end',
+		removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end, .page-title-action',
 		callback: null,
 		closeModalCallback: null,
 		isBlockEditor: false,
@@ -32,6 +29,7 @@
 			return;
 		}
 
+		// $this is the button that opens the modal
 		const $this = $( this ),
 			$modal = $( '.rwmb-modal' );
 
@@ -43,15 +41,18 @@
 		$this.click( function ( e ) {
 			e.preventDefault();
 
+			const dialog = document.getElementById( 'rwmb-modal' ); // New dialog element
+			// Show modal
+			dialog.showModal();
+
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
 			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
+
 			$( '#rwmb-modal-iframe' ).on( 'load', function () {
 				const $contents = $( this ).contents();
 				options.isBlockEditor = $contents.find( 'body' ).hasClass( 'block-editor-page' );
 
-				if ( options.removeElement !== '' ) {
-					$contents.find( options.removeElement ).remove();
-				}
+				$contents.find( options.removeElement ).remove();
 
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
 				if ( options.isBlockEditor ) {
@@ -69,21 +70,15 @@
 					options.callback( $modal, $contents );
 				}
 
-				$body.addClass( 'rwmb-modal-show' );
-				$( '.rwmb-modal-overlay' ).fadeIn( 'medium' );
-				$modal.fadeIn( 'medium' );
-
 				return false;
 			} );
 
-			$( '.rwmb-modal-close' ).on( 'click', function ( event ) {
+			const closeModalHandler = function ( event ) {
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
 				}
 
-				$modal.fadeOut( 'medium' );
-				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
-				$body.removeClass( 'rwmb-modal-show' );
+				dialog.close();
 
 				// If not add new
 				if ( !options.$objectId || !options.$objectDisplay ) {
@@ -120,13 +115,29 @@
 				options.$objectId = null;
 				options.$objectDisplay = null;
 				$( this ).off( event );
+			};
+
+			// Close modal on click close button
+			$( '.rwmb-modal-close' ).on( 'click', closeModalHandler );
+
+			// Close modal on press ESC key
+			document.addEventListener( 'keydown', ( event ) => {
+				if ( event.key === 'Escape' ) {
+					closeModalHandler( event );
+				}
+			} );
+
+			// Close modal on click outside
+			dialog.addEventListener( 'click', function ( event ) {
+				if ( event.target === dialog ) {
+					closeModalHandler( event );
+				}
 			} );
 		} );
 	};
 
 	if ( $( '.rwmb-modal' ).length === 0 ) {
-		$body.append( defaultOptions.wrapper )
-			.append( defaultOptions.markupOverlay );
+		document.body.insertAdjacentHTML( 'beforeend', defaultOptions.wrapper );
 	}
 
-} )( jQuery, rwmb );
+} )( jQuery );
