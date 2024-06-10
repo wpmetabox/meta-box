@@ -5,7 +5,9 @@
 		$( this ).rwmbModal( {
 			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
             callback: function ( $modal, $modalContent ) {
-                $modalContent.find( 'body' ).addClass( 'is-fullscreen-mode' );
+                setTimeout( () => {
+                    $modalContent.find( 'body' ).addClass( 'is-fullscreen-mode' );
+                }, 500 );
             },
 			closeModalCallback: function ( $modal, $input ) {
                 const objectId  = $modal.find( '#post_ID' ).val();
