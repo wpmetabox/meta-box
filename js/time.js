@@ -37,7 +37,7 @@
 	}
 
 	const formatTime = time => {
-		if ( time.includes( ':' ) ) {
+		if ( !time.includes( ':' ) ) {
 			return time;
 		}
 		let [ hours, minutes ] = time.split( ':' );
