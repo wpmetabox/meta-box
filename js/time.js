@@ -23,8 +23,8 @@
 			}
 		}
 
-		if ( ! $inline.length ) {
-			$this.removeClass( 'hasDatepicker' ).timepicker( options );
+		if ( !$inline.length ) {
+			$this.removeClass( 'hasDatepicker' ).timepicker( options ).timepicker( 'setTime', current );
 			return;
 		}
 
