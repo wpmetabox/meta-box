@@ -8,8 +8,7 @@
 		var $this = $( this ),
 			options = $this.data( 'options' ),
 			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			current = $this.val(),
-			timeFormat = options.timeFormat;
+			current = $this.val();
 		current = formatTime( current );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
@@ -37,12 +36,13 @@
 			.timepicker( 'setTime', current );
 	}
 
-	const formatTime = ( time ) => {
-		if ( time.indexOf( ':' ) < 0 ) {
+	const formatTime = time => {
+		if ( time.includes( ':' ) ) {
 			return time;
 		}
 		let [ hours, minutes ] = time.split( ':' );
 		hours = hours.padStart( 2, '0' );
+		minutes = minutes.padStart( 2, '0' );
 
 		return `${ hours }:${ minutes }`;
 	};
