@@ -37,13 +37,12 @@
 			.timepicker( 'setTime', current );
 	}
 
-	function formatTime(time) {
-		let [hours, minutes] = time.split(':');
+	const formatTime = ( time ) => {
+		let [ hours, minutes ] = time.split( ':' );
+		hours = hours.padStart( 2, '0' );
 
-		hours = hours.padStart(2, '0');
-
-		return `${hours}:${minutes}`;
-	}
+		return `${ hours }:${ minutes }`;
+	};
 
 	// Set language if available
 	function setTimeI18n() {
