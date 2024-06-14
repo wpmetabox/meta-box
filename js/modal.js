@@ -10,8 +10,8 @@
 			<div class="rwmb-modal-content"></div>
 		</dialog>`,
 		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{URL}" border="0"></iframe>',
-		removeElement: '',
-		removeElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end, .page-title-action',
+		hideElement: '',
+		hideElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end, .page-title-action',
 		callback: null,
 		closeModalCallback: null,
 		isBlockEditor: false,
@@ -52,7 +52,7 @@
 				const $contents = $( this ).contents();
 				options.isBlockEditor = $contents.find( 'body' ).hasClass( 'block-editor-page' );
 
-				$contents.find( options.removeElement ).remove();
+				$contents.find( options.hideElement ).hide();
 
 				$modal.find( '.rwmb-modal-title' ).css( 'background-color', '' );
 				if ( options.isBlockEditor ) {
@@ -60,8 +60,8 @@
 				}
 
 				$contents
-					.find( options.removeElementDefault ).remove().end()
-					.find( '.rwmb-modal-add-button' ).parent().remove();
+					.find( options.hideElementDefault ).hide().end()
+					.find( '.rwmb-modal-add-button' ).parents('.rwmb-field').hide();
 				$contents.find( 'html' ).css( 'padding-top', 0 ).end()
 					.find( '#wpcontent' ).css( 'margin-left', 0 ).end()
 					.find( 'a' ).on( 'click', e => e.preventDefault() );

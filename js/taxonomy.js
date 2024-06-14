@@ -5,7 +5,7 @@
         const $this = $( this );
 
         $this.rwmbModal( {
-            removeElement: '.form-wrap > h2',
+            hideElement: '.form-wrap > h2',
             callback: function ( $modal, $modalContent ) {
                 $modalContent.find( '#col-right' ).css( 'display', 'none' );
                 $modalContent.find( '.search-box' ).css( 'display', 'none' );

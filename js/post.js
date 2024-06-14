@@ -3,7 +3,7 @@
 
 	function addNew() {
 		$( this ).rwmbModal( {
-			removeElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
+			hideElement: '#editor .interface-interface-skeleton__footer, .edit-post-fullscreen-mode-close',
             callback: function ( $modal, $modalContent ) {
                 $modalContent.find( 'body' ).addClass( 'is-fullscreen-mode' );
                 
