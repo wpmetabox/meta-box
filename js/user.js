@@ -5,7 +5,7 @@
         const $this = $( this );
 
         $this.rwmbModal( {
-            removeElement: '#add-new-user',
+            hideElement: '#add-new-user',
             callback: function ( $modal, $modalContent ) {
                 $modalContent.find( '#add-new-user' ).next().next().remove();
 
