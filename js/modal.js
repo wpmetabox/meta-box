@@ -12,6 +12,7 @@
 			<div class="rwmb-modal-content"></div>
 		</div>`,
 		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{URL}" border="0"></iframe>',
+        markupOverlay: '<div class="rwmb-modal-overlay"></div>',
 		hideElement: '',
 		hideElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end, .page-title-action',
 		callback: null,
