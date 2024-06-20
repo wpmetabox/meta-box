@@ -5,14 +5,10 @@
         const $this = $( this );
 
         $this.rwmbModal( {
+            size: 'small',
             hideElement: '#add-new-user',
             callback: function ( $modal, $modalContent ) {
                 $modalContent.find( '#add-new-user' ).next().next().remove();
-
-                $modal.css( {
-                    'max-width': '480px',
-                    'margin': 'auto',
-                } );
             },
             closeModalCallback: function ( $modal, $input ) {
                 if ( $modal.find( '#wpbody-content .wrap form input[name="_wp_http_referer"]' ).length > 0 ) {
