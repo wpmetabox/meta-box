@@ -1,14 +1,16 @@
 ( $ => {
 	'use strict';
+    
+    const $body = $( 'body' );
 
 	const defaultOptions = {
-		wrapper: `<dialog class="rwmb-modal" id="rwmb-modal">
-			<div class="rwmb-modal-title">
+		wrapper: `<div class="rwmb-modal">
+			<header class="rwmb-modal-title">
 				<h2></h2>
 				<button type="button" class="rwmb-modal-close">&times;</button>
-			</div>
+			</header>
 			<div class="rwmb-modal-content"></div>
-		</dialog>`,
+		</div>`,
 		markupIframe: '<iframe id="rwmb-modal-iframe" width="100%" height="700" src="{URL}" border="0"></iframe>',
 		hideElement: '',
 		hideElementDefault: '#adminmenumain, #wpadminbar, #wpfooter, .row-actions, .form-wrap.edit-term-notes, #screen-meta-links, .wp-heading-inline, .wp-header-end, .page-title-action',
@@ -16,7 +18,9 @@
 		closeModalCallback: null,
 		isBlockEditor: false,
 		$objectId: null,
-		$objectDisplay: null
+		$objectDisplay: null,
+        isEdit: false,
+        size: 'large',
 	};
 
 	$.fn.rwmbModal = function ( options = {} ) {
@@ -40,11 +44,8 @@
 
 		$this.click( function ( e ) {
 			e.preventDefault();
-
-			const dialog = document.getElementById( 'rwmb-modal' ); // New dialog element
-			// Show modal
-			dialog.showModal();
-
+            
+            $modal.attr( 'size', options.size );
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
 			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
 
@@ -70,15 +71,21 @@
 					options.callback( $modal, $contents );
 				}
 
+                $body.addClass( 'rwmb-modal-show' );
+				$( '.rwmb-modal-overlay' ).fadeIn( 'medium' ).css( 'display', 'flex' );
+				$modal.fadeIn( 'medium' ).css( 'display', 'flex' );
+
 				return false;
 			} );
 
-			const closeModalHandler = function ( event ) {
+			$( '.rwmb-modal-close' ).on( 'click', function ( event ) {
 				if ( options.closeModalCallback !== null && typeof options.closeModalCallback === 'function' ) {
 					options.closeModalCallback( $( '#rwmb-modal-iframe' ).contents(), $input );
 				}
 
-				dialog.close();
+                $modal.fadeOut( 'medium' );
+				$( '.rwmb-modal-overlay' ).fadeOut( 'medium' );
+				$body.removeClass( 'rwmb-modal-show' );
 
 				// If not add new
 				if ( !options.$objectId || !options.$objectDisplay ) {
@@ -115,29 +122,13 @@
 				options.$objectId = null;
 				options.$objectDisplay = null;
 				$( this ).off( event );
-			};
-
-			// Close modal on click close button
-			$( '.rwmb-modal-close' ).on( 'click', closeModalHandler );
-
-			// Close modal on press ESC key
-			document.addEventListener( 'keydown', ( event ) => {
-				if ( event.key === 'Escape' ) {
-					closeModalHandler( event );
-				}
-			} );
-
-			// Close modal on click outside
-			dialog.addEventListener( 'click', function ( event ) {
-				if ( event.target === dialog ) {
-					closeModalHandler( event );
-				}
-			} );
+			});
 		} );
 	};
 
 	if ( $( '.rwmb-modal' ).length === 0 ) {
-		document.body.insertAdjacentHTML( 'beforeend', defaultOptions.wrapper );
+		$body.append( defaultOptions.wrapper )
+			.append( defaultOptions.markupOverlay );
 	}
 
 } )( jQuery );
