@@ -45,10 +45,9 @@
 
 		$this.click( function ( e ) {
 			e.preventDefault();
-            
             $modal.attr( 'size', options.size );
 			$modal.find( '.rwmb-modal-title h2' ).html( $this.html() );
-			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.data( 'url' ) ) );
+			$modal.find( '.rwmb-modal-content' ).html( options.markupIframe.replace( '{URL}', $this.attr( 'data-url' ) ) );
 
 			$( '#rwmb-modal-iframe' ).on( 'load', function () {
 				const $contents = $( this ).contents();
