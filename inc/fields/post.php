@@ -16,6 +16,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$request = rwmb_request();
 
 		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		
+		// Do not allow users to manipulate the perm.
+		unset( $field['query_args']['perm'] );
 
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
@@ -106,6 +109,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			'mb_field_id'            => $field['id'],
+			'perm'					 => 'readable',
 		] );
 
 		$meta = wp_parse_id_list( (array) $meta );
