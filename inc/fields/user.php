@@ -18,9 +18,6 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 		
-		// Do not allow users to manipulate the fields.
-		unset( $field['query_args']['fields'] );
-
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
@@ -99,8 +96,13 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 	public static function query( $meta, array $field ): array {
 		$display_field = $field['display_field'];
-		
-		$query_args_fields = apply_filters( 'rwmb_user_query_args_fields', [
+
+		$args          = wp_parse_args( $field['query_args'], [
+			'orderby' => $display_field,
+			'order'   => 'asc',
+		] );
+
+		$args['fields']  = [
 			'ID',
 			'user_login',
 			'user_nicename',
@@ -108,13 +110,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'user_registered',
 			'user_status',
 			'display_name',
-		], $field );
-
-		$args          = wp_parse_args( $field['query_args'], [
-			'orderby' => $display_field,
-			'order'   => 'asc',
-			'fields'  => $query_args_fields,
-		] );
+		];
 
 		$meta = wp_parse_id_list( (array) $meta );
 
