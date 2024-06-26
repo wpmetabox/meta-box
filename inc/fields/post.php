@@ -108,6 +108,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'mb_field_id'            => $field['id'],
 		] );
 
+		$args['perm'] = 'readable';
+
 		$meta = wp_parse_id_list( (array) $meta );
 
 		// Query only selected items.

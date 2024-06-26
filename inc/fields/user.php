@@ -17,7 +17,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$request = rwmb_request();
 
 		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-
+		
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
@@ -96,21 +96,21 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 	public static function query( $meta, array $field ): array {
 		$display_field = $field['display_field'];
+
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
 			'order'   => 'asc',
-			'fields'  => [
-				'ID',
-				'user_login',
-				'user_pass',
-				'user_nicename',
-				'user_email',
-				'user_url',
-				'user_registered',
-				'user_status',
-				'display_name',
-			],
 		] );
+
+		$args['fields']  = [
+			'ID',
+			'user_login',
+			'user_nicename',
+			'user_url',
+			'user_registered',
+			'user_status',
+			'display_name',
+		];
 
 		$meta = wp_parse_id_list( (array) $meta );
 
@@ -132,7 +132,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$users   = get_users( $args );
 		$options = [];
 		foreach ( $users as $user ) {
-			$label = $user->$display_field ? $user->$display_field : __( '(No title)', 'meta-box' );
+			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
 			$label = self::filter( 'choice_label', $label, $field, $user );
 
 			$options[ $user->ID ] = [
