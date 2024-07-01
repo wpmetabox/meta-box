@@ -14,7 +14,7 @@ Meta Box plugin is a powerful, professional developer toolkit to create custom m
 
 **Meta Box is a powerful, professional, and lightweight toolkit for developers to create custom meta boxes and custom fields for any custom post type in WordPress.**
 
-Meta Box helps you add [https://metabox.io/what-is-custom-fields-in-wordpress/](https://metabox.io) and details on your website such as pages, posts, custom post types, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
+Meta Box helps you add [custom fields](https://metabox.io/what-is-custom-fields-in-wordpress/) and details on your website such as pages, posts, custom post types, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
 
 On top of that, each WordPress custom field type has extensive internal options for unlimited content possibilities. Complete customization and control is just a few clicks away.
 

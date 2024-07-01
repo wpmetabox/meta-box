@@ -9,7 +9,7 @@
 
 **Meta Box is a powerful, professional, and lightweight toolkit for developers to create unlimited custom meta boxes and WordPress custom fields.**
 
-Meta Box helps you add [custom fields](https://metabox.io) and details on your website such as pages, posts, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
+Meta Box helps you add [custom fields](https://metabox.io/what-is-custom-fields-in-wordpress/) and details on your website such as pages, posts, forms and anywhere you want using over 40 different field types such as text, images, file upload, checkboxes, and more.
 
 On top of that, each WordPress custom field type has extensive internal options for unlimited content possibilities. Complete customization and control is just a few clicks away.
 
