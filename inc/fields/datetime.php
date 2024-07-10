@@ -242,6 +242,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 			'yearRange'        => '-100:+100',
 			'changeMonth'      => true,
 			'oneLine'          => true,
+			'stepMinute'       => 5,
 			'controlType'      => 'select', // select or slider
 			'addSliderAccess'  => true,
 			'sliderAccessArgs' => [
