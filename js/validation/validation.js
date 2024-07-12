@@ -137,12 +137,20 @@
 	class Validation {
 		constructor( formSelector ) {
 			this.$form = $( formSelector );
+
+			if ( !this.$form.length ) {
+				return;
+			}
 			this.validationElements = this.$form.find( '.rwmb-validation' );
 			this.showAsterisks();
 			this.getSettings();
 		}
 
 		init() {
+			if ( !this.$form.length ) {
+				return;
+			}
+
 			this.$form
 				// Update underlying textarea before submit.
 				// Don't use submitHandler() because form can be submitted via Ajax on the front end.
@@ -218,7 +226,7 @@
 			var that = this,
 				editor = wp.data.dispatch( 'core/editor' );
 			
-			if ( ! editor ) {
+			if ( ! editor || ! that.$form.length ) {
 				return false;
 			}
 
@@ -253,13 +261,14 @@
 	// Run on document ready.
 	function init() {
 		if ( rwmb.isGutenberg ) {
-			var advanced = new GutenbergValidation( '.metabox-location-advanced' ),
-				normal = new GutenbergValidation( '.metabox-location-normal' ),
-				side = new GutenbergValidation( '.metabox-location-side' );
+			const locations = [ 'normal', 'side', 'advanced' ];
 
-			side.init();
-			normal.init();
-			advanced.init();
+			locations.forEach( location => {
+				new GutenbergValidation( `.metabox-location-${ location }` ).init();
+			} );
+
+			new GutenbergValidation( `.mb-block-edit` ).init();
+			
 			return;
 		}
 
