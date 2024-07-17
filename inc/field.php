@@ -70,7 +70,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -101,16 +101,16 @@ abstract class RWMB_Field {
 		return $label . $input_open;
 	}
 
-	protected static function end_html( array $field ) : string {
+	protected static function end_html( array $field ): string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	protected static function label_description( array $field ) : string {
+	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -369,7 +369,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
+	public static function render_attributes( array $attributes ): string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );
