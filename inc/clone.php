@@ -7,9 +7,9 @@ class RWMB_Clone {
 		$field_html = '';
 
 		// Allows meta to be Array<null>
-		$clone_from_empty = isset( $field['clone_from_empty'] ) && $field['clone_from_empty'];
+		$clone_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start'];
 
-		if ( $clone_from_empty ) {
+		if ( $clone_empty_start ) {
 			$meta = array_filter( $meta );
 		
 			// The first element of clone is a template so we add NULL to the first
@@ -46,7 +46,7 @@ class RWMB_Clone {
 			}
 			$input_html = '';
 
-			$class .= $index === 0 && $clone_from_empty ? ' rwmb-clone-template' : '';
+			$class .= $index === 0 && $clone_empty_start ? ' rwmb-clone-template' : '';
 
 			$input_html .= "<div class='$class'>" . $sort_icon;
 
