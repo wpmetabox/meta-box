@@ -103,6 +103,9 @@
 .rwmb-sort-clone {
 	padding-left: 15px;
 }
+.rwmb-input > .rwmb-clone:first-child.rwmb-clone-template{
+	display: none;
+}
 
 /* jQuery validation */
 p.rwmb-error {
