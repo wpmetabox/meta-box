@@ -91,11 +91,13 @@ abstract class RWMB_Field {
 
 		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
+		$data_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start']  ? ' data-clone-empty-start="1"' : ' data-clone-empty-start="0"';
 
 		$input_open = sprintf(
-			'<div class="rwmb-input" %s %s>',
+			'<div class="rwmb-input" %s %s %s>',
 			$data_min_clone,
-			$data_max_clone
+			$data_max_clone,
+			$data_empty_start
 		);
 
 		return $label . $input_open;
@@ -169,17 +171,20 @@ abstract class RWMB_Field {
 		}
 
 		// Get raw meta.
-		$meta = self::call( $field, 'raw_meta', $post_id );
+		$raw_meta = self::call( $field, 'raw_meta', $post_id );
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $meta;
+		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
 
 		if ( $field['clone'] ) {
 			$meta = Arr::ensure( $meta );
 
-			// Ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
-			if ( empty( $meta ) ) {
-				$meta = [ '' ];
+			$clone_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start'];
+
+			// If clone empty start is enabled, and the field is already stored
+			// we need to prepend 1 item for the template.
+			if ( ( $clone_empty_start && ! empty( $raw_meta ) ) ) {
+				array_unshift( $meta, null );
 			}
 
 			if ( $field['multiple'] ) {
@@ -189,6 +194,7 @@ abstract class RWMB_Field {
 				// In other cases, make sure each value is an array.
 				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
 			}
+			
 		} elseif ( $field['multiple'] ) {
 			$meta = Arr::ensure( $meta );
 		}

@@ -6,16 +6,6 @@ class RWMB_Clone {
 	public static function html( array $meta, array $field ): string {
 		$field_html = '';
 
-		// Allows meta to be Array<null>
-		$clone_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start'];
-
-		if ( $clone_empty_start ) {
-			$meta = array_filter( $meta );
-		
-			// The first element of clone is a template so we add NULL to the first
-			array_unshift( $meta, null );
-		}
-
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
@@ -44,10 +34,8 @@ class RWMB_Clone {
 				$class    .= ' rwmb-sort-clone';
 				$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 			}
-			$input_html = '';
 
-			$class .= $index === 0 && $clone_empty_start ? ' rwmb-clone-template' : '';
-
+			$input_html = $index === 0 ? '<template class=" ' . $class .  '">' : '';
 			$input_html .= "<div class='$class'>" . $sort_icon;
 
 			// Call separated methods for displaying each type of field.
@@ -57,6 +45,7 @@ class RWMB_Clone {
 			// Remove clone button.
 			$input_html .= self::remove_clone_button( $sub_field );
 			$input_html .= '</div>';
+			$input_html .= $index === 0 ? '</template>' : '';
 
 			$field_html .= $input_html;
 		}
