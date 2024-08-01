@@ -183,7 +183,7 @@ abstract class RWMB_Field {
 
 			// If clone empty start is enabled, and the field is already stored
 			// we need to prepend 1 item for the template.
-			if ( ( $clone_empty_start && ! empty( $raw_meta ) ) ) {
+			if ( ! $clone_empty_start || ( $clone_empty_start && ! empty( $raw_meta ) ) ) {
 				array_unshift( $meta, null );
 			}
 

@@ -283,7 +283,7 @@
 		const cloneEmptyStart = $container[0].dataset.cloneEmptyStart ?? 0;
 
 		// If clone-empty-start is false, we need at least 1 item.
-		if ( cloneEmptyStart == 0 ) {
+		if ( cloneEmptyStart == 0 && $container.children( '.rwmb-clone' ).length === 1 ) {
 			// Trigger .add-clone button to add the first clone.
 			clone( $container );
 			toggleRemoveButtons( $container );
