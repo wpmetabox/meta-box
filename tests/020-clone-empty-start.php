@@ -6,7 +6,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			[
 				'type'              => 'text',
 				'name'              => 'Text',
-				'id'                => 'text',
+				'id'                => 't1',
 				'std'               => 'Default value',
 				'clone'             => true,
 				'clone_default'     => true,
@@ -15,7 +15,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			[
 				'type'              => 'select',
 				'name'              => 'Select',
-				'id'                => 'select',
+				'id'                => 's1',
 				'options'           => [
 					'us' => 'USA',
 					'fr' => 'France',
@@ -28,7 +28,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			],
 			[
 				'type'              => 'group',
-				'id'                => 'group',
+				'id'                => 'g1',
 				'name'              => 'Group',
 				'clone'             => true,
 				'clone_empty_start' => true,
@@ -36,14 +36,14 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 					[
 						'type'          => 'text',
 						'name'          => 'Text',
-						'id'            => 'text2',
+						'id'            => 'g1t1',
 						'std'           => 'Default value',
 						'clone_default' => true,
 					],
 					[
 						'type'          => 'select',
 						'name'          => 'Select',
-						'id'            => 'select2',
+						'id'            => 'g1s1',
 						'options'       => [
 							'us' => 'USA',
 							'fr' => 'France',
@@ -55,7 +55,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 					[
 						'type'          => 'radio',
 						'name'          => 'Radio',
-						'id'            => 'radio2',
+						'id'            => 'g1r1',
 						'options'       => [
 							'us' => 'USA',
 							'fr' => 'France',
@@ -67,9 +67,37 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 					[
 						'type'          => 'checkbox',
 						'name'          => 'Checkbox',
-						'id'            => 'checkbox2',
+						'id'            => 'g1c1',
 						'std'           => 1,
 						'clone_default' => true,
+					],
+					[
+						'type'              => 'group',
+						'id'                => 'g1g1',
+						'name'              => 'Group',
+						'clone'             => true,
+						'clone_empty_start' => true,
+						'fields'            => [
+							[
+								'type'          => 'text',
+								'name'          => 'Text',
+								'id'            => 'g1g1t1',
+								'std'           => 'Default value',
+								'clone_default' => true,
+							],
+							[
+								'type'          => 'select_advanced',
+								'name'          => 'Select',
+								'id'            => 'g1g1s1',
+								'options'       => [
+									'us' => 'USA',
+									'fr' => 'France',
+									'gb' => 'Great Britain',
+								],
+								'std'           => 'fr',
+								'clone_default' => true,
+							],
+						],
 					],
 				],
 			],
@@ -82,7 +110,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			[
 				'type'          => 'text',
 				'name'          => 'Text',
-				'id'            => 'text1',
+				'id'            => 't2',
 				'std'           => 'Default value',
 				'clone'         => true,
 				'clone_default' => true,
@@ -90,7 +118,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			[
 				'type'          => 'select',
 				'name'          => 'Select',
-				'id'            => 'select1',
+				'id'            => 's2',
 				'options'       => [
 					'us' => 'USA',
 					'fr' => 'France',
@@ -102,21 +130,21 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 			],
 			[
 				'type'   => 'group',
-				'id'     => 'group1',
+				'id'     => 'g2',
 				'name'   => 'Group',
 				'clone'  => true,
 				'fields' => [
 					[
 						'type'          => 'text',
 						'name'          => 'Text',
-						'id'            => 'text2',
+						'id'            => 'g2t2',
 						'std'           => 'Default value',
 						'clone_default' => true,
 					],
 					[
 						'type'          => 'select',
 						'name'          => 'Select',
-						'id'            => 'select2',
+						'id'            => 'g2s2',
 						'options'       => [
 							'us' => 'USA',
 							'fr' => 'France',
@@ -128,7 +156,7 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 					[
 						'type'          => 'radio',
 						'name'          => 'Radio',
-						'id'            => 'radio2',
+						'id'            => 'g2r2',
 						'options'       => [
 							'us' => 'USA',
 							'fr' => 'France',
@@ -140,9 +168,37 @@ add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 					[
 						'type'          => 'checkbox',
 						'name'          => 'Checkbox',
-						'id'            => 'checkbox2',
+						'id'            => 'g2c2',
 						'std'           => 1,
 						'clone_default' => true,
+					],
+					[
+						'type'              => 'group',
+						'id'                => 'g2g2',
+						'name'              => 'Group',
+						'clone'             => true,
+						'clone_empty_start' => true,
+						'fields'            => [
+							[
+								'type'          => 'text',
+								'name'          => 'Text',
+								'id'            => 'g2g2t2',
+								'std'           => 'Default value',
+								'clone_default' => true,
+							],
+							[
+								'type'          => 'select_advanced',
+								'name'          => 'Select',
+								'id'            => 'g2g2s2',
+								'options'       => [
+									'us' => 'USA',
+									'fr' => 'France',
+									'gb' => 'Great Britain',
+								],
+								'std'           => 'fr',
+								'clone_default' => true,
+							],
+						],
 					],
 				],
 			],
