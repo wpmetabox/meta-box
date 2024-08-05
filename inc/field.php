@@ -176,16 +176,19 @@ abstract class RWMB_Field {
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
 
-		if ( $field['clone'] ) {
-			$meta = Arr::ensure( $meta );
+		if ( $field['clone'] ) {		
+			$meta = is_array( $raw_meta ) ? $raw_meta : [];
+			$clone_empty_start = $field['clone_empty_start'] ?? false;
 
-			$clone_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start'];
-
-			// If clone empty start is enabled, and the field is already stored
-			// we need to prepend 1 item for the template.
-			if ( ! $clone_empty_start || ( $clone_empty_start && ! empty( $raw_meta ) ) ) {
-				array_unshift( $meta, null );
+			// If clone empty start = false (default), 
+			// we need to add the default value to the beginning of the array.
+			if ( ! $clone_empty_start && empty( $meta ) ) {
+				array_unshift( $meta, $field['std'] ?? null );
 			}
+	
+			// Always add the first item to the beginning of the array for the template.
+			// We will need to remove it later before saving.
+			array_unshift( $meta, $field['std'] ?? null );	
 
 			if ( $field['multiple'] ) {
 				$first = reset( $meta );

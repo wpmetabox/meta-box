@@ -14,7 +14,6 @@
 
 				// Name attribute
 				var name = this.name;
-
 				if ( name && ! $field.closest( '.rwmb-group-clone' ).length ) {
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
@@ -128,29 +127,20 @@
 	 * @param $container A div container which has all fields
 	 */
 	function clone( $container ) {
-		const $last = $container.children( '.rwmb-clone' ).last();
-		const nextIndex = cloneIndex.nextIndex( $container );
-
-		const template = $container.children( 'template' )[0];
-		if ( ! template ) {
-			return;
-		}
-		
-		const clone = template.content.cloneNode( true );
-		let $clone = $( clone );
+		var $last = $container.children( '.rwmb-clone' ).last(),
+			$clone = $last.clone(),
+			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );
 		$inputs.each( cloneValue.clear );
 
+		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
-
+		
 		// Insert clone.
 		$clone.insertAfter( $last );
-
-		// Append clone to the container.
-		$clone = $container.children( '.rwmb-clone' ).last();
 
 		// Trigger custom event for the clone instance. Required for Group extension to update sub fields.
 		$clone.trigger( 'clone_instance', nextIndex );
@@ -177,6 +167,7 @@
 	 * @param $container .rwmb-input container
 	 */
 	function toggleRemoveButtons( $container ) {
+
 		const $clones = $container.children( '.rwmb-clone' );
 		let minClone = 1;
 		let offset = 1;
@@ -192,7 +183,6 @@
 		if ( $container.data( 'min-clone' ) ) {
 			minClone = parseInt( $container.data( 'min-clone' ) );
 		}
-
 		$clones.children( '.remove-clone' ).toggle( $clones.length - offset > minClone );
 
 		// Recursive for nested groups.
@@ -278,18 +268,6 @@
 		var $container = $( this );
 		toggleRemoveButtons( $container );
 		toggleAddButton( $container );
-
-		// Add the first clone if data-clone-empty-start = false
-		const cloneEmptyStart = $container[0].dataset.cloneEmptyStart ?? 0;
-
-		// If clone-empty-start is false, we need at least 1 item.
-		if ( cloneEmptyStart == 0 && $container.children( '.rwmb-clone' ).length === 1 ) {
-			// Trigger .add-clone button to add the first clone.
-			clone( $container );
-			toggleRemoveButtons( $container );
-			toggleAddButton( $container );
-			sortClones.apply( $container[0] );
-		}
 
 		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length );
 		sortClones.apply( this );

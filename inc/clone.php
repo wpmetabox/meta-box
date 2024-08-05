@@ -3,7 +3,7 @@
  * The clone module, allowing users to clone (duplicate) fields.
  */
 class RWMB_Clone {
-	public static function html( array $meta, array $field ): string {
+	public static function html( array $meta, array $field ) : string {
 		$field_html = '';
 
 		foreach ( $meta as $index => $sub_meta ) {
@@ -35,8 +35,8 @@ class RWMB_Clone {
 				$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 			}
 
-			$input_html = $index === 0 ? '<template class=" ' . $class .  '">' : '';
-			$input_html .= "<div class='$class'>" . $sort_icon;
+			$class .= $index === 0 ? ' rwmb-clone-template' : '';
+			$input_html = "<div class='$class'>" . $sort_icon;
 
 			// Call separated methods for displaying each type of field.
 			$input_html .= RWMB_Field::call( $sub_field, 'html', $sub_meta );
@@ -45,7 +45,6 @@ class RWMB_Clone {
 			// Remove clone button.
 			$input_html .= self::remove_clone_button( $sub_field );
 			$input_html .= '</div>';
-			$input_html .= $index === 0 ? '</template>' : '';
 
 			$field_html .= $input_html;
 		}
@@ -67,6 +66,9 @@ class RWMB_Clone {
 		if ( ! is_array( $new ) ) {
 			$new = [];
 		}
+
+		// Remove the first item of $new because it's the template.
+		array_shift( $new );
 
 		if ( in_array( $field['type'], [ 'file', 'image' ], true ) ) {
 			$new = RWMB_File_Field::clone_value( $new, $old, $object_id, $field );
