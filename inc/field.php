@@ -70,7 +70,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -89,9 +89,9 @@ abstract class RWMB_Field {
 			$label
 		) : '';
 
-		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
-		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
-		$data_empty_start = isset( $field['clone_empty_start'] ) && $field['clone_empty_start']  ? ' data-clone-empty-start="1"' : ' data-clone-empty-start="0"';
+		$data_min_clone   = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
+		$data_max_clone   = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
+		$data_empty_start = $field['clone_empty_start'] ? ' data-clone-empty-start="1"' : ' data-clone-empty-start="0"';
 
 		$input_open = sprintf(
 			'<div class="rwmb-input" %s %s %s>',
@@ -103,16 +103,16 @@ abstract class RWMB_Field {
 		return $label . $input_open;
 	}
 
-	protected static function end_html( array $field ) : string {
+	protected static function end_html( array $field ): string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	protected static function label_description( array $field ) : string {
+	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -176,19 +176,18 @@ abstract class RWMB_Field {
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
 
-		if ( $field['clone'] ) {		
+		if ( $field['clone'] ) {
 			$meta = is_array( $raw_meta ) ? $raw_meta : [];
-			$clone_empty_start = $field['clone_empty_start'] ?? false;
 
-			// If clone empty start = false (default), 
-			// we need to add the default value to the beginning of the array.
-			if ( ! $clone_empty_start && empty( $meta ) ) {
-				array_unshift( $meta, $field['std'] ?? null );
+			// If clone empty start = false (default),
+			// ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
+			if ( ! $field['clone_empty_start'] && empty( $meta ) ) {
+				$meta = [ $field['std'] ];
 			}
-	
+
 			// Always add the first item to the beginning of the array for the template.
 			// We will need to remove it later before saving.
-			array_unshift( $meta, $field['std'] ?? null );	
+			array_unshift( $meta, $field['std'] );
 
 			if ( $field['multiple'] ) {
 				$first = reset( $meta );
@@ -197,7 +196,6 @@ abstract class RWMB_Field {
 				// In other cases, make sure each value is an array.
 				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
 			}
-			
 		} elseif ( $field['multiple'] ) {
 			$meta = Arr::ensure( $meta );
 		}
@@ -318,6 +316,7 @@ abstract class RWMB_Field {
 			'add_button'        => __( '+ Add more', 'meta-box' ),
 			'clone_default'     => false,
 			'clone_as_multiple' => false,
+			'clone_empty_start' => false,
 
 			'class'             => '',
 			'disabled'          => false,
@@ -378,7 +377,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
+	public static function render_attributes( array $attributes ): string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );
