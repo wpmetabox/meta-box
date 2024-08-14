@@ -135,9 +135,10 @@
 		var $inputs = $clone.find( rwmb.inputSelectors );
 		$inputs.each( cloneValue.clear );
 
+		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
-
+		
 		// Insert clone.
 		$clone.insertAfter( $last );
 
@@ -167,13 +168,22 @@
 	 */
 	function toggleRemoveButtons( $container ) {
 
-		var $clones = $container.children( '.rwmb-clone' ),
-		    minClone = 1;
+		const $clones = $container.children( '.rwmb-clone' );
+		let minClone = 1;
+		let offset = 1;
+
+		// Add the first clone if data-clone-empty-start = false
+		const cloneEmptyStart = $container[0].dataset.cloneEmptyStart ?? 0;
+
+		// If clone-empty-start is true, we need at least 1 item.
+		if ( cloneEmptyStart == 1 ) {
+			offset = 0;
+		}
 
 		if ( $container.data( 'min-clone' ) ) {
 			minClone = parseInt( $container.data( 'min-clone' ) );
 		}
-		$clones.children( '.remove-clone' ).toggle( $clones.length > minClone );
+		$clones.children( '.remove-clone' ).toggle( $clones.length - offset > minClone );
 
 		// Recursive for nested groups.
 		$container.find( '.rwmb-input' ).each( function () {

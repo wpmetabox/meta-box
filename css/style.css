@@ -104,6 +104,10 @@
 	padding-left: 15px;
 }
 
+.rwmb-clone.rwmb-clone-template {
+	display: none;
+}
+
 /* jQuery validation */
 p.rwmb-error {
 	color: #dc3232;
