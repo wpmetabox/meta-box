@@ -94,7 +94,7 @@ class RWMB_Clone {
 			return '';
 		}
 		$text = RWMB_Field::filter( 'add_clone_button_text', $field['add_button'], $field );
-		return '<a href="#" class="rwmb-button button-primary add-clone">' . esc_html( $text ) . '</a>';
+		return '<a href="#" class="rwmb-button button add-clone">' . esc_html( $text ) . '</a>';
 	}
 
 	public static function remove_clone_button( array $field ) : string {
