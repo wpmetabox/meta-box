@@ -664,8 +664,8 @@ abstract class RWMB_Field {
 			$default = 0;
 		}
 
-		if ( 'object' === $return_type &&  ! is_array( $default ) ) {
-			$default = [];
+		if ( 'object' === $return_type &&  ! is_object( $default ) ) {
+			$default = new stdClass();
 		}
 
 		return $default;
