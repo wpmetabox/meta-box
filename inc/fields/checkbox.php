@@ -44,13 +44,16 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	}
 
 	/**
-	 * Get the type of a single item.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
-		return [ 'type' => 'integer' ];
+		return [
+			'type' => 'integer',
+		];
 	}
+
 }

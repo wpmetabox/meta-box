@@ -214,7 +214,11 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	/**
-	 * This field saves multiple file IDs in db.
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
 		if ( $field['multiple'] ) {

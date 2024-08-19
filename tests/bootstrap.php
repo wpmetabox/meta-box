@@ -13,7 +13,7 @@ $meta_boxes = [
     'title' => 'Test Register Meta',
     'revision' => true,
     'fields' => [
-        // RegisterMetaTest::testFieldRegisteredByDefault()
+        // RegisterMetaTest::testFieldNotRegisteredByDefault()
         [
             'name' => 'rmt_simple_text',
             'desc' => 'Basic text field',
@@ -21,13 +21,13 @@ $meta_boxes = [
             'type' => 'text',
             'std' => 'Simple Text Default',
         ],
-        // RegisterMetaTest::testNotRegisteredFieldShouldNotBeRegistered()
+        // RegisterMetaTest::testRegisteredField()
         [
-            'name' => 'rmt_text_no_register_meta',
+            'name' => 'rmt_text_register_meta',
             'desc' => 'Text No Register Meta Description',
-            'id'   => 'rmt_text_no_register_meta',
+            'id'   => 'rmt_text_register_meta',
             'type' => 'text',
-            'register_meta' => false
+            'register_meta' => true
         ],
         // RegisterMetaTest::testOverrideArgs()
         [

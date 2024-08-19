@@ -104,9 +104,11 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	}
 
 	/**
-	 * Get the type of a single item.
-	 *
-	 * @param array $field Field parameters.
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
 		$properties = [];

@@ -20,9 +20,15 @@ class RWMB_Heading_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get the type of a single item.
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
-		return false;
+		return [
+			'type' => 'null',
+		];
 	}
 }

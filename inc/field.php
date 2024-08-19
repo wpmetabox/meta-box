@@ -317,7 +317,7 @@ abstract class RWMB_Field {
 			'attributes'        => [],
 
 			'sanitize_callback' => null,
-			'register_meta' 	=> true,
+			'register_meta' 	=> false,
 		] );
 
 		// Store the original ID to run correct filters for the clonable field.
@@ -601,6 +601,10 @@ abstract class RWMB_Field {
 
 		$args = array_merge( $args, self::get_register_meta_args( $field ) );
 
+		if ( $args['type'] === 'null' ) {
+			return;
+		}
+
 		register_meta( $post_type, $field['id'], $args );
 	}
 
@@ -616,11 +620,6 @@ abstract class RWMB_Field {
 		}
 
 		$schema = self::call( 'get_schema',  $field );
-		
-		// HTML, Heading, Divider, etc. don't have a schema.
-		if ( ! $schema ) {
-			return [];
-		}
 
 		$return_type = $schema['type'] ?? 'string';
 
@@ -672,7 +671,6 @@ abstract class RWMB_Field {
 	}
 
 	protected static function get_full_schema( $field ) {
-		$field = self::call( 'normalize', $field );
 		$schema = self::call( 'get_schema', $field );
 
 		if ( ! $schema ) {
@@ -689,6 +687,13 @@ abstract class RWMB_Field {
 		return $schema;
 	}
 	
+	/**
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
 	protected static function get_schema( $field ) {
 		return [ 'type' => 'string' ];
 	}

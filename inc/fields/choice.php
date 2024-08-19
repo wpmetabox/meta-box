@@ -68,11 +68,11 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Get the type of a single item.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
 		if ( $field['multiple'] ) {

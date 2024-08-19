@@ -48,7 +48,16 @@ class RWMB_Button_Field extends RWMB_Field {
 		return $attributes;
 	}
 
+	/**
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
 	protected static function get_schema( $field ) {
-		return false;
+		return [
+			'type' => 'null',
+		];
 	}
 }

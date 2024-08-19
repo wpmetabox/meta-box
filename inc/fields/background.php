@@ -156,6 +156,13 @@ class RWMB_Background_Field extends RWMB_Field {
 		return $output;
 	}
 
+	/**
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
 	public static function get_schema( $field ) {
 		return [
 			'type'       => 'object',

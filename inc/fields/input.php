@@ -110,14 +110,15 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		return $html;
 	}
 
-	/**
-	 * Get the type of a single item.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
+		/**
+	 * Get the schema for the field.
+	 * 
+	 * @param array $field
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
-		return [ 'type' => 'string' ];
+		return [
+			'type' => 'string',
+		];
 	}
 }

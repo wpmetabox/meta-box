@@ -7,8 +7,6 @@
 class RWMB_Field_Registry {
 	private $data = [];
 
-	private $meta_box;
-
 	/**
 	 * Add a single field to the registry.
 	 *

@@ -8,12 +8,12 @@ class RegisterMetaTest extends TestCase {
 		$this->meta = get_registered_meta_keys( 'post' );
 	}
 
-	public function testFieldRegisteredByDefault() {
-		$this->assertArrayHasKey( 'rmt_simple_text', $this->meta );
+	public function testFieldNotRegisteredByDefault() {
+		$this->assertArrayNotHasKey( 'rmt_simple_text', $this->meta );
 	}
 
-	public function testNotRegisteredFieldShouldNotBeRegistered() {
-		$this->assertArrayNotHasKey( 'rmt_text_no_register_meta', $this->meta );
+	public function testRegisteredField() {
+		$this->assertArrayHasKey( 'rmt_text_register_meta', $this->meta );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class RegisterMetaTest extends TestCase {
 	 */
 	public function testRevisionArgument() {
         // This inherits from the meta box
-		$this->assertEquals( true, $this->meta['rmt_simple_text']['revisions_enabled'] );
+		$this->assertEquals( true, $this->meta['rmt_text_register_meta']['revisions_enabled'] );
 
         // This is set to false
 		$this->assertEquals( false, $this->meta['rmt_text_override']['revisions_enabled'] );
@@ -50,7 +50,7 @@ class RegisterMetaTest extends TestCase {
 	 * 2. If $field['register_meta']['multiple'] is set, it should be used
 	 */
 	public function testSingleArgument() {
-		$this->assertEquals( true, $this->meta['rmt_simple_text']['single'] );
+		$this->assertEquals( true, $this->meta['rmt_text_register_meta']['single'] );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class RegisterMetaTest extends TestCase {
 	 * 2. If $field['register_meta']['show_in_rest'] is set, it should be used
 	 */
 	public function testShowInRestArgument() {
-		$this->assertEquals( true, $this->meta['rmt_simple_text']['show_in_rest'] );
+		$this->assertEquals( true, $this->meta['rmt_text_register_meta']['show_in_rest'] );
 
         $this->assertEquals( false, $this->meta['rmt_text_override']['show_in_rest'] );
 	}
@@ -78,7 +78,7 @@ class RegisterMetaTest extends TestCase {
 	 * Need to test if possible to skip the schema validation on POST request
 	 * 
 	 * Ref: function _block_bindings_post_meta_get_value( array $source_args, $block_instance ) {
-	 * Ref: get_{$meta_type}_metadata 
+	 * Ref: get_{$meta_type}_metadata
 	 * Ref: update_{$meta_type}_metadata
 	 * @return void
 	 */

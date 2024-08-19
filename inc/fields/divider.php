@@ -20,11 +20,15 @@ class RWMB_Divider_Field extends RWMB_Field {
 	}
 
 	/**
-	 * Divider field does not have a schema.
+	 * Get the schema for the field.
+	 * 
 	 * @param array $field
-	 * @return bool
+	 * 
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( $field ) {
-		return false;
+		return [
+			'type' => 'null',
+		];
 	}
 }
