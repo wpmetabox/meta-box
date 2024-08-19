@@ -40,7 +40,7 @@ abstract class RWMB_Field {
 		$end = static::end_html( $field );
 		$end = self::filter( 'end_html', $end, $field, $meta );
 
-		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
+		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
@@ -48,11 +48,12 @@ abstract class RWMB_Field {
 			$classes .= ' required';
 		}
 
-		$outer_html = sprintf(
-			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
-			esc_attr( trim( $classes ) ),
-			$html
-		);
+		$classes = esc_attr( trim( $classes ) );
+
+		$outer_html  = $field['before'];
+		$outer_html .= '<div class="' . $classes . '">' . $html . '</div>';
+		$outer_html .= $field['after'];
+
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html; // phpcs:ignore WordPress.Security.EscapeOutput
