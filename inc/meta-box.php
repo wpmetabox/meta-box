@@ -62,7 +62,6 @@ class RW_Meta_Box {
 
 	public function register_fields() {
 		$field_registry = rwmb_get_registry( 'field' );
-		$field_registry->set_meta_box( $this->meta_box );
 		
 		foreach ( $this->post_types as $post_type ) {
 			foreach ( $this->fields as $field ) {
