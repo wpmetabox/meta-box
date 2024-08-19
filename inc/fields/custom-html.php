@@ -20,4 +20,11 @@ class RWMB_Custom_Html_Field extends RWMB_Field {
 		}
 		return $html;
 	}
+
+	/**
+	 * Get the type of a single item.
+	 */
+	protected static function get_schema( $field ) {
+		return false;
+	}
 }

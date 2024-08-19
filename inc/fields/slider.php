@@ -69,4 +69,15 @@ class RWMB_Slider_Field extends RWMB_Field {
 
 		return $field;
 	}
+
+	/**
+	 * Get the type of a single item.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
+	protected static function get_schema( $field ) {
+		return [ 'type' => 'number' ];
+	}
 }

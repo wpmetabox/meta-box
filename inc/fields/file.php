@@ -492,4 +492,14 @@ class RWMB_File_Field extends RWMB_Field {
 
 		return home_url( $relative_path );
 	}
+
+	/**
+	 * This field saves multiple file IDs in db.
+	 */
+	protected static function get_schema( $field ) {
+		return [ 
+			'type' => 'array', 
+			'items' => [ 'type' => 'integer' ] 
+		];
+	}
 }

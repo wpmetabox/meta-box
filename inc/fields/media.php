@@ -212,4 +212,18 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	public static function print_templates() {
 		require RWMB_INC_DIR . 'templates/media.php';
 	}
+
+	/**
+	 * This field saves multiple file IDs in db.
+	 */
+	protected static function get_schema( $field ) {
+		if ( $field['multiple'] ) {
+			return [ 
+				'type' => 'array', 
+				'items' => [ 'type' => 'integer' ] 
+			];
+		}
+		
+		return [ 'type' => 'integer' ];
+	}
 }

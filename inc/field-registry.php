@@ -7,6 +7,8 @@
 class RWMB_Field_Registry {
 	private $data = [];
 
+	private $meta_box;
+
 	/**
 	 * Add a single field to the registry.
 	 *
@@ -27,8 +29,51 @@ class RWMB_Field_Registry {
 		}
 		$this->data[ $object_type ][ $type ][ $field['id'] ] = $field;
 
+		// $this->register_meta( $field, $type, $object_type );
+
 		do_action( 'rwmb_field_registered', $field, $type, $object_type );
 	}
+
+	public function set_meta_box( array $meta_box ) {
+		$this->meta_box = $meta_box;
+	}
+
+	public function get_meta_box() {
+		return $this->meta_box;
+	}
+
+	public function register_meta( $field, $type, $object_type ) {
+		// Bail early if the field is implicitly not registered as meta.
+		if ( ! $field['register_meta'] ) {
+			return;
+		}
+
+		// Bail if the meta box storage is custom table.
+		if ( ! isset( $field['storage'] ) || ! $field['storage'] instanceof RWMB_Post_Storage ) {
+			return;
+		}
+
+		$type_default = $this->get_return_type_and_default( $field );
+
+		$args = [
+			'object_subtype'   => $object_type,
+			'type'             =>  $type_default['type'],
+			'description'      => $field['desc'] ?? '',
+			'single'           => ! $field['multiple'],
+			'default'          => $type_default['default'],
+			'show_in_rest'     => true,
+			'revision_enabled' => ( isset( $this->meta_box['revision'] ) && $this->meta_box['revision'] && $object_type === 'post' ) || false,
+		];
+
+		$field_register_meta = is_array( $field['register_meta'] ) ? $field['register_meta'] : [];
+
+		// Merge the args with the field's args.
+		$args = array_merge( $args, $field_register_meta );
+
+		register_meta( $object_type, $field['id'], $args );
+	}
+
+	
 
 	/**
 	 * Retrieve a field.

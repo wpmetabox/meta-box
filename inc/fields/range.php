@@ -66,4 +66,15 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 		}
 		return $new;
 	}
+
+	/**
+	 * Get the type of a single item.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
+	protected static function get_schema( $field ) {
+		return [ 'type' => 'number' ];
+	}
 }

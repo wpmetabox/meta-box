@@ -102,4 +102,22 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		$output .= '</tr>';
 		return $output;
 	}
+
+	/**
+	 * Get the type of a single item.
+	 *
+	 * @param array $field Field parameters.
+	 */
+	protected static function get_schema( $field ) {
+		$properties = [];
+
+		foreach ( $field['options'] as $key => $label ) {
+			$properties[ $key ] = [ 'type' => 'string' ];
+		}
+
+		return [
+			'type'  => 'object',
+			'properties' => $properties
+		];
+	}
 }

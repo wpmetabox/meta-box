@@ -42,4 +42,20 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		return $field['options'][ $value ];
 	}
+
+	/**
+	 * Get the type of a single item.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
+	protected static function get_schema( $field ) {
+		return [ 
+			'type' => 'array',
+			'items' => [ 
+				'type' => 'string',
+			],
+		];
+	}
 }

@@ -155,4 +155,18 @@ class RWMB_Background_Field extends RWMB_Field {
 		}
 		return $output;
 	}
+
+	public static function get_schema( $field ) {
+		return [
+			'type'       => 'object',
+			'properties' => [
+				'color'      => [ 'type' => 'string' ],
+				'image'      => [ 'type' => 'string' ],
+				'repeat'     => [ 'type' => 'string' ],
+				'attachment' => [ 'type' => 'string' ],
+				'position'   => [ 'type' => 'string' ],
+				'size'       => [ 'type' => 'string' ],
+			],
+		];
+	}
 }

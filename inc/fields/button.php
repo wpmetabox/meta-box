@@ -47,4 +47,8 @@ class RWMB_Button_Field extends RWMB_Field {
 
 		return $attributes;
 	}
+
+	protected static function get_schema( $field ) {
+		return false;
+	}
 }

@@ -317,6 +317,7 @@ abstract class RWMB_Field {
 			'attributes'        => [],
 
 			'sanitize_callback' => null,
+			'register_meta' 	=> true,
 		] );
 
 		// Store the original ID to run correct filters for the clonable field.
@@ -574,5 +575,121 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	public static function register_meta( $field, $meta_box, $post_type ) {
+		// Bail early if the field is implicitly not registered as meta.
+		if ( ! $field['register_meta'] ) {
+			return;
+		}
+
+		// Bail if the meta box storage is custom table.
+		if ( ! isset( $field['storage'] ) || ! $field['storage'] instanceof RWMB_Post_Storage ) {
+			return;
+		}
+
+		$revisions_enabled = $meta_box['revision'] ?? false;
+
+		$args = [
+			'type'              => 'string',
+			'description'       => $field['desc'] ?? '',
+			'single'            => ! $field['multiple'],
+			'default'           => '',
+			'show_in_rest'      => true,
+			'revisions_enabled' => $revisions_enabled,
+		];
+
+		$args = array_merge( $args, self::get_register_meta_args( $field ) );
+
+		register_meta( $post_type, $field['id'], $args );
+	}
+
+	/**
+	 * Define the schema for the field.
+	 * 
+	 * @return array
+	 */
+	public static function get_register_meta_args( $field ) {
+		// If the schema is explicitly defined, use it.
+		if ( is_array( $field['register_meta'] ) ) {
+			return $field['register_meta'];
+		}
+
+		$schema = self::call( 'get_schema',  $field );
+		
+		// HTML, Heading, Divider, etc. don't have a schema.
+		if ( ! $schema ) {
+			return [];
+		}
+
+		$return_type = $schema['type'] ?? 'string';
+
+		if ( $field['clone'] ) {
+			$return_type = 'array';
+
+			$schema = [
+				'type'  => 'array',
+				'items' => $schema,
+			];	
+		}
+
+		$args['type']    = $return_type;
+		$args['default'] = self::get_validated_default_value( $field, $return_type );
+
+		if ( in_array ( $return_type, [ 'array', 'object' ] ) ) {
+			$args['show_in_rest'] = [
+				'schema' => $schema
+			];
+		}
+		
+		return $args;
+	}
+
+	private static function get_validated_default_value( $field, $return_type ) {
+		$default = $field['std'] ?? '';
+
+		if ( 'array' === $return_type && ! is_array( $default ) ) {
+			return [];
+		}
+
+		if ( 'boolean' === $return_type && ! is_bool( $default ) ) {
+			$default = false;
+		}
+
+		if ( 'integer' === $return_type && ! is_int( $default ) ) {
+			$default = 0;
+		}
+
+		if ( 'number' === $return_type && ! is_float( $default ) ) {
+			$default = 0;
+		}
+
+		if ( 'object' === $return_type &&  ! is_array( $default ) ) {
+			$default = [];
+		}
+
+		return $default;
+	}
+
+	protected static function get_full_schema( $field ) {
+		$field = self::call( 'normalize', $field );
+		$schema = self::call( 'get_schema', $field );
+
+		if ( ! $schema ) {
+			return false;
+		}
+
+		if ( $field['clone'] === true ) {
+			$schema = [
+				'type'  => 'array',
+				'items' => $schema,
+			];
+		}
+
+		return $schema;
+	}
+	
+	protected static function get_schema( $field ) {
+		return [ 'type' => 'string' ];
 	}
 }

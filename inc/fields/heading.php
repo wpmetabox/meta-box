@@ -18,4 +18,11 @@ class RWMB_Heading_Field extends RWMB_Field {
 	protected static function end_html( array $field ) : string {
 		return self::input_description( $field );
 	}
+
+	/**
+	 * Get the type of a single item.
+	 */
+	protected static function get_schema( $field ) {
+		return false;
+	}
 }
