@@ -502,17 +502,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	protected static function get_schema( array $field ): array {
 		return [
-			'type' => 'array',
-			'items' => [
-				'type' => 'object',
-				'properties' => [
-					'ID' => [ 'type' => 'integer' ],
-					'name' => [ 'type' => 'string' ],
-					'path' => [ 'type' => 'string' ],
-					'url' => [ 'type' => 'string' ],
-					'title' => [ 'type' => 'string' ],
-				],
-			 ]
+			'type'  => 'array',
+			'items' => [ 'type' => 'integer' ],
 		];
 	}
 }
