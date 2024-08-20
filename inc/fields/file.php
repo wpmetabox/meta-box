@@ -495,15 +495,15 @@ class RWMB_File_Field extends RWMB_Field {
 
 	/**
 	 * Get the schema for the field.
-	 * 
+	 *
 	 * @param array $field
-	 * 
+	 *
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
-	protected static function get_schema( $field ) {
-		return [ 
-			'type' => 'array', 
-			'items' => [ 
+	protected static function get_schema( array $field ): array {
+		return [
+			'type' => 'array',
+			'items' => [
 				'type' => 'object',
 				'properties' => [
 					'ID' => [ 'type' => 'integer' ],
@@ -512,7 +512,7 @@ class RWMB_File_Field extends RWMB_Field {
 					'url' => [ 'type' => 'string' ],
 					'title' => [ 'type' => 'string' ],
 				],
-			 ] 
+			 ]
 		];
 	}
 }

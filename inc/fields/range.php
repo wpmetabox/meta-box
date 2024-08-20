@@ -74,7 +74,7 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 	 *
 	 * @return array
 	 */
-	protected static function get_schema( $field ) {
+	protected static function get_schema( array $field ): array {
 		return [ 'type' => 'number' ];
 	}
 }

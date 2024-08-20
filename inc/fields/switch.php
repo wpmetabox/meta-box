@@ -93,7 +93,7 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 	 *
 	 * @return array
 	 */
-	protected static function get_schema( $field ) {
+	protected static function get_schema( array $field ): array {
 		return [ 'type' => 'integer' ];
 	}
 }

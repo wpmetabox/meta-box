@@ -577,7 +577,7 @@ abstract class RWMB_Field {
 		return $value;
 	}
 
-	public static function register_meta( $field, $meta_box, $post_type ) {
+	public static function register_meta( array $field, array $meta_box, string $post_type ): void {
 		// Bail early if the field is implicitly not registered as meta.
 		if ( ! $field['register_meta'] ) {
 			return;
@@ -591,8 +591,9 @@ abstract class RWMB_Field {
 		$revisions_enabled = $meta_box['revision'] ?? false;
 
 		$args = [
+			'object_subtype'    => $post_type,
 			'type'              => 'string',
-			'description'       => $field['desc'] ?? '',
+			'description'       => $field['desc'] ?: $field['label_description'],
 			'single'            => ! $field['multiple'],
 			'default'           => '',
 			'show_in_rest'      => true,
@@ -605,15 +606,10 @@ abstract class RWMB_Field {
 			return;
 		}
 
-		register_meta( $post_type, $field['id'], $args );
+		register_meta( 'post', $field['id'], $args );
 	}
 
-	/**
-	 * Define the schema for the field.
-	 * 
-	 * @return array
-	 */
-	public static function get_register_meta_args( $field ) {
+	private static function get_register_meta_args( array $field ): array {
 		// If the schema is explicitly defined, use it.
 		if ( is_array( $field['register_meta'] ) ) {
 			return $field['register_meta'];
@@ -629,7 +625,7 @@ abstract class RWMB_Field {
 			$schema = [
 				'type'  => 'array',
 				'items' => $schema,
-			];	
+			];
 		}
 
 		$args['type']    = $return_type;
@@ -640,11 +636,11 @@ abstract class RWMB_Field {
 				'schema' => $schema
 			];
 		}
-		
+
 		return $args;
 	}
 
-	private static function get_validated_default_value( $field, $return_type ) {
+	private static function get_validated_default_value( array $field, string $return_type ) {
 		$default = $field['std'] ?? '';
 
 		if ( 'array' === $return_type && ! is_array( $default ) ) {
@@ -670,11 +666,11 @@ abstract class RWMB_Field {
 		return $default;
 	}
 
-	protected static function get_full_schema( $field ) {
+	protected static function get_full_schema( array $field ): array {
 		$schema = self::call( 'get_schema', $field );
 
 		if ( ! $schema ) {
-			return false;
+			return [];
 		}
 
 		if ( $field['clone'] === true ) {
@@ -686,15 +682,15 @@ abstract class RWMB_Field {
 
 		return $schema;
 	}
-	
+
 	/**
 	 * Get the schema for the field.
-	 * 
+	 *
 	 * @param array $field
-	 * 
+	 *
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
-	protected static function get_schema( $field ) {
+	protected static function get_schema( array $field ): array {
 		return [ 'type' => 'string' ];
 	}
 }

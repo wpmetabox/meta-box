@@ -215,19 +215,19 @@ class RWMB_Media_Field extends RWMB_File_Field {
 
 	/**
 	 * Get the schema for the field.
-	 * 
+	 *
 	 * @param array $field
-	 * 
+	 *
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
-	protected static function get_schema( $field ) {
+	protected static function get_schema( array $field ): array {
 		if ( $field['multiple'] ) {
-			return [ 
-				'type' => 'array', 
-				'items' => [ 'type' => 'integer' ] 
+			return [
+				'type' => 'array',
+				'items' => [ 'type' => 'integer' ]
 			];
 		}
-		
+
 		return [ 'type' => 'integer' ];
 	}
 }
