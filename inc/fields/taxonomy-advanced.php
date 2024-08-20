@@ -102,4 +102,19 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		$info = is_array( $info ) ? $info : [];
 		return $field['multiple'] ? $info : reset( $info );
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		if ( $field['multiple'] ) {
+			return [ 'type' => 'string' ];
+		}
+
+		return [ 'type' => 'integer' ];
+	}
 }

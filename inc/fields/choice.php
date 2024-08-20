@@ -66,4 +66,22 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 		$options = self::transform_options( $field['options'] );
 		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		if ( $field['multiple'] ) {
+			return [
+				'type'  => 'array',
+				'items' => [ 'type' => 'string' ],
+			];
+		}
+
+		return [ 'type' => 'string' ];
+	}
 }

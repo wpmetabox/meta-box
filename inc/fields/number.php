@@ -40,4 +40,15 @@ class RWMB_Number_Field extends RWMB_Input_Field {
 		] );
 		return $attributes;
 	}
+
+	/**
+	 * Get the type of a single item.
+	 *
+	 * @param array $field Field parameters.
+	 *
+	 * @return array
+	 */
+	protected static function get_schema( array $field ): array {
+		return [ 'type' => 'number' ];
+	}
 }

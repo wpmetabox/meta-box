@@ -20,4 +20,16 @@ class RWMB_Custom_Html_Field extends RWMB_Field {
 		}
 		return $html;
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type' => 'null',
+		];
+	}
 }

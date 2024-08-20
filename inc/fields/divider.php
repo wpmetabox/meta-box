@@ -18,4 +18,17 @@ class RWMB_Divider_Field extends RWMB_Field {
 	public static function end_html( array $field ) : string {
 		return '';
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type' => 'null',
+		];
+	}
 }

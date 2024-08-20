@@ -5,3 +5,5 @@ yarn.lock
 .DS_Store
 .idea
 vendor
+.phpunit.result.cache
+.phpunit.cache

@@ -109,4 +109,16 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		$html .= '</datalist>';
 		return $html;
 	}
+
+		/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type' => 'string',
+		];
+	}
 }

@@ -446,7 +446,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @param string $file_id File ID in $_FILES when uploading.
 	 * @param array  $field   Field settings.
 	 *
-	 * @return string URL to uploaded file.
+	 * @return string|void URL to uploaded file.
 	 */
 	public static function handle_upload_custom_dir( $file_id, $field ) {
 		// @codingStandardsIgnoreStart
@@ -491,5 +491,19 @@ class RWMB_File_Field extends RWMB_Field {
 		$relative_path = str_replace( $root, '', $path );
 
 		return home_url( $relative_path );
+	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type'  => 'array',
+			'items' => [ 'type' => 'integer' ],
+		];
 	}
 }

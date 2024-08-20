@@ -326,6 +326,7 @@ abstract class RWMB_Field {
 			'attributes'        => [],
 
 			'sanitize_callback' => null,
+			'register_meta' 	=> false,
 		] );
 
 		// Store the original ID to run correct filters for the clonable field.
@@ -583,5 +584,107 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	public static function register_meta( array $field, array $meta_box, string $post_type ): void {
+		// Bail early if the field is implicitly not registered as meta.
+		if ( ! $field['register_meta'] ) {
+			return;
+		}
+
+		// Bail if the meta box storage is custom table.
+		if ( ! isset( $field['storage'] ) || ! $field['storage'] instanceof RWMB_Post_Storage ) {
+			return;
+		}
+
+		$revisions_enabled = $meta_box['revision'] ?? false;
+
+		$args = [
+			'object_subtype'    => $post_type,
+			'type'              => 'string',
+			'description'       => $field['desc'] ?: $field['label_description'],
+			'single'            => ! $field['multiple'],
+			'default'           => '',
+			'show_in_rest'      => true,
+			'revisions_enabled' => $revisions_enabled,
+		];
+
+		$args = array_merge( $args, self::get_register_meta_args( $field ) );
+
+		if ( $args['type'] === 'null' ) {
+			return;
+		}
+
+		register_meta( 'post', $field['id'], $args );
+	}
+
+	private static function get_register_meta_args( array $field ): array {
+		// If the schema is explicitly defined, use it.
+		if ( is_array( $field['register_meta'] ) ) {
+			return $field['register_meta'];
+		}
+
+		$schema = self::call( 'get_full_schema',  $field );
+
+		$args['type']    = $schema['type'];
+		$args['default'] = self::get_validated_default_value( $field, $schema['type'] );
+
+		if ( in_array ( $schema['type'], [ 'array', 'object' ] ) ) {
+			$args['show_in_rest'] = [
+				'schema' => $schema
+			];
+		}
+
+		return $args;
+	}
+
+	protected static function get_full_schema( array $field ): array {
+		$schema = self::call( 'get_schema', $field );
+
+		if ( $field['clone'] ) {
+			$schema = [
+				'type'  => 'array',
+				'items' => $schema,
+			];
+		}
+
+		return $schema;
+	}
+
+	private static function get_validated_default_value( array $field, string $return_type ) {
+		$default = $field['std'] ?? '';
+
+		if ( 'array' === $return_type && ! is_array( $default ) ) {
+			return [];
+		}
+
+		if ( 'boolean' === $return_type && ! is_bool( $default ) ) {
+			$default = false;
+		}
+
+		if ( 'integer' === $return_type && ! is_int( $default ) ) {
+			$default = 0;
+		}
+
+		if ( 'number' === $return_type && ! is_float( $default ) ) {
+			$default = 0.0;
+		}
+
+		if ( 'object' === $return_type &&  ! is_object( $default ) ) {
+			$default = new stdClass();
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [ 'type' => 'string' ];
 	}
 }

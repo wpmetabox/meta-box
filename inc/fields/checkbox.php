@@ -42,4 +42,17 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		return $value ? __( 'Yes', 'meta-box' ) : __( 'No', 'meta-box' );
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type' => 'integer',
+		];
+	}
 }
