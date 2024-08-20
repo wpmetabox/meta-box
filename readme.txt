@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 5.9
 Requires PHP: 7.0
-Tested up to: 6.6
-Stable tag: 5.9.11
+Tested up to: 6.6.1
+Stable tag: 5.10.0
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -160,7 +160,20 @@ If you like this plugin, you might also like our other WordPress products:
 
 == Changelog ==
 
-= 5.9.11 - 2024-07-17 =
+= 5.10.0 - 2024-08-19
+
+**Highlights:**
+
+This version introduces new parameter for field: `clone_empty_start` that makes cloneable groups **not** showing inputs at first. When users want to enter data, they'll need to click the "+ Add new" button. This feature updates the UI and makes it cleaner.
+
+See more details on our [blog post](https://metabox.io/clone-empty-start/).
+
+Other changes:
+
+- Replace `sprintf` with string concatenation in `RWMB_Field::show` to fix issues when `$field['before']` or `$field['after']` contains special characters (`%`). Props Daniel Haim.
+- Fix mismatch filter params for `rwmb_meta` when no fields are found.
+
+= 5.9.11 - 2024-07-10.0
 - Make validation work for blocks
 - Fix JavaScript validation error in site editor
 - Set default minute step = 5 for datetime/time pickers
