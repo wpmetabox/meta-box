@@ -33,7 +33,7 @@ class FieldReturnTypeTest extends TestCase {
 		'map' => 'string',
 		'oembed' => 'string',
 		'osm' => 'string',
-		'post' => 'string',
+		'post' => 'integer',
 		'radio' => 'string',
 		'range' => 'number',
 		'select_advanced' => 'string',
@@ -41,11 +41,10 @@ class FieldReturnTypeTest extends TestCase {
 		'sidebar' => 'string',
 		'single_image' => 'integer',
 		'switch' => 'integer',
-		'taxonomy_advanced' => 'string',
-		'taxonomy' => 'string',
+		'taxonomy' => 'integer',
 		'text_list' => 'array',
 		'textarea' => 'string',
-		'user' => 'string',
+		'user' => 'integer',
 		'video' => 'array',
 		'wysiwyg' => 'string',
 	];
@@ -66,7 +65,7 @@ class FieldReturnTypeTest extends TestCase {
 		foreach ( $this->field_return_types as $field_id => $expected_return_type ) {
 			$field  = $this->setupField( $field_id );
 			$schema = RWMB_Field::call( 'get_schema', $field );
-			$type   = $schema['type'] ?? false;
+			$type   = $schema['type'] ?? 'null';
 
 			$this->assertEquals( $expected_return_type, $type, "Field $field_id should return $expected_return_type" );
 		}
@@ -128,4 +127,16 @@ class FieldReturnTypeTest extends TestCase {
         $this->assertEquals('string', $schema['properties']['name']['type'], 'Fieldset text field name property should return string' );
         $this->assertEquals('string', $schema['properties']['email']['type'], 'Fieldset text field email property should return string' );
     }
+
+	public function testTaxonomyAdvancedField() {
+		$field_single = $this->setupField( 'taxonomy_advanced', [ 'taxonomy' => 'category' ] );
+		$schema = RWMB_Field::call( 'get_full_schema', $field_single );
+
+		$this->assertEquals( 'integer', $schema['type'], 'Single taxonomy advanced should return integer' );
+
+		$field_multiple = $this->setupField( 'taxonomy_advanced_multiple', [ 'taxonomy' => 'category', 'multiple' => true ] );
+		$schema_multiple = RWMB_Field::call( 'get_full_schema', $field_multiple );
+		
+		$this->assertEquals( 'string', $schema_multiple['type'], 'Multiple taxonomy advanced should return CSV' );
+	}
 }

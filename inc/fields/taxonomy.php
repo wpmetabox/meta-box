@@ -323,4 +323,15 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 
 		return false === $taxonomy_object ? '' : $taxonomy_object->labels->singular_name;
 	}
+
+	/**
+	 * Get the schema for the field.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [ 'type' => 'integer' ];
+	}
 }

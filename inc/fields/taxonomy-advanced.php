@@ -104,13 +104,17 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	}
 
 	/**
-	 * Get the type of a single item.
+	 * Get the schema for the field.
 	 *
-	 * @param array $field Field parameters.
+	 * @param array $field
 	 *
-	 * @return array
+	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		return [ 'type' => 'string' ];
+		if ( $field['multiple'] ) {
+			return [ 'type' => 'string' ];
+		}
+
+		return [ 'type' => 'integer' ];
 	}
 }

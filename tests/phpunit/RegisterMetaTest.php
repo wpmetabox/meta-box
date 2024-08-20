@@ -5,7 +5,7 @@ class RegisterMetaTest extends TestCase {
 	private $meta;
 
 	public function setUp(): void {
-		$this->meta = get_registered_meta_keys( 'post' );
+		$this->meta = get_registered_meta_keys( 'post', 'post' );
 	}
 
 	public function testFieldNotRegisteredByDefault() {

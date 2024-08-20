@@ -615,29 +615,31 @@ abstract class RWMB_Field {
 			return $field['register_meta'];
 		}
 
-		$schema = self::call( 'get_schema',  $field );
+		$schema = self::call( 'get_full_schema',  $field );
 
-		$return_type = $schema['type'] ?? 'string';
+		$args['type']    = $schema['type'];
+		$args['default'] = self::get_validated_default_value( $field, $schema['type'] );
 
-		if ( $field['clone'] ) {
-			$return_type = 'array';
-
-			$schema = [
-				'type'  => 'array',
-				'items' => $schema,
-			];
-		}
-
-		$args['type']    = $return_type;
-		$args['default'] = self::get_validated_default_value( $field, $return_type );
-
-		if ( in_array ( $return_type, [ 'array', 'object' ] ) ) {
+		if ( in_array ( $schema['type'], [ 'array', 'object' ] ) ) {
 			$args['show_in_rest'] = [
 				'schema' => $schema
 			];
 		}
 
 		return $args;
+	}
+
+	protected static function get_full_schema( array $field ): array {
+		$schema = self::call( 'get_schema', $field );
+
+		if ( $field['clone'] ) {
+			$schema = [
+				'type'  => 'array',
+				'items' => $schema,
+			];
+		}
+
+		return $schema;
 	}
 
 	private static function get_validated_default_value( array $field, string $return_type ) {
@@ -656,7 +658,7 @@ abstract class RWMB_Field {
 		}
 
 		if ( 'number' === $return_type && ! is_float( $default ) ) {
-			$default = 0;
+			$default = 0.0;
 		}
 
 		if ( 'object' === $return_type &&  ! is_object( $default ) ) {
@@ -664,23 +666,6 @@ abstract class RWMB_Field {
 		}
 
 		return $default;
-	}
-
-	protected static function get_full_schema( array $field ): array {
-		$schema = self::call( 'get_schema', $field );
-
-		if ( ! $schema ) {
-			return [];
-		}
-
-		if ( $field['clone'] === true ) {
-			$schema = [
-				'type'  => 'array',
-				'items' => $schema,
-			];
-		}
-
-		return $schema;
 	}
 
 	/**
