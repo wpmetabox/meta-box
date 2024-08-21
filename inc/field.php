@@ -188,7 +188,7 @@ abstract class RWMB_Field {
 
 			// Always add the first item to the beginning of the array for the template.
 			// We will need to remove it later before saving.
-			array_unshift( $meta, $field['std'] );
+			array_unshift( $meta, '' );
 
 			if ( $field['multiple'] ) {
 				$first = reset( $meta );
