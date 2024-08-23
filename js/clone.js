@@ -199,7 +199,7 @@
 	 */
 	function toggleAddButton( $container ) {
 		var $button = $container.children( '.add-clone' ),
-			maxClone = parseInt( $container.data( 'max-clone' ) ),
+			maxClone = parseInt( $container.data( 'max-clone' ) ) + 1,
 			numClone = $container.children( '.rwmb-clone' ).length;
 
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
