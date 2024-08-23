@@ -174,32 +174,23 @@ abstract class RWMB_Field {
 		// Get raw meta.
 		$raw_meta = self::call( $field, 'raw_meta', $post_id );
 
+		$std = self::call( 'get_std', $field );
+		d( $std );
+
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
+		$meta = ! $saved || ! $field['save_field'] ? $std : $raw_meta;
 
 		if ( $field['clone'] ) {
-			$meta = is_array( $raw_meta ) ? $raw_meta : [];
-
-			// If clone empty start = false (default),
-			// ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
-			if ( ! $field['clone_empty_start'] && empty( $meta ) ) {
-				$meta = [ $field['std'] ];
+			if ( empty( $meta ) || ! is_array( $meta ) ) {
+				$meta = $std;
 			}
 
-			// Always add the first item to the beginning of the array for the template.
-			// We will need to remove it later before saving.
-			array_unshift( $meta, $meta ? $meta[0] : '' );
-
-			if ( $field['multiple'] ) {
-				$first = reset( $meta );
-
-				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
-				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
+			if ( ! $field['clone_empty_start'] ) {
+				$clone_std = self::call( 'get_clone_std', $field );
+				array_unshift( $meta, $clone_std );
 			}
-		} elseif ( $field['multiple'] ) {
-			$meta = Arr::ensure( $meta );
 		}
+		d( $field['name'], $meta );
 
 		return $meta;
 	}
@@ -583,5 +574,29 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	protected static function get_std( array $field ) {
+		if ( $field['clone'] ) {
+			$clone = self::call( 'get_clone_std', $field );
+
+			return [ $clone ];
+		}
+
+		return self::call( 'get_clone_std', $field );
+	}
+
+	protected static function get_clone_std( array $field ) {
+		if ( $field['multiple'] ) {
+			$single = self::call( 'get_single_std', $field );
+
+			return [ $single ];
+		}
+
+		return self::call( 'get_single_std', $field );
+	}
+
+	protected static function get_single_std( array $field ) {
+		return $field['std'];
 	}
 }

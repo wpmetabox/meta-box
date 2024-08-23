@@ -121,4 +121,13 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 		$output .= '</tr>';
 		return $output;
 	}
+
+	protected static function get_clone_std( array $field ) {
+		$clone = [];
+		foreach ( $field['options'] as $placeholder => $label ) {
+			$clone[] = self::get_single_std( $field );
+		}
+
+		return $clone;
+	}
 }
