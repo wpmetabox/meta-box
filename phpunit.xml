@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" colors="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnWarning="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.3/phpunit.xsd" cacheDirectory=".phpunit.cache" displayDetailsOnTestsThatTriggerWarnings="true">
+  <testsuites>
+    <testsuite name="Plugin Tests">
+      <directory>./tests/phpunit</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

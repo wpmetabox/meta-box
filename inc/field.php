@@ -170,27 +170,23 @@ abstract class RWMB_Field {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
-
 		// Get raw meta.
 		$raw_meta = self::call( $field, 'raw_meta', $post_id );
-
+		$single_std = self::call( 'get_single_std', $field );
 		$std = self::call( 'get_std', $field );
-		d( $std );
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved || ! $field['save_field'] ? $std : $raw_meta;
-
+		
 		if ( $field['clone'] ) {
-			if ( empty( $meta ) || ! is_array( $meta ) ) {
+			$meta = is_array( $raw_meta ) ? $raw_meta : $std;
+			
+			if ( empty( $meta ) && ! $field['clone_empty_start'] ) {
 				$meta = $std;
 			}
 
-			if ( ! $field['clone_empty_start'] ) {
-				$clone_std = self::call( 'get_clone_std', $field );
-				array_unshift( $meta, $clone_std );
-			}
+			array_unshift( $meta, $single_std );	
 		}
-		d( $field['name'], $meta );
 
 		return $meta;
 	}
@@ -578,25 +574,22 @@ abstract class RWMB_Field {
 
 	protected static function get_std( array $field ) {
 		if ( $field['clone'] ) {
-			$clone = self::call( 'get_clone_std', $field );
+			$clone = Arr::ensure( $field['std'] ?? [] );
 
-			return [ $clone ];
-		}
-
-		return self::call( 'get_clone_std', $field );
-	}
-
-	protected static function get_clone_std( array $field ) {
-		if ( $field['multiple'] ) {
-			$single = self::call( 'get_single_std', $field );
-
-			return [ $single ];
+			return $clone;
 		}
 
 		return self::call( 'get_single_std', $field );
 	}
 
 	protected static function get_single_std( array $field ) {
-		return $field['std'];
+		$std = $field['std'] ?? '';
+		$multiple = $field['multiple'] ?? false;
+
+		if ( $multiple ) {
+			return (array) $std;
+		}
+
+		return is_array( $std ) ? $std[0] : $std;
 	}
 }
