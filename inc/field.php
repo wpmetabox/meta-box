@@ -177,15 +177,17 @@ abstract class RWMB_Field {
 
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
 		$meta = ! $saved || ! $field['save_field'] ? $std : $raw_meta;
-		
+
 		if ( $field['clone'] ) {
-			$meta = is_array( $raw_meta ) ? $raw_meta : $std;
-			
-			if ( empty( $meta ) && ! $field['clone_empty_start'] ) {
-				$meta = $std;
+			$meta = (array) $meta;
+
+			if ( ! $field['clone_empty_start'] && empty( $raw_meta ) ) {
+				array_unshift( $meta, $single_std );
 			}
 
-			array_unshift( $meta, $single_std );	
+			if ( ! empty( $raw_meta ) ) {
+				array_unshift( $meta, $single_std );
+			}
 		}
 
 		return $meta;
