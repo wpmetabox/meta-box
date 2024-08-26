@@ -107,15 +107,16 @@ class StdTest extends TestCase {
 
     public function testStdForGroup() {
         $field = [
-            'type' => 'group',
+           'type' => 'group',
             'id' => 'group',
             'clone' => true,
+            'name' => 'Group 1',
             'std' => [
                 [
                     'text' => 'a',
                     'group2' => [
-                       ['text2' => 'b'],
-                       ['text2' => 'c'],
+                    ['text2' => 'b'],
+                    ['text2' => 'c'],
                     ]
                 ],
                 [
@@ -130,6 +131,7 @@ class StdTest extends TestCase {
                 [
                     'id' => 'text',
                     'type' => 'text',
+                    'name' => 'Text 1',
                     'clone' => true,
                     'clone_empty_start' => true,
                 ],
@@ -137,10 +139,12 @@ class StdTest extends TestCase {
                     'id' => 'group2',
                     'type' => 'group',
                     'clone' => true,
+                    'name' => 'Group 2',
                     'fields' => [
                         [
                             'id' => 'text2',
                             'type' => 'text',
+                            'name' => 'Text 2',
                             'clone' => true,
                             'clone_empty_start' => true,
                         ]
