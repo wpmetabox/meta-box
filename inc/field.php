@@ -576,7 +576,7 @@ abstract class RWMB_Field {
 
 	protected static function get_std( array $field ) {
 		if ( $field['clone'] ) {
-			$clone = Arr::ensure( $field['std'] ?? [] );
+			$clone = Arr::ensure( $field['std'] );
 
 			return $clone;
 		}
@@ -585,7 +585,7 @@ abstract class RWMB_Field {
 	}
 
 	protected static function get_single_std( array $field ) {
-		$std = $field['std'] ?? '';
+		$std = $field['std'];
 		$multiple = $field['multiple'] ?? false;
 
 		if ( $multiple ) {
