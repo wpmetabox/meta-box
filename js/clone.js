@@ -128,12 +128,12 @@
 	 */
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone' ).last(),
-			$clone = $last.clone(),
+			$template = $container.children( '.rwmb-clone-template' ),
+			$clone = $template.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );
-		$inputs.each( cloneValue.clear );
 
 		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
