@@ -144,4 +144,38 @@ class Arr {
 
 		return $array;
 	}
+
+	public static function to_depth( $input, $depth ) {
+		$current_depth = is_array( $input ) ? self::depth( $input ) : 0;
+		
+		if ( $depth < $current_depth ) {
+			while ( $current_depth > $depth ) {
+				$input = reset( $input );
+				$current_depth--;
+			}
+		} elseif ( $depth > $current_depth ) {
+			while ( $current_depth < $depth ) {
+				$input = [ $input ];
+				$current_depth++;
+			}
+		}
+
+		return $input;
+	}
+
+	public static function depth( array $array ) {
+		$max_depth = 1;
+
+		foreach ( $array as $key => $value ) {
+			if ( !is_string($key) && is_array( $value ) ) {
+				$depth = self::depth( $value ) + 1;
+
+				if ( $depth > $max_depth ) {
+					$max_depth = $depth;
+				}
+			}
+		}
+
+		return $max_depth;
+	}
 }

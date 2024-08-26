@@ -575,23 +575,20 @@ abstract class RWMB_Field {
 	}
 
 	protected static function get_std( array $field ) {
-		if ( $field['clone'] ) {
-			$clone_std = Arr::ensure( $field['std'] );
+		$depth = 0;
 
-			return $clone_std;
+		if ( $field['multiple'] ) {
+			$depth++;
 		}
 
-		return self::call( 'get_single_std', $field );
+		if ( $field['clone'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field['std'], $depth );
 	}
 
 	protected static function get_single_std( array $field ) {
-		$std = $field['std'];
-		$multiple = $field['multiple'] ?? false;
-
-		if ( $multiple ) {
-			return (array) $std;
-		}
-
-		return is_array( $std ) ? $std[0] : $std;
+		return Arr::to_depth( $field[ 'std' ], 0 );
 	}
 }
