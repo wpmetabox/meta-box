@@ -589,6 +589,12 @@ abstract class RWMB_Field {
 	}
 
 	protected static function get_single_std( array $field ) {
-		return Arr::to_depth( $field[ 'std' ], 0 );
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field[ 'std' ], $depth );
 	}
 }
