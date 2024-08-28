@@ -179,13 +179,19 @@ abstract class RWMB_Field {
 		$meta = ! $saved || ! $field['save_field'] ? $std : $raw_meta;
 
 		if ( $field['clone'] ) {
-			$meta = is_array( $raw_meta ) ? $raw_meta : [];
+			$meta = (array) $meta;
 
-			if ( ! $field['clone_empty_start'] && empty( $raw_meta ) ) {
-				$meta = [ $single_std ];
+			if ( empty( $raw_meta ) ) {
+				if ( $field['clone_empty_start'] ) {
+					$meta = [ $single_std ];
+				} else {
+					array_unshift( $meta, $single_std );
+				}
 			}
 
-			array_unshift( $meta, $single_std );
+			if ( ! empty( $raw_meta ) ) {
+				array_unshift( $meta, $single_std );
+			}
 		}
 
 		return $meta;

@@ -134,7 +134,8 @@
 
 		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );
-
+		$inputs.each( cloneValue.clear );
+		
 		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
