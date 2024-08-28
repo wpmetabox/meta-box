@@ -133,8 +133,13 @@
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Clear fields' values.
-		var $inputs = $clone.find( rwmb.inputSelectors );
-		$inputs.each( cloneValue.clear );
+		var $inputs = $clone.find( rwmb.inputSelectors );		
+		const count = $container.children( '.rwmb-clone' ).length;
+		
+		// The first clone should keep the default values.
+		if ( count > 1 ) {
+			$inputs.each( cloneValue.clear );
+		}
 		
 		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.

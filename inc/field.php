@@ -175,24 +175,27 @@ abstract class RWMB_Field {
 		$single_std = self::call( 'get_single_std', $field );
 		$std = self::call( 'get_std', $field );
 
+		$saved = $saved && $field['save_field'];
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $std : $raw_meta;
+		$meta = $saved ? $raw_meta : $std;
 
-		if ( $field['clone'] ) {
-			$meta = (array) $meta;
-
-			if ( empty( $raw_meta ) ) {
-				if ( $field['clone_empty_start'] ) {
-					$meta = [ $single_std ];
-				} else {
-					array_unshift( $meta, $single_std );
-				}
-			}
-
-			if ( ! empty( $raw_meta ) ) {
-				array_unshift( $meta, $single_std );
-			}
+		if ( ! $field['clone'] ) {
+			return $meta;
 		}
+
+		$meta = is_array( $raw_meta ) ? $raw_meta : [];
+
+		// Clone empty start = TRUE, get nothing to display
+		// Clone empty start = FALSE, get all default values to display
+		$std 		= $field['clone_empty_start'] ? [] : $std;
+		$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $raw_meta, Arr::depth( $std ) );
+
+		if ( empty( $meta ) ) {
+			$meta = $saved ? $empty_std : $std;
+		}
+			
+		// 2. Always prepend a template
+		array_unshift( $meta, $single_std );
 
 		return $meta;
 	}
