@@ -67,10 +67,15 @@ class RWMB_Clone {
 			$new = [];
 		}
 
+		$request = new RWMB_Request();
+		$cleanup = $request->post( 'rwmb_cleanup' ); // Array of field ids
+
 		// Remove the first item of $new because it's the template.
 		// Also, check the count of $new because some fields may create another input (e.g., file).
-		if ( isset( $new[0] ) ) {
-			array_shift( $new );
+		if ( in_array( $field['id'], $cleanup ) ) {
+			if ( isset( $new[0] ) ) {
+				array_shift( $new );
+			}
 		}
 
 		if ( in_array( $field['type'], [ 'file', 'image' ], true ) ) {

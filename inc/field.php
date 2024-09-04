@@ -37,10 +37,15 @@ abstract class RWMB_Field {
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = static::end_html( $field );
-		$end = self::filter( 'end_html', $end, $field, $meta );
+		$cleanup = '';
 
-		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
+		if ( $field['clone'] ) {
+			$cleanup = '<input type="hidden" name="rwmb_cleanup[]" value="' .  $field['id'] .'">';
+		}
+
+		$end = static::end_html( $field );
+		$end = self::filter( 'end_html', $end, $field, $meta );	
+		$html = self::filter( 'wrapper_html', $begin . $field_html . $cleanup . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
