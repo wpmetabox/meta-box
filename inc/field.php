@@ -37,10 +37,15 @@ abstract class RWMB_Field {
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = static::end_html( $field );
-		$end = self::filter( 'end_html', $end, $field, $meta );
+		$cleanup = '';
 
-		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
+		if ( $field['clone'] ) {
+			$cleanup = '<input type="hidden" name="rwmb_cleanup[]" value="' .  $field['id'] .'">';
+		}
+
+		$end = static::end_html( $field );
+		$end = self::filter( 'end_html', $end, $field, $meta );	
+		$html = self::filter( 'wrapper_html', $begin . $field_html . $cleanup . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
@@ -170,36 +175,32 @@ abstract class RWMB_Field {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
-
 		// Get raw meta.
 		$raw_meta = self::call( $field, 'raw_meta', $post_id );
+		$single_std = self::call( 'get_single_std', $field );
+		$std = self::call( 'get_std', $field );
 
+		$saved = $saved && $field['save_field'];
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
+		$meta = $saved ? $raw_meta : $std;
 
-		if ( $field['clone'] ) {
-			$meta = is_array( $raw_meta ) ? $raw_meta : [];
-
-			// If clone empty start = false (default),
-			// ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
-			if ( ! $field['clone_empty_start'] && empty( $meta ) ) {
-				$meta = [ $field['std'] ];
-			}
-
-			// Always add the first item to the beginning of the array for the template.
-			// We will need to remove it later before saving.
-			array_unshift( $meta, $field['std'] );
-
-			if ( $field['multiple'] ) {
-				$first = reset( $meta );
-
-				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
-				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
-			}
-		} elseif ( $field['multiple'] ) {
-			$meta = Arr::ensure( $meta );
+		if ( ! $field['clone'] ) {
+			return $meta;
 		}
+
+		$meta = is_array( $raw_meta ) ? $raw_meta : [];
+
+		// Clone empty start = TRUE, get nothing to display
+		// Clone empty start = FALSE, get all default values to display
+		$std 		= $field['clone_empty_start'] ? [] : $std;
+		$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $raw_meta, Arr::depth( $std ) );
+
+		if ( empty( $meta ) ) {
+			$meta = $saved ? $empty_std : $std;
+		}
+			
+		// 2. Always prepend a template
+		array_unshift( $meta, $single_std );
 
 		return $meta;
 	}
@@ -583,5 +584,29 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	protected static function get_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		if ( $field['clone'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field['std'], $depth );
+	}
+
+	protected static function get_single_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field[ 'std' ], $depth );
 	}
 }

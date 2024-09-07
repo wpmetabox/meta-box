@@ -183,7 +183,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"])',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *',
 				errorPlacement: function ( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},

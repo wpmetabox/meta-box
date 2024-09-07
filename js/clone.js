@@ -128,13 +128,19 @@
 	 */
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone' ).last(),
-			$clone = $last.clone(),
+			$template = $container.children( '.rwmb-clone-template' ),
+			$clone = $template.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
 		// Clear fields' values.
-		var $inputs = $clone.find( rwmb.inputSelectors );
-		$inputs.each( cloneValue.clear );
-
+		var $inputs = $clone.find( rwmb.inputSelectors );		
+		const count = $container.children( '.rwmb-clone' ).length;
+		
+		// The first clone should keep the default values.
+		if ( count > 1 ) {
+			$inputs.each( cloneValue.clear );
+		}
+		
 		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
@@ -199,7 +205,7 @@
 	 */
 	function toggleAddButton( $container ) {
 		var $button = $container.children( '.add-clone' ),
-			maxClone = parseInt( $container.data( 'max-clone' ) ),
+			maxClone = parseInt( $container.data( 'max-clone' ) ) + 1,
 			numClone = $container.children( '.rwmb-clone' ).length;
 
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );
