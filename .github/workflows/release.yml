@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Install PHP dependencies
-      run: composer install
+      run: composer install --no-dev
     - uses: 10up/action-wordpress-plugin-deploy@master
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
