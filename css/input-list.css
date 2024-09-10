@@ -4,6 +4,9 @@
 .rwmb-input-list {
 	line-height: 1.8;
 }
+.rwmb-input-list.hidden {
+	display: none;
+}
 .rwmb-input-list .rwmb-input-list {
 	margin-left: 20px;
 }
