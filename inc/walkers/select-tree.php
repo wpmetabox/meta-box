@@ -59,9 +59,19 @@ class RWMB_Walker_Select_Tree {
 	 * @return string
 	 */
 	public function display_level( $options, $parent_id = 0, $active = false ) {
+		static $output_required = false;
+
 		$field      = $this->field;
 		$walker     = new RWMB_Walker_Select( $field, $this->meta );
 		$attributes = RWMB_Field::call( 'get_attributes', $field, $this->meta );
+
+		if ( $output_required ) {
+			unset( $attributes[ 'required' ] );
+		}
+
+		if ( ! empty( $attributes['required'] ) ) {
+			$output_required = true;
+		}
 
 		$children = $options[ $parent_id ];
 		$output   = sprintf(
