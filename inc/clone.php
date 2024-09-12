@@ -35,7 +35,7 @@ class RWMB_Clone {
 				$sort_icon = "<a href='javascript:;' class='rwmb-clone-icon'></a>";
 			}
 
-			$class .= $index === 0 ? ' rwmb-clone-template' : '';
+			$class .= $index === 'rwmb-template' ? ' rwmb-clone-template' : '';
 			$input_html = "<div class='$class'>" . $sort_icon;
 
 			// Call separated methods for displaying each type of field.
@@ -67,17 +67,8 @@ class RWMB_Clone {
 			$new = [];
 		}
 
-		$request = rwmb_request();
-		$cleanup = $request->post( 'rwmb_cleanup', [] ); // Array of field ids
-
-		// Remove the first item of $new because it's the template.
-		// Also, check the count of $new because some fields may create another input (e.g., file).
-		if ( in_array( $field['id'], $cleanup ) ) {
-			if ( isset( $new[0] ) ) {
-				array_shift( $new );
-			}
-		}
-
+		unset( $new['rwmb-template'] );
+		
 		if ( in_array( $field['type'], [ 'file', 'image' ], true ) ) {
 			$new = RWMB_File_Field::clone_value( $new, $old, $object_id, $field );
 		} else {

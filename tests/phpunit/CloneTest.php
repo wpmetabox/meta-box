@@ -85,23 +85,23 @@ class CloneTest extends TestCase {
         $meta = RWMB_Field::meta(2, false, $field );
         $this->assertGreaterThanOrEqual(2, $meta );
         $this->assertEquals( $meta[0], RWMB_Field::call('get_single_std', $field));
-        $this->assertEquals( $meta[1], RWMB_Field::call('get_single_std', $field));
+        $this->assertEquals( $meta['rwmb-template'], RWMB_Field::call('get_single_std', $field));
 
-        // 1.1 Not Saved, should return Array<template, std>
+        // 1.1 Not Saved, should return Array<std, template>
         $field['std'] = $field['_optional_default'];
         $meta = RWMB_Field::meta(2, false, $field);
         
         $this->assertGreaterThanOrEqual(2, $meta );
         $this->assertEquals( $meta[0], RWMB_Field::call('get_single_std', $field) );
-        $this->assertEquals( $meta[1], RWMB_Field::call('get_single_std', $field) );
+        $this->assertEquals( $meta['rwmb-template'], RWMB_Field::call('get_single_std', $field) );
       
-        // 1.2 When saved, it should return Array<template, ...saved>
+        // 1.2 When saved, it should return Array<...saved, 'rwmb-template'>
         $meta = RWMB_Field::meta(1, true, $field);
         $this->assertGreaterThanOrEqual(2, count( $meta ) );
-        $this->assertEquals( $meta[0], RWMB_Field::call('get_single_std', $field) );
+        $this->assertEquals( $meta['rwmb-template'], RWMB_Field::call('get_single_std', $field) );
 
-        for( $i = 1; $i < count( $meta ); $i++ ) {
-            $this->assertEquals( $meta[ $i ], $this->getMeta( $field )[ $i-1 ] );
+        for( $i = 0; $i < count( $meta ) - 1; $i++ ) {
+            $this->assertEquals( $meta[ $i ], $this->getMeta( $field )[ $i ] );
         }
     }
 

@@ -13,7 +13,10 @@
 				var $field = $( this );
 
 				// Name attribute
-				var name = this.name;
+				let name = this.name;
+				// replace [rwmb-template] with [index]
+				name = name.replace( /\[rwmb-template\]/g, '[' + index + ']' );
+				
 				if ( name && ! $field.closest( '.rwmb-group-clone' ).length ) {
 					$field.attr( 'name', cloneIndex.replace( index, name, '[', ']', false ) );
 				}
@@ -71,7 +74,6 @@
 		 */
 		nextIndex: function ( $container ) {
 			var nextIndex = $container.data( 'next-index' );
-
 			// If we render cloneable fields via AJAX, the mb_ready event is not fired.
 			// so nextIndex is undefined. In this case, we get the next index from the number of existing clones.
 			if ( nextIndex === undefined ) {
@@ -127,16 +129,16 @@
 	 * @param $container A div container which has all fields
 	 */
 	function clone( $container ) {
-		var $last = $container.children( '.rwmb-clone' ).last(),
-			$template = $container.children( '.rwmb-clone-template' ),
-			$clone = $template.clone(),
-			nextIndex = cloneIndex.nextIndex( $container );
+		const $template = $container.children( '.rwmb-clone-template' );
+		const nextIndex = cloneIndex.nextIndex( $container );
+        let $clone = $template.clone();
 
 		// Clear fields' values.
-		var $inputs = $clone.find( rwmb.inputSelectors );		
+		let $inputs = $clone.find( rwmb.inputSelectors );		
 		const count = $container.children( '.rwmb-clone' ).length;
 		
-		// The first clone should keep the default values.
+		// If we have only one clone (template), we don't want to clear the values,
+		// so need to add count > 1 condition.
 		if ( count > 1 ) {
 			$inputs.each( cloneValue.clear );
 		}
@@ -146,7 +148,7 @@
 		$clone.find( 'p.rwmb-error' ).remove();
 		
 		// Insert clone.
-		$clone.insertAfter( $last );
+		$clone.insertBefore( $template );
 
 		// Trigger custom event for the clone instance. Required for Group extension to update sub fields.
 		$clone.trigger( 'clone_instance', nextIndex );
