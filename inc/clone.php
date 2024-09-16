@@ -16,7 +16,7 @@ class RWMB_Clone {
 				$sub_field['id'] = $field['id'] . "_{$index}";
 
 				if ( ! empty( $sub_field['attributes']['id'] ) ) {
-					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+					$sub_field['attributes']['id'] .= "_{$index}";
 				}
 			}
 

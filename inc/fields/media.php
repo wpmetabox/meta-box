@@ -55,6 +55,8 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		 */
 		$ids = (array) $meta;
 		if ( $field['clone'] ) {
+			unset( $ids[ 'rwmb-template' ] );
+			
 			foreach ( $ids as &$value ) {
 				$value = (array) $value;
 			}

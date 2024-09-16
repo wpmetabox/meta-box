@@ -9,11 +9,14 @@
 		 * @param index Index value
 		 */
 		set: function ( $inputs, index ) {
+			index = index - 1;
+
 			$inputs.each( function () {
-				var $field = $( this );
+				let $field = $( this );
 
 				// Name attribute
 				let name = this.name;
+				
 				// replace [rwmb-template] with [index]
 				name = name.replace( /\[rwmb-template\]/g, '[' + index + ']' );
 				
@@ -22,12 +25,20 @@
 				}
 
 				// ID attribute
-				var id = this.id;
-				if ( id ) {
-					$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
-				}
+				let id = this.id;
+				id = id.replace( /_rwmb-template/g, '' );
 
-				$field.trigger( 'update_index', index );
+				if ( index === 0 && id ) {
+					$field.attr( 'id', id );
+				}
+				
+				if ( index > 0 ) {
+					if ( id ) {
+						$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
+					}
+
+					$field.trigger( 'update_index', index );
+				}
 			} );
 		},
 
