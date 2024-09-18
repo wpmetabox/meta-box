@@ -6,17 +6,27 @@ class RWMB_Clone {
 	public static function html( array $meta, array $field ) : string {
 		$field_html = '';
 
+		$count = count( $meta );
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
-			if ( $index > 0 ) {
+
+			if ( $index === 0 && $count > 1 ) {
+				$sub_field['attributes']['id'] = $field['id'] . "_template";
+			}
+
+			if ( $index === 1 ) {
+				$sub_field['attributes']['id'] = $field['id'];
+			}
+
+			if ( $index > 1 ) {
 				if ( isset( $sub_field['address_field'] ) ) {
 					$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 				}
 				$sub_field['id'] = $field['id'] . "_{$index}";
 
 				if ( ! empty( $sub_field['attributes']['id'] ) ) {
-					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+					$sub_field['attributes']['id'] .= "_{$index}";
 				}
 			}
 

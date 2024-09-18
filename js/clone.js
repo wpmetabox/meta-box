@@ -21,7 +21,16 @@
 				// ID attribute
 				var id = this.id;
 				if ( id ) {
-					$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
+					id = id.replace( '_template', '' );
+
+					// First clone takes the original ID
+					if ( index === 1 ) {
+						$field.attr( 'id', id );
+					}
+
+					if ( index > 1 ) {
+						$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
+					}
 				}
 
 				$field.trigger( 'update_index', index );
@@ -132,6 +141,12 @@
 			$clone = $template.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
+		// Add _template suffix to ID of fields in template.
+		// so that the first clone will take the original ID.
+		$template.find( rwmb.inputSelectors ).each( function () {
+			this.id = this.id.includes( '_template' ) ? this.id : this.id + '_template';
+		} );
+		
 		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );		
 		const count = $container.children( '.rwmb-clone' ).length;
