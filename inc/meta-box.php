@@ -283,8 +283,6 @@ class RW_Meta_Box {
 		$default = $single ? '' : [];
 		$old     = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 		$new     = rwmb_request()->post( $field['id'], $default );
-		consolelog($field['id']);
-		consolelog($new);
 		$new     = RWMB_Field::process_value( $new, $this->object_id, $field );
 
 		// Filter to allow the field to be modified.
