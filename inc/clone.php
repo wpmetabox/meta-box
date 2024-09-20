@@ -12,7 +12,7 @@ class RWMB_Clone {
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
 
 			if ( $index === 0 && $count > 1 ) {
-				$sub_field['attributes']['id'] = $field['id'] . "_template";
+				$sub_field['attributes']['id'] = $field['id'] . "_rwmb_template";
 			}
 
 			if ( $index === 1 ) {

@@ -8,7 +8,7 @@
 		 * @param $inputs .rwmb-clone element
 		 * @param index Index value
 		 */
-		set: function ( $inputs, index ) {
+		set: function ( $inputs, index, count ) {
 			$inputs.each( function () {
 				var $field = $( this );
 
@@ -21,14 +21,14 @@
 				// ID attribute
 				var id = this.id;
 				if ( id ) {
-					id = id.replace( '_template', '' );
+					id = id.replace( '_rwmb_template', '' );
 
 					// First clone takes the original ID
-					if ( index === 1 ) {
+					if ( count === 2 ) {
 						$field.attr( 'id', id );
 					}
 
-					if ( index > 1 ) {
+					if ( count > 2 ) {
 						$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
 					}
 				}
@@ -141,10 +141,10 @@
 			$clone = $template.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
-		// Add _template suffix to ID of fields in template.
+		// Add _rwmb_template suffix to ID of fields in template.
 		// so that the first clone will take the original ID.
 		$template.find( rwmb.inputSelectors ).each( function () {
-			this.id = this.id.includes( '_template' ) ? this.id : this.id + '_template';
+			this.id = this.id.includes( '_rwmb_template' ) ? this.id : this.id + '_rwmb_template';
 		} );
 		
 		// Clear fields' values.
@@ -167,7 +167,7 @@
 		$clone.trigger( 'clone_instance', nextIndex );
 
 		// Set fields index. Must run before trigger clone event.
-		cloneIndex.set( $inputs, nextIndex );
+		cloneIndex.set( $inputs, nextIndex, count );
 
 		// Set fields' default values: do after index is set to prevent previous radio fields from unchecking.
 		$inputs.each( cloneValue.setDefault );
