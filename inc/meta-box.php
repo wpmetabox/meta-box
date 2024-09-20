@@ -218,6 +218,7 @@ class RW_Meta_Box {
 			RWMB_Field::call( 'show', $field, $saved, $this->object_id );
 		}
 
+		$this->render_cleanup();
 		// Allow users to add custom code after meta box content.
 		// 1st action applies to all meta boxes.
 		// 2nd action applies to only current meta box.
@@ -226,6 +227,30 @@ class RW_Meta_Box {
 
 		// End container.
 		echo '</div>';
+	}
+
+	protected function get_cleanup_fields( $fields, $prefix = '' ) {
+		$names = [];
+		foreach ( $fields as $field ) {
+			if ( ! empty( $field['fields'] ) ) {
+				$suffix = $field[ 'clone' ] ? '.*.' : '.';
+				
+				$names = array_merge( $names, $this->get_cleanup_fields( $field['fields'], $field['id'] . $suffix ) );
+			}
+
+			if ( ! $field['clone'] ) {
+				continue;
+			}
+
+			$names[] = $prefix . $field['id'];
+		}
+
+		return $names;
+	}
+	protected function render_cleanup() {
+		$names = $this->get_cleanup_fields( $this->fields );
+
+		echo '<input type="hidden" name="rwmb_cleanup[]" value="' . esc_attr( json_encode( $names ) ) . '">';
 	}
 
 	/**
@@ -258,6 +283,8 @@ class RW_Meta_Box {
 		$default = $single ? '' : [];
 		$old     = RWMB_Field::call( $field, 'raw_meta', $this->object_id );
 		$new     = rwmb_request()->post( $field['id'], $default );
+		consolelog($field['id']);
+		consolelog($new);
 		$new     = RWMB_Field::process_value( $new, $this->object_id, $field );
 
 		// Filter to allow the field to be modified.

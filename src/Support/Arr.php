@@ -73,7 +73,7 @@ class Arr {
 	/**
 	 * Convert flatten collection (with dot notation) to multiple dimensional array
 	 *
-	 * @param  collection $collection Collection to be flatten.
+	 * @param  array $collection Collection to be flatten.
 	 * @return array
 	 */
 	public static function unflatten( $collection ) {
@@ -177,5 +177,37 @@ class Arr {
 		}
 
 		return $max_depth;
+	}
+
+	/**
+	 * Remove the first element of an array, support wildcard * and dot notation.
+	 */
+	public static function remove_first( array &$array, string $key ) : array {
+		$keys = explode( '.', $key );
+		$current = &$array;
+		$last_key = array_pop( $keys );
+	
+		foreach ( $keys as $key ) {
+			if ( $key === '*' ) {
+				$new_current = [];
+				foreach ( $current as $item ) {
+					$new_current[] = self::remove_first( $item, $last_key );
+				}
+				$current = $new_current;
+				return $array;
+			}
+	
+			$current = &$current[ $key ];
+		}
+	
+		if ( $last_key === '*' ) {
+			foreach ( $current as &$item ) {
+				unset( $item[0] );
+			}
+		} else {
+			unset( $current[ $last_key ][0] );
+		}
+	
+		return $array;
 	}
 }
