@@ -236,7 +236,7 @@ class RW_Meta_Box {
 			$field_id = $prefix . $field['id'];
 			if ( ! empty( $field['fields'] ) ) {
 				$suffix = $field[ 'clone' ] ? '.*.' : '.';
-				$names = [...$names, ...$this->get_cleanup_fields( $field['fields'], $field_id . $suffix )];
+				$names = array_merge( $names, $this->get_cleanup_fields( $field['fields'], $field_id . $suffix ) );
 			}
 
 			if ( $field['clone'] ) {
