@@ -39,7 +39,6 @@ class RWMB_Request {
 
 	public function cleanup( array $data ) {
 		$cleanups = $data['rwmb_cleanup'] ?? []; // Array of field ids
-		
 		if ( empty( $cleanups ) || ! is_array( $cleanups ) ) {
 			return $data;
 		}

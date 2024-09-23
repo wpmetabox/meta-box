@@ -231,22 +231,22 @@ class RW_Meta_Box {
 
 	protected function get_cleanup_fields( $fields, $prefix = '' ) {
 		$names = [];
+
 		foreach ( $fields as $field ) {
+			$field_id = $prefix . $field['id'];
 			if ( ! empty( $field['fields'] ) ) {
 				$suffix = $field[ 'clone' ] ? '.*.' : '.';
-				
-				$names = array_merge( $names, $this->get_cleanup_fields( $field['fields'], $field['id'] . $suffix ) );
+				$names = [...$names, ...$this->get_cleanup_fields( $field['fields'], $field_id . $suffix )];
 			}
 
-			if ( ! $field['clone'] ) {
-				continue;
+			if ( $field['clone'] ) {
+				$names[] = $field_id;
 			}
-
-			$names[] = $prefix . $field['id'];
 		}
 
 		return $names;
 	}
+
 	protected function render_cleanup() {
 		$names = $this->get_cleanup_fields( $this->fields );
 

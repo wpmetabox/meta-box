@@ -179,35 +179,32 @@ class Arr {
 		return $max_depth;
 	}
 
-	/**
-	 * Remove the first element of an array, support wildcard * and dot notation.
-	 */
-	public static function remove_first( array &$array, string $key ) : array {
-		$keys = explode( '.', $key );
-		$current = &$array;
-		$last_key = array_pop( $keys );
+	public static function remove_first( &$array, $query ) {
+		$keys = explode( '.', $query );
+		$key  = array_shift( $keys );
 	
-		foreach ( $keys as $key ) {
-			if ( $key === '*' ) {
-				$new_current = [];
-				foreach ( $current as $item ) {
-					$new_current[] = self::remove_first( $item, $last_key );
+		if ( count( $keys ) === 0 ) {
+			if ( is_array( $array ) && array_key_exists( $key, $array ) ) {
+				unset( $array[ $key ][0] );
+			}
+			return;
+		}
+	
+		if ( $key === '*' ) {
+			foreach ( $array as $k => $v ) {
+				if ( is_array( $array[ $k ] ) ) {
+					self::remove_first( $array[ $k ], implode( '.', $keys ) );
 				}
-				$current = $new_current;
-				return $array;
 			}
-	
-			$current = &$current[ $key ];
+			return;
 		}
 	
-		if ( $last_key === '*' ) {
-			foreach ( $current as &$item ) {
-				unset( $item[0] );
-			}
-		} else {
-			unset( $current[ $last_key ][0] );
+		if ( $key === '' ) {
+			return;
 		}
 	
-		return $array;
+		if ( is_array( $array[ $key ] ) ) {
+			self::remove_first( $array[ $key ], implode( '.', $keys ) );
+		}
 	}
 }
