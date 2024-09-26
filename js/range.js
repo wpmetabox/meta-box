@@ -5,12 +5,11 @@
 	 * Update text value.
 	 */
 	function update() {
-		var $this = $( this ),
+		const $this = $( this ),
 			$output = $this.siblings( '.rwmb-range-output' );
 
-		$this.on( 'input propertychange change', function () {
-			$output.html( $this.val() );
-		} );
+		$output.html( $this.val() );
+		$this.on( 'input propertychange change', () => $output.html( $this.val() ) );
 	}
 
 	function init( e ) {
