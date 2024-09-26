@@ -27,7 +27,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		}
 		
 		foreach ( $field['options'] as $key => $label ) {
-			$value                       = isset( $meta[ $key ] ) ? $meta[ $key ] : '';
+			$value                       = $meta[ $key ] ?? '';
 			$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
 			$html[]                      = sprintf( $tpl, $label, parent::html( $value, $field ) );
 		}

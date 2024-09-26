@@ -1,4 +1,5 @@
 <?php
+use MetaBox\Support\Arr;
 /**
  * A very simple request class that handles form inputs.
  * Based on the code of Symphony framework, (c) Fabien Potencier <fabien@symfony.com>
@@ -15,6 +16,9 @@ class RWMB_Request {
 		$this->get_data  = $_GET;
 		// @codingStandardsIgnoreLine
 		$this->post_data = $_POST;
+
+		// Cleanup data
+		$this->post_data = $this->cleanup( $this->post_data );
 	}
 
 	public function set_get_data( array $data ) {
@@ -31,6 +35,29 @@ class RWMB_Request {
 
 	public function post( string $name, $default = null ) {
 		return $this->post_data[ $name ] ?? $default;
+	}
+
+	public function cleanup( array $data ) {
+		$cleanups = $data['rwmb_cleanup'] ?? []; // Array of field ids
+		if ( empty( $cleanups ) || ! is_array( $cleanups ) ) {
+			return $data;
+		}
+		
+		// Decode the JSON string for each cleanup item
+		foreach ( $cleanups as $cleanup ) {
+			$cleanup = json_decode( stripslashes( $cleanup ) );
+
+			if ( ! is_array( $cleanup ) ) {
+				continue;
+			}
+
+			foreach ( $cleanup as $field_id ) {
+				// Remove the field from the data
+				Arr::remove_first( $data, $field_id );
+			}
+		}
+
+		return $data;
 	}
 
 	/**

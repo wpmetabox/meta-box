@@ -73,7 +73,7 @@ class Arr {
 	/**
 	 * Convert flatten collection (with dot notation) to multiple dimensional array
 	 *
-	 * @param  collection $collection Collection to be flatten.
+	 * @param  array $collection Collection to be flatten.
 	 * @return array
 	 */
 	public static function unflatten( $collection ) {
@@ -177,5 +177,34 @@ class Arr {
 		}
 
 		return $max_depth;
+	}
+
+	public static function remove_first( &$array, $query ) {
+		$keys = explode( '.', $query );
+		$key  = array_shift( $keys );
+	
+		if ( count( $keys ) === 0 ) {
+			if ( is_array( $array ) && array_key_exists( $key, $array ) ) {
+				unset( $array[ $key ][0] );
+			}
+			return;
+		}
+	
+		if ( $key === '*' ) {
+			foreach ( $array as $k => $v ) {
+				if ( is_array( $array[ $k ] ) ) {
+					self::remove_first( $array[ $k ], implode( '.', $keys ) );
+				}
+			}
+			return;
+		}
+	
+		if ( $key === '' ) {
+			return;
+		}
+	
+		if ( is_array( $array[ $key ] ) ) {
+			self::remove_first( $array[ $key ], implode( '.', $keys ) );
+		}
 	}
 }

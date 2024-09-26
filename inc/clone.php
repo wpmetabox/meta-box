@@ -6,17 +6,27 @@ class RWMB_Clone {
 	public static function html( array $meta, array $field ) : string {
 		$field_html = '';
 
+		$count = count( $meta );
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
-			if ( $index > 0 ) {
+
+			if ( $index === 0 && $count > 1 ) {
+				$sub_field['attributes']['id'] = $field['id'] . "_rwmb_template";
+			}
+
+			if ( $index === 1 ) {
+				$sub_field['attributes']['id'] = $field['id'];
+			}
+
+			if ( $index > 1 ) {
 				if ( isset( $sub_field['address_field'] ) ) {
 					$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 				}
 				$sub_field['id'] = $field['id'] . "_{$index}";
 
 				if ( ! empty( $sub_field['attributes']['id'] ) ) {
-					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+					$sub_field['attributes']['id'] .= "_{$index}";
 				}
 			}
 
@@ -65,17 +75,6 @@ class RWMB_Clone {
 	public static function value( $new, $old, $object_id, array $field ) {
 		if ( ! is_array( $new ) ) {
 			$new = [];
-		}
-
-		$request = rwmb_request();
-		$cleanup = $request->post( 'rwmb_cleanup', [] ); // Array of field ids
-
-		// Remove the first item of $new because it's the template.
-		// Also, check the count of $new because some fields may create another input (e.g., file).
-		if ( in_array( $field['id'], $cleanup ) ) {
-			if ( isset( $new[0] ) ) {
-				array_shift( $new );
-			}
 		}
 
 		if ( in_array( $field['type'], [ 'file', 'image' ], true ) ) {
