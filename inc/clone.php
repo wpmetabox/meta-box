@@ -10,13 +10,14 @@ class RWMB_Clone {
 		foreach ( $meta as $index => $sub_meta ) {
 			$sub_field               = $field;
 			$sub_field['field_name'] = $field['field_name'] . "[{$index}]";
+			$attributes_id = $sub_field['attributes']['id'] ?? $sub_field['id'];
 
 			if ( $index === 0 && $count > 1 ) {
-				$sub_field['attributes']['id'] = $field['id'] . "_rwmb_template";
+				$sub_field['attributes']['id'] = $attributes_id . "_rwmb_template";
 			}
 
 			if ( $index === 1 ) {
-				$sub_field['attributes']['id'] = $field['id'];
+				$sub_field['attributes']['id'] = $attributes_id;
 			}
 
 			if ( $index > 1 ) {
