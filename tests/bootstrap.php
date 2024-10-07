@@ -10,12 +10,13 @@ $wp_dir = dirname( dirname( $plugins_dir ) );
 // Load local WP
 $wp_load_file = $wp_dir . '/wp-load.php';
 
-print_r( $wp_load_file );
-
 // Load WP on Scrutinizer-CI
 if ( ! file_exists( $wp_load_file ) && ! empty( $_ENV['SCRUTINIZER'] ) ) {
+	echo "Scrutinizer is on \n";
 	$wp_load_file = $base_dir . '/wordpress/wp-load.php';
 }
+
+echo $wp_load_file . "\n";
 
 if ( ! file_exists( $wp_load_file ) ) {
 	return;
