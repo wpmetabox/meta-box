@@ -3,12 +3,10 @@
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
-    "ui",
-    "select2",
-    "wp-admin",
     "meta-box",
     "wordpress-plugin",
-    "custom-field"
+    "custom-field",
+    "custom-fields"
   ],
   "description": "A powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
   "homepage": "https://metabox.io",
@@ -22,6 +20,9 @@
       "role": "Developer"
     }
   ],
+  "config": {
+    "allow-plugins": true
+  },
   "autoload": {
     "psr-4": {
       "MetaBox\\": "src/"
@@ -41,22 +42,15 @@
   },
   "scripts": {
     "post-update-cmd": [
-      "echo [WARNING] Delete all .git dirs in /vendor/ folder",
-      "rm -rf vendor/**/**/.git",
-      "echo [WARNING] Delete all .git dirs in /modules/ folder",
-      "rm -rf modules/**/.git"
+      "echo Deleting .git dirs...",
+      "rm -rf vendor/**/**/.git"
     ],
     "post-install-cmd": [
-      "echo [WARNING] Delete all .git dirs in /vendor/ folder",
-      "rm -rf vendor/**/**/.git",
-      "echo [WARNING] Delete all .git dirs in /modules/ folder",
-      "rm -rf modules/**/.git"
+      "echo Deleting .git dirs...",
+      "rm -rf vendor/**/**/.git"
     ]
   },
   "extra": {
-    "installer-paths": {
-      "modules/{$name}": ["vendor:wpmetabox", "vendor:meta-box"]
-    },
     "dev-files": {
       "/": [
         ".git",
