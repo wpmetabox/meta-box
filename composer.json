@@ -48,6 +48,9 @@
     "post-install-cmd": [
       "echo Deleting .git dirs...",
       "rm -rf vendor/**/**/.git"
+    ],
+    "test": [
+      "./vendor/bin/phpunit"
     ]
   },
   "extra": {
