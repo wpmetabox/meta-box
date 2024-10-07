@@ -27,7 +27,80 @@
       "MetaBox\\": "src/"
     }
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/wpmetabox/support.git"
+    }
+  ],
   "require-dev": {
     "phpunit/phpunit": "^11.3"
+  },
+  "require": {
+    "meta-box/support": "dev-master"
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "echo [WARNING] Delete all .git dirs in /vendor/ folder",
+      "rm -rf vendor/**/**/.git",
+      "echo [WARNING] Delete all .git dirs in /modules/ folder",
+      "rm -rf modules/**/.git"
+    ],
+    "post-install-cmd": [
+      "echo [WARNING] Delete all .git dirs in /vendor/ folder",
+      "rm -rf vendor/**/**/.git",
+      "echo [WARNING] Delete all .git dirs in /modules/ folder",
+      "rm -rf modules/**/.git"
+    ]
+  },
+  "extra": {
+    "installer-paths": {
+      "modules/{$name}": ["vendor:wpmetabox", "vendor:meta-box"]
+    },
+    "dev-files": {
+      "/": [
+        ".git",
+        ".github/",
+        ".gitattributes",
+        ".gitignore",
+
+        ".distignore",
+
+        "*.yaml",
+        "*.yml",
+
+        "*.txt",
+        "*.less",
+        "*.scss",
+        "*.po",
+
+        "composer.json",
+        "composer.lock",
+        "package.json",
+        "package-lock.json",
+        "phpcs.xml",
+        "pnpm-lock.yaml",
+        "phpstan.neon",
+        "phpunit.xml",
+
+        ".babelrc",
+        "webpack.config.js",
+
+        ".editoconfig",
+        ".vscode",
+        "esbuild.js",
+
+        "LICENSE",
+        "*.md",
+
+        "test/",
+        "tests/",
+
+        "demo.php",
+        "demo/",
+        "sass/",
+        "vendor/"
+      ]
+    }
   }
 }
