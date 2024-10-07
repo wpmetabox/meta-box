@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Allows all Composer packages
+        run: composer global config --no-plugins allow-plugins true
       - name: Install liborm85/composer-vendor-cleaner Composer package globally
         run: composer global require liborm85/composer-vendor-cleaner
       - name: Install PHP dependencies
