@@ -5,7 +5,7 @@
 
 add_filter(
 	'rwmb_meta_boxes',
-	function( $meta_boxes ) {
+	function ( $meta_boxes ) {
 		$meta_boxes[] = [
 			'title'  => 'File Upload Custom Folder',
 			'fields' => [
@@ -34,10 +34,10 @@ add_filter(
 					'name' => 'Normal Upload',
 				],
 				[
-					'type'         => 'file',
-					'id'           => 'f5',
-					'name'         => 'Upload to upper folder',
-					'upload_dir'   => '../',
+					'type'       => 'file',
+					'id'         => 'f5',
+					'name'       => 'Upload to upper folder',
+					'upload_dir' => '../',
 				],
 			],
 		];
@@ -47,7 +47,7 @@ add_filter(
 
 add_filter(
 	'the_content',
-	function( $content ) {
+	function ( $content ) {
 		if ( ! is_single() ) {
 			return $content;
 		}

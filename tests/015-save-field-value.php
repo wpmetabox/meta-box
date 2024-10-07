@@ -4,9 +4,9 @@
  * It targets to change in version 4.15.8
  * Date: Nov 30, 2018
  */
-add_filter( 'rwmb_meta_boxes', function( $meta_boxes ) {
+add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	$meta_boxes[] = [
-		'title' => 'Test save field value',
+		'title'  => 'Test save field value',
 		'fields' => [
 			[
 				'type'              => 'select',
@@ -79,7 +79,7 @@ add_filter( 'rwmb_meta_boxes', function( $meta_boxes ) {
 		],
 	];
 	$meta_boxes[] = [
-		'title' => 'Special cases',
+		'title'  => 'Special cases',
 		'fields' => [
 			[
 				'type'              => 'image_advanced',

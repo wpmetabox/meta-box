@@ -121,13 +121,13 @@ function field_custom_icon( $meta_boxes ) {
 				'type'        => 'icon',
 				'icon_dir'    => RWMB_DIR . 'tests/assets/svg/',
 			],
-            [
+			[
 				'name'        => __( 'Icon custom with rebuild icon_css', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_custom_rebuild_icon_css_path',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome.json',
-                'icon_css'    => '/wp-content/plugins/meta-box/tests/assets/css/line-awesome.min.css',
+				'icon_css'    => '/wp-content/plugins/meta-box/tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with rebuild icon_file', 'your-text-domain' ),
@@ -135,7 +135,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => '/wp-content/plugins/meta-box/tests/assets/line-awesome.json',
-                'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with rebuild icon_dir', 'your-text-domain' ),
@@ -145,12 +145,12 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_dir'    => '/wp-content/plugins/meta-box/tests/assets/svg/',
 			],
 			[
-				'name'        => __( 'Icon custom with css file as icon_css', 'your-text-domain' ),
-				'id'          => $prefix . 'icon_custom_use_css_file_only',
-				'placeholder' => 'Select Icon',
-				'type'        => 'icon',
-				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
-				'icon_base_class'  => 'las',
+				'name'            => __( 'Icon custom with css file as icon_css', 'your-text-domain' ),
+				'id'              => $prefix . 'icon_custom_use_css_file_only',
+				'placeholder'     => 'Select Icon',
+				'type'            => 'icon',
+				'icon_css'        => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
+				'icon_base_class' => 'las',
 			],
 		],
 	];

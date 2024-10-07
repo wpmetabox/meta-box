@@ -5,8 +5,8 @@
  */
 add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
 	$meta_boxes[] = [
-		'title' => 'Field required with label description',
-		'fields' => [
+		'title'      => 'Field required with label description',
+		'fields'     => [
 			[
 				'id'                => 'text_1',
 				'type'              => 'text',

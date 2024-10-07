@@ -59,11 +59,11 @@ add_filter(
 					'name'    => 'Fieldset Text',
 					'id'      => 'fieldset_text',
 					'type'    => 'fieldset_text',
-					'options' => array(
+					'options' => [
 						'name'    => __( 'Name', 'your-prefix' ),
 						'address' => __( 'Address', 'your-prefix' ),
 						'email'   => __( 'Email', 'your-prefix' ),
-					),
+					],
 				],
 				[
 					'name' => 'Key Value',
