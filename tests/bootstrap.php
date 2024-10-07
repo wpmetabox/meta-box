@@ -3,15 +3,15 @@
 // 1. composer install --dev
 // 2. ./vendor/bin/phpunit
 
-$base_dir = dirname( __DIR__ );
+$base_dir    = dirname( __DIR__ );
 $plugins_dir = dirname( $base_dir );
-$wp_dir = dirname( dirname( $plugins_dir ) );
+$wp_dir      = dirname( dirname( $plugins_dir ) );
 
 // Load local WP
 $wp_load_file = $wp_dir . '/wp-load.php';
 
 // Load WP on Scrutinizer-CI
-if ( ! file_exists( $wp_load_file ) && ! empty( $_ENV['SCRUTINIZER'] ) ) {
+if ( ! empty( $_ENV['SCRUTINIZER'] ) ) {
 	echo "Scrutinizer is on \n";
 	$wp_load_file = $base_dir . '/wordpress/wp-load.php';
 }
