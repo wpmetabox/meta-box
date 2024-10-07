@@ -149,7 +149,8 @@ abstract class RWMB_Field {
 			$args['single'] = false;
 		}
 
-		$value = $storage->get( $object_id, $field['id'], $args );
+		$value = $field['value'] ? $field['value'] : $storage->get($object_id, $field['id'], $args);
+		
 		$value = self::filter( 'raw_meta', $value, $field, $object_id, $args );
 		return $value;
 	}
@@ -306,7 +307,7 @@ abstract class RWMB_Field {
 			'field_name'        => $field['id'] ?? '',
 			'placeholder'       => '',
 			'save_field'        => true,
-
+			'value'				=> '',
 			'clone'             => false,
 			'min_clone'         => 0,
 			'max_clone'         => 0,
