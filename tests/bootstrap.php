@@ -11,7 +11,7 @@ $wp_dir      = dirname( dirname( $plugins_dir ) );
 $wp_load_file = $wp_dir . '/wp-load.php';
 
 // Load WP on Scrutinizer-CI
-if ( ! empty( $_ENV['SCRUTINIZER'] ) ) {
+if ( file_exists( $base_dir . '/wordpress' ) ) {
 	echo "Scrutinizer is on \n";
 	$wp_load_file = $base_dir . '/wordpress/wp-load.php';
 }
