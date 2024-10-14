@@ -21,9 +21,7 @@ jobs:
         run: composer global require liborm85/composer-vendor-cleaner
       - name: Install PHP dependencies
         run: composer install --no-dev
-      - name: Setup Git
-        run: git config --global --add safe.directory /github/workspace
-      - uses: 10up/action-wordpress-plugin-deploy@master
+      - uses: 10up/action-wordpress-plugin-deploy@develop
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
