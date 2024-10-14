@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
       - name: Allows all Composer packages
         run: composer global config --no-plugins allow-plugins true
       - name: Install liborm85/composer-vendor-cleaner Composer package globally
         run: composer global require liborm85/composer-vendor-cleaner
       - name: Install PHP dependencies
         run: composer install --no-dev
-      - uses: 10up/action-wordpress-plugin-deploy@develop
+      - uses: 10up/action-wordpress-plugin-deploy@master
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
