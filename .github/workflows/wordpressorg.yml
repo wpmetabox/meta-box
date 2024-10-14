@@ -21,7 +21,7 @@ jobs:
         run: composer global require liborm85/composer-vendor-cleaner
       - name: Install PHP dependencies
         run: composer install --no-dev
-      - uses: 10up/action-wordpress-plugin-deploy@develop
+      - uses: 10up/action-wordpress-plugin-deploy@stable
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
