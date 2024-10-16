@@ -1,11 +1,12 @@
 <?php
 add_filter( 'rwmb_meta_boxes', 'field_icon' );
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
 function field_icon( $meta_boxes ) {
 	$prefix = '';
 
 	$meta_boxes[] = [
-		'title'  => __( 'Test field icon' ),
+		'title'  => __( 'Test field icon', 'your-text-domain' ),
 		'id'     => 'test_icon',
 		'fields' => [
 			[
@@ -52,7 +53,7 @@ function field_custom_icon( $meta_boxes ) {
 	$prefix = '';
 
 	$meta_boxes[] = [
-		'title'  => __( 'Test field icon custom' ),
+		'title'  => __( 'Test field icon custom', 'your-text-domain' ),
 		'id'     => 'test_icon_custom',
 		'fields' => [
 			[
@@ -157,3 +158,4 @@ function field_custom_icon( $meta_boxes ) {
 
 	return $meta_boxes;
 }
+// phpcs:enable

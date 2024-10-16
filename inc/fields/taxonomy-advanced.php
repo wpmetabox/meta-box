@@ -98,6 +98,7 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			'hide_empty' => false,
 		], $args );
 
+		// phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found
 		$info = get_terms( $field['taxonomy'], $args );
 		$info = is_array( $info ) ? $info : [];
 		return $field['multiple'] ? $info : reset( $info );

@@ -140,7 +140,7 @@ class RWMB_Test_Helper {
 	 */
 	public function meta_all( $key ) {
 		$meta = rwmb_meta( $key );
-		return is_string( $meta ) ? $meta : '<pre>' . print_r( $meta, true ) . '</pre>';
+		return is_string( $meta ) ? $meta : '<pre>' . print_r( $meta, true ) . '</pre>'; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 	}
 
 	/**
@@ -151,6 +151,7 @@ class RWMB_Test_Helper {
 	 * @return string
 	 */
 	public function meta_admin( $key ) {
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		switch ( $key ) {
 			case $this->prefix . 'text':
 				$meta = rwmb_meta( $key, 'clone=true' );
@@ -186,6 +187,7 @@ class RWMB_Test_Helper {
 				$meta = rwmb_meta( $key );
 				break;
 		}// End switch().
+		// phpcs:enable
 		return $meta;
 	}
 }

@@ -52,6 +52,7 @@ add_filter(
 			return $content;
 		}
 		$value    = rwmb_meta( 'f' );
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		$value    = '<pre>' . print_r( $value, true ) . '</pre>';
 		$content .= $value;
 

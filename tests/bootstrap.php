@@ -15,7 +15,7 @@ if ( file_exists( $base_dir . '/wordpress' ) ) {
 	echo "Scrutinizer is on \n";
 	$wp_load_file = $base_dir . '/wordpress/wp-load.php';
 }
-
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 echo $wp_load_file . "\n";
 
 if ( ! file_exists( $wp_load_file ) ) {

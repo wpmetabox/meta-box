@@ -1,5 +1,7 @@
 <?php
 add_filter( 'rwmb_meta_boxes', 'your_prefix_choice_demo' );
+
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
 function your_prefix_choice_demo( $meta_boxes ) {
 	$prefix       = '';
 	$meta_boxes[] = [
@@ -94,3 +96,4 @@ function your_prefix_choice_demo( $meta_boxes ) {
 	];
 	return $meta_boxes;
 }
+// phpcs:enable

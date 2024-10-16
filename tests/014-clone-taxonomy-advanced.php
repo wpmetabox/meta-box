@@ -62,6 +62,7 @@ add_filter( 'the_content', function ( $content ) {
 	}
 	ob_start();
 	$fields = range( 1, 6 );
+	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_print_r, WordPress.Security.EscapeOutput.OutputNotEscaped
 	foreach ( $fields as $field ) {
 		$field = "ta$field";
 		echo "<h1>Field $field</h1>";
@@ -81,6 +82,6 @@ add_filter( 'the_content', function ( $content ) {
 		echo '<h3>rwmb_the_value()</h3>';
 		rwmb_the_value( $field );
 	}
-
+	// phpcs:enable
 	return $content . ob_get_clean();
 } );

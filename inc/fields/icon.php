@@ -81,6 +81,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return [];
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$data    = (string) file_get_contents( $field['icon_file'] );
 		$decoded = json_decode( $data, true );
 
@@ -100,6 +101,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			return [];
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$css = (string) file_get_contents( $file );
 
 		preg_match_all( '/\.([^\s:]+):before/', $css, $matches );
@@ -125,6 +127,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			$icons[]  = [
 				'value' => $filename,
 				'label' => $filename,
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				'svg'   => file_get_contents( $file ),
 			];
 		}
@@ -191,6 +194,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 	private static function get_svg( array $field, string $value ): string {
 		$file = trailingslashit( $field['icon_dir'] ) . $value . '.svg';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		return file_exists( $file ) ? file_get_contents( $file ) : '';
 	}
 

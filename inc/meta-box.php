@@ -250,7 +250,7 @@ class RW_Meta_Box {
 	protected function render_cleanup() {
 		$names = $this->get_cleanup_fields( $this->fields );
 
-		echo '<input type="hidden" name="rwmb_cleanup[]" value="' . esc_attr( json_encode( $names ) ) . '">';
+		echo '<input type="hidden" name="rwmb_cleanup[]" value="' . esc_attr( wp_json_encode( $names ) ) . '">';
 	}
 
 	/**
