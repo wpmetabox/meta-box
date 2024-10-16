@@ -101,6 +101,7 @@ class RWMB_Loader {
 		$wpml->init();
 
 		// Update.
+		$update_checker = null;
 		if ( class_exists( '\MetaBox\Updater\Option' ) ) {
 			$update_option = new \MetaBox\Updater\Option();
 			$update_checker = new \MetaBox\Updater\Checker( $update_option );
