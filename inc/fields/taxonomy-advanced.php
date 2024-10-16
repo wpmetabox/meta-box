@@ -94,11 +94,12 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 			return [];
 		}
 		$args = wp_parse_args( [
+			'taxonomy'   => $field['taxonomy'],
 			'include'    => $term_ids,
 			'hide_empty' => false,
 		], $args );
 
-		$info = get_terms( $field['taxonomy'], $args );
+		$info = get_terms( $args );
 		$info = is_array( $info ) ? $info : [];
 		return $field['multiple'] ? $info : reset( $info );
 	}

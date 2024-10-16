@@ -3,6 +3,7 @@
  * This file test the helper function rwmb_the_value with the optimization in "helper" branch since 4.8.7
  */
 global $test;
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
 add_filter(
 	'rwmb_meta_boxes',
 	function ( $meta_boxes ) {
@@ -257,6 +258,7 @@ add_filter(
 		return $meta_boxes;
 	}
 );
+// phpcs:enable
 
 add_filter(
 	'the_content',

@@ -59,11 +59,13 @@ add_filter(
 					'name'    => 'Fieldset Text',
 					'id'      => 'fieldset_text',
 					'type'    => 'fieldset_text',
+					// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
 					'options' => [
 						'name'    => __( 'Name', 'your-prefix' ),
 						'address' => __( 'Address', 'your-prefix' ),
 						'email'   => __( 'Email', 'your-prefix' ),
 					],
+					// phpcs:enable
 				],
 				[
 					'name' => 'Key Value',

@@ -8,9 +8,6 @@
  * Author URI:  https://metabox.io
  * License:     GPL2+
  * Text Domain: meta-box
- * Domain Path: /languages/
- *
- * @package Meta Box
  */
 
 if ( defined( 'ABSPATH' ) && ! defined( 'RWMB_VER' ) ) {
