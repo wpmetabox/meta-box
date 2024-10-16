@@ -1,25 +1,12 @@
 <?php
-/**
- * Add about page for the Meta Box plugin.
- */
 class RWMB_About {
-	/**
-	 * The updater checker object.
-	 *
-	 * @var object
-	 */
-	private $update_checker;
+	private $is_pro = false;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param object $update_checker The updater checker object.
-	 */
 	public function __construct( $update_checker ) {
-		$this->update_checker = $update_checker;
+		$this->is_pro = $update_checker && $update_checker->has_extensions();
 	}
 
-	public function init() {
+	public function init(): void {
 		// Add links to about page in the plugin action links.
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', [ $this, 'plugin_links' ], 20 );
 
@@ -36,13 +23,13 @@ class RWMB_About {
 
 	public function plugin_links( array $links ): array {
 		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'About', 'meta-box' ) . '</a>';
-		if ( $this->update_checker && ! $this->update_checker->has_extensions() ) {
+		if ( ! $this->is_pro ) {
 			$links[] = '<a href="https://elu.to/mpp" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
 		}
 		return $links;
 	}
 
-	public function add_menu() {
+	public function add_menu(): void {
 		if ( ! $this->has_menu() ) {
 			return;
 		}
@@ -56,7 +43,7 @@ class RWMB_About {
 		);
 	}
 
-	public function add_submenu() {
+	public function add_submenu(): void {
 		$parent_menu = $this->has_menu() ? 'meta-box' : $this->get_parent_menu();
 		$about       = add_submenu_page(
 			$parent_menu,
@@ -69,11 +56,11 @@ class RWMB_About {
 		add_action( "load-$about", [ $this, 'enqueue' ] );
 	}
 
-	public function hide_page() {
+	public function hide_page(): void {
 		remove_submenu_page( $this->get_parent_menu(), 'meta-box' );
 	}
 
-	public function render() {
+	public function render(): void {
 		?>
 		<div class="wrap">
 			<div id="poststuff">
@@ -83,7 +70,7 @@ class RWMB_About {
 							<?php
 							include __DIR__ . '/sections/welcome.php';
 							include __DIR__ . '/sections/tabs.php';
-							if ( $this->update_checker->has_extensions() ) {
+							if ( $this->is_pro ) {
 								include __DIR__ . '/sections/getting-started-pro.php';
 							} else {
 								include __DIR__ . '/sections/getting-started.php';
@@ -98,7 +85,7 @@ class RWMB_About {
 						<?php
 						include __DIR__ . '/sections/products.php';
 						include __DIR__ . '/sections/review.php';
-						if ( ! $this->update_checker->has_extensions() ) {
+						if ( ! $this->is_pro ) {
 							include __DIR__ . '/sections/upgrade.php';
 						}
 						?>
@@ -109,7 +96,7 @@ class RWMB_About {
 		<?php
 	}
 
-	public function enqueue() {
+	public function enqueue(): void {
 		wp_enqueue_style( 'meta-box-about', RWMB_URL . 'inc/about/css/about.css', [], RWMB_VER );
 		wp_enqueue_script( 'meta-box-about', RWMB_URL . 'inc/about/js/about.js', [ 'jquery' ], RWMB_VER, true );
 	}
@@ -121,7 +108,7 @@ class RWMB_About {
 	 * @param bool   $network_wide Whether to enable the plugin for all sites in the network
 	 *                             or just the current site. Multisite only. Default is false.
 	 */
-	public function redirect( $plugin, $network_wide = false ) {
+	public function redirect( $plugin, $network_wide = false ): void {
 		$is_cli           = 'cli' === php_sapi_name();
 		$is_plugin        = 'meta-box/meta-box.php' === $plugin;
 		$is_bulk_activate = 'activate-selected' === rwmb_request()->post( 'action' ) && count( rwmb_request()->post( 'checked' ) ) > 1;
