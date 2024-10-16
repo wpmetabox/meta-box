@@ -101,13 +101,15 @@ class RWMB_Loader {
 		$wpml->init();
 
 		// Update.
-		$update_option  = new \MetaBox\Updater\Option();
-		$update_checker = new \MetaBox\Updater\Checker( $update_option );
-		$update_checker->init();
-		$update_settings = new \MetaBox\Updater\Settings( $update_checker, $update_option );
-		$update_settings->init();
-		$update_notification = new \MetaBox\Updater\Notification( $update_checker, $update_option );
-		$update_notification->init();
+		if ( class_exists( '\MetaBox\Updater\Option' ) ) {
+			$update_option = new \MetaBox\Updater\Option();
+			$update_checker = new \MetaBox\Updater\Checker( $update_option );
+			$update_checker->init();
+			$update_settings = new \MetaBox\Updater\Settings( $update_checker, $update_option );
+			$update_settings->init();
+			$update_notification = new \MetaBox\Updater\Notification( $update_checker, $update_option );
+			$update_notification->init();
+		}
 
 		// Register categories for page builders.
 		new \MetaBox\Integrations\Block();
