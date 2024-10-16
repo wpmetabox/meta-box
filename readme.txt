@@ -1,4 +1,4 @@
-=== Meta Box - WordPress Custom Fields Framework ===
+=== Meta Box ===
 Contributors: elightup, metabox, rilwis, f-j-kaiser, funkatronic, PerWiklander, ruanmer, tanng
 Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box

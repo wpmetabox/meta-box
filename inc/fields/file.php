@@ -52,7 +52,7 @@ class RWMB_File_Field extends RWMB_Field {
 			$result = wp_delete_attachment( $attachment );
 		} else {
 			$path   = str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $attachment );
-			$result = wp_delete_file( $path );
+			$result = unlink( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
 		}
 
 		if ( $result ) {
