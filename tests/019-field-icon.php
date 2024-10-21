@@ -64,7 +64,7 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome.json',
 				// Manually enqueue icon font's CSS.
 				'icon_css'    => function () {
-					wp_enqueue_style( 'line-awesome', 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css', [], '1.3.0' );
+					wp_enqueue_style( 'line-awesome', RWMB_DIR . 'tests/assets/css/line-awesome.min.css', [], '1.3.0' );
 				},
 			],
 			[
@@ -73,7 +73,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome.json',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with Input type 1 options', 'your-text-domain' ),
@@ -81,7 +81,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome-type-1.text',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with Input type 2 options', 'your-text-domain' ),
@@ -89,7 +89,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome-type-2.json',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with Input type 3 options', 'your-text-domain' ),
@@ -97,7 +97,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome-type-3.json',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with svg ouput type 1', 'your-text-domain' ),
@@ -105,7 +105,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => RWMB_DIR . 'tests/assets/line-awesome-svg-1.json',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with svg ouput type 2', 'your-text-domain' ),
@@ -136,7 +136,7 @@ function field_custom_icon( $meta_boxes ) {
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
 				'icon_file'   => '/wp-content/plugins/meta-box/tests/assets/line-awesome.json',
-				'icon_css'    => 'https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css',
+				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
 				'name'        => __( 'Icon custom with rebuild icon_dir', 'your-text-domain' ),
