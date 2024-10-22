@@ -310,11 +310,11 @@ class RWMB_File_Field extends RWMB_Field {
 	 *
 	 * @return int The number of uploaded files.
 	 */
-	protected static function transform( $input_name ) {
-		// @codingStandardsIgnoreStart
+	protected static function transform( $input_name ): int {
+		// phpcs:disable
 		foreach ( $_FILES[ $input_name ] as $key => $list ) {
 			foreach ( $list as $index => $value ) {
-				$file_key = "{$input_name}_{$index}";
+				$file_key = sanitize_text_field( "{$input_name}_{$index}" );
 				if ( ! isset( $_FILES[ $file_key ] ) ) {
 					$_FILES[ $file_key ] = [];
 				}
@@ -323,7 +323,7 @@ class RWMB_File_Field extends RWMB_Field {
 		}
 
 		return count( $_FILES[ $input_name ]['name'] );
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable
 	}
 
 	/**
