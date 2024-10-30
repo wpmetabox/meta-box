@@ -5,7 +5,7 @@ Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 5.9
 Requires PHP: 7.0
 Tested up to: 6.6.2
-Stable tag: 5.10.2
+Stable tag: 5.10.3
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -159,6 +159,11 @@ If you like this plugin, you might also like our other WordPress products:
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.10.3 - 2024-10-30 =
+- fix: std after saving
+- fix: field set text save empty values
+- fix: subfield's id
 
 = 5.10.2 - 2024-09-26 =
 - Fix issue with conditional logic
