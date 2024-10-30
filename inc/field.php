@@ -184,17 +184,17 @@ abstract class RWMB_Field {
 			return $meta;
 		}
 
+		// When a field is cloneable, it should always return an array.
 		$meta = is_array( $raw_meta ) ? $raw_meta : [];
 
-		// Clone empty start = TRUE, get nothing to display
-		// Clone empty start = FALSE, get all default values to display
-		$std 		= $field['clone_empty_start'] ? [] : $std;
-		$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $raw_meta, Arr::depth( $std ) );
-
 		if ( empty( $meta ) ) {
+			$empty_meta = empty( $raw_meta ) ? [null] : $raw_meta;
+			$std 		= $field['clone_empty_start'] ? [] : $std;
+			$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $empty_meta, Arr::depth( $std ) );
+
 			$meta = $saved ? $empty_std : $std;
 		}
-			
+
 		// 2. Always prepend a template
 		array_unshift( $meta, $single_std );
 
