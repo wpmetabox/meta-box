@@ -7,7 +7,7 @@ on:
         required: true
 
 jobs:
-  trigger-aio-update:
+  trigger-update:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger update on Meta Box AIO
