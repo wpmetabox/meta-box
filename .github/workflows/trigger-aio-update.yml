@@ -1,0 +1,21 @@
+name: Reusable workflow to trigger updates on bundle plugins
+
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  trigger-aio-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger update on Meta Box AIO
+        run:
+          curl --request POST --url https://api.github.com/repos/wpmetabox/meta-box-aio/actions/workflows/update-from-extensions.yml/dispatches --header 'Authorization:Bearer ${{ secrets.ACCESS_TOKEN }}' --header 'content-type:application/json' --data '{"ref":"master"}'
+      - name: Trigger update on MB Core
+        run:
+          curl --request POST --url https://api.github.com/repos/wpmetabox/mb-core/actions/workflows/update-from-extensions.yml/dispatches --header 'Authorization:Bearer ${{ secrets.ACCESS_TOKEN }}' --header 'content-type:application/json' --data '{"ref":"master"}'
+      - name: Trigger update on Meta Box Lite
+        run:
+          curl --request POST --url https://api.github.com/repos/wpmetabox/meta-box-lite/actions/workflows/update-from-extensions.yml/dispatches --header 'Authorization:Bearer ${{ secrets.ACCESS_TOKEN }}' --header 'content-type:application/json' --data '{"ref":"master"}'

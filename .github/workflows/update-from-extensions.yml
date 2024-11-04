@@ -1,0 +1,45 @@
+name: Reusable workflow to auto update extensions
+
+on:
+  workflow_call:
+    secrets:
+      SSH_KEY:
+        required: true
+      SSH_KNOWN_HOSTS:
+        required: true
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  update-extensions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Allows all Composer packages
+        run: composer global config --no-plugins allow-plugins true
+      - name: Install liborm85/composer-vendor-cleaner Composer package globally
+        run: composer global require liborm85/composer-vendor-cleaner
+      - name: Remove vendor folder and reinstall extensions
+        run: |
+          rm -rf vendor
+          composer update
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add --all
+          git commit --message "Update extensions"
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
