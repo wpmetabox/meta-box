@@ -1,4 +1,4 @@
-name: Reusable workflow to trigger updates on bundle plugins
+name: Reusable workflow to trigger update on bundle plugins
 
 on:
   workflow_call:
