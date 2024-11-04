@@ -7,8 +7,6 @@ on:
         required: true
       SSH_KNOWN_HOSTS:
         required: true
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
   update-extensions:
