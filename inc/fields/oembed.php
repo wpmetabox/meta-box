@@ -83,7 +83,7 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 		if ( $not_available ) {
 			$not_available = '<div class="rwmb-oembed-not-available">' . wp_kses_post( $not_available ) . '</div>';
 		}
-		$not_available = apply_filters( 'rwmb_oembed_not_available_string', $not_available );
+		$not_available = apply_filters( 'rwmb_oembed_not_available_string', $not_available, $url );
 
 		return $embed ? $embed : $not_available;
 	}
