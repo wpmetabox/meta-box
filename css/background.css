@@ -1,6 +1,7 @@
 .rwmb-background-row {
 	margin-bottom: 5px;
 	display: flex;
+	gap: 5px;
 	flex-wrap: wrap;
 	align-items: flex-start;
 }
