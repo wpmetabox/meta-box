@@ -1,0 +1,15 @@
+name: Reusable workflow to trigger update on auto listings plugin
+
+on:
+  workflow_call:
+    secrets:
+      ACCESS_TOKEN:
+        required: true
+
+jobs:
+  trigger-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger update on Auto Listings
+        run:
+          curl --request POST --url https://api.github.com/repos/elightup/auto-listings/actions/workflows/update-from-extensions.yml/dispatches --header 'Authorization:Bearer ${{ secrets.ACCESS_TOKEN }}' --header 'content-type:application/json' --data '{"ref":"master"}'
