@@ -225,8 +225,8 @@
 		init() {
 			var that = this,
 				editor = wp.data.dispatch( 'core/editor' );
-			
-			if ( ! editor || ! that.$form.length ) {
+
+			if ( !editor || !that.$form.length ) {
 				return false;
 			}
 
@@ -258,6 +258,25 @@
 		}
 	};
 
+	class TaxonomyValidation extends Validation {
+		init() {
+			const submitButton = $( '#submit' );
+
+			this.$form.validate( {
+				...this.settings, 
+				invalidHandler: null,
+				onkeyup: () => {
+					submitButton.prop( 'disabled', ! this.$form.valid() );
+				}
+			} );
+
+			submitButton.prop( 'disabled', ! this.$form.valid() );
+			$( '#tag-name' ).on( 'blur', () => {
+				submitButton.prop('disabled', ! this.$form.valid());
+			});
+		}
+	}
+
 	// Run on document ready.
 	function init() {
 		if ( rwmb.isGutenberg ) {
@@ -268,7 +287,7 @@
 			} );
 
 			new GutenbergValidation( `.mb-block-edit` ).init();
-			
+
 			return;
 		}
 
@@ -278,6 +297,14 @@
 			var form = new Validation( this );
 			form.init();
 		} );
+
+		const $addTag = $( '#addtag' );
+		if ( $addTag.length ) {
+			new TaxonomyValidation( '#addtag' ).init();
+			$( '#submit' ).on('click', function() {
+				new TaxonomyValidation( '#addtag' ).init();
+			});
+		}
 	};
 
 	rwmb.$document
