@@ -263,17 +263,17 @@
 			const submitButton = $( '#submit' );
 
 			this.$form.validate( {
-				...this.settings, 
+				...this.settings,
 				invalidHandler: null,
 				onkeyup: () => {
-					submitButton.prop( 'disabled', ! this.$form.valid() );
+					submitButton.prop( 'disabled', !this.$form.valid() );
 				}
 			} );
 
-			submitButton.prop( 'disabled', ! this.$form.valid() );
+			submitButton.prop( 'disabled', !this.$form.valid() );
 			$( '#tag-name' ).on( 'blur', () => {
-				submitButton.prop('disabled', ! this.$form.valid());
-			});
+				submitButton.prop( 'disabled', !this.$form.valid() );
+			} );
 		}
 	}
 
@@ -301,9 +301,9 @@
 		const $addTag = $( '#addtag' );
 		if ( $addTag.length ) {
 			new TaxonomyValidation( '#addtag' ).init();
-			$( '#submit' ).on('click', function() {
+			$( '#submit' ).on( 'click', function () {
 				new TaxonomyValidation( '#addtag' ).init();
-			});
+			} );
 		}
 	};
 
