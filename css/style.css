@@ -140,6 +140,16 @@ select.rwmb-error {
 	margin-bottom: 4px;
 }
 
+/* Block editor */
+.edit-post-meta-boxes-area.is-side .inside:has(.rwmb-meta-box) {
+	padding-inline: 16px;
+}
+.edit-post-meta-boxes-area.is-side #poststuff .postbox:has(.rwmb-meta-box) h2.hndle {
+	padding-left: 16px;
+	font-weight: 500;
+	color: #1e1e1e;
+}
+
 /* Mobile style */
 @media (max-width: 782px) {
 	.rwmb-field {
