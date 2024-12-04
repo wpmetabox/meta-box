@@ -24,6 +24,6 @@
 .rwmb-input-group input {
 	margin: 0;
 }
-.rwmb-input-group :not(:first-child) {
+.rwmb-input-group.rwmb-input-group.rwmb-input-group :not(:first-child) {
 	margin-left: -1px;
 }
