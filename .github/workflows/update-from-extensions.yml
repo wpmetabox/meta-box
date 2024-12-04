@@ -29,7 +29,7 @@ jobs:
         run: composer global require liborm85/composer-vendor-cleaner
       - name: Remove vendor folder and reinstall extensions
         run: |
-          rm -rf vendor
+          rm -rf vendor modules
           composer update
       - name: Commit changes
         run: |

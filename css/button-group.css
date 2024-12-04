@@ -12,6 +12,7 @@
 	z-index: 1;
 	padding: 5px 10px;
 	background: #fff;
+	cursor: pointer;
 }
 .rwmb-button-input-list .selected {
 	border-color: var(--color);
