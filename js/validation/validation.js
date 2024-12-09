@@ -125,6 +125,11 @@
 		for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
 			if ( this.findByName( elements[ i ].name ).length !== undefined && this.findByName( elements[ i ].name ).length > 1 ) {
 				for ( var cnt = 0; cnt < this.findByName( elements[ i ].name ).length; cnt++ ) {
+					const isTargetExists = this.validationTargetFor( this.clean( this.findByName( elements[ i ].name )[ cnt ] ) );
+					if ( typeof isTargetExists === 'undefined' ) {
+						continue;
+					}
+
 					this.check( this.findByName( elements[ i ].name )[ cnt ] );
 				}
 			} else {
