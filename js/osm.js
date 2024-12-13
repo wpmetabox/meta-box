@@ -248,18 +248,18 @@
 				return $address;
 			}
 
-			let groupWrapper = this.$container.closest( '.rwmb-group-clone' );
-			if ( ! groupWrapper.length ) {
-				groupWrapper = this.$container.closest( '.rwmb-group-wrapper' );
+			let $groupWrapper = this.$container.closest( '.rwmb-group-clone' );
+			if ( ! $groupWrapper.length ) {
+				$groupWrapper = this.$container.closest( '.rwmb-group-wrapper' );
 			}
 
-			if ( ! groupWrapper.length ) {
+			if ( ! $groupWrapper.length ) {
 				return null;
 			}
 
 			selector = `input[name*="${ fieldName }"], select[name*="${ fieldName }"]`;
 
-			$address = groupWrapper.find( selector );
+			$address = $groupWrapper.find( selector );
 			if ( $address.length ) {
 				return $address;
 			}
