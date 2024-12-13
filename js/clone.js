@@ -149,7 +149,7 @@
 		
 		// Clear fields' values.
 		var $inputs = $clone.find( rwmb.inputSelectors );		
-		const count = $container.children( '.rwmb-clone' ).length;
+		let count = $container.children( '.rwmb-clone' ).length;
 		
 		// The first clone should keep the default values.
 		if ( count > 1 ) {
@@ -162,6 +162,7 @@
 		
 		// Insert clone.
 		$clone.insertAfter( $last );
+		count++;
 
 		// Trigger custom event for the clone instance. Required for Group extension to update sub fields.
 		$clone.trigger( 'clone_instance', nextIndex );
