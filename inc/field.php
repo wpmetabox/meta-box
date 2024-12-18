@@ -38,7 +38,7 @@ abstract class RWMB_Field {
 		}
 
 		$end = static::end_html( $field );
-		$end = self::filter( 'end_html', $end, $field, $meta );	
+		$end = self::filter( 'end_html', $end, $field, $meta );
 		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
@@ -75,20 +75,15 @@ abstract class RWMB_Field {
 	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
+		$required = $required ? '<span class="rwmb-required">*</span>' : '';
 
 		$label = $field['name'] ? sprintf(
-			'<label for="%s">%s%s</label>',
+			// Translators: %1$s - field ID, %2$s - field label, %3$s - required asterisk, %4$s - label description.
+			'<div class="rwmb-label" id="%1$s-label"><label for="%1$s">%2$s%3$s</label>%4$s</div>',
 			esc_attr( $id ),
 			$field['name'],
-			$required ? '<span class="rwmb-required">*</span>' : ''
-		) : '';
-
-		$label .= static::label_description( $field );
-
-		$label = $label ? sprintf(
-			'<div class="rwmb-label" id="%s-label">%s</div>',
-			esc_attr( $id ),
-			$label
+			$required,
+			static::label_description( $field )
 		) : '';
 
 		$data_min_clone   = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
