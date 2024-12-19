@@ -41,10 +41,6 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		return '';
 	}
 
-	protected static function label_description( array $field ) : string {
-		return '';
-	}
-
 	/**
 	 * Normalize parameters for field.
 	 *
