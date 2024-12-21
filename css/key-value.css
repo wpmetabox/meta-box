@@ -1,6 +1,7 @@
 .rwmb-key_value-clone {
 	display: flex;
 	align-items: center;
+	gap: 8px;
 }
 .rwmb-key_value-clone input {
 	flex: 1;
