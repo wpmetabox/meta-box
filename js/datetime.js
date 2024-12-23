@@ -5,23 +5,28 @@
 	 * Transform an input into a datetime picker.
 	 */
 	function transform() {
-		var $this = $( this ),
-			options = $this.data( 'options' ),
-			$inline = $this.siblings( '.rwmb-datetime-inline' ),
-			$timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
+		let $this = $( this ),
+			options = $this.data( 'options' );
+
+		let $inline = $this.siblings( '.rwmb-datetime-inline' );
+		if ( !$inline.length ) {
+			$inline = $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' );
+		}
+
+		let $timestamp = $this.siblings( '.rwmb-datetime-timestamp' ),
 			current = $this.val(),
 			$picker = $inline.length ? $inline : $this;
 
 		$this.siblings( '.ui-datepicker-append' ).remove(); // Remove appended text
 
-		options.onSelect = function() {
+		options.onSelect = function () {
 			$this.trigger( 'change' );
-		}
-		options.beforeShow = function( i ) {
+		};
+		options.beforeShow = function ( i ) {
 			if ( $( i ).prop( 'readonly' ) ) {
 				return false;
 			}
-		}
+		};
 
 		if ( $timestamp.length ) {
 			options.onClose = options.onSelect = function () {
@@ -36,7 +41,7 @@
 			} );
 		}
 
-		if ( ! $inline.length ) {
+		if ( !$inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).datetimepicker( options );
 			return;
 		}
@@ -44,7 +49,7 @@
 		options.altField = '#' + $this.attr( 'id' );
 		$this.on( 'keydown', _.debounce( function () {
 			// if val is empty, return to allow empty datepicker input.
-			if ( ! $this.val() ) {
+			if ( !$this.val() ) {
 				return;
 			}
 			$picker
@@ -78,9 +83,9 @@
 	// Set language if available
 	function setTimeI18n() {
 		if ( $.timepicker.regional.hasOwnProperty( i18n.locale ) ) {
-			$.timepicker.setDefaults( $.timepicker.regional[i18n.locale] );
+			$.timepicker.setDefaults( $.timepicker.regional[ i18n.locale ] );
 		} else if ( $.timepicker.regional.hasOwnProperty( i18n.localeShort ) ) {
-			$.timepicker.setDefaults( $.timepicker.regional[i18n.localeShort] );
+			$.timepicker.setDefaults( $.timepicker.regional[ i18n.localeShort ] );
 		}
 	}
 

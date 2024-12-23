@@ -5,9 +5,8 @@
 	 * Transform an input into a time picker.
 	 */
 	function transform() {
-		var $this = $( this ),
+		let $this = $( this ),
 			options = $this.data( 'options' ),
-			$inline = $this.siblings( '.rwmb-datetime-inline' ),
 			current = $this.val();
 		current = formatTime( current );
 
@@ -22,6 +21,10 @@
 			}
 		};
 
+		let $inline = $this.siblings( '.rwmb-datetime-inline' );
+		if ( !$inline.length ) {
+			$inline = $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' );
+		}
 		if ( !$inline.length ) {
 			$this.removeClass( 'hasDatepicker' ).timepicker( options ).timepicker( 'setTime', current );
 			return;
