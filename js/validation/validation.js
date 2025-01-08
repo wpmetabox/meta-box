@@ -33,6 +33,11 @@
 	 * group[1][subgroup][1][field][1][] => field  // Cloneable group with cloneable subgroup with cloneable fields with multiple values: file, checkbox list, etc.
 	 */
 	const getValidationKey = name => {
+		// For fields without [], early return the name.
+		if ( name.at( '-1' ) !== ']' ) {
+			return name;
+		}
+
 		// Detect name parts in format of anything[] or anything[1].
 		let parts = name.match( /^(.+?)(?:\[\d+\]|(?:\[\]))?$/ );
 
