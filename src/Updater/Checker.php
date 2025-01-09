@@ -58,6 +58,8 @@ class Checker {
 			'mb-favorite-posts',
 			'mb-testimonials',
 			'mb-user-avatar',
+
+			'meta-box-lite',
 		];
 		$plugins    = get_plugins();
 		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
