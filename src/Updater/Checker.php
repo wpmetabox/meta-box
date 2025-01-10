@@ -35,7 +35,6 @@ class Checker {
 		$extensions = [
 			'mb-admin-columns',
 			'mb-blocks',
-			'mb-core',
 			'mb-custom-table',
 			'mb-frontend-submission',
 			'mb-revision',
@@ -44,8 +43,6 @@ class Checker {
 			'mb-user-meta',
 			'mb-user-profile',
 			'mb-views',
-			'meta-box-aio',
-			'meta-box-builder',
 			'meta-box-columns',
 			'meta-box-conditional-logic',
 			'meta-box-geolocation',
@@ -58,6 +55,9 @@ class Checker {
 			'mb-favorite-posts',
 			'mb-testimonials',
 			'mb-user-avatar',
+
+			'mb-core',
+			'meta-box-aio',
 		];
 		$plugins    = get_plugins();
 		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
@@ -77,6 +77,7 @@ class Checker {
 
 		$extensions = [
 			'meta-box-lite',
+			'meta-box-builder',
 		];
 		$plugins    = get_plugins();
 		$plugins    = array_map( 'dirname', array_keys( $plugins ) );
