@@ -38,7 +38,7 @@
 
 		if ( parts[ 1 ] && isNaN( parts[ 1 ] ) ) {
 			// Remove []
-			let words = name.match( /(\w+)|(\[\w+\])/g );
+			let words = name.match( /([\w-]+)|(\[\w+\])/g );
 			let resultArray = [ words.join( "" ) ];
 
 			// Remove characters "[" and "]".
@@ -179,6 +179,10 @@
 					if ( !$el.length ) {
 						$el = $( '[name*="[' + k + ']"]' ); // Subfields in groups.
 					}
+					if ( !$el.length ) {
+						$el = $( '[name*="' + k + '"]' ); // contains field ID.
+					}
+
 					if ( $el.length ) {
 						$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
 					}
