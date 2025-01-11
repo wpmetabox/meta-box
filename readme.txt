@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 5.9
 Requires PHP: 7.0
-Tested up to: 6.7
-Stable tag: 5.10.5
+Tested up to: 6.7.1
+Stable tag: 5.10.6
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -36,13 +36,12 @@ That's right – any type. No matter where you need to insert custom data and fe
 - [Settings pages or Customizer sections](https://metabox.io/plugins/mb-settings-page/)
 - [User profile pages](https://metabox.io/plugins/mb-user-profile/)
 - [Post comments](https://metabox.io/plugins/mb-comment-meta/)
-- [And even more data types](https://docs.metabox.io/field-settings/) than Batman has tools on his utility belt.
 
 ### A wide-range of field types and options
 
 Take your standard WordPress custom field and imagine it infinitely expanded. That's how many options Meta Box gives you:
 
-- Meta Box supports [40+ built-in WordPress custom field types](https://docs.metabox.io/field-settings/) for all your needs including text, textarea, WYSIWYG editor, image, file, post, select, checkbox, radio buttons, date/time picker, taxonomy, user, oembed and more to come.
+- Meta Box supports [40+ built-in WordPress custom field types](https://docs.metabox.io/fields/) for all your needs including text, textarea, WYSIWYG editor, image, file, post, select, checkbox, radio buttons, date/time picker, taxonomy, user, oembed and more to come.
 - Not enough? You can also [effortlessly create your own field type](https://docs.metabox.io/custom-field-type/).
 - Meta Box supports cloning fields for most field types including the WYSIWYG editor field. It also supports [repeatable field groups](https://metabox.io/plugins/meta-box-group/).
 
@@ -60,19 +59,11 @@ You can use Meta Box and its custom fields for any custom post type in WordPress
 
 ### Don't love coding? You're in luck!
 
-If you prefer a more visual system to create custom fields in WordPress, you can choose one or all of the extensions below:
-
-- [MB Custom Post Types & Custom Taxonomies](https://wordpress.org/plugins/mb-custom-post-type/)
-- [Meta Box Builder](https://metabox.io/plugins/meta-box-builder/)
-
-These plugins have a ton of features to make quick work of any project:
+If you prefer a more visual system to create custom fields in WordPress, please use [Meta Box Lite](https://metabox.io/lite/), a feature-rich free UI version of Meta Box that provides:
 
 - All the power of Meta Box without touching a single line of code.
 - Designer-friendly, lightweight and work at top-notch speeds.
 - Export your custom fields and settings to PHP. Then, add it to a new site without needing to install this extension for an incredibly lightweight option.
-
-> **Meta Box Lite**
-> We recommend using [Meta Box Lite](https://metabox.io/lite/), a feature-rich free UI version of Meta Box that provides UI and all free features for managing custom fields and dynamic content on WordPress, including post types, taxonomies, custom fields, and relationships.
 
 ### Free Extensions
 
@@ -113,7 +104,7 @@ These plugins have a ton of features to make quick work of any project:
 
 ### Detailed Documentation
 
-We provide regularly updated, and extensive documentation as well as tutorials on how to use MetaBox and custom fields in WordPress to your advantage as well as in the most efficient way possible.
+We provide regularly updated, and extensive [documentation](https://docs.metabox.io) as well as [tutorials](https://docs.metabox.io/tutorials/) on how to use MetaBox and custom fields in WordPress to your advantage as well as in the most efficient way possible.
 
 Here are a few guides to quickly get you started with Meta Box and creating your own WordPress custom fields:
 
@@ -122,8 +113,6 @@ Here are a few guides to quickly get you started with Meta Box and creating your
 - [Custom fields](https://docs.metabox.io/custom-fields/)
 - [Field settings](https://docs.metabox.io/field-settings/)
 - [Displaying fields](https://docs.metabox.io/displaying-fields-with-code/)
-
-Check out more on the [Meta Box Documentation](https://docs.metabox.io/) page.
 
 ### You might also like
 
@@ -161,6 +150,14 @@ If you want to use Meta Box, please follow these steps:
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.10.6 - 2025-01-11 =
+- Fix validation for dash ids
+- Fix datetime fields not showing inline picker inside groups
+- Fix `label_description` not working for `fieldset_text`
+- Fix field label div still show when no field name but with `label_description`
+- Remove `image_select` field's JS, styling with CSS only
+- Add gap for key value inputs
 
 = 5.10.5 - 2024-12-16 =
 - Make validation for add new terms work
