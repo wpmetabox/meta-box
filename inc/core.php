@@ -1,19 +1,12 @@
 <?php
 class RWMB_Core {
 	public function init() {
-		add_action( 'init', [ $this, 'load_textdomain' ] );
-
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', [ $this, 'plugin_links' ], 20 );
 
 		// Uses priority 20 to support custom port types registered using the default priority.
 		add_action( 'init', [ $this, 'register_meta_boxes' ], 20 );
 		add_action( 'edit_page_form', [ $this, 'fix_page_template' ] );
 		$this->add_context_hooks();
-	}
-
-	public function load_textdomain() {
-		unload_textdomain( 'meta-box' );
-		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/languages/' );
 	}
 
 	public function plugin_links( array $links ) : array {
