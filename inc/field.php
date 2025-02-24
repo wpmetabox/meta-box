@@ -86,8 +86,8 @@ abstract class RWMB_Field {
 			static::label_description( $field )
 		) : '';
 
-		$data_max_clone   = is_numeric( $field['max_clone'] ) ? ' data-max-clone=' . $field['max_clone'] : '';
-		$data_min_clone   = is_numeric( $field['min_clone'] ) ? ' data-min-clone=' . $field['min_clone'] : '';
+		$data_max_clone   = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 0 ? ' data-max-clone=' . $field['max_clone'] : '';
+		$data_min_clone   = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 0 ? ' data-min-clone=' . $field['min_clone'] : '';
 		$data_empty_start = $field['clone_empty_start'] ? ' data-clone-empty-start="1"' : ' data-clone-empty-start="0"';
 
 		$input_open = sprintf(
