@@ -119,8 +119,7 @@ class RWMB_Loader {
 		new \MetaBox\Integrations\Oxygen();
 
 		if ( is_admin() ) {
-			$about = new RWMB_About( $update_checker );
-			$about->init();
+			new \MetaBox\Menu\Menu( $update_checker );
 		}
 
 		// Public functions.
