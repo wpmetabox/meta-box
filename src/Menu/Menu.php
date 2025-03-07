@@ -2,9 +2,11 @@
 namespace MetaBox\Menu;
 class Menu {
 	private $is_pro = false;
+	private $assets_url;
 
 	public function __construct( $update_checker ) {
-		$this->is_pro = $update_checker && $update_checker->has_extensions();
+		$this->is_pro   = $update_checker && $update_checker->has_extensions();
+		$this->assets_url = RWMB_URL . 'src/Menu/assets';
 
 		$this->init();
 	}
@@ -65,16 +67,15 @@ class Menu {
 
 	public function render(): void {
 		?>
-		<div class="wrap">
+		<div class="mb-dashboard">
 			<?php include 'dashboard.php'; ?>
 		</div>
 		<?php
 	}
 
 	public function enqueue(): void {
-		$base_url = RWMB_URL . 'src/Menu/Menu/assets';
-		wp_enqueue_style( 'meta-box-dashboard', "$base_url/dashboard.css", [], filemtime( __DIR__ . '/assets/dashboard.css' ) );
-		wp_enqueue_script( 'meta-box-dashboard', "$base_url/dashboard.js", [], filemtime( __DIR__ . '/assets/dashboard.js' ), true );
+		wp_enqueue_style( 'meta-box-dashboard', "$this->assets_url/dashboard.css", [], filemtime( __DIR__ . '/assets/dashboard.css' ) );
+		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/dashboard.js", [], filemtime( __DIR__ . '/assets/dashboard.js' ), true );
 	}
 
 	/**
