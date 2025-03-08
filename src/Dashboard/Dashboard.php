@@ -25,6 +25,9 @@ class Dashboard {
 
 		// Redirect to the Dashboard after activation.
 		add_action( 'activated_plugin', [ $this, 'redirect' ], 10, 2 );
+
+		// Handle install & activate plugin.
+		add_action( 'wp_ajax_mb_dashboard_plugin_action', [ $this, 'handle_plugin_action' ] );
 	}
 
 	public function plugin_links( array $links ): array {
@@ -77,6 +80,9 @@ class Dashboard {
 	public function enqueue(): void {
 		wp_enqueue_style( 'meta-box-dashboard', "$this->assets_url/dashboard.css", [], filemtime( __DIR__ . '/assets/dashboard.css' ) );
 		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/dashboard.js", [], filemtime( __DIR__ . '/assets/dashboard.js' ), true );
+		wp_localize_script( 'meta-box-dashboard', 'MBD', [
+			'nonce' => wp_create_nonce( 'plugin-action' ),
+		] );
 	}
 
 	/**
@@ -120,5 +126,119 @@ class Dashboard {
 			}
 		}
 		return false;
+	}
+
+	private function get_plugin_status( string $slug ): array {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$plugin = "$slug/$slug.php";
+		$plugins = get_plugins();
+
+		if ( empty( $plugins[ $plugin ] ) ) {
+			return [
+				'action'     => 'install',
+				'text'       => __( 'Install', 'meta-box' ),
+				'processing' => __( 'Installing...', 'meta-box' ),
+				'done'       => __( 'Active', 'meta-box' ),
+			];
+		}
+
+		if ( ! is_plugin_active( $plugin ) ) {
+			return [
+				'action'     => 'activate',
+				'text'       => __( 'Activate', 'meta-box' ),
+				'processing' => __( 'Activating...', 'meta-box' ),
+				'done'       => __( 'Active', 'meta-box' ),
+			];
+		}
+
+		return [
+			'action'     => '',
+			'text'       => __( 'Active', 'meta-box' ),
+			'processing' => '',
+			'done'       => '',
+		];
+	}
+
+	public function handle_plugin_action(): void {
+		check_ajax_referer( action: 'plugin-action' );
+
+		$plugin = isset( $_GET['mb_plugin'] ) ? sanitize_text_field( $_GET['mb_plugin'] ) : '';
+		$action = isset( $_GET['mb_action'] ) ? sanitize_text_field( $_GET['mb_action'] ) : '';
+
+		if ( ! $plugin || ! $action || ! in_array( $action, [ 'install', 'activate' ] ) ) {
+			wp_send_json_error();
+		}
+
+		if ( $action === 'install' ) {
+			$this->install_plugin( $plugin );
+			$this->activate_plugin( $plugin );
+		} elseif ( $action === 'activate' ) {
+			$this->activate_plugin( $plugin );
+		}
+
+		wp_send_json_success();
+	}
+
+	private function install_plugin( string $slug ): void {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$plugin = "$slug/$slug.php";
+		$plugins = get_plugins();
+
+		if ( isset( $plugins[ $plugin ] ) ) {
+			return;
+		}
+
+		$api = plugins_api(
+			'plugin_information',
+			[
+				'slug'   => $slug,
+				'fields' => array(
+					'short_description' => false,
+					'requires'          => false,
+					'sections'          => false,
+					'rating'            => false,
+					'ratings'           => false,
+					'downloaded'        => false,
+					'last_updated'      => false,
+					'added'             => false,
+					'tags'              => false,
+					'compatibility'     => false,
+					'homepage'          => false,
+					'donate_link'       => false,
+				),
+			],
+		);
+
+		if ( is_wp_error( $api ) ) {
+			wp_send_json_error( $api->get_error_message() );
+		}
+
+		$skin     = new \Plugin_Installer_Skin( [ 'api' => $api ] );
+        $upgrader = new \Plugin_Upgrader( $skin );
+        $result   = $upgrader->install( $api->download_link );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
+
+		if ( ! $result ) {
+			wp_send_json_error( __( 'Error installing plugin. Please try again.', 'meta-box' ) );
+		}
+	}
+
+	private function activate_plugin( string $slug ): void {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		$result = activate_plugin( "$slug/$slug.php", '', false, true );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
 	}
 }

@@ -23,6 +23,7 @@ div#wpcontent {
 		flex: 1;
 	}
 
+
 	// Header
 
 	&__header {
@@ -57,10 +58,11 @@ div#wpcontent {
 		height: 48px;
 	}
 
+
 	// Sidebar
 
 	&__sidebar {
-		flex-basis: 300px;
+		flex-basis: 400px;
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
@@ -83,7 +85,7 @@ div#wpcontent {
 		&-title {
 			font-weight: 600;
 			font-size: 16px;
-			color: #1d2327;
+			color: #0f172a; // slate-700
 			margin-bottom: 18px;
 			margin-top: -4px;
 		}
@@ -93,36 +95,105 @@ div#wpcontent {
 				margin-bottom: 0;
 			}
 		}
+	}
 
-		&--upgrade {
-			border: none;
-			background: linear-gradient(135deg, rgba(0, 182, 182, 1) 0%, rgba(43, 68, 91, 1) 100%);
-			color: #fff;
+	// Upgrade widget
+	&__upgrade {
+		border: none;
+		background: linear-gradient(135deg, rgba(0, 182, 182, 1) 0%, rgba(43, 68, 91, 1) 100%);
+		color: #fff;
 
-			.mb-dashboard__widget-title {
-				color: inherit;
+		.mb-dashboard__widget-title {
+			color: inherit;
+		}
+
+		ul {
+			margin-bottom: 12px;
+		}
+
+		li {
+			display: flex;
+			gap: 4px;
+			align-items: center;
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+			fill: #fff;
+		}
+	}
+
+	// Recommended plugins widget
+	&__plugins .mb-dashboard__widget-body {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	&__plugin {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+
+		img {
+			width: 32px;
+			height: 32px;
+		}
+
+		&__text {
+			flex: 1;
+		}
+
+		&__title {
+			font-weight: 600;
+			color: #0f172a; // slate-900
+		}
+
+		&__description {
+			font-size: 12px;
+			color: #64748b; // slate-500
+		}
+
+		&__status {
+			font-size: 12px;
+			font-weight: 600;
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			padding: 2px 6px;
+			border-radius: 4px;
+			border: 1px solid transparent;
+
+			&:before {
+				display: inline-block;
+				content: "";
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background: currentColor;
 			}
 
-			ul {
-				margin-bottom: 12px;
+			&[data-action="install"] {
+				color: #64748b; // slate-500
+				border-color: currentColor;
+				cursor: pointer;
 			}
 
-			li {
-				display: flex;
-				gap: 4px;
-				align-items: center;
+			&[data-action="activate"] {
+				color: #f59e0b; // amber-500
+				border-color: currentColor;
+				cursor: pointer;
 			}
 
-			svg {
-				width: 16px;
-				height: 16px;
-				fill: #fff;
+			&[data-action=""] {
+				color: #16a34a; // green-600
 			}
 		}
 	}
 
 
-	// Common elements.
+	// Common elements
 
 	a {
 		text-decoration: none;

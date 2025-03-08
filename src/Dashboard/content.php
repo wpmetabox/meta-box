@@ -46,7 +46,7 @@
 	</div>
 
 	<aside class="mb-dashboard__sidebar">
-		<div class="mb-dashboard__widget mb-dashboard__widget--upgrade">
+		<div class="mb-dashboard__widget mb-dashboard__upgrade">
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna Advanced Features?', 'meta-box' ); ?></div>
 			<div class="mb-dashboard__widget-body">
 				<ul>
@@ -73,11 +73,42 @@
 			</div>
 		</div>
 
-		<div class="mb-dashboard__widget">
+		<div class="mb-dashboard__widget mb-dashboard__plugins">
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Recommended plugins', 'meta-box' ) ?></div>
 			<div class="mb-dashboard__widget-body">
-				<p><a href="https://wpslimseo.com?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box" target="_blank"><strong>Slim SEO</strong></a> - <?php esc_html_e( 'Automated & fast SEO plugin for WordPress', 'meta-box' ) ?></p>
-				<p><a href="https://gretathemes.com?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box" target="_blank"><strong>GretaThemes</strong></a> - <?php esc_html_e( 'Simple, elegant and clean WordPress themes', 'meta-box' ) ?></p>
+				<?php
+				$plugins = [
+					[
+						'title'       => 'Slim SEO',
+						'slug'        => 'slim-seo',
+						'description' => __( 'Fast & Automated WordPress SEO Plugin', 'meta-box' ),
+					],
+					[
+						'title'       => 'Falcon',
+						'slug'        => 'falcon',
+						'description' => __( 'WordPress Optimizations & Tweaks', 'meta-box' ),
+					],
+				];
+				?>
+				<?php foreach ( $plugins as $plugin ) : ?>
+					<div class="mb-dashboard__plugin">
+						<img src="<?php echo esc_attr( "{$this->assets_url}/{$plugin['slug']}.svg" ); ?>" alt="<?= esc_attr( $plugin['title'] ); ?>" />
+						<div class="mb-dashboard__plugin__text">
+							<div class="mb-dashboard__plugin__title"><?= esc_html( $plugin['title'] ); ?></div>
+							<div class="mb-dashboard__plugin__description"><?= esc_html( $plugin['description'] ); ?></div>
+						</div>
+						<?php $status = $this->get_plugin_status( $plugin['slug'] ); ?>
+						<span
+							class="mb-dashboard__plugin__status"
+							data-plugin="<?= esc_attr( $plugin['slug'] ); ?>"
+							data-action="<?= esc_attr( $status['action'] ); ?>"
+							data-processing="<?= esc_attr( $status['processing'] ); ?>"
+							data-done="<?= esc_attr( $status['done'] ); ?>"
+						>
+							<?= esc_html( $status['text'] ); ?>
+						</span>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 
