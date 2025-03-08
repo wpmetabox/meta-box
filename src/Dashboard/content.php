@@ -50,12 +50,12 @@
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna Advanced Features?', 'meta-box' ); ?></div>
 			<div class="mb-dashboard__widget-body">
 				<ul>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Organize fields into groups', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Conditional logic', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Save fields to custom tables', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Create custom Gutenbeg blocks', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Create user profile pages', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Create frontend forms', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Organize fields into groups (repeater)', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Advanced location rules and conditional logic', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Custom tables to boost performance', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Create custom Gutenbeg blocks with low code', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Create login, register and edit profile pages', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 				</ul>
 				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/?utm_source=dashboard&utm_medium=cta&utm_campaign=meta_box"><?php esc_html_e( 'Get Meta Box AIO', 'meta-box' ); ?></a>
