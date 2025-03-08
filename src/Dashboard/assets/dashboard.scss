@@ -1,5 +1,5 @@
 body {
-	background: #f8fafc;
+	background: #f8fafc; // slate-50
 }
 
 div#wpcontent {
@@ -8,6 +8,10 @@ div#wpcontent {
 
 .mb-dashboard {
 	--color-accent: #00b1b3;
+	--color-link: var(--color-accent);
+
+	font-size: 14px;
+	color: #334155; // slate-700
 
 	&__body {
 		display: flex;
@@ -19,17 +23,41 @@ div#wpcontent {
 		flex: 1;
 	}
 
+	// Header
+
 	&__header {
 		display: flex;
+		align-items: center;
+		justify-content: space-between;
 		padding: 12px;
 		background: #fff;
-		border-bottom: 1px solid rgb(226 232 240); // slate-200
+		border-bottom: 1px solid #e2e8f0; // slate-200
+
+		&__search[type="text"] {
+			width: 480px;
+			background: #f1f5f9; // slate-100
+			border: none;
+		}
+
+		&__actions {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+
+			svg {
+				width: 24px;
+				height: 24px;
+				fill: #475569;
+			}
+		}
 	}
 
 	&__logo {
 		display: block;
 		height: 48px;
 	}
+
+	// Sidebar
 
 	&__sidebar {
 		flex-basis: 300px;
@@ -39,7 +67,7 @@ div#wpcontent {
 	}
 
 	&__widget {
-		border: 1px solid rgb(226 232 240); // slate-200
+		border: 1px solid #cbd5e1; // slate-300
 		border-radius: 8px;
 		background: #fff;
 		padding: 24px;
@@ -49,12 +77,11 @@ div#wpcontent {
 		transition: all .2s ease;
 
 		&:hover {
-			border-color: rgb(203 213 225); // slate-300
 			top: -8px;
 		}
 
 		&-title {
-			font-weight: 700;
+			font-weight: 600;
 			font-size: 16px;
 			color: #1d2327;
 			margin-bottom: 18px;
@@ -69,7 +96,7 @@ div#wpcontent {
 
 		&--upgrade {
 			border: none;
-			background: linear-gradient(135deg, rgba(0,182,182,1) 0%, rgba(43,68,91,1) 100%);
+			background: linear-gradient(135deg, rgba(0, 182, 182, 1) 0%, rgba(43, 68, 91, 1) 100%);
 			color: #fff;
 
 			.mb-dashboard__widget-title {
@@ -84,18 +111,36 @@ div#wpcontent {
 				display: flex;
 				gap: 4px;
 				align-items: center;
-				font-size: 14px;
 			}
 
 			svg {
 				width: 16px;
 				height: 16px;
-				color: #fff;
+				fill: #fff;
 			}
 		}
 	}
 
+
+	// Common elements.
+
+	a {
+		text-decoration: none;
+		color: var(--color-link);
+
+		&:hover {
+			color: var(--color-link);
+			text-decoration: underline;
+		}
+	}
+
+	p {
+		font-size: 14px;
+	}
+
 	&__button {
+		--color-link: #fff;
+
 		display: block;
 		text-align: center;
 		background: var(--color-accent);
@@ -106,13 +151,25 @@ div#wpcontent {
 		line-height: 1;
 		letter-spacing: .025em;
 		white-space: nowrap;
-		color: #fff;
 		border-radius: 4px;
 		text-decoration: none;
 
-		&:hover {
+		&.mb-dashboard__button:hover {
 			color: #fff;
 			opacity: .9;
+			text-decoration: none;
+		}
+	}
+
+	&__link--icon {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+
+		svg {
+			width: 1em;
+			height: 1em;
+			fill: currentColor;
 		}
 	}
 }
