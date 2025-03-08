@@ -1,33 +1,34 @@
 <?php
-namespace MetaBox\Menu;
-class Menu {
+namespace MetaBox\Dashboard;
+
+class Dashboard {
 	private $is_pro = false;
 	private $assets_url;
 
 	public function __construct( $update_checker ) {
 		$this->is_pro   = $update_checker && $update_checker->has_extensions();
-		$this->assets_url = RWMB_URL . 'src/Menu/assets';
+		$this->assets_url = RWMB_URL . 'src/Dashboard/assets';
 
 		$this->init();
 	}
 
 	public function init(): void {
-		// Add links to about page in the plugin action links.
+		// Add links to the Dashboard in the plugin action links.
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', [ $this, 'plugin_links' ], 20 );
 
-		// Add a shared top-level admin menu and Dashboard page. Use priority 5 to show Dashboard at the top.
+		// Add a shared top-level admin menu and the Dashboard. Use priority 5 to show the Dashboard at the top.
 		add_action( 'admin_menu', [ $this, 'add_menu' ], 5 );
 		add_action( 'admin_menu', [ $this, 'add_submenu' ], 5 );
 
-		// If no admin menu, then hide the About page.
+		// If no admin menu, then hide the Dashboard.
 		add_action( 'admin_head', [ $this, 'hide_page' ] );
 
-		// Redirect to about page after activation.
+		// Redirect to the Dashboard after activation.
 		add_action( 'activated_plugin', [ $this, 'redirect' ], 10, 2 );
 	}
 
 	public function plugin_links( array $links ): array {
-		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'About', 'meta-box' ) . '</a>';
+		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'Dashboard', 'meta-box' ) . '</a>';
 		if ( ! $this->is_pro ) {
 			$links[] = '<a href="https://elu.to/mpp" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
 		}
@@ -68,7 +69,7 @@ class Menu {
 	public function render(): void {
 		?>
 		<div class="mb-dashboard">
-			<?php include 'dashboard.php'; ?>
+			<?php include 'content.php'; ?>
 		</div>
 		<?php
 	}
