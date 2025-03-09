@@ -60,13 +60,15 @@ div#wpcontent {
 				fill: #475569;
 			}
 		}
-	}
 
-	&__logo {
-		display: block;
-		height: 48px;
+		.mb-dashboard__logo {
+			svg {
+				display: block;
+				width: auto;
+				height: 46px;
+			}
+		}
 	}
-
 
 	// Main area
 	&__main {
@@ -156,6 +158,27 @@ div#wpcontent {
 		padding: 24px;
 	}
 
+	// Comparing tab and table
+	&__compare {
+		&__header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 24px;
+		}
+
+		&__title {
+			font-size: 20px;
+			font-weight: 600;
+			color: #0f172a; // slate-900
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
 	// Sidebar
 
 	&__sidebar {
@@ -218,6 +241,11 @@ div#wpcontent {
 			width: 16px;
 			height: 16px;
 			fill: #fff;
+		}
+
+		a {
+			display: block;
+			text-align: center;
 		}
 	}
 
@@ -332,16 +360,12 @@ div#wpcontent {
 	table {
 		width: 100%;
 		border-collapse: collapse;
-
-		svg {
-			width: 18px;
-			height: 18px;
-		}
 	}
 
 	tr {
 		border-bottom: 1px solid #e2e8f0; // slate-200
 	}
+
 	th,
 	td {
 		padding-block: 12px;
@@ -350,8 +374,6 @@ div#wpcontent {
 	&__button {
 		--mb-color-link: #fff;
 
-		display: block;
-		text-align: center;
 		background: var(--mb-color-accent);
 		padding: 16px;
 		text-transform: uppercase;
@@ -367,6 +389,12 @@ div#wpcontent {
 			color: #fff;
 			opacity: .9;
 			text-decoration: none;
+		}
+
+		&:focus,
+		&:active {
+			color: #fff;
+			box-shadow: none;
 		}
 	}
 }
