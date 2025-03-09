@@ -1,7 +1,7 @@
 <?php defined( 'ABSPATH' ) || die; ?>
 
 <header class="mb-dashboard__header">
-	<a href="https://metabox.io?utm_source=dashboard&utm_medium=logo&utm_campaign=meta_box" target="_blank">
+	<a href="https://metabox.io" target="_blank">
 		<img class="mb-dashboard__logo" src="<?php echo esc_attr( $this->assets_url ) ?>/logo.svg" alt="Meta Box" />
 	</a>
 
@@ -269,7 +269,7 @@
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 				</ul>
-				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/?utm_source=dashboard&utm_medium=cta&utm_campaign=meta_box"><?php esc_html_e( 'Get Meta Box AIO', 'meta-box' ); ?></a>
+				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Get Meta Box AIO', 'meta-box' ); ?></a>
 			</div>
 		</div>
 

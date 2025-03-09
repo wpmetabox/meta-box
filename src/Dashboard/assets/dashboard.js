@@ -1,4 +1,11 @@
 {
+	// Auto add UTM params to links.
+	document.querySelectorAll( '.mb-dashboard a' ).forEach( a => {
+		if ( a.href.startsWith( 'https://metabox.io' ) ) {
+			a.href += '?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box';
+		}
+	} );
+
 	// Click to install or activate plugins.
 	document.addEventListener( 'click', e => {
 		const el = e.target;
