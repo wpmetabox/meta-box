@@ -98,7 +98,9 @@
 					<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
 				</div>
 			</div>
-			<div class="mb-dashboard__tab-pane" data-tab="tutorials"></div>
+			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials">
+
+			</div>
 			<div class="mb-dashboard__tab-pane mb-hidden" data-tab="videos"></div>
 			<div class="mb-dashboard__tab-pane mb-hidden mb-dashboard__compare" data-tab="compare">
 				<div class="mb-dashboard__compare__header">
@@ -118,149 +120,149 @@
 				<table>
 					<thead>
 						<tr>
-							<th align="left">Feature</th>
+							<th align="left"><?php esc_html_e( 'Feature', 'meta-box' ); ?></th>
 							<th align="center">Meta Box Lite</th>
 							<th align="center">Meta Box AIO</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>Pricing</td>
-							<td align="center">Free</td>
-							<td align="center">Paid</td>
+							<td><?php esc_html_e( 'Pricing', 'meta-box' ); ?></td>
+							<td align="center"><?php esc_html_e( 'Free', 'meta-box' ); ?></td>
+							<td align="center"><?php esc_html_e( 'Paid', 'meta-box' ); ?></td>
 						</tr>
 						<tr>
-							<td>The Meta Box framework</td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td>Create custom post types &amp; taxonomies</td>
+							<td><?php esc_html_e( 'The Meta Box framework', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom fields with UI</td>
+							<td><?php esc_html_e( 'Create custom post types &amp; taxonomies', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Migration from ACF, Pods, Toolset</td>
+							<td><?php esc_html_e( 'Create custom fields with UI', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Intergrations with Elementor, Divi, FacetWP, Yoast SEO,...</td>
+							<td><?php esc_html_e( 'Migration from ACF, Pods, Toolset', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Relationships</td>
+							<td><?php esc_html_e( 'Intergrations with Elementor, Divi, FacetWP, Yoast SEO,...', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Get/set meta values with REST API</td>
+							<td><?php esc_html_e( 'Relationships', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Limit text length</td>
+							<td><?php esc_html_e( 'Get/set meta values with REST API', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Add custom fields to comments in WordPress</td>
+							<td><?php esc_html_e( 'Limit text length', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Auto update</td>
+							<td><?php esc_html_e( 'Add custom fields to comments in WordPress', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom fields for taxonomies</td>
+							<td><?php esc_html_e( 'Auto update', 'meta-box' ); ?></td>
+							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Create custom fields for taxonomies', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom fields for users</td>
+							<td><?php esc_html_e( 'Create custom fields for users', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom settings pages</td>
+							<td><?php esc_html_e( 'Create custom settings pages', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create Customizer sections &amp; panels</td>
+							<td><?php esc_html_e( 'Create Customizer sections &amp; panels', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create user profile</td>
+							<td><?php esc_html_e( 'Create user profile', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom content models and save their data to custom tables</td>
+							<td><?php esc_html_e( 'Create custom content models and save their data to custom tables', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Organize custom fields into repeatable groups</td>
+							<td><?php esc_html_e( 'Organize custom fields into repeatable groups', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Advanced location rules for field groups</td>
+							<td><?php esc_html_e( 'Advanced location rules for field groups', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Toogle fields or field groups with conditional logic</td>
+							<td><?php esc_html_e( 'Toogle fields or field groups with conditional logic', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Frontend submission forms and dashboard</td>
+							<td><?php esc_html_e( 'Frontend submission forms and dashboard', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create templates and displaying fields with views</td>
+							<td><?php esc_html_e( 'Create templates and displaying fields with views', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Save post/term meta to custom tables</td>
+							<td><?php esc_html_e( 'Save post/term meta to custom tables', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Create custom Gutenberg blocks</td>
+							<td><?php esc_html_e( 'Create custom Gutenberg blocks', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Display fields in admin columns</td>
+							<td><?php esc_html_e( 'Display fields in admin columns', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>UI features: columns, tooltips, tabs</td>
+							<td><?php esc_html_e( 'UI features: columns, tooltips, tabs', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Premium support</td>
+							<td><?php esc_html_e( 'Premium support', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
 						<tr>
-							<td>Licensing management system, including sub-licensing</td>
+							<td><?php esc_html_e( 'Licensing management system, including sub-licensing', 'meta-box' ); ?></td>
 							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 						</tr>
