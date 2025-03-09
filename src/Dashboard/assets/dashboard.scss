@@ -27,13 +27,6 @@ div#wpcontent {
 
 	// Common elements
 
-	h2 {
-		font-size: 14px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: .025em;
-	}
-
 	a {
 		text-decoration: none;
 		color: var(--mb-color-link);
@@ -165,10 +158,21 @@ div#wpcontent {
 	}
 
 	// Actions
-	&__actions__inner {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 24px;
+	&__actions {
+		&__title {
+			font-size: 14px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: .025em;
+			line-height: 1;
+			margin-bottom: 16px;
+		}
+
+		&__inner {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 24px;
+		}
 	}
 
 	&__action {
@@ -286,6 +290,7 @@ div#wpcontent {
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
+		margin-top: 30px;
 	}
 
 	&__widget {

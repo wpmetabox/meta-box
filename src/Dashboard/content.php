@@ -41,7 +41,7 @@
 	<div class="mb-dashboard__main">
 
 		<section class="mb-dashboard__actions">
-			<h2><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></h2>
+			<div class="mb-dashboard__actions__title"><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></div>
 
 			<div class="mb-dashboard__actions__inner">
 				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
