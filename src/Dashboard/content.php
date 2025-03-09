@@ -99,7 +99,54 @@
 				</div>
 			</div>
 			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials">
+				<div class="mb-dashboard__tutorials__inner">
+					<div class="mb-dashboard__tutorials__block">
+						<div class="mb-dashboard__tutorials__title">
+							<?php esc_html_e( 'Beginners', 'meta-box' ); ?>
+						</div>
 
+						<div class="mb-dashboard__tutorial">
+							<a class="mb-dashboard__tutorial__image lightbox" href="#" data-type="youtube" data-id="-oYrHGOri4w" title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>">
+								<img src="https://cdn.jsdelivr.net/gh/wpmetabox/docsv2/static/tutorials/beginners-1.png">
+							</a>
+							<div class="mb-dashboard__tutorial__text">
+								<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-post-types-taxonomies/" target="_blank"><?php esc_html_e( 'Creating post types and taxonomies', 'meta-box' ); ?></a>
+								<div class="mb-dashboard__tutorial__description">
+									<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+								</div>
+							</div>
+						</div>
+
+						<div class="mb-dashboard__tutorial">
+							<a class="mb-dashboard__tutorial__image lightbox" href="#" data-type="youtube" data-id="-oYrHGOri4w" title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>">
+								<img src="https://cdn.jsdelivr.net/gh/wpmetabox/docsv2/static/tutorials/beginners-1.png">
+							</a>
+							<div class="mb-dashboard__tutorial__text">
+								<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-fields/" target="_blank"><?php esc_html_e( 'Creating and configure custom fields', 'meta-box' ); ?></a>
+								<div class="mb-dashboard__tutorial__description">
+									<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+								</div>
+							</div>
+						</div>
+						<ul>
+							<li><a href="https://docs.metabox.io/tutorials/custom-fields-vs-taxonomies/" target="_blank"><?php esc_html_e( 'Custom fields vs custom taxonomies', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/filter-posts-by-custom-fields-taxonomies/" target="_blank"><?php esc_html_e( 'Filtering posts by custom fields & taxonomies', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/display-listings-on-map/" target="_blank"><?php esc_html_e( 'Displaying all listings on a map', 'meta-box' ); ?></a></li>
+						</ul>
+					</div>
+					<div class="mb-dashboard__tutorials__block">
+						<div class="mb-dashboard__tutorials__title">
+							<?php esc_html_e( 'Case Studies', 'meta-box' ); ?>
+						</div>
+						<ul>
+							<li><a href="https://docs.metabox.io/tutorials/category-thumbnails/" target="_blank"><?php esc_html_e( 'Creating category thumbnails & featured Images', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/create-simple-listing-meta-box-bricks/" target="_blank"><?php esc_html_e( 'Creating a simple listing - with Bricks', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/create-faqs-page-meta-box-elementor/" target="_blank"><?php esc_html_e( 'Creating a FAQs page - with Elementor', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/create-recipes-meta-box-bricks/" target="_blank"><?php esc_html_e( 'Creating a recipe page - with Bricks', 'meta-box' ); ?></a></li>
+							<li><a href="https://docs.metabox.io/tutorials/create-menu-restaurants-meta-box-elementor/" target="_blank"><?php esc_html_e( 'Creating menus for restaurants - with Elementor', 'meta-box' ); ?></a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
 			<div class="mb-dashboard__tab-pane mb-hidden" data-tab="videos"></div>
 			<div class="mb-dashboard__tab-pane mb-hidden mb-dashboard__compare" data-tab="compare">

@@ -79,7 +79,9 @@ class Dashboard {
 
 	public function enqueue(): void {
 		wp_enqueue_style( 'meta-box-dashboard', "$this->assets_url/dashboard.css", [], filemtime( __DIR__ . '/assets/dashboard.css' ) );
-		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/dashboard.js", [], filemtime( __DIR__ . '/assets/dashboard.js' ), true );
+		wp_enqueue_style( 'tobii', "$this->assets_url/tobii.min.css", [], '2.7.3' );
+		wp_enqueue_script( 'tobii', "$this->assets_url/tobii.min.js", [], '2.7.3', true );
+		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/dashboard.js", ['tobii'], filemtime( __DIR__ . '/assets/dashboard.js' ), true );
 		wp_localize_script( 'meta-box-dashboard', 'MBD', [
 			'nonce' => wp_create_nonce( 'plugin-action' ),
 		] );

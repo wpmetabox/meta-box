@@ -35,6 +35,12 @@ div#wpcontent {
 			color: var(--mb-color-link);
 			text-decoration: underline;
 		}
+
+		&:focus,
+		&:active {
+			outline: none;
+			box-shadow: none;
+		}
 	}
 
 	p {
@@ -83,7 +89,6 @@ div#wpcontent {
 		&:focus,
 		&:active {
 			color: #fff;
-			box-shadow: none;
 		}
 	}
 
@@ -254,6 +259,72 @@ div#wpcontent {
 
 	&__tab-pane {
 		padding: 24px;
+	}
+
+	// Tutorials
+	&__tutorials {
+		a {
+			color: inherit;
+		}
+
+		&__inner {
+			display: grid;
+			gap: 24px;
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		&__title {
+			font-size: 14px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: .025em;
+			line-height: 1;
+			margin-bottom: 16px;
+		}
+	}
+
+	&__tutorial {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+
+		&__image {
+			position: relative;
+
+			.tobii-zoom__icon {
+				display: none;
+			}
+
+			&:after {
+				position: absolute;
+				top: calc(50% - 9px);
+				left: calc(50% - 16px);
+				content: "\f19b";
+				font-family: "dashicons";
+				font-size: 32px;
+				color: #ff0000;
+			}
+		}
+
+		img {
+			width: 90px;
+			height: auto;
+			display: block;
+			border-radius: 8px;
+		}
+
+		.mb-dashboard__tutorial__title {
+			font-size: 16px;
+			font-weight: 600;
+			color: #0f172a; // slate-900
+			margin-bottom: 8px;
+			display: block;
+		}
+
+		&__description {
+			font-size: 12px;
+			color: #64748b;
+		}
 	}
 
 	// Comparing tab and table
