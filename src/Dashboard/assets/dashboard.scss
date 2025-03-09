@@ -35,18 +35,6 @@ div#wpcontent {
 			color: var(--mb-color-link);
 			text-decoration: underline;
 		}
-
-		&:has(svg) {
-			display: inline-flex;
-			align-items: center;
-			gap: 4px;
-
-			svg {
-				width: 1em;
-				height: 1em;
-				fill: currentColor;
-			}
-		}
 	}
 
 	p {
@@ -101,6 +89,18 @@ div#wpcontent {
 
 	.mb-hidden {
 		display: none;
+	}
+
+	&__external {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+
+		svg {
+			width: 1em;
+			height: 1em;
+			fill: currentColor;
+		}
 	}
 
 	&__body {
@@ -176,7 +176,9 @@ div#wpcontent {
 	}
 
 	&__action {
-		display: block;
+		display: flex;
+		gap: 16px;
+		align-items: center;
 		border-radius: 8px;
 		border: var(--mb-border);
 		padding: 24px;
@@ -185,6 +187,12 @@ div#wpcontent {
 		position: relative;
 		top: 0;
 		transition: all .2s ease;
+
+		svg {
+			width: 32px;
+			height: 32px;
+			fill: #cbd5e1; // slate-200
+		}
 
 		&__title {
 			display: block;
@@ -264,13 +272,13 @@ div#wpcontent {
 			color: #0f172a; // slate-900
 		}
 
-		svg {
+		tbody svg {
 			width: 20px;
 			height: 20px;
 		}
 
 		&__footer {
-			margin-block: 48px;
+			margin-top: 48px;
 			background: #f1f5f9; // slate-50
 			padding: 48px;
 			text-align: center;

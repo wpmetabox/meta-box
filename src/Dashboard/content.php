@@ -45,20 +45,42 @@
 
 			<div class="mb-dashboard__actions__inner">
 				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
-					<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a post type', 'meta-box' ); ?></span>
-					<span class="mb-dashboard__action__description"><?php esc_html_e( 'For a new type of content on your website', 'meta-box' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+						<path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
+						<path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
+					</svg>
+					<span class="mb-dashboard__action__text">
+						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a post type', 'meta-box' ); ?></span>
+						<span class="mb-dashboard__action__description"><?php esc_html_e( 'For a new type of content on your website', 'meta-box' ); ?></span>
+					</span>
 				</a>
 				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-taxonomy' ) ); ?>">
-					<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a taxonomy', 'meta-box' ); ?></span>
-					<span class="mb-dashboard__action__description"><?php esc_html_e( 'To group or categorize your posts', 'meta-box' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+						<path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5z"/>
+					</svg>
+					<span class="mb-dashboard__action__text">
+						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a taxonomy', 'meta-box' ); ?></span>
+						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To group or categorize your posts', 'meta-box' ); ?></span>
+					</span>
 				</a>
 				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=meta-box' ) ); ?>">
-					<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a field group', 'meta-box' ); ?></span>
-					<span class="mb-dashboard__action__description"><?php esc_html_e( 'To add custom fields to your posts', 'meta-box' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+						<path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5z"/>
+						<path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0M0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
+					</svg>
+					<span class="mb-dashboard__action__text">
+						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a field group', 'meta-box' ); ?></span>
+						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To add custom fields to your posts', 'meta-box' ); ?></span>
+					</span>
 				</a>
 				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-relationship' ) ); ?>">
-					<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a relationship', 'meta-box' ); ?></span>
-					<span class="mb-dashboard__action__description"><?php esc_html_e( 'To establish connections between posts', 'meta-box' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+					</svg>
+					<span class="mb-dashboard__action__text">
+						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a relationship', 'meta-box' ); ?></span>
+						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To establish connections between posts', 'meta-box' ); ?></span>
+					</span>
 				</a>
 			</div>
 		</section>
@@ -247,13 +269,13 @@
 						<tr>
 							<td><?php esc_html_e( 'Learn more', 'meta-box' ); ?></td>
 							<td align="center">
-								<a href="https://metabox.io/lite/" target="_blank">
+								<a class="mb-dashboard__external" href="https://metabox.io/lite/" target="_blank">
 									Meta Box Lite
 									<svg><use xlink:href="#external-link"></use></svg>
 								</a>
 							</td>
 							<td align="center">
-								<a href="https://metabox.io/aio/" target="_blank">
+								<a class="mb-dashboard__external" href="https://metabox.io/aio/" target="_blank">
 									Meta Box AIO
 									<svg><use xlink:href="#external-link"></use></svg>
 								</a>
@@ -298,7 +320,7 @@
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Leave us a review', 'meta-box' ) ?></div>
 			<div class="mb-dashboard__widget-body">
 				<p><?php esc_html_e( 'Are you are enjoying Meta Box? We would love to hear your feedback.', 'meta-box' ) ?></p>
-				<a href="https://wordpress.org/support/plugin/meta-box/reviews/?filter=5" target="_blank">
+				<a class="mb-dashboard__external" href="https://wordpress.org/support/plugin/meta-box/reviews/?filter=5" target="_blank">
 					<?php esc_html_e( 'Submit a review', 'meta-box' ) ?>
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
@@ -342,7 +364,7 @@
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Join the community', 'meta-box' ) ?></div>
 			<div class="mb-dashboard__widget-body">
 				<p><?php esc_html_e( 'Share opinions, ask questions and help each other on our Meta Box community!', 'meta-box' ); ?></p>
-				<a href="https://www.facebook.com/groups/metaboxusers" target="_blank">
+				<a class="mb-dashboard__external" href="https://www.facebook.com/groups/metaboxusers" target="_blank">
 					<?php esc_html_e( 'Join our Facebook Group', 'meta-box' ); ?>
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
