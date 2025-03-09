@@ -1,4 +1,5 @@
 {
+	// Click to install or activate plugins.
 	document.addEventListener( 'click', e => {
 		const el = e.target;
 
@@ -22,4 +23,6 @@
 				el.textContent = el.dataset.done;
 			} );
 	} );
+
+	// Switch tabs
 }

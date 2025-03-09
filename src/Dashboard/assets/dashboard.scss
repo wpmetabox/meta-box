@@ -1,4 +1,6 @@
-body {
+// Overwrite general WordPress styles
+
+body.wp-admin {
 	background: #f8fafc; // slate-50
 }
 
@@ -6,21 +8,28 @@ div#wpcontent {
 	padding-left: 0;
 }
 
+// Do not show any notices here.
+.notice {
+	display: none;
+}
+
+
+// Our dashboard
+
 .mb-dashboard {
-	--color-accent: #00b1b3;
-	--color-link: var(--color-accent);
+	--mb-color-accent: #00b1b3;
+	--mb-color-link: var(--mb-color-accent);
+	--mb-border: 1px solid #cbd5e1; // slate-300
 
 	font-size: 14px;
 	color: #334155; // slate-700
 
 	&__body {
 		display: flex;
-		gap: 24px;
+		gap: 48px;
 		padding: 48px;
-	}
-
-	&__main {
-		flex: 1;
+		max-width: 1280px;
+		margin-inline: auto;
 	}
 
 
@@ -59,33 +68,121 @@ div#wpcontent {
 	}
 
 
+	// Main area
+	&__main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 48px;
+	}
+
+	// Actions
+	&__actions__inner {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 24px;
+	}
+
+	&__action {
+		display: block;
+		border-radius: 8px;
+		border: var(--mb-border);
+		padding: 24px;
+		background: #fff;
+		box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); // shadow-lg
+		position: relative;
+		top: 0;
+		transition: all .2s ease;
+
+		&__title {
+			display: block;
+			margin-bottom: 4px;
+			color: #0f172a; // slate-900
+			font-weight: 600;
+			font-size: 16px;
+		}
+
+		&__description {
+			color: #64748b; // slate-500;
+		}
+	}
+
+	&__action.mb-dashboard__action:hover {
+		text-decoration: none;
+		top: -8px;
+	}
+
+	// Tabs
+	&__info {
+		background: #fff;
+		border-radius: 8px;
+		border: var(--mb-border);
+	}
+
+	&__tabs {
+		display: flex;
+		gap: 24px;
+		border-bottom: var(--mb-border);
+		font-size: 14px;
+		padding-inline: 24px;
+	}
+
+	&__tab {
+		display: block;
+		padding-block: 16px;
+		border-bottom: 3px solid transparent;
+		font-weight: 600;
+		color: #0f172a; // slate-900
+		cursor: pointer;
+
+		&--active {
+			border-color: var(--mb-color-accent);
+		}
+
+		&__badge {
+			background: var(--mb-color-accent);
+			color: #fff;
+			font-size: 10px;
+			display: inline-block;
+			line-height: 1;
+			padding: 4px;
+			border-radius: 2px;
+			position: relative;
+			top: -12px;
+		}
+	}
+
+	&__tab-pane {
+		padding: 24px;
+	}
+
 	// Sidebar
 
 	&__sidebar {
-		flex-basis: 400px;
+		flex-basis: 360px;
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
 	}
 
 	&__widget {
-		border: 1px solid #cbd5e1; // slate-300
+		border: var(--mb-border);
 		border-radius: 8px;
 		background: #fff;
 		padding: 24px;
-		box-shadow: #000 0 0 0 0, #000 0 0 0 0, rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px; // shadow-lg
-		position: relative;
-		top: 0;
-		transition: all .2s ease;
+		// box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); // shadow-lg
+		// position: relative;
+		// top: 0;
+		// transition: all .2s ease;
 
-		&:hover {
-			top: -8px;
-		}
+		// &:hover {
+		// 	top: -8px;
+		// }
 
 		&-title {
 			font-weight: 600;
 			font-size: 16px;
-			color: #0f172a; // slate-700
+			color: #0f172a; // slate-900
 			margin-bottom: 18px;
 			margin-top: -4px;
 		}
@@ -133,8 +230,9 @@ div#wpcontent {
 
 	&__plugin {
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		gap: 8px;
+		position: relative;
 
 		img {
 			width: 32px;
@@ -161,6 +259,9 @@ div#wpcontent {
 			display: inline-flex;
 			align-items: center;
 			gap: 4px;
+			position: absolute;
+			right: 0;
+			top: -4px;
 			padding: 2px 6px;
 			border-radius: 4px;
 			border: 1px solid transparent;
@@ -195,13 +296,32 @@ div#wpcontent {
 
 	// Common elements
 
+	h2 {
+		font-size: 14px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: .025em;
+	}
+
 	a {
 		text-decoration: none;
-		color: var(--color-link);
+		color: var(--mb-color-link);
 
 		&:hover {
-			color: var(--color-link);
+			color: var(--mb-color-link);
 			text-decoration: underline;
+		}
+
+		&:has(svg) {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+
+			svg {
+				width: 1em;
+				height: 1em;
+				fill: currentColor;
+			}
 		}
 	}
 
@@ -209,12 +329,30 @@ div#wpcontent {
 		font-size: 14px;
 	}
 
+	table {
+		width: 100%;
+		border-collapse: collapse;
+
+		svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	tr {
+		border-bottom: 1px solid #e2e8f0; // slate-200
+	}
+	th,
+	td {
+		padding-block: 12px;
+	}
+
 	&__button {
-		--color-link: #fff;
+		--mb-color-link: #fff;
 
 		display: block;
 		text-align: center;
-		background: var(--color-accent);
+		background: var(--mb-color-accent);
 		padding: 16px;
 		text-transform: uppercase;
 		font-weight: 700;
@@ -229,18 +367,6 @@ div#wpcontent {
 			color: #fff;
 			opacity: .9;
 			text-decoration: none;
-		}
-	}
-
-	&__link--icon {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-
-		svg {
-			width: 1em;
-			height: 1em;
-			fill: currentColor;
 		}
 	}
 }
