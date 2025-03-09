@@ -72,22 +72,22 @@
 					<?php esc_html_e( 'Videos', 'meta-box' ); ?>
 				</div>
 				<div class="mb-dashboard__tab" data-tab="compare">
-					<?php esc_html_e( 'Lite vs AIO', 'meta-box' ); ?>
-					<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Upgrade', 'meta-box' ); ?></span>
+					<?php esc_html_e( 'Upgrade', 'meta-box' ); ?>
+					<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
 				</div>
 			</div>
 			<div class="mb-dashboard__tab-pane" data-tab="tutorials"></div>
-			<div class="mb-dashboard__tab-pane mb-dashboard__tab-pane--hidden" data-tab="videos"></div>
-			<div class="mb-dashboard__tab-pane mb-dashboard__tab-pane--hidden mb-dashboard__compare" data-tab="compare">
+			<div class="mb-dashboard__tab-pane mb-hidden" data-tab="videos"></div>
+			<div class="mb-dashboard__tab-pane mb-hidden mb-dashboard__compare" data-tab="compare">
 				<div class="mb-dashboard__compare__header">
 					<div>
 						<div class="mb-dashboard__compare__title">
 							<?php
-							// Translators: %1$s - Meta Box Lite, %2$s - Meta Box AIO.
-							echo esc_html( sprintf( __( '%1$s vs %2$s', 'meta-box' ), 'Meta Box Lite', 'Meta Box AIO' ) );
+							// Translators: %s - Meta Box AIO.
+							echo esc_html( sprintf( __( 'Get access to %s', 'meta-box' ), 'Meta Box AIO' ) );
 							?>
 						</div>
-						<p><?php esc_html_e( 'Understand what\'s the difference between the two plugins and select what best suit your needs.', 'meta-box' ); ?></p>
+						<p><?php esc_html_e( 'An all-in-one plugin that provides all free & pro Meta Box extensions for building powerful and dynamic WordPress websites!', 'meta-box' ); ?></p>
 					</div>
 
 					<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
@@ -261,6 +261,18 @@
 						</tr>
 					</tfoot>
 				</table>
+
+				<div class="mb-dashboard__compare__footer">
+					<div class="mb-dashboard__compare__title">
+						<?php
+						// Translators: %s - Meta Box AIO.
+						echo esc_html( sprintf( __( 'Do more with %s', 'meta-box' ), 'Meta Box AIO' ) );
+						?>
+					</div>
+					<p><?php esc_html_e( 'Get access to the all-in-one version of Meta Box with full of top-notch features for building robust and dynamic websites.', 'meta-box' ); ?></p>
+
+					<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
+				</div>
 			</div>
 		</section>
 	</div>
@@ -278,7 +290,7 @@
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 				</ul>
-				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Get Meta Box AIO', 'meta-box' ); ?></a>
+				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
 			</div>
 		</div>
 

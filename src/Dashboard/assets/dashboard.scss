@@ -24,6 +24,92 @@ div#wpcontent {
 	font-size: 14px;
 	color: #334155; // slate-700
 
+
+	// Common elements
+
+	h2 {
+		font-size: 14px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: .025em;
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--mb-color-link);
+
+		&:hover {
+			color: var(--mb-color-link);
+			text-decoration: underline;
+		}
+
+		&:has(svg) {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+
+			svg {
+				width: 1em;
+				height: 1em;
+				fill: currentColor;
+			}
+		}
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	tr {
+		border-bottom: 1px solid #e2e8f0; // slate-200
+
+		&:hover {
+			background: #f8fafc; // slate-50
+		}
+	}
+
+	th,
+	td {
+		padding-block: 12px;
+	}
+
+	&__button {
+		--mb-color-link: #fff;
+
+		display: inline-block;
+		background: var(--mb-color-accent);
+		padding: 16px;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 16px;
+		line-height: 1;
+		letter-spacing: .025em;
+		white-space: nowrap;
+		border-radius: 4px;
+		text-decoration: none;
+
+		&.mb-dashboard__button:hover {
+			color: #fff;
+			opacity: .9;
+			text-decoration: none;
+		}
+
+		&:focus,
+		&:active {
+			color: #fff;
+			box-shadow: none;
+		}
+	}
+
+	.mb-hidden {
+		display: none;
+	}
+
 	&__body {
 		display: flex;
 		gap: 48px;
@@ -165,6 +251,7 @@ div#wpcontent {
 			align-items: flex-start;
 			justify-content: space-between;
 			gap: 24px;
+			margin-block: 24px;
 		}
 
 		&__title {
@@ -176,6 +263,19 @@ div#wpcontent {
 		svg {
 			width: 20px;
 			height: 20px;
+		}
+
+		&__footer {
+			margin-block: 48px;
+			background: #f1f5f9; // slate-50
+			padding: 48px;
+			text-align: center;
+			border-radius: 8px;
+
+			p {
+				font-size: 16px;
+				margin-bottom: 24px;
+			}
 		}
 	}
 
@@ -318,83 +418,6 @@ div#wpcontent {
 			&[data-action=""] {
 				color: #16a34a; // green-600
 			}
-		}
-	}
-
-
-	// Common elements
-
-	h2 {
-		font-size: 14px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: .025em;
-	}
-
-	a {
-		text-decoration: none;
-		color: var(--mb-color-link);
-
-		&:hover {
-			color: var(--mb-color-link);
-			text-decoration: underline;
-		}
-
-		&:has(svg) {
-			display: inline-flex;
-			align-items: center;
-			gap: 4px;
-
-			svg {
-				width: 1em;
-				height: 1em;
-				fill: currentColor;
-			}
-		}
-	}
-
-	p {
-		font-size: 14px;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-	}
-
-	tr {
-		border-bottom: 1px solid #e2e8f0; // slate-200
-	}
-
-	th,
-	td {
-		padding-block: 12px;
-	}
-
-	&__button {
-		--mb-color-link: #fff;
-
-		background: var(--mb-color-accent);
-		padding: 16px;
-		text-transform: uppercase;
-		font-weight: 700;
-		font-size: 16px;
-		line-height: 1;
-		letter-spacing: .025em;
-		white-space: nowrap;
-		border-radius: 4px;
-		text-decoration: none;
-
-		&.mb-dashboard__button:hover {
-			color: #fff;
-			opacity: .9;
-			text-decoration: none;
-		}
-
-		&:focus,
-		&:active {
-			color: #fff;
-			box-shadow: none;
 		}
 	}
 }
