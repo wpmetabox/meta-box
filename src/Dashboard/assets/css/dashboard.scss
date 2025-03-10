@@ -273,6 +273,12 @@ div#wpcontent {
 			grid-template-columns: repeat(2, 1fr);
 		}
 
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+
 		&__title {
 			font-size: 14px;
 			font-weight: 600;

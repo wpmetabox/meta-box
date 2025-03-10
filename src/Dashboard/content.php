@@ -105,34 +105,70 @@
 							<?php esc_html_e( 'Beginners', 'meta-box' ); ?>
 						</div>
 
-						<div class="mb-dashboard__tutorial">
-							<a class="mb-dashboard__tutorial__image lightbox" href="#" data-type="youtube" data-id="-oYrHGOri4w" title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>">
-								<img src="https://cdn.jsdelivr.net/gh/wpmetabox/docsv2/static/tutorials/beginners-1.png">
-							</a>
-							<div class="mb-dashboard__tutorial__text">
-								<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-post-types-taxonomies/" target="_blank"><?php esc_html_e( 'Creating post types and taxonomies', 'meta-box' ); ?></a>
-								<div class="mb-dashboard__tutorial__description">
-									<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+						<div class="mb-dashbboard__tutorials__list">
+							<div class="mb-dashboard__tutorial">
+								<a
+									class="mb-dashboard__tutorial__image lightbox"
+									data-featherlight="iframe"
+									data-featherlight-iframe-frameborder="0"
+									data-featherlight-iframe-allow="autoplay; encrypted-media"
+									data-featherlight-iframe-allowfullscreen="true"
+									data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
+									href="http://www.youtube.com/embed/-oYrHGOri4w"
+									title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+								>
+									<img src="<?= esc_attr( "{$this->assets_url}/img/create-post-types.png" ); ?>" alt="<?php esc_attr_e( 'Creating post types and taxonomies', 'meta-box' ); ?>">
+								</a>
+								<div class="mb-dashboard__tutorial__text">
+									<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-post-types-taxonomies/" target="_blank"><?php esc_html_e( 'Creating post types and taxonomies', 'meta-box' ); ?></a>
+									<div class="mb-dashboard__tutorial__description">
+										<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="mb-dashboard__tutorial">
-							<a class="mb-dashboard__tutorial__image lightbox" href="#" data-type="youtube" data-id="-oYrHGOri4w" title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>">
-								<img src="https://cdn.jsdelivr.net/gh/wpmetabox/docsv2/static/tutorials/beginners-1.png">
-							</a>
-							<div class="mb-dashboard__tutorial__text">
-								<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-fields/" target="_blank"><?php esc_html_e( 'Creating and configure custom fields', 'meta-box' ); ?></a>
-								<div class="mb-dashboard__tutorial__description">
-									<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+							<div class="mb-dashboard__tutorial">
+								<a
+									class="mb-dashboard__tutorial__image lightbox"
+									data-featherlight="iframe"
+									data-featherlight-iframe-frameborder="0"
+									data-featherlight-iframe-allow="autoplay; encrypted-media"
+									data-featherlight-iframe-allowfullscreen="true"
+									data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
+									href="http://www.youtube.com/embed/_DaFUt92kYY"
+									title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+								>
+									<img src="<?= esc_attr( "{$this->assets_url}/img/create-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Creating and configure custom fields', 'meta-box' ); ?>">
+								</a>
+								<div class="mb-dashboard__tutorial__text">
+									<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-fields/" target="_blank"><?php esc_html_e( 'Creating and configure custom fields', 'meta-box' ); ?></a>
+									<div class="mb-dashboard__tutorial__description">
+										<?php esc_html_e( 'Step-by-step guide to create custom post types and custom taxonomies.', 'meta-box' ); ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="mb-dashboard__tutorial">
+								<a
+									class="mb-dashboard__tutorial__image lightbox"
+									data-featherlight="iframe"
+									data-featherlight-iframe-frameborder="0"
+									data-featherlight-iframe-allow="autoplay; encrypted-media"
+									data-featherlight-iframe-allowfullscreen="true"
+									data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
+									href="http://www.youtube.com/embed/Byce7gfpZJQ"
+									title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+								>
+									<img src="<?= esc_attr( "{$this->assets_url}/img/filter-posts.png" ); ?>" alt="<?php esc_attr_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?>">
+								</a>
+								<div class="mb-dashboard__tutorial__text">
+									<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/filter-posts-by-custom-fields-taxonomies/" target="_blank"><?php esc_html_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?></a>
+									<div class="mb-dashboard__tutorial__description">
+										<?php esc_html_e( 'How to query, filter and show posts by taxonomies and by custom fields.', 'meta-box' ); ?>
+									</div>
 								</div>
 							</div>
 						</div>
-						<ul>
-							<li><a href="https://docs.metabox.io/tutorials/custom-fields-vs-taxonomies/" target="_blank"><?php esc_html_e( 'Custom fields vs custom taxonomies', 'meta-box' ); ?></a></li>
-							<li><a href="https://docs.metabox.io/tutorials/filter-posts-by-custom-fields-taxonomies/" target="_blank"><?php esc_html_e( 'Filtering posts by custom fields & taxonomies', 'meta-box' ); ?></a></li>
-							<li><a href="https://docs.metabox.io/tutorials/display-listings-on-map/" target="_blank"><?php esc_html_e( 'Displaying all listings on a map', 'meta-box' ); ?></a></li>
-						</ul>
 					</div>
 					<div class="mb-dashboard__tutorials__block">
 						<div class="mb-dashboard__tutorials__title">
@@ -384,7 +420,7 @@
 				?>
 				<?php foreach ( $plugins as $plugin ) : ?>
 					<div class="mb-dashboard__plugin">
-						<img src="<?php echo esc_attr( "{$this->assets_url}/{$plugin['slug']}.svg" ); ?>" alt="<?= esc_attr( $plugin['title'] ); ?>" />
+						<img src="<?= esc_attr( "{$this->assets_url}/img/{$plugin['slug']}.svg" ); ?>" alt="<?= esc_attr( $plugin['title'] ); ?>" />
 						<div class="mb-dashboard__plugin__text">
 							<div class="mb-dashboard__plugin__title"><?= esc_html( $plugin['title'] ); ?></div>
 							<div class="mb-dashboard__plugin__description"><?= esc_html( $plugin['description'] ); ?></div>

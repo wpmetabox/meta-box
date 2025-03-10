@@ -1,7 +1,4 @@
 {
-	// Enable lightbox for tutorials.
-	const tobii = new Tobii();
-
 	// Auto add UTM params to links.
 	document.querySelectorAll( '.mb-dashboard a' ).forEach( a => {
 		if ( a.href.startsWith( 'https://metabox.io' ) ) {
