@@ -56,7 +56,7 @@ class Dashboard {
 		$parent_menu = $this->has_menu() ? 'meta-box' : $this->get_parent_menu();
 		$about       = add_submenu_page(
 			$parent_menu,
-			__( 'Welcome to Meta Box', 'meta-box' ),
+			__( 'Dashboard', 'meta-box' ),
 			__( 'Dashboard', 'meta-box' ),
 			'activate_plugins',
 			'meta-box',
