@@ -350,29 +350,18 @@
 
 	<aside class="mb-dashboard__sidebar">
 		<div class="mb-dashboard__widget mb-dashboard__upgrade">
-			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna Advanced Features?', 'meta-box' ); ?></div>
+			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
 			<div class="mb-dashboard__widget-body">
 				<ul>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Organize fields into groups (repeater)', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Advanced location rules and conditional logic', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'More location rules & conditional logic', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Custom tables to boost performance', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create custom Gutenbeg blocks with low code', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create login, register and edit profile pages', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create custom blocks with low code', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create login, register & edit profile pages', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 				</ul>
 				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
-			</div>
-		</div>
-
-		<div class="mb-dashboard__widget">
-			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Leave us a review', 'meta-box' ) ?></div>
-			<div class="mb-dashboard__widget-body">
-				<p><?php esc_html_e( 'Are you are enjoying Meta Box? We would love to hear your feedback.', 'meta-box' ) ?></p>
-				<a class="mb-dashboard__external" href="https://wordpress.org/support/plugin/meta-box/reviews/?filter=5" target="_blank">
-					<?php esc_html_e( 'Submit a review', 'meta-box' ) ?>
-					<svg><use xlink:href="#external-link"></use></svg>
-				</a>
 			</div>
 		</div>
 
@@ -415,6 +404,17 @@
 				<p><?php esc_html_e( 'Share opinions, ask questions and help each other on our Meta Box community!', 'meta-box' ); ?></p>
 				<a class="mb-dashboard__external" href="https://www.facebook.com/groups/metaboxusers" target="_blank">
 					<?php esc_html_e( 'Join our Facebook Group', 'meta-box' ); ?>
+					<svg><use xlink:href="#external-link"></use></svg>
+				</a>
+			</div>
+		</div>
+
+		<div class="mb-dashboard__widget">
+			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Leave us a review', 'meta-box' ) ?></div>
+			<div class="mb-dashboard__widget-body">
+				<p><?php esc_html_e( 'Are you are enjoying Meta Box? We would love to hear your feedback.', 'meta-box' ) ?></p>
+				<a class="mb-dashboard__external" href="https://wordpress.org/support/plugin/meta-box/reviews/?filter=5" target="_blank">
+					<?php esc_html_e( 'Submit a review', 'meta-box' ) ?>
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
 			</div>
