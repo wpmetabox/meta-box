@@ -127,10 +127,19 @@ div#wpcontent {
 		background: #fff;
 		border-bottom: 1px solid #e2e8f0; // slate-200
 
-		&__search[type="text"] {
+		&__search {
 			width: 480px;
 			background: #f1f5f9; // slate-100
 			border: none;
+			padding: 8px 16px;
+			border-radius: 4px;
+			cursor: pointer;
+			color: #64748b;
+			transition: all .2s ease-in-out;
+
+			&:hover {
+				background: #e2e8f0; // slate-200
+			}
 		}
 
 		&__actions {
@@ -455,7 +464,7 @@ div#wpcontent {
 			flex: 1;
 		}
 
-		&__title {
+		.mb-dashboard__plugin__title {
 			font-weight: 600;
 			color: #0f172a; // slate-900
 		}
