@@ -269,14 +269,8 @@ div#wpcontent {
 
 		&__inner {
 			display: grid;
-			gap: 24px;
+			gap: 16px;
 			grid-template-columns: repeat(2, 1fr);
-		}
-
-		&__list {
-			display: flex;
-			flex-direction: column;
-			gap: 24px;
 		}
 
 		&__title {
@@ -285,13 +279,12 @@ div#wpcontent {
 			text-transform: uppercase;
 			letter-spacing: .025em;
 			line-height: 1;
-			margin-bottom: 16px;
 		}
 	}
 
 	&__tutorial {
 		display: flex;
-		align-items: center;
+		align-items: flext-start;
 		gap: 16px;
 
 		&__image {

@@ -81,7 +81,7 @@ class Dashboard {
 		wp_enqueue_style( 'meta-box-dashboard', "$this->assets_url/css/dashboard.css", [], filemtime( __DIR__ . '/assets/css/dashboard.css' ) );
 		wp_enqueue_style( 'featherlight', "$this->assets_url/css/featherlight.min.css", [], '1.7.14' );
 		wp_enqueue_script( 'featherlight', "$this->assets_url/js/featherlight.min.js", ['jquery'], '1.7.14', true );
-		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/dashboard.js", ['featherlight'], filemtime( __DIR__ . '/assets/js/dashboard.js' ), true );
+		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/js/dashboard.js", ['featherlight'], filemtime( __DIR__ . '/assets/js/dashboard.js' ), true );
 		wp_localize_script( 'meta-box-dashboard', 'MBD', [
 			'nonce' => wp_create_nonce( 'plugin-action' ),
 		] );
