@@ -273,6 +273,11 @@
 						</div>
 					</div>
 				</div>
+
+				<a href="https://docs.metabox.io/tutorials/" target="_blank" class="mb-dashboard__external">
+					<?php esc_html_e( 'View all tutorials', 'meta-box' ); ?>
+					<svg><use xlink:href="#external-link"></use></svg>
+				</a>
 			</div>
 			<div class="mb-dashboard__tab-pane mb-hidden mb-dashboard__compare" data-tab="compare">
 				<div class="mb-dashboard__compare__header">

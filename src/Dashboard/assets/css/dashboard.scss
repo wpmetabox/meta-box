@@ -263,14 +263,11 @@ div#wpcontent {
 
 	// Tutorials
 	&__tutorials {
-		a {
-			color: inherit;
-		}
-
 		&__inner {
 			display: grid;
 			gap: 16px;
 			grid-template-columns: repeat(2, 1fr);
+			margin-bottom: 24px;
 		}
 
 		&__title {
@@ -286,6 +283,10 @@ div#wpcontent {
 		display: flex;
 		align-items: flext-start;
 		gap: 16px;
+
+		a {
+			color: inherit;
+		}
 
 		&__image {
 			position: relative;
