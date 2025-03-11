@@ -176,11 +176,11 @@ div#wpcontent {
 				margin-inline: auto;
 			}
 
-			input {
+			input[type="text"] {
 				width: 100%;
 				background: #f1f5f9; // slate-100
 				border-color: #e2e8f0;
-				padding: 4px 16px;
+				padding: 2px 16px;
 				margin: 0;
 
 				&:focus,
