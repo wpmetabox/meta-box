@@ -1,1 +1,1 @@
-- Responsive
+- Detect Meta Box, Meta Box Lite, Pro & Meta Box AIO

@@ -10,14 +10,16 @@
 	</a>
 
 	<div class="mb-dashboard__header__search">
-		<input type="text" placeholder="<?php esc_attr_e( 'Need some help? Search here...', 'meta-box' ); ?>" />
+		<div class="mb-dashboard__header__search__inner">
+			<input type="text" placeholder="<?php esc_attr_e( 'Need some help? Search here...', 'meta-box' ); ?>" />
 
-		<div
-			class="mb-dashboard__header__search-results"
-			data-searching="<?php esc_html_e( 'Searching...', 'meta-box' ); ?>"
-			data-none="<?php esc_html_e( 'No results found.', 'meta-box' ); ?>"
-			data-type="empty"
-		>
+			<div
+				class="mb-dashboard__header__search-results"
+				data-searching="<?php esc_html_e( 'Searching...', 'meta-box' ); ?>"
+				data-none="<?php esc_html_e( 'No results found.', 'meta-box' ); ?>"
+				data-type="empty"
+			>
+			</div>
 		</div>
 	</div>
 
@@ -121,14 +123,6 @@
 			</div>
 			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials">
 				<div class="mb-dashboard__tutorials__inner">
-					<div class="mb-dashboard__tutorials__title">
-						<?php esc_html_e( 'Beginners', 'meta-box' ); ?>
-					</div>
-
-					<div class="mb-dashboard__tutorials__title">
-						<?php esc_html_e( 'Advanced', 'meta-box' ); ?>
-					</div>
-
 					<div class="mb-dashboard__tutorial">
 						<a
 							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
@@ -521,6 +515,7 @@
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create custom blocks with low code', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create login, register & edit profile pages', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
+					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Priority support', 'meta-box' ); ?></li>
 					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 				</ul>
 				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
