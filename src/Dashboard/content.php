@@ -116,10 +116,13 @@
 				<div class="mb-dashboard__tab mb-dashboard__tab--active" data-tab="tutorials">
 					<?php esc_html_e( 'Tutorials', 'meta-box' ); ?>
 				</div>
-				<div class="mb-dashboard__tab" data-tab="compare">
-					<?php esc_html_e( 'Upgrade', 'meta-box' ); ?>
-					<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
-				</div>
+
+				<?php if ( ! $this->is_pro ) : ?>
+					<div class="mb-dashboard__tab" data-tab="compare">
+						<?php esc_html_e( 'Upgrade', 'meta-box' ); ?>
+						<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials">
 				<div class="mb-dashboard__tutorials__inner">
@@ -305,222 +308,227 @@
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
 			</div>
-			<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare">
-				<div class="mb-dashboard__compare__header">
-					<div>
+
+			<?php if ( ! $this->is_pro ) : ?>
+				<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare">
+					<div class="mb-dashboard__compare__header">
+						<div>
+							<div class="mb-dashboard__compare__title">
+								<?php
+								// Translators: %s - Meta Box AIO.
+								echo esc_html( sprintf( __( 'Get access to %s', 'meta-box' ), 'Meta Box AIO' ) );
+								?>
+							</div>
+							<p><?php esc_html_e( 'An all-in-one plugin that provides all free & pro Meta Box extensions for building powerful and dynamic WordPress websites!', 'meta-box' ); ?></p>
+						</div>
+
+						<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
+					</div>
+
+					<table>
+						<thead>
+							<tr>
+								<th align="left"><?php esc_html_e( 'Feature', 'meta-box' ); ?></th>
+								<th align="center">Meta Box Lite</th>
+								<th align="center">Meta Box AIO</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><?php esc_html_e( 'Pricing', 'meta-box' ); ?></td>
+								<td align="center"><?php esc_html_e( 'Free', 'meta-box' ); ?></td>
+								<td align="center"><?php esc_html_e( 'Paid', 'meta-box' ); ?></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'The Meta Box framework', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom post types & taxonomies', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom fields with UI', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Migration from ACF, Pods, Toolset', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Intergrations with Elementor, Divi, FacetWP, Yoast SEO,...', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Relationships', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Get/set meta values with REST API', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Limit text length', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Add custom fields to comments in WordPress', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Auto update', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom fields for taxonomies', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom fields for users', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom settings pages', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create Customizer sections & panels', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create user profile', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom content models and save their data to custom tables', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Organize custom fields into repeatable groups', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Advanced location rules for field groups', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Toogle fields or field groups with conditional logic', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Frontend submission forms and dashboard', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create templates and displaying fields with views', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Save post/term meta to custom tables', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Create custom Gutenberg blocks', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Display fields in admin columns', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'UI features: columns, tooltips, tabs', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Premium support', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+							<tr>
+								<td><?php esc_html_e( 'Licensing management system, including sub-licensing', 'meta-box' ); ?></td>
+								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
+								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td><?php esc_html_e( 'Learn more', 'meta-box' ); ?></td>
+								<td align="center">
+									<a class="mb-dashboard__external" href="https://metabox.io/lite/" target="_blank">
+										Meta Box Lite
+										<svg><use xlink:href="#external-link"></use></svg>
+									</a>
+								</td>
+								<td align="center">
+									<a class="mb-dashboard__external" href="https://metabox.io/aio/" target="_blank">
+										Meta Box AIO
+										<svg><use xlink:href="#external-link"></use></svg>
+									</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+
+					<div class="mb-dashboard__compare__footer">
 						<div class="mb-dashboard__compare__title">
 							<?php
 							// Translators: %s - Meta Box AIO.
-							echo esc_html( sprintf( __( 'Get access to %s', 'meta-box' ), 'Meta Box AIO' ) );
+							echo esc_html( sprintf( __( 'Do more with %s', 'meta-box' ), 'Meta Box AIO' ) );
 							?>
 						</div>
-						<p><?php esc_html_e( 'An all-in-one plugin that provides all free & pro Meta Box extensions for building powerful and dynamic WordPress websites!', 'meta-box' ); ?></p>
+						<p><?php esc_html_e( 'Get access to the all-in-one version of Meta Box with full of top-notch features for building robust and dynamic websites.', 'meta-box' ); ?></p>
+
+						<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
 					</div>
-
-					<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
 				</div>
-
-				<table>
-					<thead>
-						<tr>
-							<th align="left"><?php esc_html_e( 'Feature', 'meta-box' ); ?></th>
-							<th align="center">Meta Box Lite</th>
-							<th align="center">Meta Box AIO</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><?php esc_html_e( 'Pricing', 'meta-box' ); ?></td>
-							<td align="center"><?php esc_html_e( 'Free', 'meta-box' ); ?></td>
-							<td align="center"><?php esc_html_e( 'Paid', 'meta-box' ); ?></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'The Meta Box framework', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom post types & taxonomies', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom fields with UI', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Migration from ACF, Pods, Toolset', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Intergrations with Elementor, Divi, FacetWP, Yoast SEO,...', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Relationships', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Get/set meta values with REST API', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Limit text length', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Add custom fields to comments in WordPress', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Auto update', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom fields for taxonomies', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom fields for users', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom settings pages', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create Customizer sections & panels', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create user profile', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom content models and save their data to custom tables', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Organize custom fields into repeatable groups', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Advanced location rules for field groups', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Toogle fields or field groups with conditional logic', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Frontend submission forms and dashboard', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create templates and displaying fields with views', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Save post/term meta to custom tables', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Create custom Gutenberg blocks', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Display fields in admin columns', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'UI features: columns, tooltips, tabs', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Premium support', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Licensing management system, including sub-licensing', 'meta-box' ); ?></td>
-							<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
-							<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td><?php esc_html_e( 'Learn more', 'meta-box' ); ?></td>
-							<td align="center">
-								<a class="mb-dashboard__external" href="https://metabox.io/lite/" target="_blank">
-									Meta Box Lite
-									<svg><use xlink:href="#external-link"></use></svg>
-								</a>
-							</td>
-							<td align="center">
-								<a class="mb-dashboard__external" href="https://metabox.io/aio/" target="_blank">
-									Meta Box AIO
-									<svg><use xlink:href="#external-link"></use></svg>
-								</a>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-
-				<div class="mb-dashboard__compare__footer">
-					<div class="mb-dashboard__compare__title">
-						<?php
-						// Translators: %s - Meta Box AIO.
-						echo esc_html( sprintf( __( 'Do more with %s', 'meta-box' ), 'Meta Box AIO' ) );
-						?>
-					</div>
-					<p><?php esc_html_e( 'Get access to the all-in-one version of Meta Box with full of top-notch features for building robust and dynamic websites.', 'meta-box' ); ?></p>
-
-					<a class="mb-dashboard__button" href="https://metabox.io/pricing/" target="_blank"><?php esc_html_e( 'Upgrade now', 'meta-box' ); ?></a>
-				</div>
-			</div>
+			<?php endif; ?>
 		</section>
 	</div>
 
 	<aside class="mb-dashboard__sidebar">
-		<div class="mb-dashboard__widget mb-dashboard__upgrade">
-			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
-			<div class="mb-dashboard__widget-body">
-				<ul>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Organize fields into groups (repeater)', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'More location rules & conditional logic', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Custom tables to boost performance', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create custom blocks with low code', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create login, register & edit profile pages', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Priority support', 'meta-box' ); ?></li>
-					<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
-				</ul>
-				<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
+		<?php if ( ! $this->is_pro ) : ?>
+			<div class="mb-dashboard__widget mb-dashboard__upgrade">
+				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
+				<div class="mb-dashboard__widget-body">
+					<ul>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Organize fields into groups (repeater)', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'More location rules & conditional logic', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Custom tables to boost performance', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create custom blocks with low code', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Create login, register & edit profile pages', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Submit & manage posts on the frontend', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'Priority support', 'meta-box' ); ?></li>
+						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
+					</ul>
+					<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
+				</div>
 			</div>
-		</div>
+		<?php endif; ?>
 
 		<div class="mb-dashboard__widget mb-dashboard__plugins">
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Recommended plugins', 'meta-box' ) ?></div>

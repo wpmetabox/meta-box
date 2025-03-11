@@ -5,8 +5,8 @@ class Dashboard {
 	private $is_pro = false;
 	private $assets_url;
 
-	public function __construct( $update_checker ) {
-		$this->is_pro   = $update_checker && $update_checker->has_extensions();
+	public function __construct( bool $is_pro ) {
+		$this->is_pro     = $is_pro;
 		$this->assets_url = RWMB_URL . 'src/Dashboard/assets';
 
 		$this->init();

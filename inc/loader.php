@@ -101,7 +101,7 @@ class RWMB_Loader {
 		$wpml->init();
 
 		// Update.
-		$update_checker = null;
+		$update_option = null;
 		if ( class_exists( '\MetaBox\Updater\Option' ) ) {
 			$update_option = new \MetaBox\Updater\Option();
 			$update_checker = new \MetaBox\Updater\Checker( $update_option );
@@ -119,7 +119,8 @@ class RWMB_Loader {
 		new \MetaBox\Integrations\Oxygen();
 
 		if ( is_admin() ) {
-			new \MetaBox\Dashboard\Dashboard( $update_checker );
+			$is_pro = $update_option && $update_option->get_license_status() === 'active';
+			new \MetaBox\Dashboard\Dashboard( $is_pro );
 		}
 
 		// Public functions.
