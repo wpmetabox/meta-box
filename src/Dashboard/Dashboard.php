@@ -86,7 +86,7 @@ class Dashboard {
 		wp_enqueue_script( 'featherlight', "$this->assets_url/js/featherlight.min.js", [ 'jquery' ], '1.7.14', true );
 		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/js/dashboard.js", [ 'featherlight' ], filemtime( __DIR__ . '/assets/js/dashboard.js' ), true );
 		wp_localize_script( 'meta-box-dashboard', 'MBD', [
-			'nonces'      => [
+			'nonces' => [
 				'plugin' => wp_create_nonce( 'plugin' ),
 				'feed'   => wp_create_nonce( 'feed' ),
 			],
@@ -141,7 +141,7 @@ class Dashboard {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$plugin = "$slug/$slug.php";
+		$plugin  = "$slug/$slug.php";
 		$plugins = get_plugins();
 
 		if ( empty( $plugins[ $plugin ] ) ) {
@@ -171,12 +171,12 @@ class Dashboard {
 	}
 
 	public function handle_plugin_action(): void {
-		check_ajax_referer( action: 'plugin' );
+		check_ajax_referer( 'plugin' );
 
-		$plugin = isset( $_GET['mb_plugin'] ) ? sanitize_text_field( $_GET['mb_plugin'] ) : '';
-		$action = isset( $_GET['mb_action'] ) ? sanitize_text_field( $_GET['mb_action'] ) : '';
+		$plugin = isset( $_GET['mb_plugin'] ) ? sanitize_text_field( wp_unslash( $_GET['mb_plugin'] ) ) : '';
+		$action = isset( $_GET['mb_action'] ) ? sanitize_text_field( wp_unslash( $_GET['mb_action'] ) ) : '';
 
-		if ( ! $plugin || ! $action || ! in_array( $action, [ 'install', 'activate' ] ) ) {
+		if ( ! $plugin || ! $action || ! in_array( $action, [ 'install', 'activate' ], true ) ) {
 			wp_send_json_error();
 		}
 
@@ -195,7 +195,7 @@ class Dashboard {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
-		$plugin = "$slug/$slug.php";
+		$plugin  = "$slug/$slug.php";
 		$plugins = get_plugins();
 
 		if ( isset( $plugins[ $plugin ] ) ) {
@@ -206,7 +206,7 @@ class Dashboard {
 			'plugin_information',
 			[
 				'slug'   => $slug,
-				'fields' => array(
+				'fields' => [
 					'short_description' => false,
 					'requires'          => false,
 					'sections'          => false,
@@ -219,8 +219,8 @@ class Dashboard {
 					'compatibility'     => false,
 					'homepage'          => false,
 					'donate_link'       => false,
-				),
-			],
+				],
+			]
 		);
 
 		if ( is_wp_error( $api ) ) {
@@ -229,7 +229,7 @@ class Dashboard {
 
 		$skin     = new \Plugin_Installer_Skin( [ 'api' => $api ] );
 		$upgrader = new \Plugin_Upgrader( $skin );
-        $result   = $upgrader->install( $api->download_link );
+		$result   = $upgrader->install( $api->download_link );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( $result->get_error_message() );
@@ -266,7 +266,7 @@ class Dashboard {
 			wp_send_json_error( __( 'No items available', 'meta-box' ) );
 		}
 
-		$items = array_map( function ($item): array {
+		$items = array_map( function ( $item ): array {
 			return [
 				'url'         => $item->get_permalink(),
 				'title'       => $item->get_title(),

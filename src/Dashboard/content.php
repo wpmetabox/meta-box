@@ -50,7 +50,7 @@
 		<div class="mb-dashboard__header__links">
 			<a href="https://docs.metabox.io" target="_blank" class="mb-dashboard__tooltip" data-tooltip="<?php esc_attr_e( 'Documentation', 'meta-box' ); ?>">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-  					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
 				</svg>
 			</a>
 			<a href="#" class="mb-dashboard__tooltip mb-dashboard__news-icon" data-tooltip="<?php esc_attr_e( 'What\'s new?', 'meta-box' ); ?>" data-position="bottom-right">
@@ -534,6 +534,7 @@
 			<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Recommended plugins', 'meta-box' ) ?></div>
 			<div class="mb-dashboard__widget-body">
 				<?php
+				// phpcs:disable
 				$plugins = [
 					[
 						'title'       => 'Slim SEO',
@@ -560,6 +561,7 @@
 						</span>
 					</div>
 				<?php endforeach; ?>
+				<?php // phpcs:enable ?>
 			</div>
 		</div>
 
