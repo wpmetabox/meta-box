@@ -9,7 +9,17 @@
 		</svg>
 	</a>
 
-	<input class="mb-dashboard__header__search" type="text" placeholder="<?php esc_attr_e( 'Need some help? Search here...', 'meta-box' ); ?>" />
+	<div class="mb-dashboard__header__search">
+		<input type="text" placeholder="<?php esc_attr_e( 'Need some help? Search here...', 'meta-box' ); ?>" />
+
+		<div
+			class="mb-dashboard__header__search-results"
+			data-searching="<?php esc_html_e( 'Searching...', 'meta-box' ); ?>"
+			data-none="<?php esc_html_e( 'No results found.', 'meta-box' ); ?>"
+			data-type="empty"
+		>
+		</div>
+	</div>
 
 	<div class="mb-dashboard__header__actions">
 		<a href="https://www.facebook.com/groups/metaboxusers" target="_blank">
