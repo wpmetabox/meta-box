@@ -69,28 +69,29 @@
 		 * Normalize docs data, keeping only references to docs titles and sections.
 		 */
 		const normalizeData = data => {
-			const newData = [];
-
 			// Original docs
-			data[ 0 ].documents.forEach( doc => {
-				newData.push( {
-					t: doc.t,
-					u: doc.u,
-				} );
-			} );
+			const originalDocs = data[ 0 ].documents.map( ( { t, u } ) => ( { t, u } ) );
 
 			// Sections
-			data[ 1 ].documents.forEach( doc => {
-				if ( !doc.h || doc.u.includes( '/category/' ) ) {
-					return;
+			const findOriginalDoc = url => originalDocs.find( ( { t, u } ) => u === url );
+
+			// Section docs.
+			const sectionDocs = data[ 1 ].documents.filter( doc => doc.h.length > 0 && !doc.u.includes( '/category/' ) ).map( ( { t, u, h } ) => {
+				const originalDoc = findOriginalDoc( u );
+				if ( !originalDoc ) {
+					return {
+						t,
+						u: `${ u }${ h }`,
+					};
 				}
-				newData.push( {
-					t: doc.t,
-					u: `${ doc.u }${ doc.h }`,
-				} );
+
+				return {
+					t: `${ originalDoc.t } → ${ t }`,
+					u: `${ u }${ h }`,
+				};
 			} );
 
-			return newData;
+			return [ ...originalDocs, ...sectionDocs ];
 		};
 
 		if ( !needsUpdate() ) {
