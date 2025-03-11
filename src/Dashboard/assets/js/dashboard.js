@@ -98,9 +98,15 @@
 			return docs;
 		}
 
-		let response = await fetch( 'https://docs.metabox.io/search-index.json' );//+
-		response = await response.json();//+
+		let response = await fetch( 'https://docs.metabox.io/search-index.json' );
+		response = await response.json();
+
+		if ( !Array.isArray( response ) || response.length === 0 ) {
+			return [];
+		}
+
 		docs = normalizeData( response );
+
 		localStorage.setItem( 'meta-box-docs', JSON.stringify( docs ) );
 		localStorage.setItem( 'meta-box-docs-last-updated', Date.now() );
 
@@ -172,29 +178,49 @@
 	searchDocs();
 
 	const fetchNews = async () => {
-		const list = document.querySelector( '.mb-dashboard__news__list' );
+		let items = [];
 
-		list.innerHTML = list.dataset.fetching;
+		const needsUpdate = () => {
+			const lastUpdated = localStorage.getItem( 'meta-box-news-last-updated' );
+			const now = Date.now();
+			const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
+			if ( !lastUpdated || now - lastUpdated > DAY_IN_MILLISECONDS ) {
+				return true;
+			}
+
+			items = JSON.parse( localStorage.getItem( 'meta-box-news' ) );
+			return !Array.isArray( items ) || items.length === 0;
+		};
+
+		if ( !needsUpdate() ) {
+			return items;
+		}
 
 		let response = await fetch( `${ ajaxurl }?action=mb_dashboard_feed&_ajax_nonce=${ MBD.nonces.feed }` );
 		response = await response.json();
 
-		if ( !response.success ) {
-			alert( response.data );
+		items = response.success ? response.data : [];
+
+		localStorage.setItem( 'meta-box-news', JSON.stringify( items ) );
+		localStorage.setItem( 'meta-box-news-last-updated', Date.now() );
+
+		return items;
+	}
+
+	const renderNews = async () => {
+		let items  = await fetchNews();
+		const list = document.querySelector( '.mb-dashboard__news__list' );
+
+		if ( ! Array.isArray( items ) || items.length === 0 ) {
 			list.innerHTML = list.dataset.empty;
 			return;
 		}
 
-		let lastUpdated = 0;
-		const items = response.data.map( item => {
+		items = items.map( item => {
 			const url = new URL( item.url );
 			url.searchParams.append( 'utm_source', 'dashboard' );
 			url.searchParams.append( 'utm_medium', 'news' );
 			url.searchParams.append( 'utm_campaign', 'meta_box' );
-
-			if ( lastUpdated < item.timestamp ) {
-				lastUpdated = item.timestamp;
-			}
 
 			return `<div class="mb-dashboard__news__item">
 				<div class="mb-dashboard__news__date">${ item.date }</div>
@@ -204,17 +230,10 @@
 		} );
 
 		list.innerHTML = items.join( '' );
-
-		const now = Math.floor( Date.now() ) / 1000;
-		const WEEK_IN_SECONDS = 7 * 24 * 60 * 60 * 20;
-		if ( now - lastUpdated < WEEK_IN_SECONDS ) {
-			document.querySelector( '.mb-dashboard__news-icon' ).classList.add( 'mb-dashboard__news-icon--hot' );
-		}
 	};
 
 	const showNews = async () => {
-		await fetchNews();
-
+		await renderNews();
 		const news = document.querySelector( '.mb-dashboard__news' );
 		document.querySelector( '.mb-dashboard__news-icon' ).addEventListener( 'click', () => news.classList.toggle( 'mb-dashboard__news--active' ) );
 		document.querySelector( '.mb-dashboard__news__close' ).addEventListener( 'click', () => news.classList.remove( 'mb-dashboard__news--active' ) );

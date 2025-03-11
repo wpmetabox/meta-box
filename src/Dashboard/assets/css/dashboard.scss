@@ -662,7 +662,7 @@ div#wpcontent {
 	&__news-icon {
 		position: relative;
 
-		&--hot:before {
+		&:before {
 			content: "";
 			display: inline-block;
 			width: 10px;

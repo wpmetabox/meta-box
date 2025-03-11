@@ -1,2 +1,1 @@
-- Fetch news from the website
 - Responsive
