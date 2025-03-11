@@ -92,7 +92,7 @@ div#wpcontent {
 		}
 	}
 
-	.mb-hidden {
+	&__hidden {
 		display: none;
 	}
 
@@ -105,6 +105,39 @@ div#wpcontent {
 			width: 1em;
 			height: 1em;
 			fill: currentColor;
+		}
+	}
+
+	&__tooltip {
+		position: relative;
+
+		&:after {
+			content: attr(data-tooltip);
+			background-color: #0f172a; // slate-900
+			color: #fff;
+			padding: 4px 8px;
+			border-radius: 4px;
+			white-space: nowrap;
+
+			// Positioning
+			position: absolute;
+			top: calc(100% + 8px);
+			left: 50%;
+			transform: translateX(-50%);
+
+			visibility: hidden;
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+		}
+
+		&[data-position="top"]:after {
+			bottom: calc(100% + 8px);
+			top: auto;
+		}
+
+		&:hover:after {
+			visibility: visible;
+			opacity: 1;
 		}
 	}
 
@@ -198,15 +231,63 @@ div#wpcontent {
 			}
 		}
 
-		&__actions {
+		&__icons {
 			display: flex;
 			align-items: center;
-			gap: 16px;
+
+			a {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+
+		&__social {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+
+			border-right: var(--mb-border);
+			padding-right: 12px;
+			margin-right: 12px;
 
 			svg {
+				width: 16px;
+				height: 16px;
+				fill: #64748b;
+				transition: all .2s ease-in-out;
+			}
+
+			a {
 				width: 24px;
 				height: 24px;
-				fill: #475569;
+
+				&:hover svg {
+					fill: #334155;
+				}
+			}
+		}
+
+		&__links {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+
+			a {
+				color: #64748b;
+				width: 36px;
+				height: 36px;
+				border: var(--mb-border);
+				border-radius: 50%;
+
+				&:hover {
+					color: #334155;
+				}
+			}
+
+			svg {
+				width: 20px;
+				height: 20px;
 			}
 		}
 
@@ -346,7 +427,7 @@ div#wpcontent {
 
 	&__tutorial {
 		display: flex;
-		align-items: flext-start;
+		align-items: flex-start;
 		gap: 16px;
 
 		a {
@@ -360,7 +441,7 @@ div#wpcontent {
 				display: none;
 			}
 
-			&:after {
+			&:before {
 				position: absolute;
 				top: calc(50% - 9px);
 				left: calc(50% - 16px);

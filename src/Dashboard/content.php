@@ -21,28 +21,42 @@
 		</div>
 	</div>
 
-	<div class="mb-dashboard__header__actions">
-		<a href="https://www.facebook.com/groups/metaboxusers" target="_blank">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Facebook">
-				<path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"></path>
-			</svg>
-		</a>
-		<a href="https://www.youtube.com/c/MetaBoxWP" target="_blank">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Youtube">
-				<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
-			</svg>
-		</a>
-		<a href="https://x.com/wpmetabox" target="_blank">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="X">
-				<path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
-			</svg>
-		</a>
-		<a href="https://www.linkedin.com/company/meta-box/" target="_blank">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="LinkedIn">
-				<circle cx="4.983" cy="5.009" r="2.188"></circle>
-				<path d="M9.237 8.855v12.139h3.769v-6.003c0-1.584.298-3.118 2.262-3.118 1.937 0 1.961 1.811 1.961 3.218v5.904H21v-6.657c0-3.27-.704-5.783-4.526-5.783-1.835 0-3.065 1.007-3.568 1.96h-.051v-1.66H9.237zm-6.142 0H6.87v12.139H3.095z"></path>
-			</svg>
-		</a>
+	<div class="mb-dashboard__header__icons">
+		<div class="mb-dashboard__header__social">
+			<a href="https://www.facebook.com/groups/metaboxusers" target="_blank">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Facebook">
+					<path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"></path>
+				</svg>
+			</a>
+			<a href="https://www.youtube.com/c/MetaBoxWP" target="_blank">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Youtube">
+					<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
+				</svg>
+			</a>
+			<a href="https://x.com/wpmetabox" target="_blank">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="X">
+					<path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
+				</svg>
+			</a>
+			<a href="https://www.linkedin.com/company/meta-box/" target="_blank">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="LinkedIn">
+					<circle cx="4.983" cy="5.009" r="2.188"></circle>
+					<path d="M9.237 8.855v12.139h3.769v-6.003c0-1.584.298-3.118 2.262-3.118 1.937 0 1.961 1.811 1.961 3.218v5.904H21v-6.657c0-3.27-.704-5.783-4.526-5.783-1.835 0-3.065 1.007-3.568 1.96h-.051v-1.66H9.237zm-6.142 0H6.87v12.139H3.095z"></path>
+				</svg>
+			</a>
+		</div>
+		<div class="mb-dashboard__header__links">
+			<a href="https://docs.metabox.io" target="_blank" class="mb-dashboard__tooltip" data-tooltip="<?php esc_attr_e( 'Documentation', 'meta-box' ); ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+  					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+				</svg>
+			</a>
+			<a href="#" class="mb-dashboard__tooltip" data-tooltip="<?php esc_attr_e( 'What\'s new?', 'meta-box' ); ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+				</svg>
+			</a>
+		</div>
 	</div>
 </header>
 
@@ -117,14 +131,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/-oYrHGOri4w"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/create-post-types.png" ); ?>" alt="<?php esc_attr_e( 'Creating post types and taxonomies', 'meta-box' ); ?>">
 						</a>
@@ -138,14 +153,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/VEZSCHtOt5Q"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/change-id.png" ); ?>" alt="<?php esc_attr_e( 'Changing the ID of a field', 'meta-box' ); ?>">
 						</a>
@@ -159,14 +175,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/_DaFUt92kYY"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/create-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Creating and configure custom fields', 'meta-box' ); ?>">
 						</a>
@@ -180,14 +197,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/pFgElK8pvn0"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/category-thumbnails.png" ); ?>" alt="<?php esc_attr_e( 'Creating category thumbnails', 'meta-box' ); ?>">
 						</a>
@@ -201,14 +219,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/Byce7gfpZJQ"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/filter-posts.png" ); ?>" alt="<?php esc_attr_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?>">
 						</a>
@@ -222,14 +241,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/ev24jQJTgCY"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/recipe.png" ); ?>" alt="<?php esc_attr_e( 'Creating a recipe with Meta Box and Bricks', 'meta-box' ); ?>">
 						</a>
@@ -243,14 +263,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/BGVY-5W6d7g"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/export-import-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Export and import custom fields', 'meta-box' ); ?>">
 						</a>
@@ -264,14 +285,15 @@
 
 					<div class="mb-dashboard__tutorial">
 						<a
-							class="mb-dashboard__tutorial__image lightbox"
+							class="mb-dashboard__tutorial__image lightbox mb-dashboard__tooltip"
 							data-featherlight="iframe"
 							data-featherlight-iframe-frameborder="0"
 							data-featherlight-iframe-allow="autoplay; encrypted-media"
 							data-featherlight-iframe-allowfullscreen="true"
 							data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;"
 							href="http://www.youtube.com/embed/6mHDBIO_qlY"
-							title="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
+							data-position="top"
 						>
 							<img src="<?= esc_attr( "{$this->assets_url}/img/simple-listings.png" ); ?>" alt="<?php esc_attr_e( 'Creating a listing site with Meta Box and Elementor', 'meta-box' ); ?>">
 						</a>
@@ -289,7 +311,7 @@
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
 			</div>
-			<div class="mb-dashboard__tab-pane mb-hidden mb-dashboard__compare" data-tab="compare">
+			<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare">
 				<div class="mb-dashboard__compare__header">
 					<div>
 						<div class="mb-dashboard__compare__title">

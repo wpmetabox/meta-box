@@ -42,8 +42,8 @@
 		document.querySelectorAll( '.mb-dashboard__tab' ).forEach( e => e.classList.remove( 'mb-dashboard__tab--active' ) );
 		el.classList.add( 'mb-dashboard__tab--active' );
 
-		document.querySelectorAll( '.mb-dashboard__tab-pane' ).forEach( e => e.classList.add( 'mb-hidden' ) );
-		document.querySelector( `.mb-dashboard__tab-pane[data-tab="${ el.dataset.tab }"]` ).classList.remove( 'mb-hidden' );
+		document.querySelectorAll( '.mb-dashboard__tab-pane' ).forEach( e => e.classList.add( 'mb-dashboard__hidden' ) );
+		document.querySelector( `.mb-dashboard__tab-pane[data-tab="${ el.dataset.tab }"]` ).classList.remove( 'mb-dashboard__hidden' );
 	} );
 
 	const fetchDocs = async () => {

@@ -1,3 +1,2 @@
-- Add docs + news to header
 - Fetch news from the website
 - Responsive
