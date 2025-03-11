@@ -28,6 +28,9 @@ class Dashboard {
 
 		// Handle install & activate plugin.
 		add_action( 'wp_ajax_mb_dashboard_plugin_action', [ $this, 'handle_plugin_action' ] );
+
+		// Handle ajax to get RSS.
+		add_action( 'wp_ajax_mb_dashboard_feed', [ $this, 'get_feed' ] );
 	}
 
 	public function plugin_links( array $links ): array {
@@ -80,10 +83,13 @@ class Dashboard {
 	public function enqueue(): void {
 		wp_enqueue_style( 'meta-box-dashboard', "$this->assets_url/css/dashboard.css", [], filemtime( __DIR__ . '/assets/css/dashboard.css' ) );
 		wp_enqueue_style( 'featherlight', "$this->assets_url/css/featherlight.min.css", [], '1.7.14' );
-		wp_enqueue_script( 'featherlight', "$this->assets_url/js/featherlight.min.js", ['jquery'], '1.7.14', true );
-		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/js/dashboard.js", ['featherlight'], filemtime( __DIR__ . '/assets/js/dashboard.js' ), true );
+		wp_enqueue_script( 'featherlight', "$this->assets_url/js/featherlight.min.js", [ 'jquery' ], '1.7.14', true );
+		wp_enqueue_script( 'meta-box-dashboard', "$this->assets_url/js/dashboard.js", [ 'featherlight' ], filemtime( __DIR__ . '/assets/js/dashboard.js' ), true );
 		wp_localize_script( 'meta-box-dashboard', 'MBD', [
-			'nonce' => wp_create_nonce( 'plugin-action' ),
+			'nonces'      => [
+				'plugin' => wp_create_nonce( 'plugin' ),
+				'feed'   => wp_create_nonce( 'feed' ),
+			],
 		] );
 	}
 
@@ -165,7 +171,7 @@ class Dashboard {
 	}
 
 	public function handle_plugin_action(): void {
-		check_ajax_referer( action: 'plugin-action' );
+		check_ajax_referer( action: 'plugin' );
 
 		$plugin = isset( $_GET['mb_plugin'] ) ? sanitize_text_field( $_GET['mb_plugin'] ) : '';
 		$action = isset( $_GET['mb_action'] ) ? sanitize_text_field( $_GET['mb_action'] ) : '';
@@ -222,7 +228,7 @@ class Dashboard {
 		}
 
 		$skin     = new \Plugin_Installer_Skin( [ 'api' => $api ] );
-        $upgrader = new \Plugin_Upgrader( $skin );
+		$upgrader = new \Plugin_Upgrader( $skin );
         $result   = $upgrader->install( $api->download_link );
 
 		if ( is_wp_error( $result ) ) {
@@ -242,5 +248,35 @@ class Dashboard {
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( $result->get_error_message() );
 		}
+	}
+
+	public function get_feed(): void {
+		check_ajax_referer( 'feed' );
+
+		$rss = fetch_feed( 'https://feeds.feedburner.com/metaboxio' );
+
+		if ( is_wp_error( $rss ) ) {
+			wp_send_json_error( $rss->get_error_message() );
+		}
+
+		$rss->set_item_limit( 10 );
+		$items = $rss->get_items( 0, 10 );
+
+		if ( ! $items ) {
+			wp_send_json_error( __( 'No items available', 'meta-box' ) );
+		}
+
+		$items = array_map( function ($item): array {
+			return [
+				'url'         => $item->get_permalink(),
+				'title'       => $item->get_title(),
+				'description' => $item->get_description(),
+				'content'     => $item->get_content(),
+				'date'        => $item->get_date( get_option( 'date_format' ) ),
+				'timestamp'   => $item->get_date( 'U' ),
+			];
+		}, $items );
+
+		wp_send_json_success( $items );
 	}
 }

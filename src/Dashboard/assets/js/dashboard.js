@@ -17,7 +17,7 @@
 		const oldText = el.textContent;
 		el.textContent = el.dataset.processing;
 
-		fetch( `${ ajaxurl }?action=mb_dashboard_plugin_action&mb_plugin=${ el.dataset.plugin }&mb_action=${ el.dataset.action }&_ajax_nonce=${ MBD.nonce }` )
+		fetch( `${ ajaxurl }?action=mb_dashboard_plugin_action&mb_plugin=${ el.dataset.plugin }&mb_action=${ el.dataset.action }&_ajax_nonce=${ MBD.nonces.plugin }` )
 			.then( response => response.json() )
 			.then( response => {
 				if ( !response.success ) {
@@ -170,4 +170,41 @@
 	};
 
 	searchDocs();
+
+	const fetchNews = async () => {
+		const newsDiv = document.querySelector( '.mb-dashboard__news' );
+
+		newsDiv.innerHTML = newsDiv.dataset.fetching;
+
+		let response = await fetch( `${ ajaxurl }?action=mb_dashboard_feed&_ajax_nonce=${ MBD.nonces.feed }` );
+		response = await response.json();
+
+		if ( ! response.success ) {
+			alert( response.data );
+			newsDiv.innerHTML = newsDiv.dataset.empty;
+			return;
+		}
+
+		let lastUpdated = 0;
+		const items = response.data.map( item => {
+			const url = new URL( item.url );
+			url.searchParams.append( 'utm_source', 'dashboard' );
+			url.searchParams.append( 'utm_medium', 'news' );
+			url.searchParams.append( 'utm_campaign', 'meta_box' );
+
+			if ( lastUpdated < item.timestamp ) {
+				lastUpdated = item.timestamp;
+			}
+
+			return `<div class="mb-dashboard__news__item">
+				<a class="mb-dashboard__news__title" href="${ url }" target="_blank">${ item.title }</a>
+				<div class="mb-dashboard__news__date">${ item.date }</div>
+				<div class="mb-dashboard__news__content">${ item.content }</div>
+			</div>`;
+		} );
+
+		newsDiv.innerHTML = items.join( '' );
+	};
+
+	fetchNews();
 }
