@@ -135,6 +135,12 @@ div#wpcontent {
 			top: auto;
 		}
 
+		&[data-position="bottom-right"]:after {
+			left: auto;
+			transform: none;
+			right: 0;
+		}
+
 		&:hover:after {
 			visibility: visible;
 			opacity: 1;
@@ -282,6 +288,7 @@ div#wpcontent {
 
 				&:hover {
 					color: #334155;
+					border-color: #94a3b8;
 				}
 			}
 
@@ -648,6 +655,104 @@ div#wpcontent {
 			&[data-action=""] {
 				color: #16a34a; // green-600
 			}
+		}
+	}
+
+
+	&__news-icon {
+		position: relative;
+
+		&--hot:before {
+			content: "";
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background: #ef4444;
+			border-radius: 50%;
+		}
+	}
+
+	&__news {
+		--mb-news-width: 360px;
+
+		position: fixed;
+		top: 32px;
+		right: calc(0px - var(--mb-news-width));
+		width: var(--mb-news-width);
+		bottom: 0;
+		background: #fff;
+		transition: all .2s ease-in-out;
+		overflow-x: auto;
+		border-left: var(--mb-border);
+
+		&--active {
+			right: 0;
+		}
+
+		&__header {
+			padding: 12px 24px;
+			border-bottom: var(--mb-border);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 24px;
+		}
+
+		&__heading {
+			font-size: 16px;
+			font-weight: 600;
+			color: #0f172a; // slate-900
+		}
+
+		&__close {
+			width: 32px;
+			height: 32px;
+			padding: 0;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border: none;
+			background: none;
+			cursor: pointer;
+
+			svg {
+				width: 24px;
+				height: 24px;
+			}
+		}
+
+		&__date {
+			font-size: 10px;
+			text-transform: uppercase;
+			letter-spacing: .025em;
+			font-weight: 600;
+			margin-bottom: 8px;
+			color: #94a3b8;
+		}
+
+		.mb-dashboard__news__title {
+			display: block;
+			font-size: 16px;
+			font-weight: 600;
+			color: #0f172a; // slate-900
+			margin-bottom: 16px;
+		}
+
+		&__content p {
+			display: none;
+		}
+
+		&__item {
+			padding-inline: 24px;
+		}
+
+		&__item:not(:first-child) {
+			margin-top: 24px;
+			padding-top: 24px;
+			border-top: var(--mb-border);
 		}
 	}
 }

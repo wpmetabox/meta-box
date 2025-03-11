@@ -51,9 +51,9 @@
   					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
 				</svg>
 			</a>
-			<a href="#" class="mb-dashboard__tooltip" data-tooltip="<?php esc_attr_e( 'What\'s new?', 'meta-box' ); ?>">
+			<a href="#" class="mb-dashboard__tooltip mb-dashboard__news-icon" data-tooltip="<?php esc_attr_e( 'What\'s new?', 'meta-box' ); ?>" data-position="bottom-right">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+					<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
 				</svg>
 			</a>
 		</div>
@@ -590,6 +590,16 @@
 	data-empty="<?php esc_html_e( 'No items available', 'meta-box' ); ?>"
 	data-fetching="<?php esc_html_e( 'Gettings news...', 'meta-box' ); ?>"
 >
+	<div class="mb-dashboard__news__header">
+		<div class="mb-dashboard__news__heading"><?php esc_html_e( 'What\'s new?', 'meta-box' ); ?></div>
+		<button class="mb-dashboard__news__close">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+			</svg>
+		</button>
+	</div>
+
+	<div class="mb-dashboard__news__list"></div>
 </div>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

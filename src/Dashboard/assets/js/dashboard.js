@@ -172,16 +172,16 @@
 	searchDocs();
 
 	const fetchNews = async () => {
-		const newsDiv = document.querySelector( '.mb-dashboard__news' );
+		const list = document.querySelector( '.mb-dashboard__news__list' );
 
-		newsDiv.innerHTML = newsDiv.dataset.fetching;
+		list.innerHTML = list.dataset.fetching;
 
 		let response = await fetch( `${ ajaxurl }?action=mb_dashboard_feed&_ajax_nonce=${ MBD.nonces.feed }` );
 		response = await response.json();
 
-		if ( ! response.success ) {
+		if ( !response.success ) {
 			alert( response.data );
-			newsDiv.innerHTML = newsDiv.dataset.empty;
+			list.innerHTML = list.dataset.empty;
 			return;
 		}
 
@@ -197,14 +197,28 @@
 			}
 
 			return `<div class="mb-dashboard__news__item">
-				<a class="mb-dashboard__news__title" href="${ url }" target="_blank">${ item.title }</a>
 				<div class="mb-dashboard__news__date">${ item.date }</div>
-				<div class="mb-dashboard__news__content">${ item.content }</div>
+				<a class="mb-dashboard__news__title" href="${ url }" target="_blank">${ item.title }</a>
+				<div class="mb-dashboard__news__content">${ item.description }</div>
 			</div>`;
 		} );
 
-		newsDiv.innerHTML = items.join( '' );
+		list.innerHTML = items.join( '' );
+
+		const now = Math.floor( Date.now() ) / 1000;
+		const WEEK_IN_SECONDS = 7 * 24 * 60 * 60 * 20;
+		if ( now - lastUpdated < WEEK_IN_SECONDS ) {
+			document.querySelector( '.mb-dashboard__news-icon' ).classList.add( 'mb-dashboard__news-icon--hot' );
+		}
 	};
 
-	fetchNews();
+	const showNews = async () => {
+		await fetchNews();
+
+		const news = document.querySelector( '.mb-dashboard__news' );
+		document.querySelector( '.mb-dashboard__news-icon' ).addEventListener( 'click', () => news.classList.toggle( 'mb-dashboard__news--active' ) );
+		document.querySelector( '.mb-dashboard__news__close' ).addEventListener( 'click', () => news.classList.remove( 'mb-dashboard__news--active' ) );
+	};
+
+	showNews();
 }
