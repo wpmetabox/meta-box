@@ -481,12 +481,18 @@ div#wpcontent {
 
 	// Comparing tab and table
 	&__compare {
+		container-type: inline-size;
+
 		&__header {
 			display: flex;
 			align-items: flex-start;
 			justify-content: space-between;
 			gap: 24px;
 			margin-block: 24px;
+
+			p {
+				margin-bottom: 0;
+			}
 		}
 
 		&__title {
@@ -779,5 +785,11 @@ div#wpcontent {
 
 	.mb-dashboard__body {
 		padding: 24px;
+	}
+}
+
+@container (max-width: 599px) {
+	.mb-dashboard__compare__header {
+		flex-direction: column;
 	}
 }
