@@ -684,7 +684,7 @@ div#wpcontent {
 			}
 
 			&[data-action=""] {
-				color: #16a34a; // green-600
+				color: var(--mb-color-accent);
 			}
 		}
 	}
