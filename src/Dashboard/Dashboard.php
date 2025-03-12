@@ -13,10 +13,6 @@ class Dashboard {
 		$this->is_aio      = defined( 'META_BOX_AIO_DIR' );
 		$this->assets_url  = RWMB_URL . 'src/Dashboard/assets';
 
-		$this->upgradable = true;
-		$this->has_actions = false;
-		$this->is_aio = false;
-
 		$this->init();
 	}
 
