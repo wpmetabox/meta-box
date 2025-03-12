@@ -66,74 +66,104 @@
 
 	<div class="mb-dashboard__main">
 
-		<section class="mb-dashboard__actions">
-			<div class="mb-dashboard__actions__title"><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></div>
-
-			<div class="mb-dashboard__actions__inner">
-				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-						<path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
-						<path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
-					</svg>
-					<span class="mb-dashboard__action__text">
-						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a post type', 'meta-box' ); ?></span>
-						<span class="mb-dashboard__action__description"><?php esc_html_e( 'For a new type of content on your website', 'meta-box' ); ?></span>
-					</span>
-				</a>
-				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-taxonomy' ) ); ?>">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-						<path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5z"/>
-					</svg>
-					<span class="mb-dashboard__action__text">
-						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a taxonomy', 'meta-box' ); ?></span>
-						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To group or categorize your posts', 'meta-box' ); ?></span>
-					</span>
-				</a>
-				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=meta-box' ) ); ?>">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-						<path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5z"/>
-						<path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0M0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
-					</svg>
-					<span class="mb-dashboard__action__text">
-						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a field group', 'meta-box' ); ?></span>
-						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To add custom fields to your posts', 'meta-box' ); ?></span>
-					</span>
-				</a>
-				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-relationship' ) ); ?>">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-						<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
-					</svg>
-					<span class="mb-dashboard__action__text">
-						<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a relationship', 'meta-box' ); ?></span>
-						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To establish connections between posts', 'meta-box' ); ?></span>
-					</span>
-				</a>
-
-				<?php if ( $this->is_aio ) : ?>
-					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-views' ) ); ?>">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-							<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
-							<path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708m-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708"/>
-						</svg>
-						<span class="mb-dashboard__action__text">
-							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a view', 'meta-box' ); ?></span>
-							<span class="mb-dashboard__action__description"><?php esc_html_e( 'To output fields on the frontend', 'meta-box' ); ?></span>
-						</span>
-					</a>
-
-					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-settings-page' ) ); ?>">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-							<path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
-							<path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
-						</svg>
-						<span class="mb-dashboard__action__text">
-							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a settings page', 'meta-box' ); ?></span>
-							<span class="mb-dashboard__action__description"><?php esc_html_e( 'For global settings of your website', 'meta-box' ); ?></span>
-						</span>
-					</a>
-				<?php endif; ?>
+		<section class="mb-dashboard__intro" data-utm="intro">
+			<div class="mb-dashboard__intro__subtitle">
+				<?php
+				// Translators: %s - current user display name.
+				echo esc_html( sprintf( __( 'Hello %s,', 'meta-box' ), wp_get_current_user()->display_name ) );
+				?>
 			</div>
+			<div class="mb-dashboard__intro__title">
+				<?php
+				// Translators: %s - Meta Box (plugin name).
+				echo esc_html( sprintf( __( 'Welcome to %s,', 'meta-box' ), 'Meta Box' ) );
+				?>
+			</div>
+			<div class="mb-dashboard__intro__text">
+				<?php
+				// Translators: %s - Meta Box (plugin name).
+				echo esc_html( sprintf( __( '%s is a powerful, lightweight WordPress plugin for creating custom post types, fields, relationships, and more. With a user-friendly interface and flexible options, it simplifies dynamic content creation without complex coding. Free and reliable, it\'s perfect for beginners and experts alike.', 'meta-box' ), 'Meta Box' ) );
+				?>
+			</div>
+
+			<?php if ( ! $this->has_actions ) : ?>
+				<a class="mb-dashboard__external mb-dashboard__button" href="https://docs.metabox.io/introduction/" target="_blank">
+					<?php esc_html_e( 'Getting started', 'meta-box' ); ?>
+					<svg><use xlink:href="#external-link"></use></svg>
+				</a>
+			<?php endif; ?>
 		</section>
+
+		<?php if ( $this->has_actions ) : ?>
+			<section class="mb-dashboard__actions">
+				<div class="mb-dashboard__actions__title"><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></div>
+
+				<div class="mb-dashboard__actions__inner">
+					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+							<path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
+							<path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
+						</svg>
+						<span class="mb-dashboard__action__text">
+							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a post type', 'meta-box' ); ?></span>
+							<span class="mb-dashboard__action__description"><?php esc_html_e( 'For a new type of content on your website', 'meta-box' ); ?></span>
+						</span>
+					</a>
+					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-taxonomy' ) ); ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+							<path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5z"/>
+						</svg>
+						<span class="mb-dashboard__action__text">
+							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a taxonomy', 'meta-box' ); ?></span>
+							<span class="mb-dashboard__action__description"><?php esc_html_e( 'To group or categorize your posts', 'meta-box' ); ?></span>
+						</span>
+					</a>
+					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=meta-box' ) ); ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+							<path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5z"/>
+							<path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0M0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
+						</svg>
+						<span class="mb-dashboard__action__text">
+							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a field group', 'meta-box' ); ?></span>
+							<span class="mb-dashboard__action__description"><?php esc_html_e( 'To add custom fields to your posts', 'meta-box' ); ?></span>
+						</span>
+					</a>
+					<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-relationship' ) ); ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+						</svg>
+						<span class="mb-dashboard__action__text">
+							<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a relationship', 'meta-box' ); ?></span>
+							<span class="mb-dashboard__action__description"><?php esc_html_e( 'To establish connections between posts', 'meta-box' ); ?></span>
+						</span>
+					</a>
+
+					<?php if ( $this->is_aio ) : ?>
+						<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-views' ) ); ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+								<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+								<path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708m-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708"/>
+							</svg>
+							<span class="mb-dashboard__action__text">
+								<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a view', 'meta-box' ); ?></span>
+								<span class="mb-dashboard__action__description"><?php esc_html_e( 'To output fields on the frontend', 'meta-box' ); ?></span>
+							</span>
+						</a>
+
+						<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-settings-page' ) ); ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+								<path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+								<path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+							</svg>
+							<span class="mb-dashboard__action__text">
+								<span class="mb-dashboard__action__title"><?php esc_html_e( 'Create a settings page', 'meta-box' ); ?></span>
+								<span class="mb-dashboard__action__description"><?php esc_html_e( 'For global settings of your website', 'meta-box' ); ?></span>
+							</span>
+						</a>
+					<?php endif; ?>
+				</div>
+			</section>
+		<?php endif; ?>
 
 		<section class="mb-dashboard__info">
 			<div class="mb-dashboard__tabs">

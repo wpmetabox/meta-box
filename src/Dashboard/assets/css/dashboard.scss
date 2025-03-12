@@ -377,6 +377,32 @@ div#wpcontent {
 		top: -8px;
 	}
 
+
+	// Intro
+	&__intro {
+		&__subtitle {
+			font-size: 16px;
+		}
+
+		&__title {
+			font-size: 24px;
+			color: #0f172a; // slate-900
+			font-weight: 600;
+			margin-top: 12px;
+		}
+
+		&__text {
+			margin-top: 24px;
+			font-size: 18px;
+			line-height: 1.6;
+		}
+
+		.mb-dashboard__button {
+			margin-top: 24px;
+		}
+	}
+
+
 	// Tabs
 	&__info {
 		background: #fff;
@@ -527,7 +553,6 @@ div#wpcontent {
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
-		margin-top: 30px;
 	}
 
 	&__widget {
@@ -535,14 +560,6 @@ div#wpcontent {
 		border-radius: 8px;
 		background: #fff;
 		padding: 24px;
-		// box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); // shadow-lg
-		// position: relative;
-		// top: 0;
-		// transition: all .2s ease;
-
-		// &:hover {
-		// 	top: -8px;
-		// }
 
 		&-title {
 			font-weight: 600;

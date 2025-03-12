@@ -3,13 +3,19 @@ namespace MetaBox\Dashboard;
 
 class Dashboard {
 	private $upgradable = true;
+	private $has_actions = false;
 	private $is_aio = false;
 	private $assets_url;
 
 	public function __construct( $update_checker, $update_option ) {
-		$this->upgradable = $this->get_upgradable( $update_checker, $update_option );
-		$this->is_aio     = defined( 'META_BOX_AIO_DIR' );
-		$this->assets_url = RWMB_URL . 'src/Dashboard/assets';
+		$this->upgradable  = $this->get_upgradable( $update_checker, $update_option );
+		$this->has_actions = defined( 'META_BOX_LITE_DIR' ) || defined( 'META_BOX_AIO_DIR' );
+		$this->is_aio      = defined( 'META_BOX_AIO_DIR' );
+		$this->assets_url  = RWMB_URL . 'src/Dashboard/assets';
+
+		$this->upgradable = true;
+		$this->has_actions = false;
+		$this->is_aio = false;
 
 		$this->init();
 	}
