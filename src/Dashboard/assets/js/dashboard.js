@@ -1,7 +1,8 @@
 {
 	// Auto add UTM params to links.
 	document.querySelectorAll( '.mb-dashboard a' ).forEach( a => {
-		if ( !a.href.startsWith( 'https://metabox.io' ) && !a.href.startsWith( 'https://docs.metabox.io' ) && !a.href.startsWith( 'https://wpslimseo.com' ) ) {
+		const domains = [ 'metabox.io', 'docs.metabox.io', 'support.metabox.io', 'wpslimseo.com' ];
+		if ( domains.every( domain => !a.href.startsWith( `https://${ domain }` ) ) ) {
 			return;
 		}
 

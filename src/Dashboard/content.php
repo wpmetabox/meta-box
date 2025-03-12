@@ -534,7 +534,7 @@
 		</section>
 	</div>
 
-	<aside class="mb-dashboard__sidebar">
+	<aside class="mb-dashboard__sidebar" data-utm="sidebar">
 		<?php if ( ! $this->is_pro ) : ?>
 			<div class="mb-dashboard__widget mb-dashboard__upgrade" data-utm="cta">
 				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
@@ -550,6 +550,17 @@
 						<li><svg><use xlink:href="#check-circle-solid"></use></svg><?php esc_html_e( 'And much more!', 'meta-box' ); ?></li>
 					</ul>
 					<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
+				</div>
+			</div>
+		<?php else : ?>
+			<div class="mb-dashboard__widget mb-dashboard__support" data-utm="support">
+				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Premium support', 'meta-box' ); ?></div>
+				<div class="mb-dashboard__widget-body">
+					<p><?php esc_html_e( 'If you have any questions, need a hand with a technical issue, or just want to say hi, we\'ve got you covered. Get in touch with us and we\'ll be happy to assist you!', 'meta-box' ); ?><p>
+					<a class="mb-dashboard__external" target="_blank" href="https://support.metabox.io">
+						<?php esc_html_e( 'Go to the support forum', 'meta-box' ); ?>
+						<svg><use xlink:href="#external-link"></use></svg>
+					</a>
 				</div>
 			</div>
 		<?php endif; ?>

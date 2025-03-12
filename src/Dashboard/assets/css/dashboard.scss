@@ -663,7 +663,23 @@ div#wpcontent {
 		}
 	}
 
+	// Support widget
+	&__support {
+		position: relative;
 
+		&__icon {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 48px;
+			height: 48px;
+			fill: #f8fafc;
+			z-index: 0;
+		}
+	}
+
+
+	// News flyout sidebar
 	&__news-icon {
 		position: relative;
 
