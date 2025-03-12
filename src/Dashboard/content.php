@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) || die; ?>
 
-<header class="mb-dashboard__header">
+<header class="mb-dashboard__header" data-utm="header">
 	<a class="mb-dashboard__logo" href="https://metabox.io" target="_blank">
 		<svg viewBox="0 0 196 46" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect width="46" height="46" rx="3" fill="#000"/>
@@ -124,7 +124,7 @@
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials">
+			<div class="mb-dashboard__tab-pane mb-dashboard__tutorials" data-tab="tutorials" data-utm="tutorials">
 				<div class="mb-dashboard__tutorials__inner">
 					<div class="mb-dashboard__tutorial">
 						<a
@@ -310,7 +310,7 @@
 			</div>
 
 			<?php if ( ! $this->is_pro ) : ?>
-				<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare">
+				<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare" data-utm="compare">
 					<div class="mb-dashboard__compare__header">
 						<div>
 							<div class="mb-dashboard__compare__title">
@@ -512,7 +512,7 @@
 
 	<aside class="mb-dashboard__sidebar">
 		<?php if ( ! $this->is_pro ) : ?>
-			<div class="mb-dashboard__widget mb-dashboard__upgrade">
+			<div class="mb-dashboard__widget mb-dashboard__upgrade" data-utm="cta">
 				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
 				<div class="mb-dashboard__widget-body">
 					<ul>

@@ -1,9 +1,14 @@
 {
 	// Auto add UTM params to links.
 	document.querySelectorAll( '.mb-dashboard a' ).forEach( a => {
-		if ( a.href.startsWith( 'https://metabox.io' ) || a.href.startsWith( 'https://docs.metabox.io' ) ) {
-			a.href += `?utm_source=dashboard&utm_medium=link&utm_campaign=${ MBD.campaign }`;
+		if ( !a.href.startsWith( 'https://metabox.io' ) && !a.href.startsWith( 'https://docs.metabox.io' ) ) {
+			return;
 		}
+
+		const parent = a.closest( '[data-utm]' );
+		const medium = parent ? parent.dataset.utm : 'link';
+
+		a.href += `?utm_source=dashboard&utm_medium=${ medium }&utm_campaign=${ MBD.campaign }`;
 	} );
 
 	// Click to install or activate plugins.
