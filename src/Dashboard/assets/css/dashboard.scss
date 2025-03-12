@@ -564,6 +564,7 @@ div#wpcontent {
 		border: none;
 		background: linear-gradient(135deg, rgba(0, 182, 182, 1) 0%, rgba(43, 68, 91, 1) 100%);
 		color: #fff;
+		position: relative;
 
 		.mb-dashboard__widget-title {
 			color: inherit;
@@ -588,6 +589,14 @@ div#wpcontent {
 		a {
 			display: block;
 			text-align: center;
+		}
+
+		img {
+			position: absolute;
+			top: -30px;
+			right: -10px;
+			width: 60px;
+			transform: rotate(-30deg);
 		}
 	}
 

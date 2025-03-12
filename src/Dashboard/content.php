@@ -551,6 +551,7 @@
 					</ul>
 					<a class="mb-dashboard__button" target="_blank" href="https://metabox.io/pricing/"><?php esc_html_e( 'Upgrade Now', 'meta-box' ); ?></a>
 				</div>
+				<img src="<?php echo esc_attr( "{$this->assets_url}/img/bulb.svg" ); ?>" />
 			</div>
 		<?php else : ?>
 			<div class="mb-dashboard__widget mb-dashboard__support" data-utm="support">
