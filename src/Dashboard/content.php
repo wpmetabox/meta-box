@@ -88,7 +88,7 @@
 
 			<?php if ( ! $this->has_actions ) : ?>
 				<a class="mb-dashboard__external mb-dashboard__button" href="https://docs.metabox.io/introduction/" target="_blank">
-					<?php esc_html_e( 'Getting started', 'meta-box' ); ?>
+					<?php esc_html_e( 'Get started', 'meta-box' ); ?>
 					<svg><use xlink:href="#external-link"></use></svg>
 				</a>
 			<?php endif; ?>
