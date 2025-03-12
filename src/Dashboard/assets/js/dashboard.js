@@ -2,7 +2,7 @@
 	// Auto add UTM params to links.
 	document.querySelectorAll( '.mb-dashboard a' ).forEach( a => {
 		if ( a.href.startsWith( 'https://metabox.io' ) || a.href.startsWith( 'https://docs.metabox.io' ) ) {
-			a.href += '?utm_source=dashboard&utm_medium=link&utm_campaign=meta_box';
+			a.href += `?utm_source=dashboard&utm_medium=link&utm_campaign=${ MBD.campaign }`;
 		}
 	} );
 
@@ -154,7 +154,7 @@
 				const url = new URL( `https://docs.metabox.io${ result.u }` );
 				url.searchParams.append( 'utm_source', 'dashboard' );
 				url.searchParams.append( 'utm_medium', 'search' );
-				url.searchParams.append( 'utm_campaign', 'meta_box' );
+				url.searchParams.append( 'utm_campaign', MBD.campaign );
 
 				return `<a target="_blank" href="${ url.toString() }">${ result.t } <span>${ category }</span></a>`;
 			} );
@@ -220,7 +220,7 @@
 			const url = new URL( item.url );
 			url.searchParams.append( 'utm_source', 'dashboard' );
 			url.searchParams.append( 'utm_medium', 'news' );
-			url.searchParams.append( 'utm_campaign', 'meta_box' );
+			url.searchParams.append( 'utm_campaign', MBD.campaign );
 
 			return `<div class="mb-dashboard__news__item">
 				<div class="mb-dashboard__news__date">${ item.date }</div>
