@@ -141,7 +141,7 @@
 					<?php esc_html_e( 'Tutorials', 'meta-box' ); ?>
 				</div>
 
-				<?php if ( ! $this->is_pro ) : ?>
+				<?php if ( $this->upgradable ) : ?>
 					<div class="mb-dashboard__tab" data-tab="compare">
 						<?php esc_html_e( 'Upgrade', 'meta-box' ); ?>
 						<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Cool', 'meta-box' ); ?></span>
@@ -333,7 +333,7 @@
 				</a>
 			</div>
 
-			<?php if ( ! $this->is_pro ) : ?>
+			<?php if ( $this->upgradable ) : ?>
 				<div class="mb-dashboard__tab-pane mb-dashboard__hidden mb-dashboard__compare" data-tab="compare" data-utm="compare">
 					<div class="mb-dashboard__compare__header">
 						<div>
@@ -535,7 +535,7 @@
 	</div>
 
 	<aside class="mb-dashboard__sidebar" data-utm="sidebar">
-		<?php if ( ! $this->is_pro ) : ?>
+		<?php if ( $this->upgradable ) : ?>
 			<div class="mb-dashboard__widget mb-dashboard__upgrade" data-utm="cta">
 				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
 				<div class="mb-dashboard__widget-body">

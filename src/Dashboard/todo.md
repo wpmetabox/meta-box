@@ -1,2 +1,1 @@
-- Add tab support
-- Add bulb icon
+- Fix is_pro conditions

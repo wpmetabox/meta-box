@@ -2,16 +2,28 @@
 namespace MetaBox\Dashboard;
 
 class Dashboard {
-	private $is_pro = false;
+	private $upgradable = true;
 	private $is_aio = false;
 	private $assets_url;
 
-	public function __construct( bool $is_pro ) {
-		$this->is_pro     = $is_pro;
+	public function __construct( $update_checker, $update_option ) {
+		$this->upgradable = $this->get_upgradable( $update_checker, $update_option );
 		$this->is_aio     = defined( 'META_BOX_AIO_DIR' );
 		$this->assets_url = RWMB_URL . 'src/Dashboard/assets';
 
 		$this->init();
+	}
+
+	private function get_upgradable( $update_checker, $update_option ): bool {
+		if ( ! $update_checker || ! $update_option ) {
+			return true;
+		}
+
+		if ( ! $update_checker->has_extensions() ) {
+			return true;
+		}
+
+		return $update_option->get_license_status() !== 'active';
 	}
 
 	public function init(): void {
@@ -37,8 +49,8 @@ class Dashboard {
 
 	public function plugin_links( array $links ): array {
 		$links[] = '<a href="' . esc_url( $this->get_menu_link() ) . '">' . esc_html__( 'Dashboard', 'meta-box' ) . '</a>';
-		if ( ! $this->is_pro ) {
-			$links[] = '<a href="https://elu.to/mpp" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Go Pro', 'meta-box' ) . '</a>';
+		if ( $this->upgradable ) {
+			$links[] = '<a href="https://elu.to/mpp" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Upgrade', 'meta-box' ) . '</a>';
 		}
 		return $links;
 	}
