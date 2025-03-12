@@ -1,0 +1,2 @@
+- Add tab support
+- Add 2 actions for AIO
