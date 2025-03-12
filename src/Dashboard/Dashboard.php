@@ -3,10 +3,12 @@ namespace MetaBox\Dashboard;
 
 class Dashboard {
 	private $is_pro = false;
+	private $is_aio = false;
 	private $assets_url;
 
 	public function __construct( bool $is_pro ) {
 		$this->is_pro     = $is_pro;
+		$this->is_aio     = defined( 'META_BOX_AIO_DIR' );
 		$this->assets_url = RWMB_URL . 'src/Dashboard/assets';
 
 		$this->init();
