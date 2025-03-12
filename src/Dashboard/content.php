@@ -540,11 +540,13 @@
 						'title'       => 'Slim SEO',
 						'slug'        => 'slim-seo',
 						'description' => __( 'Fast & Automated WordPress SEO Plugin', 'meta-box' ),
+						'url'         => 'https://wpslimseo.com',
 					],
 					[
 						'title'       => 'Falcon',
 						'slug'        => 'falcon',
 						'description' => __( 'WordPress Optimizations & Tweaks', 'meta-box' ),
+						'url'         => 'https://wordpress.org/plugins/falcon/',
 					],
 				];
 				?>
@@ -552,7 +554,7 @@
 					<div class="mb-dashboard__plugin">
 						<img src="<?php echo esc_attr( "{$this->assets_url}/img/{$plugin['slug']}.svg" ); ?>" alt="<?php echo esc_attr( $plugin['title'] ); ?>" />
 						<div class="mb-dashboard__plugin__text">
-							<div class="mb-dashboard__plugin__title"><?php echo esc_html( $plugin['title'] ); ?></div>
+							<a class="mb-dashboard__plugin__title" href="<?php echo esc_attr( $plugin['url'] ); ?>" target="_blank"><?php echo esc_html( $plugin['title'] ); ?></a>
 							<div class="mb-dashboard__plugin__description"><?php echo esc_html( $plugin['description'] ); ?></div>
 						</div>
 						<?php $status = $this->get_plugin_status( $plugin['slug'] ); ?>
