@@ -345,7 +345,7 @@ div#wpcontent {
 		gap: 16px;
 		align-items: center;
 		border-radius: 8px;
-		border: var(--mb-border);
+		border: 1px solid var(--mb-color-accent);
 		padding: 24px;
 		background: #fff;
 		box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); // shadow-lg
@@ -356,7 +356,7 @@ div#wpcontent {
 		svg {
 			width: 32px;
 			height: 32px;
-			fill: #cbd5e1; // slate-200
+			fill: var(--mb-color-accent);
 		}
 
 		&__title {

@@ -70,7 +70,7 @@
 			<div class="mb-dashboard__actions__title"><?php esc_html_e( 'Getting Started', 'meta-box' ); ?></div>
 
 			<div class="mb-dashboard__actions__inner">
-				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
+				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-post-type' ) ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 						<path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
 						<path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
@@ -80,7 +80,7 @@
 						<span class="mb-dashboard__action__description"><?php esc_html_e( 'For a new type of content on your website', 'meta-box' ); ?></span>
 					</span>
 				</a>
-				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-taxonomy' ) ); ?>">
+				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-taxonomy' ) ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 						<path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5z"/>
 					</svg>
@@ -89,7 +89,7 @@
 						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To group or categorize your posts', 'meta-box' ); ?></span>
 					</span>
 				</a>
-				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=meta-box' ) ); ?>">
+				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=meta-box' ) ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 						<path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5z"/>
 						<path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0M0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
@@ -99,7 +99,7 @@
 						<span class="mb-dashboard__action__description"><?php esc_html_e( 'To add custom fields to your posts', 'meta-box' ); ?></span>
 					</span>
 				</a>
-				<a class="mb-dashboard__action" href="<?= esc_attr( admin_url( 'post-new.php?post_type=mb-relationship' ) ); ?>">
+				<a class="mb-dashboard__action" href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=mb-relationship' ) ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
 					</svg>
@@ -120,7 +120,7 @@
 				<?php if ( ! $this->is_pro ) : ?>
 					<div class="mb-dashboard__tab" data-tab="compare">
 						<?php esc_html_e( 'Upgrade', 'meta-box' ); ?>
-						<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
+						<span class="mb-dashboard__tab__badge"><?php esc_html_e( 'Cool', 'meta-box' ); ?></span>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -138,7 +138,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/create-post-types.png" ); ?>" alt="<?php esc_attr_e( 'Creating post types and taxonomies', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/create-post-types.png" ); ?>" alt="<?php esc_attr_e( 'Creating post types and taxonomies', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-post-types-taxonomies/" target="_blank"><?php esc_html_e( 'Creating post types and taxonomies', 'meta-box' ); ?></a>
@@ -160,7 +160,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/change-id.png" ); ?>" alt="<?php esc_attr_e( 'Changing the ID of a field', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/change-id.png" ); ?>" alt="<?php esc_attr_e( 'Changing the ID of a field', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/change-id-meta-box-field/" target="_blank"><?php esc_html_e( 'Changing the ID of a field', 'meta-box' ); ?></a>
@@ -182,7 +182,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/create-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Creating and configure custom fields', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/create-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Creating and configure custom fields', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-custom-fields/" target="_blank"><?php esc_html_e( 'Creating and configure custom fields', 'meta-box' ); ?></a>
@@ -204,7 +204,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/category-thumbnails.png" ); ?>" alt="<?php esc_attr_e( 'Creating category thumbnails', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/category-thumbnails.png" ); ?>" alt="<?php esc_attr_e( 'Creating category thumbnails', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/category-thumbnails/" target="_blank"><?php esc_html_e( 'Creating category thumbnails', 'meta-box' ); ?></a>
@@ -226,7 +226,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/filter-posts.png" ); ?>" alt="<?php esc_attr_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/filter-posts.png" ); ?>" alt="<?php esc_attr_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/filter-posts-by-custom-fields-taxonomies/" target="_blank"><?php esc_html_e( 'Filtering posts by custom fields and taxonomies', 'meta-box' ); ?></a>
@@ -248,7 +248,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/recipe.png" ); ?>" alt="<?php esc_attr_e( 'Creating a recipe with Meta Box and Bricks', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/recipe.png" ); ?>" alt="<?php esc_attr_e( 'Creating a recipe with Meta Box and Bricks', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-recipes-meta-box-bricks/" target="_blank"><?php esc_html_e( 'Creating a recipe with Meta Box and Bricks', 'meta-box' ); ?></a>
@@ -270,7 +270,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/export-import-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Export and import custom fields', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/export-import-custom-fields.png" ); ?>" alt="<?php esc_attr_e( 'Export and import custom fields', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/export-import-custom-fields-meta-box-builder/" target="_blank"><?php esc_html_e( 'Export and import custom fields', 'meta-box' ); ?></a>
@@ -292,7 +292,7 @@
 							data-tooltip="<?php esc_attr_e( 'Click to view the video version', 'meta-box' ); ?>"
 							data-position="top"
 						>
-							<img src="<?= esc_attr( "{$this->assets_url}/img/simple-listings.png" ); ?>" alt="<?php esc_attr_e( 'Creating a listing site with Meta Box and Elementor', 'meta-box' ); ?>">
+							<img src="<?php echo esc_attr( "{$this->assets_url}/img/simple-listings.png" ); ?>" alt="<?php esc_attr_e( 'Creating a listing site with Meta Box and Elementor', 'meta-box' ); ?>">
 						</a>
 						<div class="mb-dashboard__tutorial__text">
 							<a class="mb-dashboard__tutorial__title" href="https://docs.metabox.io/tutorials/create-simple-listing-with-elementor/" target="_blank"><?php esc_html_e( 'Creating a listing site with Meta Box and Elementor', 'meta-box' ); ?></a>
@@ -550,14 +550,14 @@
 				?>
 				<?php foreach ( $plugins as $plugin ) : ?>
 					<div class="mb-dashboard__plugin">
-						<img src="<?= esc_attr( "{$this->assets_url}/img/{$plugin['slug']}.svg" ); ?>" alt="<?= esc_attr( $plugin['title'] ); ?>" />
+						<img src="<?php echo esc_attr( "{$this->assets_url}/img/{$plugin['slug']}.svg" ); ?>" alt="<?php echo esc_attr( $plugin['title'] ); ?>" />
 						<div class="mb-dashboard__plugin__text">
-							<div class="mb-dashboard__plugin__title"><?= esc_html( $plugin['title'] ); ?></div>
-							<div class="mb-dashboard__plugin__description"><?= esc_html( $plugin['description'] ); ?></div>
+							<div class="mb-dashboard__plugin__title"><?php echo esc_html( $plugin['title'] ); ?></div>
+							<div class="mb-dashboard__plugin__description"><?php echo esc_html( $plugin['description'] ); ?></div>
 						</div>
 						<?php $status = $this->get_plugin_status( $plugin['slug'] ); ?>
-						<span class="mb-dashboard__plugin__status" data-plugin="<?= esc_attr( $plugin['slug'] ); ?>" data-action="<?= esc_attr( $status['action'] ); ?>" data-processing="<?= esc_attr( $status['processing'] ); ?>" data-done="<?= esc_attr( $status['done'] ); ?>">
-							<?= esc_html( $status['text'] ); ?>
+						<span class="mb-dashboard__plugin__status" data-plugin="<?php echo esc_attr( $plugin['slug'] ); ?>" data-action="<?php echo esc_attr( $status['action'] ); ?>" data-processing="<?php echo esc_attr( $status['processing'] ); ?>" data-done="<?php echo esc_attr( $status['done'] ); ?>">
+							<?php echo esc_html( $status['text'] ); ?>
 						</span>
 					</div>
 				<?php endforeach; ?>
@@ -611,7 +611,7 @@
 	<symbol id="check-circle-solid" viewBox="0 0 24 24">
 		<path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.999 14.413-3.713-3.705L7.7 11.292l2.299 2.295 5.294-5.294 1.414 1.414-6.706 6.706z"></path>
 	</symbol>
-	<symbol id="check-circle" viewBox="0 0 24 24" fill="#16a34a">
+	<symbol id="check-circle" viewBox="0 0 24 24" fill="var(--mb-color-accent)">
 		<path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
 		<path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path>
 	</symbol>
