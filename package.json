@@ -1,0 +1,9 @@
+{
+	"scripts": {
+		"dashboard:css:build": "sass -s compressed --no-source-map src/Dashboard/assets/css",
+		"dashboard:css:watch": "sass -s compressed --no-source-map -w src/Dashboard/assets/css"
+	},
+	"devDependencies": {
+		"sass": "^1.80.1"
+	}
+}
