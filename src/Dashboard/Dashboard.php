@@ -2,9 +2,9 @@
 namespace MetaBox\Dashboard;
 
 class Dashboard {
-	private $upgradable = true;
+	private $upgradable  = true;
 	private $has_actions = false;
-	private $is_aio = false;
+	private $is_aio      = false;
 	private $assets_url;
 
 	public function __construct( $update_checker, $update_option ) {
