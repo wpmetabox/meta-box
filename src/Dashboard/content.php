@@ -66,33 +66,35 @@
 
 	<div class="mb-dashboard__main">
 
-		<section class="mb-dashboard__intro" data-utm="intro">
-			<div class="mb-dashboard__intro__subtitle">
-				<?php
-				// Translators: %s - current user display name.
-				echo esc_html( sprintf( __( 'Hello %s,', 'meta-box' ), wp_get_current_user()->display_name ) );
-				?>
-			</div>
-			<div class="mb-dashboard__intro__title">
-				<?php
-				// Translators: %s - Meta Box (plugin name).
-				echo esc_html( sprintf( __( 'Welcome to %s,', 'meta-box' ), 'Meta Box' ) );
-				?>
-			</div>
-			<div class="mb-dashboard__intro__text">
-				<?php
-				// Translators: %s - Meta Box (plugin name).
-				echo esc_html( sprintf( __( '%s is a powerful, lightweight WordPress plugin for creating custom post types, fields, relationships, and more. With a user-friendly interface and flexible options, it simplifies dynamic content creation without complex coding. Free and reliable, it\'s perfect for beginners and experts alike.', 'meta-box' ), 'Meta Box' ) );
-				?>
-			</div>
+		<?php if ( ! $this->is_aio ) : ?>
+			<section class="mb-dashboard__intro" data-utm="intro">
+				<div class="mb-dashboard__intro__subtitle">
+					<?php
+					// Translators: %s - current user display name.
+					echo esc_html( sprintf( __( 'Hello %s,', 'meta-box' ), wp_get_current_user()->display_name ) );
+					?>
+				</div>
+				<div class="mb-dashboard__intro__title">
+					<?php
+					// Translators: %s - Meta Box (plugin name).
+					echo esc_html( sprintf( __( 'Welcome to %s,', 'meta-box' ), 'Meta Box' ) );
+					?>
+				</div>
+				<div class="mb-dashboard__intro__text">
+					<?php
+					// Translators: %s - Meta Box (plugin name).
+					echo esc_html( sprintf( __( '%s is a powerful, lightweight WordPress plugin for creating custom post types, fields, relationships, and more. With a user-friendly interface and flexible options, it simplifies dynamic content creation without complex coding. Free and reliable, it\'s perfect for beginners and experts alike.', 'meta-box' ), 'Meta Box' ) );
+					?>
+				</div>
 
-			<?php if ( ! $this->has_actions ) : ?>
-				<a class="mb-dashboard__external mb-dashboard__button" href="https://docs.metabox.io/introduction/" target="_blank">
-					<?php esc_html_e( 'Get started', 'meta-box' ); ?>
-					<svg><use xlink:href="#external-link"></use></svg>
-				</a>
-			<?php endif; ?>
-		</section>
+				<?php if ( ! $this->has_actions ) : ?>
+					<a class="mb-dashboard__external mb-dashboard__button" href="https://docs.metabox.io/introduction/" target="_blank">
+						<?php esc_html_e( 'Get started', 'meta-box' ); ?>
+						<svg><use xlink:href="#external-link"></use></svg>
+					</a>
+				<?php endif; ?>
+			</section>
+		<?php endif; ?>
 
 		<?php if ( $this->has_actions ) : ?>
 			<section class="mb-dashboard__actions">
