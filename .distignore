@@ -11,14 +11,14 @@ Thumbs.db
 
 composer.json
 composer.lock
-package-lock.json
-package.json
 
-gulpfile.js
+package.json
+package-lock.json
+
 phpcs.xml
 phpstan.neon
+
 README.md
 
 tests
-css/scss
 src/Dashboard/assets/css/dashboads.scss
