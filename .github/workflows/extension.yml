@@ -37,5 +37,5 @@ jobs:
         run:
           curl --request POST --url "https://metabox.io/wp-json/buse2/version/?secret=${{ secrets.VERSION_SECRET }}&slug=$name&version=$tag"
       - name: Copy CHANGELOG.md to metabox.io server
-        run:
+        run: \
           [ -f CHANGELOG.md ] && rsync -e "ssh -o StrictHostKeyChecking=no" -avz CHANGELOG.md ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}/changelogs/$name.md
