@@ -31,6 +31,15 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		$attributes = static::get_attributes( $field, $meta );
 		$output    .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
 
+		if ( $field['type'] === 'password' ) {
+            $output .= sprintf(
+                '<button type="button" class="rwmb-password-toggle" data-for="%s">
+                    <span class="dashicons dashicons-visibility"></span>
+                </button>',
+                esc_attr( $field['id'] )
+            );
+        }
+
 		if ( $field['append'] ) {
 			$output .= '<span class="rwmb-input-group-text">' . $field['append'] . '</span>';
 		}
