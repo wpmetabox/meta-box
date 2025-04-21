@@ -4,7 +4,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	toggleButtons.forEach( button => {
 		button.addEventListener( 'click', function ( e ) {
 			e.preventDefault();
-			const input = document.getElementById( this.dataset.for );
+			const input = this.previousElementSibling;
 			const eyeIcon = this.querySelector( '.rwmb-eye-icon' );
 			const eyeOffIcon = this.querySelector( '.rwmb-eye-off-icon' );
 
