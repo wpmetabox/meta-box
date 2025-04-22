@@ -165,10 +165,10 @@ class RWMB_OSM_Field extends RWMB_Field {
 
 	private static function enqueue_map_assets() {
 		wp_enqueue_style( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.css', [], '1.9.4' );
-		wp_style_add_data( 'leaflet', 'path', RWMB_CSS_DIR . 'leaflet/leaflet.css' );
+		wp_style_add_data( 'leaflet', 'path', RWMB_JS_URL . 'leaflet/leaflet.css' );
 		wp_enqueue_script( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.js', [], '1.9.4', true );
 		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.css', [ 'leaflet' ], '1.2.2' );
-		wp_style_add_data( 'leaflet-gesture-handling', 'path', RWMB_CSS_DIR . 'leaflet/leaflet-gesture-handling.min.css' );
+		wp_style_add_data( 'leaflet-gesture-handling', 'path', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.css' );
 		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], '1.2.2' );
 	}
 }
