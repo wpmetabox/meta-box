@@ -12,7 +12,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_style_add_data( 'rwmb-osm', 'path', RWMB_CSS_DIR . 'osm.css' );
 		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', [ 'jquery', 'jquery-ui-autocomplete', 'leaflet' ], RWMB_VER, true );
 
-		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [ 
 			'no_results_string' => __( 'No results found', 'meta-box' ),
 		] );
 	}
@@ -59,7 +59,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, [
+		$field = wp_parse_args( $field, [ 
 			'std'           => '',
 			'address_field' => '',
 			'language'      => '',
@@ -128,7 +128,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 			return '';
 		}
 
-		$args = wp_parse_args( $args, [
+		$args = wp_parse_args( $args, [ 
 			'latitude'     => $latitude,
 			'longitude'    => $longitude,
 			'width'        => '100%',
@@ -149,7 +149,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		 * More Open Street Map options
 		 * @link https://leafletjs.com/reference-1.5.0.html#map-option
 		 */
-		$args['js_options'] = wp_parse_args( $args['js_options'], [
+		$args['js_options'] = wp_parse_args( $args['js_options'], [ 
 			// Default to 'zoom' level set in admin, but can be overwritten.
 			'zoom' => $args['zoom'],
 		] );
@@ -165,8 +165,10 @@ class RWMB_OSM_Field extends RWMB_Field {
 
 	private static function enqueue_map_assets() {
 		wp_enqueue_style( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.css', [], '1.9.4' );
+		wp_style_add_data( 'leaflet', 'path', RWMB_CSS_DIR . 'leaflet/leaflet.css' );
 		wp_enqueue_script( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.js', [], '1.9.4', true );
 		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.css', [ 'leaflet' ], '1.2.2' );
+		wp_style_add_data( 'leaflet-gesture-handling', 'path', RWMB_CSS_DIR . 'leaflet/leaflet-gesture-handling.min.css' );
 		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], '1.2.2' );
 	}
 }
