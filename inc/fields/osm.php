@@ -11,7 +11,8 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_enqueue_style( 'rwmb-osm', RWMB_CSS_URL . 'osm.css', [ 'leaflet' ], RWMB_VER );
 		wp_style_add_data( 'rwmb-osm', 'path', RWMB_CSS_DIR . 'osm.css' );
 		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', [ 'jquery', 'jquery-ui-autocomplete', 'leaflet' ], RWMB_VER, true );
-
+		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_CSS_URL . '../js/leaflet/leaflet-gesture-handling.min.css', RWMB_VER );
+		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], RWMB_VER );
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [ 
 			'no_results_string' => __( 'No results found', 'meta-box' ),
 		] );
@@ -144,7 +145,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_enqueue_script( 'rwmb-osm-frontend', RWMB_JS_URL . 'osm-frontend.js', [ 'jquery', 'leaflet' ], RWMB_VER, true );
 		wp_enqueue_style( 'rwmb-osm-frontend', RWMB_CSS_URL . 'osm-frontend.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-osm-frontend', 'path', RWMB_CSS_DIR . 'osm-frontend.css' );
-		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_CSS_URL . '../js/leaflet/leaflet-gesture-handling.min.css', [ 'leaflet' ], RWMB_VER );
+		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_CSS_URL . '../js/leaflet/leaflet-gesture-handling.min.css', RWMB_VER );
 		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], RWMB_VER );
 
 		/*
