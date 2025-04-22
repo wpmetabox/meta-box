@@ -29,7 +29,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		}
 
 		$attributes = static::get_attributes( $field, $meta );
-		$output    .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
+		$output .= sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
 
 		if ( $field['append'] ) {
 			$output .= '<span class="rwmb-input-group-text">' . $field['append'] . '</span>';
@@ -50,7 +50,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, [
+		$field = wp_parse_args( $field, [ 
 			'autocomplete' => false,
 			'datalist'     => false,
 			'readonly'     => false,
@@ -61,7 +61,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 			'append'       => '',
 		] );
 		if ( $field['datalist'] ) {
-			$field['datalist'] = wp_parse_args( $field['datalist'], [
+			$field['datalist'] = wp_parse_args( $field['datalist'], [ 
 				'id'      => $field['id'] . '_list',
 				'options' => [],
 			] );
@@ -78,7 +78,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 	 */
 	public static function get_attributes( $field, $value = null ) {
 		$attributes = parent::get_attributes( $field, $value );
-		$attributes = wp_parse_args( $attributes, [
+		$attributes = wp_parse_args( $attributes, [ 
 			'autocomplete' => $field['autocomplete'],
 			'list'         => $field['datalist'] ? $field['datalist']['id'] : false,
 			'readonly'     => $field['readonly'],
@@ -96,7 +96,7 @@ abstract class RWMB_Input_Field extends RWMB_Field {
 		return $attributes;
 	}
 
-	protected static function datalist( array $field ) : string {
+	protected static function datalist( array $field ): string {
 		if ( empty( $field['datalist'] ) ) {
 			return '';
 		}
