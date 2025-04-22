@@ -12,7 +12,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_style_add_data( 'rwmb-osm', 'path', RWMB_CSS_DIR . 'osm.css' );
 		wp_enqueue_script( 'rwmb-osm', RWMB_JS_URL . 'osm.js', [ 'jquery', 'jquery-ui-autocomplete', 'leaflet' ], RWMB_VER, true );
 
-		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-osm', 'RWMB_Osm', [ 
 			'no_results_string' => __( 'No results found', 'meta-box' ),
 		] );
 	}
@@ -59,7 +59,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, [
+		$field = wp_parse_args( $field, [ 
 			'std'           => '',
 			'address_field' => '',
 			'language'      => '',
@@ -87,7 +87,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 			$location = [];
 			foreach ( $value as $clone ) {
 				list( $latitude, $longitude, $zoom ) = explode( ',', $clone . ',,' );
-				$location[]                            = compact( 'latitude', 'longitude', 'zoom' );
+				$location[]                          = compact( 'latitude', 'longitude', 'zoom' );
 			}
 			return $location;
 		}
@@ -117,18 +117,18 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function render_map( $location, $args = [] ) {
-        // For compatibility with previous version, or within groups.
+		// For compatibility with previous version, or within groups.
 		if ( is_string( $location ) ) {
 			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
 		} else {
 			extract( $location );
 		}
 
-        if ( ! $latitude || ! $longitude ) {
-            return '';
-        }
+		if ( ! $latitude || ! $longitude ) {
+			return '';
+		}
 
-		$args = wp_parse_args( $args, [
+		$args = wp_parse_args( $args, [ 
 			'latitude'     => $latitude,
 			'longitude'    => $longitude,
 			'width'        => '100%',
@@ -144,12 +144,14 @@ class RWMB_OSM_Field extends RWMB_Field {
 		wp_enqueue_script( 'rwmb-osm-frontend', RWMB_JS_URL . 'osm-frontend.js', [ 'jquery', 'leaflet' ], RWMB_VER, true );
 		wp_enqueue_style( 'rwmb-osm-frontend', RWMB_CSS_URL . 'osm-frontend.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-osm-frontend', 'path', RWMB_CSS_DIR . 'osm-frontend.css' );
+		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.css', [ 'leaflet' ], RWMB_VER );
+		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], RWMB_VER );
 
 		/*
 		 * More Open Street Map options
 		 * @link https://leafletjs.com/reference-1.5.0.html#map-option
 		 */
-		$args['js_options'] = wp_parse_args( $args['js_options'], [
+		$args['js_options'] = wp_parse_args( $args['js_options'], [ 
 			// Default to 'zoom' level set in admin, but can be overwritten.
 			'zoom' => $args['zoom'],
 		] );

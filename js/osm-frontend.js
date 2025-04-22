@@ -1,4 +1,4 @@
-jQuery( function( $ ) {
+jQuery( function ( $ ) {
 	'use strict';
 
 	/**
@@ -13,13 +13,14 @@ jQuery( function( $ ) {
 			center = L.latLng( options.latitude, options.longitude ),
 			map;
 
-			mapOptions.center = center;
+		mapOptions.center = center;
 
-			// Typcast zoom to a number
-			mapOptions.zoom *= 1;
+		// Typcast zoom to a number
+		mapOptions.zoom *= 1;
 
-			map = L.map( this, mapOptions );
-			map.addLayer( osmTileLayer );
+		mapOptions.gestureHandling = true;
+		map = L.map( this, mapOptions );
+		map.addLayer( osmTileLayer );
 
 		// Set marker
 		if ( options.marker ) {
@@ -37,7 +38,7 @@ jQuery( function( $ ) {
 				} );
 			}
 
-			var marker = L.marker( center, markerOptions ).addTo( map )
+			var marker = L.marker( center, markerOptions ).addTo( map );
 		}
 
 		// Set info window
