@@ -45,7 +45,7 @@
 		},
 
 		initMapElements: function () {
-			this.map = L.map( this.canvas, { zoom: 14 } );
+			this.map = L.map( this.canvas, { zoom: 14, gestureHandling: true } );
 			L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			} ).addTo( this.map );
@@ -249,11 +249,11 @@
 			}
 
 			let $groupWrapper = this.$container.closest( '.rwmb-group-clone' );
-			if ( ! $groupWrapper.length ) {
+			if ( !$groupWrapper.length ) {
 				$groupWrapper = this.$container.closest( '.rwmb-group-wrapper' );
 			}
 
-			if ( ! $groupWrapper.length ) {
+			if ( !$groupWrapper.length ) {
 				return null;
 			}
 

@@ -87,7 +87,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 			$location = [];
 			foreach ( $value as $clone ) {
 				list( $latitude, $longitude, $zoom ) = explode( ',', $clone . ',,' );
-				$location[]                            = compact( 'latitude', 'longitude', 'zoom' );
+				$location[]                          = compact( 'latitude', 'longitude', 'zoom' );
 			}
 			return $location;
 		}
@@ -117,16 +117,16 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function render_map( $location, $args = [] ) {
-        // For compatibility with previous version, or within groups.
+		// For compatibility with previous version, or within groups.
 		if ( is_string( $location ) ) {
 			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
 		} else {
 			extract( $location );
 		}
 
-        if ( ! $latitude || ! $longitude ) {
-            return '';
-        }
+		if ( ! $latitude || ! $longitude ) {
+			return '';
+		}
 
 		$args = wp_parse_args( $args, [
 			'latitude'     => $latitude,
@@ -166,5 +166,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 	private static function enqueue_map_assets() {
 		wp_enqueue_style( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.css', [], '1.9.4' );
 		wp_enqueue_script( 'leaflet', RWMB_JS_URL . 'leaflet/leaflet.js', [], '1.9.4', true );
+		wp_enqueue_style( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.css', [ 'leaflet' ], '1.2.2' );
+		wp_enqueue_script( 'leaflet-gesture-handling', RWMB_JS_URL . 'leaflet/leaflet-gesture-handling.min.js', [ 'leaflet' ], '1.2.2' );
 	}
 }
