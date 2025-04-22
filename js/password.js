@@ -2,12 +2,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const toggleButtons = document.querySelectorAll( '.rwmb-password-toggle' );
 
 	toggleButtons.forEach( button => {
-		button.addEventListener( 'click', function ( e ) {
-			e.preventDefault();
-			const input = this.previousElementSibling;
-			const eyeIcon = this.querySelector( '.rwmb-eye-icon' );
-			const eyeOffIcon = this.querySelector( '.rwmb-eye-off-icon' );
+		const eyeIcon = button.querySelector( '.rwmb-eye-icon' );
+		const eyeOffIcon = button.querySelector( '.rwmb-eye-off-icon' );
+		const input = button.previousElementSibling.querySelector( 'input' );
 
+		button.addEventListener( 'click', () => {
 			if ( input.type === 'password' ) {
 				input.type = 'text';
 				eyeIcon.style.display = 'none';
