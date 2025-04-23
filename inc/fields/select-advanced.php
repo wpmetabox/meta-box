@@ -17,7 +17,7 @@ class RWMB_Select_Advanced_Field extends RWMB_Select_Field {
 
 		// Localize.
 		$dependencies = [ 'rwmb-select2', 'rwmb-select', 'underscore' ];
-		$locale       = str_replace( '_', '-', get_locale() );
+		$locale       = str_replace( '_', '-', get_user_locale() );
 		$locale_short = substr( $locale, 0, 2 );
 		$locale       = file_exists( RWMB_DIR . "js/select2/i18n/$locale.js" ) ? $locale : $locale_short;
 

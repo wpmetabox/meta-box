@@ -81,7 +81,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		wp_register_script( 'rwmb-time', RWMB_JS_URL . 'time.js', [ 'jquery-ui-timepicker-i18n', 'jquery-ui-button', 'jquery-ui-timepicker-slider', 'rwmb' ], RWMB_VER, true );
 
 		$handles      = [ 'datetime', 'time' ];
-		$locale       = str_replace( '_', '-', get_locale() );
+		$locale       = str_replace( '_', '-', get_user_locale() );
 		$locale_short = substr( $locale, 0, 2 );
 		$data         = [
 			'locale'      => $locale,
