@@ -18,6 +18,7 @@ package-lock.json
 phpcs.xml
 phpstan.neon
 
+CHANGELOG.md
 README.md
 
 tests
