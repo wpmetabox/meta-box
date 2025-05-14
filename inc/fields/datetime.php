@@ -202,6 +202,9 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Transform meta value from save format to the JS format.
 	 */
 	public static function from_save_format( $meta, array $field ): string {
+		if ( $meta === null ) {
+			return '';
+		}
 		$formats = array_merge(
 			[
 				$field['save_format'] => $field['save_format'],
