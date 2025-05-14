@@ -202,9 +202,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 	 * Transform meta value from save format to the JS format.
 	 */
 	public static function from_save_format( $meta, array $field ): string {
-		if ( $meta === null ) {
-			return '';
-		}
 		$formats = array_merge(
 			[
 				$field['save_format'] => $field['save_format'],
@@ -216,7 +213,7 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		);
 		$format  = $formats[ $field['save_format'] ];
 		$date    = DateTimeImmutable::createFromFormat( $format, $meta );
-		return false === $date ? $meta : $date->format( $field['php_format'] );
+		return false === $date ? (string) $meta : $date->format( $field['php_format'] );
 	}
 
 	/**
