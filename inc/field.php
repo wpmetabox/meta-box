@@ -37,12 +37,12 @@ abstract class RWMB_Field {
 			$field_html = self::filter( 'html', $field_html, $field, $meta );
 		}
 
-		$end = static::end_html( $field );
-		$end = self::filter( 'end_html', $end, $field, $meta );
+		$end  = static::end_html( $field );
+		$end  = self::filter( 'end_html', $end, $field, $meta );
 		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
-		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
+		$classes  = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
 		if ( $required ) {
@@ -167,9 +167,9 @@ abstract class RWMB_Field {
 			return '';
 		}
 		// Get raw meta.
-		$raw_meta = self::call( $field, 'raw_meta', $post_id );
+		$raw_meta   = self::call( $field, 'raw_meta', $post_id );
 		$single_std = self::call( 'get_single_std', $field );
-		$std = self::call( 'get_std', $field );
+		$std        = self::call( 'get_std', $field );
 
 		$saved = $saved && $field['save_field'];
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
@@ -183,8 +183,8 @@ abstract class RWMB_Field {
 		$meta = is_array( $raw_meta ) ? $raw_meta : [];
 
 		if ( empty( $meta ) ) {
-			$empty_meta = empty( $raw_meta ) ? [null] : $raw_meta;
-			$std 		= $field['clone_empty_start'] ? [] : $std;
+			$empty_meta = empty( $raw_meta ) ? [ null ] : $raw_meta;
+			$std        = $field['clone_empty_start'] ? [] : $std;
 			$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $empty_meta, Arr::depth( $std ) );
 
 			$meta = $saved ? $empty_std : $std;
