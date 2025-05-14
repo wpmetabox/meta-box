@@ -145,7 +145,7 @@
 			if ( ! this.$input.val() ) {
 				return;
 			}
-			let items = $('<div>').html( this.$input.attr( 'data-attachments' ) ).text(),
+			let items = $( '<div>' ).html( this.$input.attr( 'data-attachments' ) ).text(),
 				models = JSON.parse( items ).map( function( attachment ) {
 				return wp.media.model.Attachment.create( attachment );
 			} );
