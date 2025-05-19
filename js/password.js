@@ -4,7 +4,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	toggleButtons.forEach( button => {
 		const eyeIcon = button.querySelector( '.rwmb-eye-icon' );
 		const eyeOffIcon = button.querySelector( '.rwmb-eye-off-icon' );
-		const input = button.previousElementSibling.querySelector( 'input' );
+		const input = button.previousElementSibling;
 
 		button.addEventListener( 'click', () => {
 			if ( input.type === 'password' ) {
