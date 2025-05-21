@@ -1,3 +1,9 @@
+### 5.10.10 - 2025-05-21
+
+- Fix datetime field returns null
+- Fix single image field not working with Polylang Pro
+- Fix reveal password icon not working
+
 ### 5.10.9 - 2025-05-08
 
 - Add button to toggle password (#1630)
