@@ -8,6 +8,7 @@
  * Author URI:  https://metabox.io
  * License:     GPL2+
  * Text Domain: meta-box
+ * Domain Path: /languages/
  *
  * Copyright (C) 2010-2025 Tran Ngoc Tuan Anh. All rights reserved.
  *
@@ -29,4 +30,6 @@ if ( defined( 'ABSPATH' ) && ! defined( 'RWMB_VER' ) ) {
 	require_once __DIR__ . '/inc/loader.php';
 	$rwmb_loader = new RWMB_Loader();
 	$rwmb_loader->init();
+
+	load_plugin_textdomain( 'meta-box', false, plugin_basename( __DIR__ ) . '/languages/' );
 }
