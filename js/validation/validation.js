@@ -140,8 +140,9 @@
 	};
 
 	class Validation {
-		constructor( formSelector ) {
-			this.$form = $( formSelector );
+		constructor( selector ) {
+			this.selector = selector;
+			this.$form = $( selector );
 
 			if ( !this.$form.length ) {
 				return;
@@ -230,40 +231,59 @@
 		}
 	};
 
+	let globalSavePosts = {};
+
 	class GutenbergValidation extends Validation {
 		init() {
-			var that = this,
-				editor = wp.data.dispatch( 'core/editor' );
+			const that = this;
+			const editor = wp.data.dispatch( 'core/editor' );
 
 			if ( !editor || !that.$form.length ) {
 				return false;
 			}
 
-			const savePost = editor.savePost; // Reference original method.
-
-			if ( that.settings ) {
-				that.$form.validate( that.settings );
+			// Store the original savePost method.
+			// Only store the first time, because GutenbergValidation can be initialized multiple times.
+			if ( !globalSavePosts[ this.selector ] ) {
+				globalSavePosts[ this.selector ] = editor.savePost;
 			}
+
+			this.removeMessage();
+			this.$form.validate( this.settings );
 
 			// Change the editor method.
 			editor.savePost = function ( options = {} ) {
 				// Bypass the validation when previewing in Gutenberg.
 				if ( typeof options === 'object' && options.isPreview ) {
-					return savePost( options );
+					return globalSavePosts[ that.selector ]( options );
 				}
 
 				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
 				if ( that.$form.valid() ) {
-					return savePost( options );
+					that.removeMessage();
+					return globalSavePosts[ that.selector ]( options );
 				}
 			};
 		}
 
+		reset() {
+			const editor = wp.data.dispatch( 'core/editor' );
+
+			if ( editor && globalSavePosts[ this.selector ] ) {
+				editor.savePost = globalSavePosts[ this.selector ];
+				this.removeMessage();
+			}
+		}
+
 		showMessage() {
 			wp.data.dispatch( 'core/notices' ).createErrorNotice( i18n.message, {
-				id: 'meta-box-validation',
+				id: `meta-box-validation-${ this.selector }`,
 				isDismissible: true
 			} );
+		}
+
+		removeMessage() {
+			wp.data.dispatch( 'core/notices' ).removeNotice( `meta-box-validation-${ this.selector }` );
 		}
 	};
 
@@ -286,24 +306,39 @@
 		}
 	}
 
+	let metaBoxInstances = {};
+	let blockInstance = null;
+
 	// Run on document ready.
 	function init() {
 		if ( rwmb.isGutenberg ) {
-			const locations = [ 'normal', 'side', 'advanced' ];
+			// In Gutenberg, when we switch to a block, `.mb_ready` is triggered, thus creating new instances of the validation.
 
-			locations.forEach( location => {
-				new GutenbergValidation( `.metabox-location-${ location }` ).init();
-			} );
+			// These are static meta boxes and should be initialized only once.
+			if ( Object.keys( metaBoxInstances ).length === 0 ) {
+				const locations = [ 'normal', 'side', 'advanced' ];
+				locations.forEach( location => {
+					metaBoxInstances[ location ] = new GutenbergValidation( `.metabox-location-${ location }` );
+					metaBoxInstances[ location ].init();
+				} );
+			}
 
-			new GutenbergValidation( `.mb-block-edit` ).init();
+			// Because only one block can be edited at a time, this instance is always used for the current block.
+			// We need to remove previous validation (by resetting the savePost method), and create new instances.
+			if ( blockInstance ) {
+				blockInstance.reset();
+			}
+
+			blockInstance = new GutenbergValidation( '.mb-block-edit' );
+			blockInstance.init();
 
 			return;
 		}
 
 		// Edit post, edit term, edit user, front-end form.
-		var $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+		const $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
 		$forms.each( function () {
-			var form = new Validation( this );
+			const form = new Validation( this );
 			form.init();
 		} );
 
