@@ -1,16 +1,18 @@
 .rwmb-switch-label {
+	--size: 13px;
+	--padding: 2px;
+	--color: var(--wp-admin-theme-color, #2271b1);
+
+	cursor: pointer;
 	position: relative;
 	display: inline-block;
 	background-color: #ccc;
-	padding: 2px;
+	padding: var(--padding);
 	border-radius: 3px;
-	min-width: 40px;
-	height: 22px;
+	min-width: calc(var(--size) * 2 + var(--padding) * 2);
+	height: calc(var(--size) + var(--padding) * 2);
 	box-sizing: border-box;
-
-	--color: var(--wp-admin-theme-color, #2271b1);
 }
-
 .rwmb-switch.rwmb-switch {
 	display: none;
 }
@@ -21,7 +23,7 @@
 }
 
 .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-slider:before {
-	left: calc(100% - 20px);
+	left: calc(100% - var(--size) - var(--padding));
 }
 
 .rwmb-switch:checked + .rwmb-switch-status .rwmb-switch-off {
@@ -48,10 +50,10 @@
 .rwmb-switch-slider:before {
 	position: absolute;
 	content: attr(title-before) "";
-	height: 18px;
-	width: 18px;
-	left: 2px;
-	bottom: 2px;
+	height: var(--size);
+	width: var(--size);
+	left: var(--padding);
+	bottom: var(--padding);
 	z-index: 99;
 	background-color: white;
 	transition: .4s;
@@ -64,7 +66,7 @@
 
 .rwmb-switch-label--rounded,
 .rwmb-switch-label--rounded .rwmb-switch-slider {
-	border-radius: 34px;
+	border-radius: 99px;
 }
 
 .rwmb-switch-label--rounded .rwmb-switch-slider:before {
@@ -81,15 +83,15 @@
 	font-size: 11px;
 	position: relative;
 	z-index: 20;
-	line-height: 18px;
+	line-height: var(--size);
 }
 
 .rwmb-switch-on {
-	padding-right: 20px;
+	padding-right: calc(var(--size) + var(--padding));
 }
 
 .rwmb-switch-off {
-	padding-left: 20px;
+	padding-left: calc(var(--size) + var(--padding));
 }
 
 /* Admin color schemes */
