@@ -1,3 +1,7 @@
+### 5.10.11 - 2025-07-15
+
+Fix validation for blocks
+
 ### 5.10.10 - 2025-05-21
 
 - Fix datetime field returns null
