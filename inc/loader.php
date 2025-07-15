@@ -121,6 +121,7 @@ class RWMB_Loader {
 
 		if ( is_admin() ) {
 			new \MetaBox\Dashboard\Dashboard( $update_checker, $update_option );
+			new \MetaBox\FeaturedPlugins();
 		}
 
 		// Public functions.
