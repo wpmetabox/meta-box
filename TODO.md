@@ -1,0 +1,2 @@
+- Make media fields work for iframed editor
+- Make validation work for iframed editor
