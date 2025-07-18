@@ -70,4 +70,8 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-image_advanced', initImageField );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/image_advanced', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, rwmb );

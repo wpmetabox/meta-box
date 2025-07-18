@@ -163,4 +163,8 @@
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-file_upload', initFileUpload )
 		.on( 'click', '.rwmb-file-actions .rwmb-remove-media', removeFile );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/file_upload', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, wp, rwmb );

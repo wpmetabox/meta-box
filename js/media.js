@@ -655,4 +655,8 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-file_advanced', initMediaField );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/media', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, wp, _, rwmb, i18nRwmbMedia );

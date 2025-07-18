@@ -74,4 +74,8 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-video', initVideoField );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/video', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, rwmb );
