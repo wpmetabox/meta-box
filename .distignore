@@ -22,6 +22,7 @@ phpstan.neon
 
 CHANGELOG.md
 README.md
+TODO.md
 
 tests
 src/Dashboard/assets/css/dashboads.scss
