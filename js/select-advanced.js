@@ -60,7 +60,7 @@
 					delete params.data.page;
 				}
 
-				// Create cache key from ajax params from only neccessary keys to make cache available for multiple fields.
+				// Create cache key from ajax params from only necessary keys to make cache available for multiple fields.
 				var data = $.extend( true, {}, params.data );
 				delete data.field.id;
 				delete data.action;
