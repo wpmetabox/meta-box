@@ -100,7 +100,7 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
-				'name'        => __( 'Icon custom with svg ouput type 1', 'your-text-domain' ),
+				'name'        => __( 'Icon custom with svg output type 1', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_custom_svg_type_1',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',
@@ -108,7 +108,7 @@ function field_custom_icon( $meta_boxes ) {
 				'icon_css'    => RWMB_URL . 'tests/assets/css/line-awesome.min.css',
 			],
 			[
-				'name'        => __( 'Icon custom with svg ouput type 2', 'your-text-domain' ),
+				'name'        => __( 'Icon custom with svg output type 2', 'your-text-domain' ),
 				'id'          => $prefix . 'icon_custom_svg_type_2',
 				'placeholder' => 'Select Icon',
 				'type'        => 'icon',

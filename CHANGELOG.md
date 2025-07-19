@@ -785,7 +785,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 - Added new `osm` field for Open Street Map. Google Maps requires developers to enter credit card details to keep using their free service, which is not always possible (and comfortable). The new `osm` field uses open source data from Open Street Map with the Leafleft library to render maps. It has the same settings as the Google Maps `map` field, including autocomplete feature, `language` and `region`.
 - Added new boolean field setting `save_field` for disabling the fields from saving to the database. Developers should handle the "save" action themselves.
 - Added `closed` parameter for meta box that collapses meta box on page load.
-- Allows users to change the "Embeded HTML not available" for oembed field or hide it with CSS:
+- Allows users to change the "Embedded HTML not available" for oembed field or hide it with CSS:
     - Added `not_available_string` setting to oembed field.
     - Added `rwmb_not_available_string` filter for oembed field.
     - Wrap "Not available" string in a div.
@@ -1180,7 +1180,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 - Improvement: Add 'inline' mode for date/datetime fields.
 - Improvement: Add option 'select\_all\_none' for select/select2 with default = false
 - Fix: users now can register 2 meta boxes with same field IDs for different post types.
-- Fix: width of embeded video if $content\_width is too large.
+- Fix: width of embedded video if $content\_width is too large.
 - Fix: autoloader now works more safely.
 - Fix: post field doesn't show correct post link
 - Fix: select field must call field's get\_value to get field's value as 'select' is used in many non-inherited classes
@@ -1193,7 +1193,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 ### 4.8.3
 
 - Improvement: WYSIWYG field now can be cloned. Sorting clone hasn't worked yet.
-- Fix: 'std' value not working if there is 'divider' or 'heading' field withough 'id'
+- Fix: 'std' value not working if there is 'divider' or 'heading' field without 'id'
 - Fix: helper function not working in AJAX or admin.
 - Fix: getting plugin's path on Windows system.
 - Fix: warning get\_value of taxonomy field
@@ -1262,7 +1262,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 ### 4.6
 
 - Improvement: the plugin translation is now handled in translate.wordpress.org. While the plugin keeps old translation as backward compatibility, it's recommended to translate everything in translate.wordpress.org. Language packs will be automatically updated by WordPress.
-- Improvement: rewrite code for `file_advanced` and `image_advanced`, which share the same code base. These fields are now clonable and not autosave (you have to save post to save files)! Props @funkatronic.
+- Improvement: rewrite code for `file_advanced` and `image_advanced`, which share the same code base. These fields are now cloneable and not autosave (you have to save post to save files)! Props @funkatronic.
 - Improvement: restyle clone icon, sort clone icon and add clone button for better UI. The new UI now is compatible with `color` and `date` fields
 - Improvement: separate validation module into 1 class, for better code structure
 - Improvement: add `pattern` attribute for `url` field
@@ -1381,7 +1381,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 
 - Bug fix: `text-list` field type
 - Improvement: better coding styles
-- Improvement: wysiwyg field is now clonable
+- Improvement: wysiwyg field is now cloneable
 - Improvement: launch geolocation autocomplete when address field is cloned
 - Improvement: better cloning for radio, checkbox
 - Improvement: add more hooks
@@ -1416,7 +1416,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 ### 4.3.5
 
 - Bug fix: fatal error in PHP 5.2
-- Bug fix: save empty values of clonable fields
+- Bug fix: save empty values of cloneable fields
 
 ### 4.3.4
 
@@ -1628,7 +1628,7 @@ It works well with MB Builder and with code. An improvement for registering vali
 
 - move js and css codes to separated files (rewrite js code for fields, too)
 - allow to add multiple images to image meta field with selection, modified from "Fast Insert Image" plugin
-- remove 'style' attibutes for fields as all CSS rules now can be put in the 'meta=box.css' file. All fields now has the class 'rw=$type', and table cells have class 'rwmb=label' and 'rwmb=field'
+- remove 'style' attributes for fields as all CSS rules now can be put in the 'meta=box.css' file. All fields now has the class 'rw=$type', and table cells have class 'rwmb=label' and 'rwmb=field'
 - allow to use file uploader for images as well
 - when delete uploaded images, they're not deleted from the server (in case you insert them from the media, not the uploader). Also remove hook to delete all attachments when delete post
 - change hook for adding meta box to 'add\_meta\_boxes', according Codex. Required WP 3.0+

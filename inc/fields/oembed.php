@@ -55,7 +55,7 @@ class RWMB_OEmbed_Field extends RWMB_Input_Field {
 	 */
 	public static function get_embed( $url, $not_available = '' ) {
 		/**
-		 * Set arguments for getting embeded HTML.
+		 * Set arguments for getting embedded HTML.
 		 * Without arguments, default width will be taken from global $content_width, which can break UI in the admin.
 		 *
 		 * @link https://github.com/rilwis/meta-box/issues/801

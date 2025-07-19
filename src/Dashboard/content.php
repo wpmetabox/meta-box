@@ -416,7 +416,7 @@
 								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							</tr>
 							<tr>
-								<td><?php esc_html_e( 'Intergrations with Elementor, Divi, FacetWP, Yoast SEO,...', 'meta-box' ); ?></td>
+								<td><?php esc_html_e( 'Integrations with Elementor, Divi, FacetWP, Yoast SEO,...', 'meta-box' ); ?></td>
 								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							</tr>
@@ -486,7 +486,7 @@
 								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							</tr>
 							<tr>
-								<td><?php esc_html_e( 'Toogle fields or field groups with conditional logic', 'meta-box' ); ?></td>
+								<td><?php esc_html_e( 'Toggle fields or field groups with conditional logic', 'meta-box' ); ?></td>
 								<td align="center"><svg><use xlink:href="#x-circle"></use></svg></td>
 								<td align="center"><svg><use xlink:href="#check-circle"></use></svg></td>
 							</tr>
@@ -663,7 +663,7 @@
 <div
 	class="mb-dashboard__news"
 	data-empty="<?php esc_html_e( 'No items available', 'meta-box' ); ?>"
-	data-fetching="<?php esc_html_e( 'Gettings news...', 'meta-box' ); ?>"
+	data-fetching="<?php esc_html_e( 'Getting news...', 'meta-box' ); ?>"
 >
 	<div class="mb-dashboard__news__header">
 		<div class="mb-dashboard__news__heading"><?php esc_html_e( 'What\'s new?', 'meta-box' ); ?></div>
