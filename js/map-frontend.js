@@ -32,7 +32,7 @@
 		}
 		mapOptions.center = center;
 
-		// Typcast zoom to a number
+		// Typecast zoom to a number
 		mapOptions.zoom *= 1;
 
 		if ( typeof mapOptions.styles === 'string' ) {

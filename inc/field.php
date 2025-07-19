@@ -320,7 +320,7 @@ abstract class RWMB_Field {
 			'sanitize_callback' => null,
 		] );
 
-		// Store the original ID to run correct filters for the clonable field.
+		// Store the original ID to run correct filters for the cloneable field.
 		if ( $field['clone'] ) {
 			$field['_original_id'] = $field['id'];
 		}

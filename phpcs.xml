@@ -35,7 +35,7 @@
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 
-		<!-- Only comment when neccessary -->
+		<!-- Only comment when necessary -->
 		<exclude name="Squiz.Commenting.FileComment.Missing" />
 		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
 		<exclude name="Squiz.Commenting.ClassComment.Missing" />
