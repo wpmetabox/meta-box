@@ -122,12 +122,4 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 			'type' => 'video',
 		] );
 	}
-
-	/**
-	 * Template for media item.
-	 */
-	public static function print_templates() {
-		parent::print_templates();
-		require RWMB_INC_DIR . 'templates/video.php';
-	}
 }

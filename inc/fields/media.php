@@ -32,10 +32,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		] );
 	}
 
-	public static function add_actions() {
-		add_action( 'print_media_templates', [ get_called_class(), 'print_templates' ] );
-	}
-
 	/**
 	 * Get meta value.
 	 *
@@ -205,12 +201,5 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		$storage = $field['storage'];
 		$storage->delete( $post_id, $field['id'] );
 		parent::save( $new, [], $post_id, $field );
-	}
-
-	/**
-	 * Template for media item.
-	 */
-	public static function print_templates() {
-		require RWMB_INC_DIR . 'templates/media.php';
 	}
 }
