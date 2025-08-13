@@ -1,3 +1,8 @@
+### 5.10.12 - 2025-08-13
+
+- Fix Open Street Maps field not showing (sometimes) with conditional logic
+- Enqueue assets for the iframed editor, to make all fields are rendered properly in the iframed editor
+
 ### 5.10.11 - 2025-07-15
 
 Fix validation for blocks
