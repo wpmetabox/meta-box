@@ -1,6 +1,28 @@
 ( function ( $, wp, _, rwmb, i18n ) {
 	'use strict';
 
+	/**
+	 * Mimic the wp.template() to be able to use with raw template string intead of a DOM element.
+	 * So it can be used in the iframed editor.
+	 *
+	 * @see https://codex.wordpress.org/Javascript_Reference/wp.template
+	 * @see https://core.trac.wordpress.org/browser/trunk/src/js/_enqueues/wp/util.js#L0
+	 */
+	rwmb.template = _.memoize( function ( template ) {
+		let compiled,
+			options = {
+				evaluate: /<#([\s\S]+?)#>/g,
+				interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+				escape: /\{\{([^\}]+?)\}\}(?!\})/g,
+				variable: 'data'
+			};
+
+		return function ( data ) {
+			compiled = compiled || _.template( template, options );
+			return compiled( data );
+		};
+	} );
+
 	var views = rwmb.views = rwmb.views || {},
 		models = rwmb.models = rwmb.models || {},
 		media = wp.media,
@@ -147,8 +169,8 @@
 			}
 			let items = $( '<div>' ).html( this.$input.attr( 'data-attachments' ) ).text(),
 				models = JSON.parse( items ).map( function( attachment ) {
-				return wp.media.model.Attachment.create( attachment );
-			} );
+					return wp.media.model.Attachment.create( attachment );
+				} );
 			this.controller.get( 'items' ).add( models );
 		},
 
@@ -191,15 +213,15 @@
 			this.collection = this.controller.get( 'items' );
 			this.itemView = options.itemView || MediaItem;
 			this.getItemView = _.memoize( function ( item ) {
-					var itemView = new this.itemView( {
-						model: item,
-						controller: this.controller
-					} );
+				var itemView = new this.itemView( {
+					model: item,
+					controller: this.controller
+				} );
 
-					this.listenToItemView( itemView );
+				this.listenToItemView( itemView );
 
-					return itemView;
-				},
+				return itemView;
+			},
 				function ( item ) {
 					return item.cid;
 				}
@@ -320,7 +342,12 @@
 	MediaStatus = views.MediaStatus = Backbone.View.extend( {
 		tagName: 'div',
 		className: 'rwmb-media-status',
-		template: wp.template( 'rwmb-media-status' ),
+		template: rwmb.template( `
+			<# if ( data.maxFiles > 0 ) { #>
+				{{{ data.length }}}/{{{ data.maxFiles }}}
+				<# if ( 1 < data.maxFiles ) { #>{{{ i18nRwmbMedia.multiple }}}<# } else {#>{{{ i18nRwmbMedia.single }}}<# } #>
+			<# } #>
+		` ),
 
 		initialize: function ( options ) {
 			this.controller = options.controller;
@@ -351,7 +378,7 @@
 	MediaButton = views.MediaButton = Backbone.View.extend( {
 		tagName: 'div',
 		className: 'rwmb-media-add',
-		template: wp.template( 'rwmb-media-button' ),
+		template: rwmb.template( `<a class="button">{{{ data.text }}}</a>` ),
 		events: {
 			'click .button': function () {
 				if ( this._frame ) {
@@ -413,7 +440,48 @@
 	MediaItem = views.MediaItem = Backbone.View.extend( {
 		tagName: 'li',
 		className: 'rwmb-file',
-		template: wp.template( 'rwmb-media-item' ),
+		template: rwmb.template( `
+			<input type="hidden" name="{{{ data.controller.fieldName }}}" value="{{{ data.id }}}" class="rwmb-media-input">
+			<div class="rwmb-file-icon">
+				<# if ( data.sizes ) { #>
+					<# if ( data.sizes.thumbnail ) { #>
+						<img src="{{{ data.sizes.thumbnail.url }}}">
+					<# } else { #>
+						<img src="{{{ data.sizes.full.url }}}">
+					<# } #>
+				<# } else { #>
+					<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+						<img src="{{ data.image.src }}" />
+					<# } else { #>
+						<img src="{{ data.icon }}" />
+					<# } #>
+				<# } #>
+			</div>
+			<div class="rwmb-file-info">
+				<a href="{{{ data.url }}}" class="rwmb-file-title" target="_blank">
+					<# if( data.title ) { #>
+						{{{ data.title }}}
+					<# } else { #>
+						{{{ i18nRwmbMedia.noTitle }}}
+					<# } #>
+				</a>
+				<div class="rwmb-file-name">{{{ data.filename }}}</div>
+				<div class="rwmb-file-actions">
+					<a class="rwmb-edit-media" title="{{{ i18nRwmbMedia.edit }}}" href="{{{ data.editLink }}}" target="_blank">
+						{{{ i18nRwmbMedia.edit }}}
+					</a>
+					<# if( data.file ) { #>
+					<a href="#" class="rwmb-remove-media" data-file_id="{{{ data.file.id }}}" title="{{{ i18nRwmbMedia.remove }}}">
+						{{{ i18nRwmbMedia.remove }}}
+					</a>
+					<# } else { #>
+					<a href="#" class="rwmb-remove-media" title="{{{ i18nRwmbMedia.remove }}}">
+						{{{ i18nRwmbMedia.remove }}}
+					</a>
+					<# } #>
+				</div>
+			</div>
+		` ),
 		initialize: function ( options ) {
 			this.controller = options.controller;
 			this.collection = this.controller.get( 'items' );
@@ -587,4 +655,8 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-file_advanced', initMediaField );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/media', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, wp, _, rwmb, i18nRwmbMedia );

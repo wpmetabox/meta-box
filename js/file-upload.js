@@ -14,7 +14,13 @@
 	UploadButton = views.UploadButton = Backbone.View.extend( {
 		className: 'rwmb-upload-area',
 		tagName: 'div',
-		template: wp.template( 'rwmb-upload-area' ),
+		template: rwmb.template( `
+			<div class="rwmb-upload-inside">
+				<h3>{{{ i18nRwmbMedia.uploadInstructions }}}</h3>
+				<p>{{{ i18nRwmbMedia.or }}}</p>
+				<button type="button" class="rwmb-browse-button browser button button-hero" id="{{{ _.uniqueId( 'rwmb-upload-browser-') }}}">{{{ i18nRwmbMedia.select }}}</button>
+			</div>
+		` ),
 		render: function () {
 			this.$el.html( this.template( {} ) );
 			return this;
@@ -157,4 +163,8 @@
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-file_upload', initFileUpload )
 		.on( 'click', '.rwmb-file-actions .rwmb-remove-media', removeFile );
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/file_upload', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, wp, rwmb );

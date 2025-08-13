@@ -38,4 +38,8 @@
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'clone', '.rwmb-image_upload, .rwmb-plupload_image', initImageUpload )
+
+	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/image_upload', ref => {
+		init( { target: ref } );
+	} );
 } )( jQuery, rwmb );

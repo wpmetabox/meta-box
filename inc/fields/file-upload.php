@@ -31,12 +31,4 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 
 		return $field;
 	}
-
-	/**
-	 * Template for media item.
-	 */
-	public static function print_templates() {
-		parent::print_templates();
-		require RWMB_INC_DIR . 'templates/upload.php';
-	}
 }
