@@ -81,9 +81,10 @@ class RW_Meta_Box {
 
 		// Enqueue assets for the block editor only, just for previewing (submission forms, custom blocks).
 		// Don't enqueue on frontend as front-end forms and blocks already call the enqueue() method.
-		if ( is_admin() ) {
-			add_action( 'enqueue_block_assets', [ $this, 'enqueue' ] );
-		}
+		// TODO: Uncomment this when we have a way to enqueue assets for the block/site editor.
+		// if ( is_admin() ) {
+		// 	add_action( 'enqueue_block_assets', [ $this, 'enqueue' ] );
+		// }
 
 		// Add additional actions for fields.
 		foreach ( $this->fields as $field ) {
