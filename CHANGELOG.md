@@ -1,3 +1,7 @@
+### 5.10.13 - 2025-08-14
+
+Fix `get_current_screen()` error for term meta
+
 ### 5.10.12 - 2025-08-13
 
 - Fix Open Street Maps field not showing (sometimes) with conditional logic
