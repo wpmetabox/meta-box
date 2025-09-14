@@ -13,11 +13,9 @@
 }
 .select2-container--open .select2-dropdown--below {
 	border-top: 1px solid #7e8993;
-	top: -1px;
 }
 .select2-container--open .select2-dropdown--above {
 	border-bottom: 1px solid #7e8993;
-	bottom: -1px;
 }
 .select2-container .select2-selection--single {
 	height: 30px;
