@@ -1,3 +1,7 @@
+### 5.10.14 - 2025-09-15
+
+Update dependencies
+
 ### 5.10.13 - 2025-08-14
 
 Fix `get_current_screen()` error for term meta
