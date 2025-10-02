@@ -50,10 +50,11 @@ class RWMB_Map_Field extends RWMB_Field {
 		$attributes['value'] = $meta;
 
 		$html .= sprintf(
-			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"></div>
+			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"  data-draggable="%s"></div>
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
+			esc_attr( $field['draggable'] ),
 			self::render_attributes( $attributes )
 		);
 
@@ -76,6 +77,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			'address_field' => '',
 			'language'      => '',
 			'region'        => '',
+			'draggable'     => true,
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
