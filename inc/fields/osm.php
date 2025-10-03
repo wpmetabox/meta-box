@@ -42,7 +42,7 @@ class RWMB_OSM_Field extends RWMB_Field {
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
 			esc_attr( $field['language'] ),
-			esc_attr( $field['draggable'] ),
+			esc_attr( $field['draggable'] ? 'true' : 'false' ),
 			self::render_attributes( $attributes )
 		);
 

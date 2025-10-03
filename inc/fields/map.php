@@ -54,7 +54,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
-			esc_attr( $field['draggable'] ),
+			esc_attr( $field['draggable'] ? 'true' : 'false' ),
 			self::render_attributes( $attributes )
 		);
 
