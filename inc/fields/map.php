@@ -50,10 +50,11 @@ class RWMB_Map_Field extends RWMB_Field {
 		$attributes['value'] = $meta;
 
 		$html .= sprintf(
-			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"></div>
+			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"  data-marker_draggable="%s"></div>
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
+			esc_attr( $field['marker_draggable'] ? 'true' : 'false' ),
 			self::render_attributes( $attributes )
 		);
 
@@ -72,14 +73,15 @@ class RWMB_Map_Field extends RWMB_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
-			'std'           => '',
-			'address_field' => '',
-			'language'      => '',
-			'region'        => '',
+			'std'              => '',
+			'address_field'    => '',
+			'language'         => '',
+			'region'           => '',
+			'marker_draggable' => true,
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
-			'api_key'       => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
+			'api_key'          => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
 		] );
 
 		return $field;

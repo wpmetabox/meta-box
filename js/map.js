@@ -43,7 +43,7 @@
 			this.marker = new google.maps.Marker( {
 				position: location,
 				map: this.map,
-				draggable: true,
+				draggable: this.$canvas.data( 'marker_draggable' ),
 			} );
 		},
 

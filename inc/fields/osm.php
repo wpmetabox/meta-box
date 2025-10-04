@@ -37,11 +37,12 @@ class RWMB_OSM_Field extends RWMB_Field {
 		$attributes['value'] = $meta;
 
 		$html .= sprintf(
-			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s" data-language="%s"></div>
+			'<div class="rwmb-osm-canvas" data-default-loc="%s" data-region="%s" data-language="%s" data-marker_draggable="%s"></div>
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
 			esc_attr( $field['language'] ),
+			esc_attr( $field['marker_draggable'] ? 'true' : 'false' ),
 			self::render_attributes( $attributes )
 		);
 
@@ -59,11 +60,12 @@ class RWMB_OSM_Field extends RWMB_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, [ 
-			'std'           => '',
-			'address_field' => '',
-			'language'      => '',
-			'region'        => '',
+		$field = wp_parse_args( $field, [
+			'std'              => '',
+			'address_field'    => '',
+			'language'         => '',
+			'region'           => '',
+			'marker_draggable' => true,
 		] );
 
 		return $field;
