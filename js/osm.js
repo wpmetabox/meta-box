@@ -40,7 +40,7 @@
 			}
 
 			this.marker = L.marker( location, {
-				draggable: this.$canvas.data( 'draggable' ),
+				draggable: this.$canvas.data( 'marker_draggable' ),
 			} ).addTo( this.map );
 		},
 
