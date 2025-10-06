@@ -1,3 +1,7 @@
+### 5.10.15 - 2025-10-06
+
+Add `marker_draggable` option for `map`/`osm` fields to disable changing the pin on the map.
+
 ### 5.10.14 - 2025-09-15
 
 Update dependencies
