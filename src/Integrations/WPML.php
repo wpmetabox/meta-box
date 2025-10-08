@@ -22,7 +22,7 @@ class WPML {
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
 
 		// Filter the value on the front end.
-		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 4 );
+		add_filter( 'rwmb_raw_meta', [ $this, 'get_translated_value' ], 10, 4 );
 	}
 
 	/**
@@ -106,27 +106,23 @@ class WPML {
 		return $field;
 	}
 
-	public function get_translated_value( $value, $field ) {
-		if ( ! $field || ! in_array( $field['type'], $this->field_types, true ) ) {
+	public function get_translated_value( $value, array $field ) {
+		if ( ! in_array( $field['type'], $this->field_types, true ) ) {
 			return $value;
 		}
 
-		$type  = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
-		return $this->get_translated_id( $value, $type );
+		$type             = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
+		$current_language = apply_filters( 'wpml_current_language', null );
+		return $this->get_translated_id( $value, $type, $current_language );
 	}
 
-	private function get_translated_id( $id, $type ) {
+	private function get_translated_id( $id, $type, $current_language ) {
 		if ( is_array( $id ) ) {
-			return array_map( function( $sub_id ) use ( $type ) {
-				return $this->get_translated_id( $sub_id, $type );
+			return array_map( function( $sub_id ) use ( $type, $current_language ) {
+				return $this->get_translated_id( $sub_id, $type, $current_language );
 			}, $id );
 		}
 
-		if ( ! is_numeric( $id ) ) {
-			return $id;
-		}
-
-		$current_language = apply_filters( 'wpml_current_language', null );
-		return apply_filters( 'wpml_object_id', $id, $type, true, $current_language );
+		return is_numeric( $id ) ? apply_filters( 'wpml_object_id', $id, $type, true, $current_language ) : $id;
 	}
 }
