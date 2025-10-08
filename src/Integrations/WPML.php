@@ -20,6 +20,9 @@ class WPML {
 		}
 		add_filter( 'wpml_duplicate_generic_string', [ $this, 'translate_ids' ], 10, 3 );
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
+
+		// Filter the value on the front end.
+		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 4 );
 	}
 
 	/**
@@ -101,5 +104,21 @@ class WPML {
 		}
 
 		return $field;
+	}
+
+	public function get_translated_value( $value, $field ) {
+		if ( ! $field || empty( $value ) || ! is_numeric( $value ) ) {
+			return $value;
+		}
+
+		if ( ! in_array( $field['type'], $this->field_types, true ) ) {
+			return $value;
+		}
+
+		$type             = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
+		$current_language = apply_filters( 'wpml_current_language', null );
+		$value            = apply_filters( 'wpml_object_id', $value, $type, true, $current_language );
+
+		return $value;
 	}
 }
