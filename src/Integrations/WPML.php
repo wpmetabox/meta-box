@@ -107,18 +107,26 @@ class WPML {
 	}
 
 	public function get_translated_value( $value, $field ) {
-		if ( ! $field || empty( $value ) || ! is_numeric( $value ) ) {
+		if ( ! $field || ! in_array( $field['type'], $this->field_types, true ) ) {
 			return $value;
 		}
 
-		if ( ! in_array( $field['type'], $this->field_types, true ) ) {
-			return $value;
+		$type  = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
+		return $this->get_translated_id( $value, $type );
+	}
+
+	private function get_translated_id( $id, $type ) {
+		if ( is_array( $id ) ) {
+			return array_map( function( $sub_id ) use ( $type ) {
+				return $this->get_translated_id( $sub_id, $type );
+			}, $id );
 		}
 
-		$type             = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
+		if ( ! is_numeric( $id ) ) {
+			return $id;
+		}
+
 		$current_language = apply_filters( 'wpml_current_language', null );
-		$value            = apply_filters( 'wpml_object_id', $value, $type, true, $current_language );
-
-		return $value;
+		return apply_filters( 'wpml_object_id', $id, $type, true, $current_language );
 	}
 }
