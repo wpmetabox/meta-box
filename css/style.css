@@ -1,8 +1,8 @@
 /* Styles for 'normal' meta boxes
 -------------------------------------------------------------- */
 
-/* Clearfix for field */
-.rwmb-field {
+/* Lower specificity so it field classes are applied */
+:where(.rwmb-field) {
 	display: flex;
 }
 .rwmb-field:not(:last-of-type) {
