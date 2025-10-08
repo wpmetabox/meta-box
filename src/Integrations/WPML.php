@@ -1,25 +1,20 @@
 <?php
-/**
- * The WPML compatibility module, allowing all fields are translatable by WPML plugin.
- */
-class RWMB_WPML {
+namespace MetaBox\Integrations;
+
+class WPML {
 	/**
 	 * List of fields that need to translate values (because they're saved as IDs).
 	 *
 	 * @var array
 	 */
-	protected $field_types = [ 'post', 'taxonomy_advanced' ];
+	private $field_types = [ 'post', 'taxonomy_advanced' ];
 
-	public function init() {
-		/**
-		 * Run before meta boxes are registered so it can modify fields.
-		 *
-		 * @see modify_field()
-		 */
-		add_action( 'init', [ $this, 'register_hooks' ], 9 );
+	public function __construct() {
+		// Run before meta boxes are registered (at `init` with priority 20) so it can modify fields.
+		add_action( 'init', [ $this, 'init' ] );
 	}
 
-	public function register_hooks() {
+	public function init(): void {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
 			return;
 		}
@@ -72,12 +67,8 @@ class RWMB_WPML {
 	 * - Do not translate: hide the field.
 	 * - Copy: make it disabled so users cannot edit.
 	 * - Translate: do nothing.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return mixed
 	 */
-	public function modify_field( $field ) {
+	public function modify_field( array $field ): array {
 		global $wpml_post_translations;
 
 		if ( empty( $field['id'] ) ) {
