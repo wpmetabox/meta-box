@@ -22,7 +22,7 @@ class WPML {
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
 
 		// Filter the value on the front end.
-		add_filter( 'rwmb_raw_meta', [ $this, 'get_translated_value' ], 10, 4 );
+		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 4 );
 	}
 
 	/**
