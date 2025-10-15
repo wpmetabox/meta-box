@@ -1,30 +1,28 @@
 <?php
-/**
- * The WPML compatibility module, allowing all fields are translatable by WPML plugin.
- */
-class RWMB_WPML {
+namespace MetaBox\Integrations;
+
+class WPML {
 	/**
 	 * List of fields that need to translate values (because they're saved as IDs).
 	 *
 	 * @var array
 	 */
-	protected $field_types = [ 'post', 'taxonomy_advanced' ];
+	private $field_types = [ 'post', 'taxonomy_advanced' ];
 
-	public function init() {
-		/**
-		 * Run before meta boxes are registered so it can modify fields.
-		 *
-		 * @see modify_field()
-		 */
-		add_action( 'init', [ $this, 'register_hooks' ], 9 );
+	public function __construct() {
+		// Run before meta boxes are registered (at `init` with priority 20) so it can modify fields.
+		add_action( 'init', [ $this, 'init' ] );
 	}
 
-	public function register_hooks() {
+	public function init(): void {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
 			return;
 		}
 		add_filter( 'wpml_duplicate_generic_string', [ $this, 'translate_ids' ], 10, 3 );
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
+
+		// Filter the value on the front end.
+		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 4 );
 	}
 
 	/**
@@ -72,12 +70,8 @@ class RWMB_WPML {
 	 * - Do not translate: hide the field.
 	 * - Copy: make it disabled so users cannot edit.
 	 * - Translate: do nothing.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return mixed
 	 */
-	public function modify_field( $field ) {
+	public function modify_field( array $field ): array {
 		global $wpml_post_translations;
 
 		if ( empty( $field['id'] ) ) {
@@ -110,5 +104,25 @@ class RWMB_WPML {
 		}
 
 		return $field;
+	}
+
+	public function get_translated_value( $value, array $field ) {
+		if ( $field['type'] !== 'post' ) {
+			return $value;
+		}
+
+		$type             = reset( $field['post_type'] );
+		$current_language = apply_filters( 'wpml_current_language', null );
+		return $this->get_translated_id( $value, $type, $current_language );
+	}
+
+	private function get_translated_id( $id, $type, $current_language ) {
+		if ( is_array( $id ) ) {
+			return array_map( function( $sub_id ) use ( $type, $current_language ) {
+				return $this->get_translated_id( $sub_id, $type, $current_language );
+			}, $id );
+		}
+
+		return is_numeric( $id ) ? apply_filters( 'wpml_object_id', $id, $type, true, $current_language ) : $id;
 	}
 }
