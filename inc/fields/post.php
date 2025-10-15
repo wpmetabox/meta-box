@@ -136,7 +136,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			if ( ! current_user_can( 'read_post', $post ) ) {
 				continue;
 			}
-			
+
 			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
 			$label                = self::filter( 'choice_label', $label, $field, $post );
 			$options[ $post->ID ] = [
@@ -211,6 +211,14 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		if ( empty( $value ) ) {
 			return '';
 		}
+
+		/**
+		 * Allow developers to change the value of the post. Used for WPML integration.
+		 * @var int|string $value The post ID.
+		 * @var array $field The field parameters.
+		 * @internal
+		 */
+		$value = apply_filters( '_rwmb_post_format_single_value', $value, $field );
 
 		$link = $args['link'] ?? 'view';
 		$text = get_the_title( $value );

@@ -22,7 +22,8 @@ class WPML {
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
 
 		// Filter the value on the front end.
-		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 4 );
+		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 2 );
+		add_filter( '_rwmb_post_format_single_value', [ $this, 'get_translated_value' ], 10, 2 );
 	}
 
 	/**
@@ -118,7 +119,7 @@ class WPML {
 
 	private function get_translated_id( $id, $type, $current_language ) {
 		if ( is_array( $id ) ) {
-			return array_map( function( $sub_id ) use ( $type, $current_language ) {
+			return array_map( function ( $sub_id ) use ( $type, $current_language ) {
 				return $this->get_translated_id( $sub_id, $type, $current_language );
 			}, $id );
 		}
