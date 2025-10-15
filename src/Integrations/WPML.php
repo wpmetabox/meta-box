@@ -107,11 +107,11 @@ class WPML {
 	}
 
 	public function get_translated_value( $value, array $field ) {
-		if ( ! in_array( $field['type'], $this->field_types, true ) ) {
+		if ( $field['type'] !== 'post' ) {
 			return $value;
 		}
 
-		$type             = 'post' === $field['type'] ? reset( $field['post_type'] ) : reset( $field['taxonomy'] );
+		$type             = reset( $field['post_type'] );
 		$current_language = apply_filters( 'wpml_current_language', null );
 		return $this->get_translated_id( $value, $type, $current_language );
 	}
