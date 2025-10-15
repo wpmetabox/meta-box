@@ -325,6 +325,14 @@ abstract class RWMB_Field {
 			$field['_original_id'] = $field['id'];
 		}
 
+		// Always set data-default for cloneable fields with std values
+		// This ensures switch fields and other fields maintain their default values when cloning
+		if ( $field['clone'] && isset( $field['std'] ) && $field['std'] !== '' ) {
+			$field['attributes'] = wp_parse_args( $field['attributes'], [
+				'data-default' => $field['std'],
+			] );
+		}
+
 		if ( $field['clone_default'] ) {
 			$field['attributes'] = wp_parse_args( $field['attributes'], [
 				'data-default'       => $field['std'],
