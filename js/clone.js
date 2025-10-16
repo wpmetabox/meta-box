@@ -122,12 +122,7 @@
 				type = $field.attr( 'type' );
 
 			if ( 'radio' === type || 'checkbox' === type ) {
-				// Special handling for switch fields with default values
-				if ( $field.hasClass( 'rwmb-switch' ) && typeof $field.data( 'default' ) !== 'undefined' ) {
-					$field.prop( 'checked', !!$field.data( 'default' ) );
-				} else {
-					$field.prop( 'checked', false );
-				}
+				$field.prop( 'checked', false );
 			} else if ( $field.is( 'select' ) ) {
 				if ( $field.attr( 'multiple' ) ) {
 					$field.find( 'option' ).prop( 'selected', false );
