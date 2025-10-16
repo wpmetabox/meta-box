@@ -128,16 +128,13 @@
 				} else {
 					$field.prop( 'checked', false );
 				}
-			} else if ( $field.is( 'select' ) ) {
-				// Special handling for select_advanced with multiple
-				if ( $field.hasClass( 'rwmb-select_advanced' ) && $field.attr( 'multiple' ) ) {
-					// Remove selected attribute from all options before clearing
-					// This prevents select2 from picking up old values on reinitialize
-					$field.find( 'option' ).prop( 'selected', false );
-					$field.val( null ).trigger( 'change' );
-				} else {
-					$field.prop( 'selectedIndex', 0 );
-				}
+		} else if ( $field.is( 'select' ) ) {
+			if ( $field.attr( 'multiple' ) ) {
+				$field.find( 'option' ).prop( 'selected', false );
+				$field.val( null ).trigger( 'change' );
+			} else {
+				$field.prop( 'selectedIndex', 0 );
+			}
 			} else if ( !$field.hasClass( 'rwmb-hidden' ) ) {
 				$field.val( '' );
 			}
