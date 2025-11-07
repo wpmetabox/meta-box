@@ -29,6 +29,7 @@
 
 	<!-- Exclude patterns. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<rule ref="WordPress">
 		<!-- Use PSR-4 naming -->
@@ -59,6 +60,9 @@
 		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments" />
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames" />
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed" />
+		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
 	</rule>
 
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
@@ -67,14 +71,14 @@
 		 Multiple valid text domains can be provided as a comma-delimited list. -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="meta-box"/>
+			<property name="text_domain" value="meta-box"/>
 		</properties>
 	</rule>
 
 	<!-- Set the minimum supported WP version. This is used by several sniffs.
 		 The minimum version set here should be in line with the minimum WP version
 		 as set in the "Requires at least" tag in the readme.txt file. -->
-	<config name="minimum_supported_wp_version" value="4.3"/>
+	<config name="minimum_supported_wp_version" value="6.5"/>
 
 	<!--
 	#############################################################################

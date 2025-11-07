@@ -37,7 +37,7 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 		return $field;
 	}
 
-	public static function transform_options( $options ) : array {
+	public static function transform_options( $options ): array {
 		$transformed = [];
 		$options     = (array) $options;
 		foreach ( $options as $value => $label ) {

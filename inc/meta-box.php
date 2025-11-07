@@ -70,7 +70,7 @@ class RW_Meta_Box {
 		}
 	}
 
-	public function is_shown() : bool {
+	public function is_shown(): bool {
 		$show = apply_filters( 'rwmb_show', true, $this->meta_box );
 		return apply_filters( "rwmb_show_{$this->id}", $show, $this->meta_box );
 	}
@@ -83,7 +83,7 @@ class RW_Meta_Box {
 		// Don't enqueue on frontend as front-end forms and blocks already call the enqueue() method.
 		// TODO: Uncomment this when we have a way to enqueue assets for the block/site editor.
 		// if ( is_admin() ) {
-		// 	add_action( 'enqueue_block_assets', [ $this, 'enqueue' ] );
+		// add_action( 'enqueue_block_assets', [ $this, 'enqueue' ] );
 		// }
 
 		// Add additional actions for fields.
@@ -156,10 +156,10 @@ class RW_Meta_Box {
 		do_action( 'rwmb_enqueue_scripts', $this );
 	}
 
-	private function is_gutenberg_screen() : bool {
+	private function is_gutenberg_screen(): bool {
 		$screen = get_current_screen();
 
-		return in_array( $screen->base, [ 'site-editor', 'widgets' ] );
+		return in_array( $screen->base, [ 'site-editor', 'widgets' ], true );
 	}
 
 	/**
@@ -181,7 +181,7 @@ class RW_Meta_Box {
 		}
 	}
 
-	public function postbox_classes( array $classes ) : array {
+	public function postbox_classes( array $classes ): array {
 		if ( $this->closed ) {
 			$classes[] = 'closed';
 		}
@@ -190,7 +190,7 @@ class RW_Meta_Box {
 		return $classes;
 	}
 
-	public function hide( array $hidden, $screen ) : array {
+	public function hide( array $hidden, $screen ): array {
 		if ( $this->is_edit_screen( $screen ) && $this->default_hidden ) {
 			$hidden[] = $this->id;
 		}
@@ -242,8 +242,8 @@ class RW_Meta_Box {
 		foreach ( $fields as $field ) {
 			$field_id = $prefix . $field['id'];
 			if ( ! empty( $field['fields'] ) ) {
-				$suffix = $field[ 'clone' ] ? '.*.' : '.';
-				$names = array_merge( $names, $this->get_cleanup_fields( $field['fields'], $field_id . $suffix ) );
+				$suffix = $field['clone'] ? '.*.' : '.';
+				$names  = array_merge( $names, $this->get_cleanup_fields( $field['fields'], $field_id . $suffix ) );
 			}
 
 			if ( $field['clone'] ) {
@@ -301,7 +301,7 @@ class RW_Meta_Box {
 		RWMB_Field::filter( 'after_save_field', null, $field, $new, $old, $this->object_id );
 	}
 
-	public function validate() : bool {
+	public function validate(): bool {
 		$nonce = rwmb_request()->filter_post( "nonce_{$this->id}" );
 
 		return ! $this->saved
@@ -336,7 +336,7 @@ class RW_Meta_Box {
 		return $meta_box;
 	}
 
-	public static function normalize_fields( array $fields, $storage = null ) : array {
+	public static function normalize_fields( array $fields, $storage = null ): array {
 		foreach ( $fields as $k => $field ) {
 			$field = RWMB_Field::call( 'normalize', $field );
 
@@ -410,7 +410,7 @@ class RW_Meta_Box {
 		$this->object_id = $id;
 	}
 
-	public function get_object_type() : string {
+	public function get_object_type(): string {
 		return $this->object_type;
 	}
 

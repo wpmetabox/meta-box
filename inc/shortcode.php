@@ -22,7 +22,7 @@ class RWMB_Shortcode {
 
 		$field_id  = $atts['id'];
 		$object_id = $atts['object_id'];
-		
+
 		unset( $atts['id'], $atts['object_id'] );
 
 		$value = $this->get_value( $field_id, $object_id, $atts );
@@ -39,11 +39,11 @@ class RWMB_Shortcode {
 	}
 
 	private function get_value( $field_id, $object_id, $atts ) {
-		// If we pass object_id via shortcode, we need to make sure current user 
+		// If we pass object_id via shortcode, we need to make sure current user
 		// has permission to view the object
-		if ( ! is_null ( $object_id ) ) {
+		if ( ! is_null( $object_id ) ) {
 			$has_object_permission = $this->check_object_permission( $object_id, $atts );
-			
+
 			if ( ! $has_object_permission ) {
 				return null;
 			}

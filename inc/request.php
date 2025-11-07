@@ -42,7 +42,7 @@ class RWMB_Request {
 		if ( empty( $cleanups ) || ! is_array( $cleanups ) ) {
 			return $data;
 		}
-		
+
 		// Decode the JSON string for each cleanup item
 		foreach ( $cleanups as $cleanup ) {
 			$cleanup = json_decode( stripslashes( $cleanup ) );

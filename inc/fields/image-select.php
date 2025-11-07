@@ -18,14 +18,15 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		$html    = [];
-		$meta    = (array) $meta;
+		$html = [];
+		$meta = (array) $meta;
 		foreach ( $field['options'] as $value => $image ) {
 			$attributes = self::get_attributes( $field, $value );
 			$html[]     = sprintf(
 				'<label class="rwmb-image-select"><img src="%s"><input %s%s></label>',
 				$image,
 				self::render_attributes( $attributes ),
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				checked( in_array( $value, $meta ), true, false )
 			);
 		}

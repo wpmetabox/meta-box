@@ -112,7 +112,7 @@ class Checker {
 		}
 
 		if ( empty( $data ) ) {
-			$data = new stdClass;
+			$data = new stdClass();
 		}
 		if ( ! isset( $data->response ) ) {
 			$data->response = [];
@@ -162,7 +162,8 @@ class Checker {
 		] );
 
 		// Get from cache first.
-		$data      = compact( 'endpoint', 'args' );
+		$data = compact( 'endpoint', 'args' );
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$cache_key = 'meta_box_' . md5( serialize( $data ) );
 		if ( $this->option->is_network_activated() ) {
 			$cache = get_site_transient( $cache_key );

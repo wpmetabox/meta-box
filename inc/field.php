@@ -577,11 +577,11 @@ abstract class RWMB_Field {
 		$depth = 0;
 
 		if ( $field['multiple'] ) {
-			$depth++;
+			++$depth;
 		}
 
 		if ( $field['clone'] ) {
-			$depth++;
+			++$depth;
 		}
 
 		return Arr::to_depth( $field['std'], $depth );
@@ -591,9 +591,9 @@ abstract class RWMB_Field {
 		$depth = 0;
 
 		if ( $field['multiple'] ) {
-			$depth++;
+			++$depth;
 		}
 
-		return Arr::to_depth( $field[ 'std' ], $depth );
+		return Arr::to_depth( $field['std'], $depth );
 	}
 }

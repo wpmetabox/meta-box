@@ -49,7 +49,7 @@ class Notification {
 			'settings_page_meta-box-updater-network',
 			'meta-box_page_meta-box-aio',
 		];
-		$screen = get_current_screen();
+		$screen           = get_current_screen();
 		if ( in_array( $screen->id, $excluded_screens, true ) ) {
 			return;
 		}

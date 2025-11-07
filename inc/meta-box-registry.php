@@ -34,7 +34,7 @@ class RWMB_Meta_Box_Registry {
 	 *
 	 * @param array $args Custom argument to get meta boxes by.
 	 */
-	public function get_by( array $args ) : array {
+	public function get_by( array $args ): array {
 		$meta_boxes = $this->data;
 		foreach ( $meta_boxes as $index => $meta_box ) {
 			foreach ( $args as $key => $value ) {

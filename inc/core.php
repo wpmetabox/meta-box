@@ -9,7 +9,7 @@ class RWMB_Core {
 		$this->add_context_hooks();
 	}
 
-	public function plugin_links( array $links ) : array {
+	public function plugin_links( array $links ): array {
 		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
 		return $links;
 	}
@@ -46,7 +46,7 @@ class RWMB_Core {
 	 * Get registered meta boxes via a filter.
 	 * @deprecated No longer used. Keep for backward-compatibility with extensions.
 	 */
-	public static function get_meta_boxes() : array {
+	public static function get_meta_boxes(): array {
 		$meta_boxes = rwmb_get_registry( 'meta_box' )->all();
 		return wp_list_pluck( $meta_boxes, 'meta_box' );
 	}

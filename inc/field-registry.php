@@ -50,7 +50,7 @@ class RWMB_Field_Registry {
 	 *
 	 * @return array List of fields.
 	 */
-	public function get_by_object_type( string $object_type = 'post' ) : array {
+	public function get_by_object_type( string $object_type = 'post' ): array {
 		return $this->data[ $object_type ] ?? [];
 	}
 }

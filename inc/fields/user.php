@@ -17,7 +17,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$request = rwmb_request();
 
 		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-		
+
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
@@ -97,12 +97,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	public static function query( $meta, array $field ): array {
 		$display_field = $field['display_field'];
 
-		$args          = wp_parse_args( $field['query_args'], [
+		$args = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
 			'order'   => 'asc',
 		] );
 
-		$args['fields']  = [
+		$args['fields'] = [
 			'ID',
 			'user_login',
 			'user_nicename',
@@ -122,9 +122,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'users' );
-		$key          = md5( serialize( $args ) );
-		$cache_key    = "$key:$last_changed";
-		$options      = wp_cache_get( $cache_key, 'meta-box-user-field' );
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		$key       = md5( serialize( $args ) );
+		$cache_key = "$key:$last_changed";
+		$options   = wp_cache_get( $cache_key, 'meta-box-user-field' );
 		if ( false !== $options ) {
 			return $options;
 		}

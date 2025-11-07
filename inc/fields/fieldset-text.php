@@ -37,7 +37,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		return $out;
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		return '';
 	}
 

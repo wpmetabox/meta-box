@@ -142,7 +142,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		return $attributes;
 	}
 
-	protected static function get_mime_extensions() : array {
+	protected static function get_mime_extensions(): array {
 		$mime_types = wp_get_mime_types();
 		$extensions = [];
 		foreach ( $mime_types as $ext => $mime ) {

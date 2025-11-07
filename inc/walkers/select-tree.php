@@ -66,7 +66,7 @@ class RWMB_Walker_Select_Tree {
 		$attributes = RWMB_Field::call( 'get_attributes', $field, $this->meta );
 
 		if ( $output_required ) {
-			unset( $attributes[ 'required' ] );
+			unset( $attributes['required'] );
 		}
 
 		if ( ! empty( $attributes['required'] ) ) {
@@ -86,6 +86,7 @@ class RWMB_Walker_Select_Tree {
 
 		foreach ( $children as $child ) {
 			if ( isset( $options[ $child->value ] ) ) {
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				$output .= $this->display_level( $options, $child->value, in_array( $child->value, $this->meta ) && $active );
 			}
 		}

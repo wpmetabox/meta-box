@@ -38,7 +38,7 @@ class RWMB_Text_List_Field extends RWMB_Multiple_Values_Field {
 				$label,
 				self::render_attributes( $attributes )
 			);
-			$count ++;
+			++$count;
 		}
 
 		return implode( ' ', $html );

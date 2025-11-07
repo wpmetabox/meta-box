@@ -100,7 +100,7 @@ class RWMB_Loader {
 		$update_option  = null;
 		$update_checker = null;
 		if ( class_exists( '\MetaBox\Updater\Option' ) ) {
-			$update_option = new \MetaBox\Updater\Option();
+			$update_option  = new \MetaBox\Updater\Option();
 			$update_checker = new \MetaBox\Updater\Checker( $update_option );
 			$update_checker->init();
 			$update_settings = new \MetaBox\Updater\Settings( $update_checker, $update_option );
@@ -114,8 +114,8 @@ class RWMB_Loader {
 
 		// Register categories for page builders.
 		new \MetaBox\Integrations\Block();
-		new \MetaBox\Integrations\Bricks;
-		new \MetaBox\Integrations\Elementor;
+		new \MetaBox\Integrations\Bricks();
+		new \MetaBox\Integrations\Elementor();
 		new \MetaBox\Integrations\Oxygen();
 
 		if ( is_admin() ) {

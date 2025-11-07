@@ -26,11 +26,11 @@ class Option {
 		return null === $name ? $option : ( $option[ $name ] ?? $default );
 	}
 
-	public function get_api_key() : string {
+	public function get_api_key(): string {
 		return defined( 'META_BOX_KEY' ) ? META_BOX_KEY : $this->get( 'api_key', '' );
 	}
 
-	public function get_license_status() : string {
+	public function get_license_status(): string {
 		return $this->get_api_key() ? $this->get( 'status', 'active' ) : 'no_key';
 	}
 
@@ -50,7 +50,7 @@ class Option {
 		}
 	}
 
-	public function is_network_activated() : bool {
+	public function is_network_activated(): bool {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}

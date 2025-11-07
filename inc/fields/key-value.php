@@ -34,11 +34,11 @@ class RWMB_Key_Value_Field extends RWMB_Input_Field {
 		return $html;
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		return parent::begin_html( $field ) . parent::input_description( $field );
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		return '';
 	}
 

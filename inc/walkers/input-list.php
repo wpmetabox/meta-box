@@ -42,6 +42,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 		$output .= sprintf(
 			'<label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			checked( in_array( $object->value, $this->meta ), true, false ),
 			$object->label
 		);

@@ -105,7 +105,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			$location = [];
 			foreach ( $value as $clone ) {
 				list( $latitude, $longitude, $zoom ) = explode( ',', $clone . ',,' );
-				$location[]                            = compact( 'latitude', 'longitude', 'zoom' );
+				$location[]                          = compact( 'latitude', 'longitude', 'zoom' );
 			}
 			return $location;
 		}
@@ -116,13 +116,13 @@ class RWMB_Map_Field extends RWMB_Field {
 
 	/**
 	 * Format value before render map
-	 * @param mixed $field
-	 * @param mixed $value
-	 * @param mixed $args
-	 * @param mixed $post_id
+	 * @param array $field    Field settings.
+	 * @param mixed $value    Field value.
+	 * @param mixed $args     Additional arguments.
+	 * @param mixed $post_id  Post ID.
 	 * @return string
 	 */
-	public static function format_single_value( $field, $value, $args, $post_id ): string {
+	public static function format_single_value( $field, $value, $args, $post_id ) {
 		$args = wp_parse_args( $args, [
 			'api_key' => $field['api_key'] ?? '',
 		] );
@@ -138,16 +138,17 @@ class RWMB_Map_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function render_map( $location, $args = [] ) {
-        // For compatibility with previous version, or within groups.
+		// For compatibility with previous version, or within groups.
 		if ( is_string( $location ) ) {
 			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
 		} else {
+			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 			extract( $location );
 		}
 
-        if ( ! $latitude || ! $longitude ) {
-            return '';
-        }
+		if ( ! $latitude || ! $longitude ) {
+			return '';
+		}
 
 		$args = wp_parse_args( $args, [
 			'latitude'     => $latitude,

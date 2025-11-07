@@ -22,6 +22,7 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 		$output .= sprintf(
 			'<option value="%s" %s>%s%s</option>',
 			esc_attr( $object->value ),
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			selected( in_array( $object->value, $this->meta ), true, false ),
 			$indent,
 			esc_html( $object->label )

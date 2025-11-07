@@ -28,7 +28,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		parent::show( $field, $saved, $post_id );
 	}
 
-	abstract public static function query( $meta, array $field ) : array;
+	abstract public static function query( $meta, array $field ): array;
 
 	/**
 	 * Get field HTML.
@@ -152,7 +152,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
 	 * Get correct rendering class for the field.
 	 */
-	protected static function get_type_class( array $field ) : string {
+	protected static function get_type_class( array $field ): string {
 		return RWMB_Helpers_Field::get_class( [ 'type' => $field['field_type'] ] );
 	}
 }

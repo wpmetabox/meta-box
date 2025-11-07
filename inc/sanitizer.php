@@ -146,6 +146,7 @@ class RWMB_Sanitizer {
 		$options = RWMB_Choice_Field::transform_options( $field['options'] );
 		$options = wp_list_pluck( $options, 'value' );
 		$value   = wp_unslash( $value );
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		return is_array( $value ) ? array_intersect( $value, $options ) : ( in_array( $value, $options ) ? $value : '' );
 	}
 

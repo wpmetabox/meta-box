@@ -4,12 +4,12 @@ use MetaBox\Support\Arr;
 
 class StdTest extends TestCase {
 	public function testTextStd() {
-        if ( ! defined( 'RWMB_VER' ) ) {
+		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active' );
 		}
 
 		$field = [
-			'id' => 'text',
+			'id'   => 'text',
 			'type' => 'text',
 		];
 
@@ -32,7 +32,7 @@ class StdTest extends TestCase {
 		$std = RWMB_Field::call( 'get_std', [
 			...$field,
 			'clone' => true,
-			'std' => 'default',
+			'std'   => 'default',
 		] );
 
 		$this->assertIsArray( $std );
@@ -42,7 +42,7 @@ class StdTest extends TestCase {
 		$field = RWMB_Field::call( 'normalize', [
 			...$field,
 			'clone' => true,
-			'std' => [ 'default' ],
+			'std'   => [ 'default' ],
 		] );
 
 		$std = RWMB_Field::call( 'get_std', $field );
@@ -53,7 +53,7 @@ class StdTest extends TestCase {
 		$field = RWMB_Field::call( 'normalize', [
 			...$field,
 			'clone' => true,
-			'std' => [ 'default', 'default2' ],
+			'std'   => [ 'default', 'default2' ],
 		] );
 
 		$std = RWMB_Field::call( 'get_std', $field );
@@ -62,7 +62,7 @@ class StdTest extends TestCase {
 	}
 
 	public function testStdForCheckboxList() {
-        if ( ! defined( 'RWMB_VER' ) ) {
+		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active' );
 		}
 
@@ -75,16 +75,16 @@ class StdTest extends TestCase {
 		];
 
 		$field = [
-			'id' => 'checkbox_list',
-			'type' => 'checkbox_list',
-			'clone' => true,
+			'id'      => 'checkbox_list',
+			'type'    => 'checkbox_list',
+			'clone'   => true,
 			'options' => [
 				'a' => 'A',
 				'b' => 'B',
 				'c' => 'C',
 				'd' => 'D',
 			],
-			'std' => $std_case_1,
+			'std'     => $std_case_1,
 		];
 
 		$field = RWMB_Field::call( 'normalize', $field );
@@ -120,45 +120,45 @@ class StdTest extends TestCase {
 
 		$group_std = [
 			[
-				'text' => 'a',
+				'text'   => 'a',
 				'group2' => [
 					[ 'text2' => 'b' ],
 					[ 'text2' => 'c' ],
 				],
 			],
 			[
-				'text' => 'd',
+				'text'   => 'd',
 				'group2' => [
 					[ 'text2' => 'e' ],
 					[ 'text2' => 'f' ],
 				],
 			],
 		];
-		$field = [
-			'type' => 'group',
-			'id' => 'group',
-			'clone' => true,
-			'name' => 'Group 1',
-			'std' => $group_std,
+		$field     = [
+			'type'   => 'group',
+			'id'     => 'group',
+			'clone'  => true,
+			'name'   => 'Group 1',
+			'std'    => $group_std,
 			'fields' => [
 				[
-					'id' => 'text',
-					'type' => 'text',
-					'name' => 'Text 1',
-					'clone' => true,
+					'id'                => 'text',
+					'type'              => 'text',
+					'name'              => 'Text 1',
+					'clone'             => true,
 					'clone_empty_start' => true,
 				],
 				[
-					'id' => 'group2',
-					'type' => 'group',
-					'clone' => true,
-					'name' => 'Group 2',
+					'id'     => 'group2',
+					'type'   => 'group',
+					'clone'  => true,
+					'name'   => 'Group 2',
 					'fields' => [
 						[
-							'id' => 'text2',
-							'type' => 'text',
-							'name' => 'Text 2',
-							'clone' => true,
+							'id'                => 'text2',
+							'type'              => 'text',
+							'name'              => 'Text 2',
+							'clone'             => true,
 							'clone_empty_start' => true,
 						],
 					],

@@ -30,11 +30,12 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 	private static function get_icons( array $field ): array {
 		// Get from cache to prevent reading large files.
-		$params    = [
+		$params = [
 			'icon_file' => $field['icon_file'],
 			'icon_dir'  => $field['icon_dir'],
 			'icon_css'  => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
 		];
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$cache_key = md5( serialize( $params ) ) . '-icons';
 		$icons     = wp_cache_get( $cache_key, self::CACHE_GROUP );
 		if ( false !== $icons ) {
@@ -239,6 +240,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		// Font Awesome Pro.
+		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 		if ( $field['icon_set'] === 'font-awesome-pro' ) {
 
 		} elseif ( $field['icon_file'] || $field['icon_dir'] || $field['icon_css'] ) {
@@ -274,7 +276,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		}
 
 		$icons = self::get_icons( $field );
-		$key   = array_search( $value, array_column( $icons, 'value' ) );
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		$key = array_search( $value, array_column( $icons, 'value' ) );
 		if ( false === $key ) {
 			return '';
 		}

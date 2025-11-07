@@ -70,6 +70,7 @@ class RWMB_Autocomplete_Field extends RWMB_Multiple_Values_Field {
 
 		if ( is_array( $field['options'] ) ) {
 			foreach ( $field['options'] as $value => $label ) {
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				if ( ! in_array( $value, $meta ) ) {
 					continue;
 				}

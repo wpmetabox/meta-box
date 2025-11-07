@@ -51,7 +51,7 @@ add_filter(
 		if ( ! is_single() ) {
 			return $content;
 		}
-		$value    = rwmb_meta( 'f' );
+		$value = rwmb_meta( 'f' );
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		$value    = '<pre>' . print_r( $value, true ) . '</pre>';
 		$content .= $value;

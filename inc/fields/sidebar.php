@@ -15,7 +15,7 @@ class RWMB_Sidebar_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		global $wp_registered_sidebars;
 		$options = [];
 		foreach ( $wp_registered_sidebars as $sidebar ) {
