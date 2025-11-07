@@ -1,3 +1,7 @@
+### 5.10.17 - 2025-11-07
+
+WPML integration: fix error when filtering value for helper functions when no fields are found.
+
 ### 5.10.15 - 2025-10-06
 
 Add `marker_draggable` option for `map`/`osm` fields to disable changing the pin on the map.
