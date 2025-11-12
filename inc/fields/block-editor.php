@@ -28,21 +28,12 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'wp-hooks',
 		];
 
-		foreach ( $packages as $package ) {
-			wp_enqueue_script( $package );
-		}
-
-		wp_enqueue_style( 'wp-components' );
-		wp_enqueue_style( 'wp-block-library' );
-		wp_enqueue_style( 'wp-edit-blocks' );
-
-		$default_bundle = RWMB_JS_URL . 'isolated-block-editor.js';
-		$bundle_url     = apply_filters( 'rwmb_block_editor_bundle_url', $default_bundle );
+		$bundle_url = RWMB_JS_URL . 'isolated-block-editor.js';
 
 		wp_register_script(
 			'rwmb-block-editor-iso',
 			$bundle_url,
-			[ 'wp-element', 'wp-components', 'wp-data', 'wp-i18n' ],
+			$packages,
 			'2.29.0',
 			true
 		);
@@ -82,7 +73,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		wp_enqueue_style(
 			'rwmb-block-editor',
 			RWMB_CSS_URL . 'block-editor.css',
-			[ 'wp-edit-blocks', 'rwmb-block-editor-iso' ],
+			[ 'wp-components', 'wp-block-library', 'wp-edit-blocks', 'rwmb-block-editor-iso' ],
 			RWMB_VER
 		);
 		wp_style_add_data( 'rwmb-block-editor', 'path', RWMB_CSS_DIR . 'block-editor.css' );
@@ -194,7 +185,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	 */
 	protected static function prepare_settings( $field ) {
 		$settings = [
-			'editor' => self::get_editor_settings( $field ),
+			'editor' => self::get_editor_settings(),
 			'iso'    => [
 				'blocks'            => [
 					'allowBlocks' => self::get_allowed_blocks( $field ),
@@ -218,7 +209,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'replaceParagraphCode' => false,
 		];
 
-		return apply_filters( 'rwmb/block_editor/settings', $settings, $field );
+		return $settings;
 	}
 
 	/**
@@ -243,22 +234,15 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	 *
 	 * @return array
 	 */
-	protected static function get_editor_settings( $field ) {
+	protected static function get_editor_settings() {
 		global $editor_styles, $post;
 
-		if ( function_exists( 'get_block_categories' ) && function_exists( 'wp_add_inline_script' ) ) {
-			wp_add_inline_script(
-				'wp-blocks',
-				sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $post ) ) )
-			);
-		}
+		wp_add_inline_script(
+			'wp-blocks',
+			sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $post ) ) )
+		);
 
 		$styles = [];
-		$locale_font_family = esc_html_x( 'Noto Serif', 'CSS Font Family for Editor Font', 'meta-box' );
-		$styles[]           = [
-			'css' => "body { font-family: '$locale_font_family' }",
-		];
-
 		if ( ! empty( $editor_styles ) && current_theme_supports( 'editor-styles' ) ) {
 			foreach ( $editor_styles as $style ) {
 				if ( preg_match( '~^(https?:)?//~', $style ) ) {
