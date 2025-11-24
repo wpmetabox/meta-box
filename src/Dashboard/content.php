@@ -567,6 +567,79 @@
 	</div>
 
 	<aside class="mb-dashboard__sidebar" data-utm="sidebar">
+		<?php
+		$utc_timezone = new \DateTimeZone( 'UTC' );
+		$now = new \DateTime( 'now', $utc_timezone );
+		$sale_end1 = new \DateTime( '2025-11-29 00:00:00', $utc_timezone );
+		$sale_end2 = new \DateTime( '2025-12-02 00:00:00', $utc_timezone );
+		if ( $now < $sale_end2 ) :
+			?>
+			<div class="mb-dashboard__widget mb-dashboard__sale" data-utm="sale">
+				<div class="mb-dashboard__widget-title">
+					<?php esc_html_e( 'Black Friday Sale', 'meta-box' ); ?>
+					<span class="mb-dashboard__sale__badge"><?php esc_html_e( 'Hot', 'meta-box' ); ?></span>
+				</div>
+				<div class="mb-dashboard__widget-body">
+					<p><?php esc_html_e( 'Upgrade your package and optimize the workflow at the best price!', 'meta-box' ); ?></p>
+					<a class="mb-dashboard__sale__button" href="https://metabox.io/black-friday/" target="_blank">
+						<?php if ( $now < $sale_end1 ) : ?>
+							<span class="mb-dashboard__sale__button-text--large"><?php esc_html_e( 'Get 40% OFF now', 'meta-box' ); ?></span>
+						<?php else : ?>
+							<span class="mb-dashboard__sale__button-text--large"><?php esc_html_e( 'Get 25% OFF now', 'meta-box' ); ?></span>
+						<?php endif; ?>
+						<span class="mb-dashboard__sale__button-text--small"><?php esc_html_e( 'on annual plans', 'meta-box' ); ?></span>
+					</a>
+					<ul class="mb-dashboard__countdown" data-end="<?= $now < $sale_end1 ? '2025-11-29T00:00:00+00:00' : '2025-12-02T00:00:00+00:00' ?>">
+						<li>
+							<div class="mb-dashboard__countdown-number" data-type="days">0</div>
+							<div class="mb-dashboard__countdown-label">Days</div>
+						</li>
+						<li>
+							<div class="mb-dashboard__countdown-number" data-type="hours">0</div>
+							<div class="mb-dashboard__countdown-label">Hours</div>
+						</li>
+						<li>
+							<div class="mb-dashboard__countdown-number" data-type="minutes">0</div>
+							<div class="mb-dashboard__countdown-label">Min.</div>
+						</li>
+						<li>
+							<div class="mb-dashboard__countdown-number" data-type="seconds">0</div>
+							<div class="mb-dashboard__countdown-label">Sec.</div>
+						</li>
+					</ul>
+					<script>
+						document.querySelectorAll( '.mb-dashboard__countdown' ).forEach( el => {
+							const days = el.querySelector( '[data-type="days"]' );
+							const hours = el.querySelector( '[data-type="hours"]' );
+							const minutes = el.querySelector( '[data-type="minutes"]' );
+							const seconds = el.querySelector( '[data-type="seconds"]' );
+
+							const countdown = () => {
+								const time = new Date( el.dataset.end ).getTime();
+								const now = new Date().getTime();
+								const distance = ( time - now ) / 1000;
+
+								if ( distance < 0 ) {
+									days.innerHTML = '0';
+									hours.innerHTML = '0';
+									minutes.innerHTML = '0';
+									seconds.innerHTML = '0';
+									clearInterval( timer );
+									return;
+								}
+
+								days.innerHTML = Math.floor( distance / 86400 );
+								hours.innerHTML = Math.floor( ( distance % 86400 ) / 3600 );
+								minutes.innerHTML = Math.floor( ( distance % 3600 ) / 60 );
+								seconds.innerHTML = Math.floor( distance % 60 );
+							};
+
+							const timer = setInterval( countdown, 1000 );
+						} );
+					</script>
+				</div>
+			</div>
+		<?php endif; ?>
 		<?php if ( $this->upgradable ) : ?>
 			<div class="mb-dashboard__widget mb-dashboard__upgrade" data-utm="cta">
 				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Wanna advanced features?', 'meta-box' ); ?></div>
@@ -590,10 +663,10 @@
 				<div class="mb-dashboard__widget-title"><?php esc_html_e( 'Premium support', 'meta-box' ); ?></div>
 				<div class="mb-dashboard__widget-body">
 					<p><?php esc_html_e( 'If you have any questions, need a hand with a technical issue, or just want to say hi, we\'ve got you covered. Get in touch with us and we\'ll be happy to assist you!', 'meta-box' ); ?><p>
-					<a class="mb-dashboard__external" target="_blank" href="https://support.metabox.io">
-						<?php esc_html_e( 'Go to the support forum', 'meta-box' ); ?>
+						<a class="mb-dashboard__external" target="_blank" href="https://support.metabox.io">
+							<?php esc_html_e( 'Go to the support forum', 'meta-box' ); ?>
 						<svg><use xlink:href="#external-link"></use></svg>
-					</a>
+						</a>
 				</div>
 			</div>
 		<?php endif; ?>
