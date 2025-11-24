@@ -149,7 +149,7 @@ If you want to use Meta Box, please follow these steps:
 
 = 5.10.18 - 2025-11-24 =
 
-- Update the plugin dashboard
+- Fix deprecation message for `datetime` field
 
 = 5.10.17 - 2025-11-07 =
 
