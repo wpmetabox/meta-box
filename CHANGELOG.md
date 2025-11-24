@@ -1,3 +1,7 @@
+### 5.10.18 - 2025-11-24
+
+- Update the plugin dashboard
+
 ### 5.10.17 - 2025-11-07
 
 WPML integration: fix error when filtering value for helper functions when no fields are found.
