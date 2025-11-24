@@ -1,3 +1,7 @@
+### 5.10.19 - 2025-11-24
+
+- Fix the `use` statement with non-compound name has no effect
+
 ### 5.10.18 - 2025-11-24
 
 - Fix deprecation message for `datetime` field
