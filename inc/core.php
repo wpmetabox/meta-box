@@ -1,4 +1,8 @@
 <?php
+
+use DateTime;
+use DateTimeZone;
+
 class RWMB_Core {
 	public function init() {
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', [ $this, 'plugin_links' ], 20 );
@@ -10,7 +14,14 @@ class RWMB_Core {
 	}
 
 	public function plugin_links( array $links ): array {
-		$links[] = '<a href="https://docs.metabox.io">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
+		$links[] = '<a href="https://docs.metabox.io?utm_source=plugin_links&utm_medium=link&utm_campaign=meta_box" target="_blank">' . esc_html__( 'Docs', 'meta-box' ) . '</a>';
+
+		$utc_timezone = new DateTimeZone( 'UTC' );
+		$now = new DateTime( 'now', $utc_timezone );
+		$sale_end = new DateTime( '2025-12-02 00:00:00', $utc_timezone );
+		if ( $now < $sale_end ) {
+			$links[] = '<a href="https://metabox.io/black-friday/?utm_source=plugin_links&utm_medium=link&utm_campaign=black_friday" target="_blank" style="color: #39b54a; font-weight: bold">' . esc_html__( 'Black Friday Sale', 'meta-box' ) . '</a>';
+		}
 		return $links;
 	}
 
