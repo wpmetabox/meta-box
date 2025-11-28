@@ -131,6 +131,10 @@
 				fieldName += '[]';
 			}
 
+			// Store initial value for change detection
+			this.initialValue = this.$input.val();
+			this.isInitializing = true;
+
 			this.controller = new Controller( _.extend(
 				{
 					fieldName: fieldName,
@@ -159,7 +163,35 @@
 
 			collection.on( 'all', _.debounce( function() {
 				var ids = collection.pluck( 'id' ).join( ',' );
-				that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+
+				// Convert to strings for reliable comparison
+				var currentIds = String( ids || '' );
+				var initialIds = String( that.initialValue || '' );
+
+				// During initialization, check if we've loaded the initial value
+				if ( that.isInitializing ) {
+					// Only update value if it matches initial (no change event needed)
+					if ( currentIds === initialIds ) {
+						// Silently update the value without triggering any events
+						that.$input.val( ids );
+
+						// Check if collection is properly loaded before marking complete
+						var hasAttachments = collection.length > 0;
+						var shouldHaveAttachments = initialIds.length > 0;
+
+						if ( hasAttachments || ! shouldHaveAttachments ) {
+							that.isInitializing = false;
+						}
+					}
+					// If values don't match during init, don't update anything - wait for correct value
+					return;
+				}
+
+				// After initialization, update value and trigger change event only if value actually changed
+				var currentValue = that.$input.val();
+				if ( String( currentValue || '' ) !== currentIds ) {
+					that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+				}
 			}, 500 ) );
 		},
 
