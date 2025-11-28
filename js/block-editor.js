@@ -43,13 +43,24 @@
 			return;
 		}
 
+		// Check if textarea already has an editor attached (prevent duplicate initialization)
+		if ( textarea.dataset.hasEditor === 'true' ) {
+			return;
+		}
+
 		const settings = parseSettings( wrapper.getAttribute( 'data-settings' ) );
+
+		// Mark as initialized BEFORE calling attachEditor to prevent race conditions
+		wrapper.dataset.initialized = 'true';
+		textarea.dataset.hasEditor = 'true';
 
 		try {
 			attachEditor( textarea, settings );
-			wrapper.dataset.initialized = 'true';
 		} catch ( error ) {
 			console.error( 'RWMB Block Editor: failed to initialize editor instance.', error );
+			// Reset flags on error so it can be retried
+			wrapper.dataset.initialized = 'false';
+			textarea.dataset.hasEditor = 'false';
 		}
 	};
 
