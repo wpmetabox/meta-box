@@ -131,10 +131,6 @@
 				fieldName += '[]';
 			}
 
-			// Store initial value for change detection
-			this.initialValue = this.$input.val();
-			this.isInitializing = true;
-
 			this.controller = new Controller( _.extend(
 				{
 					fieldName: fieldName,
@@ -149,7 +145,6 @@
 			this.createStatus();
 
 			this.render();
-			this.loadInitialAttachments();
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
@@ -161,38 +156,39 @@
 				collection.reset();
 			} );
 
+			// Store initial value BEFORE loading attachments
+			const initialValue = this.$input.val();
+			let isInitialLoad = true;
+
 			collection.on( 'all', _.debounce( function() {
-				var ids = collection.pluck( 'id' ).join( ',' );
+				const ids = collection.pluck( 'id' ).join( ',' );
+				const currentValue = that.$input.val();
 
-				// Convert to strings for reliable comparison
-				var currentIds = String( ids || '' );
-				var initialIds = String( that.initialValue || '' );
+				// Disable main input when there are items to prevent duplicate values in form
+				// The actual values are submitted via inputs inside each media item
+				if ( collection.length > 0 ) {
+					that.$input.prop( 'disabled', true );
+				} else {
+					that.$input.prop( 'disabled', false );
+				}
 
-				// During initialization, check if we've loaded the initial value
-				if ( that.isInitializing ) {
-					// Only update value if it matches initial (no change event needed)
-					if ( currentIds === initialIds ) {
-						// Silently update the value without triggering any events
+				// During initial load, only update value if different, and don't trigger change
+				if ( isInitialLoad ) {
+					if ( String( currentValue || '' ) !== String( ids || '' ) ) {
 						that.$input.val( ids );
-
-						// Check if collection is properly loaded before marking complete
-						var hasAttachments = collection.length > 0;
-						var shouldHaveAttachments = initialIds.length > 0;
-
-						if ( hasAttachments || ! shouldHaveAttachments ) {
-							that.isInitializing = false;
-						}
 					}
-					// If values don't match during init, don't update anything - wait for correct value
+					isInitialLoad = false;
 					return;
 				}
 
-				// After initialization, update value and trigger change event only if value actually changed
-				var currentValue = that.$input.val();
-				if ( String( currentValue || '' ) !== currentIds ) {
+				// After initial load, only trigger change if value actually changed
+				if ( String( currentValue || '' ) !== String( ids || '' ) ) {
 					that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
 				}
 			}, 500 ) );
+
+			// Load initial attachments AFTER setting up the event listener
+			this.loadInitialAttachments();
 		},
 
 		loadInitialAttachments: function () {
