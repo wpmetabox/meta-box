@@ -131,6 +131,12 @@
 				fieldName += '[]';
 			}
 
+			// Disable main input immediately if it has initial data to prevent duplicate form values
+			// The actual values are submitted via inputs inside each media item
+			if ( this.$input.val() && this.$input.attr( 'data-attachments' ) ) {
+				this.$input.prop( 'disabled', true );
+			}
+
 			this.controller = new Controller( _.extend(
 				{
 					fieldName: fieldName,
@@ -145,7 +151,6 @@
 			this.createStatus();
 
 			this.render();
-			this.loadInitialAttachments();
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
@@ -157,10 +162,38 @@
 				collection.reset();
 			} );
 
+			// Store initial value BEFORE loading attachments
+			const initialValue = this.$input.val();
+			let isInitialLoad = true;
+
 			collection.on( 'all', _.debounce( function() {
-				var ids = collection.pluck( 'id' ).join( ',' );
-				that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+				const ids = collection.pluck( 'id' ).join( ',' );
+				const currentValue = that.$input.val();
+
+				// Update disabled state based on collection length
+				if ( collection.length > 0 ) {
+					that.$input.prop( 'disabled', true );
+				} else {
+					that.$input.prop( 'disabled', false );
+				}
+
+				// During initial load, only update value if different, and don't trigger change
+				if ( isInitialLoad ) {
+					if ( String( currentValue || '' ) !== String( ids || '' ) ) {
+						that.$input.val( ids );
+					}
+					isInitialLoad = false;
+					return;
+				}
+
+				// After initial load, only trigger change if value actually changed
+				if ( String( currentValue || '' ) !== String( ids || '' ) ) {
+					that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+				}
 			}, 500 ) );
+
+			// Load initial attachments AFTER setting up the event listener
+			this.loadInitialAttachments();
 		},
 
 		loadInitialAttachments: function () {
