@@ -131,6 +131,12 @@
 				fieldName += '[]';
 			}
 
+			// Disable main input immediately if it has initial data to prevent duplicate form values
+			// The actual values are submitted via inputs inside each media item
+			if ( this.$input.val() && this.$input.attr( 'data-attachments' ) ) {
+				this.$input.prop( 'disabled', true );
+			}
+
 			this.controller = new Controller( _.extend(
 				{
 					fieldName: fieldName,
@@ -164,8 +170,7 @@
 				const ids = collection.pluck( 'id' ).join( ',' );
 				const currentValue = that.$input.val();
 
-				// Disable main input when there are items to prevent duplicate values in form
-				// The actual values are submitted via inputs inside each media item
+				// Update disabled state based on collection length
 				if ( collection.length > 0 ) {
 					that.$input.prop( 'disabled', true );
 				} else {
