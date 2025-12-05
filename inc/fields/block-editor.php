@@ -95,6 +95,12 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			]
 		);
 
+		// Parse allowed_blocks from textarea (one block per line) to array for Meta Box Builder
+		if ( ! empty( $field['allowed_blocks'] ) && is_string( $field['allowed_blocks'] ) ) {
+			$blocks = array_filter( array_map( 'trim', explode( "\n", $field['allowed_blocks'] ) ) );
+			$field['allowed_blocks'] = array_values( $blocks );
+		}
+
 		$field['allowed_blocks'] = array_values(
 			array_filter(
 				array_map(
