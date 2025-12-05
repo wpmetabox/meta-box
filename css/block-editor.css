@@ -1,0 +1,30 @@
+.rwmb-block-editor-wrapper {
+	margin: 12px 0;
+}
+
+.rwmb-block-editor-wrapper .rwmb-block-editor-root {
+	position: relative;
+	min-height: 320px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+.rwmb-block-editor-root:empty::before {
+	content: attr(data-loading-label);
+	display: block;
+	padding: 24px;
+	color: #757575;
+	text-align: center;
+	font-style: italic;
+}
+
+.rwmb-block-editor-wrapper .components-popover {
+	z-index: 1000000;
+}
+
+.rwmb-block-editor-wrapper .components-modal__screen-overlay {
+	z-index: 1000001;
+}
+
