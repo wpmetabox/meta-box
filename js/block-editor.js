@@ -56,12 +56,248 @@
 
 		try {
 			attachEditor( textarea, settings );
+
+			// Setup auto-close inserter popover after block is inserted
+			setupAutoCloseInserter( wrapper );
 		} catch ( error ) {
 			console.error( 'RWMB Block Editor: failed to initialize editor instance.', error );
 			// Reset flags on error so it can be retried
 			wrapper.dataset.initialized = 'false';
 			textarea.dataset.hasEditor = 'false';
 		}
+	};
+
+	const setupAutoCloseInserter = ( wrapper ) => {
+		// Wait a bit for editor to be fully initialized
+		setTimeout( () => {
+			// Method 1: Use wp.data to monitor block insertion
+			if ( window.wp && window.wp.data ) {
+				try {
+					const { subscribe, select, dispatch } = window.wp.data;
+					const store = 'isolated/editor';
+
+					// Check if store exists
+					if ( select( store ) ) {
+						let previousBlockCount = 0;
+						let isInserterOpened = false;
+						let lastInserterStateCheck = 0;
+
+						// Monitor inserter state and block count
+						const unsubscribe = subscribe( () => {
+							try {
+								const now = Date.now();
+
+								// Check inserter state (throttle to avoid too many checks)
+								if ( now - lastInserterStateCheck > 50 ) {
+									const currentInserterState = select( store ).isInserterOpened();
+									if ( currentInserterState !== isInserterOpened ) {
+										isInserterOpened = currentInserterState;
+									}
+									lastInserterStateCheck = now;
+								}
+
+								// Check block count
+								const blocks = select( 'core/block-editor' )?.getBlocks();
+								const currentBlockCount = blocks ? blocks.length : 0;
+
+								// If inserter is open and block count increased, close it
+								if ( isInserterOpened && currentBlockCount > previousBlockCount ) {
+									// Close inserter via store
+									dispatch( store ).setIsInserterOpened( false );
+									isInserterOpened = false;
+									previousBlockCount = currentBlockCount;
+									return; // Exit early after closing
+								}
+
+								previousBlockCount = currentBlockCount;
+							} catch ( e ) {
+								// Store might not be ready, use DOM fallback
+							}
+						} );
+
+						// Cleanup when wrapper is removed
+						const cleanupObserver = new MutationObserver( () => {
+							if ( ! document.body.contains( wrapper ) ) {
+								unsubscribe();
+								cleanupObserver.disconnect();
+							}
+						} );
+						cleanupObserver.observe( document.body, { childList: true, subtree: true } );
+					}
+				} catch ( e ) {
+					// Fall through to DOM-based approach
+				}
+			}
+
+			// Method 2: DOM-based fallback - listen for clicks on inserter items
+			setupAutoCloseInserterDOM( wrapper );
+		}, 500 );
+	};
+
+	const closePopoverDirectly = ( wrapper ) => {
+		// ONLY use store API - never manipulate DOM directly to avoid React conflicts
+		if ( ! window.wp || ! window.wp.data ) {
+			return;
+		}
+
+		try {
+			const { select, dispatch } = window.wp.data;
+			const store = 'isolated/editor';
+
+			// Check if store exists
+			if ( ! select( store ) ) {
+				return;
+			}
+
+			// Always try to close inserter (even if state check fails)
+			// This ensures it closes even if state is out of sync
+			try {
+				dispatch( store ).setIsInserterOpened( false );
+			} catch ( e ) {
+				// If that fails, try checking state first
+				try {
+					if ( select( store ).isInserterOpened() ) {
+						dispatch( store ).setIsInserterOpened( false );
+					}
+				} catch ( e2 ) {
+					// Store method failed - silently ignore
+					// React will handle the popover lifecycle
+				}
+			}
+		} catch ( error ) {
+			// Silently ignore - React manages the DOM, we shouldn't interfere
+		}
+	};
+
+	const setupAutoCloseInserterDOM = ( wrapper ) => {
+		// Track if we've already set up listeners to avoid duplicates
+		if ( wrapper.dataset.inserterCloseSetup === 'true' ) {
+			return;
+		}
+		wrapper.dataset.inserterCloseSetup = 'true';
+
+		// Listen for clicks on block inserter menu items
+		const handleBlockInsert = ( event ) => {
+			const target = event.target;
+			const inserterItem = target.closest(
+				'.block-editor-inserter__menu-item, ' +
+				'.block-editor-block-types-list__list-item, ' +
+				'[role="option"][aria-label], ' +
+				'.block-editor-inserter__block-list-item, ' +
+				'.block-editor-inserter__block, ' +
+				'button[aria-label*="block"], ' +
+				'button[aria-label*="Block"]'
+			);
+
+			if ( inserterItem ) {
+				// Block was clicked, close popover immediately and after delays
+				// Try multiple times to ensure it closes
+				closePopoverDirectly( wrapper );
+
+				requestAnimationFrame( () => {
+					closePopoverDirectly( wrapper );
+					setTimeout( () => {
+						closePopoverDirectly( wrapper );
+					}, 50 );
+					setTimeout( () => {
+						closePopoverDirectly( wrapper );
+					}, 150 );
+				} );
+			}
+		};
+
+		// Listen for clicks (capture phase to catch early)
+		wrapper.addEventListener( 'click', handleBlockInsert, true );
+		wrapper.addEventListener( 'mousedown', handleBlockInsert, true );
+
+		// Also listen for keyboard events (Enter/Space on inserter items)
+		wrapper.addEventListener( 'keydown', ( event ) => {
+			if ( event.key === 'Enter' || event.key === ' ' ) {
+				const target = event.target;
+				const inserterItem = target.closest(
+					'.block-editor-inserter__menu-item, ' +
+					'.block-editor-block-types-list__list-item, ' +
+					'[role="option"][aria-label], ' +
+					'.block-editor-inserter__block-list-item, ' +
+					'.block-editor-inserter__block, ' +
+					'button[aria-label*="block"], ' +
+					'button[aria-label*="Block"]'
+				);
+
+				if ( inserterItem ) {
+					// Try multiple times to ensure it closes
+					closePopoverDirectly( wrapper );
+
+					requestAnimationFrame( () => {
+						closePopoverDirectly( wrapper );
+						setTimeout( () => {
+							closePopoverDirectly( wrapper );
+						}, 50 );
+						setTimeout( () => {
+							closePopoverDirectly( wrapper );
+						}, 150 );
+					} );
+				}
+			}
+		}, true );
+
+		// Also use MutationObserver to detect when popover appears and monitor for block insertion
+		const popoverObserver = new MutationObserver( () => {
+			// Check if popover is visible
+			const popover = wrapper.querySelector( '.components-popover.is-positioned' );
+			if ( popover ) {
+				// Monitor for block insertion by watching for changes in block list
+				let previousBlockCount = 0;
+				const blockListObserver = new MutationObserver( () => {
+					// Check if a new block was added
+					const blocks = wrapper.querySelectorAll( '.block-editor-block-list__block' );
+					const currentBlockCount = blocks.length;
+
+					if ( currentBlockCount > previousBlockCount ) {
+						// Block was added, close popover
+						closePopoverDirectly( wrapper );
+
+						requestAnimationFrame( () => {
+							closePopoverDirectly( wrapper );
+							setTimeout( () => {
+								closePopoverDirectly( wrapper );
+							}, 100 );
+							setTimeout( () => {
+								closePopoverDirectly( wrapper );
+							}, 250 );
+						} );
+					}
+
+					previousBlockCount = currentBlockCount;
+				} );
+
+				// Observe the editor content area (but only use store API, never manipulate DOM)
+				const editorRoot = wrapper.querySelector( '.rwmb-block-editor-root, .block-editor-writing-flow' );
+				if ( editorRoot ) {
+					blockListObserver.observe( editorRoot, { childList: true, subtree: true } );
+
+					// Cleanup after popover is closed (check via store, not DOM)
+					const cleanupObserver = new MutationObserver( () => {
+						// Check via store instead of DOM query
+						if ( window.wp && window.wp.data ) {
+							try {
+								const { select } = window.wp.data;
+								const store = 'isolated/editor';
+								if ( select( store ) && ! select( store ).isInserterOpened() ) {
+									blockListObserver.disconnect();
+									cleanupObserver.disconnect();
+								}
+							} catch ( e ) {
+								// Ignore
+							}
+						}
+					} );
+					cleanupObserver.observe( wrapper, { childList: true, subtree: true } );
+				}
+			}
+		} );
+
+		popoverObserver.observe( wrapper, { childList: true, subtree: true } );
 	};
 
 	const waitForAttachEditor = () => new Promise( ( resolve, reject ) => {
