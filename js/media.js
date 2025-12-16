@@ -64,9 +64,10 @@
 		},
 
 		remove: function ( models, options ) {
-			// Don't remove models if event is not fired from MB plugin.
-			if( ! $( event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
-				return;
+			options = options || {};
+			// Don't remove models if event is not fired from MB plugin (only when event exists).
+			if ( options.event && ! $( options.event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
+				return this;
 			}
 			models = Backbone.Collection.prototype.remove.call( this, models, options );
 			if ( this.controller.get( 'forceDelete' ) === true ) {
@@ -75,6 +76,7 @@
 					model.destroy();
 				} );
 			}
+			return models;
 		},
 
 		destroyAll: function () {
@@ -127,14 +129,14 @@
 				fieldName = options.input.name;
 			this.$input = $( options.input );
 
+			// For multiple fields, ensure input gốc also has [] in name to match hidden inputs
+			// This prevents WP autosave from detecting form structure changes
 			if ( 1 != this.$input.attr( 'data-single-image' ) ) {
-				fieldName += '[]';
-			}
-
-			// Disable main input immediately if it has initial data to prevent duplicate form values
-			// The actual values are submitted via inputs inside each media item
-			if ( this.$input.val() && this.$input.attr( 'data-attachments' ) ) {
-				this.$input.prop( 'disabled', true );
+				// Update input gốc name to include [] if not already present
+				if ( fieldName.indexOf( '[]' ) === -1 ) {
+					fieldName += '[]';
+					this.$input.attr( 'name', fieldName );
+				}
 			}
 
 			this.controller = new Controller( _.extend(
@@ -162,31 +164,14 @@
 				collection.reset();
 			} );
 
-			// Store initial value BEFORE loading attachments
-			const initialValue = this.$input.val();
-			let isInitialLoad = true;
-
 			collection.on( 'all', _.debounce( function() {
 				const ids = collection.pluck( 'id' ).join( ',' );
 				const currentValue = that.$input.val();
 
-				// Update disabled state based on collection length
-				if ( collection.length > 0 ) {
-					that.$input.prop( 'disabled', true );
-				} else {
-					that.$input.prop( 'disabled', false );
-				}
+				// Update disabled state
+				that.$input.prop( 'disabled', collection.length > 0 );
 
-				// During initial load, only update value if different, and don't trigger change
-				if ( isInitialLoad ) {
-					if ( String( currentValue || '' ) !== String( ids || '' ) ) {
-						that.$input.val( ids );
-					}
-					isInitialLoad = false;
-					return;
-				}
-
-				// After initial load, only trigger change if value actually changed
+				// Only trigger change if value actually changed
 				if ( String( currentValue || '' ) !== String( ids || '' ) ) {
 					that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
 				}
