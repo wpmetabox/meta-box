@@ -295,9 +295,13 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			$allowed_block_types = apply_filters( 'allowed_block_types', $allowed_block_types, $post );
 		}
 
+		// Check if current user can upload files
+		// Allow filter to override this check if needed
+		$can_upload_files = apply_filters( 'rwmb_block_editor_can_upload_files', current_user_can( 'upload_files' ), $post );
+
 		$editor_settings = [
-			'enableUpload'           => true,
-			'enableLibrary'          => true,
+			'enableUpload'           => $can_upload_files,
+			'enableLibrary'          => $can_upload_files,
 			'alignWide'              => get_theme_support( 'align-wide' ),
 			'disableCustomColors'    => get_theme_support( 'disable-custom-colors' ),
 			'disableCustomFontSizes' => get_theme_support( 'disable-custom-font-sizes' ),
@@ -306,7 +310,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'bodyPlaceholder'        => apply_filters( 'write_your_story', __( 'Start writing or type / to choose a block', 'meta-box' ), $post ),
 			'isRTL'                  => is_rtl(),
 			'autosaveInterval'       => defined( 'AUTOSAVE_INTERVAL' ) ? AUTOSAVE_INTERVAL : 0,
-			'maxUploadFileSize'      => wp_max_upload_size() ? wp_max_upload_size() : 0,
+			'maxUploadFileSize'      => $can_upload_files ? ( wp_max_upload_size() ? wp_max_upload_size() : 0 ) : 0,
 			'styles'                 => $styles,
 			'imageSizes'             => $available_image_sizes,
 			'richEditingEnabled'     => user_can_richedit(),
@@ -317,6 +321,11 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'__experimentalCanUserUseUnfilteredHTML' => false,
 			'__experimentalBlockPatterns'            => [],
 			'__experimentalBlockPatternCategories'   => [],
+			// Add capability check for media upload
+			'hasUploadPermissions'   => $can_upload_files,
+			'mediaLibrary'            => [
+				'canUserUploadFiles' => $can_upload_files,
+			],
 		];
 
 		$color_palette = current( (array) get_theme_support( 'editor-color-palette' ) );
