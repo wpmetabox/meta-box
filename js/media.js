@@ -64,9 +64,10 @@
 		},
 
 		remove: function ( models, options ) {
-			// Don't remove models if event is not fired from MB plugin.
-			if( ! $( event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
-				return;
+			options = options || {};
+			// Don't remove models if event is not fired from MB plugin (only when event exists).
+			if ( options.event && ! $( options.event.target ).closest( '.rwmb-field, [data-class="rwmb-field"]' ).length ) {
+				return this;
 			}
 			models = Backbone.Collection.prototype.remove.call( this, models, options );
 			if ( this.controller.get( 'forceDelete' ) === true ) {
@@ -75,6 +76,7 @@
 					model.destroy();
 				} );
 			}
+			return models;
 		},
 
 		destroyAll: function () {
@@ -127,8 +129,14 @@
 				fieldName = options.input.name;
 			this.$input = $( options.input );
 
+			// For multiple fields, ensure input gốc also has [] in name to match hidden inputs
+			// This prevents WP autosave from detecting form structure changes
 			if ( 1 != this.$input.attr( 'data-single-image' ) ) {
-				fieldName += '[]';
+				// Update input gốc name to include [] if not already present
+				if ( fieldName.indexOf( '[]' ) === -1 ) {
+					fieldName += '[]';
+					this.$input.attr( 'name', fieldName );
+				}
 			}
 
 			this.controller = new Controller( _.extend(
@@ -145,7 +153,6 @@
 			this.createStatus();
 
 			this.render();
-			this.loadInitialAttachments();
 
 			// Listen for destroy event on input
 			this.$input.on( 'remove', function () {
@@ -158,9 +165,20 @@
 			} );
 
 			collection.on( 'all', _.debounce( function() {
-				var ids = collection.pluck( 'id' ).join( ',' );
-				that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+				const ids = collection.pluck( 'id' ).join( ',' );
+				const currentValue = that.$input.val();
+
+				// Update disabled state
+				that.$input.prop( 'disabled', collection.length > 0 );
+
+				// Only trigger change if value actually changed
+				if ( String( currentValue || '' ) !== String( ids || '' ) ) {
+					that.$input.val( ids ).trigger( 'change', [that.$( '.rwmb-media-input' )] );
+				}
 			}, 500 ) );
+
+			// Load initial attachments AFTER setting up the event listener
+			this.loadInitialAttachments();
 		},
 
 		loadInitialAttachments: function () {

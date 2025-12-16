@@ -110,6 +110,13 @@ class RWMB_Media_Field extends RWMB_File_Field {
 
 		$field['multiple'] = true;
 
+		// Ensure field_name has [] for multiple fields (not single-image) to match hidden inputs rendered by JS
+		// This prevents WP autosave from detecting form structure changes
+		// Single-image fields should NOT have [] as they only store a single value
+		if ( ! $field['clone'] && $field['type'] !== 'single_image' && strpos( $field['field_name'], '[]' ) === false ) {
+			$field['field_name'] .= '[]';
+		}
+
 		return $field;
 	}
 
