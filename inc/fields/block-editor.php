@@ -13,6 +13,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_editor();
 		wp_enqueue_media();
+		wp_enqueue_script( 'wp-media-utils' ); // Ensure wp-media-utils is enqueued
 
 		do_action( 'enqueue_block_editor_assets' );
 		do_action( 'enqueue_block_assets' );
@@ -26,6 +27,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'wp-compose',
 			'wp-i18n',
 			'wp-hooks',
+			'wp-media-utils', // Added to dependencies
 		];
 
 		$bundle_url = RWMB_JS_URL . 'isolated-block-editor.js';
@@ -299,6 +301,12 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		// Allow filter to override this check if needed
 		$can_upload_files = apply_filters( 'rwmb_block_editor_can_upload_files', current_user_can( 'upload_files' ), $post );
 
+		// Get allowed mime types for media upload
+		$allowed_mime_types = get_allowed_mime_types();
+		if ( ! $can_upload_files ) {
+			$allowed_mime_types = [];
+		}
+
 		$editor_settings = [
 			'enableUpload'           => $can_upload_files,
 			'enableLibrary'          => $can_upload_files,
@@ -311,6 +319,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'isRTL'                  => is_rtl(),
 			'autosaveInterval'       => defined( 'AUTOSAVE_INTERVAL' ) ? AUTOSAVE_INTERVAL : 0,
 			'maxUploadFileSize'      => $can_upload_files ? ( wp_max_upload_size() ? wp_max_upload_size() : 0 ) : 0,
+			'allowedMimeTypes'        => $allowed_mime_types,
 			'styles'                 => $styles,
 			'imageSizes'             => $available_image_sizes,
 			'richEditingEnabled'     => user_can_richedit(),

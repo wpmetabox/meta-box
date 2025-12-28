@@ -50,6 +50,35 @@
 
 		const settings = parseSettings( wrapper.getAttribute( 'data-settings' ) );
 
+		// Add mediaUpload function if enableUpload is true and user has permission
+		if ( settings.editor && settings.editor.enableUpload ) {
+			// Check if wp.mediaUtils is available
+			if ( window.wp && window.wp.mediaUtils && typeof window.wp.mediaUtils.uploadMedia === 'function' ) {
+				// Create mediaUpload function wrapper
+				settings.editor.mediaUpload = ( { onError, ...args } ) => {
+					try {
+						window.wp.mediaUtils.uploadMedia( {
+							wpAllowedMimeTypes: settings.editor.allowedMimeTypes || {},
+							onError: ( error ) => {
+								if ( onError ) {
+									const errorMessage = error && error.message ? error.message : ( typeof error === 'string' ? error : 'Upload failed' );
+									onError( errorMessage );
+								}
+							},
+							...args
+						} );
+					} catch ( error ) {
+						if ( onError ) {
+							onError( error.message || 'Upload failed' );
+						}
+					}
+				};
+			} else {
+				// Log warning if mediaUtils is not available
+				console.warn( 'RWMB Block Editor: wp.mediaUtils.uploadMedia is not available. Media upload may not work.' );
+			}
+		}
+
 		// Mark as initialized BEFORE calling attachEditor to prevent race conditions
 		wrapper.dataset.initialized = 'true';
 		textarea.dataset.hasEditor = 'true';
@@ -321,6 +350,44 @@
 	} );
 
 	const bootstrap = () => {
+		// Setup global filter to override MediaUploadCheck for isolated editors
+		// This fixes the "To edit this block, you need permission to upload media" error
+		// Permission is already checked in PHP via current_user_can('upload_files')
+		if ( window.wp && window.wp.hooks && window.wp.element ) {
+			window.wp.hooks.addFilter(
+				'editor.MediaUploadCheck',
+				'rwmb/block-editor/media-upload-check',
+				( OriginalComponent ) => {
+					return ( props ) => {
+						// Check if we're in a Meta Box isolated editor context
+						// If any isolated editor wrapper exists with enableUpload, allow it
+						const allWrappers = document.querySelectorAll( '.rwmb-block-editor-wrapper' );
+						for ( let i = 0; i < allWrappers.length; i++ ) {
+							try {
+								const settings = parseSettings( allWrappers[i].getAttribute( 'data-settings' ) );
+								// If enableUpload is true, always allow (permission already checked in PHP)
+								if ( settings.editor && settings.editor.enableUpload ) {
+									// Check if this component is rendered within this isolated editor
+									const editorElement = allWrappers[i].querySelector( '.editor, .block-editor-writing-flow' );
+									if ( editorElement ) {
+										// Always allow in isolated editor if enableUpload is true
+										// The permission was already verified in PHP
+										return props.children;
+									}
+								}
+							} catch ( e ) {
+								// Continue to next wrapper
+							}
+						}
+
+						// Otherwise use original component (for regular WordPress editor)
+						return window.wp.element.createElement( OriginalComponent, props );
+					};
+				},
+				10
+			);
+		}
+
 		const wrappers = document.querySelectorAll( '.rwmb-block-editor-wrapper' );
 		if ( ! wrappers.length ) {
 			return;
