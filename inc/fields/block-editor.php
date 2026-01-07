@@ -12,11 +12,6 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	 * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
 	 */
 	public static function admin_enqueue_scripts() {
-		wp_enqueue_editor();
-		wp_enqueue_media();
-
-		do_action( 'enqueue_block_editor_assets' );
-
 		wp_register_script(
 			'isolated-block-editor',
 			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/isolated-block-editor.js',
@@ -53,6 +48,13 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			[ 'isolated-block-editor-core', 'isolated-block-editor' ],
 			RWMB_VER
 		);
+
+		wp_tinymce_inline_scripts();
+		wp_enqueue_editor();
+		wp_enqueue_media();
+		add_action( 'wp_print_footer_scripts', array( '_WP_Editors', 'print_default_editor_scripts' ), 45 );
+
+		do_action( 'enqueue_block_editor_assets' );
 	}
 
 	/**
@@ -82,14 +84,13 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	 * Get field HTML.
 	 *
 	 * @param string $meta  Meta value.
-	 * @param array  $field Field parameters.
+	 * @param array  $field Field settings.
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
 		return sprintf(
-			// Translators: %1$s - editor settings, %2$s - value
 			'<textarea data-settings="%1$s">%2$s</textarea>',
-			esc_attr( wp_json_encode( self::prepare_settings( $field ) ) ),
+			esc_attr( wp_json_encode( self::get_editor_settings( $field ) ) ),
 			esc_textarea( $meta )
 		);
 	}
@@ -97,7 +98,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	/**
 	 * Format the value on the front end.
 	 *
-	 * @param array  $field   Field parameters.
+	 * @param array  $field   Field settings.
 	 * @param string $value   The saved value.
 	 * @param array  $args    Additional arguments.
 	 * @param int    $post_id Current post ID.
@@ -107,23 +108,14 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		return do_blocks( $value );
 	}
 
-	/**
-	 * Build settings passed to the isolated editor instance.
-	 *
-	 * @param array $field Field parameters.
-	 *
-	 * @return array
-	 */
-	protected static function prepare_settings( array $field ): array {
-		$settings = [
-			'iso' => [
+	protected static function get_editor_settings( array $field ): array {
+		return [
+			'iso'    => [
 				'blocks' => [
 					'allowBlocks' => $field['allowed_blocks'],
 				],
 			],
 			'upload' => current_user_can( 'upload_files' ),
 		];
-
-		return $settings;
 	}
 }
