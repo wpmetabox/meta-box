@@ -23,7 +23,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		wp_enqueue_script(
 			'rwmb-block-editor',
 			RWMB_JS_URL . 'block-editor.js',
-			[ 'isolated-block-editor' ],
+			[ 'isolated-block-editor', 'jquery', 'rwmb' ],
 			RWMB_VER,
 			true
 		);
@@ -92,7 +92,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'<textarea data-settings="%1$s" %2$s>%3$s</textarea>',
 			esc_attr( wp_json_encode( self::get_editor_settings( $field ) ) ),
 			self::render_attributes( self::get_attributes( $field, $meta ) ),
-			esc_textarea( $meta )
+			esc_textarea( (string) $meta )
 		);
 	}
 
