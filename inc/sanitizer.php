@@ -83,6 +83,7 @@ class RWMB_Sanitizer {
 			'user'              => [ $this, 'sanitize_object' ],
 			'video'             => [ $this, 'sanitize_object' ],
 			'wysiwyg'           => 'wp_kses_post',
+			'block_editor'      => 'wp_kses_post',
 		];
 
 		$type = $field['type'];
