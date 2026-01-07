@@ -2,34 +2,25 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Block Editor field leveraging the isolated block editor package.
+ * Block editor field leveraging the isolated block editor package.
  *
- * @since 1.0.0
+ * @see https://github.com/Automattic/isolated-block-editor
  */
 class RWMB_Block_Editor_Field extends RWMB_Field {
 	/**
 	 * Enqueue scripts and styles for the field.
+	 * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
 	 */
 	public static function admin_enqueue_scripts() {
-		do_action( 'enqueue_block_editor_assets' );
-		do_action( 'enqueue_block_assets' );
+		wp_enqueue_editor();
+		wp_enqueue_media();
 
-		$packages = [
-			'wp-element',
-			'wp-blocks',
-			'wp-block-editor',
-			'wp-components',
-			'wp-data',
-			'wp-compose',
-			'wp-i18n',
-			'wp-hooks',
-			'wp-media-utils',
-		];
+		do_action( 'enqueue_block_editor_assets' );
 
 		wp_register_script(
 			'isolated-block-editor',
-			RWMB_JS_URL . 'isolated-block-editor.js',
-			$packages,
+			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/isolated-block-editor.js',
+			[ 'wp-block-library', 'wp-format-library', 'wp-editor' ],
 			'2.29.0',
 			true
 		);
@@ -44,25 +35,24 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 
 		wp_register_style(
 			'isolated-block-editor-core',
-			RWMB_CSS_URL . 'isolated-block-editor-core.css',
+			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/core.css',
 			[],
 			'2.29.0'
 		);
 
 		wp_register_style(
 			'isolated-block-editor',
-			RWMB_CSS_URL . 'isolated-block-editor.css',
-			[ 'isolated-block-editor-core' ],
+			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/isolated-block-editor.css',
+			[ 'wp-edit-post', 'wp-format-library' ],
 			'2.29.0'
 		);
 
 		wp_enqueue_style(
 			'rwmb-block-editor',
 			RWMB_CSS_URL . 'block-editor.css',
-			[ 'wp-components', 'wp-block-library', 'wp-edit-blocks', 'isolated-block-editor' ],
+			[ 'isolated-block-editor-core', 'isolated-block-editor' ],
 			RWMB_VER
 		);
-		wp_style_add_data( 'rwmb-block-editor', 'path', RWMB_CSS_DIR . 'block-editor.css' );
 	}
 
 	/**
