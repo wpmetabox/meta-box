@@ -89,8 +89,9 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	 */
 	public static function html( $meta, $field ) {
 		return sprintf(
-			'<textarea data-settings="%1$s">%2$s</textarea>',
+			'<textarea data-settings="%1$s" %2$s>%3$s</textarea>',
 			esc_attr( wp_json_encode( self::get_editor_settings( $field ) ) ),
+			self::render_attributes( self::get_attributes( $field, $meta ) ),
 			esc_textarea( $meta )
 		);
 	}
