@@ -73,10 +73,11 @@ class Settings {
 						<td>
 							<?php
 							$messages = [
-								'invalid' => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
-								'error'   => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
-								'expired' => __( 'Your license key is <b style="color: #d63638">expired</b>.', 'meta-box' ),
-								'active'  => __( 'Your license key is <b style="color: #00a32a">active</b>.', 'meta-box' ),
+								'invalid'  => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
+								'error'    => __( 'Your license key is <b style="color: #d63638">invalid</b>.', 'meta-box' ),
+								'expired'  => __( 'Your license key is <b style="color: #d63638">expired</b>.', 'meta-box' ),
+								'active'   => __( 'Your license key is <b style="color: #00a32a">active</b>.', 'meta-box' ),
+								'refunded' => __( 'Your license has been <b style="color: #d63638">refunded</b>.', 'meta-box' ),
 							];
 							$status   = $this->option->get_license_status();
 							$api_key  = 'active' === $status ? $this->fake_api_key : $this->option->get( 'api_key' );

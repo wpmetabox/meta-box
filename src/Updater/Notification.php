@@ -56,13 +56,15 @@ class Notification {
 
 		$messages = [
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( 'You have not set your Meta Box license key yet, which means you are missing out on automatic updates and support! Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+			'no_key'   => __( 'You have not entered a Meta Box license key. Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">purchase a license</a> to enable premium features.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
+			'invalid'  => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
+			'error'    => __( 'Your license key for Meta Box is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one</a> to enable automatic updates.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
-			'expired' => __( 'Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a> to get automatic updates and premium support.', 'meta-box' ),
+			'expired'  => __( 'Your license key for Meta Box is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a> to get automatic updates and premium support.', 'meta-box' ),
+			// Translators: %2$s - URL to the pricing page.
+			'refunded' => __( 'Your Meta Box license has been <b>refunded</b>. To continue using Meta Box premium features and receive updates, please <a href="%2$s" target="_blank">purchase a new license</a>. Otherwise, premium features will be disabled.', 'meta-box' ),
 		];
 		$status   = $this->option->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
@@ -86,13 +88,15 @@ class Notification {
 
 		$messages = [
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'no_key'  => __( 'Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+			'no_key'   => __( 'Please <a href="%1$s">enter your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'invalid' => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+			'invalid'  => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %1$s - URL to the settings page, %2$s - URL to the pricing page.
-			'error'   => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
+			'error'    => __( 'Your license key is <b>invalid</b>. Please <a href="%1$s">update your license key</a> or <a href="%2$s" target="_blank">get a new one here</a>.', 'meta-box' ),
 			// Translators: %3$s - URL to the My Account page.
-			'expired' => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
+			'expired'  => __( 'Your license key is <b>expired</b>. Please <a href="%3$s" target="_blank">renew your license</a>.', 'meta-box' ),
+			// Translators: %2$s - URL to the pricing page.
+			'refunded' => __( 'Your license has been <b>refunded</b>. Please <a href="%2$s" target="_blank">purchase a new license</a> to enable premium features.', 'meta-box' ),
 		];
 		$status   = $this->option->get_license_status();
 		if ( ! isset( $messages[ $status ] ) ) {
