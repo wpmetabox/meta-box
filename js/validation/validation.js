@@ -290,18 +290,54 @@
 	class TaxonomyValidation extends Validation {
 		init() {
 			const submitButton = $( '#submit' );
+			const that = this;
+			let hasUserInteraction = false;
 
 			this.$form.validate( {
 				...this.settings,
 				invalidHandler: null,
 				onkeyup: () => {
+					if ( hasUserInteraction ) {
+						submitButton.prop( 'disabled', !that.$form.valid() );
+					}
+				}
+			} );
+
+			// Initially, only check if term name is empty (WordPress core requirement)
+			// This allows users to create terms and fill in group fields before validation kicks in
+			const $tagName = $( '#tag-name' );
+			const initialCheck = () => {
+				const tagNameValue = $tagName.length ? $tagName.val().trim() : '';
+				return tagNameValue !== '';
+			};
+
+			submitButton.prop( 'disabled', !initialCheck() );
+
+			// Mark that user has interacted with the form
+			const markInteraction = () => {
+				if ( !hasUserInteraction ) {
+					hasUserInteraction = true;
+					// Now enable full validation
+					submitButton.prop( 'disabled', !this.$form.valid() );
+				}
+			};
+
+			// Track interaction with tag name field
+			$tagName.on( 'input blur', () => {
+				if ( !hasUserInteraction ) {
+					markInteraction.call( this );
+				} else {
 					submitButton.prop( 'disabled', !this.$form.valid() );
 				}
 			} );
 
-			submitButton.prop( 'disabled', !this.$form.valid() );
-			$( '#tag-name' ).on( 'blur', () => {
-				submitButton.prop( 'disabled', !this.$form.valid() );
+			// Track interaction with any Meta Box field
+			this.$form.on( 'change input keyup', '.rwmb-field :input', function() {
+				if ( !hasUserInteraction ) {
+					markInteraction.call( that );
+				} else {
+					submitButton.prop( 'disabled', !that.$form.valid() );
+				}
 			} );
 		}
 	}
