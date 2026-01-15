@@ -687,7 +687,7 @@
 						'title'       => 'Falcon',
 						'slug'        => 'falcon',
 						'description' => __( 'WordPress Optimizations & Tweaks', 'meta-box' ),
-						'url'         => 'https://wordpress.org/plugins/falcon/',
+						'url'         => 'https://wpfalcon.pro',
 					],
 				];
 				?>

@@ -1,3 +1,7 @@
+### 5.11.0 - 2026-01-15
+
+- Add new field type: `block_editor`. See more details on our [blog post](https://metabox.io/block-editor-field-type/) and [documentation](https://docs.metabox.io/fields/block-editor/).
+
 ### 5.10.19 - 2025-11-24
 
 - Fix the `use` statement with non-compound name has no effect
