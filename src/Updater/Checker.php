@@ -164,6 +164,7 @@ class Checker {
 			'wp_version'  => $wp_version,
 			'language'    => get_locale(),
 			'php_version' => PHP_VERSION,
+			'product'     => defined( 'META_BOX_LITE_DIR' ) ? 'meta-box-lite' : ( defined( 'META_BOX_AIO_DIR' ) ? 'meta-box-aio' : 'meta-box' ),
 		] );
 
 		// Get from cache first.
