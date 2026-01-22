@@ -193,7 +193,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *, .rwmb-field[data-visible="hidden"] *',
 				errorPlacement: function ( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
@@ -290,55 +290,25 @@
 	class TaxonomyValidation extends Validation {
 		init() {
 			const submitButton = $( '#submit' );
-			const that = this;
+			const $form = this.$form;
 			let hasUserInteraction = false;
 
-			this.$form.validate( {
+			$form.validate( {
 				...this.settings,
 				invalidHandler: null,
-				onkeyup: () => {
-					if ( hasUserInteraction ) {
-						submitButton.prop( 'disabled', !that.$form.valid() );
-					}
-				}
+				onkeyup: () => hasUserInteraction && submitButton.prop( 'disabled', !$form.valid() )
 			} );
 
-			// Initially, only check if term name is empty (WordPress core requirement)
-			// This allows users to create terms and fill in group fields before validation kicks in
 			const $tagName = $( '#tag-name' );
-			const initialCheck = () => {
-				const tagNameValue = $tagName.length ? $tagName.val().trim() : '';
-				return tagNameValue !== '';
+			submitButton.prop( 'disabled', !$tagName.length || !$tagName.val().trim() );
+
+			const validate = () => {
+				hasUserInteraction = true;
+				submitButton.prop( 'disabled', !$form.valid() );
 			};
 
-			submitButton.prop( 'disabled', !initialCheck() );
-
-			// Mark that user has interacted with the form
-			const markInteraction = () => {
-				if ( !hasUserInteraction ) {
-					hasUserInteraction = true;
-					// Now enable full validation
-					submitButton.prop( 'disabled', !this.$form.valid() );
-				}
-			};
-
-			// Track interaction with tag name field
-			$tagName.on( 'input blur', () => {
-				if ( !hasUserInteraction ) {
-					markInteraction.call( this );
-				} else {
-					submitButton.prop( 'disabled', !this.$form.valid() );
-				}
-			} );
-
-			// Track interaction with any Meta Box field
-			this.$form.on( 'change input keyup', '.rwmb-field :input', function() {
-				if ( !hasUserInteraction ) {
-					markInteraction.call( that );
-				} else {
-					submitButton.prop( 'disabled', !that.$form.valid() );
-				}
-			} );
+			$tagName.on( 'input blur', validate );
+			$form.on( 'change input keyup', '.rwmb-field :input', validate );
 		}
 	}
 
