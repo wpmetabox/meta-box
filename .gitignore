@@ -7,3 +7,5 @@ yarn.lock
 vendor
 .phpunit.result.cache
 .phpunit.cache
+
+js/block-editor/build

@@ -1,0 +1,105 @@
+<?php
+defined( 'ABSPATH' ) || die;
+
+
+class RWMB_Block_Editor2_Field extends RWMB_Field {
+	/**
+	 * Enqueue scripts and styles for the field.
+	 * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
+	 */
+	public static function admin_enqueue_scripts(): void {
+		$asset_file = RWMB_DIR . "js/block-editor/build/block-editor.asset.php";
+		$asset = require $asset_file;
+
+		// 'wp-edit-post' already includes these dependencies:
+		// @see wp_default_styles()
+		// 'wp-components',
+		// 'wp-block-editor',
+		// 'wp-editor',
+		// 'wp-edit-blocks', // wp-includes/css/dist/block-library/editor.css
+		// 'wp-block-library', // wp-includes/css/dist/block-library/style.css
+		// 'wp-commands',
+		// 'wp-preferences',
+		wp_enqueue_style(
+			'rwmb-block-editor2',
+			RWMB_URL . 'js/block-editor/build/style-block-editor.css',
+			[
+				'wp-edit-post',
+				'wp-block-library-theme',
+				'wp-format-library',
+			],
+			$asset['version']
+		);
+
+		wp_enqueue_script(
+			'rwmb-block-editor2',
+			RWMB_URL . 'js/block-editor/build/block-editor.js',
+			array_merge( $asset['dependencies'], [ 'rwmb' ] ),
+			$asset['version'],
+			true
+		);
+	}
+
+	/**
+	 * Normalize parameters for field.
+	 *
+	 * @param array $field Field parameters.
+	 * @return array
+	 */
+	public static function normalize( $field ) {
+		$field = parent::normalize( $field );
+
+		$field = wp_parse_args( $field, [
+			'allowed_blocks' => [],
+		] );
+
+		// Parse allowed_blocks from textarea (one block per line) to array for MB Builder
+		if ( is_string( $field['allowed_blocks'] ) ) {
+			$field['allowed_blocks'] = array_map( 'trim', explode( "\n", $field['allowed_blocks'] ) );
+		}
+
+		$field['allowed_blocks'] = array_values( array_filter( $field['allowed_blocks'] ) );
+
+		return $field;
+	}
+
+	/**
+	 * Get field HTML.
+	 *
+	 * @param string $meta  Meta value.
+	 * @param array  $field Field settings.
+	 * @return string
+	 */
+	public static function html( $meta, $field ) {
+		return sprintf(
+			'<textarea data-settings="%1$s" %2$s>%3$s</textarea>',
+			esc_attr( wp_json_encode( self::get_editor_settings( $field ) ) ),
+			self::render_attributes( self::get_attributes( $field, $meta ) ),
+			esc_textarea( (string) $meta )
+		);
+	}
+
+	/**
+	 * Format the value on the front end.
+	 *
+	 * @param array  $field   Field settings.
+	 * @param string $value   The saved value.
+	 * @param array  $args    Additional arguments.
+	 * @param int    $post_id Current post ID.
+	 * @return string
+	 */
+	public static function format_single_value( $field, $value, $args, $post_id ) {
+		return do_blocks( $value );
+	}
+
+	protected static function get_editor_settings( array $field ): array {
+		return [
+			'iso' => [
+				'blocks' => [
+					'allowBlocks' => $field['allowed_blocks'],
+				],
+			],
+			'upload' => current_user_can( 'upload_files' ),
+		];
+	}
+}
