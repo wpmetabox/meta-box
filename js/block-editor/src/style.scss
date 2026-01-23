@@ -1,5 +1,7 @@
 .rwmb-block-editor {
 	border: 1px solid #ddd;
+	display: flex;
+	flex-direction: column;
 
 	&__toolbar {
 		border-bottom: 1px solid #ddd;
@@ -10,6 +12,10 @@
 		.components-accessible-toolbar.block-editor-block-contextual-toolbar {
 			box-shadow: none;
 		}
+	}
+
+	&__main {
+		flex: 1;
 	}
 
 	&__content {
@@ -27,6 +33,17 @@
 	#poststuff & .block-editor-block-inspector h2,
 	#poststuff & .block-editor-block-inspector h3 {
 		padding: 0;
+	}
+
+	&--fullscreen {
+		position: fixed;
+		inset: 0;
+		z-index: 99999; // Same as popover component (inserter) and admin bar
+		background: #fff;
+
+		.rwmb-block-editor__content > div {
+			height: 100% !important;
+		}
 	}
 }
 

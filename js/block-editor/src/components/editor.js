@@ -10,16 +10,34 @@ import { parse, rawHandler, serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
-import { useReducer } from '@wordpress/element';
+import { createPortal, useEffect, useReducer } from '@wordpress/element';
 import '@wordpress/format-library';
 import { __ } from '@wordpress/i18n';
-import { drawerRight, redo as redoIcon, undo as undoIcon } from '@wordpress/icons';
+import {
+	drawerRight,
+	fullscreen,
+	redo as redoIcon,
+	undo as undoIcon,
+} from '@wordpress/icons';
 
 const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
+
+const getPortalRoot = () => {
+	let el = document.getElementById( 'rwmb-block-editor-portal' );
+
+	if ( !el ) {
+		el = document.createElement( 'div' );
+		el.id = 'rwmb-block-editor-portal';
+		document.body.appendChild( el );
+	}
+
+	return el;
+};
 
 export default function( { textarea } ) {
 	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: parseContent( textarea.value ) } );
 	const [ isSidebarOpen, toggleSidebar ] = useReducer( state => !state, false );
+	const [ isFullscreen, toggleFullscreen ] = useReducer( state => !state, false );
 
 	const persistBlocks = blocks => {
 		setValue( { blocks } );
@@ -34,7 +52,20 @@ export default function( { textarea } ) {
 	const settings = useSelect( select => select( store ).getSettings() );
 	settings.hasFixedToolbar = true;
 
-	return (
+	// Disable body scroll in fullscreen
+	useEffect( () => {
+		if ( isFullscreen ) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
+		}
+
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [ isFullscreen ] );
+
+	const editor = (
 		<BlockEditorProvider
 			value={ value.blocks }
 			onChange={ persistBlocks }
@@ -61,17 +92,28 @@ export default function( { textarea } ) {
 					/>
 					<BlockToolbar hideDragHandle />
 				</Flex>
-				<Button
-					icon={ drawerRight }
-					aria-pressed={ isSidebarOpen }
-					label={ __( 'Toggle Sidebar', 'meta-box' ) }
-					size="compact"
-					onClick={ toggleSidebar }
-				/>
+
+				<Flex gap={ 1 } justify="flex-end">
+					<Button
+						icon={ fullscreen }
+						aria-pressed={ isFullscreen }
+						label={ __( 'Toggle Fullscreen', 'meta-box' ) }
+						size="compact"
+						onClick={ toggleFullscreen }
+					/>
+					<Button
+						icon={ drawerRight }
+						aria-pressed={ isSidebarOpen }
+						label={ __( 'Toggle Sidebar', 'meta-box' ) }
+						size="compact"
+						onClick={ toggleSidebar }
+					/>
+				</Flex>
 			</Flex>
+
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
 				<div className="rwmb-block-editor__content">
-					<BlockCanvas height="500px" />
+					<BlockCanvas />
 				</div>
 				{
 					isSidebarOpen && (
@@ -82,5 +124,20 @@ export default function( { textarea } ) {
 				}
 			</Flex>
 		</BlockEditorProvider>
+	);
+
+	if ( isFullscreen ) {
+		return createPortal(
+			<div className="rwmb-block-editor rwmb-block-editor--fullscreen">
+				{ editor }
+			</div>,
+			getPortalRoot()
+		);
+	}
+
+	return (
+		<div className="rwmb-block-editor">
+			{ editor }
+		</div>
 	);
 }
