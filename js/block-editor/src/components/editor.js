@@ -8,7 +8,7 @@ import {
 import { parse, rawHandler, serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
-import { useReducer, useState } from '@wordpress/element';
+import { useReducer } from '@wordpress/element';
 import '@wordpress/format-library';
 import { __ } from '@wordpress/i18n';
 import { drawerRight, redo as redoIcon, undo as undoIcon } from '@wordpress/icons';
@@ -16,12 +16,11 @@ import { drawerRight, redo as redoIcon, undo as undoIcon } from '@wordpress/icon
 const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
 
 export default function( { textarea } ) {
-	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: [] } );
-	const [ blocks, updateBlocks ] = useState( parseContent( textarea.value ) );
+	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: parseContent( textarea.value ) } );
 	const [ isSidebarOpen, toggleSidebar ] = useReducer( state => !state, false );
 
 	const persistBlocks = blocks => {
-		updateBlocks( blocks );
+		setValue( { blocks } );
 		textarea.value = serialize( blocks );
 	};
 
@@ -32,8 +31,7 @@ export default function( { textarea } ) {
 
 	return (
 		<BlockEditorProvider
-			value={ blocks }
-			onInput={ updateBlocks }
+			value={ value.blocks }
 			onChange={ persistBlocks }
 			settings={ {
 				hasFixedToolbar: true,
