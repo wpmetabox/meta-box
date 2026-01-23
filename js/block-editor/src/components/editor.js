@@ -8,8 +8,9 @@ import {
 import { parse, rawHandler, serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
-import { useState } from '@wordpress/element';
+import { useReducer, useState } from '@wordpress/element';
 import '@wordpress/format-library';
+import { __ } from '@wordpress/i18n';
 import { drawerRight, redo as redoIcon, undo as undoIcon } from '@wordpress/icons';
 
 const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
@@ -17,7 +18,7 @@ const parseContent = content => content.includes( '<!--' ) ? parse( content ) : 
 export default function( { textarea } ) {
 	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: [] } );
 	const [ blocks, updateBlocks ] = useState( parseContent( textarea.value ) );
-	const [ isSidebarOpen, setIsSidebarOpen ] = useState( false );
+	const [ isSidebarOpen, toggleSidebar ] = useReducer( state => !state, false );
 
 	const persistBlocks = blocks => {
 		updateBlocks( blocks );
@@ -46,7 +47,7 @@ export default function( { textarea } ) {
 						disabled={ !hasUndo }
 						accessibleWhenDisabled
 						icon={ undoIcon }
-						label="Undo"
+						label={ __( 'Undo', 'meta-box' ) }
 						size="compact"
 					/>
 					<Button
@@ -54,7 +55,7 @@ export default function( { textarea } ) {
 						disabled={ !hasRedo }
 						accessibleWhenDisabled
 						icon={ redoIcon }
-						label="Redo"
+						label={ __( 'Redo', 'meta-box' ) }
 						size="compact"
 					/>
 					<BlockToolbar hideDragHandle />
@@ -62,9 +63,9 @@ export default function( { textarea } ) {
 				<Button
 					icon={ drawerRight }
 					aria-pressed={ isSidebarOpen }
-					label="Toggle Sidebar"
+					label={ __( 'Toggle Sidebar', 'meta-box' ) }
 					size="compact"
-					onClick={ () => setIsSidebarOpen( !isSidebarOpen ) }
+					onClick={ toggleSidebar }
 				/>
 			</Flex>
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
