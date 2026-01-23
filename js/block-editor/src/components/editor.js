@@ -5,16 +5,18 @@ import {
 	BlockToolbar,
 	Inserter,
 } from '@wordpress/block-editor';
-import { serialize } from '@wordpress/blocks';
+import { parse, rawHandler, serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import '@wordpress/format-library';
 import { drawerRight, redo as redoIcon, undo as undoIcon } from '@wordpress/icons';
 
+const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
+
 export default function( { textarea } ) {
 	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: [] } );
-	const [ blocks, updateBlocks ] = useState( [] );
+	const [ blocks, updateBlocks ] = useState( parseContent( textarea.value ) );
 	const [ isSidebarOpen, setIsSidebarOpen ] = useState( false );
 
 	const persistBlocks = blocks => {
