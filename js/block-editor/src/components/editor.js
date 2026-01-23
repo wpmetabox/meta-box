@@ -4,10 +4,12 @@ import {
 	BlockInspector,
 	BlockToolbar,
 	Inserter,
+	store,
 } from '@wordpress/block-editor';
 import { parse, rawHandler, serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
+import { useSelect } from '@wordpress/data';
 import { useReducer } from '@wordpress/element';
 import '@wordpress/format-library';
 import { __ } from '@wordpress/i18n';
@@ -29,13 +31,14 @@ export default function( { textarea } ) {
 		variant: 'primary',
 	};
 
+	const settings = useSelect( select => select( store ).getSettings() );
+	settings.hasFixedToolbar = true;
+
 	return (
 		<BlockEditorProvider
 			value={ value.blocks }
 			onChange={ persistBlocks }
-			settings={ {
-				hasFixedToolbar: true,
-			} }
+			settings={ settings }
 		>
 			<Flex align="center" justify="space-between" className="rwmb-block-editor__toolbar">
 				<Flex align="center" justify="flex-start" className="rwmb-block-editor__toolbar-left">
