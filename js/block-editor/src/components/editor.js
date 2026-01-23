@@ -4,12 +4,10 @@ import {
 	BlockInspector,
 	BlockNavigationDropdown,
 	Inserter,
-	store,
 } from '@wordpress/block-editor';
-import { parse, rawHandler, serialize } from '@wordpress/blocks';
+import { serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
 import { createPortal, useEffect, useReducer } from '@wordpress/element';
 import '@wordpress/format-library';
 import { __ } from '@wordpress/i18n';
@@ -19,20 +17,7 @@ import {
 	redo as redoIcon,
 	undo as undoIcon,
 } from '@wordpress/icons';
-
-const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
-
-const getPortalRoot = () => {
-	let el = document.getElementById( 'rwmb-block-editor-portal' );
-
-	if ( !el ) {
-		el = document.createElement( 'div' );
-		el.id = 'rwmb-block-editor-portal';
-		document.body.appendChild( el );
-	}
-
-	return el;
-};
+import { getEditorSettings, getPortalRoot, parseContent } from '../functions';
 
 export default function( { textarea } ) {
 	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: parseContent( textarea.value ) } );
@@ -50,7 +35,7 @@ export default function( { textarea } ) {
 	};
 
 	const settings = JSON.parse( textarea.dataset.settings );
-	const editorSettings = useSelect( select => select( store ).getSettings() );
+	const editorSettings = getEditorSettings( settings );
 
 	// Disable body scroll in fullscreen
 	useEffect( () => {
@@ -67,8 +52,8 @@ export default function( { textarea } ) {
 			onChange={ persistBlocks }
 			settings={ editorSettings }
 		>
-			<Flex align="center" justify="space-between" className="rwmb-block-editor__toolbar">
-				<Flex align="center" justify="flex-start" className="rwmb-block-editor__toolbar-left">
+			<Flex justify="space-between" className="rwmb-block-editor__toolbar">
+				<Flex justify="flex-start">
 					<Inserter toggleProps={ inserterProps } />
 					<Button
 						onClick={ undo }
@@ -89,7 +74,7 @@ export default function( { textarea } ) {
 					<BlockNavigationDropdown />
 				</Flex>
 
-				<Flex gap={ 1 } justify="flex-end">
+				<Flex justify="flex-end">
 					<Button
 						icon={ fullscreen }
 						aria-pressed={ isFullscreen }
