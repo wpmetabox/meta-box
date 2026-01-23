@@ -1,6 +1,6 @@
-import { store as blockEditorStore } from '@wordpress/block-editor';
-import { store as blocksStore, parse, rawHandler } from '@wordpress/blocks';
+import { parse, rawHandler } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
+import { store as editorStore } from '@wordpress/editor';
 import '@wordpress/format-library';
 
 export const parseContent = content => content.includes( '<!--' ) ? parse( content ) : rawHandler( { HTML: content } );
@@ -17,13 +17,11 @@ export const getPortalRoot = () => {
 	return el;
 };
 
-export const getEditorSettings = ( { allowed_blocks } ) => useSelect( select => {
-	let settings = select( blockEditorStore ).getSettings();
+export const getEditorSettings = ( { allowed_blocks } ) => useSelect( ( select ) => {
+	const settings = select( editorStore )?.getEditorSettings?.() || {};
 
 	if ( Array.isArray( allowed_blocks ) && allowed_blocks.length > 0 ) {
 		settings.allowedBlockTypes = allowed_blocks;
-	} else {
-		settings.allowedBlockTypes = select( blocksStore ).getBlockTypes().map( block => block.name );
 	}
 
 	return settings;
