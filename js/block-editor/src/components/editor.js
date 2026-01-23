@@ -93,7 +93,7 @@ export default function( { textarea } ) {
 			</Flex>
 
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
-				<div className="rwmb-block-editor__content">
+				<div className="rwmb-block-editor__content editor-styles-wrapper">
 					<BlockCanvas height={ settings.height } />
 				</div>
 				{
@@ -109,12 +109,12 @@ export default function( { textarea } ) {
 
 	if ( isFullscreen ) {
 		return createPortal(
-			<div className="rwmb-block-editor rwmb-block-editor--fullscreen">
+			<div className="rwmb-block-editor__canvas rwmb-block-editor__canvas--fullscreen">
 				{ editor }
 			</div>,
 			getPortalRoot()
 		);
 	}
 
-	return <div className="rwmb-block-editor">{ editor }</div>;
+	return <div className="rwmb-block-editor__canvas">{ editor }</div>;
 }

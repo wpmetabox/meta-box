@@ -1,7 +1,21 @@
 .rwmb-block-editor {
 	border: 1px solid #ddd;
-	display: flex;
-	flex-direction: column;
+
+	&__canvas {
+		display: flex;
+		flex-direction: column;
+
+		&--fullscreen {
+			position: fixed;
+			inset: 0;
+			z-index: 99999; // Same as popover component (inserter) and admin bar
+			background: #fff;
+
+			.rwmb-block-editor__content > div {
+				height: 100% !important;
+			}
+		}
+	}
 
 	&__toolbar {
 		border-bottom: 1px solid #ddd;
@@ -33,17 +47,6 @@
 	#poststuff & .block-editor-block-inspector h2,
 	#poststuff & .block-editor-block-inspector h3 {
 		padding: 0;
-	}
-
-	&--fullscreen {
-		position: fixed;
-		inset: 0;
-		z-index: 99999; // Same as popover component (inserter) and admin bar
-		background: #fff;
-
-		.rwmb-block-editor__content > div {
-			height: 100% !important;
-		}
 	}
 }
 
