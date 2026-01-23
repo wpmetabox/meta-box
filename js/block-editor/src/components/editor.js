@@ -2,7 +2,7 @@ import {
 	BlockCanvas,
 	BlockEditorProvider,
 	BlockInspector,
-	BlockToolbar,
+	BlockNavigationDropdown,
 	Inserter,
 	store,
 } from '@wordpress/block-editor';
@@ -50,15 +50,10 @@ export default function( { textarea } ) {
 	};
 
 	const settings = useSelect( select => select( store ).getSettings() );
-	settings.hasFixedToolbar = true;
 
 	// Disable body scroll in fullscreen
 	useEffect( () => {
-		if ( isFullscreen ) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
-		}
+		document.body.style.overflow = isFullscreen ? 'hidden' : '';
 
 		return () => {
 			document.body.style.overflow = '';
@@ -90,7 +85,7 @@ export default function( { textarea } ) {
 						label={ __( 'Redo', 'meta-box' ) }
 						size="compact"
 					/>
-					<BlockToolbar hideDragHandle />
+					<BlockNavigationDropdown />
 				</Flex>
 
 				<Flex gap={ 1 } justify="flex-end">
@@ -135,9 +130,5 @@ export default function( { textarea } ) {
 		);
 	}
 
-	return (
-		<div className="rwmb-block-editor">
-			{ editor }
-		</div>
-	);
+	return <div className="rwmb-block-editor">{ editor }</div>;
 }
