@@ -51,6 +51,7 @@ class RWMB_Block_Editor2_Field extends RWMB_Field {
 
 		$field = wp_parse_args( $field, [
 			'allowed_blocks' => [],
+			'height'         => '',
 		] );
 
 		// Parse allowed_blocks from textarea (one block per line) to array for MB Builder
@@ -93,13 +94,7 @@ class RWMB_Block_Editor2_Field extends RWMB_Field {
 	}
 
 	protected static function get_editor_settings( array $field ): array {
-		return [
-			'iso' => [
-				'blocks' => [
-					'allowBlocks' => $field['allowed_blocks'],
-				],
-			],
-			'upload' => current_user_can( 'upload_files' ),
-		];
+		$keys = [ 'allowed_blocks', 'height' ];
+		return array_filter( array_intersect_key( $field, array_flip( $keys ) ) );
 	}
 }

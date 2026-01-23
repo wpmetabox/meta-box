@@ -49,7 +49,8 @@ export default function( { textarea } ) {
 		variant: 'primary',
 	};
 
-	const settings = useSelect( select => select( store ).getSettings() );
+	const settings = JSON.parse( textarea.dataset.settings );
+	const editorSettings = useSelect( select => select( store ).getSettings() );
 
 	// Disable body scroll in fullscreen
 	useEffect( () => {
@@ -64,7 +65,7 @@ export default function( { textarea } ) {
 		<BlockEditorProvider
 			value={ value.blocks }
 			onChange={ persistBlocks }
-			settings={ settings }
+			settings={ editorSettings }
 		>
 			<Flex align="center" justify="space-between" className="rwmb-block-editor__toolbar">
 				<Flex align="center" justify="flex-start" className="rwmb-block-editor__toolbar-left">
@@ -108,7 +109,7 @@ export default function( { textarea } ) {
 
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
 				<div className="rwmb-block-editor__content">
-					<BlockCanvas />
+					<BlockCanvas height={ settings.height } />
 				</div>
 				{
 					isSidebarOpen && (
