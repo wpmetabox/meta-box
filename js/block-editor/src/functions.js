@@ -19,14 +19,12 @@ export const getPortalRoot = () => {
 
 export const getEditorSettings = ( { allowed_blocks } ) => useSelect( select => {
 	let settings = select( blockEditorStore ).getSettings();
-	let blockTypes = select( blocksStore ).getBlockTypes() || [];
 
 	if ( Array.isArray( allowed_blocks ) && allowed_blocks.length > 0 ) {
-		blockTypes = blockTypes.filter( block => allowed_blocks.includes( block.name ) );
+		settings.allowedBlockTypes = allowed_blocks;
+	} else {
+		settings.allowedBlockTypes = select( blocksStore ).getBlockTypes().map( block => block.name );
 	}
-
-	// TODO: Add allowed block types to the editor settings
-	// settings.allowedBlockTypes = blockTypes;
 
 	return settings;
 } );
