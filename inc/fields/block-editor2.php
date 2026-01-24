@@ -1,13 +1,16 @@
 <?php
 defined( 'ABSPATH' ) || die;
 
-
 class RWMB_Block_Editor2_Field extends RWMB_Field {
-	/**
-	 * Enqueue scripts and styles for the field.
-	 * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
-	 */
 	public static function admin_enqueue_scripts(): void {
+		// Don't run on site editor
+		if ( is_admin() ) {
+			$screen = get_current_screen();
+			if ( $screen->base == 'site-editor' ) {
+				return;
+			}
+		}
+
 		$asset_file = RWMB_DIR . "js/block-editor/build/block-editor.asset.php";
 		$asset = require $asset_file;
 
