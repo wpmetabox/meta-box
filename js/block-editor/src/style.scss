@@ -11,7 +11,8 @@
 			z-index: 999998; // Higher than the admin bar (99999), less than the inserter (999999)
 			background: #fff;
 
-			.rwmb-block-editor__content>div {
+			.rwmb-block-editor__content {
+				resize: none;
 				height: 100% !important;
 			}
 		}
@@ -36,6 +37,9 @@
 		flex: 1;
 		padding-inline: 8px;
 		box-sizing: border-box;
+
+		resize: vertical;
+		overflow: hidden;
 	}
 
 	&__sidebar {

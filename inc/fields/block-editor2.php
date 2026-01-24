@@ -54,7 +54,7 @@ class RWMB_Block_Editor2_Field extends RWMB_Field {
 
 		$field = wp_parse_args( $field, [
 			'allowed_blocks' => [],
-			'height'         => '',
+			'height'         => '300px',
 		] );
 
 		// Parse allowed_blocks from textarea (one block per line) to array for MB Builder
