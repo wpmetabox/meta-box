@@ -94,7 +94,7 @@ export default function( { textarea } ) {
 
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
 				<div className="rwmb-block-editor__content editor-styles-wrapper">
-					<BlockCanvas height={ settings.height } />
+					<BlockCanvas height={ settings.height } styles={ editorSettings.styles } />
 				</div>
 				{
 					isSidebarOpen && (

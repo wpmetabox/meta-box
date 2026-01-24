@@ -24,16 +24,13 @@ function attachEditor( textarea ) {
 	// Create a node after the textarea
 	const editor = document.createElement( 'div' );
 	editor.classList.add( 'rwmb-block-editor' );
-	const editorReactRoot = createRoot( editor );
+	const root = createRoot( editor );
 
 	// Insert after the textarea, and hide it
 	textarea.parentNode.insertBefore( editor, textarea.nextSibling );
 	textarea.style.display = 'none';
 
-	// Render the editor
-	editorReactRoot.render(
-		<Editor textarea={ textarea } />
-	);
+	root.render( <Editor textarea={ textarea } /> );
 }
 
 const transform = textarea => {

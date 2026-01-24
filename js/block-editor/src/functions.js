@@ -17,7 +17,7 @@ export const getPortalRoot = () => {
 	return el;
 };
 
-export const getEditorSettings = ( { allowed_blocks } ) => useSelect( ( select ) => {
+export const getEditorSettings = ( { allowed_blocks } ) => useSelect( select => {
 	const settings = select( editorStore )?.getEditorSettings?.() || {};
 
 	if ( Array.isArray( allowed_blocks ) && allowed_blocks.length > 0 ) {
