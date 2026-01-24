@@ -36,7 +36,7 @@
 }
 .rwmb-block-editor__sidebar {
   width: 240px;
-  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
   box-sizing: border-box;
 }
 #poststuff .rwmb-block-editor .block-editor-block-inspector h2, #poststuff .rwmb-block-editor .block-editor-block-inspector h3 {
@@ -48,5 +48,3 @@
 .components-popover__content {
   overflow-x: hidden !important;
 }
-
-/*# sourceMappingURL=style-block-editor.css.map*/
