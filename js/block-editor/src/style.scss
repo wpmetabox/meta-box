@@ -8,10 +8,10 @@
 		&--fullscreen {
 			position: fixed;
 			inset: 0;
-			z-index: 99999; // Same as popover component (inserter) and admin bar
+			z-index: 999998; // Higher than the admin bar (99999), less than the inserter (999999)
 			background: #fff;
 
-			.rwmb-block-editor__content > div {
+			.rwmb-block-editor__content>div {
 				height: 100% !important;
 			}
 		}
@@ -50,6 +50,14 @@
 	}
 }
 
+// Inserter
+
+// Make it pop
+.components-popover.block-editor-inserter__popover {
+	z-index: 999999;
+}
+
+// Hide horizontal scrollbar
 .components-popover__content {
 	overflow-x: hidden !important;
 }
