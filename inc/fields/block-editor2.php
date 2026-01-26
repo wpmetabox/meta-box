@@ -3,32 +3,18 @@ defined( 'ABSPATH' ) || die;
 
 class RWMB_Block_Editor2_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts(): void {
-		// Don't run on site editor
-		if ( is_admin() ) {
-			$screen = get_current_screen();
-			if ( $screen->base == 'site-editor' ) {
-				return;
-			}
-		}
+		$asset_file = RWMB_DIR . 'js/block-editor/build/block-editor.asset.php';
+		$asset      = require $asset_file;
 
-		$asset_file = RWMB_DIR . "js/block-editor/build/block-editor.asset.php";
-		$asset = require $asset_file;
-
-		// 'wp-edit-post' already includes these dependencies:
-		// @see wp_default_styles()
-		// 'wp-components',
-		// 'wp-block-editor',
-		// 'wp-editor',
-		// 'wp-edit-blocks', // wp-includes/css/dist/block-library/editor.css
-		// 'wp-block-library', // wp-includes/css/dist/block-library/style.css
-		// 'wp-commands',
-		// 'wp-preferences',
 		wp_enqueue_style(
 			'rwmb-block-editor2',
 			RWMB_URL . 'js/block-editor/build/style-block-editor.css',
 			[
-				'wp-edit-post',
-				'wp-block-library-theme',
+				'wp-block-editor',        // @wordpress/block-editor/build-style/style.css
+				'wp-components',          // @wordpress/components/build-style/style.css
+				'wp-edit-blocks',         // @wordpress/block-library/build-style/editor.css
+				'wp-block-library',       // @wordpress/block-library/build-style/style.css
+				'wp-block-library-theme', // @wordpress/block-library/build-style/theme.css
 				'wp-format-library',
 			],
 			$asset['version']
