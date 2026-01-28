@@ -48,9 +48,14 @@
 		box-sizing: border-box;
 	}
 
-	#poststuff & .block-editor-block-inspector h2,
-	#poststuff & .block-editor-block-inspector h3 {
-		padding: 0;
+	// Fix sidepanel title spacing
+	#poststuff & {
+		.block-editor-block-inspector h2 {
+			padding: 0;
+		}
+		.components-panel__body.is-opened > .components-panel__body-title {
+			margin: -16px -16px 5px;
+		}
 	}
 }
 

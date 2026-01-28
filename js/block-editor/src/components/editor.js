@@ -50,6 +50,7 @@ export default function( { textarea } ) {
 		<BlockEditorProvider
 			value={ value.blocks }
 			onChange={ persistBlocks }
+			onInput={ persistBlocks }
 			settings={ editorSettings }
 		>
 			<Flex justify="space-between" className="rwmb-block-editor__toolbar">
