@@ -14,12 +14,6 @@ import './style.scss';
 
 registerCoreBlocks();
 
-/**
- * Attach IsolatedBlockEditor to a textarea
- *
- * @param {HTMLTextAreaElement} textarea Textarea node
- * @param {BlockEditorSettings} userSettings Settings object
- */
 function attachEditor( textarea ) {
 	// Create a node after the textarea
 	const editor = document.createElement( 'div' );
@@ -44,12 +38,12 @@ const transform = textarea => {
 };
 
 const init = () => {
-	document.querySelectorAll( '.rwmb-block_editor2-wrapper textarea' ).forEach( transform );
+	document.querySelectorAll( '.rwmb-block_editor-wrapper textarea' ).forEach( transform );
 };
 
 rwmb.$document
 	.on( 'mb_ready', init )
-	.on( 'clone', '.rwmb-block_editor2', function() {
+	.on( 'clone', '.rwmb-block_editor', function() {
 		// Transform a textarea to an editor is a heavy task.
 		// Moving it to the end of task queue with setTimeout makes cloning faster.
 		setTimeout( () => transform( this ), 200 );
