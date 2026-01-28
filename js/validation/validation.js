@@ -193,7 +193,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *, .rwmb-field[data-visible="hidden"] *',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *',
 				errorPlacement: function ( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
@@ -290,25 +290,17 @@
 	class TaxonomyValidation extends Validation {
 		init() {
 			const submitButton = $( '#submit' );
-			const $form = this.$form;
-			let hasUserInteraction = false;
+			const validate = () => submitButton.prop( 'disabled', !this.$form.valid() );
 
-			$form.validate( {
+			this.$form.validate( {
 				...this.settings,
 				invalidHandler: null,
-				onkeyup: () => hasUserInteraction && submitButton.prop( 'disabled', !$form.valid() )
+				onkeyup: validate
 			} );
 
-			const $tagName = $( '#tag-name' );
-			submitButton.prop( 'disabled', !$tagName.length || !$tagName.val().trim() );
-
-			const validate = () => {
-				hasUserInteraction = true;
-				submitButton.prop( 'disabled', !$form.valid() );
-			};
-
-			$tagName.on( 'input blur', validate );
-			$form.on( 'change input keyup', '.rwmb-field :input', validate );
+			$( '#tag-name' ).on( 'blur', validate );
+			this.$form.on( 'change input', rwmb.inputSelectors, validate );
+			validate();
 		}
 	}
 
