@@ -290,19 +290,17 @@
 	class TaxonomyValidation extends Validation {
 		init() {
 			const submitButton = $( '#submit' );
+			const validate = () => submitButton.prop( 'disabled', !this.$form.valid() );
 
 			this.$form.validate( {
 				...this.settings,
 				invalidHandler: null,
-				onkeyup: () => {
-					submitButton.prop( 'disabled', !this.$form.valid() );
-				}
+				onkeyup: validate
 			} );
 
-			submitButton.prop( 'disabled', !this.$form.valid() );
-			$( '#tag-name' ).on( 'blur', () => {
-				submitButton.prop( 'disabled', !this.$form.valid() );
-			} );
+			$( '#tag-name' ).on( 'blur', validate );
+			this.$form.on( 'change input', rwmb.inputSelectors, validate );
+			validate();
 		}
 	}
 
