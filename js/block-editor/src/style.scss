@@ -1,0 +1,72 @@
+.rwmb-block-editor {
+	border: 1px solid #ddd;
+
+	&__canvas {
+		display: flex;
+		flex-direction: column;
+
+		&--fullscreen {
+			position: fixed;
+			inset: 0;
+			z-index: 999998; // Higher than the admin bar (99999), less than the inserter (999999)
+			background: #fff;
+
+			.rwmb-block-editor__content {
+				resize: none;
+				height: 100% !important;
+			}
+		}
+	}
+
+	&__toolbar {
+		border-bottom: 1px solid #ddd;
+		height: 46px;
+		padding-inline: 8px;
+		box-sizing: border-box;
+
+		.components-accessible-toolbar.block-editor-block-contextual-toolbar {
+			box-shadow: none;
+		}
+	}
+
+	&__main {
+		flex: 1;
+	}
+
+	&__content {
+		flex: 1;
+		padding-inline: 8px;
+		box-sizing: border-box;
+
+		resize: vertical;
+		overflow: hidden;
+	}
+
+	&__sidebar {
+		width: 240px;
+		border-left: 1px solid #ddd;
+		box-sizing: border-box;
+	}
+
+	// Fix sidepanel title spacing
+	#poststuff & {
+		.block-editor-block-inspector h2 {
+			padding: 0;
+		}
+		.components-panel__body.is-opened > .components-panel__body-title {
+			margin: -16px -16px 5px;
+		}
+	}
+}
+
+// Inserter
+
+// Make it pop
+.components-popover.block-editor-inserter__popover {
+	z-index: 999999;
+}
+
+// Hide horizontal scrollbar
+.components-popover__content {
+	overflow-x: hidden !important;
+}
