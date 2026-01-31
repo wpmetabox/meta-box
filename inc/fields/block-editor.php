@@ -27,6 +27,12 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			$asset['version'],
 			true
 		);
+
+		$block_editor_context = new WP_Block_Editor_Context();
+		$editor_settings      = get_block_editor_settings( [], $block_editor_context );
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-block-editor', 'rwmbBlockEditor', [
+			'editor_settings' => $editor_settings,
+		] );
 	}
 
 	/**
