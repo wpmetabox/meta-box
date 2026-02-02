@@ -1,60 +1,38 @@
 <?php
 defined( 'ABSPATH' ) || die;
 
-/**
- * Block editor field leveraging the isolated block editor package.
- *
- * @see https://github.com/Automattic/isolated-block-editor
- */
 class RWMB_Block_Editor_Field extends RWMB_Field {
-	/**
-	 * Enqueue scripts and styles for the field.
-	 * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
-	 */
-	public static function admin_enqueue_scripts() {
-		wp_register_script(
-			'isolated-block-editor',
-			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/isolated-block-editor.js',
-			[ 'wp-block-library', 'wp-format-library', 'wp-editor' ],
-			'2.29.0',
-			true
+	public static function admin_enqueue_scripts(): void {
+		$asset_file = RWMB_DIR . 'js/block-editor/build/block-editor.asset.php';
+		$asset      = require $asset_file;
+
+		wp_enqueue_style(
+			'rwmb-block-editor',
+			RWMB_URL . 'js/block-editor/build/style-block-editor.css',
+			[
+				'wp-block-editor',        // @wordpress/block-editor/build-style/style.css
+				'wp-components',          // @wordpress/components/build-style/style.css
+				'wp-edit-blocks',         // @wordpress/block-library/build-style/editor.css
+				'wp-block-library',       // @wordpress/block-library/build-style/style.css
+				'wp-block-library-theme', // @wordpress/block-library/build-style/theme.css
+				'wp-format-library',
+			],
+			$asset['version']
 		);
 
 		wp_enqueue_script(
 			'rwmb-block-editor',
-			RWMB_JS_URL . 'block-editor.js',
-			[ 'isolated-block-editor', 'jquery', 'rwmb' ],
-			RWMB_VER,
+			RWMB_URL . 'js/block-editor/build/block-editor.js',
+			array_merge( $asset['dependencies'], [ 'rwmb' ] ),
+			$asset['version'],
 			true
 		);
 
-		wp_register_style(
-			'isolated-block-editor-core',
-			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/core.css',
-			[],
-			'2.29.0'
-		);
-
-		wp_register_style(
-			'isolated-block-editor',
-			'https://cdn.jsdelivr.net/gh/Automattic/isolated-block-editor@2.29.0/build-browser/isolated-block-editor.css',
-			[ 'wp-edit-post', 'wp-format-library' ],
-			'2.29.0'
-		);
-
-		wp_enqueue_style(
-			'rwmb-block-editor',
-			RWMB_CSS_URL . 'block-editor.css',
-			[ 'isolated-block-editor-core', 'isolated-block-editor' ],
-			RWMB_VER
-		);
-
-		wp_tinymce_inline_scripts();
-		wp_enqueue_editor();
-		wp_enqueue_media();
-		add_action( 'wp_print_footer_scripts', array( '_WP_Editors', 'print_default_editor_scripts' ), 45 );
-
-		do_action( 'enqueue_block_editor_assets' );
+		$block_editor_context = new WP_Block_Editor_Context();
+		$editor_settings      = get_block_editor_settings( [], $block_editor_context );
+		RWMB_Helpers_Field::localize_script_once( 'rwmb-block-editor', 'rwmbBlockEditor', [
+			'editor_settings' => $editor_settings,
+		] );
 	}
 
 	/**
@@ -68,6 +46,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 
 		$field = wp_parse_args( $field, [
 			'allowed_blocks' => [],
+			'height'         => '300px',
 		] );
 
 		// Parse allowed_blocks from textarea (one block per line) to array for MB Builder
@@ -110,13 +89,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	}
 
 	protected static function get_editor_settings( array $field ): array {
-		return [
-			'iso'    => [
-				'blocks' => [
-					'allowBlocks' => $field['allowed_blocks'],
-				],
-			],
-			'upload' => current_user_can( 'upload_files' ),
-		];
+		$keys = [ 'allowed_blocks', 'height' ];
+		return array_filter( array_intersect_key( $field, array_flip( $keys ) ) );
 	}
 }
