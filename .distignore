@@ -1,29 +1,48 @@
-node_modules
-.git
-.github
-.gitignore
-.gitattributes
-
+## OS
 .DS_Store
 Thumbs.db
 
-.distignore
+## Editor
+.vscode
+.cursor
 
+## Git
+.git
+.github
+.gitattributes
+.gitignore
+
+## PHP
 composer.json
 composer.lock
+phpcs.xml
+phpcs.xml.dist
+phpunit.xml
+phpstan.neon
+phpstan.neon.dist
 
+## JS
 package.json
 package-lock.json
 pnpm-lock.yaml
+webpack.config.js
+esbuild.js
 
-phpunit.xml
-phpcs.xml
-phpstan.neon
-
-CHANGELOG.md
-README.md
+## Markdown
 TODO.md
+README.md
+CHANGELOG.md
 
+## Special files and folders
+.distignore
 tests
+bin
 docs
+
+## WordPress
+*.po
+
+## Other files
+## @developers: add your own files here
 src/Dashboard/assets/css/dashboads.scss
+js/block-editor/src/
