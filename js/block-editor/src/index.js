@@ -1,6 +1,7 @@
 import { registerCoreBlocks } from '@wordpress/block-library';
 import { createRoot } from '@wordpress/element';
-import Editor from './components/editor';
+import '@wordpress/format-library';
+import Editor from './Editor';
 import './style.scss';
 
 // Make sure to load stylesheets:

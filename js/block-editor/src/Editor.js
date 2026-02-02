@@ -11,7 +11,6 @@ import { serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
 import { useStateWithHistory } from '@wordpress/compose';
 import { createPortal, useEffect, useReducer } from '@wordpress/element';
-import '@wordpress/format-library';
 import { __ } from '@wordpress/i18n';
 import {
 	drawerRight,
@@ -19,7 +18,7 @@ import {
 	redo as redoIcon,
 	undo as undoIcon,
 } from '@wordpress/icons';
-import { getEditorSettings, getPortalRoot, parseContent } from '../functions';
+import { getEditorSettings, getPortalRoot, parseContent } from './functions';
 
 export default function( { textarea } ) {
 	const { value, setValue, hasUndo, hasRedo, undo, redo } = useStateWithHistory( { blocks: parseContent( textarea.value ) } );
