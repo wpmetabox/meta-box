@@ -14,7 +14,7 @@
 - Fix custom rich text formats not working
 - Fix conflicts with `image_advanced` and `file_advanced` fields
 
-** Other changes:**
+**Other changes:**
 
 - Fix cannot create new terms with required date/time fields
 
