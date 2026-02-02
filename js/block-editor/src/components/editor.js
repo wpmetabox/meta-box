@@ -1,9 +1,11 @@
 import {
-	BlockCanvas,
 	BlockEditorProvider,
 	BlockInspector,
+	BlockList,
 	BlockNavigationDropdown,
+	BlockTools,
 	Inserter,
+	WritingFlow
 } from '@wordpress/block-editor';
 import { serialize } from '@wordpress/blocks';
 import { Button, Flex } from '@wordpress/components';
@@ -95,7 +97,11 @@ export default function( { textarea } ) {
 
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
 				<div className="rwmb-block-editor__content" style={ { height: settings.height } }>
-					<BlockCanvas height="100%" styles={ editorSettings.styles } />
+					<BlockTools>
+						<WritingFlow>
+							<BlockList />
+						</WritingFlow>
+					</BlockTools>
 				</div>
 				{
 					isSidebarOpen && (
