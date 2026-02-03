@@ -22,7 +22,7 @@ class RWMB_Time_Field extends RWMB_Datetime_Field {
 		$field['js_options']['timeFormat'] = empty( $field['format'] ) ? $field['js_options']['timeFormat'] : $field['format'];
 		if ( isset( $field['timestamp'] ) ) {
 			// Time-only field not support timestamp
-			unset( $field['timestamp'] );
+			$field['timestamp'] = false;
 		}
 
 		return $field;
