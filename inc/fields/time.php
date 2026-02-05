@@ -20,6 +20,12 @@ class RWMB_Time_Field extends RWMB_Datetime_Field {
 	public static function normalize( $field ) {
 		$field                             = parent::normalize( $field );
 		$field['js_options']['timeFormat'] = empty( $field['format'] ) ? $field['js_options']['timeFormat'] : $field['format'];
+		// This field does not support timestamp.
+		// Prevent the timestamp from being set to true, like switching from a date field to a time field in the builder.
+		if ( isset( $field['timestamp'] ) ) {
+			$field['timestamp'] = false;
+		}
+
 		return $field;
 	}
 
