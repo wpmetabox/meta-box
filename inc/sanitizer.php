@@ -205,7 +205,18 @@ class RWMB_Sanitizer {
 	 * @return array
 	 */
 	private function sanitize_file( $value, $field ) {
-		return $field['upload_dir'] ? array_map( 'esc_url_raw', $value ) : $this->sanitize_object( $value );
+		if ( ! $field['upload_dir'] ) {
+			return $this->sanitize_object( $value );
+		}
+
+		// Security fix: Sanitize URLs and reject path traversal sequences.
+		return array_filter( array_map( function ( $url ) {
+			$url = esc_url_raw( $url );
+			if ( str_contains( $url, '../' ) || str_contains( $url, '..' . DIRECTORY_SEPARATOR ) ) {
+				return '';
+			}
+			return $url;
+		}, $value ) );
 	}
 
 	/**
