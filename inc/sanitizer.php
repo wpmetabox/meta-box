@@ -209,13 +209,9 @@ class RWMB_Sanitizer {
 			return $this->sanitize_object( $value );
 		}
 
-		// Security fix: Sanitize URLs and reject path traversal sequences.
+		// Security: sanitize URLs and reject path traversal sequences.
 		return array_filter( array_map( function ( $url ) {
-			$url = esc_url_raw( $url );
-			if ( str_contains( $url, '..' ) ) {
-				return '';
-			}
-			return $url;
+			return str_contains( $url, '..' ) ? '' : esc_url_raw( $url );
 		}, $value ) );
 	}
 

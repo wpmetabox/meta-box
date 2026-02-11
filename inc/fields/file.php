@@ -51,14 +51,14 @@ class RWMB_File_Field extends RWMB_Field {
 		if ( is_numeric( $attachment ) ) {
 			$result = wp_delete_attachment( $attachment );
 		} else {
-			$path   = str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $attachment );
+			$path = str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $attachment );
 
-			// Security fix: Validate resolved path is within uploads directory.
+			// Security: validate resolved path is within $field['upload_dir'] directory.
 			$real_path    = realpath( $path );
 			$real_path    = wp_normalize_path( $real_path );
 			$allowed_base = ! empty( $field['upload_dir'] ) ? wp_normalize_path( $field['upload_dir'] ) : '';
 			if ( ! $real_path || ! $allowed_base || ! str_starts_with( $real_path, $allowed_base ) ) {
-				wp_send_json_error( __( 'Error: File is outside allowed directory', 'meta-box' ) );
+				wp_send_json_error( __( 'Error: The file is outside the allowed upload directory', 'meta-box' ) );
 			}
 
 			$result = unlink( $real_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
