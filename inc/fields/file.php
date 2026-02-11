@@ -41,12 +41,6 @@ class RWMB_File_Field extends RWMB_Field {
 		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id' );
 		$object_type = (string) $request->filter_post( 'object_type' );
-
-		// Security fix: Authorization check.
-		if ( 'post' === $object_type && ! current_user_can( 'edit_post', (int) $object_id ) ) {
-			wp_send_json_error( __( 'Error: Permission denied', 'meta-box' ) );
-		}
-
 		$field       = rwmb_get_field_settings( $field_id, [ 'object_type' => $object_type ], $object_id );
 		$field_value = self::raw_meta( $object_id, $field );
 
@@ -60,9 +54,10 @@ class RWMB_File_Field extends RWMB_Field {
 			$path   = str_replace( home_url( '/' ), trailingslashit( ABSPATH ), $attachment );
 
 			// Security fix: Validate resolved path is within uploads directory.
-			$real_path   = realpath( $path );
-			$upload_base = realpath( wp_upload_dir()['basedir'] );
-			if ( ! $real_path || ! $upload_base || ! str_starts_with( wp_normalize_path( $real_path ), wp_normalize_path( $upload_base ) ) ) {
+			$real_path    = realpath( $path );
+			$real_path    = wp_normalize_path( $real_path );
+			$allowed_base = ! empty( $field['upload_dir'] ) ? wp_normalize_path( $field['upload_dir'] ) : '';
+			if ( ! $real_path || ! $allowed_base || ! str_starts_with( $real_path, $allowed_base ) ) {
 				wp_send_json_error( __( 'Error: File is outside allowed directory', 'meta-box' ) );
 			}
 

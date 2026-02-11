@@ -212,7 +212,7 @@ class RWMB_Sanitizer {
 		// Security fix: Sanitize URLs and reject path traversal sequences.
 		return array_filter( array_map( function ( $url ) {
 			$url = esc_url_raw( $url );
-			if ( str_contains( $url, '../' ) || str_contains( $url, '..' . DIRECTORY_SEPARATOR ) ) {
+			if ( str_contains( $url, '..' ) ) {
 				return '';
 			}
 			return $url;
