@@ -34,6 +34,14 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'editor_settings' => $editor_settings,
 		] );
 
+		// Load block categories.
+		wp_add_inline_script(
+			'wp-blocks',
+			sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $block_editor_context ) ) ),
+			'after'
+		);
+
+		// Load 3rd party blocks.
 		add_filter( 'should_load_block_editor_scripts_and_styles', '__return_true' );
 		do_action( 'enqueue_block_editor_assets' );
 	}
