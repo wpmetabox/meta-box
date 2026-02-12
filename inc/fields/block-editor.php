@@ -33,6 +33,8 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-block-editor', 'rwmbBlockEditor', [
 			'editor_settings' => $editor_settings,
 		] );
+
+		do_action( 'enqueue_block_editor_assets' );
 	}
 
 	/**
