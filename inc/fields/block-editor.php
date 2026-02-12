@@ -34,6 +34,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'editor_settings' => $editor_settings,
 		] );
 
+		add_filter( 'should_load_block_editor_scripts_and_styles', '__return_true' );
 		do_action( 'enqueue_block_editor_assets' );
 	}
 
