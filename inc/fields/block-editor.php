@@ -49,7 +49,10 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 
 		// Load 3rd party blocks.
 		add_filter( 'should_load_block_editor_scripts_and_styles', '__return_true' );
-		do_action( 'enqueue_block_editor_assets' );
+
+		if ( ! did_action( 'enqueue_block_editor_assets' ) ) {
+			do_action( 'enqueue_block_editor_assets' );
+		}
 	}
 
 	/**
