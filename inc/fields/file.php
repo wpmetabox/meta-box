@@ -56,7 +56,7 @@ class RWMB_File_Field extends RWMB_Field {
 			// Security: validate resolved path is within $field['upload_dir'] directory.
 			$real_path    = realpath( $path );
 			$real_path    = wp_normalize_path( $real_path );
-			$allowed_base = ! empty( $field['upload_dir'] ) ? wp_normalize_path( $field['upload_dir'] ) : '';
+			$allowed_base = ! empty( $field['upload_dir'] ) ? trailingslashit( wp_normalize_path( $field['upload_dir'] ) ) : '';
 			if ( ! $real_path || ! $allowed_base || ! str_starts_with( $real_path, $allowed_base ) ) {
 				wp_send_json_error( __( 'Error: The file is outside the allowed upload directory', 'meta-box' ) );
 			}
