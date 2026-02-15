@@ -33,6 +33,23 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-block-editor', 'rwmbBlockEditor', [
 			'editor_settings' => $editor_settings,
 		] );
+
+		// Load block categories.
+		wp_add_inline_script(
+			'wp-blocks',
+			sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $block_editor_context ) ) ),
+			'after'
+		);
+
+		// Preload server-registered block schemas.
+		wp_add_inline_script(
+			'wp-blocks',
+			'wp.blocks.unstable__bootstrapServerSideBlockDefinitions(' . wp_json_encode( get_block_editor_server_block_settings(), JSON_HEX_TAG | JSON_UNESCAPED_SLASHES ) . ');'
+		);
+
+		// Load 3rd party blocks.
+		add_filter( 'should_load_block_editor_scripts_and_styles', '__return_true' );
+		do_action( 'enqueue_block_editor_assets' );
 	}
 
 	/**
