@@ -1,4 +1,5 @@
 import {
+	BlockBreadcrumb,
 	BlockEditorProvider,
 	BlockInspector,
 	BlockList,
@@ -110,6 +111,7 @@ export default function( { textarea } ) {
 					)
 				}
 			</Flex>
+			<BlockBreadcrumb />
 		</BlockEditorProvider>
 	);
 

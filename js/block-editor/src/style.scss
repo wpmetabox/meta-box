@@ -17,6 +17,11 @@
 				height: 100% !important;
 			}
 		}
+
+		.block-editor-block-breadcrumb {
+			border-top: 1px solid #ddd;
+			padding-block: 4px;
+		}
 	}
 
 	&__toolbar {
