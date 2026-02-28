@@ -7,8 +7,10 @@
 
 	const template = option => {
 		if ( option.text.includes( '<svg' ) ) {
-			const title = option.text.replace( /<svg.*?>.*?<\/svg>/, '' );
-			return $( `<span class="rwmb-icon-select" title="${ title }">${ option.text }</span>` );
+			const title = option.text.replace( /<svg.*?>.*?<\/svg>/s, '' );
+			const $span = $( '<span>', { class: 'rwmb-icon-select', title: title } );
+			$span.html( option.text );
+			return $span;
 		}
 
 		return option.id ? $( `<span class="rwmb-icon-select" title=${ option.text }><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
