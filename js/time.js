@@ -8,7 +8,6 @@
 		let $this = $( this ),
 			options = $this.data( 'options' ),
 			current = $this.val();
-		current = formatTime( current );
 
 		$this.siblings( '.ui-datepicker-append' ).remove();  // Remove appended text
 
@@ -38,17 +37,6 @@
 			.timepicker( options )
 			.timepicker( 'setTime', current );
 	}
-
-	const formatTime = time => {
-		if ( !time.includes( ':' ) ) {
-			return time;
-		}
-		let [ hours, minutes ] = time.split( ':' );
-		hours = hours.padStart( 2, '0' );
-		minutes = minutes.padStart( 2, '0' );
-
-		return `${ hours }:${ minutes }`;
-	};
 
 	// Set language if available
 	function setTimeI18n() {
