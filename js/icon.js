@@ -8,7 +8,7 @@
 	const template = option => {
 		if ( option.text.includes( '<svg' ) ) {
 			const title = option.text.replace( /<svg.*?>.*?<\/svg>/s, '' );
-			const $span = $( '<span>', { class: 'rwmb-icon-select', title: title } );
+			const $span = $( '<span>', { class: 'rwmb-icon-select', title } );
 			$span.html( option.text );
 			return $span;
 		}
