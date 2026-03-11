@@ -41,7 +41,9 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		'HH' => 'H',
 		'h'  => 'g',
 		'hh' => 'h',
+		'm'  => 'i',
 		'mm' => 'i',
+		's'  => 's',
 		'ss' => 's',
 		'l'  => 'u',
 		'tt' => 'a',
@@ -231,12 +233,32 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 			'autocomplete' => 'off',
 		] );
 
+		// Timepicker addon have option for separator
+		$separator = $field['js_options']['separator'] ?? ' ';
+
+		if ( ! empty( $field['datetime_format'] ) ) {
+			$pos = strpos( $field['datetime_format'], $separator );
+
+			// if no separator, setup date format only
+			$dateFormat = ( false !== $pos ) ? substr( $field['datetime_format'], 0, $pos ) : $field['datetime_format'];
+			$timeFormat = ( false !== $pos ) ? substr( $field['datetime_format'], $pos + strlen( $separator ) ) : '';
+
+			// Handle only when client not setup setting in MBB
+			if ( ! isset( $field['js_options']['dateFormat'] ) ) {
+			    $field['js_options']['dateFormat'] = $dateFormat;
+			}
+
+			if ( ! isset( $field['js_options']['timeFormat'] ) && '' !== $timeFormat ) {
+			    $field['js_options']['timeFormat'] = $timeFormat;
+			}
+		}
+
 		// Deprecate 'format', but keep it for backward compatible.
 		// Use 'js_options' instead.
 		$field['js_options'] = wp_parse_args( $field['js_options'], [
 			'timeFormat'       => 'HH:mm',
-			'separator'        => ' ',
-			'dateFormat'       => $field['format'] ?? 'yy-mm-dd',
+			'separator'        => $separator,
+			'dateFormat'       => 'yy-mm-dd',
 			'showButtonPanel'  => true,
 			'changeYear'       => true,
 			'yearRange'        => '-100:+100',
@@ -257,7 +279,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 		$field['php_format'] = static::get_php_format( $field['js_options'] );
 
 		$field = parent::normalize( $field );
-
 		return $field;
 	}
 
@@ -306,6 +327,6 @@ class RWMB_Datetime_Field extends RWMB_Input_Field {
 				'formatted' => $value,
 			];
 		}
-		return empty( $args['format'] ) ? $value['formatted'] : gmdate( $args['format'], $value['timestamp'] );
+		return empty( $args['datetime_format'] ) ? $value['formatted'] : gmdate( $args['datetime_format'], $value['timestamp'] );
 	}
 }
