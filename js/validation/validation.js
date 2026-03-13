@@ -257,6 +257,20 @@
 				if ( typeof options === 'object' && options.isPreview ) {
 					return globalSavePosts[ that.selector ]( options );
 				}
+				// Re-query the DOM to get current block edit forms.
+				// Blocks can be duplicated and removed, so we need fresh references.
+				that.$form = $( that.selector );
+
+				// No block edit form exists, save directly.
+				if ( !that.$form.length ) {
+					that.removeMessage();
+					return globalSavePosts[ that.selector ]( options );
+				}
+
+				// Refresh validation settings from current DOM elements.
+				that.validationElements = that.$form.find( '.rwmb-validation' );
+				that.getSettings();
+				that.$form.validate( that.settings );
 
 				// Must call savePost() here instead of in submitHandler() because the form has inline onsubmit callback.
 				if ( that.$form.valid() ) {
