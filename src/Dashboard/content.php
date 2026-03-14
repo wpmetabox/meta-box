@@ -569,9 +569,9 @@
 	<aside class="mb-dashboard__sidebar" data-utm="sidebar">
 		<?php
 		$utc_timezone = new \DateTimeZone( 'UTC' );
-		$now = new \DateTime( 'now', $utc_timezone );
-		$sale_end1 = new \DateTime( '2025-11-29 00:00:00', $utc_timezone );
-		$sale_end2 = new \DateTime( '2025-12-02 00:00:00', $utc_timezone );
+		$now          = new \DateTime( 'now', $utc_timezone );
+		$sale_end1    = new \DateTime( '2025-11-29 00:00:00', $utc_timezone );
+		$sale_end2    = new \DateTime( '2025-12-02 00:00:00', $utc_timezone );
 		if ( $now < $sale_end2 ) :
 			?>
 			<div class="mb-dashboard__widget mb-dashboard__sale" data-utm="sale">
@@ -589,7 +589,7 @@
 						<?php endif; ?>
 						<span class="mb-dashboard__sale__button-text--small"><?php esc_html_e( 'on annual plans', 'meta-box' ); ?></span>
 					</a>
-					<ul class="mb-dashboard__countdown" data-end="<?= $now < $sale_end1 ? '2025-11-29T00:00:00+00:00' : '2025-12-02T00:00:00+00:00' ?>">
+					<ul class="mb-dashboard__countdown" data-end="<?= $now < $sale_end1 ? '2025-11-29T00:00:00+00:00' : '2025-12-02T00:00:00+00:00'; ?>">
 						<li>
 							<div class="mb-dashboard__countdown-number" data-type="days">0</div>
 							<div class="mb-dashboard__countdown-label">Days</div>
