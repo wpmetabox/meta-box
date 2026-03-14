@@ -43,6 +43,9 @@
       "echo Deleting .git dirs...",
       "rm -rf vendor/**/**/.git"
     ],
+    "phpcs": "phpcs --standard=phpcs.xml inc src",
+    "phpcbf": "phpcbf --standard=phpcs.xml inc src",
+    "phpstan": "phpstan analyse",
     "test": [
       "./vendor/bin/phpunit"
     ]
