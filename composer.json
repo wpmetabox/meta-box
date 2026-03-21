@@ -8,15 +8,14 @@
     "custom-field",
     "custom-fields"
   ],
-  "description": "A powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
+  "description": "The most powerful & comprehensive plugin to create, manage, show and connect dynamic data with forms and custom fields effortlessly on WordPress.",
   "homepage": "https://metabox.io",
   "license": "GPL-2.0",
-  "minimum-stability": "stable",
   "authors": [
     {
       "name": "Tran Ngoc Tuan Anh",
       "email": "anhtnt@elightup.com",
-      "homepage": "https://metabox.io",
+      "homepage": "https://deluxeblogtips.com",
       "role": "Developer"
     }
   ],
@@ -32,7 +31,7 @@
     "phpunit/phpunit": "^11.3"
   },
   "require": {
-    "wpmetabox/support": "dev-master"
+    "wpmetabox/support": "^1.0"
   },
   "scripts": {
     "post-update-cmd": [
