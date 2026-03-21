@@ -113,6 +113,25 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		return do_blocks( $value );
 	}
 
+	/**
+	 * Set value of meta before saving into database.
+	 *
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
+	 *
+	 * @return mixed
+	 */
+	public static function value( $new, $old, $post_id, $field ) {
+		$new = (string) $new;
+
+		// Remove the only empty paragraph block.
+		$pattern = '/^\s*<!-- wp:paragraph -->\s*?<p><\/p>\s*?<!-- \/wp:paragraph -->\s*$/';
+
+		return preg_replace( $pattern, '', $new );
+	}
+
 	protected static function get_editor_settings( array $field ): array {
 		$keys = [ 'allowed_blocks', 'height', 'toolbar_position' ];
 		return array_filter( array_intersect_key( $field, array_flip( $keys ) ) );
