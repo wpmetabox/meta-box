@@ -21,6 +21,20 @@ function attachEditor( textarea ) {
 	editor.classList.add( 'rwmb-block-editor' );
 	const root = createRoot( editor );
 
+	// Prevent unintended form submissions (like clicking accordion blocks).
+	const fixButtons = () => {
+		editor.querySelectorAll( 'button:not([type])' ).forEach( button => {
+			button.type = 'button';
+		} );
+	};
+
+	// Fix existing buttons immediately
+	fixButtons();
+
+	// Use MutationObserver to fix newly added buttons
+	const observer = new MutationObserver( fixButtons );
+	observer.observe( editor, { childList: true, subtree: true } );
+
 	// Insert after the textarea, and hide it
 	textarea.parentNode.insertBefore( editor, textarea.nextSibling );
 	textarea.style.display = 'none';
