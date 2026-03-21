@@ -4,6 +4,7 @@ import {
 	BlockInspector,
 	BlockList,
 	BlockNavigationDropdown,
+	BlockToolbar,
 	BlockTools,
 	Inserter,
 	WritingFlow
@@ -38,6 +39,7 @@ export default function( { textarea } ) {
 
 	const settings = JSON.parse( textarea.dataset.settings );
 	const editorSettings = getEditorSettings( settings );
+	const toolbarPosition = settings.toolbar_position || 'top';
 
 	// Disable body scroll in fullscreen
 	useEffect( () => {
@@ -55,8 +57,8 @@ export default function( { textarea } ) {
 			onInput={ persistBlocks }
 			settings={ editorSettings }
 		>
-			<Flex justify="space-between" className="rwmb-block-editor__toolbar">
-				<Flex justify="flex-start">
+			<div className="rwmb-block-editor__toolbar">
+				<div className="rwmb-block-editor__toolbar-left">
 					<Inserter toggleProps={ inserterProps } />
 					<Button
 						onClick={ undo }
@@ -75,9 +77,10 @@ export default function( { textarea } ) {
 						size="compact"
 					/>
 					<BlockNavigationDropdown />
-				</Flex>
+					{ toolbarPosition === 'top' && <BlockToolbar hideDragHandle /> }
+				</div>
 
-				<Flex justify="flex-end">
+				<div className="rwmb-block-editor__toolbar-right">
 					<Button
 						icon={ fullscreen }
 						aria-pressed={ isFullscreen }
@@ -92,8 +95,8 @@ export default function( { textarea } ) {
 						size="compact"
 						onClick={ toggleSidebar }
 					/>
-				</Flex>
-			</Flex>
+				</div>
+			</div>
 
 			<Flex gap={ 0 } align="stretch" className="rwmb-block-editor__main">
 				<div className="rwmb-block-editor__content" style={ { minHeight: settings.height } }>

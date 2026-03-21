@@ -65,9 +65,14 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		$field = parent::normalize( $field );
 
 		$field = wp_parse_args( $field, [
-			'allowed_blocks' => [],
-			'height'         => '300px',
+			'allowed_blocks'   => [],
+			'height'           => '300px',
+			'toolbar_position' => 'top',
 		] );
+
+		$field['toolbar_position'] = in_array( $field['toolbar_position'], [ 'top', 'contextual' ], true )
+			? $field['toolbar_position']
+			: 'top';
 
 		// Parse allowed_blocks from textarea (one block per line) to array for MB Builder
 		if ( is_string( $field['allowed_blocks'] ) ) {
@@ -109,7 +114,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 	}
 
 	protected static function get_editor_settings( array $field ): array {
-		$keys = [ 'allowed_blocks', 'height' ];
+		$keys = [ 'allowed_blocks', 'height', 'toolbar_position' ];
 		return array_filter( array_intersect_key( $field, array_flip( $keys ) ) );
 	}
 }

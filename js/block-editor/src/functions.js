@@ -18,8 +18,10 @@ export const getPortalRoot = () => {
 	return el;
 };
 
-export const getEditorSettings = ( { allowed_blocks } ) => useSelect( select => {
+export const getEditorSettings = ( { allowed_blocks, toolbar_position } ) => useSelect( select => {
 	const settings = rwmbBlockEditor.editor_settings;
+
+	settings.hasFixedToolbar = toolbar_position === 'top';
 
 	if ( Array.isArray( allowed_blocks ) && allowed_blocks.length > 0 ) {
 		settings.allowedBlockTypes = allowed_blocks;
