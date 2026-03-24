@@ -1,3 +1,10 @@
+### 5.11.3 - 2026-03-24
+
+- Add `toolbar_position` option for the block editor field, which accepts value `top` (default) or `contextual`. This option is for where to display editing toolbar for blocks.
+- Fix saving an empty paragraph in the block editor field
+- Fix validation error persisting after removing duplicate blocks
+- Fix extra empty clone saved when calling `set_post_data()` during validation
+
 ### 5.11.2 - 2026-03-05
 
 **Improvements for the block editor field:**
