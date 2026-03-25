@@ -39,8 +39,11 @@
 			};
 
 			// Set editor mode after initializing.
+			// WP 7.0+: switchEditors may not be available when the block editor runs in an iframe.
 			settings.tinymce.init_instance_callback = function() {
-				switchEditors.go( id, mode );
+				if ( typeof switchEditors !== 'undefined' && typeof switchEditors.go === 'function' ) {
+					switchEditors.go( id, mode );
+				}
 			};
 
 			tinymce.remove( '#' + id );
@@ -69,7 +72,28 @@
 	}
 
 	function getDefaultEditorSettings() {
-		var settings = wp.editor.getDefaultSettings();
+		// WP 7.0+: wp.editor.getDefaultSettings() may not be available if the
+		// block editor runs in an iframe and the classic editor API isn't loaded.
+		var settings;
+		if ( wp.editor && typeof wp.editor.getDefaultSettings === 'function' ) {
+			settings = wp.editor.getDefaultSettings();
+		} else {
+			settings = {
+				tinymce: {
+					wpautop: true,
+					plugins: 'charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview',
+				},
+				quicktags: {},
+			};
+		}
+
+		// Ensure sub-objects exist before setting properties.
+		if ( ! settings.tinymce ) {
+			settings.tinymce = {};
+		}
+		if ( ! settings.quicktags ) {
+			settings.quicktags = {};
+		}
 
 		settings.tinymce.toolbar1 = 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv';
 		settings.tinymce.toolbar2 = 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help';
