@@ -53,6 +53,8 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		if ( ! did_action( 'enqueue_block_editor_assets' ) ) {
 			do_action( 'enqueue_block_editor_assets' );
 		}
+
+		do_action( 'rwmb_enqueue_block_editor_assets' );
 	}
 
 	/**
