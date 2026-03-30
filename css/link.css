@@ -1,0 +1,36 @@
+.rwmb-link {
+	padding: 5px 0;
+}
+
+.rwmb-link-display {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.rwmb-link-text {
+	flex: 1;
+}
+
+.rwmb-link-text .dashicons {
+	color: #999;
+	vertical-align: middle;
+}
+
+.rwmb-link-text a {
+	text-decoration: underline;
+}
+
+.rwmb-link-target {
+	color: #999;
+	font-style: italic;
+}
+
+.rwmb-link-edit,
+.rwmb-link-remove {
+	text-decoration: none;
+}
+
+.rwmb-link-select {
+	text-decoration: none;
+}
