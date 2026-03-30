@@ -3,7 +3,7 @@ Contributors: elightup, metabox, rilwis, f-j-kaiser, funkatronic, PerWiklander, 
 Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 6.5
-Requires PHP: 7.2
+Requires PHP: 7.4
 Tested up to: 6.9.4
 Stable tag: 5.11.4
 License: GPLv2 or later
@@ -148,7 +148,11 @@ If you want to use Meta Box, please follow these steps:
 
 == Changelog ==
 
-= 5.11.4 - 2026-03-24 =
+= 5.11.4 - 2026-03-30 =
+
+- Add an internal hook for enqueuing custom blocks' assets for `block_editor` field
+
+= 5.11.3 - 2026-03-24 =
 
 - Add `toolbar_position` option for the block editor field, which accepts value `top` (default) or `contextual`. This option is for where to display editing toolbar for blocks.
 - Fix saving an empty paragraph in the block editor field

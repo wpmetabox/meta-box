@@ -1,3 +1,7 @@
+### 5.11.4 - 2026-03-30
+
+- Add an internal hook for enqueuing custom blocks' assets for `block_editor` field
+
 ### 5.11.3 - 2026-03-24
 
 - Add `toolbar_position` option for the block editor field, which accepts value `top` (default) or `contextual`. This option is for where to display editing toolbar for blocks.
