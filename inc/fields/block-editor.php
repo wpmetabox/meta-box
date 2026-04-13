@@ -81,9 +81,23 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			$field['allowed_blocks'] = array_map( 'trim', explode( "\n", $field['allowed_blocks'] ) );
 		}
 
-		$field['allowed_blocks'] = array_values( array_filter( $field['allowed_blocks'] ) );
+		$field['allowed_blocks'] = self::add_child_blocks( $field['allowed_blocks'] );
+		$field['allowed_blocks'] = array_unique( array_values( array_filter( $field['allowed_blocks'] ) ) );
 
 		return $field;
+	}
+
+	private static function add_child_blocks( array $blocks ): array {
+		$all_blocks = WP_Block_Type_Registry::get_instance()->get_all_registered();
+
+		$list = $blocks;
+		foreach ( $blocks as $block_type ) {
+			$children = array_filter( $all_blocks, fn( $block ) => is_array( $block->parent ) && in_array( $block_type, $block->parent, true ) );
+			$children = array_map( fn( $block ) => $block->name, $children );
+			$list     = array_merge( $list, $children );
+		}
+
+		return $list;
 	}
 
 	/**
