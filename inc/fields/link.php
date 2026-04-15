@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || die;
  * The link field.
  */
 class RWMB_Link_Field extends RWMB_Field {
-	public static function admin_enqueue_scripts() {
+	public static function admin_enqueue_scripts(): void {
 		wp_enqueue_style( 'rwmb-link', RWMB_CSS_URL . 'link.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-link', 'path', RWMB_CSS_DIR . 'link.css' );
 		wp_enqueue_script( 'rwmb-link', RWMB_JS_URL . 'link.js', [ 'jquery' ], RWMB_VER, true );
@@ -23,10 +23,8 @@ class RWMB_Link_Field extends RWMB_Field {
 	 *
 	 * @param mixed $meta  Meta value.
 	 * @param array $field Field settings.
-	 *
-	 * @return string
 	 */
-	public static function html( $meta, $field ) {
+	public static function html( $meta, $field ): string {
 		$meta = wp_parse_args( $meta, [
 			'url'     => '',
 			'title'   => '',
@@ -99,16 +97,13 @@ class RWMB_Link_Field extends RWMB_Field {
 	 * @param array    $value   The value.
 	 * @param array    $args    Additional arguments. Rarely used. See specific fields for details.
 	 * @param int|null $post_id Post ID. null for current post. Optional.
-	 *
-	 * @return string
 	 */
-	public static function format_single_value( $field, $value, $args, $post_id ) {
-		if ( empty( $value['url'] ) ) {
-			return '';
-		}
-		$url    = esc_url( $value['url'] );
-		$title  = esc_html( $value['title'] );
-		$target = ! empty( $value['target'] ) ? ' target="' . esc_attr( $value['target'] ) . '"' : '';
-		return '<a href="' . $url . '"' . $target . '>' . $title . '</a>';
+	public static function format_single_value( $field, $value, $args, $post_id ): string {
+		return empty( $value['url'] ) ? '' : sprintf(
+			'<a href="%s"%s>%s</a>',
+			esc_url( $value['url'] ),
+			empty( $value['target'] ) ? '' : ' target="' . esc_attr( $value['target'] ) . '"',
+			esc_html( $value['title'] ?? '' )
+		);
 	}
 }
