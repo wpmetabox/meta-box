@@ -8,7 +8,7 @@ class RWMB_Link_Field extends RWMB_Field {
 	public static function admin_enqueue_scripts(): void {
 		wp_enqueue_style( 'rwmb-link', RWMB_CSS_URL . 'link.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-link', 'path', RWMB_CSS_DIR . 'link.css' );
-		wp_enqueue_script( 'rwmb-link', RWMB_JS_URL . 'link.js', [ 'jquery' ], RWMB_VER, true );
+		wp_enqueue_script( 'rwmb-link', RWMB_JS_URL . 'link.js', [ 'jquery', 'rwmb' ], RWMB_VER, true );
 		wp_localize_script( 'rwmb-link', 'rwmbLink', [
 			'editText'       => esc_html__( 'Edit', 'meta-box' ),
 			'removeText'     => esc_html__( 'Remove', 'meta-box' ),
@@ -54,7 +54,7 @@ class RWMB_Link_Field extends RWMB_Field {
 			$output .= '</div>';
 		} else {
 			$output .= '<div class="rwmb-link-display">';
-			$output .= '<a href="#" class="rwmb-link-select">' . esc_html__( 'Add link', 'meta-box' ) . '</a>';
+			$output .= '<button class="button rwmb-link-select">' . esc_html__( 'Add link', 'meta-box' ) . '</button>';
 			$output .= '</div>';
 		}
 
