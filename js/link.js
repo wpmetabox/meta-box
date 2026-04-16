@@ -47,7 +47,7 @@
 			$display.append( '<span class="dashicons dashicons-admin-links"></span> ' );
 			$display.append( $( '<a>', { href: attrs.href, target: '_blank', text: $title.val() } ) );
 			if ( $target.val() === '_blank' ) {
-				$display.append( ' <span class="rwmb-link-target">' + i18n.newTabText + '</span>' );
+				$display.append( `<span class="rwmb-link-target">${ i18n.newTabText }</span>` );
 			}
 
 			const $wrapper = $( '<div></div>' );
@@ -72,7 +72,7 @@
 		$link.find( 'input[name$="[title]"]' ).val( '' );
 		$link.find( 'input[name$="[target]"]' ).val( '' );
 		$link.find( 'input[name$="[post_id]"]' ).val( 0 );
-		$link.find( '.rwmb-link-display' ).html( '<button class="button rwmb-link-select">' + i18n.selectLinkText + '</button>' );
+		$link.find( '.rwmb-link-display' ).html( `<a href="#" class="rwmb-link-select">${ i18n.selectLinkText }</a>` );
 	} );
 
 } )( jQuery, rwmb, rwmbLink );

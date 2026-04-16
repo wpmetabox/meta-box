@@ -46,7 +46,7 @@ class RWMB_Link_Field extends RWMB_Field {
 			$output .= '<span class="dashicons dashicons-admin-links"></span> ';
 			$output .= '<a href="' . esc_url( $meta['url'] ) . '" target="_blank">' . esc_html( $meta['title'] ) . '</a>';
 			if ( '_blank' === $meta['target'] ) {
-				$output .= ' <span class="rwmb-link-target">' . esc_html__( '(new tab)', 'meta-box' ) . '</span>';
+				$output .= '<span class="rwmb-link-target">' . esc_html__( '(new tab)', 'meta-box' ) . '</span>';
 			}
 			$output .= '</span> ';
 			$output .= '<a href="#" class="rwmb-link-edit">' . esc_html__( 'Edit', 'meta-box' ) . '</a>';
@@ -54,7 +54,7 @@ class RWMB_Link_Field extends RWMB_Field {
 			$output .= '</div>';
 		} else {
 			$output .= '<div class="rwmb-link-display">';
-			$output .= '<button class="button rwmb-link-select">' . esc_html__( 'Add link', 'meta-box' ) . '</button>';
+			$output .= '<a href="#" class="rwmb-link-select">' . esc_html__( 'Add link', 'meta-box' ) . '</a>';
 			$output .= '</div>';
 		}
 

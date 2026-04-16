@@ -1,7 +1,3 @@
-.rwmb-link {
-	padding: 5px 0;
-}
-
 .rwmb-link-display {
 	display: flex;
 	align-items: center;
@@ -10,15 +6,17 @@
 
 .rwmb-link-text {
 	flex: 1;
+	display: flex;
+	align-items: center;
+	gap: 4px;
 }
 
 .rwmb-link-text .dashicons {
 	color: #999;
 	vertical-align: middle;
-}
-
-.rwmb-link-text a {
-	text-decoration: underline;
+	font-size: 16px;
+	width: 1em;
+	height: 1em;
 }
 
 .rwmb-link-target {
