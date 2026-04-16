@@ -15,10 +15,11 @@
 			return;
 		}
 
-		const $link     = $( e.target ).closest( '.rwmb-link' ),
-			$url       = $link.find( 'input[name$="[url]"]' ),
-			$title     = $link.find( 'input[name$="[title]"]' ),
-			$target    = $link.find( 'input[name$="[target]"]' );
+		const $link = $( e.target ).closest( '.rwmb-link' ),
+			$url    = $link.find( 'input[name$="[url]"]' ),
+			$title  = $link.find( 'input[name$="[title]"]' ),
+			$target = $link.find( 'input[name$="[target]"]' ),
+			$postId = $link.find( 'input[name$="[post_id]"]' );
 
 		wpLink.open( textareaId );
 
@@ -36,19 +37,16 @@
 			}
 
 			$url.val( attrs.href );
-			$target.val( attrs.target === '_blank' ? '_blank' : '' );
 			$title.val( $( '#wp-link-text' ).val() || attrs.href );
+			$target.val( attrs.target === '_blank' ? '_blank' : '' );
 
 			const postData = $( '#wp-link-wrap' ).data( 'selectedPost' );
-			$link.find( 'input[name$="[post_id]"]' ).val( postData && postData.ID ? postData.ID : 0 );
+			$postId.val( postData && postData.ID ? postData.ID : 0 );
 
-			const titleVal  = $title.val();
-			const targetVal = $target.val();
 			const $display  = $( '<span class="rwmb-link-text"></span>' );
-
 			$display.append( '<span class="dashicons dashicons-admin-links"></span> ' );
-			$display.append( $( '<a>', { href: attrs.href, target: '_blank', text: titleVal } ) );
-			if ( targetVal === '_blank' ) {
+			$display.append( $( '<a>', { href: attrs.href, target: '_blank', text: $title.val() } ) );
+			if ( $target.val() === '_blank' ) {
 				$display.append( ' <span class="rwmb-link-target">' + i18n.newTabText + '</span>' );
 			}
 

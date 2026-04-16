@@ -35,10 +35,10 @@ class RWMB_Link_Field extends RWMB_Field {
 		$name = $field['field_name'];
 
 		$output  = '<div class="rwmb-link" data-field-name="' . esc_attr( $name ) . '">';
-		$output .= '<input type="hidden" name="' . esc_attr( $name ) . '[url]" value="' . esc_attr( $meta['url'] ) . '">';
-		$output .= '<input type="hidden" name="' . esc_attr( $name ) . '[title]" value="' . esc_attr( $meta['title'] ) . '">';
-		$output .= '<input type="hidden" name="' . esc_attr( $name ) . '[target]" value="' . esc_attr( $meta['target'] ) . '">';
-		$output .= '<input type="hidden" name="' . esc_attr( $name ) . '[post_id]" value="' . esc_attr( $meta['post_id'] ) . '">';
+		$output .= '<input type="hidden" class="rwmb-link-input" name="' . esc_attr( $name ) . '[url]" value="' . esc_attr( $meta['url'] ) . '">';
+		$output .= '<input type="hidden" class="rwmb-link-input" name="' . esc_attr( $name ) . '[title]" value="' . esc_attr( $meta['title'] ) . '">';
+		$output .= '<input type="hidden" class="rwmb-link-input" name="' . esc_attr( $name ) . '[target]" value="' . esc_attr( $meta['target'] ) . '">';
+		$output .= '<input type="hidden" class="rwmb-link-input" name="' . esc_attr( $name ) . '[post_id]" value="' . esc_attr( $meta['post_id'] ) . '">';
 
 		if ( $meta['url'] ) {
 			$output .= '<div class="rwmb-link-display">';
