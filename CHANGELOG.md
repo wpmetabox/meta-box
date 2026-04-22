@@ -1,3 +1,8 @@
+### 5.12.0 - 2026-04-22
+
+- New field type `link` that allows you to add a link with native WordPress experience (similar to ACF)
+- Auto add child blocks for allowed blocks for the `block_editor` field
+
 ### 5.11.4 - 2026-03-30
 
 - Add an internal hook for enqueuing custom blocks' assets for `block_editor` field
