@@ -20,6 +20,7 @@ class WPML {
 		}
 		add_filter( 'wpml_duplicate_generic_string', [ $this, 'translate_ids' ], 10, 3 );
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
+		add_filter( 'rwmb_post_choice_label', [ $this, 'append_language_to_label' ], 10, 3 );
 
 		// Filter the value on the front end.
 		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 2 );
@@ -105,6 +106,23 @@ class WPML {
 		}
 
 		return $field;
+	}
+
+	/**
+	 * Append WPML language code to post choice label.
+	 * Helps distinguish translations with the same title in the dropdown.
+	 *
+	 * @param string   $label The current label.
+	 * @param array    $field Field parameters.
+	 * @param \WP_Post $post  The post object.
+	 */
+	public function append_language_to_label( string $label, array $field, $post ): string {
+		$language_details = apply_filters( 'wpml_post_language_details', null, $post->ID );
+		if ( ! is_array( $language_details ) || empty( $language_details['language_code'] ) ) {
+			return $label;
+		}
+
+		return $label . ' [' . strtoupper( $language_details['language_code'] ) . ']';
 	}
 
 	public function get_translated_value( $value, $field ) {
