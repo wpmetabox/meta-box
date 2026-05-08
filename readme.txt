@@ -138,6 +138,10 @@ If you want to use Meta Box, please follow these steps:
 
 == Frequently Asked Questions ==
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Meta Box – WordPress Custom Fields Framework plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fbeb8-4b92-420d-9aa3-2de53ed433fe). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 1. Text Fields
 1. Basic Fields
