@@ -6,8 +6,8 @@
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
-		"@wordpress/icons": "^11.8.0",
-		"@wordpress/scripts": "^31.6.0",
-		"sass": "^1.97.3"
+		"@wordpress/icons": "^13.1.0",
+		"@wordpress/scripts": "^32.2.0",
+		"sass": "^1.99.0"
 	}
 }

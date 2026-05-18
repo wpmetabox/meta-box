@@ -25,6 +25,7 @@ phpstan.neon.dist
 package.json
 package-lock.json
 pnpm-lock.yaml
+pnpm-workspace.yaml
 webpack.config.js
 esbuild.js
 
