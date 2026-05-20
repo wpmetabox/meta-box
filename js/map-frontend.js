@@ -39,24 +39,36 @@
 			mapOptions.styles = JSON.parse(mapOptions.styles);
 		}
 
+		if ( mapOptions.mapId === undefined && options.map_id ) {
+			mapOptions.mapId = options.map_id;
+		}
+
 		map = new google.maps.Map( this, mapOptions );
 
 		// Set marker
 		if ( options.marker ) {
-			var marker = new google.maps.Marker( {
+			var markerOptions = {
 				position: center,
 				map: map
-			} );
+			};
 
 			// Set marker title
 			if ( options.marker_title ) {
-				marker.setTitle( options.marker_title );
+				markerOptions.title = options.marker_title;
 			}
 
-			// Set marker icon
+			// Set marker icon via custom content
 			if ( options.marker_icon ) {
-				marker.setIcon( options.marker_icon );
+				var icon = document.createElement( 'img' );
+				icon.src = options.marker_icon;
+				markerOptions.content = icon;
 			}
+
+			if ( options.info_window ) {
+				markerOptions.gmpClickable = true;
+			}
+
+			var marker = new google.maps.marker.AdvancedMarkerElement( markerOptions );
 		}
 
 		// Set info window
@@ -66,12 +78,12 @@
 				minWidth: 200
 			} );
 
-			google.maps.event.addListener( marker, 'click', function () {
-				infoWindow.open( map, marker );
+			marker.addEventListener( 'gmp-click', function () {
+				infoWindow.open( { anchor: marker, map: map } );
 			} );
 
 			if ( true === mapOptions.openInfoWindow ) {
-				infoWindow.open( map, marker );
+				infoWindow.open( { anchor: marker, map: map } );
 			}
 		}
 	}
