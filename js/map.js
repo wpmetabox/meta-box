@@ -8,7 +8,6 @@
 
 	// Geocoder service.
 	var geocoder = new google.maps.Geocoder();
-	// Autocomplete Service - now using AutocompleteSuggestion (static method, no constructor needed).
 	// Use prototype for better performance
 	MapField.prototype = {
 		// Initialize everything
@@ -36,6 +35,10 @@
 			this.map.setCenter( location );
 			if ( this.marker ) {
 				this.marker.position = location;
+				return;
+			}
+
+			if ( !google.maps.marker || !google.maps.marker.AdvancedMarkerElement ) {
 				return;
 			}
 
@@ -115,19 +118,27 @@
 			}
 
 			google.maps.event.addListener( this.map, 'click', function ( event ) {
+				if ( !that.marker ) {
+					return;
+				}
 				that.marker.position = event.latLng;
 				that.updateCoordinate( event.latLng );
 			} );
 
 			google.maps.event.addListener( this.map, 'zoom_changed', function ( event ) {
+				if ( !that.marker ) {
+					return;
+				}
 				var pos = that.marker.position;
 				that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
 			} );
 
-			that.marker.addEventListener( 'gmp-drag', function () {
-				var pos = that.marker.position;
-				that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
-			} );
+			if ( that.marker ) {
+				that.marker.addEventListener( 'gmp-drag', function () {
+					var pos = that.marker.position;
+					that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
+				} );
+			}
 
 			/**
 			 * Custom event to refresh maps when in hidden divs.

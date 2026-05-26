@@ -39,14 +39,14 @@
 			mapOptions.styles = JSON.parse(mapOptions.styles);
 		}
 
-		if ( mapOptions.mapId === undefined && options.map_id ) {
+		if ( !mapOptions.mapId && options.map_id ) {
 			mapOptions.mapId = options.map_id;
 		}
 
 		map = new google.maps.Map( this, mapOptions );
 
 		// Set marker
-		if ( options.marker ) {
+		if ( options.marker && google.maps.marker && google.maps.marker.AdvancedMarkerElement ) {
 			var markerOptions = {
 				position: center,
 				map: map
