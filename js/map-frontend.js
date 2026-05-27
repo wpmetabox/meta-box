@@ -39,15 +39,15 @@
 			mapOptions.styles = JSON.parse(mapOptions.styles);
 		}
 
-		if ( !mapOptions.mapId ) {
-			mapOptions.mapId = options.map_id || 'DEMO_MAP_ID';
+		if ( !mapOptions.mapId && options.map_id ) {
+			mapOptions.mapId = options.map_id;
 		}
 
 		map = new google.maps.Map( this, mapOptions );
 
 		// Set marker
 		if ( options.marker && google.maps.marker && google.maps.marker.AdvancedMarkerElement ) {
-			var markerOptions = {
+			const markerOptions = {
 				position: center,
 				map: map
 			};
@@ -59,7 +59,7 @@
 
 			// Set marker icon via custom content
 			if ( options.marker_icon ) {
-				var icon = document.createElement( 'img' );
+				const icon = document.createElement( 'img' );
 				icon.src = options.marker_icon;
 				markerOptions.content = icon;
 			}
@@ -68,7 +68,7 @@
 				markerOptions.gmpClickable = true;
 			}
 
-			var marker = new google.maps.marker.AdvancedMarkerElement( markerOptions );
+			const marker = new google.maps.marker.AdvancedMarkerElement( markerOptions );
 		}
 
 		// Set info window

@@ -50,13 +50,16 @@
 		},
 
 		initMapElements: function () {
-			var mapOptions = {
+			const mapOptions = {
 				zoom: 14,
 				streetViewControl: 0,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
-			mapOptions.mapId = this.$canvas.data( 'map_id' ) || 'DEMO_MAP_ID';
+			const mapId = this.$canvas.data( 'map_id' );
+			if ( mapId ) {
+				mapOptions.mapId = mapId;
+			}
 
 			this.map = new google.maps.Map( this.canvas, mapOptions );
 
@@ -126,13 +129,13 @@
 				if ( !that.marker ) {
 					return;
 				}
-				var pos = that.marker.position;
+				const pos = that.marker.position;
 				that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
 			} );
 
 			if ( that.marker ) {
 				that.marker.addEventListener( 'gmp-drag', function () {
-					var pos = that.marker.position;
+					const pos = that.marker.position;
 					that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
 				} );
 			}
@@ -180,16 +183,16 @@
 
 			$address.autocomplete( {
 				source: async function ( request, response ) {
-					var region = that.$canvas.data( 'region' );
-					var requestOptions = { input: request.term };
+					const region = that.$canvas.data( 'region' );
+					const requestOptions = { input: request.term };
 
 					if ( region ) {
 						requestOptions.includedRegionCodes = [ region ];
 					}
 
 					try {
-						var result = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions( requestOptions );
-						var suggestions = result.suggestions;
+						const result = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions( requestOptions );
+						const suggestions = result.suggestions;
 
 						if ( !suggestions || !suggestions.length ) {
 							response( [ {
