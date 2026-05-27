@@ -56,10 +56,7 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
-			const mapId = this.$canvas.data( 'map_id' );
-			if ( mapId ) {
-				mapOptions.mapId = mapId;
-			}
+			mapOptions.mapId = this.$canvas.data( 'map_id' ) || 'DEMO_MAP_ID';
 
 			this.map = new google.maps.Map( this.canvas, mapOptions );
 

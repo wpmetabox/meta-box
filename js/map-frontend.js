@@ -39,8 +39,8 @@
 			mapOptions.styles = JSON.parse(mapOptions.styles);
 		}
 
-		if ( !mapOptions.mapId && options.map_id ) {
-			mapOptions.mapId = options.map_id;
+		if ( !mapOptions.mapId ) {
+			mapOptions.mapId = options.map_id || 'DEMO_MAP_ID';
 		}
 
 		map = new google.maps.Map( this, mapOptions );

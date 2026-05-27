@@ -79,7 +79,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			'language'         => '',
 			'region'           => '',
 			'marker_draggable' => true,
-			'map_id'           => '',
+			'map_id'           => 'DEMO_MAP_ID',
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
@@ -162,7 +162,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
 			'js_options'   => [],
 			'zoom'         => $zoom,
-			'map_id'       => '',
+			'map_id'       => 'DEMO_MAP_ID',
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
