@@ -8,8 +8,6 @@
 
 	// Geocoder service.
 	var geocoder = new google.maps.Geocoder();
-	// Autocomplete Service.
-	var autocomplete = new google.maps.places.AutocompleteService();
 	// Use prototype for better performance
 	MapField.prototype = {
 		// Initialize everything
@@ -36,23 +34,31 @@
 			}
 			this.map.setCenter( location );
 			if ( this.marker ) {
-				this.marker.setPosition( location );
+				this.marker.position = location;
 				return;
 			}
 
-			this.marker = new google.maps.Marker( {
+			if ( !google.maps.marker || !google.maps.marker.AdvancedMarkerElement ) {
+				return;
+			}
+
+			this.marker = new google.maps.marker.AdvancedMarkerElement( {
 				position: location,
 				map: this.map,
-				draggable: this.$canvas.data( 'marker_draggable' ),
+				gmpDraggable: this.$canvas.data( 'marker_draggable' ),
 			} );
 		},
 
 		initMapElements: function () {
-			this.map = new google.maps.Map( this.canvas, {
+			const mapOptions = {
 				zoom: 14,
 				streetViewControl: 0,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
-			} );
+			};
+
+			mapOptions.mapId = this.$canvas.data( 'map_id' ) || 'DEMO_MAP_ID';
+
+			this.map = new google.maps.Map( this.canvas, mapOptions );
 
 			// If there is a saved location, don't set the default location.
 			if ( this.$coordinate.val() ) {
@@ -109,17 +115,27 @@
 			}
 
 			google.maps.event.addListener( this.map, 'click', function ( event ) {
-				that.marker.setPosition( event.latLng );
+				if ( !that.marker ) {
+					return;
+				}
+				that.marker.position = event.latLng;
 				that.updateCoordinate( event.latLng );
 			} );
 
 			google.maps.event.addListener( this.map, 'zoom_changed', function ( event ) {
-				that.updateCoordinate( that.marker.getPosition() );
+				if ( !that.marker ) {
+					return;
+				}
+				const pos = that.marker.position;
+				that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
 			} );
 
-			google.maps.event.addListener( this.marker, 'drag', function ( event ) {
-				that.updateCoordinate( event.latLng );
-			} );
+			if ( that.marker ) {
+				that.marker.addEventListener( 'gmp-drag', function () {
+					const pos = that.marker.position;
+					that.updateCoordinate( new google.maps.LatLng( pos.lat, pos.lng ) );
+				} );
+			}
 
 			/**
 			 * Custom event to refresh maps when in hidden divs.
@@ -163,29 +179,40 @@
 			}
 
 			$address.autocomplete( {
-				source: function ( request, response ) {
-					// if add region only search in that region
-					var options = {
-						'input': request.term,
-						'componentRestrictions': { country: that.$canvas.data( 'region' ) }
-					};
-					// Change Geocode to getPlacePredictions .
-					autocomplete.getPlacePredictions( options, function ( results ) {
-						if ( results == null || !results.length ) {
+				source: async function ( request, response ) {
+					const region = that.$canvas.data( 'region' );
+					const requestOptions = { input: request.term };
+
+					if ( region ) {
+						requestOptions.includedRegionCodes = [ region ];
+					}
+
+					try {
+						const result = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions( requestOptions );
+						const suggestions = result.suggestions;
+
+						if ( !suggestions || !suggestions.length ) {
 							response( [ {
 								value: '',
 								label: i18n.no_results_string
 							} ] );
 							return;
 						}
-						response( results.map( function ( item ) {
+
+						response( suggestions.map( function ( suggestion ) {
 							return {
-								label: item.description,
-								value: item.description,
-								placeid: item.place_id,
+								label: suggestion.placePrediction.text.text,
+								value: suggestion.placePrediction.text.text,
+								placeid: suggestion.placePrediction.placeId,
 							};
 						} ) );
-					} );
+					} catch ( error ) {
+						console.error( 'AutocompleteSuggestion error:', error );
+						response( [ {
+							value: '',
+							label: i18n.no_results_string
+						} ] );
+					}
 				},
 				select: function ( event, ui ) {
 					geocoder.geocode( {

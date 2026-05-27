@@ -14,7 +14,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		$google_maps_url = add_query_arg( [
 			'key'       => $field['api_key'],
 			'language'  => $field['language'],
-			'libraries' => 'places',
+			'libraries' => 'places,marker',
 		], 'https://maps.google.com/maps/api/js' );
 
 		/**
@@ -50,11 +50,12 @@ class RWMB_Map_Field extends RWMB_Field {
 		$attributes['value'] = $meta;
 
 		$html .= sprintf(
-			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"  data-marker_draggable="%s"></div>
+			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s" data-marker_draggable="%s" data-map_id="%s"></div>
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),
 			esc_attr( $field['marker_draggable'] ? 'true' : 'false' ),
+			esc_attr( $field['map_id'] ),
 			self::render_attributes( $attributes )
 		);
 
@@ -78,6 +79,7 @@ class RWMB_Map_Field extends RWMB_Field {
 			'language'         => '',
 			'region'           => '',
 			'marker_draggable' => true,
+			'map_id'           => 'DEMO_MAP_ID',
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
@@ -160,13 +162,17 @@ class RWMB_Map_Field extends RWMB_Field {
 			'info_window'  => '', // Content of info window (when click on marker). HTML allowed.
 			'js_options'   => [],
 			'zoom'         => $zoom,
+			'map_id'       => 'DEMO_MAP_ID',
 
 			// Default API key, required by Google Maps since June 2016.
 			// Users should overwrite this key with their own key.
 			'api_key'      => 'AIzaSyC1mUh87SGFyf133tpZQJa-s96p0tgnraQ',
 		] );
 
-		$google_maps_url = add_query_arg( 'key', $args['api_key'], 'https://maps.google.com/maps/api/js' );
+		$google_maps_url = add_query_arg( [
+			'key'       => $args['api_key'],
+			'libraries' => 'marker',
+		], 'https://maps.google.com/maps/api/js' );
 
 		/*
 		 * Allows developers load more libraries via a filter.
