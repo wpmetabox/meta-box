@@ -45,7 +45,7 @@
 			this.marker = new google.maps.marker.AdvancedMarkerElement( {
 				position: location,
 				map: this.map,
-				gmpDraggable: this.$canvas.data( 'marker_draggable' ) === 'true' || this.$canvas.data( 'marker_draggable' ) === true,
+				gmpDraggable: this.$canvas.data( 'marker_draggable' ),
 			} );
 		},
 
