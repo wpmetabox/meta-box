@@ -27,4 +27,4 @@ jobs:
        - name: Run OpenCode
          uses: anomalyco/opencode/github@latest
          with:
-           model: opencode/minimax-m2.5-free
+           model: opencode/big-pickle
