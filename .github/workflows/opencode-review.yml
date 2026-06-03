@@ -20,5 +20,5 @@ jobs:
       - name: Run opencode review
         uses: anomalyco/opencode/github@latest
         with:
-          model: opencode/minimax-m2.5-free
+          model: opencode/big-pickle
           prompt: Review this pull request focusing only on the changed code. Identify issues related to code quality, best practices, bugs, edge cases, performance, and security. Report only the issues found, do not include other feedback.
