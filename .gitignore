@@ -4,6 +4,7 @@ package-lock.json
 yarn.lock
 .DS_Store
 .idea
+.commandcode
 vendor
 .phpunit.result.cache
 .phpunit.cache
