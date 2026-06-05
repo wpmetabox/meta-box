@@ -1,5 +1,6 @@
 .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #2271b1);
+	--color: var(--wp-admin-theme-color, #3858e9);
+	--radius: 2px;
 }
 
 .rwmb-button-input-list .rwmb-button_group {
@@ -7,12 +8,17 @@
 }
 .rwmb-button-input-list label {
 	display: block;
-	border: 1px solid #8c8f94;
+	border: 1px solid #949494;
 	position: relative;
 	z-index: 1;
-	padding: 5px 10px;
+	padding: 0 16px;
+	min-height: 40px;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: calc(38px / 13px);
 	background: #fff;
 	cursor: pointer;
+	box-sizing: border-box;
 }
 .rwmb-button-input-list .selected {
 	border-color: var(--color);
@@ -29,12 +35,12 @@
 	border-bottom-color: rgba(255, 255, 255, .25);
 }
 .rwmb-button-input-list:not(.rwmb-inline) > label:first-child:not(:last-child) {
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
 }
 .rwmb-button-input-list:not(.rwmb-inline)  > label:last-child:not(:first-child) {
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: var(--radius);
+	border-bottom-left-radius: var(--radius);
 }
 
 /*  Layout inline */
@@ -48,36 +54,10 @@
 	border-right-color: rgba(255, 255, 255, .25);
 }
 .rwmb-button-input-list.rwmb-inline > label:first-child:not(:last-child) {
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
+	border-top-left-radius: var(--radius);
+	border-bottom-left-radius: var(--radius);
 }
 .rwmb-button-input-list.rwmb-inline > label:last-child:not(:first-child) {
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-}
-
-/* Admin color schemes */
-.admin-color-blue .rwmb-button-input-list  {
-	--color: var(--wp-admin-theme-color, #e1a948);
-}
-.admin-color-coffee .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #c7a589);
-}
-.admin-color-ectoplasm .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #a3b745);
-}
-.admin-color-light .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #04a4cc);
-}
-.admin-color-midnight .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #e14d43);
-}
-.admin-color-modern .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #3858e9);
-}
-.admin-color-ocean .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #9ebaa0);
-}
-.admin-color-sunrise .rwmb-button-input-list {
-	--color: var(--wp-admin-theme-color, #dd823b);
+	border-top-right-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
 }
