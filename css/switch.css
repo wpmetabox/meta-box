@@ -1,15 +1,15 @@
 .rwmb-switch-label {
-	--size: 13px;
+	--size: 16px;
 	--padding: 2px;
-	--color: var(--wp-admin-theme-color, #2271b1);
+	--color: var(--wp-admin-theme-color, #3858e9);
 
 	cursor: pointer;
 	position: relative;
 	display: inline-block;
 	background-color: #ccc;
 	padding: var(--padding);
-	border-radius: 3px;
-	min-width: calc(var(--size) * 2 + var(--padding) * 2);
+	border-radius: 2px;
+	min-width: calc(var(--size) * 2 + var(--padding) * 3);
 	height: calc(var(--size) + var(--padding) * 2);
 	box-sizing: border-box;
 }
@@ -92,30 +92,4 @@
 
 .rwmb-switch-off {
 	padding-left: calc(var(--size) + var(--padding));
-}
-
-/* Admin color schemes */
-.admin-color-blue .rwmb-switch-label  {
-	--color: var(--wp-admin-theme-color, #e1a948);
-}
-.admin-color-coffee .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #c7a589);
-}
-.admin-color-ectoplasm .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #a3b745);
-}
-.admin-color-light .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #04a4cc);
-}
-.admin-color-midnight .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #e14d43);
-}
-.admin-color-modern .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #3858e9);
-}
-.admin-color-ocean .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #9ebaa0);
-}
-.admin-color-sunrise .rwmb-switch-label {
-	--color: var(--wp-admin-theme-color, #dd823b);
 }
