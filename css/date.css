@@ -1,7 +1,7 @@
 body {
 	--mb-color-datepicker-primary: #23282d;
 	--mb-color-datepicker-border: #23282d;
-	--mb-color-datepicker-active: var(--wp-admin-theme-color, #2271b1);
+	--mb-color-datepicker-active: var(--wp-admin-theme-color, #3858e9);
 	--mb-color-datepicker-heading: #fff;
 }
 

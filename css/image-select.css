@@ -8,11 +8,7 @@
 	padding: 1px;
 	cursor: pointer;
 
-	--color: #2271b1;
-}
-
-.block-editor-page .rwmb-image-select {
-	--color: var(--wp-admin-theme-color, #2271b1);
+	--color: var(--wp-admin-theme-color, #3858e9);
 }
 
 .rwmb-image-select img {
