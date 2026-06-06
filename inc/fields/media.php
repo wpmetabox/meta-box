@@ -54,7 +54,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			foreach ( $ids as &$value ) {
 				$value = (array) $value;
 			}
-			$ids = call_user_func_array( 'array_merge', $ids );
+			$ids = array_merge( ...$ids );
 		}
 		update_meta_cache( 'post', $ids );
 

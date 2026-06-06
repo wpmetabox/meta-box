@@ -50,7 +50,7 @@ class RWMB_Map_Field extends RWMB_Field {
 		$attributes['value'] = $meta;
 
 		$html .= sprintf(
-			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s"  data-marker_draggable="%s"></div>
+			'<div class="rwmb-map-canvas" data-default-loc="%s" data-region="%s" data-marker_draggable="%s"></div>
 			<input %s>',
 			esc_attr( $field['std'] ),
 			esc_attr( $field['region'] ),

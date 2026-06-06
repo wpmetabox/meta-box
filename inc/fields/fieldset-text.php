@@ -71,7 +71,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 		foreach ( $field['options'] as $label ) {
 			$output .= "<th>$label</th>";
 		}
-		$output .= '</tr></thead></tbody>';
+		$output .= '</tr></thead><tbody>';
 
 		if ( ! $field['clone'] ) {
 			$output .= self::format_single_value( $field, $value, $args, $post_id );

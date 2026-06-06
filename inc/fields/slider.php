@@ -37,7 +37,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 				<span class="rwmb-slider-label">%s<span>%s</span>%s</span>
 				<input type="hidden" value="%s" %s>
 			</div>',
-			$field['id'],
+			esc_attr( $field['id'] ),
 			esc_attr( wp_json_encode( $field['js_options'] ) ),
 			$field['prefix'],
 			$meta,
