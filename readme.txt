@@ -2,10 +2,10 @@
 Contributors: elightup, metabox, rilwis, f-j-kaiser, funkatronic, PerWiklander, ruanmer, tanng
 Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
-Requires at least: 6.5
+Requires at least: 6.6
 Requires PHP: 7.4
-Tested up to: 6.9.4
-Stable tag: 5.12.0
+Tested up to: 7.0
+Stable tag: 5.12.1
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -151,6 +151,13 @@ Please report security bugs found in the source code of the Meta Box – WordPre
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.12.1 - 2026-06-10 =
+
+- Update style to match WordPress 7
+- Fix wp_style_add_data issue for OSM field
+- Fix: prevent invalid JSON in media field data attributes
+- Fix: escape $object->label with esc_html() in input-list walker
 
 = 5.12.0 - 2026-04-22 =
 

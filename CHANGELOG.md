@@ -1,3 +1,10 @@
+### 5.12.1 - 2026-06-10
+
+- Update style to match WordPress 7
+- Fix wp_style_add_data issue for OSM field
+- Fix: prevent invalid JSON in media field data attributes
+- Fix: escape $object->label with esc_html() in input-list walker
+
 ### 5.12.0 - 2026-04-22
 
 - New field type `link` that allows you to add a link with native WordPress experience (similar to ACF)
