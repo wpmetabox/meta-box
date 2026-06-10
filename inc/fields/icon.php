@@ -289,7 +289,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		// Render with class and use css.
 		self::enqueue_icon_font_style( $field );
-		return sprintf( '<span class="%s"></span>', $value );
+		return sprintf( '<span class="%s"></span>', esc_attr( $value ) );
 	}
 
 	private static function url_to_path( string $url ): string {

@@ -24,7 +24,7 @@ class RWMB_Image_Select_Field extends RWMB_Field {
 			$attributes = self::get_attributes( $field, $value );
 			$html[]     = sprintf(
 				'<label class="rwmb-image-select"><img src="%s"><input %s%s></label>',
-				$image,
+				esc_url( $image ),
 				self::render_attributes( $attributes ),
 				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				checked( in_array( $value, $meta ), true, false )

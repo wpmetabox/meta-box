@@ -69,7 +69,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	public static function format_value( $field, $value, $args, $post_id ) {
 		$output = '<table><thead><tr>';
 		foreach ( $field['options'] as $label ) {
-			$output .= "<th>$label</th>";
+			$output .= '<th>' . esc_html( $label ) . '</th>';
 		}
 		$output .= '</tr></thead><tbody>';
 
@@ -97,7 +97,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	public static function format_single_value( $field, $value, $args, $post_id ) {
 		$output = '<tr>';
 		foreach ( $value as $subvalue ) {
-			$output .= "<td>$subvalue</td>";
+			$output .= '<td>' . esc_html( $subvalue ) . '</td>';
 		}
 		$output .= '</tr>';
 		return $output;

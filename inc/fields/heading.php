@@ -11,8 +11,8 @@ class RWMB_Heading_Field extends RWMB_Field {
 	}
 
 	protected static function begin_html( array $field ): string {
-		$attributes = empty( $field['id'] ) ? '' : " id='{$field['id']}'";
-		return sprintf( '<h4%s>%s</h4>', $attributes, $field['name'] );
+		$attributes = empty( $field['id'] ) ? '' : sprintf( " id='%s'", esc_attr( $field['id'] ) );
+		return sprintf( '<h4%s>%s</h4>', $attributes, esc_html( $field['name'] ) );
 	}
 
 	protected static function end_html( array $field ): string {

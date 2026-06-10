@@ -25,8 +25,8 @@ class RWMB_Switch_Field extends RWMB_Input_Field {
 				<input %s %s>
 				<div class="rwmb-switch-status">
 					<span class="rwmb-switch-slider"></span>
-					<span class="rwmb-switch-on">' . $field['on_label'] . '</span>
-					<span class="rwmb-switch-off">' . $field['off_label'] . '</span>
+					<span class="rwmb-switch-on">' . esc_html( $field['on_label'] ) . '</span>
+					<span class="rwmb-switch-off">' . esc_html( $field['off_label'] ) . '</span>
 				</div>
 				</label>
 			',

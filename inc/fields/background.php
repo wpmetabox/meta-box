@@ -150,7 +150,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$output = '';
 		$value  = array_filter( $value );
 		foreach ( $value as $key => $subvalue ) {
-			$subvalue = 'image' === $key ? 'url(' . esc_url( $subvalue ) . ')' : $subvalue;
+			$subvalue = 'image' === $key ? 'url(' . esc_url( $subvalue ) . ')' : esc_attr( $subvalue );
 			$output  .= 'background-' . $key . ': ' . $subvalue . ';';
 		}
 		return $output;

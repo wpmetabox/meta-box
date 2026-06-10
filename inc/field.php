@@ -106,12 +106,12 @@ abstract class RWMB_Field {
 
 	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
-		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
+		return $field['label_description'] ? "<p{$id} class='description'>" . wp_kses_post( $field['label_description'] ) . '</p>' : '';
 	}
 
 	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
-		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
+		return $field['desc'] ? "<p{$id} class='description'>" . wp_kses_post( $field['desc'] ) . '</p>' : '';
 	}
 
 	/**
