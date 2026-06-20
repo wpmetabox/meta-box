@@ -1,29 +1,29 @@
 .rwmb-block-editor {
 	border: 1px solid #ddd;
 	background: #fff;
-
 	&__canvas {
 		display: flex;
 		flex-direction: column;
-
 		&--fullscreen {
 			position: fixed;
 			inset: 0;
 			z-index: 999998; // Higher than the admin bar (99999), less than the inserter (999999)
 			background: #fff;
-
+			height: 100vh;
+			.rwmb-block-editor__main {
+				min-height: 0;
+			}
 			.rwmb-block-editor__content {
 				resize: none;
 				height: 100% !important;
+				overflow-y: auto;
 			}
 		}
-
 		.block-editor-block-breadcrumb {
 			border-top: 1px solid #ddd;
 			padding-block: 4px;
 		}
 	}
-
 	&__toolbar {
 		border-bottom: 1px solid #ddd;
 		padding-inline: 8px;
@@ -33,24 +33,20 @@
 		grid-template-columns: 1fr auto;
 		align-items: center;
 		gap: 8px;
-
 		&-left,
 		&-right {
 			display: flex;
 			align-items: center;
 			gap: 4px;
 		}
-
 		&-left {
 			flex-wrap: nowrap;
 			overflow-x: auto;
 			scrollbar-width: none;
-
 			&::-webkit-scrollbar {
 				display: none;
 			}
 		}
-
 		.block-editor-block-contextual-toolbar {
 			display: flex;
 			align-items: center;
@@ -63,26 +59,21 @@
 			flex-shrink: 0;
 		}
 	}
-
 	&__main {
 		flex: 1;
 	}
-
 	&__content {
 		flex: 1;
 		padding-inline: 8px;
 		box-sizing: border-box;
-
 		resize: vertical;
 		overflow: hidden;
 	}
-
 	&__sidebar {
 		width: 280px;
 		border-left: 1px solid #ddd;
 		box-sizing: border-box;
 	}
-
 	// Fix sidepanel title spacing
 	#poststuff & {
 		.block-editor-block-inspector h2 {
@@ -93,14 +84,11 @@
 		}
 	}
 }
-
 // Inserter
-
 // Make it pop
 .components-popover.block-editor-inserter__popover {
 	z-index: 999999;
 }
-
 // Hide horizontal scrollbar
 .components-popover__content {
 	overflow-x: hidden !important;
