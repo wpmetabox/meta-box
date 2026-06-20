@@ -157,7 +157,7 @@ class Abilities {
 					'description' => __( 'The object type the field belongs to.', 'meta-box' ),
 				],
 				'value'       => [
-					'description' => __( 'The value to store. Required for update; ignored for get and delete.', 'meta-box' ),
+					'description' => __( 'The value to store. Required for update; ignored for get and delete. Format depends on field type: text/textarea/wysiwyg = string; number/range = integer or float; checkbox/switch = "1" or "0"; select/radio = option value string; select multiple/checkbox-list = array of option values; image/file/media = array of attachment IDs (e.g. [1,2,3]) or comma-separated string; single-image/single-file = single attachment ID; post = post ID or array of IDs; user = user ID or array of IDs; taxonomy = term ID or array of IDs; taxonomy-advanced = comma-separated term IDs; link = array with url/title/target keys; map/osm = "latitude,longitude" or "latitude,longitude,zoom"; datetime/date/time = date string matching field format or Unix timestamp when timestamp=true; color = hex string (e.g. "#ff0000"); background = array with color/image/repeat/position/size keys.', 'meta-box' ),
 				],
 			],
 			'required'             => [ 'field_id', 'object_id' ],
@@ -229,6 +229,12 @@ class Abilities {
 		$args  = array_diff_key( $input, array_flip( [ 'field_id', 'object_id', 'value' ] ) );
 		$value = $input['value'] ?? null;
 
+		$field = rwmb_get_field_settings( $input['field_id'], $args, $input['object_id'] );
+
+		if ( $field ) {
+			$value = $this->normalize_value( $value, $field );
+		}
+
 		rwmb_set_meta( $input['object_id'], $input['field_id'], $value, $args );
 
 		return [ 'success' => true ];
@@ -239,5 +245,34 @@ class Abilities {
 		$deleted  = rwmb_delete_meta( $input['object_id'], $input['field_id'], $args );
 
 		return [ 'success' => (bool) $deleted ];
+	}
+
+	/**
+	 * Normalize value based on field type.
+	 *
+	 * Ensures attachment/object ID fields receive proper array format.
+	 * Handles cloneable fields where value is array of arrays.
+	 *
+	 * @param mixed  $value Raw value from input.
+	 * @param array  $field Field settings.
+	 * @return mixed Normalized value.
+	 */
+	private function normalize_value( $value, array $field ) {
+		$type   = $field['type'] ?? '';
+		$clone  = $field['clone'] ?? false;
+
+		$attachment_fields = [ 'media', 'file', 'image', 'image_advanced', 'file_upload', 'image_upload', 'video' ];
+		$object_id_fields  = [ 'post', 'user', 'taxonomy' ];
+		$needs_ids         = in_array( $type, array_merge( $attachment_fields, $object_id_fields ), true );
+
+		if ( ! $needs_ids ) {
+			return $value;
+		}
+
+		if ( $clone && is_array( $value ) ) {
+			return array_map( 'wp_parse_id_list', $value );
+		}
+
+		return wp_parse_id_list( $value );
 	}
 }

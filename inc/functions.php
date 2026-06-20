@@ -69,10 +69,7 @@ if ( ! function_exists( 'rwmb_delete_meta' ) ) {
 	 * @return bool True on success, false on failure.
 	 */
 	function rwmb_delete_meta( $object_id, $key, $args = [] ) {
-		$args = wp_parse_args( $args, [
-			'object_type' => 'post',
-		] );
-
+		$args  = wp_parse_args( $args );
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
 		if ( false === $field ) {
