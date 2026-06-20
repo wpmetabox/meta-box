@@ -79,10 +79,6 @@ class Abilities {
 						'type'        => 'boolean',
 						'description' => __( 'Whether the value was saved.', 'meta-box' ),
 					],
-					'meta_id' => [
-						'type'        => [ 'integer', 'null' ],
-						'description' => __( 'The resulting meta ID, or null when not available.', 'meta-box' ),
-					],
 				],
 				'additionalProperties' => false,
 			],
@@ -223,40 +219,24 @@ class Abilities {
 	}
 
 	public function get_field_value( array $input ): array {
-		$object_id   = (int) $input['object_id'];
-		$field_id    = (string) $input['field_id'];
-		$object_type = isset( $input['object_type'] ) ? (string) $input['object_type'] : 'post';
-
-		$field = rwmb_get_field_settings( $field_id, [ 'object_type' => $object_type ], $object_id );
-
-		$value = $field
-			? \RWMB_Field::call( 'get_value', $field, [], $object_id )
-			: rwmb_get_storage( $object_type )->get( $object_id, $field_id, true );
+		$args  = array_diff_key( $input, array_flip( [ 'field_id', 'object_id' ] ) );
+		$value = rwmb_get_value( $input['field_id'], $args, $input['object_id'] );
 
 		return [ 'value' => $value ];
 	}
 
 	public function update_field_value( array $input ): array {
-		$object_id   = (int) $input['object_id'];
-		$field_id    = (string) $input['field_id'];
-		$object_type = isset( $input['object_type'] ) ? (string) $input['object_type'] : 'post';
+		$args  = array_diff_key( $input, array_flip( [ 'field_id', 'object_id', 'value' ] ) );
+		$value = $input['value'] ?? null;
 
-		// rwmb_set_meta runs process_value (sanitize + field transform) then save() -> update_metadata().
-		// WP auto-adds the row when absent, so this covers create as well.
-		rwmb_set_meta( $object_id, $field_id, $input['value'] ?? null, [ 'object_type' => $object_type ] );
+		rwmb_set_meta( $input['object_id'], $input['field_id'], $value, $args );
 
-		return [
-			'success' => true,
-			'meta_id' => null,
-		];
+		return [ 'success' => true ];
 	}
 
 	public function delete_field_value( array $input ): array {
-		$object_id   = (int) $input['object_id'];
-		$field_id    = (string) $input['field_id'];
-		$object_type = isset( $input['object_type'] ) ? (string) $input['object_type'] : 'post';
-
-		$deleted = rwmb_delete_meta( $object_id, $field_id, [ 'object_type' => $object_type ] );
+		$args     = array_diff_key( $input, array_flip( [ 'field_id', 'object_id' ] ) );
+		$deleted  = rwmb_delete_meta( $input['object_id'], $input['field_id'], $args );
 
 		return [ 'success' => (bool) $deleted ];
 	}
