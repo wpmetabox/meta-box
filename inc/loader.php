@@ -113,6 +113,10 @@ class RWMB_Loader {
 		// WPML Compatibility.
 		new \MetaBox\Integrations\WPML();
 
+		// Abilities API integration (WordPress 6.9+). Bails silently on older versions.
+		$abilities = new \MetaBox\Abilities\Abilities();
+		$abilities->init();
+
 		// Register categories for page builders.
 		new \MetaBox\Integrations\Block();
 		new \MetaBox\Integrations\Bricks();
