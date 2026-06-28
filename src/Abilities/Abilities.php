@@ -106,7 +106,9 @@ class Abilities {
 					'type'   => 'tool',
 				],
 			],
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'read' );
+			},
 			'execute_callback'    => [ $this, 'get_field_value_format' ],
 		] );
 
