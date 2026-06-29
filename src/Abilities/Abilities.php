@@ -19,7 +19,7 @@ class Abilities {
 	 * Guarded against double registration (e.g. extensions or repeated init).
 	 */
 	public function register_category(): void {
-		if ( null !== wp_get_ability_category( 'meta-box' ) ) {
+		if ( wp_has_ability_category( 'meta-box' ) ) {
 			return;
 		}
 
