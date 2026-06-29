@@ -59,6 +59,37 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 	}
 }
 
+if ( ! function_exists( 'rwmb_delete_meta' ) ) {
+	/**
+	 * Delete meta value.
+	 *
+	 * @param int|string $object_id Object ID. Required.
+	 * @param string     $key       Meta key. Required.
+	 * @param array      $args      Array of arguments. Optional. Supports `object_type` (default `post`).
+	 * @return bool True on success, false on failure.
+	 */
+	function rwmb_delete_meta( $object_id, $key, $args = [] ) {
+		$args  = wp_parse_args( $args );
+		$field = rwmb_get_field_settings( $key, $args, $object_id );
+
+		if ( false === $field ) {
+			return false;
+		}
+
+		$storage = $field['storage'];
+
+		// Mirror rwmb_before_save_post / rwmb_after_save_post for symmetry.
+		do_action( 'rwmb_before_delete_field', $object_id, $key, $args );
+		$result = $storage->delete( $object_id, $key );
+		do_action( 'rwmb_after_delete_field', $object_id, $key, $args, $result );
+
+		// For MB Custom Table to flush data from the cache to the database.
+		do_action( 'rwmb_flush_data', $object_id, $field, $args );
+
+		return (bool) $result;
+	}
+}
+
 if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 	/**
 	 * Get field settings.
