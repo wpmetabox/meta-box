@@ -73,7 +73,7 @@ if ( ! function_exists( 'rwmb_delete_meta' ) ) {
 		$field = rwmb_get_field_settings( $key, $args, $object_id );
 
 		if ( false === $field ) {
-			return;
+			return false;
 		}
 
 		$storage = $field['storage'];

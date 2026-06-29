@@ -48,9 +48,8 @@ class Abilities {
 						'description' => __( 'Field meta key. When given, resolves field settings (multiple/clone) for precise format.', 'meta-box' ),
 					],
 					'object_id'   => [
-						'type'        => 'integer',
-						'minimum'     => 1,
-						'description' => __( 'Object ID (post, term, or user). Required when field_id is given.', 'meta-box' ),
+						'type'        => [ 'integer', 'string' ],
+						'description' => __( 'Object ID (post, term, user ID, or option name). Required when field_id is given.', 'meta-box' ),
 					],
 					'object_type' => [
 						'type'        => 'string',
@@ -108,7 +107,7 @@ class Abilities {
 			],
 			'permission_callback' => function ( $input ) {
 				$field_id    = $input['field_id'] ?? '';
-				$object_id   = isset( $input['object_id'] ) ? (int) $input['object_id'] : 0;
+				$object_id   = $input['object_id'] ?? 0;
 				$object_type = $input['object_type'] ?? 'post';
 
 				// Field-level: require edit capability on the object.
@@ -158,7 +157,7 @@ class Abilities {
 			'category'            => 'meta-box',
 			'label'               => __( 'Update (or create) a custom field value', 'meta-box' ),
 			'description'         => __( 'Set the value of a Meta Box custom field. Creates the field value if it does not exist yet.', 'meta-box' ),
-			'input_schema'        => $input_schema,
+			'input_schema'        => $this->get_update_input_schema(),
 			'output_schema'       => [
 				'type'                 => 'object',
 				'properties'           => [
@@ -233,9 +232,8 @@ class Abilities {
 					'description' => __( 'The custom field meta key.', 'meta-box' ),
 				],
 				'object_id'   => [
-					'type'        => 'integer',
-					'minimum'     => 1,
-					'description' => __( 'The object ID (post, term, or user).', 'meta-box' ),
+					'type'        => [ 'integer', 'string' ],
+					'description' => __( 'The object ID (post, term, user ID, or settings page slug).', 'meta-box' ),
 				],
 				'object_type' => [
 					'type'        => 'string',
@@ -253,6 +251,16 @@ class Abilities {
 	}
 
 	/**
+	 * Input schema for the update ability — same as shared schema but requires `value`.
+	 */
+	private function get_update_input_schema(): array {
+		$schema               = $this->get_input_schema();
+		$schema['required'][] = 'value';
+
+		return $schema;
+	}
+
+	/**
 	 * Permission gate shared by the three abilities.
 	 *
 	 * - Field must be registered (blocks arbitrary meta key access).
@@ -263,9 +271,9 @@ class Abilities {
 	 * @return bool
 	 */
 	public function check_permission( array $input, string $verb ): bool {
-		$object_id   = (int) ( $input['object_id'] ?? 0 );
-		$field_id    = isset( $input['field_id'] ) ? (string) $input['field_id'] : '';
-		$object_type = isset( $input['object_type'] ) ? (string) $input['object_type'] : 'post';
+		$object_id   = $input['object_id'] ?? 0;
+		$field_id    = $input['field_id'] ?? '';
+		$object_type = $input['object_type'] ?? 'post';
 
 		if ( ! $field_id || ! $object_id ) {
 			return false;
@@ -299,6 +307,8 @@ class Abilities {
 				return $is_read ? 'read' : 'edit_user';
 			case 'setting':
 				return $is_read ? 'read' : 'manage_options';
+			case 'comment':
+				return $is_read ? 'read' : 'moderate_comments';
 			case 'post':
 			default:
 				return $is_read ? 'read_post' : 'edit_post';
@@ -318,10 +328,11 @@ class Abilities {
 
 		$field = rwmb_get_field_settings( $input['field_id'], $args, $input['object_id'] );
 
-		if ( $field ) {
-			$value = $this->normalize_value( $value, $field );
+		if ( ! $field ) {
+			return [ 'success' => false ];
 		}
 
+		$value = $this->normalize_value( $value, $field );
 		rwmb_set_meta( $input['object_id'], $input['field_id'], $value, $args );
 
 		return [ 'success' => true ];
@@ -337,11 +348,11 @@ class Abilities {
 	public function get_field_value_format( array $input ): array {
 		$field_id    = $input['field_id'] ?? '';
 		$field_type  = $input['field_type'] ?? '';
-		$object_id   = isset( $input['object_id'] ) ? (int) $input['object_id'] : 0;
+		$object_id   = $input['object_id'] ?? 0;
 		$object_type = $input['object_type'] ?? 'post';
 
 		// Field-level mode: resolve settings from a real field.
-		if ( '' !== $field_id && $object_id > 0 ) {
+		if ( $field_id && $object_id ) {
 			$field = rwmb_get_field_settings( $field_id, [ 'object_type' => $object_type ], $object_id );
 			if ( false === $field ) {
 				return [
@@ -721,8 +732,9 @@ class Abilities {
 	 * @return mixed Normalized value.
 	 */
 	private function normalize_value( $value, array $field ) {
-		$type  = $field['type'] ?? '';
-		$clone = $field['clone'] ?? false;
+		$type     = $field['type'] ?? '';
+		$clone    = $field['clone'] ?? false;
+		$multiple = $field['multiple'] ?? false;
 
 		$attachment_fields = [ 'media', 'file', 'image', 'image_advanced', 'file_upload', 'image_upload', 'video' ];
 		$object_id_fields  = [ 'post', 'user', 'taxonomy' ];
@@ -734,6 +746,10 @@ class Abilities {
 
 		if ( $clone && is_array( $value ) ) {
 			return array_map( 'wp_parse_id_list', $value );
+		}
+
+		if ( ! $multiple ) {
+			return (int) $value;
 		}
 
 		return wp_parse_id_list( $value );
