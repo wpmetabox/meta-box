@@ -25,7 +25,7 @@ class Abilities {
 
 		wp_register_ability_category( 'meta-box', [
 			'label'       => __( 'Meta Box', 'meta-box' ),
-			'description' => __( 'Abilities for Meta Box data (post types, taxonomies, fields, etc.).', 'mb-custom-post-type' ),
+			'description' => __( 'Abilities for Meta Box data (post types, taxonomies, fields, etc.).', 'meta-box' ),
 		] );
 	}
 
@@ -744,8 +744,14 @@ class Abilities {
 			return $value;
 		}
 
-		if ( $clone && is_array( $value ) ) {
-			return array_map( 'wp_parse_id_list', $value );
+		if ( $clone ) {
+			if ( ! is_array( $value ) ) {
+				$value = [ $value ];
+			}
+			if ( $multiple ) {
+				return array_map( 'wp_parse_id_list', $value );
+			}
+			return array_map( 'intval', $value );
 		}
 
 		if ( ! $multiple ) {

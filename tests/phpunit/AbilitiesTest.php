@@ -43,6 +43,10 @@ class AbilitiesTest extends TestCase {
 		do_action( 'wp_abilities_api_init' );
 
 		$this->user_id = self::create_editor();
+		if ( ! $this->user_id ) {
+			$this->markTestSkipped( 'Failed to create test user.' );
+		}
+
 		$this->post_id = wp_insert_post( [
 			'post_author'  => $this->user_id,
 			'post_type'    => 'post',
@@ -50,6 +54,9 @@ class AbilitiesTest extends TestCase {
 			'post_title'   => 'Abilities Test Post',
 			'post_content' => '',
 		] );
+		if ( is_wp_error( $this->post_id ) ) {
+			$this->markTestSkipped( 'Failed to create test post: ' . $this->post_id->get_error_message() );
+		}
 	}
 
 	protected function tearDown(): void {

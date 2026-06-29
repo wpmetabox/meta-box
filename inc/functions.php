@@ -63,9 +63,9 @@ if ( ! function_exists( 'rwmb_delete_meta' ) ) {
 	/**
 	 * Delete meta value.
 	 *
-	 * @param int    $object_id Object ID. Required.
-	 * @param string $key       Meta key. Required.
-	 * @param array  $args      Array of arguments. Optional. Supports `object_type` (default `post`).
+	 * @param int|string $object_id Object ID. Required.
+	 * @param string     $key       Meta key. Required.
+	 * @param array      $args      Array of arguments. Optional. Supports `object_type` (default `post`).
 	 * @return bool True on success, false on failure.
 	 */
 	function rwmb_delete_meta( $object_id, $key, $args = [] ) {
