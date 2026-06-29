@@ -25,7 +25,7 @@ class Abilities {
 
 		wp_register_ability_category( 'meta-box', [
 			'label'       => __( 'Meta Box', 'meta-box' ),
-			'description' => __( 'Get, update, and delete custom field values created by the Meta Box plugin.', 'meta-box' ),
+			'description' => __( 'Abilities for Meta Box data (post types, taxonomies, fields, etc.).', 'mb-custom-post-type' ),
 		] );
 	}
 
