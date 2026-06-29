@@ -106,7 +106,18 @@ class Abilities {
 					'type'   => 'tool',
 				],
 			],
-			'permission_callback' => function () {
+			'permission_callback' => function ( $input ) {
+				$field_id    = $input['field_id'] ?? '';
+				$object_id   = isset( $input['object_id'] ) ? (int) $input['object_id'] : 0;
+				$object_type = $input['object_type'] ?? 'post';
+
+				// Field-level: require edit capability on the object.
+				if ( $field_id && $object_id ) {
+					$cap = $this->map_capability( $object_type, 'update' );
+					return current_user_can( $cap, $object_id );
+				}
+
+				// Type-level: light read gate.
 				return current_user_can( 'read' );
 			},
 			'execute_callback'    => [ $this, 'get_field_value_format' ],
@@ -256,7 +267,7 @@ class Abilities {
 		$field_id    = isset( $input['field_id'] ) ? (string) $input['field_id'] : '';
 		$object_type = isset( $input['object_type'] ) ? (string) $input['object_type'] : 'post';
 
-		if ( ! $object_id || '' === $field_id ) {
+		if ( ! $field_id || ! $object_id ) {
 			return false;
 		}
 
