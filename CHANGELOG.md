@@ -1,3 +1,17 @@
+### 5.13.0 - 2026-07-06
+
+**Highlights:**
+
+This release introduces **Abilities**, enabling you to manage custom post types and taxonomies, as well as create, retrieve, update, and delete posts and terms.
+
+See our [blog post](https://metabox.io/introducing-abilities/) for an overview or the [documentation](https://docs.metabox.io/abilities/) for usage details.
+
+**Other changes:**
+
+- Fix unable to scroll in full screen mode for the `block_editor` field (#1689)
+- Use `WP_Query`'s `search_columns` instead of custom `search_by_title` filter
+- Fix autocomplete dropdown z-index in map/osm field inside MB Blocks
+
 ### 5.12.1 - 2026-06-10
 
 - Update style to match WordPress 7
