@@ -41,6 +41,12 @@ class RWMB_File_Field extends RWMB_Field {
 		$attachment  = $request->post( 'attachment_id' );
 		$object_id   = $request->filter_post( 'object_id' );
 		$object_type = (string) $request->filter_post( 'object_type' );
+
+		// Authorization: caller must be able to edit the object and delete the attachment.
+		if ( ! self::can_delete_file( $object_id, $object_type, $attachment ) ) {
+			wp_send_json_error( __( 'Error: You are not allowed to delete this file', 'meta-box' ), 403 );
+		}
+
 		$field       = rwmb_get_field_settings( $field_id, [ 'object_type' => $object_type ], $object_id );
 		$field_value = self::raw_meta( $object_id, $field );
 
@@ -68,6 +74,49 @@ class RWMB_File_Field extends RWMB_Field {
 			wp_send_json_success();
 		}
 		wp_send_json_error( __( 'Error: Cannot delete file', 'meta-box' ) );
+	}
+
+	/**
+	 * Check whether the current user may delete a file for the given object.
+	 *
+	 * @param int|string $object_id   Object ID.
+	 * @param string     $object_type Object type (post, term, user, setting, comment).
+	 * @param mixed      $attachment  Attachment ID or custom upload path.
+	 */
+	protected static function can_delete_file( $object_id, string $object_type, $attachment ): bool {
+		if ( ! $object_id ) {
+			return false;
+		}
+
+		switch ( $object_type ) {
+			case 'term':
+				$edit_cap = 'edit_term';
+				break;
+			case 'user':
+				$edit_cap = 'edit_user';
+				break;
+			case 'setting':
+				$edit_cap = 'manage_options';
+				break;
+			case 'comment':
+				$edit_cap = 'moderate_comments';
+				break;
+			case 'post':
+			default:
+				$edit_cap = 'edit_post';
+				break;
+		}
+
+		if ( ! current_user_can( $edit_cap, $object_id ) ) {
+			return false;
+		}
+
+		// Media library attachments require delete permission on the attachment post.
+		if ( is_numeric( $attachment ) && ! current_user_can( 'delete_post', (int) $attachment ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
