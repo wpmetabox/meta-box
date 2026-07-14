@@ -578,7 +578,7 @@ abstract class RWMB_Field {
 	}
 
 	public static function register_meta( array $field, array $meta_box, string $post_type ): void {
-		if ( ! $field['register_meta'] ) {
+		if ( true !== $field['register_meta'] ) {
 			return;
 		}
 

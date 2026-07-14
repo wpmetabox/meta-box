@@ -332,6 +332,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		return [ 'type' => 'integer' ];
+		// Taxonomy stores terms via wp_set_object_terms(), not post meta.
+		return [ 'type' => 'null' ];
 	}
 }
