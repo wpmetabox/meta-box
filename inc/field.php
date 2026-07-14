@@ -70,7 +70,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -101,16 +101,16 @@ abstract class RWMB_Field {
 		return $label . $input_open;
 	}
 
-	protected static function end_html( array $field ) : string {
+	protected static function end_html( array $field ): string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	protected static function label_description( array $field ) : string {
+	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -317,7 +317,7 @@ abstract class RWMB_Field {
 			'attributes'        => [],
 
 			'sanitize_callback' => null,
-			'register_meta' 	=> false,
+			'register_meta'     => false,
 		] );
 
 		// Store the original ID to run correct filters for the clonable field.
@@ -370,7 +370,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
+	public static function render_attributes( array $attributes ): string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );
@@ -610,19 +610,15 @@ abstract class RWMB_Field {
 	}
 
 	private static function get_register_meta_args( array $field ): array {
-		// If the schema is explicitly defined, use it.
-		if ( is_array( $field['register_meta'] ) ) {
-			return $field['register_meta'];
-		}
+		$schema = self::call( 'get_full_schema', $field );
 
-		$schema = self::call( 'get_full_schema',  $field );
-
+		$args            = [];
 		$args['type']    = $schema['type'];
 		$args['default'] = self::get_validated_default_value( $field, $schema['type'] );
 
-		if ( in_array ( $schema['type'], [ 'array', 'object' ] ) ) {
+		if ( in_array( $schema['type'], [ 'array', 'object' ] ) ) {
 			$args['show_in_rest'] = [
-				'schema' => $schema
+				'schema' => $schema,
 			];
 		}
 
@@ -661,7 +657,7 @@ abstract class RWMB_Field {
 			$default = 0.0;
 		}
 
-		if ( 'object' === $return_type &&  ! is_object( $default ) ) {
+		if ( 'object' === $return_type && ! is_object( $default ) ) {
 			$default = new stdClass();
 		}
 
