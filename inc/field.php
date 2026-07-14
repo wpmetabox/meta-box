@@ -649,12 +649,12 @@ abstract class RWMB_Field {
 			$default = false;
 		}
 
-		if ( 'integer' === $return_type && ! is_int( $default ) ) {
-			$default = 0;
+		if ( 'integer' === $return_type ) {
+			$default = is_numeric( $default ) ? (int) $default : 0;
 		}
 
-		if ( 'number' === $return_type && ! is_float( $default ) ) {
-			$default = 0.0;
+		if ( 'number' === $return_type ) {
+			$default = is_numeric( $default ) ? (float) $default : 0.0;
 		}
 
 		if ( 'object' === $return_type && ! is_object( $default ) ) {
