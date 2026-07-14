@@ -1,3 +1,8 @@
+### 5.13.1 - 2026-07-14
+
+- Fix missing authorization check in `ajax_delete_file` for enhanced security
+- Allow HTML in switch on/off and button group labels (e.g., Dashicons)
+
 ### 5.13.0 - 2026-07-06
 
 **Highlights:**
