@@ -1,18 +1,26 @@
 <?php
-/**
- * RW_Meta_Box subclass dedicated to WooCommerce Orders when HPOS is enabled (full mode, no post sync).
- */
-class RWMB_Order_Meta_Box extends RW_Meta_Box {
 
+class RWMB_Order_Meta_Box extends RW_Meta_Box {
 	/**
 	 * Object type = 'order' so rwmb_get_storage() automatically resolves RWMB_Order_Storage.
 	 */
 	protected $object_type = 'order';
 
+	public function register_fields() {
+		$field_registry = rwmb_get_registry( 'field' );
+
+		foreach ( $this->post_types as $post_type ) {
+			foreach ( $this->fields as $field ) {
+				$field_registry->add( $field, $post_type, $this->object_type );
+			}
+		}
+	}
+
 	protected function object_hooks() {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 		add_filter( 'default_hidden_meta_boxes', [ $this, 'hide' ], 10, 2 );
 
+		// HPOS doesn't fire save_post_{post_type}, use WooCommerce's own hook instead.
 		add_action( 'woocommerce_process_shop_order_meta', [ $this, 'save_post' ] );
 	}
 
