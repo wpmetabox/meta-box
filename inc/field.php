@@ -578,12 +578,11 @@ abstract class RWMB_Field {
 	}
 
 	public static function register_meta( array $field, array $meta_box, string $post_type ): void {
-		// Bail early if the field is implicitly not registered as meta.
 		if ( ! $field['register_meta'] ) {
 			return;
 		}
 
-		// Bail if the meta box storage is custom table.
+		// Support post meta only
 		if ( ! isset( $field['storage'] ) || ! $field['storage'] instanceof RWMB_Post_Storage ) {
 			return;
 		}
@@ -593,8 +592,9 @@ abstract class RWMB_Field {
 		$args = [
 			'object_subtype'    => $post_type,
 			'type'              => 'string',
+			'label'             => $field['name'] ?: $field['id'],
 			'description'       => $field['desc'] ?: $field['label_description'],
-			'single'            => ! $field['multiple'],
+			'single'            => $field['clone'] ? ! $field['clone_as_multiple'] : ! $field['multiple'],
 			'default'           => '',
 			'show_in_rest'      => true,
 			'revisions_enabled' => $revisions_enabled,
