@@ -200,6 +200,6 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	protected static function get_schema( array $field ): array {
 		$item = [ 'type' => 'number' ];
 
-		return $field['multiple'] ? [ 'type'  => 'array', 'items' => $item ] : $item;
+		return $field['multiple'] ? [ 'type' => 'array', 'items' => $item ] : $item;
 	}
 }

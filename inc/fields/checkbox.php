@@ -51,8 +51,6 @@ class RWMB_Checkbox_Field extends RWMB_Input_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		return [
-			'type' => 'integer',
-		];
+		return [ 'type' => 'integer' ];
 	}
 }

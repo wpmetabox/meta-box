@@ -224,6 +224,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 		// `number` (not `integer`) so Image block `id` bindings can match.
 		$item = [ 'type' => 'number' ];
 
-		return $field['multiple'] ? [ 'type'  => 'array', 'items' => $item ] : $item;
+		return $field['multiple'] ? [ 'type' => 'array', 'items' => $item ] : $item;
 	}
 }

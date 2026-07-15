@@ -52,10 +52,8 @@ abstract class RWMB_Multiple_Values_Field extends RWMB_Field {
 	 */
 	protected static function get_schema( array $field ): array {
 		return [
-			'type' => 'array',
-			'items' => [
-				'type' => 'string',
-			],
+			'type'  => 'array',
+			'items' => [ 'type' => 'string' ],
 		];
 	}
 }

@@ -75,13 +75,8 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		if ( $field['multiple'] ) {
-			return [
-				'type'  => 'array',
-				'items' => [ 'type' => 'string' ],
-			];
-		}
+		$item = [ 'type' => 'string' ];
 
-		return [ 'type' => 'string' ];
+		return $field['multiple'] ? [ 'type' => 'array', 'items' => $item ] : $item;
 	}
 }

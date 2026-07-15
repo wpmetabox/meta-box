@@ -27,8 +27,6 @@ class RWMB_Divider_Field extends RWMB_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		return [
-			'type' => 'null',
-		];
+		return [ 'type' => 'null' ];
 	}
 }
