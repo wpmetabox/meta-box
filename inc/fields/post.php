@@ -136,7 +136,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			if ( ! current_user_can( 'read_post', $post ) ) {
 				continue;
 			}
-			
+
 			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
 			$label                = self::filter( 'choice_label', $label, $field, $post );
 			$options[ $post->ID ] = [
@@ -257,13 +257,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		if ( $field['multiple'] ) {
-			return [
-				'type'  => 'array',
-				'items' => [ 'type' => 'integer' ],
-			];
-		}
+		$item = [ 'type' => 'number' ];
 
-		return [ 'type' => 'integer' ];
+		return $field['multiple'] ? [ 'type'  => 'array', 'items' => $item ] : $item;
 	}
 }

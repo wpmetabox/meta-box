@@ -115,6 +115,6 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		return $field['multiple'] ? [ 'type' => 'string' ] : [ 'type' => 'integer' ];
+		return $field['multiple'] ? [ 'type' => 'string' ] : [ 'type' => 'number' ];
 	}
 }

@@ -35,19 +35,19 @@ class FieldReturnTypeTest extends TestCase {
 		'number'          => 'string',
 		'oembed'          => 'string',
 		'osm'             => 'string',
-		'post'            => 'integer',
+		'post'            => 'number',
 		'radio'           => 'string',
 		'range'           => 'string',
 		'select_advanced' => 'string',
 		'select'          => 'string',
 		'sidebar'         => 'string',
-		'single_image'    => 'integer',
+		'single_image'    => 'number',
 		'slider'          => 'string',
 		'switch'          => 'integer',
 		'taxonomy'        => 'null',
 		'text_list'       => 'array',
 		'textarea'        => 'string',
-		'user'            => 'integer',
+		'user'            => 'number',
 		'video'           => 'array',
 		'wysiwyg'         => 'string',
 	];
@@ -140,14 +140,14 @@ class FieldReturnTypeTest extends TestCase {
 	public function testFileStorageMatrix() {
 		$field = $this->setupField( 'file' );
 		$this->assertFalse( RWMB_Field::call( 'is_single_meta', $field ) );
-		$this->assertEquals( 'integer', RWMB_Field::call( 'get_full_schema', $field )['type'] );
+		$this->assertEquals( 'number', RWMB_Field::call( 'get_full_schema', $field )['type'] );
 
 		$field  = $this->setupField( 'file', [ 'clone' => true ] );
 		$schema = RWMB_Field::call( 'get_full_schema', $field );
 		$this->assertTrue( RWMB_Field::call( 'is_single_meta', $field ) );
 		$this->assertEquals( 'array', $schema['type'] );
 		$this->assertEquals( 'array', $schema['items']['type'] );
-		$this->assertEquals( 'integer', $schema['items']['items']['type'] );
+		$this->assertEquals( 'number', $schema['items']['items']['type'] );
 	}
 
 	public function testGroupFieldShouldReturnObject() {
@@ -200,7 +200,7 @@ class FieldReturnTypeTest extends TestCase {
 		$field_single = $this->setupField( 'taxonomy_advanced', [ 'taxonomy' => 'category' ] );
 		$schema       = RWMB_Field::call( 'get_full_schema', $field_single );
 
-		$this->assertEquals( 'integer', $schema['type'] );
+		$this->assertEquals( 'number', $schema['type'] );
 		$this->assertTrue( RWMB_Field::call( 'is_single_meta', $field_single ) );
 
 		$field_multiple = $this->setupField( 'taxonomy_advanced', [
@@ -223,6 +223,6 @@ class FieldReturnTypeTest extends TestCase {
 		] );
 
 		$this->assertFalse( RWMB_Field::call( 'is_single_meta', $field ) );
-		$this->assertEquals( 'integer', RWMB_Field::call( 'get_full_schema', $field )['type'] );
+		$this->assertEquals( 'number', RWMB_Field::call( 'get_full_schema', $field )['type'] );
 	}
 }

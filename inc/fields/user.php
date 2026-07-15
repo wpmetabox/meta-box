@@ -17,7 +17,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$request = rwmb_request();
 
 		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-		
+
 		// Required for 'choice_label' filter. See self::filter().
 		$field['clone']        = false;
 		$field['_original_id'] = $field['id'];
@@ -198,13 +198,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		if ( $field['multiple'] ) {
-			return [
-				'type'  => 'array',
-				'items' => [ 'type' => 'integer' ],
-			];
-		}
+		$item = [ 'type' => 'number' ];
 
-		return [ 'type' => 'integer' ];
+		return $field['multiple'] ? [ 'type'  => 'array', 'items' => $item ] : $item;
 	}
 }

@@ -503,7 +503,8 @@ class RWMB_File_Field extends RWMB_Field {
 	protected static function get_schema( array $field ): array {
 		return [
 			'type'  => 'array',
-			'items' => [ 'type' => 'integer' ],
+			// `number` (not `integer`) so attachment IDs can match Image block `id` bindings.
+			'items' => [ 'type' => 'number' ],
 		];
 	}
 }
