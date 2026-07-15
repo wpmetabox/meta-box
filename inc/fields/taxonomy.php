@@ -324,15 +324,7 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 		return false === $taxonomy_object ? '' : $taxonomy_object->labels->singular_name;
 	}
 
-	/**
-	 * Get the schema for the field.
-	 *
-	 * @param array $field
-	 *
-	 * @return array{type: string, items: ?array, properties: ?array}
-	 */
-	protected static function get_schema( array $field ): array {
-		// Taxonomy stores terms via wp_set_object_terms(), not post meta.
-		return [ 'type' => 'null' ];
+	public static function can_register_meta(): bool {
+		return false;
 	}
 }

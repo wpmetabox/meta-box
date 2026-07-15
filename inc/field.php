@@ -587,6 +587,10 @@ abstract class RWMB_Field {
 			return;
 		}
 
+		if ( ! static::can_register_meta() ) {
+			return;
+		}
+
 		$args = [
 			'object_subtype'    => $post_type,
 			'type'              => 'string',
@@ -600,11 +604,14 @@ abstract class RWMB_Field {
 
 		$args = array_merge( $args, self::get_register_meta_args( $field ) );
 
-		if ( $args['type'] === 'null' ) {
-			return;
-		}
-
 		register_meta( 'post', $field['id'], $args );
+	}
+
+	/**
+	 * Whether this field stores post meta that can be registered with WordPress.
+	 */
+	public static function can_register_meta(): bool {
+		return true;
 	}
 
 	/**

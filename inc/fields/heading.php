@@ -19,14 +19,7 @@ class RWMB_Heading_Field extends RWMB_Field {
 		return self::input_description( $field );
 	}
 
-	/**
-	 * Get the schema for the field.
-	 *
-	 * @param array $field
-	 *
-	 * @return array{type: string, items: ?array, properties: ?array}
-	 */
-	protected static function get_schema( array $field ): array {
-		return [ 'type' => 'null' ];
+	public static function can_register_meta(): bool {
+		return false;
 	}
 }

@@ -11,20 +11,16 @@ class FieldReturnTypeTest extends TestCase {
 	protected $field_return_types = [
 		'autocomplete'    => 'array',
 		'background'      => 'object',
-		'button'          => 'null',
 		'button_group'    => 'string',
 		'checkbox_list'   => 'array',
 		'checkbox'        => 'integer',
 		'color'           => 'string',
-		'custom_html'     => 'null',
 		'date'            => 'string',
 		'datetime'        => 'string',
-		'divider'         => 'null',
 		'file_advanced'   => 'array',
 		'file_input'      => 'string',
 		'file_upload'     => 'array',
 		'file'            => 'array',
-		'heading'         => 'null',
 		'icon'            => 'string',
 		'image_advanced'  => 'array',
 		'image_select'    => 'string',
@@ -44,12 +40,20 @@ class FieldReturnTypeTest extends TestCase {
 		'single_image'    => 'number',
 		'slider'          => 'string',
 		'switch'          => 'integer',
-		'taxonomy'        => 'null',
 		'text_list'       => 'array',
 		'textarea'        => 'string',
 		'user'            => 'number',
 		'video'           => 'array',
 		'wysiwyg'         => 'string',
+	];
+
+	/** Fields that do not store post meta. */
+	protected $non_registerable_fields = [
+		'button',
+		'custom_html',
+		'divider',
+		'heading',
+		'taxonomy',
 	];
 
 	private function setupField( $type, $props = [] ) {
@@ -72,12 +76,23 @@ class FieldReturnTypeTest extends TestCase {
 		}
 	}
 
+	public function testNonDataFieldsCannotRegisterMeta() {
+		foreach ( $this->non_registerable_fields as $field_type ) {
+			$field = $this->setupField( $field_type );
+			$class = RWMB_Helpers_Field::get_class( $field );
+
+			$this->assertFalse( $class::can_register_meta(), "Field $field_type should not register meta" );
+		}
+
+		$text = $this->setupField( 'text' );
+		$this->assertTrue(
+			RWMB_Helpers_Field::get_class( $text )::can_register_meta(),
+			'Text field should register meta'
+		);
+	}
+
 	public function testCloneFieldWrapsSchemaOnlyWhenAggregated() {
 		foreach ( $this->field_return_types as $field_id => $single_return_type ) {
-			if ( 'null' === $single_return_type ) {
-				continue;
-			}
-
 			$field = $this->setupField( $field_id, [ 'clone' => true ] );
 
 			if ( ! $field['clone'] ) {
