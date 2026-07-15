@@ -659,6 +659,11 @@ abstract class RWMB_Field {
 			$default = is_numeric( $default ) ? (float) $default : 0.0;
 		}
 
+		// Block bindings / REST expect string defaults as actual strings (not int/float).
+		if ( 'string' === $return_type ) {
+			$default = (string) $default;
+		}
+
 		if ( 'object' === $return_type && ! is_array( $default ) && ! is_object( $default ) ) {
 			$default = [];
 		}

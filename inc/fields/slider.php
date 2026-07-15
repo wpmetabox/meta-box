@@ -78,6 +78,7 @@ class RWMB_Slider_Field extends RWMB_Field {
 	 * @return array
 	 */
 	protected static function get_schema( array $field ): array {
-		return [ 'type' => 'number' ];
+		// String so values can bind to paragraph/heading content via core/post-meta.
+		return [ 'type' => 'string' ];
 	}
 }
