@@ -30,7 +30,7 @@ class FieldReturnTypeTest extends TestCase {
 		'image_select'    => 'string',
 		'image_upload'    => 'array',
 		'image'           => 'array',
-		'key_value'       => 'string',
+		'key_value'       => 'array',
 		'map'             => 'string',
 		'oembed'          => 'string',
 		'osm'             => 'string',

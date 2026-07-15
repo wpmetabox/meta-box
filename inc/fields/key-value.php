@@ -110,4 +110,18 @@ class RWMB_Key_Value_Field extends RWMB_Input_Field {
 	public static function format_clone_value( $field, $value, $args, $post_id ) {
 		return sprintf( '<label>%s:</label> %s', $value[0], $value[1] );
 	}
+
+	/**
+	 * One clone unit is a [key, value] pair.
+	 *
+	 * @param array $field
+	 *
+	 * @return array{type: string, items: ?array, properties: ?array}
+	 */
+	protected static function get_schema( array $field ): array {
+		return [
+			'type'  => 'array',
+			'items' => [ 'type' => 'string' ],
+		];
+	}
 }
