@@ -587,17 +587,15 @@ abstract class RWMB_Field {
 			return;
 		}
 
-		$revisions_enabled = $meta_box['revision'] ?? false;
-
 		$args = [
 			'object_subtype'    => $post_type,
 			'type'              => 'string',
 			'label'             => $field['name'] ?: $field['id'],
 			'description'       => $field['desc'] ?: $field['label_description'],
-			'single'            => $field['clone'] ? ! $field['clone_as_multiple'] : ! $field['multiple'],
+			'single'            => self::call( 'is_single_meta', $field ),
 			'default'           => '',
 			'show_in_rest'      => true,
-			'revisions_enabled' => $revisions_enabled,
+			'revisions_enabled' => $meta_box['revision'] ?? false,
 		];
 
 		$args = array_merge( $args, self::get_register_meta_args( $field ) );
@@ -609,6 +607,13 @@ abstract class RWMB_Field {
 		register_meta( 'post', $field['id'], $args );
 	}
 
+	/**
+	 * Whether the field stores one meta row (register_meta `single`).
+	 */
+	protected static function is_single_meta( array $field ): bool {
+		return $field['clone'] ? ! $field['clone_as_multiple'] : ! $field['multiple'];
+	}
+
 	private static function get_register_meta_args( array $field ): array {
 		$schema = self::call( 'get_full_schema', $field );
 
@@ -616,7 +621,7 @@ abstract class RWMB_Field {
 		$args['type']    = $schema['type'];
 		$args['default'] = self::get_validated_default_value( $field, $schema['type'] );
 
-		if ( in_array( $schema['type'], [ 'array', 'object' ] ) ) {
+		if ( in_array( $schema['type'], [ 'array', 'object' ], true ) ) {
 			$args['show_in_rest'] = [
 				'schema' => $schema,
 			];
@@ -629,13 +634,10 @@ abstract class RWMB_Field {
 		$schema = self::call( 'get_schema', $field );
 
 		if ( $field['clone'] ) {
-			$schema = [
-				'type'  => 'array',
-				'items' => $schema,
-			];
+			return $field['clone_as_multiple'] ? $schema : [ 'type' => 'array', 'items' => $schema ];
 		}
 
-		return $schema;
+		return $field['multiple'] && isset( $schema['items'] ) ? $schema['items'] : $schema;
 	}
 
 	private static function get_validated_default_value( array $field, string $return_type ) {
@@ -665,7 +667,7 @@ abstract class RWMB_Field {
 	}
 
 	/**
-	 * Get the schema for the field.
+	 * Schema for one meta row / one clone unit (not the aggregated clone list).
 	 *
 	 * @param array $field
 	 *

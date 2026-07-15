@@ -103,6 +103,10 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 		return $field['multiple'] ? $info : reset( $info );
 	}
 
+	protected static function is_single_meta( array $field ): bool {
+		return $field['clone'] ? ! $field['clone_as_multiple'] : true;
+	}
+
 	/**
 	 * Get the schema for the field.
 	 *
@@ -111,10 +115,6 @@ class RWMB_Taxonomy_Advanced_Field extends RWMB_Taxonomy_Field {
 	 * @return array{type: string, items: ?array, properties: ?array}
 	 */
 	protected static function get_schema( array $field ): array {
-		if ( $field['multiple'] ) {
-			return [ 'type' => 'string' ];
-		}
-
-		return [ 'type' => 'integer' ];
+		return $field['multiple'] ? [ 'type' => 'string' ] : [ 'type' => 'integer' ];
 	}
 }
