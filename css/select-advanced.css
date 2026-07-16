@@ -19,13 +19,11 @@
 	height: var(--height);
 	border-radius: var(--radius);
 }
-.select2-container .select2-selection--multiple .select2-selection__rendered {
-	display: block;
-}
 .select2-container--default .select2-selection--single .select2-selection__rendered {
 	line-height: calc(var(--height) - 2px);
 }
-.select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default .select2-selection--single .select2-selection__arrow,
+.select2-container--default .select2-selection--single .select2-selection__clear {
 	height: calc(var(--height) - 2px);
 }
 .select2-container .select2-search--inline {
