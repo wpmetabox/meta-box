@@ -184,9 +184,7 @@ class BlockBindings {
 		}
 
 		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
-		$value = RWMB_Field::call( 'get_value', $field, $args, $post_id );
-		$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
-		$value = $this->get_single_value( $value, $field );
+		$value = $this->get_single_value( RWMB_Field::call( 'get_value', $field, $args, $post_id ), $field );
 		if ( $this->is_empty( $value ) ) {
 			return null;
 		}
