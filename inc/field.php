@@ -301,6 +301,7 @@ abstract class RWMB_Field {
 			'field_name'        => $field['id'] ?? '',
 			'placeholder'       => '',
 			'save_field'        => true,
+			'block_bindings'    => false,
 
 			'clone'             => false,
 			'min_clone'         => 0,
