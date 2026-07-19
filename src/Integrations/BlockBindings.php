@@ -7,15 +7,18 @@ use WP_Block;
  * Register a custom block bindings source: meta-box/field.
  *
  * Fields opt in with `'block_bindings' => true`.
- * The front-end value is resolved in PHP.
- * The editor only needs the fields list to show the source in the block bindings UI.
+ * The front-end value is resolved in PHP; the editor only needs the fields list to show the source in the bindings UI.
  */
 class BlockBindings {
 	public const SOURCE_NAME = 'meta-box/field';
-
-	private const IMAGE_TYPES = [ 'single_image', 'image', 'image_advanced', 'image_upload' ];
-	private const FILE_TYPES  = [ 'file', 'file_advanced', 'file_upload' ];
-	private const VALUE_KEYS  = [
+	private const VALUE_KEYS = [
+		'single_image'      => [ 'url', 'alt', 'title', 'caption', 'description' ],
+		'image'             => [ 'url', 'alt', 'title', 'caption', 'description' ],
+		'image_advanced'    => [ 'url', 'alt', 'title', 'caption', 'description' ],
+		'image_upload'      => [ 'url', 'alt', 'title', 'caption', 'description' ],
+		'file'              => [ 'url', 'title' ],
+		'file_advanced'     => [ 'url', 'title' ],
+		'file_upload'       => [ 'url', 'title' ],
 		'background'        => [ 'image' ],
 		'link'              => [ 'url', 'title', 'target' ],
 		'map'               => [ 'latitude', 'longitude' ],
@@ -50,8 +53,8 @@ class BlockBindings {
 	/**
 	 * Fields (opted in via `block_bindings`) for the editor UI, keyed by post type.
 	 *
-	 * Structured fields (image, map, post, user, …) expose selectable value keys
-	 * via `args.key`. Scalar fields are listed once as `string`.
+	 * Structured fields (image, map, post, user, …) expose selectable value keys via `args.key`.
+	 * Scalar fields are listed once as `string`.
 	 *
 	 * @return array<string, array>
 	 */
@@ -64,10 +67,7 @@ class BlockBindings {
 				if ( empty( $field['id'] ) || empty( $field['block_bindings'] ) ) {
 					continue;
 				}
-
-				foreach ( self::binding_options( $field ) as $option ) {
-					$result[ $post_type ][] = $option;
-				}
+				$result[ $post_type ] = array_merge( $result[ $post_type ] ?? [], $this->binding_options( $field ) );
 			}
 		}
 
@@ -79,25 +79,17 @@ class BlockBindings {
 	 *
 	 * @return list<array{label: string, type: string, args: array{id: string, key?: string}}>
 	 */
-	private static function binding_options( array $field ): array {
+	private function binding_options( array $field ): array {
 		$name = $field['name'] ?: $field['id'];
 		$id   = $field['id'];
 
-		if ( in_array( $field['type'], self::IMAGE_TYPES, true ) ) {
-			return self::value_key_options( $name, $id, [ 'url', 'alt', 'title', 'caption', 'description' ] );
-		}
-
-		if ( in_array( $field['type'], self::FILE_TYPES, true ) ) {
-			return self::value_key_options( $name, $id, [ 'url', 'title' ] );
-		}
-
-		// Keys come from the field's options config (associative array value).
+		// Keys come from the field's options config.
 		if ( 'fieldset_text' === $field['type'] && ! empty( $field['options'] ) && is_array( $field['options'] ) ) {
-			return self::value_key_options( $name, $id, array_keys( $field['options'] ), $field['options'] );
+			return $this->value_key_options( $name, $id, array_keys( $field['options'] ), $field['options'] );
 		}
 
 		if ( isset( self::VALUE_KEYS[ $field['type'] ] ) ) {
-			return self::value_key_options( $name, $id, self::VALUE_KEYS[ $field['type'] ] );
+			return $this->value_key_options( $name, $id, self::VALUE_KEYS[ $field['type'] ] );
 		}
 
 		return [
@@ -112,14 +104,14 @@ class BlockBindings {
 	/**
 	 * @param string   $name   Field label.
 	 * @param string   $id     Field id.
-	 * @param string[] $keys   Value keys to expose (url, alt, id, …).
+	 * @param string[] $keys   Value keys to expose (url, alt, caption, …).
 	 * @param string[] $labels Optional labels keyed by value key.
 	 * @return list<array{label: string, type: string, args: array{id: string, key: string}}>
 	 */
-	private static function value_key_options( string $name, string $id, array $keys, array $labels = [] ): array {
+	private function value_key_options( string $name, string $id, array $keys, array $labels = [] ): array {
 		$options = [];
 		foreach ( $keys as $key ) {
-			$label = $labels[ $key ] ?? self::value_key_label( $key );
+			$label     = $labels[ $key ] ?? $this->value_key_label( $key );
 			$options[] = [
 				// translators: 1: field name, 2: value property (URL, Caption, …).
 				'label' => sprintf( __( '%1$s: %2$s', 'meta-box' ), $name, wp_strip_all_tags( $label ) ),
@@ -134,7 +126,7 @@ class BlockBindings {
 		return $options;
 	}
 
-	private static function value_key_label( string $key ): string {
+	private function value_key_label( string $key ): string {
 		$labels = [
 			'url'           => __( 'URL', 'meta-box' ),
 			'alt'           => __( 'Alt Text', 'meta-box' ),
@@ -164,7 +156,7 @@ class BlockBindings {
 	/**
 	 * Resolve the field value for a bound block attribute (front-end render).
 	 *
-	 * @param array    $source_args    Expects `id` (field id), optional `key` (value property).
+	 * @param array    $source_args    Field id and optional value key.
 	 * @param WP_Block $block_instance Block instance.
 	 * @param string   $attribute_name Bound block attribute.
 	 * @return mixed
@@ -190,18 +182,13 @@ class BlockBindings {
 			return null;
 		}
 
-		$value = rwmb_get_value( $field_id, $args, $post_id );
-		$value = self::get_single_value( $value, $field );
-
-		if ( null === $value || '' === $value || false === $value ) {
+		$value = $this->get_single_value( rwmb_get_value( $field_id, $args, $post_id ), $field );
+		if ( $this->is_empty( $value ) ) {
 			return null;
 		}
 
-		// `key` selects which part of any structured value to use.
-		// Falls back to the bound block attribute name (e.g. Image block `url`).
-		$key = $source_args['key'] ?? $attribute_name;
-
-		return self::format_value( $value, $field, $key );
+		// `key` picks a part of a structured value, falling back to the bound attribute name (e.g. Image block `url`).
+		return $this->format_value( $value, $field, $source_args['key'] ?? $attribute_name );
 	}
 
 	/**
@@ -211,17 +198,15 @@ class BlockBindings {
 	 * @param array $field Field settings.
 	 * @return mixed
 	 */
-	private static function get_single_value( $value, array $field ) {
-		if ( $field['clone'] ) {
+	private function get_single_value( $value, array $field ) {
+		foreach ( [ 'clone', 'multiple' ] as $prop ) {
+			if ( ! $field[ $prop ] ) {
+				continue;
+			}
 			$value = is_array( $value ) && $value ? reset( $value ) : null;
-		}
-
-		if ( null === $value || '' === $value || false === $value ) {
-			return null;
-		}
-
-		if ( $field['multiple'] ) {
-			$value = is_array( $value ) && $value ? reset( $value ) : null;
+			if ( $this->is_empty( $value ) ) {
+				return null;
+			}
 		}
 
 		return $value;
@@ -235,7 +220,7 @@ class BlockBindings {
 	 * @param string $key   Value key or block attribute name.
 	 * @return mixed
 	 */
-	private static function format_value( $value, array $field, string $key ) {
+	private function format_value( $value, array $field, string $key ) {
 		if ( 'post' === $field['type'] ) {
 			$post = get_post( $value );
 			if ( ! $post ) {
@@ -260,19 +245,25 @@ class BlockBindings {
 		}
 
 		if ( is_object( $value ) ) {
-			$value = $value->$key ?? null;
-			return is_scalar( $value ) ? (string) $value : null;
+			return $this->to_string( $value->$key ?? null );
 		}
 
 		if ( is_array( $value ) ) {
 			// Image uses full_url/url; video uses src.
 			if ( in_array( $key, [ 'url', 'href' ], true ) ) {
-				return $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
+				return $this->to_string( $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null );
 			}
-			$value = $value[ $key ] ?? null;
-			return is_scalar( $value ) ? (string) $value : null;
+			return $this->to_string( $value[ $key ] ?? null );
 		}
 
+		return $this->to_string( $value );
+	}
+
+	private function is_empty( $value ): bool {
+		return null === $value || '' === $value || false === $value;
+	}
+
+	private function to_string( $value ): ?string {
 		return is_scalar( $value ) ? (string) $value : null;
 	}
 }
