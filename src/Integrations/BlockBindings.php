@@ -45,9 +45,14 @@ class BlockBindings {
 	}
 
 	public function enqueue(): void {
+		$fields = $this->get_editor_fields();
+		if ( ! $fields ) {
+			return;
+		}
+
 		wp_enqueue_script( 'rwmb-block-bindings', RWMB_JS_URL . 'block-bindings.js', [ 'wp-blocks', 'wp-i18n' ], RWMB_VER, true );
 		wp_localize_script( 'rwmb-block-bindings', 'rwmbBlockBindings', [
-			'fields' => $this->get_editor_fields(),
+			'fields' => $fields,
 		] );
 	}
 
@@ -229,7 +234,7 @@ class BlockBindings {
 				return null;
 			}
 			if ( 'url' === $key ) {
-				return get_permalink( $post );
+				return esc_url( get_permalink( $post ) );
 			}
 			if ( 'post_author' === $key ) {
 				return get_the_author_meta( 'display_name', $post->post_author );
