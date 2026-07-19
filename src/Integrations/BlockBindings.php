@@ -13,21 +13,19 @@ use WP_Block;
 class BlockBindings {
 	public const SOURCE_NAME = 'meta-box/field';
 
-	/**
-	 * Fields storing attachment IDs. Their value can map to url/id/alt/title/caption.
-	 */
-	private const ATTACHMENT_TYPES = [
-		'single_image',
-		'image',
-		'image_advanced',
-		'image_upload',
-		'file',
-		'file_advanced',
-		'file_upload',
-		'video',
+	private const IMAGE_TYPES = [ 'single_image', 'image', 'image_advanced', 'image_upload' ];
+	private const FILE_TYPES  = [ 'file', 'file_advanced', 'file_upload' ];
+	private const VALUE_KEYS  = [
+		'background'        => [ 'image' ],
+		'link'              => [ 'url', 'title', 'target' ],
+		'map'               => [ 'latitude', 'longitude' ],
+		'osm'               => [ 'latitude', 'longitude' ],
+		'post'              => [ 'post_title', 'post_excerpt', 'post_content', 'post_date', 'post_modified', 'post_author', 'url' ],
+		'taxonomy'          => [ 'name', 'slug', 'description', 'url' ],
+		'taxonomy_advanced' => [ 'name', 'slug', 'description', 'url' ],
+		'user'              => [ 'display_name', 'user_url' ],
+		'video'             => [ 'src', 'title', 'caption', 'description' ],
 	];
-
-	private const NUMERIC_TYPES = [ 'number', 'range', 'slider' ];
 
 	public function __construct() {
 		add_action( 'init', [ $this, 'register' ] );
@@ -51,7 +49,9 @@ class BlockBindings {
 
 	/**
 	 * Fields (opted in via `block_bindings`) for the editor UI, keyed by post type.
-	 * Attachment fields are listed as both string (url/alt/…) and number (id).
+	 *
+	 * Structured fields (image, map, post, user, …) expose selectable value keys
+	 * via `args.key`. Scalar fields are listed once as `string`.
 	 *
 	 * @return array<string, array>
 	 */
@@ -65,14 +65,8 @@ class BlockBindings {
 					continue;
 				}
 
-				$item = [
-					'label' => $field['name'] ?: $field['id'],
-					'args'  => [ 'id' => $field['id'] ],
-				];
-
-				$types = self::attribute_types( $field['type'] );
-				foreach ( $types as $type ) {
-					$result[ $post_type ][] = $item + [ 'type' => $type ];
+				foreach ( self::binding_options( $field ) as $option ) {
+					$result[ $post_type ][] = $option;
 				}
 			}
 		}
@@ -81,26 +75,98 @@ class BlockBindings {
 	}
 
 	/**
-	 * Block attribute types a field can bind to.
+	 * Binding options for one field (label + type + args).
 	 *
-	 * @return string[]
+	 * @return list<array{label: string, type: string, args: array{id: string, key?: string}}>
 	 */
-	private static function attribute_types( string $field_type ): array {
-		if ( in_array( $field_type, self::ATTACHMENT_TYPES, true ) ) {
-			return [ 'string', 'number' ];
+	private static function binding_options( array $field ): array {
+		$name = $field['name'] ?: $field['id'];
+		$id   = $field['id'];
+
+		if ( in_array( $field['type'], self::IMAGE_TYPES, true ) ) {
+			return self::value_key_options( $name, $id, [ 'url', 'alt', 'title', 'caption', 'description' ] );
 		}
-		if ( in_array( $field_type, self::NUMERIC_TYPES, true ) ) {
-			return [ 'string', 'number' ];
+
+		if ( in_array( $field['type'], self::FILE_TYPES, true ) ) {
+			return self::value_key_options( $name, $id, [ 'url', 'title' ] );
 		}
-		return [ 'string' ];
+
+		// Keys come from the field's options config (associative array value).
+		if ( 'fieldset_text' === $field['type'] && ! empty( $field['options'] ) && is_array( $field['options'] ) ) {
+			return self::value_key_options( $name, $id, array_keys( $field['options'] ), $field['options'] );
+		}
+
+		if ( isset( self::VALUE_KEYS[ $field['type'] ] ) ) {
+			return self::value_key_options( $name, $id, self::VALUE_KEYS[ $field['type'] ] );
+		}
+
+		return [
+			[
+				'label' => $name,
+				'type'  => 'string',
+				'args'  => [ 'id' => $id ],
+			],
+		];
+	}
+
+	/**
+	 * @param string   $name   Field label.
+	 * @param string   $id     Field id.
+	 * @param string[] $keys   Value keys to expose (url, alt, id, …).
+	 * @param string[] $labels Optional labels keyed by value key.
+	 * @return list<array{label: string, type: string, args: array{id: string, key: string}}>
+	 */
+	private static function value_key_options( string $name, string $id, array $keys, array $labels = [] ): array {
+		$options = [];
+		foreach ( $keys as $key ) {
+			$label = $labels[ $key ] ?? self::value_key_label( $key );
+			$options[] = [
+				// translators: 1: field name, 2: value property (URL, Caption, …).
+				'label' => sprintf( __( '%1$s: %2$s', 'meta-box' ), $name, wp_strip_all_tags( $label ) ),
+				'type'  => 'string',
+				'args'  => [
+					'id'  => $id,
+					'key' => $key,
+				],
+			];
+		}
+
+		return $options;
+	}
+
+	private static function value_key_label( string $key ): string {
+		$labels = [
+			'url'           => __( 'URL', 'meta-box' ),
+			'alt'           => __( 'Alt Text', 'meta-box' ),
+			'title'         => __( 'Title', 'meta-box' ),
+			'caption'       => __( 'Caption', 'meta-box' ),
+			'description'   => __( 'Description', 'meta-box' ),
+			'name'          => __( 'Name', 'meta-box' ),
+			'src'           => __( 'Source URL', 'meta-box' ),
+			'latitude'      => __( 'Latitude', 'meta-box' ),
+			'longitude'     => __( 'Longitude', 'meta-box' ),
+			'image'         => __( 'Image', 'meta-box' ),
+			'target'        => __( 'Target', 'meta-box' ),
+			'post_title'    => __( 'Title', 'meta-box' ),
+			'post_excerpt'  => __( 'Excerpt', 'meta-box' ),
+			'post_content'  => __( 'Content', 'meta-box' ),
+			'post_date'     => __( 'Published Date', 'meta-box' ),
+			'post_modified' => __( 'Modified Date', 'meta-box' ),
+			'post_author'   => __( 'Author', 'meta-box' ),
+			'slug'          => __( 'Slug', 'meta-box' ),
+			'display_name'  => __( 'Display Name', 'meta-box' ),
+			'user_url'      => __( 'URL', 'meta-box' ),
+		];
+
+		return $labels[ $key ] ?? $key;
 	}
 
 	/**
 	 * Resolve the field value for a bound block attribute (front-end render).
 	 *
-	 * @param array     $source_args    Expects `id` (field id).
-	 * @param WP_Block  $block_instance Block instance.
-	 * @param string    $attribute_name Bound attribute.
+	 * @param array    $source_args    Expects `id` (field id), optional `key` (value property).
+	 * @param WP_Block $block_instance Block instance.
+	 * @param string   $attribute_name Bound block attribute.
 	 * @return mixed
 	 */
 	public function get_value( array $source_args, WP_Block $block_instance, string $attribute_name ) {
@@ -131,7 +197,11 @@ class BlockBindings {
 			return null;
 		}
 
-		return self::format_for_attribute( $value, $attribute_name );
+		// `key` selects which part of any structured value to use.
+		// Falls back to the bound block attribute name (e.g. Image block `url`).
+		$key = $source_args['key'] ?? $attribute_name;
+
+		return self::format_value( $value, $field, $key );
 	}
 
 	/**
@@ -158,25 +228,49 @@ class BlockBindings {
 	}
 
 	/**
-	 * Map a single field value to the bound block attribute.
+	 * Map a single field value to the requested key / block attribute.
 	 *
-	 * @param mixed  $value          Single field value.
-	 * @param string $attribute_name Block attribute.
+	 * @param mixed  $value Single field value.
+	 * @param array  $field Field settings.
+	 * @param string $key   Value key or block attribute name.
 	 * @return mixed
 	 */
-	private static function format_for_attribute( $value, string $attribute_name ) {
-		if ( is_array( $value ) ) {
-			if ( 'id' === $attribute_name ) {
-				return isset( $value['ID'] ) ? (float) $value['ID'] : null;
+	private static function format_value( $value, array $field, string $key ) {
+		if ( 'post' === $field['type'] ) {
+			$post = get_post( $value );
+			if ( ! $post ) {
+				return null;
 			}
-			if ( in_array( $attribute_name, [ 'url', 'href' ], true ) ) {
-				return $value['full_url'] ?? $value['url'] ?? null;
+			if ( 'url' === $key ) {
+				return get_permalink( $post );
 			}
-			return isset( $value[ $attribute_name ] ) ? (string) $value[ $attribute_name ] : null;
+			if ( 'post_author' === $key ) {
+				return get_the_author_meta( 'display_name', $post->post_author );
+			}
+			$value = $post;
 		}
 
-		if ( 'id' === $attribute_name && is_numeric( $value ) ) {
-			return (float) $value;
+		if ( 'user' === $field['type'] ) {
+			$value = get_userdata( $value );
+		}
+
+		if ( in_array( $field['type'], [ 'taxonomy', 'taxonomy_advanced' ], true ) && 'url' === $key ) {
+			$url = get_term_link( $value );
+			return is_wp_error( $url ) ? null : $url;
+		}
+
+		if ( is_object( $value ) ) {
+			$value = $value->$key ?? null;
+			return is_scalar( $value ) ? (string) $value : null;
+		}
+
+		if ( is_array( $value ) ) {
+			// Image uses full_url/url; video uses src.
+			if ( in_array( $key, [ 'url', 'href' ], true ) ) {
+				return $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
+			}
+			$value = $value[ $key ] ?? null;
+			return is_scalar( $value ) ? (string) $value : null;
 		}
 
 		return is_scalar( $value ) ? (string) $value : null;
