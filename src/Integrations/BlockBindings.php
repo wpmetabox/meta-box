@@ -1,6 +1,7 @@
 <?php
 namespace MetaBox\Integrations;
 
+use RWMB_Field;
 use WP_Block;
 
 /**
@@ -182,7 +183,10 @@ class BlockBindings {
 			return null;
 		}
 
-		$value = $this->get_single_value( rwmb_get_value( $field_id, $args, $post_id ), $field );
+		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
+		$value = RWMB_Field::call( 'get_value', $field, $args, $post_id );
+		$value = apply_filters( 'rwmb_get_value', $value, $field, $args, $post_id );
+		$value = $this->get_single_value( $value, $field );
 		if ( $this->is_empty( $value ) ) {
 			return null;
 		}
@@ -237,6 +241,9 @@ class BlockBindings {
 
 		if ( 'user' === $field['type'] ) {
 			$value = get_userdata( $value );
+			if ( ! $value ) {
+				return null;
+			}
 		}
 
 		if ( in_array( $field['type'], [ 'taxonomy', 'taxonomy_advanced' ], true ) && 'url' === $key ) {
