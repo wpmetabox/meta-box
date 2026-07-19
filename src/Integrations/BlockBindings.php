@@ -247,11 +247,15 @@ class BlockBindings {
 			if ( ! $value ) {
 				return null;
 			}
+			// user_url is user-controlled, so escape it as a URL.
+			if ( 'user_url' === $key ) {
+				return esc_url( $value->user_url );
+			}
 		}
 
 		if ( in_array( $field['type'], [ 'taxonomy', 'taxonomy_advanced' ], true ) && 'url' === $key ) {
 			$url = get_term_link( $value );
-			return is_wp_error( $url ) ? null : $url;
+			return is_wp_error( $url ) ? null : esc_url( $url );
 		}
 
 		if ( is_object( $value ) ) {
