@@ -50,7 +50,7 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 
 	/**
 	 * Persist all queued meta_data changes (add/update/delete above only mutate in-memory)
-	 * to the DB. Called once after saving all fields, avoiding repeated expensive
+	 * to the DB. Called once after saving all fields, avoiding repeated expensive $order->save() calls per field.
 	 */
 	public function flush( $object_id ) {
 		if ( isset( $this->orders[ $object_id ] ) ) {
