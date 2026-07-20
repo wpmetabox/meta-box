@@ -2,7 +2,7 @@
 Contributors: elightup, metabox, rilwis, f-j-kaiser, funkatronic, PerWiklander, ruanmer, tanng
 Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
-Requires at least: 6.6
+Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 7.0.1
 Stable tag: 5.13.1

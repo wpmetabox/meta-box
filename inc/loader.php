@@ -119,6 +119,7 @@ class RWMB_Loader {
 
 		// Register categories for page builders.
 		new \MetaBox\Integrations\Block();
+		new \MetaBox\Integrations\BlockBindings();
 		new \MetaBox\Integrations\Bricks();
 		new \MetaBox\Integrations\Elementor();
 		new \MetaBox\Integrations\Oxygen();

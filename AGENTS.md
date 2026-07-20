@@ -83,8 +83,8 @@ pnpm run start
 - Follows **WordPress Coding Standards** (see `phpcs.xml`)
 - Uses **PSR-4** autoloading via Composer (`src/` directory)
 - Uses short array syntax `[]` (not `array()`)
-- Minimum PHP version: **7.1**
-- Minimum WordPress version: **6.5**
+- Minimum PHP version: **7.4**
+- Minimum WordPress version: **6.7**
 - Text domain: `meta-box`
 
 ### Naming Conventions
