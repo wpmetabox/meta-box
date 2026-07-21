@@ -1,14 +1,14 @@
 <?php
 
 class RWMB_Order_Meta_Box extends RW_Meta_Box {
-	protected $type = 'order';
+	protected $object_type = 'order';
 
 	public function register_fields() {
 		$field_registry = rwmb_get_registry( 'field' );
 
 		foreach ( $this->post_types as $post_type ) {
 			foreach ( $this->fields as $field ) {
-				$field_registry->add( $field, $post_type, $this->type );
+				$field_registry->add( $field, $post_type, $this->object_type );
 			}
 		}
 	}
