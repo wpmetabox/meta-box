@@ -7,6 +7,11 @@ namespace MetaBox\Integrations\WooCommerce;
 class WooCommerce {
 	public function __construct() {
 		add_action( 'woocommerce_loaded', [ $this, 'register' ] );
+
+		// Defensive reload
+		if ( did_action( 'woocommerce_loaded' ) ) {
+			$this->register();
+		}
 	}
  
 	public function register() {

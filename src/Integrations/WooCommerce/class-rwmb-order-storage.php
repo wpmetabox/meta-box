@@ -5,6 +5,11 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 	private $orders = [];
 
 	private function get_order( $object_id ) {
+		$object_id = absint( $object_id );
+		if ( $object_id === 0 ) {
+			return null;
+		}
+
 		if ( ! isset( $this->orders[ $object_id ] ) ) {
 			$this->orders[ $object_id ] = wc_get_order( $object_id );
 		}
@@ -35,6 +40,12 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 		if ( ! $order ) {
 			return false;
 		}
+
+		if ( $prev_value !== '' ) {
+			// Woo function delete_meta_data_value
+			$order->delete_meta_data_value( $name, $prev_value );
+		}
+
 		$order->update_meta_data( $name, $value );
 		return true;
 	}
@@ -44,7 +55,13 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 		if ( ! $order ) {
 			return false;
 		}
-		$order->delete_meta_data( $name );
+
+		if ( $value !== '' ) {
+			$order->delete_meta_data_value( $name, $value );
+		} else {
+			$order->delete_meta_data( $name );
+		}
+
 		return true;
 	}
 
