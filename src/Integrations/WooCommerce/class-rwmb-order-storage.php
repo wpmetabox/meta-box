@@ -42,11 +42,12 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 		}
 
 		if ( $prev_value !== '' ) {
-			// Woo function delete_meta_data_value
 			$order->delete_meta_data_value( $name, $prev_value );
+			$order->add_meta_data( $name, $value );
+		} else {
+			$order->update_meta_data( $name, $value );
 		}
 
-		$order->update_meta_data( $name, $value );
 		return true;
 	}
 
@@ -62,15 +63,16 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 			$order->delete_meta_data( $name );
 		}
 
+		// Ignore $delete_all because storage only run in 1 order
 		return true;
 	}
 
 	/**
-	 * Persist all queued meta_data changes (add/update/delete above only mutate in-memory)
-	 * to the DB. Called once after saving all fields, avoiding repeated expensive $order->save() calls per field.
+	 * Persist all queued meta_data changes to the DB.
 	 */
 	public function flush( $object_id ) {
-		if ( isset( $this->orders[ $object_id ] ) ) {
+		$object_id = absint( $object_id );
+		if ( isset( $this->orders[ $object_id ] ) && $this->orders[ $object_id ] ) {
 			$this->orders[ $object_id ]->save();
 		}
 	}

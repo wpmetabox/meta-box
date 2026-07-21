@@ -46,7 +46,7 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 	}
 
 	protected function get_current_object_id() {
-		if ( ! empty( $_GET['id'] ) ) { // phpcs:ignore
+		if ( ! empty( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return absint( $_GET['id'] );
 		}
 
@@ -54,12 +54,19 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 	}
 
 	public function save_post( $object_id ) {
+		$object_id = absint( $object_id );
+		if ( empty( $object_id ) ) {
+			return;
+		}
+
 		parent::save_post( $object_id );
 
-		$storage = $this->get_storage();
-
-		if ( method_exists( $storage, 'flush' ) ) {
-			$storage->flush( $object_id );
+		// Flush only when saved successful
+		if ( ! empty( $this->saved ) ) {
+			$storage = $this->get_storage();
+			if ( method_exists( $storage, 'flush' ) ) {
+				$storage->flush( $object_id );
+			}
 		}
 	}
 
