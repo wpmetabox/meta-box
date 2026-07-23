@@ -41,29 +41,14 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 			return false;
 		}
 
-		if ( $prev_value === '' ) {
+		if ( $prev_value !== '' ) {
+			$order->delete_meta_data_value( $name, $prev_value );
+			$order->add_meta_data( $name, $value );
+		} else {
 			$order->update_meta_data( $name, $value );
-			return true;
 		}
 
-		// If $prev_value, update in-place ( not create new if not match)
-		$all_meta = $order->get_meta( $name, false );
-
-		if ( ! is_array( $all_meta ) ) {
-			$all_meta = $all_meta ? [ $all_meta ] : [];
-		}
-
-		$updated = false;
-
-		foreach ( $all_meta as $index => $current_value ) {
-			if ( $current_value == $prev_value ) {
-				$order->update_meta_data( $name, $value, $index ); // WC support offset from 8.3+
-				$updated = true;
-				break;
-			}
-		}
-
-		return $updated;
+		return true;
 	}
 
 	public function delete( $object_id, $name, $value = '', $delete_all = false ) {
@@ -87,7 +72,7 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 	 */
 	public function flush( $object_id ) {
 		$object_id = absint( $object_id );
-		if ( ! empty( $this->orders[ $object_id ] ) ) {
+		if ( isset( $this->orders[ $object_id ] ) && $this->orders[ $object_id ] ) {
 			$this->orders[ $object_id ]->save();
 		}
 	}

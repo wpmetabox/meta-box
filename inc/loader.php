@@ -122,9 +122,6 @@ class RWMB_Loader {
 		new \MetaBox\Integrations\Bricks();
 		new \MetaBox\Integrations\Elementor();
 		new \MetaBox\Integrations\Oxygen();
-
-		require_once dirname( __DIR__ ) . '/src/Integrations/WooCommerce/class-rwmb-order-storage.php';
-		require_once dirname( __DIR__ ) . '/src/Integrations/WooCommerce/class-rwmb-order-meta-box.php';
 		new \MetaBox\Integrations\WooCommerce\WooCommerce();
 
 		if ( is_admin() ) {
