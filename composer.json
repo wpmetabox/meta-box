@@ -25,7 +25,11 @@
   "autoload": {
     "psr-4": {
       "MetaBox\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/Integrations/WooCommerce/RWMB_Order_Meta_Box.php",
+      "src/Integrations/WooCommerce/RWMB_Order_Storage.php"
+    ]
   },
   "require-dev": {
     "phpunit/phpunit": "^12.5"

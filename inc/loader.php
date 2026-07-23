@@ -123,6 +123,7 @@ class RWMB_Loader {
 		new \MetaBox\Integrations\Bricks();
 		new \MetaBox\Integrations\Elementor();
 		new \MetaBox\Integrations\Oxygen();
+		new \MetaBox\Integrations\WooCommerce\WooCommerce();
 
 		if ( is_admin() ) {
 			new \MetaBox\Dashboard\Dashboard( $update_checker, $update_option );
