@@ -3,7 +3,15 @@
 class RWMB_Order_Meta_Box extends RW_Meta_Box {
 	protected $object_type = 'order';
 
+	/**
+	 * WooCommerce order types.
+	 */
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
+
+	const SAVE_HOOKS = [
+		'shop_order'        => 'woocommerce_process_shop_order_meta',
+		'shop_subscription' => 'woocommerce_process_shop_subscription_meta',
+	];
 
 	public function register_fields() {
 		$field_registry = rwmb_get_registry( 'field' );
@@ -21,12 +29,10 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 		// Hide meta box if 'default_hidden'.
 		add_filter( 'default_hidden_meta_boxes', [ $this, 'hide' ], 10, 2 );
 
-		// HPOS doesn't fire save_post_{post_type}, use WooCommerce's hook(s) instead.
-		// Register a separate save hook for EACH order type this field group targets.
+		// HPOS doesn't fire save_post_{post_type}, use WooCommerce hook instead.
 		foreach ( $this->post_types as $post_type ) {
-			$hook = $this->get_save_hook( $post_type );
-			if ( $hook ) {
-				add_action( $hook, [ $this, 'save_post' ] );
+			if ( isset( self::SAVE_HOOKS[ $post_type ] ) ) {
+				add_action( self::SAVE_HOOKS[ $post_type ], [ $this, 'save_post' ] );
 			}
 		}
 	}
@@ -93,42 +99,14 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 		}
 	}
 
-	/**
-	 * Get the screen ID for each order type.
-	 */
 	private function get_order_screen_id( string $post_type ) {
-		if ( 'shop_order' === $post_type ) {
-			return function_exists( 'wc_get_page_screen_id' )
-				? wc_get_page_screen_id( 'shop-order' )
-				: 'woocommerce_page_wc-orders';
+		if ( ! in_array( $post_type, self::SUPPORTED_ORDER_TYPES, true ) ) {
+			return false;
 		}
 
-		if ( 'shop_subscription' === $post_type ) {
-			return apply_filters(
-				'rwmb_order_subscription_screen_id',
-				'woocommerce_page_wc-orders--shop_subscription'
-			);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get the save hook for each order type.
-	 */
-	private function get_save_hook( string $post_type ) {
-		if ( 'shop_order' === $post_type ) {
-			return 'woocommerce_process_shop_order_meta';
-		}
-
-		if ( 'shop_subscription' === $post_type ) {
-			return apply_filters(
-				'rwmb_order_subscription_save_hook',
-				'woocommerce_process_shop_subscription_meta'
-			);
-		}
-
-		return false;
+		return function_exists( 'wc_get_page_screen_id' )
+			? wc_get_page_screen_id( $post_type )
+			: $post_type;
 	}
 
 	public static function normalize( $meta_box ) {
@@ -138,6 +116,7 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 			(array) ( $meta_box['post_types'] ?? [] ),
 			self::SUPPORTED_ORDER_TYPES
 		) );
+
 		$meta_box['post_types'] = $post_types ?: [ 'shop_order' ];
 
 		return $meta_box;
