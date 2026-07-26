@@ -41,7 +41,20 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 			return false;
 		}
 
-		if ( $prev_value !== '' ) {
+		if ( '' !== $prev_value ) {
+			$found = false;
+			foreach ( (array) $order->get_meta( $name, false ) as $meta ) {
+				if ( (string) $meta->value === (string) $prev_value ) {
+					$found = true;
+					break;
+				}
+			}
+
+			// No entry matches
+			if ( ! $found ) {
+				return false;
+			}
+
 			$order->delete_meta_data_value( $name, $prev_value );
 			$order->add_meta_data( $name, $value );
 		} else {

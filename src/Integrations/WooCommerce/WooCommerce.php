@@ -5,6 +5,8 @@ namespace MetaBox\Integrations\WooCommerce;
  * Register logic to 'woocommerce_loaded' hook
  */
 class WooCommerce {
+	private $order_type_cache = [];
+
 	public function __construct() {
 		add_action( 'woocommerce_loaded', [ $this, 'register' ] );
 
@@ -23,7 +25,7 @@ class WooCommerce {
 		if ( 'order' !== ( $settings['type'] ?? '' ) ) {
 			return $class_name;
 		}
- 
+
 		return 'RWMB_Order_Meta_Box';
 	}
 
@@ -32,9 +34,17 @@ class WooCommerce {
 			return $type;
 		}
 
-		$order = function_exists( 'wc_get_order' ) ? wc_get_order( $object_id ) : false;
+		$object_id = absint( $object_id );
+		if ( isset( $this->order_type_cache[ $object_id ] ) ) {
+			return $this->order_type_cache[ $object_id ];
+		}
 
-		return $order ? $order->get_type() : $type;
+		$order = function_exists( 'wc_get_order' ) ? wc_get_order( $object_id ) : false;
+		$resolved_type = $order ? $order->get_type() : $type;
+
+		$this->order_type_cache[ $object_id ] = $resolved_type;
+
+		return $resolved_type;
 	}
 
 
