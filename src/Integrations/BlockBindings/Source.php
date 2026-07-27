@@ -1,18 +1,17 @@
 <?php
-namespace MetaBox\Integrations;
+namespace MetaBox\Integrations\BlockBindings;
 
 use RWMB_Field;
 use WP_Block;
 
 /**
- * Register a custom block bindings source: meta-box/field.
+ * Block bindings source for Meta Box fields.
  *
- * Fields opt in with `'block_bindings' => true`.
- * The front-end value is resolved in PHP; the editor only needs the fields list to show the source in the bindings UI.
+ * Subclasses provide object-specific data. Register via:
+ * `rwmb_get_registry( 'block_bindings' )->add( new Post() )`.
  */
-class BlockBindings {
-	public const SOURCE_NAME = 'meta-box/field';
-	private const VALUE_KEYS = [
+abstract class Source {
+	protected const VALUE_KEYS = [
 		'single_image'      => [ 'url', 'alt', 'title', 'caption', 'description' ],
 		'image'             => [ 'url', 'alt', 'title', 'caption', 'description' ],
 		'image_advanced'    => [ 'url', 'alt', 'title', 'caption', 'description' ],
@@ -31,53 +30,114 @@ class BlockBindings {
 		'video'             => [ 'src', 'title', 'caption', 'description' ],
 	];
 
-	public function __construct() {
-		add_action( 'init', [ $this, 'register' ] );
-		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue' ] );
-	}
+	abstract public function name(): string;
+
+	abstract public function label(): string;
+
+	/**
+	 * Block context keys this source needs (e.g. postId, postType).
+	 *
+	 * @return string[]
+	 */
+	abstract public function uses_context(): array;
+
+	/**
+	 * Meta Box object type: post, term, user, or setting.
+	 */
+	abstract public function object_type(): string;
+
+	/**
+	 * Context property used to pick the fields list in the editor.
+	 * Empty string = return the fields list as-is (flat or single group).
+	 */
+	abstract public function context_key(): string;
+
+	/**
+	 * @return int|string|null Object ID for value resolution.
+	 */
+	abstract protected function get_object_id( WP_Block $block_instance );
+
+	/**
+	 * Registry / field-settings "type" (post type, taxonomy, settings page id, …).
+	 */
+	abstract protected function get_type( WP_Block $block_instance ): string;
+
+	/**
+	 * Whether the current request may access fields for this object.
+	 *
+	 * @param int|string $object_id Object ID.
+	 */
+	abstract protected function has_permission( $object_id, WP_Block $block_instance ): bool;
+
+	/**
+	 * Fields for the bindings UI.
+	 *
+	 * Usually keyed by context value (post type, taxonomy, …).
+	 * Settings sources may return a flat list.
+	 *
+	 * @return array
+	 */
+	abstract protected function get_fields(): array;
 
 	public function register(): void {
-		register_block_bindings_source( self::SOURCE_NAME, [
-			'label'              => __( 'Meta Box Field', 'meta-box' ),
+		register_block_bindings_source( $this->name(), [
+			'label'              => $this->label(),
 			'get_value_callback' => [ $this, 'get_value' ],
-			'uses_context'       => [ 'postId', 'postType' ],
-		] );
-	}
-
-	public function enqueue(): void {
-		$fields = $this->get_editor_fields();
-		if ( ! $fields ) {
-			return;
-		}
-
-		wp_enqueue_script( 'rwmb-block-bindings', RWMB_JS_URL . 'block-bindings.js', [ 'wp-blocks', 'wp-i18n' ], RWMB_VER, true );
-		wp_localize_script( 'rwmb-block-bindings', 'rwmbBlockBindings', [
-			'fields' => $fields,
+			'uses_context'       => $this->uses_context(),
 		] );
 	}
 
 	/**
-	 * Fields (opted in via `block_bindings`) for the editor UI, keyed by post type.
+	 * Editor config for the bindings UI.
 	 *
-	 * Structured fields (image, map, post, user, …) expose selectable value keys via `args.key`.
-	 * Scalar fields are listed once as `string`.
-	 *
-	 * @return array<string, array>
+	 * @return array{name: string, label: string, usesContext: string[], contextKey: string, fields: array}
 	 */
-	private function get_editor_fields(): array {
-		$result      = [];
-		$post_fields = rwmb_get_registry( 'field' )->get_by_object_type( 'post' );
+	public function get_editor_data(): array {
+		return [
+			'name'        => $this->name(),
+			'label'       => $this->label(),
+			'usesContext' => $this->uses_context(),
+			'contextKey'  => $this->context_key(),
+			'fields'      => $this->get_fields(),
+		];
+	}
 
-		foreach ( $post_fields as $post_type => $fields ) {
-			foreach ( $fields as $field ) {
-				if ( empty( $field['id'] ) || empty( $field['block_bindings'] ) ) {
-					continue;
-				}
-				$result[ $post_type ] = array_merge( $result[ $post_type ] ?? [], $this->binding_options( $field ) );
-			}
+	/**
+	 * Resolve the field value for a bound block attribute (front-end render).
+	 *
+	 * @param array    $source_args    Field id and optional value key.
+	 * @param WP_Block $block_instance Block instance.
+	 * @param string   $attribute_name Bound block attribute.
+	 * @return mixed
+	 */
+	public function get_value( array $source_args, WP_Block $block_instance, string $attribute_name ) {
+		$field_id  = $source_args['id'] ?? '';
+		$object_id = $this->get_object_id( $block_instance );
+		if ( ! $field_id || ! $object_id ) {
+			return null;
 		}
 
-		return $result;
+		if ( ! $this->has_permission( $object_id, $block_instance ) ) {
+			return null;
+		}
+
+		$args  = [
+			'object_type' => $this->object_type(),
+			'type'        => $this->get_type( $block_instance ),
+		];
+		$field = rwmb_get_field_settings( $field_id, $args, $object_id );
+		if ( ! $field || empty( $field['block_bindings'] ) ) {
+			return null;
+		}
+
+		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
+		$value = $this->get_single_value( RWMB_Field::call( 'get_value', $field, $args, $object_id ), $field );
+		if ( $this->is_empty( $value ) ) {
+			return null;
+		}
+
+		// `key` picks a part of a structured value, falling back to the bound attribute name (e.g. Image block `url`).
+		return $this->format_value( $value, $field, $source_args['key'] ?? $attribute_name );
 	}
 
 	/**
@@ -85,7 +145,7 @@ class BlockBindings {
 	 *
 	 * @return list<array{label: string, type: string, args: array{id: string, key?: string}}>
 	 */
-	private function binding_options( array $field ): array {
+	protected function binding_options( array $field ): array {
 		$name = $field['name'] ?: $field['id'];
 		$id   = $field['id'];
 
@@ -114,7 +174,7 @@ class BlockBindings {
 	 * @param string[] $labels Optional labels keyed by value key.
 	 * @return list<array{label: string, type: string, args: array{id: string, key: string}}>
 	 */
-	private function value_key_options( string $name, string $id, array $keys, array $labels = [] ): array {
+	protected function value_key_options( string $name, string $id, array $keys, array $labels = [] ): array {
 		$options = [];
 		foreach ( $keys as $key ) {
 			$label     = $labels[ $key ] ?? $this->value_key_label( $key );
@@ -132,7 +192,7 @@ class BlockBindings {
 		return $options;
 	}
 
-	private function value_key_label( string $key ): string {
+	protected function value_key_label( string $key ): string {
 		$labels = [
 			'url'           => __( 'URL', 'meta-box' ),
 			'alt'           => __( 'Alt Text', 'meta-box' ),
@@ -160,52 +220,13 @@ class BlockBindings {
 	}
 
 	/**
-	 * Resolve the field value for a bound block attribute (front-end render).
-	 *
-	 * @param array    $source_args    Field id and optional value key.
-	 * @param WP_Block $block_instance Block instance.
-	 * @param string   $attribute_name Bound block attribute.
-	 * @return mixed
-	 */
-	public function get_value( array $source_args, WP_Block $block_instance, string $attribute_name ) {
-		$field_id = $source_args['id'] ?? '';
-		$post_id  = (int) ( $block_instance->context['postId'] ?? 0 );
-		if ( ! $field_id || ! $post_id ) {
-			return null;
-		}
-
-		$post = get_post( $post_id );
-		if ( ! $post || post_password_required( $post ) || ( ! is_post_publicly_viewable( $post ) && ! current_user_can( 'read_post', $post_id ) ) ) {
-			return null;
-		}
-
-		$args  = [
-			'object_type' => 'post',
-			'type'        => $block_instance->context['postType'] ?? '',
-		];
-		$field = rwmb_get_field_settings( $field_id, $args, $post_id );
-		if ( ! $field || empty( $field['block_bindings'] ) ) {
-			return null;
-		}
-
-		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
-		$value = $this->get_single_value( RWMB_Field::call( 'get_value', $field, $args, $post_id ), $field );
-		if ( $this->is_empty( $value ) ) {
-			return null;
-		}
-
-		// `key` picks a part of a structured value, falling back to the bound attribute name (e.g. Image block `url`).
-		return $this->format_value( $value, $field, $source_args['key'] ?? $attribute_name );
-	}
-
-	/**
 	 * Reduce clone / multiple values to a single unit value.
 	 *
-	 * @param mixed $value Value from rwmb_get_value().
+	 * @param mixed $value Value from RWMB_Field::get_value().
 	 * @param array $field Field settings.
 	 * @return mixed
 	 */
-	private function get_single_value( $value, array $field ) {
+	protected function get_single_value( $value, array $field ) {
 		foreach ( [ 'clone', 'multiple' ] as $prop ) {
 			if ( ! $field[ $prop ] ) {
 				continue;
@@ -227,7 +248,7 @@ class BlockBindings {
 	 * @param string $key   Value key or block attribute name.
 	 * @return mixed
 	 */
-	private function format_value( $value, array $field, string $key ) {
+	protected function format_value( $value, array $field, string $key ) {
 		if ( 'post' === $field['type'] ) {
 			$post = get_post( $value );
 			if ( ! $post ) {
@@ -273,11 +294,17 @@ class BlockBindings {
 		return $this->to_string( $value );
 	}
 
-	private function is_empty( $value ): bool {
+	/**
+	 * @param mixed $value
+	 */
+	protected function is_empty( $value ): bool {
 		return null === $value || '' === $value || false === $value;
 	}
 
-	private function to_string( $value ): ?string {
+	/**
+	 * @param mixed $value
+	 */
+	protected function to_string( $value ): ?string {
 		return is_scalar( $value ) ? (string) $value : null;
 	}
 }
