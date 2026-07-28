@@ -72,6 +72,9 @@ class Post extends Source {
 				}
 				$result[ $post_type ] = array_merge( $result[ $post_type ] ?? [], $this->binding_options( $field ) );
 			}
+			if ( ! empty( $result[ $post_type ] ) ) {
+				$result[ $post_type ] = wp_list_sort( $result[ $post_type ], 'label' );
+			}
 		}
 
 		return $result;
