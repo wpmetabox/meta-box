@@ -322,7 +322,7 @@ if ( ! function_exists( 'rwmb_get_registry' ) ) {
 			$class_map = [
 				'block_bindings' => \MetaBox\Integrations\BlockBindings\Registry::class,
 			];
-			$class = $class_map[ $type ] ?? 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Registry';
+			$class     = $class_map[ $type ] ?? 'RWMB_' . RWMB_Helpers_String::title_case( $type ) . '_Registry';
 
 			$data[ $type ] = new $class();
 		}
