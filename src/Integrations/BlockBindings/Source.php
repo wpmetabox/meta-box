@@ -291,7 +291,8 @@ abstract class Source {
 		if ( is_array( $value ) ) {
 			// Image uses full_url/url; video uses src.
 			if ( in_array( $key, [ 'url', 'href' ], true ) ) {
-				return $this->to_string( $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null );
+				$url = $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
+				return is_string( $url ) && $url ? esc_url( $url ) : null;
 			}
 			return $this->to_string( $value[ $key ] ?? null );
 		}
