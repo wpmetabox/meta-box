@@ -74,6 +74,11 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 		return false;
 	}
 
+	/*
+	 * No nonce needed here - it's not a CSRF issue.
+	 * This GET just determines which order to display, like WP core's $_GET['post'] on edit.php.
+	 * The actual write (clicking Update) already have nonce-protected via the parent's validate, saves will work with no errors.
+	 */
 	protected function get_current_object_id() {
 		if ( ! empty( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return absint( $_GET['id'] );
@@ -95,8 +100,16 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 			$storage = $this->get_storage();
 			if ( method_exists( $storage, 'flush' ) ) {
 				$storage->flush( $object_id );
+			} else {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( sprintf(
+					'[Meta Box] Storage class %s has no flush() method - queued meta changes for order #%d may not be persisted.',
+					get_class( $storage ),
+					$object_id
+				) );
 			}
 		}
+
 	}
 
 	private function get_order_screen_id( string $post_type ) {

@@ -42,26 +42,32 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 		}
 
 		if ( '' !== $prev_value ) {
-			$found = false;
-			foreach ( (array) $order->get_meta( $name, false ) as $meta ) {
-				if ( (string) $meta->value === (string) $prev_value ) {
-					$found = true;
-					break;
-				}
-			}
-
-			// No entry matches
-			if ( ! $found ) {
+			if ( ! $this->has_meta_value( $order, $name, $prev_value ) ) {
+				// No entry matches $prev_value, don't create a phantom entry.
 				return false;
 			}
 
 			$order->delete_meta_data_value( $name, $prev_value );
-			$order->add_meta_data( $name, $value );
+
+			// Avoid creating a duplicate if the new value already exists.
+			if ( ! $this->has_meta_value( $order, $name, $value ) ) {
+				$order->add_meta_data( $name, $value );
+			}
 		} else {
 			$order->update_meta_data( $name, $value );
 		}
 
 		return true;
+	}
+
+	private function has_meta_value( \WC_Order $order, string $name, $value ): bool {
+		foreach ( (array) $order->get_meta( $name, false ) as $meta ) {
+			if ( (string) $meta->value === (string) $value ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function delete( $object_id, $name, $value = '', $delete_all = false ) {
@@ -82,6 +88,9 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 
 	/**
 	 * Persist all queued meta_data changes to the DB.
+	 *
+	 * Note: flush() is not part of RWMB_Storage_Interface, core only mandates get()
+	 * The call site RWMB_Order_Meta_Box::save_post() already uses method_exists() to check before calling, it's not an oversight.
 	 */
 	public function flush( $object_id ) {
 		$object_id = absint( $object_id );

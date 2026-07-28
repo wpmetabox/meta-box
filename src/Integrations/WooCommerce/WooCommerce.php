@@ -15,7 +15,7 @@ class WooCommerce {
 			$this->register();
 		}
 	}
- 
+
 	public function register() {
 		add_filter( 'rwmb_meta_box_class_name', [ $this, 'maybe_swap_meta_box_class' ], 10, 2 );
 		add_filter( 'rwmb_meta_type', [ $this, 'force_order_meta_type' ], 10, 3 );
@@ -46,6 +46,4 @@ class WooCommerce {
 
 		return $resolved_type;
 	}
-
-
 }
