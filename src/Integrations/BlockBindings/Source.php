@@ -260,7 +260,7 @@ abstract class Source {
 				return null;
 			}
 			if ( 'url' === $key ) {
-				return esc_url( get_permalink( $post ) );
+				return get_permalink( $post );
 			}
 			if ( 'post_author' === $key ) {
 				return get_the_author_meta( 'display_name', $post->post_author );
@@ -273,15 +273,11 @@ abstract class Source {
 			if ( ! $value ) {
 				return null;
 			}
-			// user_url is user-controlled, so escape it as a URL.
-			if ( 'user_url' === $key ) {
-				return esc_url( $value->user_url );
-			}
 		}
 
 		if ( in_array( $field['type'], [ 'taxonomy', 'taxonomy_advanced' ], true ) && 'url' === $key ) {
 			$url = get_term_link( $value );
-			return is_wp_error( $url ) ? null : esc_url( $url );
+			return is_wp_error( $url ) ? null : $url;
 		}
 
 		if ( is_object( $value ) ) {
@@ -291,8 +287,7 @@ abstract class Source {
 		if ( is_array( $value ) ) {
 			// Image uses full_url/url; video uses src.
 			if ( in_array( $key, [ 'url', 'href' ], true ) ) {
-				$url = $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
-				return is_string( $url ) && $url ? esc_url( $url ) : null;
+				return $this->to_string( $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null );
 			}
 			return $this->to_string( $value[ $key ] ?? null );
 		}
