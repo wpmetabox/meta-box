@@ -119,7 +119,6 @@ class RWMB_Loader {
 
 		// Register categories for page builders.
 		new \MetaBox\Integrations\Block();
-		new \MetaBox\Integrations\BlockBindings();
 		new \MetaBox\Integrations\Bricks();
 		new \MetaBox\Integrations\Elementor();
 		new \MetaBox\Integrations\Oxygen();
@@ -131,5 +130,9 @@ class RWMB_Loader {
 
 		// Public functions.
 		require_once RWMB_INC_DIR . 'functions.php';
+
+		// Block bindings (needs rwmb_get_registry from functions.php).
+		rwmb_get_registry( 'block_bindings' )->add( new \MetaBox\Integrations\BlockBindings\Post() );
+		new \MetaBox\Integrations\BlockBindings\Loader();
 	}
 }
