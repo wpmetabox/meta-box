@@ -53,7 +53,8 @@ class Post extends Source {
 	}
 
 	/**
-	 * Fields (opted in via `block_bindings`) for the bindings UI, keyed by post type.
+	 * Fields for the bindings UI, keyed by post type.
+	 * Skip fields with `hide_from_block_bindings`.
 	 *
 	 * Structured fields (image, map, post, user, …) expose selectable value keys via `args.key`.
 	 * Scalar fields are listed once as `string`.
@@ -66,7 +67,7 @@ class Post extends Source {
 
 		foreach ( $post_fields as $post_type => $fields ) {
 			foreach ( $fields as $field ) {
-				if ( empty( $field['id'] ) || empty( $field['block_bindings'] ) ) {
+				if ( empty( $field['id'] ) || $field['hide_from_block_bindings'] ) {
 					continue;
 				}
 				$result[ $post_type ] = array_merge( $result[ $post_type ] ?? [], $this->binding_options( $field ) );

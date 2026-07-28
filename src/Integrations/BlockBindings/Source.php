@@ -126,7 +126,7 @@ abstract class Source {
 			'type'        => $this->get_type( $block_instance ),
 		];
 		$field = rwmb_get_field_settings( $field_id, $args, $object_id );
-		if ( ! $field || empty( $field['block_bindings'] ) ) {
+		if ( ! $field || $field['hide_from_block_bindings'] ) {
 			return null;
 		}
 
