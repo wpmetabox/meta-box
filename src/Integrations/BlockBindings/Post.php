@@ -7,31 +7,31 @@ use WP_Block;
  * Block bindings source for post fields: meta-box/post-field.
  */
 class Post extends Source {
-	public function name(): string {
+	protected function name(): string {
 		return 'meta-box/post-field';
 	}
 
-	public function label(): string {
+	protected function label(): string {
 		return __( 'Meta Box Post Field', 'meta-box' );
 	}
 
-	public function uses_context(): array {
+	protected function contexts(): array {
 		return [ 'postId', 'postType' ];
 	}
 
-	public function object_type(): string {
+	protected function object_type(): string {
 		return 'post';
 	}
 
-	public function context_key(): string {
+	protected function context_key(): string {
 		return 'postType';
 	}
 
-	protected function get_object_id( WP_Block $block_instance ) {
+	protected function get_object_id( array $source_args, WP_Block $block_instance ) {
 		return (int) ( $block_instance->context['postId'] ?? 0 ) ?: null;
 	}
 
-	protected function get_type( WP_Block $block_instance ): string {
+	protected function get_type( array $source_args, WP_Block $block_instance ): string {
 		return $block_instance->context['postType'] ?? '';
 	}
 

@@ -30,37 +30,42 @@ abstract class Source {
 		'video'             => [ 'src', 'title', 'caption', 'description' ],
 	];
 
-	abstract public function name(): string;
+	abstract protected function name(): string;
 
-	abstract public function label(): string;
+	abstract protected function label(): string;
 
 	/**
 	 * Block context keys this source needs (e.g. postId, postType).
 	 *
 	 * @return string[]
 	 */
-	abstract public function uses_context(): array;
+	abstract protected function contexts(): array;
 
 	/**
 	 * Meta Box object type: post, term, user, or setting.
 	 */
-	abstract public function object_type(): string;
+	abstract protected function object_type(): string;
 
 	/**
 	 * Context property used to pick the fields list in the editor.
 	 * Empty string = return the fields list as-is (flat or single group).
 	 */
-	abstract public function context_key(): string;
+	abstract protected function context_key(): string;
 
 	/**
+	 * @param array    $source_args    Binding args (field id, optional key, …).
+	 * @param WP_Block $block_instance Block instance.
 	 * @return int|string|null Object ID for value resolution.
 	 */
-	abstract protected function get_object_id( WP_Block $block_instance );
+	abstract protected function get_object_id( array $source_args, WP_Block $block_instance );
 
 	/**
-	 * Registry / field-settings "type" (post type, taxonomy, settings page id, …).
+	 * Registry / field-settings "type" (post type, taxonomy, option name, …).
+	 *
+	 * @param array    $source_args    Binding args.
+	 * @param WP_Block $block_instance Block instance.
 	 */
-	abstract protected function get_type( WP_Block $block_instance ): string;
+	abstract protected function get_type( array $source_args, WP_Block $block_instance ): string;
 
 	/**
 	 * Whether the current request may access fields for this object.
@@ -83,7 +88,7 @@ abstract class Source {
 		register_block_bindings_source( $this->name(), [
 			'label'              => $this->label(),
 			'get_value_callback' => [ $this, 'get_value' ],
-			'uses_context'       => $this->uses_context(),
+			'uses_context'       => $this->contexts(),
 		] );
 	}
 
@@ -96,7 +101,7 @@ abstract class Source {
 		return [
 			'name'        => $this->name(),
 			'label'       => $this->label(),
-			'usesContext' => $this->uses_context(),
+			'usesContext' => $this->contexts(),
 			'contextKey'  => $this->context_key(),
 			'fields'      => $this->get_fields(),
 		];
@@ -112,7 +117,7 @@ abstract class Source {
 	 */
 	public function get_value( array $source_args, WP_Block $block_instance, string $attribute_name ) {
 		$field_id  = $source_args['id'] ?? '';
-		$object_id = $this->get_object_id( $block_instance );
+		$object_id = $this->get_object_id( $source_args, $block_instance );
 		if ( ! $field_id || ! $object_id ) {
 			return null;
 		}
@@ -123,7 +128,7 @@ abstract class Source {
 
 		$args  = [
 			'object_type' => $this->object_type(),
-			'type'        => $this->get_type( $block_instance ),
+			'type'        => $this->get_type( $source_args, $block_instance ),
 		];
 		$field = rwmb_get_field_settings( $field_id, $args, $object_id );
 		if ( ! $field || $field['hide_from_block_bindings'] ) {

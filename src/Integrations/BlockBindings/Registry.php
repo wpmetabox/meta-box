@@ -6,16 +6,16 @@ namespace MetaBox\Integrations\BlockBindings;
  */
 class Registry {
 	/**
-	 * @var array<string, Source>
+	 * @var Source[]
 	 */
 	private $sources = [];
 
 	public function add( Source $source ): void {
-		$this->sources[ $source->name() ] = $source;
+		$this->sources[] = $source;
 	}
 
 	/**
-	 * @return array<string, Source>
+	 * @return Source[]
 	 */
 	public function all(): array {
 		return $this->sources;
