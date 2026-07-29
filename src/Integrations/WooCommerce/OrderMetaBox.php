@@ -1,18 +1,19 @@
 <?php
+namespace MetaBox\Integrations\WooCommerce;
 
-class RWMB_Order_Meta_Box extends RW_Meta_Box {
+class OrderMetaBox extends \RW_Meta_Box {
 	protected $object_type = 'order';
 
-	/**
-	 * WooCommerce order types.
-	 */
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
-
 	const SAVE_HOOKS = [
 		'shop_order'        => 'woocommerce_process_shop_order_meta',
 		'shop_subscription' => 'woocommerce_process_shop_subscription_meta',
 	];
 
+	/**
+	 * We need to override parent because $field_registry->add($field, $post_type) not passing object_type (defaults to 'post').
+	 * While WooCommerce need registered with 'order' namespace
+	 */
 	public function register_fields() {
 		$field_registry = rwmb_get_registry( 'field' );
 
@@ -29,7 +30,7 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 		// Hide meta box if 'default_hidden'.
 		add_filter( 'default_hidden_meta_boxes', [ $this, 'hide' ], 10, 2 );
 
-		// HPOS doesn't fire save_post_{post_type}, use WooCommerce hook instead.
+		// HPOS doesn't fire save_post_{post_type}, use WooCommerce's hook(s) instead.
 		foreach ( $this->post_types as $post_type ) {
 			if ( isset( self::SAVE_HOOKS[ $post_type ] ) ) {
 				add_action( self::SAVE_HOOKS[ $post_type ], [ $this, 'save_post' ] );
@@ -58,7 +59,7 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 	}
 
 	public function is_edit_screen( $screen = null ) {
-		if ( ! ( $screen instanceof WP_Screen ) ) {
+		if ( ! ( $screen instanceof \WP_Screen ) ) {
 			$screen = get_current_screen();
 		}
 		if ( ! $screen ) {
@@ -74,11 +75,6 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 		return false;
 	}
 
-	/*
-	 * No nonce needed here - it's not a CSRF issue.
-	 * This GET just determines which order to display, like WP core's $_GET['post'] on edit.php.
-	 * The actual write (clicking Update) already have nonce-protected via the parent's validate, saves will work with no errors.
-	 */
 	protected function get_current_object_id() {
 		if ( ! empty( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return absint( $_GET['id'] );
@@ -95,7 +91,6 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 
 		parent::save_post( $object_id );
 
-		// Flush only when saved successful
 		if ( ! empty( $this->saved ) ) {
 			$storage = $this->get_storage();
 			if ( method_exists( $storage, 'flush' ) ) {
@@ -109,7 +104,6 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 				) );
 			}
 		}
-
 	}
 
 	private function get_order_screen_id( string $post_type ) {
@@ -134,5 +128,4 @@ class RWMB_Order_Meta_Box extends RW_Meta_Box {
 
 		return $meta_box;
 	}
-
 }

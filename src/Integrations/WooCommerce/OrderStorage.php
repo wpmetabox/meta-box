@@ -1,6 +1,7 @@
 <?php
+namespace MetaBox\Integrations\WooCommerce;
 
-class RWMB_Order_Storage implements RWMB_Storage_Interface {
+class OrderStorage implements \RWMB_Storage_Interface {
 
 	private $orders = [];
 
@@ -43,13 +44,11 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 
 		if ( '' !== $prev_value ) {
 			if ( ! $this->has_meta_value( $order, $name, $prev_value ) ) {
-				// No entry matches $prev_value, don't create a phantom entry.
 				return false;
 			}
 
 			$order->delete_meta_data_value( $name, $prev_value );
 
-			// Avoid creating a duplicate if the new value already exists.
 			if ( ! $this->has_meta_value( $order, $name, $value ) ) {
 				$order->add_meta_data( $name, $value );
 			}
@@ -82,16 +81,9 @@ class RWMB_Order_Storage implements RWMB_Storage_Interface {
 			$order->delete_meta_data( $name );
 		}
 
-		// Ignore $delete_all because storage only run in 1 order
 		return true;
 	}
 
-	/**
-	 * Persist all queued meta_data changes to the DB.
-	 *
-	 * Note: flush() is not part of RWMB_Storage_Interface, core only mandates get()
-	 * The call site RWMB_Order_Meta_Box::save_post() already uses method_exists() to check before calling, it's not an oversight.
-	 */
 	public function flush( $object_id ) {
 		$object_id = absint( $object_id );
 		if ( isset( $this->orders[ $object_id ] ) && $this->orders[ $object_id ] ) {
