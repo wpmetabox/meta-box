@@ -1,3 +1,13 @@
+### 5.14.0 - 2026-07-30
+
+**Highlights:**
+
+This release introduces **Block Bindings** for Meta Box fields, allowing you to bind field values directly to blocks in the WordPress editor. Meta Box fields now appear as a source in the block bindings panel, making it easy to use custom field data inside blocks without shortcodes or PHP. See our [blog post](https://metabox.io/introducing-block-bindings/) for details.
+
+**Other changes:**
+
+- Update select2 library to fix missing placeholder
+
 ### 5.13.1 - 2026-07-14
 
 - Fix missing authorization check in `ajax_delete_file` for enhanced security
