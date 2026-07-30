@@ -82,6 +82,16 @@ To install Meta Box:
 
 Please report security bugs found in the source code of the Meta Box – WordPress Custom Fields Framework plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fbeb8-4b92-420d-9aa3-2de53ed433fe). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
+= Does Meta Box modify plugin recommendations in WordPress? =
+
+Meta Box removes Secure Custom Fields (SCF) from the Featured and Recommended plugin lists displayed in the WordPress plugin installer. This reflects our position regarding the redistribution of commercial WordPress plugins and does not prevent users from searching for, installing, or using SCF directly.
+
+To disable this, use the filter `rwmb_modify_plugin_recommendations`:
+
+```
+add_filter( 'rwmb_modify_plugin_recommendations', '__return_false' );
+```
+
 == Screenshots ==
 1. Text Fields
 1. Basic Fields

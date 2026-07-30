@@ -16,11 +16,17 @@ class FeaturedPlugins {
 			return $result;
 		}
 
+		if ( ! apply_filters( 'rwmb_modify_plugin_recommendations', true ) ) {
+			return $result;
+		}
+
 		foreach ( $result->plugins as $index => $plugin ) {
 			if ( $plugin['slug'] === 'secure-custom-fields' ) {
 				unset( $result->plugins[ $index ] );
 			}
 		}
+
+		$result->plugins = array_values( $result->plugins );
 
 		return $result;
 	}
