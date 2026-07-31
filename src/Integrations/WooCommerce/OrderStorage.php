@@ -24,7 +24,12 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		}
 
 		$single = is_array( $args ) ? ! empty( $args['single'] ) : (bool) $args;
-		return $order->get_meta( $name, $single );
+		if ( $single ) {
+			return $order->get_meta( $name, true );
+		}
+
+		// WC Core uses single=false for multiple/clone_as_multiple fields (inc/field.php:139-145), without map, those fields receive objects instead of values, breaking render/save.
+		return array_map( fn( $meta ) => $meta->value, $order->get_meta( $name, false ) );
 	}
 
 	public function add( $object_id, $name, $value, $unique = false ) {
