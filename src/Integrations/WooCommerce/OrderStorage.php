@@ -32,6 +32,10 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		if ( ! $order ) {
 			return false;
 		}
+
+		// WC add_meta_data() returns void - so failure cannot be detected via return value.
+		// However there's no real silent fail when $unique=true, WC first deletes all existing entries then always adds the new one (abstract-wc-data.php:499-507)
+		// Returning true is correct.
 		$order->add_meta_data( $name, $value, $unique );
 		return true;
 	}
@@ -43,15 +47,7 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		}
 
 		if ( '' !== $prev_value ) {
-			if ( ! $this->has_meta_value( $order, $name, $prev_value ) ) {
-				return false;
-			}
-
-			$order->delete_meta_data_value( $name, $prev_value );
-
-			if ( ! $this->has_meta_value( $order, $name, $value ) ) {
-				$order->add_meta_data( $name, $value );
-			}
+			$this->update_first_matching_meta( $order, $name, $prev_value, $value );
 		} else {
 			$order->update_meta_data( $name, $value );
 		}
@@ -59,14 +55,17 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return true;
 	}
 
-	private function has_meta_value( \WC_Order $order, string $name, $value ): bool {
-		foreach ( (array) $order->get_meta( $name, false ) as $meta ) {
-			if ( (string) $meta->value === (string) $value ) {
-				return true;
+	/**
+	 * Updates only the FIRST entry in meta_data with key=$name and value=$prev_value.
+	 */
+	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): void {
+		foreach ( $order->get_meta( $name, false ) as $meta ) {
+			// Use maybe_unserialize for type-safe comparison (array === array)
+			if ( maybe_unserialize( $meta->value ) === maybe_unserialize( $prev_value ) ) {
+				$meta->value = $new_value;
+				return;
 			}
 		}
-
-		return false;
 	}
 
 	public function delete( $object_id, $name, $value = '', $delete_all = false ) {
