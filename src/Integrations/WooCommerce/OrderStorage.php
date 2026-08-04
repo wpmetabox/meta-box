@@ -52,11 +52,10 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		}
 
 		if ( '' !== $prev_value ) {
-			$this->update_first_matching_meta( $order, $name, $prev_value, $value );
-		} else {
-			$order->update_meta_data( $name, $value );
+			return $this->update_first_matching_meta( $order, $name, $prev_value, $value );
 		}
 
+		$order->update_meta_data( $name, $value );
 		return true;
 	}
 
