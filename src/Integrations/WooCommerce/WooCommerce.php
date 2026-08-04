@@ -23,6 +23,8 @@ class WooCommerce {
 		add_filter( 'rwmb_meta_type', [ $this, 'force_order_meta_type' ], 10, 3 );
 
 		add_filter( 'rwmb_get_storage', [ $this, 'maybe_swap_storage' ], 10, 2 );
+
+		add_action( 'rwmb_flush_data', [ $this, 'flush_order_storage' ], 10, 3 );
 	}
 
 	public function maybe_swap_storage( $storage, $object_type ) {
@@ -61,6 +63,16 @@ class WooCommerce {
 		}
 
 		return OrderMetaBox::class;
+	}
+
+	public function flush_order_storage( $object_id, $field, $args ) {
+		if ( ( $args['object_type'] ?? '' ) !== 'order' ) {
+			return;
+		}
+
+		if ( $this->order_storage ) {
+			$this->order_storage->flush( $object_id );
+		}
 	}
 
 }

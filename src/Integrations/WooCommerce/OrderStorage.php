@@ -63,14 +63,16 @@ class OrderStorage implements \RWMB_Storage_Interface {
 	/**
 	 * Updates only the FIRST entry in meta_data with key=$name and value=$prev_value.
 	 */
-	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): void {
+	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): bool {
 		foreach ( $order->get_meta( $name, false ) as $meta ) {
 			// Use maybe_unserialize for type-safe comparison (array === array)
 			if ( maybe_unserialize( $meta->value ) === maybe_unserialize( $prev_value ) ) {
 				$meta->value = $new_value;
-				return;
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	public function delete( $object_id, $name, $value = '', $delete_all = false ) {
