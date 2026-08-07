@@ -32,7 +32,7 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return array_map( fn( $meta ) => $meta->value, $order->get_meta( $name, false ) );
 	}
 
-	public function add( $object_id, $name, $value, $unique = false ) {
+	public function add( $object_id, $name, $value, $unique = false ): bool {
 		$order = $this->get_order( $object_id );
 		if ( ! $order ) {
 			return false;
@@ -45,7 +45,7 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return true;
 	}
 
-	public function update( $object_id, $name, $value, $prev_value = '' ) {
+	public function update( $object_id, $name, $value, $prev_value = '' ): bool {
 		$order = $this->get_order( $object_id );
 		if ( ! $order ) {
 			return false;
@@ -74,7 +74,7 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return false;
 	}
 
-	public function delete( $object_id, $name, $value = '', $delete_all = false ) {
+	public function delete( $object_id, $name, $value = '', $delete_all = false ): bool {
 		$order = $this->get_order( $object_id );
 		if ( ! $order ) {
 			return false;
@@ -89,9 +89,9 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return true;
 	}
 
-	public function flush( $object_id ) {
+	public function flush( $object_id ): void {
 		$object_id = absint( $object_id );
-		if ( isset( $this->orders[ $object_id ] ) && $this->orders[ $object_id ] ) {
+		if ( ! empty( $this->orders[ $object_id ] ) ) {
 			$this->orders[ $object_id ]->save();
 		}
 	}
