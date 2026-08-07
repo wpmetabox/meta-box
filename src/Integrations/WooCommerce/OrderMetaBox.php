@@ -32,9 +32,7 @@ class OrderMetaBox extends \RW_Meta_Box {
 
 		// HPOS doesn't fire save_post_{post_type}, use WooCommerce's hook(s) instead.
 		foreach ( $this->post_types as $post_type ) {
-			if ( isset( self::SAVE_HOOKS[ $post_type ] ) ) {
-				add_action( self::SAVE_HOOKS[ $post_type ], [ $this, 'save_post' ] );
-			}
+			add_action( self::SAVE_HOOKS[ $post_type ], [ $this, 'save_post' ] );
 		}
 	}
 
@@ -91,29 +89,20 @@ class OrderMetaBox extends \RW_Meta_Box {
 
 		parent::save_post( $object_id );
 
-		if ( ! empty( $this->saved ) ) {
-			$storage = $this->get_storage();
-			if ( method_exists( $storage, 'flush' ) ) {
-				$storage->flush( $object_id );
-			} else {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( sprintf(
-					'[Meta Box] Storage class %s has no flush() method - queued meta changes for order #%d may not be persisted.',
-					get_class( $storage ),
-					$object_id
-				) );
-			}
+		if ( empty( $this->saved ) ) {
+			return;
 		}
+
+		$storage = $this->get_storage();
+		$storage->flush( $object_id );
 	}
 
-	private function get_order_screen_id( string $post_type ) {
+	private function get_order_screen_id( string $post_type ): string {
 		if ( ! in_array( $post_type, self::SUPPORTED_ORDER_TYPES, true ) ) {
-			return false;
+			return '';
 		}
 
-		return function_exists( 'wc_get_page_screen_id' )
-			? wc_get_page_screen_id( $post_type )
-			: $post_type;
+		return wc_get_page_screen_id( $post_type );
 	}
 
 	public static function normalize( $meta_box ) {
