@@ -589,7 +589,7 @@
 						<?php endif; ?>
 						<span class="mb-dashboard__sale__button-text--small"><?php esc_html_e( 'on annual plans', 'meta-box' ); ?></span>
 					</a>
-					<ul class="mb-dashboard__countdown" data-end="<?= $now < $sale_end1 ? '2025-11-29T00:00:00+00:00' : '2025-12-02T00:00:00+00:00'; ?>">
+					<ul class="mb-dashboard__countdown" data-end="<?php echo esc_attr( $now < $sale_end1 ? '2025-11-29T00:00:00+00:00' : '2025-12-02T00:00:00+00:00' ); ?>">
 						<li>
 							<div class="mb-dashboard__countdown-number" data-type="days">0</div>
 							<div class="mb-dashboard__countdown-label">Days</div>

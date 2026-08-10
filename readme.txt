@@ -4,7 +4,7 @@ Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 7.0.2
+Tested up to: 7.0
 Stable tag: 5.14.0
 License: GPLv2 or later
 
@@ -82,15 +82,29 @@ To install Meta Box:
 
 Please report security bugs found in the source code of the Meta Box – WordPress Custom Fields Framework plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fbeb8-4b92-420d-9aa3-2de53ed433fe). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
-= Does Meta Box modify plugin recommendations in WordPress? =
+= Where can I find the source code? =
 
-Meta Box removes Secure Custom Fields (SCF) from the Featured and Recommended plugin lists displayed in the WordPress plugin installer. This reflects our position regarding the redistribution of commercial WordPress plugins and does not prevent users from searching for, installing, or using SCF directly.
+The source code is available on GitHub: [https://github.com/wpmetabox/meta-box](https://github.com/wpmetabox/meta-box)
 
-To disable this, use the filter `rwmb_modify_plugin_recommendations`:
+== External services ==
 
-```
-add_filter( 'rwmb_modify_plugin_recommendations', '__return_false' );
-```
+This plugin may connect to third-party services when you use certain features. No data is sent until those features are used.
+
+= Google Maps =
+
+The map field uses the Google Maps JavaScript API to show maps and look up addresses.
+
+When a map field is displayed in the admin or on the frontend, the browser loads the Google Maps script. Address searches and map coordinates are sent to Google. You must supply your own Google Maps API key.
+
+This service is provided by Google: [terms of use](https://cloud.google.com/maps-platform/terms), [privacy policy](https://policies.google.com/privacy).
+
+= OpenStreetMap =
+
+The OSM field uses OpenStreetMap tiles to show maps and Nominatim to look up addresses.
+
+When an OSM field is displayed, the browser requests map tiles from OpenStreetMap. Address searches are sent to Nominatim.
+
+This service is provided by the OpenStreetMap Foundation: [terms of use](https://osmfoundation.org/wiki/Terms_of_Use), [privacy policy](https://osmfoundation.org/wiki/Privacy_Policy). Nominatim usage is also covered by the [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/).
 
 == Screenshots ==
 1. Text Fields

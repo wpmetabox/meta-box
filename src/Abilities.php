@@ -1,5 +1,5 @@
 <?php
-namespace MetaBox\Abilities;
+namespace MetaBox;
 
 /**
  * Registers Meta Box custom-field CRUD operations as WordPress abilities.
@@ -293,7 +293,7 @@ class Abilities {
 	/**
 	 * Map object type + verb to a WordPress capability.
 	 *
-	 * @param string $object_type post|term|user|setting.
+	 * @param string $object_type post|term|user|setting|comment.
 	 * @param string $verb        get|update|delete.
 	 * @return string WordPress capability name.
 	 */
@@ -304,14 +304,14 @@ class Abilities {
 			case 'term':
 				return $is_read ? 'assign_term' : 'edit_term';
 			case 'user':
-				return $is_read ? 'read' : 'edit_user';
+				return 'edit_user';
 			case 'setting':
-				return $is_read ? 'read' : 'manage_options';
+				return 'manage_options';
 			case 'comment':
-				return $is_read ? 'read' : 'moderate_comments';
+				return $is_read ? 'edit_comment' : 'moderate_comments';
 			case 'post':
 			default:
-				return $is_read ? 'read_post' : 'edit_post';
+				return 'edit_post';
 		}
 	}
 

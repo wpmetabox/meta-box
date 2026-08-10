@@ -13,13 +13,10 @@ Thumbs.db
 .gitignore
 
 ## PHP
-composer.json
 composer.lock
-phpcs.xml
-phpcs.xml.dist
+phpcs.*
 phpunit.xml
-phpstan.neon
-phpstan.neon.dist
+phpstan.*
 
 ## JS
 package.json
@@ -30,10 +27,7 @@ webpack.config.js
 esbuild.js
 
 ## Markdown
-TODO.md
-README.md
-CHANGELOG.md
-AGENTS.md
+*.md
 
 ## Special files and folders
 .distignore
