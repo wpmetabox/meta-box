@@ -33,7 +33,7 @@ class AbilitiesTest extends TestCase {
 			$this->filter_added = true;
 		}
 
-		$this->abilities = new \MetaBox\Abilities\Abilities();
+		$this->abilities = new \MetaBox\Abilities();
 		$this->abilities->init();
 
 		// Fields register on `init` priority 20; the category/abilities register

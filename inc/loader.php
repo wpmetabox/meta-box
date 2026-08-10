@@ -114,7 +114,7 @@ class RWMB_Loader {
 		new \MetaBox\Integrations\WPML();
 
 		// Abilities API integration (WordPress 6.9+). Bails silently on older versions.
-		$abilities = new \MetaBox\Abilities\Abilities();
+		$abilities = new \MetaBox\Abilities();
 		$abilities->init();
 
 		// Register categories for page builders.
@@ -125,7 +125,6 @@ class RWMB_Loader {
 
 		if ( is_admin() ) {
 			new \MetaBox\Dashboard\Dashboard( $update_checker, $update_option );
-			new \MetaBox\FeaturedPlugins();
 		}
 
 		// Public functions.
