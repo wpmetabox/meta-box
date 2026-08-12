@@ -9,7 +9,18 @@ class WooCommerce {
 	 * Register logic to 'woocommerce_loaded' hook
 	 */
 	public function __construct() {
+		add_action( 'before_woocommerce_init', [ $this, 'declare_hpos_compatibility' ] );
 		add_action( 'woocommerce_loaded', [ $this, 'register' ] );
+	}
+
+	public function declare_hpos_compatibility(): void {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'custom_order_tables',
+				trailingslashit( RWMB_DIR ) . 'meta-box.php',
+				true
+			);
+		}
 	}
 
 	public function register(): void {
