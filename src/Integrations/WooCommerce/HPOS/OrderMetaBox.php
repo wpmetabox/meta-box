@@ -1,5 +1,5 @@
 <?php
-namespace MetaBox\Integrations\WooCommerce;
+namespace MetaBox\Integrations\WooCommerce\HPOS;
 
 class OrderMetaBox extends \RW_Meta_Box {
 	protected $object_type = 'order';
@@ -108,6 +108,7 @@ class OrderMetaBox extends \RW_Meta_Box {
 	public static function normalize( $meta_box ) {
 		$meta_box = parent::normalize( $meta_box );
 
+		// Chỉ giữ lại post_types trong SUPPORTED_ORDER_TYPES
 		$post_types = array_values( array_intersect(
 			(array) ( $meta_box['post_types'] ?? [] ),
 			self::SUPPORTED_ORDER_TYPES

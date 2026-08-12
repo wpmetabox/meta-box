@@ -1,5 +1,5 @@
 <?php
-namespace MetaBox\Integrations\WooCommerce;
+namespace MetaBox\Integrations\WooCommerce\HPOS;
 
 class OrderStorage implements \RWMB_Storage_Interface {
 
