@@ -1,3 +1,9 @@
+### 5.14.1 - 2026-08-16
+
+- Tighten security for **Abilities**: users now need the `edit_post` capability (or equivalent) to read custom field values, so sensitive data is only accessible to users who can edit content
+- Improve the readme with a link to the source code on GitHub, plus documentation for the Google Maps and OpenStreetMap fields, including terms of use and privacy policy links
+- Fix minor issues found in the WordPress.org plugin review (PHP syntax in the dashboard, plugin package contents)
+
 ### 5.14.0 - 2026-07-30
 
 **Highlights:**
