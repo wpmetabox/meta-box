@@ -18,17 +18,17 @@ class OrderStorage implements \RWMB_Storage_Interface {
 	}
 
 	public function get( $object_id, $name, $args = [] ) {
+		$single = is_array( $args ) ? ! empty( $args['single'] ) : (bool) $args;
+
 		$order = $this->get_order( $object_id );
 		if ( ! $order ) {
-			return '';
+			return $single ? '' : [];
 		}
 
-		$single = is_array( $args ) ? ! empty( $args['single'] ) : (bool) $args;
 		if ( $single ) {
 			return $order->get_meta( $name, true );
 		}
 
-		// WC Core uses single=false for multiple/clone_as_multiple fields (inc/field.php:139-145), without map, those fields receive objects instead of values, breaking render/save.
 		return array_map( fn( $meta ) => $meta->value, $order->get_meta( $name, false ) );
 	}
 
@@ -38,9 +38,6 @@ class OrderStorage implements \RWMB_Storage_Interface {
 			return false;
 		}
 
-		// WC add_meta_data() returns void - so failure cannot be detected via return value.
-		// However there's no real silent fail when $unique=true, WC first deletes all existing entries then always adds the new one (abstract-wc-data.php:499-507)
-		// Returning true is correct.
 		$order->add_meta_data( $name, $value, $unique );
 		return true;
 	}

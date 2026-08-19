@@ -7,6 +7,9 @@ class Manager {
 	public function __construct() {
 		add_action( 'before_woocommerce_init', [ $this, 'declare_hpos_compatibility' ] );
 		add_action( 'woocommerce_loaded', [ $this, 'register' ] );
+		if ( did_action( 'woocommerce_loaded' ) ) {
+			$this->register();
+		}
 	}
 
 	public function declare_hpos_compatibility(): void {
@@ -20,12 +23,9 @@ class Manager {
 	}
 
 	public function register(): void {
-		if ( ! $this->is_hpos_enabled() ) {
-			return;
+		if ( $this->is_hpos_enabled() ) {
+			add_filter( 'rwmb_meta_box_class_name', [ $this, 'change_meta_box_class_name' ], 10, 2 );
 		}
-
-		add_filter( 'rwmb_meta_box_class_name', [ $this, 'change_meta_box_class_name' ], 10, 2 );
-		add_filter( 'rwmb_meta_type', [ $this, 'change_meta_type' ], 10, 3 );
 	}
 
 	private function is_hpos_enabled(): bool {
@@ -37,23 +37,5 @@ class Manager {
 		$order_types = OrderMetaBox::SUPPORTED_ORDER_TYPES;
 
 		return empty( array_intersect( $post_types, $order_types ) ) ? $class_name : OrderMetaBox::class;
-	}
-
-	public function change_meta_type( string $type, string $object_type, $object_id ): string {
-		if ( $object_type !== 'post' ) {
-			return $type;
-		}
-
-		$object_id = absint( $object_id );
-		if ( isset( $this->order_type_cache[ $object_id ] ) ) {
-			return $this->order_type_cache[ $object_id ];
-		}
-
-		$order = wc_get_order( $object_id );
-		$resolved_type = $order ? $order->get_type() : $type;
-
-		$this->order_type_cache[ $object_id ] = $resolved_type;
-
-		return $resolved_type;
 	}
 }

@@ -83,7 +83,7 @@ class OrderMetaBox extends \RW_Meta_Box {
 	}
 
 	private function get_order_screen_id( string $post_type ): string {
-		return in_array( $post_type, self::SUPPORTED_ORDER_TYPES, true ) ? wc_get_page_screen_id( $post_type ) : '';
+		return in_array( $post_type, self::SUPPORTED_ORDER_TYPES, true ) ? (string) wc_get_page_screen_id( $post_type ) : '';
 	}
 
 	public static function normalize( $meta_box ) {
