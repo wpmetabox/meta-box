@@ -25,12 +25,9 @@ class Manager {
 			return;
 		}
 
-		add_filter( 'rwmb_meta_box_class_name', [ $this, 'maybe_swap_meta_box_class' ], 10, 2 );
-
-		add_filter( 'rwmb_meta_type', [ $this, 'force_order_meta_type' ], 10, 3 );
-
-		add_filter( 'rwmb_get_storage', [ $this, 'maybe_swap_storage' ], 10, 2 );
-
+		add_filter( 'rwmb_meta_box_class_name', [ $this, 'change_meta_box_class_name' ], 10, 2 );
+		add_filter( 'rwmb_meta_type', [ $this, 'change_meta_type' ], 10, 3 );
+		add_filter( 'rwmb_get_storage', [ $this, 'change_storage' ], 10, 2 );
 		add_action( 'rwmb_flush_data', [ $this, 'flush_order_storage' ], 10, 3 );
 	}
 
@@ -38,22 +35,18 @@ class Manager {
 		return class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
 	}
 
-	public function maybe_swap_meta_box_class( string $class_name, array $settings ): string {
+	public function change_meta_box_class_name( string $class_name, array $settings ): string {
 		$post_types  = (array) ( $settings['post_types'] ?? [] );
 		$order_types = OrderMetaBox::SUPPORTED_ORDER_TYPES;
 
 		return empty( array_intersect( $post_types, $order_types ) ) ? $class_name : OrderMetaBox::class;
 	}
 
-	public function maybe_swap_storage( $storage, string $object_type ) {
-		if ( ! $this->order_storage ) {
-			$this->order_storage = new OrderStorage();
+	public function change_meta_type( string $type, string $object_type, $object_id ): string {
+		if ( $object_type !== 'post' ) {
+			return $type;
 		}
 
-		return $this->order_storage;
-	}
-
-	public function force_order_meta_type( string $type, string $object_type, $object_id ): string {
 		$object_id = absint( $object_id );
 		if ( isset( $this->order_type_cache[ $object_id ] ) ) {
 			return $this->order_type_cache[ $object_id ];
@@ -67,10 +60,17 @@ class Manager {
 		return $resolved_type;
 	}
 
+	public function change_storage( $storage, string $object_type ) {
+		if ( ! $this->order_storage ) {
+			$this->order_storage = new OrderStorage();
+		}
+
+		return $this->order_storage;
+	}
+
 	public function flush_order_storage( $object_id, array $field, array $args ): void {
 		if ( $this->order_storage ) {
 			$this->order_storage->flush( $object_id );
 		}
 	}
-
 }
