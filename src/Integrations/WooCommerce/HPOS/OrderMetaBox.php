@@ -2,27 +2,11 @@
 namespace MetaBox\Integrations\WooCommerce\HPOS;
 
 class OrderMetaBox extends \RW_Meta_Box {
-	protected $object_type = 'order';
-
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
 	const SAVE_HOOKS = [
 		'shop_order'        => 'woocommerce_process_shop_order_meta',
 		'shop_subscription' => 'woocommerce_process_shop_subscription_meta',
 	];
-
-	/**
-	 * We need to override parent because $field_registry->add($field, $post_type) not passing object_type (defaults to 'post').
-	 * While WooCommerce need registered with 'order' namespace
-	 */
-	public function register_fields() {
-		$field_registry = rwmb_get_registry( 'field' );
-
-		foreach ( $this->post_types as $post_type ) {
-			foreach ( $this->fields as $field ) {
-				$field_registry->add( $field, $post_type, $this->object_type );
-			}
-		}
-	}
 
 	protected function object_hooks() {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
@@ -74,11 +58,8 @@ class OrderMetaBox extends \RW_Meta_Box {
 	}
 
 	protected function get_current_object_id() {
-		if ( ! empty( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			return absint( $_GET['id'] );
-		}
-
-		return parent::get_current_object_id();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return empty( $_GET['id'] ) ? parent::get_current_object_id() : absint( $_GET['id'] );
 	}
 
 	public function save_post( $object_id ) {
@@ -108,13 +89,10 @@ class OrderMetaBox extends \RW_Meta_Box {
 	public static function normalize( $meta_box ) {
 		$meta_box = parent::normalize( $meta_box );
 
-		// Chỉ giữ lại post_types trong SUPPORTED_ORDER_TYPES
-		$post_types = array_values( array_intersect(
+		$meta_box['post_types'] = array_values( array_intersect(
 			(array) ( $meta_box['post_types'] ?? [] ),
 			self::SUPPORTED_ORDER_TYPES
 		) );
-
-		$meta_box['post_types'] = $post_types ?: [ 'shop_order' ];
 
 		return $meta_box;
 	}
