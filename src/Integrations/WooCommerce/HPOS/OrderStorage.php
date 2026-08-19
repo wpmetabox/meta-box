@@ -56,13 +56,9 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return true;
 	}
 
-	/**
-	 * Updates only the FIRST entry in meta_data with key=$name and value=$prev_value.
-	 */
 	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): bool {
 		foreach ( $order->get_meta( $name, false ) as $meta ) {
-			// Use maybe_unserialize for type-safe comparison (array === array)
-			if ( maybe_unserialize( $meta->value ) === maybe_unserialize( $prev_value ) ) {
+			if ( $meta->value == $prev_value ) {
 				$meta->value = $new_value;
 				return true;
 			}
@@ -71,6 +67,12 @@ class OrderStorage implements \RWMB_Storage_Interface {
 		return false;
 	}
 
+	/**
+	 * Delete metadata.
+	 *
+	 * Note: The $delete_all parameter is intentionally ignored. Order meta is inherently
+	 * per-order, and WC_Order::delete_meta_data() only operates on a single order object.
+	 */
 	public function delete( $object_id, $name, $value = '', $delete_all = false ): bool {
 		$order = $this->get_order( $object_id );
 		if ( ! $order ) {

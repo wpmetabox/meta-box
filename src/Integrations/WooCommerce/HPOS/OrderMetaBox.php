@@ -2,6 +2,8 @@
 namespace MetaBox\Integrations\WooCommerce\HPOS;
 
 class OrderMetaBox extends \RW_Meta_Box {
+	private $storage;
+
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
 	const SAVE_HOOKS = [
 		'shop_order'        => 'woocommerce_process_shop_order_meta',
@@ -79,7 +81,11 @@ class OrderMetaBox extends \RW_Meta_Box {
 	}
 
 	public function get_storage() {
-		return new OrderStorage();
+		if ( ! $this->storage ) {
+			$this->storage = new OrderStorage();
+		}
+
+		return $this->storage;
 	}
 
 	private function get_order_screen_id( string $post_type ): string {
