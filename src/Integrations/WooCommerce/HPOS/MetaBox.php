@@ -1,7 +1,7 @@
 <?php
 namespace MetaBox\Integrations\WooCommerce\HPOS;
 
-class OrderMetaBox extends \RW_Meta_Box {
+class MetaBox extends \RW_Meta_Box {
 	private $storage;
 
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
@@ -82,7 +82,7 @@ class OrderMetaBox extends \RW_Meta_Box {
 
 	public function get_storage() {
 		if ( ! $this->storage ) {
-			$this->storage = new OrderStorage();
+			$this->storage = new Storage();
 		}
 
 		return $this->storage;

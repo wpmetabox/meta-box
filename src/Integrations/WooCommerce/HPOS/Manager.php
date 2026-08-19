@@ -34,8 +34,8 @@ class Manager {
 
 	public function change_meta_box_class_name( string $class_name, array $settings ): string {
 		$post_types  = (array) ( $settings['post_types'] ?? [] );
-		$order_types = OrderMetaBox::SUPPORTED_ORDER_TYPES;
+		$order_types = MetaBox::SUPPORTED_ORDER_TYPES;
 
-		return empty( array_intersect( $post_types, $order_types ) ) ? $class_name : OrderMetaBox::class;
+		return empty( array_intersect( $post_types, $order_types ) ) ? $class_name : MetaBox::class;
 	}
 }

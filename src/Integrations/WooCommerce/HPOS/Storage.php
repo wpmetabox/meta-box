@@ -1,7 +1,7 @@
 <?php
 namespace MetaBox\Integrations\WooCommerce\HPOS;
 
-class OrderStorage implements \RWMB_Storage_Interface {
+class Storage implements \RWMB_Storage_Interface {
 
 	private $orders = [];
 
