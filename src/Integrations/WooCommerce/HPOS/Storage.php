@@ -38,7 +38,7 @@ class Storage implements \RWMB_Storage_Interface {
 			return false;
 		}
 
-		$order->add_meta_data( $name, $value, $unique );
+		$order->add_meta_data( $name, wp_unslash( $value ), $unique );
 		return true;
 	}
 
@@ -49,10 +49,10 @@ class Storage implements \RWMB_Storage_Interface {
 		}
 
 		if ( '' !== $prev_value ) {
-			return $this->update_first_matching_meta( $order, $name, $prev_value, $value );
+			return $this->update_first_matching_meta( $order, $name, $prev_value, wp_unslash( $value ) );
 		}
 
-		$order->update_meta_data( $name, $value );
+		$order->update_meta_data( $name, wp_unslash( $value ) );
 		return true;
 	}
 
@@ -80,7 +80,7 @@ class Storage implements \RWMB_Storage_Interface {
 		}
 
 		if ( $value !== '' ) {
-			$order->delete_meta_data_value( $name, $value );
+			$order->delete_meta_data_value( $name, wp_unslash( $value ) );
 		} else {
 			$order->delete_meta_data( $name );
 		}
