@@ -2,7 +2,6 @@
 namespace MetaBox\Integrations\WooCommerce\HPOS;
 
 class Manager {
-	private $order_storage;
 	private $order_type_cache = [];
 
 	public function __construct() {
@@ -27,8 +26,6 @@ class Manager {
 
 		add_filter( 'rwmb_meta_box_class_name', [ $this, 'change_meta_box_class_name' ], 10, 2 );
 		add_filter( 'rwmb_meta_type', [ $this, 'change_meta_type' ], 10, 3 );
-		add_filter( 'rwmb_get_storage', [ $this, 'change_storage' ], 10, 2 );
-		add_action( 'rwmb_flush_data', [ $this, 'flush_order_storage' ], 10, 3 );
 	}
 
 	private function is_hpos_enabled(): bool {
@@ -58,19 +55,5 @@ class Manager {
 		$this->order_type_cache[ $object_id ] = $resolved_type;
 
 		return $resolved_type;
-	}
-
-	public function change_storage( $storage, string $object_type ) {
-		if ( ! $this->order_storage ) {
-			$this->order_storage = new OrderStorage();
-		}
-
-		return $this->order_storage;
-	}
-
-	public function flush_order_storage( $object_id, array $field, array $args ): void {
-		if ( $this->order_storage ) {
-			$this->order_storage->flush( $object_id );
-		}
 	}
 }
