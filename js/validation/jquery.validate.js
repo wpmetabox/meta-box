@@ -626,12 +626,27 @@ $.extend( $.validator, {
 		focusInvalid: function() {
 			if ( this.settings.focusInvalid ) {
 				try {
-					$( this.findLastActive() || this.errorList.length && this.errorList[ 0 ].element || [] )
-					.filter( ":visible" )
-					.trigger( "focus" )
+					var element = this.findLastActive() || this.errorList.length && this.errorList[ 0 ].element;
 
-					// Manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
-					.trigger( "focusin" );
+					if ( !element ) {
+						return;
+					}
+
+					var $target = $( element );
+
+					if ( $target.is( ":visible" ) ) {
+						$target
+							.trigger( "focus" )
+
+							// Manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
+							.trigger( "focusin" );
+					} else {
+						var $error = $target.closest( '.rwmb-input' ).find( '.rwmb-error' );
+
+						if ( $error.length ) {
+							$error.attr( 'tabindex', '-1' ).trigger( 'focus' );
+						}
+					}
 				} catch ( e ) {
 
 					// Ignore IE throwing errors when focusing hidden elements
