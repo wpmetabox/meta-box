@@ -72,17 +72,17 @@ class MetaBox extends \RW_Meta_Box {
 
 		parent::save_post( $object_id );
 
-		if ( empty( $this->saved ) ) {
-			return;
+		if ( $this->saved && ( $this->storage instanceof Storage ) ) {
+			$this->storage->flush( $object_id );
 		}
-
-		$storage = $this->get_storage();
-		$storage->flush( $object_id );
 	}
 
 	public function get_storage() {
 		if ( ! $this->storage ) {
-			$this->storage = new Storage();
+			$storage = new Storage();
+			// Use filter to allow MB Custom Table to hook.
+			$storage = apply_filters( 'rwmb_get_storage', $storage, 'post', $this );
+			$this->storage = $storage;
 		}
 
 		return $this->storage;
