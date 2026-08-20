@@ -644,7 +644,7 @@ $.extend( $.validator, {
 						var $error = $target.closest( '.rwmb-input' ).find( '.rwmb-error' );
 
 						if ( $error.length ) {
-							$error.attr( 'tabindex', '-1' ).trigger( 'focus' );
+							$error.attr( 'tabindex', '-1' ).trigger( 'focus' ).removeAttr( 'tabindex' );
 						}
 					}
 				} catch ( e ) {
