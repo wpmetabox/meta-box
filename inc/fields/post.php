@@ -132,7 +132,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		$options = [];
 		foreach ( $query->posts as $post ) {
-			if ( ! current_user_can( 'read_post', $post ) ) {
+			if ( ! current_user_can( 'read_post', $post->ID ) ) {
 				continue;
 			}
 
