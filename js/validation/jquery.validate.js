@@ -647,18 +647,21 @@ $.extend( $.validator, {
 							var $panel = $error.closest( '.rwmb-tab-panel' );
 
 							if ( $panel.length ) {
-								var $tabs = $error.closest( '.rwmb-tabs' );
-								var tabName = $panel.data( 'panel' );
-								var $tabLink = $tabs.find( 'li[data-panel="' + tabName + '"] a' );
+								var tabName = $panel.data( "panel" );
+								var $tabLink = $panel.closest( ".rwmb-tabs" ).find( ".rwmb-tab-nav li" ).filter( function() {
+									return $( this ).data( "panel" ) === tabName;
+								} ).find( "a" );
 
 								if ( $tabLink.length ) {
-									$tabLink.trigger( 'click' );
+									$tabLink.trigger( "click" );
 								}
 							}
 
-							if ( $error.is( ":visible" ) ) {
-								$error.attr( 'tabindex', '-1' ).trigger( 'focus' ).removeAttr( 'tabindex' );
-							}
+							setTimeout( function() {
+								if ( $error.is( ":visible" ) ) {
+									$error.attr( "tabindex", "-1" ).trigger( "focus" ).removeAttr( "tabindex" );
+								}
+							}, 300 );
 						}
 					}
 				} catch ( e ) {
