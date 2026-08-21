@@ -644,7 +644,21 @@ $.extend( $.validator, {
 						var $error = $target.closest( '.rwmb-input' ).find( '.rwmb-error' );
 
 						if ( $error.length ) {
-							$error.attr( 'tabindex', '-1' ).trigger( 'focus' ).removeAttr( 'tabindex' );
+							var $panel = $error.closest( '.rwmb-tab-panel' );
+
+							if ( $panel.length ) {
+								var $tabs = $error.closest( '.rwmb-tabs' );
+								var tabName = $panel.data( 'panel' );
+								var $tabLink = $tabs.find( 'li[data-panel="' + tabName + '"] a' );
+
+								if ( $tabLink.length ) {
+									$tabLink.trigger( 'click' );
+								}
+							}
+
+							if ( $error.is( ":visible" ) ) {
+								$error.attr( 'tabindex', '-1' ).trigger( 'focus' ).removeAttr( 'tabindex' );
+							}
 						}
 					}
 				} catch ( e ) {
