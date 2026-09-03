@@ -1,11 +1,11 @@
-=== Meta Box ===
+=== Meta Box - A Framework for Dynamic Websites ===
 Contributors: elightup, metabox, rilwis, f-j-kaiser, funkatronic, PerWiklander, ruanmer, tanng
 Donate link: https://metabox.io/pricing/
 Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 7.0
-Stable tag: 5.14.1
+Tested up to: 7.1
+Stable tag: 5.15.0
 License: GPLv2 or later
 
 Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
@@ -115,6 +115,12 @@ This service is provided by the OpenStreetMap Foundation: [terms of use](https:/
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.15.0 - 2026-09-03 =
+
+**Highlights:**
+
+This version adds support for WooCommerce HPOS that allows you to use Meta Box fields to WooCommerce orders (with WooCommerce's High-Performance Order Storage (HPOS) feature). For more information, see our [blog post](https://metabox.io/hpos-support/).
 
 = 5.14.1 - 2026-08-16 =
 
