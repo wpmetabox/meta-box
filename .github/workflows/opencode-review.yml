@@ -21,4 +21,37 @@ jobs:
         uses: anomalyco/opencode/github@latest
         with:
           model: opencode/big-pickle
-          prompt: Review this pull request focusing only on the changed code. Identify issues related to code quality, best practices, bugs, edge cases, performance, and security. Report only the issues found, do not include other feedback.
+          prompt: |
+            Dựa trên các thay đổi về code, đưa ra các đánh giá về các thay đổi đó.
+
+            - Nếu đang ở 1 pull request chưa được merge, thì các thay đổi được tính là trong branch của pull request đó.
+            - Nếu đang có các file PHP/JavaScript/CSS/SCSS/HTML chưa được commit, thì các thay đổi được tính là trong các file đó.
+
+            ## Nguyên tắc
+            - Viết bằng tiếng Việt
+            - Nếu không nói rõ thì mặc định output vào file `review.md`. Nếu đã có sẵn file này thì cập nhật nội dung của nó.
+            - Chỉ liệt kê các vấn đề cần sửa hoặc lưu ý, không đánh giá & liệt kê các điểm đã làm tốt hoặc đã sửa xong.
+            - Chỉ đánh giá phần code được thay đổi, không đánh giá phần code đã có trước đó.
+
+            ## Nội dung
+
+            ### Logic
+            - Xác định mục đích của các thay đổi và của các file/class/hàm/đoạn code, kiểm tra tính đúng đắn và logic của chúng.
+            - Logic có phức tạp hơn mức cần thiết không? Có thể đơn giản hóa không?
+
+            ### Bảo mật
+            - Kiểm tra có các lỗi bảo mật thông dụng (SQL Injection, XSS, input validation, ...) hay không?
+
+            ### Tính tương thích
+            - Kiểm tra code có chạy tốt trên PHP từ 7.4 đến 8.5 không? Lưu ý: một số hàm của PHP 8 đã được WordPress include trong core https://github.com/WordPress/WordPress/blob/master/wp-includes/compat.php.
+            - Kiểm tra code có chạy tốt trên WordPress từ 6.6 đến 7.1 không?
+
+            ### Chuẩn viết code
+            - Kiểm tra code có tuân thủ các quy tắc viết code của WordPress không? Nếu trong repo có file `phpcs.xml` thì sử dụng file đó để kiểm tra. Hoặc nếu trong `composer.json` có script `phpcs` thì sử dụng `composer run phpcs` để kiểm tra.
+            - Kiểm tra lỗi cú pháp.
+            - Kiểm tra các hàm có type hint và return type không? Yêu cầu cần có ở tất cả những chỗ có thể, và đảm bảo tương thích với PHP 7.4.
+            - Kiểm tra có dead code không? Dead code là code không được sử dụng và không cần thiết, cần được loại bỏ, VD: 1 hàm/method/biến/import class/import thư viện không được sử dụng.
+
+            ### Tối ưu
+            - Code có thể tối ưu để gọn gàng hơn, dễ hiểu hơn và dễ bảo trì hơn không?
+            - Có tính năng hoặc hàm nào của JavaScript, PHP hay WordPress có thể sử dụng để không phải viết code từ đầu không?
