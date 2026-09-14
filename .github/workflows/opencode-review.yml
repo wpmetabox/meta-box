@@ -29,7 +29,6 @@ jobs:
 
             ## Nguyên tắc
             - Viết bằng tiếng Việt
-            - Nếu không nói rõ thì mặc định output vào file `review.md`. Nếu đã có sẵn file này thì cập nhật nội dung của nó.
             - Chỉ liệt kê các vấn đề cần sửa hoặc lưu ý, không đánh giá & liệt kê các điểm đã làm tốt hoặc đã sửa xong.
             - Chỉ đánh giá phần code được thay đổi, không đánh giá phần code đã có trước đó.
 
