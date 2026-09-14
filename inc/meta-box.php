@@ -313,7 +313,7 @@ class RW_Meta_Box {
 		$default_title = __( 'Meta Box Title', 'meta-box' );
 		$meta_box      = wp_parse_args( $meta_box, [
 			'title'          => $default_title,
-			'id'             => ! empty( $meta_box['title'] ) ? sanitize_title( $meta_box['title'] ) : sanitize_title( $default_title ),
+			'id'             => '',
 			'context'        => 'normal',
 			'priority'       => 'high',
 			'post_types'     => 'post',
@@ -323,6 +323,11 @@ class RW_Meta_Box {
 			'class'          => '',
 			'fields'         => [],
 		] );
+
+		$meta_box['id'] = RWMB_Helpers_String::sanitize_id(
+			'' !== $meta_box['id'] ? $meta_box['id'] : $meta_box['title'],
+			$meta_box['title']
+		);
 
 		/**
 		 * Use 'post_types' for better understanding and fallback to 'pages' for previous versions.
