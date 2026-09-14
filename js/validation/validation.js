@@ -115,6 +115,43 @@
 	};
 
 	/**
+	 * Focus the first invalid field. When the invalid element is hidden (e.g. file_upload's
+	 * hidden input), fall back to focusing the visible error message so the browser scrolls to it.
+	 * Tab switching for fields in inactive tabs is handled by MB Tabs via `after_validate`.
+	 */
+	$.validator.prototype.focusInvalid = function () {
+		if ( ! this.settings.focusInvalid ) {
+			return;
+		}
+
+		try {
+			const element = this.findLastActive() || ( this.errorList.length && this.errorList[ 0 ].element );
+
+			if ( ! element ) {
+				return;
+			}
+
+			const $target = $( element );
+
+			if ( $target.is( ':visible' ) ) {
+				$target
+					.trigger( 'focus' )
+					// Manually trigger focusin; without it, findLastActive won't have anything to find.
+					.trigger( 'focusin' );
+				return;
+			}
+
+			const $error = $target.closest( '.rwmb-input' ).find( 'p.rwmb-error' ).first();
+
+			if ( $error.length && $error.is( ':visible' ) ) {
+				$error.attr( 'tabindex', '-1' ).trigger( 'focus' ).removeAttr( 'tabindex' );
+			}
+		} catch ( e ) {
+			// Ignore IE throwing errors when focusing hidden elements.
+		}
+	};
+
+	/**
 	 * Make jQuery Validation works with multiple inputs with same names.
 	 * Need for file, image fields where users can upload multiple files with same input names.
 	 *
