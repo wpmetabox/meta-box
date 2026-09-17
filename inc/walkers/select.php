@@ -1,4 +1,5 @@
 <?php
+
 defined( 'ABSPATH' ) || die;
 
 /**
@@ -19,11 +20,20 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 	public function start_el( &$output, $object, $depth = 0, $args = [], $current_object_id = 0 ) {
 		$indent = str_repeat( '&nbsp;', $depth * 4 );
 
-		$output .= sprintf(
-			'<option value="%s" %s>%s%s</option>',
+		$attrs = sprintf(
+			'value="%s" %s',
 			esc_attr( $object->value ),
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-			selected( in_array( $object->value, $this->meta ), true, false ),
+			selected( in_array( $object->value, $this->meta ), true, false )
+		);
+
+		if ( ! empty( $object->thumbnail ) ) {
+			$attrs .= ' data-thumbnail="' . esc_url( $object->thumbnail ) . '"';
+		}
+
+		$output .= sprintf(
+			'<option %s>%s%s</option>',
+			$attrs,
 			$indent,
 			esc_html( $object->label )
 		);

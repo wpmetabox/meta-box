@@ -39,13 +39,23 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	public function start_el( &$output, $object, $depth = 0, $args = [], $current_object_id = 0 ) {
 		$attributes = RWMB_Field::call( 'get_attributes', $this->field, $object->value );
 
+		$label = $object->label;
+
+		if ( ! empty( $this->field['show_thumbnail'] ) ) {
+			$thumb = ! empty( $object->thumbnail )
+				? '<img src="' . esc_url( $object->thumbnail ) . '" class="rwmb-post-thumbnail" width="20" height="20" alt="" />'
+				: '<span class="rwmb-post-thumbnail rwmb-post-thumbnail--empty"></span>';
+
+			$label = $thumb . ' ' . $label;
+		}
+
 		$output .= sprintf(
 			'<label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			checked( in_array( $object->value, $this->meta ), true, false ),
 			// phpcs:ignore Allow to use HTML in labels (like Dashicons for button group)
-			$object->label
+			$label
 		);
 	}
 }

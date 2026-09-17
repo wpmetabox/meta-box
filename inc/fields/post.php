@@ -57,6 +57,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'post_type'  => 'post',
 			'parent'     => false,
 			'query_args' => [],
+			'show_thumbnail' => true,
 		] );
 
 		$field['post_type'] = (array) $field['post_type'];
@@ -97,6 +98,14 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
+		if ( ! empty( $field['show_thumbnail'] ) ) {
+			$field['js_options']['show_thumbnail'] = true;
+
+			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			}
+		}
+
 		return $field;
 	}
 
@@ -136,18 +145,25 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				continue;
 			}
 
-			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
-			$label                = self::filter( 'choice_label', $label, $field, $post );
-			$options[ $post->ID ] = [
+			$label = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
+			$label = self::filter( 'choice_label', $label, $field, $post );
+
+			$option = [
 				'value'  => $post->ID,
 				'label'  => $label,
 				'parent' => $post->post_parent,
 			];
+
+			if ( ! empty( $field['show_thumbnail'] ) ) {
+				$thumbnail = get_the_post_thumbnail_url( $post->ID );
+				$option['thumbnail'] = $thumbnail ?: '';
+			}
+
+			$options[ $post->ID ] = $option;
 		}
 
 		// Cache the query.
 		wp_cache_set( $cache_key, $options, 'meta-box-post-field' );
-
 		return $options;
 	}
 

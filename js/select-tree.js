@@ -33,9 +33,39 @@
 		$notSelected.addClass( 'hidden' ).find( 'select' ).each( unsetRequiredProp ).prop( 'selectedIndex', 0 );
 	}
 
+	function getSelect2Options( $select ) {
+		var options = $select.data( 'options' ) || {};
+
+		var showThumbnail = options.show_thumbnail
+			|| ( options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail );
+
+		if ( showThumbnail ) {
+			options.escapeMarkup = function ( markup ) {
+				return markup;
+			};
+
+			options.templateResult = function ( data ) {
+				if ( ! data.id ) {
+					return data.text;
+				}
+
+				var thumb = data.thumbnail || ( data.element ? $( data.element ).data( 'thumbnail' ) : '' );
+				var img = thumb
+					? '<img src="' + thumb + '" class="rwmb-post-thumbnail" width="20" height="20" alt="" />'
+					: '<span class="rwmb-post-thumbnail rwmb-post-thumbnail--empty"></span>';
+
+				return $( '<span class="rwmb-post-option">' + img + ' ' + data.text + '</span>' );
+			};
+
+			options.templateSelection = options.templateResult;
+		}
+
+		return options;
+	}
+
 	function instantiateSelect2() {
 		var $this = $( this ),
-			options = $this.data( 'options' );
+			options = getSelect2Options( $this );
 
 		$this
 			.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' )
@@ -49,10 +79,10 @@
 	function init( e ) {
 		var $select = $( e.target ).find( '.rwmb-select-tree > select' );
 
-		$select.each ( setInitialRequiredProp );
-		$select.each( function() {
-			const $this = $( this ),
-				options = $this.data( 'options' );
+		$select.each( setInitialRequiredProp );
+		$select.each( function () {
+			var $this = $( this ),
+				options = getSelect2Options( $this );
 
 			$this.select2( options );
 		} );
