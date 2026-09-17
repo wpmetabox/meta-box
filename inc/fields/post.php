@@ -151,7 +151,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query = new WP_Query( $args );
 		$posts = $query->posts;
 
-		// Bulk fetch thumbnail IDs to update_post_meta_cache
+		// Bulk fetch thumbnail IDs
 		$thumbnails = [];
 		if ( ! empty( $field['show_thumbnail'] ) && $posts ) {
 			$post_ids = wp_list_pluck( $posts, 'ID' );

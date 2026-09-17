@@ -33,16 +33,23 @@
 		$notSelected.addClass( 'hidden' ).find( 'select' ).each( unsetRequiredProp ).prop( 'selectedIndex', 0 );
 	}
 
-	function instantiateSelect2() {
-		var $this = $( this ),
-			options = $this.data( 'options' ) || {};
+	function getSelectOptions( $el ) {
+		var options = $el.data( 'options' ) || {};
+		if ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) {
+			return rwmb.postThumbnail.applyTemplates( options );
+		}
 
-		options = ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) ? rwmb.postThumbnail.applyTemplates( options) : options;
+		return options;
+	}
+
+	function instantiateSelect2() {
+		var $this = $( this );
+
 		$this
 			.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' )
 			.children().removeAttr( 'data-select2-id' ).end()
 			.siblings( '.select2-container' ).remove().end()
-			.select2( options );
+			select2( getSelectOptions( $this ) );
 
 		toggleTree.call( this );
 	}
@@ -52,11 +59,8 @@
 
 		$select.each ( setInitialRequiredProp );
 		$select.each( function() {
-			var $this = $( this ),
-				options = $this.data( 'options' ) || {};
-
-			options = ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) ? rwmb.postThumbnail.applyTemplates( options ) : options;
-			$this.select2( options );
+			var $this = $( this );
+			select2( getSelectOptions( $this ) );
 		} );
 	}
 
