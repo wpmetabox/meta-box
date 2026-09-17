@@ -8,9 +8,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	public static function admin_enqueue_scripts( $field = null ) {
 		parent::admin_enqueue_scripts( $field );
 
-		wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
-		wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
-		wp_enqueue_script( 'rwmb-post-thumbnail', RWMB_JS_URL . 'post-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+		if ( ! empty( $field['show_thumbnail'] ) ) {
+			wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
+			wp_enqueue_script( 'rwmb-post-thumbnail', RWMB_JS_URL . 'post-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+		}
 	}
 
 	public static function add_actions( $field = null ) {
@@ -124,6 +126,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'update_post_meta_cache' => ! empty( $field['show_thumbnail'] ),
 			'update_post_term_cache' => false,
 			'mb_field_id'            => $field['id'],
+			'_show_thumbnail'        => ! empty( $field['show_thumbnail'] ),
 		] );
 
 		$meta = wp_parse_id_list( (array) $meta );
@@ -136,7 +139,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'posts' );
-		$args['_show_thumbnail'] = ! empty( $field['show_thumbnail'] );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
 		$cache_key = "$key:$last_changed";
@@ -147,9 +149,27 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		}
 
 		$query = new WP_Query( $args );
+		$posts = $query->posts;
+
+		// Bulk fetch thumbnail IDs to update_post_meta_cache
+		$thumbnails = [];
+		if ( ! empty( $field['show_thumbnail'] ) && $posts ) {
+			$post_ids = wp_list_pluck( $posts, 'ID' );
+
+			foreach ( $post_ids as $post_id ) {
+				$thumb_id = get_post_meta( $post_id, '_thumbnail_id', true );
+				if ( $thumb_id ) {
+					$thumbnails[ $post_id ] = (int) $thumb_id;
+				}
+			}
+
+			if ( $thumbnails ) {
+				_prime_post_caches( array_values( $thumbnails ), false, true );
+			}
+		}
 
 		$options = [];
-		foreach ( $query->posts as $post ) {
+		foreach ( $posts as $post ) {
 			if ( ! current_user_can( 'read_post', $post->ID ) ) {
 				continue;
 			}
@@ -164,8 +184,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			];
 
 			if ( ! empty( $field['show_thumbnail'] ) ) {
-				$thumbnail = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
-				$option['thumbnail'] = $thumbnail ?: '';
+				$thumb_id = $thumbnails[ $post->ID ] ?? 0;
+				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
 			}
 
 			$options[ $post->ID ] = $option;

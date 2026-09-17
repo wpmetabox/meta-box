@@ -35,8 +35,9 @@
 
 	function instantiateSelect2() {
 		var $this = $( this ),
-			options = rwmb.postThumbnail.applyTemplates( $this.data( 'options' ) || {} );
+			options = $this.data( 'options' ) || {};
 
+		options = ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) ? rwmb.postThumbnail.applyTemplates( options) : options;
 		$this
 			.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' )
 			.children().removeAttr( 'data-select2-id' ).end()
@@ -49,11 +50,12 @@
 	function init( e ) {
 		var $select = $( e.target ).find( '.rwmb-select-tree > select' );
 
-		$select.each( setInitialRequiredProp );
+		$select.each ( setInitialRequiredProp );
 		$select.each( function() {
-			const $this = $( this ),
-				options = rwmb.postThumbnail.applyTemplates( $this.data( 'options' ) || {} );
+			var $this = $( this ),
+				options = $this.data( 'options' ) || {};
 
+			options = ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) ? rwmb.postThumbnail.applyTemplates( options ) : options;
 			$this.select2( options );
 		} );
 	}
