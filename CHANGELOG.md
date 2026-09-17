@@ -1,3 +1,8 @@
+### 5.15.1 - 2026-09-17
+
+- Fix multibyte IDs breaking WordPress 7.1 meta box tooltips
+- Fix focus handling for hidden validation error elements
+
 ### 5.15.0 - 2026-09-03
 
 **Highlights:**
