@@ -86,31 +86,3 @@ iframe#rwmb-modal-iframe {
 .rwmb-modal-close:active {
 	color: #135e96;
 }
-
-.rwmb-post-thumbnail {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	object-fit: cover;
-	border-radius: 2px;
-	vertical-align: middle;
-	margin-right: 6px;
-	flex-shrink: 0;
-}
-
-.rwmb-post-thumbnail--empty {
-	background: #f0f0f1;
-	border: 1px solid #c3c4c7;
-}
-
-.rwmb-post-option {
-	display: flex;
-	align-items: center;
-}
-
-/* Checkbox - Radio list */
-.rwmb-input-list label {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-}

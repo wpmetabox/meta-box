@@ -5,7 +5,14 @@ defined( 'ABSPATH' ) || die;
  * The post field which allows users to select existing posts.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
-	public static function add_actions() {
+	public static function admin_enqueue_scripts( $field = null ) {
+		parent::admin_enqueue_scripts( $field );
+
+		wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
+	}
+
+	public static function add_actions( $field = null ) {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 	}
@@ -54,10 +61,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'post_type'  => 'post',
-			'parent'     => false,
-			'query_args' => [],
-			'show_thumbnail' => true,
+			'post_type'      => 'post',
+			'parent'         => false,
+			'query_args'     => [],
+			'show_thumbnail' => false,
 		] );
 
 		$field['post_type'] = (array) $field['post_type'];
@@ -128,6 +135,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'posts' );
+		$args['_show_thumbnail'] = ! empty( $field['show_thumbnail'] );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
 		$cache_key = "$key:$last_changed";
