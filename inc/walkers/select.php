@@ -26,7 +26,7 @@ class RWMB_Walker_Select extends RWMB_Walker_Base {
 			selected( in_array( $object->value, $this->meta ), true, false )
 		);
 
-		if ( ! empty( $object->thumbnail ) ) {
+		if ( ! empty( $object->thumbnail ) && ! empty( $this->field['show_thumbnail'] ) ) {
 			$attrs .= ' data-thumbnail="' . esc_url( $object->thumbnail ) . '"';
 		}
 

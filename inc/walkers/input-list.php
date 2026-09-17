@@ -46,7 +46,7 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 				? '<img src="' . esc_url( $object->thumbnail ) . '" class="rwmb-post-thumbnail" width="20" height="20" alt="" />'
 				: '<span class="rwmb-post-thumbnail rwmb-post-thumbnail--empty"></span>';
 
-			$label = $thumb . ' ' . $label;
+			$label = $thumb . $label;
 		}
 
 		$output .= sprintf(

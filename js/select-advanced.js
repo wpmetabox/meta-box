@@ -32,30 +32,7 @@
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
 
-		// Support toggle thumbnail for Post field
-		var showThumbnail = options.show_thumbnail || ( options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail );
-
-		if ( showThumbnail ) {
-			options.escapeMarkup = function ( markup ) {
-				return markup;
-			};
-
-			options.templateResult = function ( data ) {
-				if ( ! data.id ) {
-					return data.text;
-				}
-
-				var thumb = data.thumbnail || ( data.element ? $( data.element ).data( 'thumbnail' ) : '' );
-				var img = thumb
-					? '<img src="' + thumb + '" class="rwmb-post-thumbnail" width="20" height="20" alt="" />'
-					: '<span class="rwmb-post-thumbnail rwmb-post-thumbnail--empty"></span>';
-
-				return $( '<span class="rwmb-post-option">' + img + ' ' + data.text + '</span>' );
-			};
-
-			options.templateSelection = options.templateResult;
-		}
-
+		options = rwmb.postThumbnail.applyTemplates( options );
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';
 			options.ajax.data = function ( params ) {

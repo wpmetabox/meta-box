@@ -10,6 +10,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
+		wp_enqueue_script( 'rwmb-post-thumbnail', RWMB_JS_URL . 'post-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
 	}
 
 	public static function add_actions( $field = null ) {
@@ -120,7 +121,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$args = wp_parse_args( $field['query_args'], [
 			'search_columns'         => [ 'post_title' ],
 			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
+			'update_post_meta_cache' => ! empty( $field['show_thumbnail'] ),
 			'update_post_term_cache' => false,
 			'mb_field_id'            => $field['id'],
 		] );
@@ -163,7 +164,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			];
 
 			if ( ! empty( $field['show_thumbnail'] ) ) {
-				$thumbnail = get_the_post_thumbnail_url( $post->ID );
+				$thumbnail = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
 				$option['thumbnail'] = $thumbnail ?: '';
 			}
 
