@@ -5,6 +5,16 @@ defined( 'ABSPATH' ) || die;
  * The user select field.
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
+	public static function admin_enqueue_scripts( $field = null ) {
+		parent::admin_enqueue_scripts( $field );
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
+			wp_enqueue_script( 'rwmb-object-thumbnail', RWMB_JS_URL . 'object-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+		}
+	}
+
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
@@ -75,6 +85,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'placeholder'   => __( 'Select a user', 'meta-box' ),
 			'query_args'    => [],
 			'display_field' => 'display_name',
+			'show_avatar'   => false,
 		] );
 
 		$field = parent::normalize( $field );
@@ -89,6 +100,13 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		if ( $field['ajax'] ) {
 			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
+		}
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			$field['show_avatar'] = true;
+			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_avatar'] = true;
+			}
 		}
 
 		return $field;
@@ -132,6 +150,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$users   = get_users( $args );
 		$options = [];
+		$show_avatar = ! empty( $field['show_avatar'] );
+
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
 			$label = self::filter( 'choice_label', $label, $field, $user );
@@ -140,6 +160,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				'value' => $user->ID,
 				'label' => $label,
 			];
+
+			if( $show_avatar ) {
+				$avatar = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
+				$options[ $user->ID ]['thumbnail'] = $avatar ?: '';
+			}
 		}
 
 		// Cache the query.

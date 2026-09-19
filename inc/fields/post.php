@@ -5,7 +5,17 @@ defined( 'ABSPATH' ) || die;
  * The post field which allows users to select existing posts.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
-	public static function add_actions() {
+	public static function admin_enqueue_scripts( $field = null ) {
+		parent::admin_enqueue_scripts( $field );
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
+			wp_enqueue_script( 'rwmb-object-thumbnail', RWMB_JS_URL . 'object-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+		}
+	}
+
+	public static function add_actions( $field = null ) {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 	}
@@ -54,9 +64,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'post_type'  => 'post',
-			'parent'     => false,
-			'query_args' => [],
+			'post_type'      => 'post',
+			'parent'         => false,
+			'query_args'     => [],
+			'show_thumbnail' => false,
 		] );
 
 		$field['post_type'] = (array) $field['post_type'];
@@ -97,14 +108,24 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
+		if ( 'select_advanced' === $field['field_type'] ) {
+			$field['show_thumbnail'] = true;
+
+			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			}
+		}
+
 		return $field;
 	}
 
 	public static function query( $meta, array $field ): array {
+		$show_thumbnail = ! empty( $field['show_thumbnail'] );
+
 		$args = wp_parse_args( $field['query_args'], [
 			'search_columns'         => [ 'post_title' ],
 			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
+			'update_post_meta_cache' => $show_thumbnail,
 			'update_post_term_cache' => false,
 			'mb_field_id'            => $field['id'],
 		] );
@@ -116,6 +137,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$args['posts_per_page'] = count( $meta );
 			$args['post__in']       = $meta;
 		}
+
+		$args['_with_thumbnail'] = $show_thumbnail;
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'posts' );
@@ -129,25 +152,63 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		}
 
 		$query = new WP_Query( $args );
+		$posts = $query->posts;
+
+		if ( $show_thumbnail ) {
+			$post_types = (array) $field['post_type'] ?: $field['query_args']['post_type'];
+
+			$supports   = false;
+			foreach ( $post_types as $pt ) {
+				if ( post_type_supports( $pt, 'thumbnail' ) ) {
+					$supports = true;
+					break;
+				}
+			}
+			$show_thumbnail = $supports;
+		}
+
+		// Bulk fetch thumbnail IDs
+		$thumbnails = [];
+		if ( $show_thumbnail && $posts ) {
+			$post_ids = wp_list_pluck( $posts, 'ID' );
+
+			foreach ( $post_ids as $post_id ) {
+				$thumb_id = get_post_meta( $post_id, '_thumbnail_id', true );
+				if ( $thumb_id ) {
+					$thumbnails[ $post_id ] = (int) $thumb_id;
+				}
+			}
+
+			if ( $thumbnails ) {
+				_prime_post_caches( array_values( $thumbnails ), false, true );
+			}
+		}
 
 		$options = [];
-		foreach ( $query->posts as $post ) {
+		foreach ( $posts as $post ) {
 			if ( ! current_user_can( 'read_post', $post->ID ) ) {
 				continue;
 			}
 
-			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
-			$label                = self::filter( 'choice_label', $label, $field, $post );
-			$options[ $post->ID ] = [
+			$label = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
+			$label = self::filter( 'choice_label', $label, $field, $post );
+
+			$option = [
 				'value'  => $post->ID,
 				'label'  => $label,
 				'parent' => $post->post_parent,
 			];
+
+			if ( $show_thumbnail ) {
+				$thumb_id = $thumbnails[ $post->ID ] ?? 0;
+				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
+			}
+
+			$options[ $post->ID ] = $option;
 		}
 
 		// Cache the query.
 		wp_cache_set( $cache_key, $options, 'meta-box-post-field' );
-
 		return $options;
 	}
 

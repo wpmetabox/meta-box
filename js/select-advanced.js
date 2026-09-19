@@ -26,11 +26,13 @@
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = $this.data( 'options' );
+			options = $this.data( 'options' ) || {};
 
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
+
+		options = ( rwmb.objectThumbnail && rwmb.objectThumbnail.applyTemplates ) ? rwmb.objectThumbnail.applyTemplates( options ) : options;
 
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';
@@ -42,6 +44,7 @@
 					return {
 						id: item.value,
 						text: _.unescape( item.label ),
+						thumbnail: item.thumbnail || ''
 					};
 				} );
 
