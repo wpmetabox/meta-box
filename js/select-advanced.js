@@ -32,7 +32,8 @@
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
 
-		options = ( rwmb.postThumbnail && rwmb.postThumbnail.applyTemplates ) ? rwmb.postThumbnail.applyTemplates( options ) : options;
+		options = ( rwmb.objectThumbnail && rwmb.objectThumbnail.applyTemplates ) ? rwmb.objectThumbnail.applyTemplates( options ) : options;
+
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';
 			options.ajax.data = function ( params ) {

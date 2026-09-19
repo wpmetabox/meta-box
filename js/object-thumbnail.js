@@ -1,16 +1,16 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
-	rwmb.postThumbnail = {
+	rwmb.objectThumbnail = {
 		applyTemplates: function ( options ) {
-			var show = options.show_thumbnail
-				|| ( options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail );
+			var show = options.ajax_data && options.ajax_data.field;
 
 			if ( ! show ) {
 				return options;
 			}
 
 			options.templateResult = function ( data ) {
+
 				if ( ! data.id ) {
 					return data.text;
 				}
@@ -33,6 +33,7 @@
 				return $wrap;
 			};
 			options.templateSelection = options.templateResult;
+
 			return options;
 		}
 	};
