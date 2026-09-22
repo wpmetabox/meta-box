@@ -17,6 +17,11 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
+
+
+		add_action( 'updated_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
+		add_action( 'deleted_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
+		add_action( 'added_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
 	}
 
 	public static function ajax_get_posts() {
@@ -108,10 +113,17 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		parent::set_ajax_params( $field );
 
 		if ( 'select_advanced' === $field['field_type'] ) {
-			$field['show_thumbnail'] = true;
-
-			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			$supports = false;
+			foreach ( (array) $field['post_type'] as $pt ) {
+				if ( post_type_supports( $pt, 'thumbnail' ) ) {
+						$supports = true;
+						break;
+					}
+				}
+				$field['show_thumbnail'] = $supports;
+				$field['js_options']['show_thumbnail'] = $supports;
+				if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+					$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
 			}
 		}
 
@@ -138,10 +150,17 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Get from cache to prevent same queries.
-		$last_changed = wp_cache_get_last_changed( 'posts' );
+		$posts_changed = wp_cache_get_last_changed( 'posts' );
+		$thumb_changed = wp_cache_get( 'last_changed', 'meta-box-post-field' );
+		if ( ! $thumb_changed ) {
+			$thumb_changed = microtime();
+			wp_cache_set( 'last_changed', $thumb_changed, 'meta-box-post-field' );
+		}
+
+		$key       = md5( serialize( $args ) );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
-		$cache_key = "$key:$last_changed";
+		$cache_key = "{$key}:{$posts_changed}:{$thumb_changed}";
 		$options   = wp_cache_get( $cache_key, 'meta-box-post-field' );
 
 		if ( false !== $options ) {
@@ -152,7 +171,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$posts = $query->posts;
 
 		if ( $show_thumbnail ) {
-			$post_types = (array) $field['post_type'] ?: $field['query_args']['post_type'];
+			$post_types = (array) ( $field['post_type'] ?? $field['query_args']['post_type'] ?? [] );
 
 			$supports   = false;
 			foreach ( $post_types as $pt ) {
@@ -209,6 +228,13 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return $options;
 	}
 
+	public static function clear_thumbnail_cache( $meta_id, $object_id, $meta_key ) {
+		if ( '_thumbnail_id' !== $meta_key ) {
+			return;
+		}
+
+		wp_cache_set( 'last_changed', microtime(), 'meta-box-post-field' );
+	}
 	/**
 	 * Get meta value.
 	 * If field is cloneable, value is saved as a single entry in DB.

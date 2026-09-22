@@ -22,7 +22,8 @@
 	}
 
 	function setObjectThumbnailTemplate( options ) {
-		const show = options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail;
+		const show = options.show_thumbnail
+					|| ( options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail );
 
 		if ( ! show ) {
 			return options;
@@ -60,7 +61,7 @@
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = setObjectThumbnailTemplate( $this.data( 'options' ) ) || {};
+			options = setObjectThumbnailTemplate( $this.data( 'options' ) || {} );
 
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
