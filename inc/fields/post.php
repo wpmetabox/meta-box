@@ -170,7 +170,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		// Bulk fetch thumbnail IDs
 		$thumbnails = [];
-		if ( $field['show_thumbnail'] && $posts ) {
+		if ( $show_thumbnail && $posts ) {
 			$post_ids = wp_list_pluck( $posts, 'ID' );
 
 			foreach ( $post_ids as $post_id ) {
@@ -200,7 +200,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				'parent' => $post->post_parent,
 			];
 
-			if ( $field['show_thumbnail'] ) {
+			if ( $show_thumbnail ) {
 				$thumb_id = $thumbnails[ $post->ID ] ?? 0;
 				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
 			}
