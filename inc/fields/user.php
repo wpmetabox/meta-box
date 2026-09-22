@@ -160,7 +160,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				'label' => $label,
 			];
 
-			if( $show_thumbnail ) {
+			if ( $show_thumbnail ) {
 				$avatar = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
 				$options[ $user->ID ]['thumbnail'] = $avatar ?: '';
 			}

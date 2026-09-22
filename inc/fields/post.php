@@ -18,7 +18,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 
-
 		add_action( 'updated_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
 		add_action( 'deleted_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
 		add_action( 'added_post_meta', [ __CLASS__, 'clear_thumbnail_cache' ], 10, 3 );
@@ -157,7 +156,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			wp_cache_set( 'last_changed', $thumb_changed, 'meta-box-post-field' );
 		}
 
-		$key       = md5( serialize( $args ) );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
 		$cache_key = "{$key}:{$posts_changed}:{$thumb_changed}";
@@ -170,22 +168,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query = new WP_Query( $args );
 		$posts = $query->posts;
 
-		if ( $show_thumbnail ) {
-			$post_types = (array) ( $field['post_type'] ?? $field['query_args']['post_type'] ?? [] );
-
-			$supports   = false;
-			foreach ( $post_types as $pt ) {
-				if ( post_type_supports( $pt, 'thumbnail' ) ) {
-					$supports = true;
-					break;
-				}
-			}
-			$show_thumbnail = $supports;
-		}
-
 		// Bulk fetch thumbnail IDs
 		$thumbnails = [];
-		if ( $show_thumbnail && $posts ) {
+		if ( $field['show_thumbnail'] && $posts ) {
 			$post_ids = wp_list_pluck( $posts, 'ID' );
 
 			foreach ( $post_ids as $post_id ) {
@@ -215,7 +200,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 				'parent' => $post->post_parent,
 			];
 
-			if ( $show_thumbnail ) {
+			if ( $field['show_thumbnail'] ) {
 				$thumb_id = $thumbnails[ $post->ID ] ?? 0;
 				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
 			}
