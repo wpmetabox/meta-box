@@ -9,9 +9,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		parent::admin_enqueue_scripts( $field );
 
 		if ( 'select_advanced' === $field['field_type'] ) {
-			wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
-			wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
-			wp_enqueue_script( 'rwmb-object-thumbnail', RWMB_JS_URL . 'object-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+			wp_enqueue_style( 'rwmb-object-thumbnail', RWMB_CSS_URL . 'object-thumbnail.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-object-thumbnail', 'path', RWMB_CSS_DIR . 'object-thumbnail.css' );
 		}
 	}
 
@@ -82,10 +81,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	public static function normalize( $field ) {
 		// Set default field args.
 		$field = wp_parse_args( $field, [
-			'placeholder'   => __( 'Select a user', 'meta-box' ),
-			'query_args'    => [],
-			'display_field' => 'display_name',
-			'show_avatar'   => false,
+			'placeholder'    => __( 'Select a user', 'meta-box' ),
+			'query_args'     => [],
+			'display_field'  => 'display_name',
+			'show_thumbnail' => false,
 		] );
 
 		$field = parent::normalize( $field );
@@ -103,9 +102,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		if ( 'select_advanced' === $field['field_type'] ) {
-			$field['show_avatar'] = true;
+			$field['show_thumbnail'] = true;
 			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_avatar'] = true;
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
 			}
 		}
 
@@ -150,7 +149,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$users   = get_users( $args );
 		$options = [];
-		$show_avatar = ! empty( $field['show_avatar'] );
+		$show_thumbnail = ! empty( $field['show_thumbnail'] );
 
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
@@ -161,7 +160,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				'label' => $label,
 			];
 
-			if( $show_avatar ) {
+			if( $show_thumbnail ) {
 				$avatar = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
 				$options[ $user->ID ]['thumbnail'] = $avatar ?: '';
 			}

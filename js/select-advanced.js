@@ -21,18 +21,51 @@
 		$select2.trigger( 'change' );
 	}
 
+	function setObjectThumbnailTemplate( options ) {
+		const show = options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail;
+
+		if ( ! show ) {
+			return options;
+		}
+
+		options.templateResult = function ( data ) {
+
+			if ( ! data.id ) {
+				return data.text;
+			}
+			const $wrap = $( '<span class="rwmb-object-option"></span>' );
+			const thumb = data.thumbnail || ( data.element ? $( data.element ).data( 'thumbnail' ) : '' );
+
+			if ( thumb ) {
+				$wrap.append( $( '<img>', {
+					src: thumb,
+					class: 'rwmb-object-thumbnail',
+					width: 20,
+					height: 20,
+					alt: ''
+				} ) );
+			} else {
+				$wrap.append( $( '<span class="rwmb-object-thumbnail rwmb-object-thumbnail--empty"></span>' ) );
+			}
+
+			$wrap.append( document.createTextNode( ' ' + ( data.text || '' ) ) );
+			return $wrap;
+		};
+		options.templateSelection = options.templateResult;
+
+		return options;
+	}
+
 	/**
 	 * Transform select fields into beautiful dropdown with select2 library.
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = $this.data( 'options' ) || {};
+			options = setObjectThumbnailTemplate( $this.data( 'options' ) ) || {};
 
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();
 		$this.find( 'option' ).removeAttr( 'data-select2-id' );
-
-		options = ( rwmb.objectThumbnail && rwmb.objectThumbnail.applyTemplates ) ? rwmb.objectThumbnail.applyTemplates( options ) : options;
 
 		if ( options.ajax_data ) {
 			options.ajax.dataType = 'json';

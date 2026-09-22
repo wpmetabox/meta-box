@@ -39,15 +39,13 @@ class RWMB_Walker_Input_List extends RWMB_Walker_Base {
 	public function start_el( &$output, $object, $depth = 0, $args = [], $current_object_id = 0 ) {
 		$attributes = RWMB_Field::call( 'get_attributes', $this->field, $object->value );
 
-		$label = $object->label;
-
 		$output .= sprintf(
 			'<label><input %s %s>%s</label>',
 			RWMB_Field::render_attributes( $attributes ),
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			checked( in_array( $object->value, $this->meta ), true, false ),
 			// phpcs:ignore Allow to use HTML in labels (like Dashicons for button group)
-			$label
+			$object->label
 		);
 	}
 }

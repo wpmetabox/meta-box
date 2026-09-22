@@ -9,13 +9,12 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		parent::admin_enqueue_scripts( $field );
 
 		if ( 'select_advanced' === $field['field_type'] ) {
-			wp_enqueue_style( 'rwmb-post', RWMB_CSS_URL . 'post.css', [], RWMB_VER );
-			wp_style_add_data( 'rwmb-post', 'path', RWMB_CSS_DIR . 'post.css' );
-			wp_enqueue_script( 'rwmb-object-thumbnail', RWMB_JS_URL . 'object-thumbnail.js', [ 'rwmb' ], RWMB_VER, true );
+			wp_enqueue_style( 'rwmb-object-thumbnail', RWMB_CSS_URL . 'object-thumbnail.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-object-thumbnail', 'path', RWMB_CSS_DIR . 'object-thumbnail.css' );
 		}
 	}
 
-	public static function add_actions( $field = null ) {
+	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 	}
@@ -137,8 +136,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$args['posts_per_page'] = count( $meta );
 			$args['post__in']       = $meta;
 		}
-
-		$args['_with_thumbnail'] = $show_thumbnail;
 
 		// Get from cache to prevent same queries.
 		$last_changed = wp_cache_get_last_changed( 'posts' );

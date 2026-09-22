@@ -1,0 +1,12 @@
+.rwmb-object-thumbnail {
+	width: 20px;
+	height: 20px;
+	object-fit: cover;
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+.rwmb-object-thumbnail--empty {
+	background: #f0f0f1;
+	border: 1px solid #c3c4c7;
+}
