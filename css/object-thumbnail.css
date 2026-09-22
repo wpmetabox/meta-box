@@ -5,8 +5,3 @@
 	border-radius: 2px;
 	flex-shrink: 0;
 }
-
-.rwmb-object-thumbnail--empty {
-	background: #f0f0f1;
-	border: 1px solid #c3c4c7;
-}

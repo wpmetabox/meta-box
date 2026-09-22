@@ -44,11 +44,10 @@
 					height: 20,
 					alt: ''
 				} ) );
-			} else {
-				$wrap.append( $( '<span class="rwmb-object-thumbnail rwmb-object-thumbnail--empty"></span>' ) );
+				$wrap.append( document.createTextNode( ' ' ) );
 			}
 
-			$wrap.append( document.createTextNode( ' ' + ( data.text || '' ) ) );
+			$wrap.append( document.createTextNode( data.text || '' ) );
 			return $wrap;
 		};
 		options.templateSelection = options.templateResult;
