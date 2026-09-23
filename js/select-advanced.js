@@ -21,16 +21,17 @@
 		$select2.trigger( 'change' );
 	}
 
-	function setObjectThumbnailTemplate( options ) {
-		const show = options.show_thumbnail
-					|| ( options.ajax_data && options.ajax_data.field && options.ajax_data.field.show_thumbnail );
+	function setObjectThumbnailTemplate( options, $select ) {
+		const show = options.show_thumbnail || options.ajax_data?.field?.show_thumbnail;
 
 		if ( ! show ) {
 			return options;
 		}
 
-		options.templateResult = function ( data ) {
+		const isUser = $select.hasClass( 'rwmb-user' ) || options.ajax_data?.field?.type === 'user';
+		const thumbClass = isUser ? 'rwmb-object-thumbnail rwmb-object-thumbnail--user' : 'rwmb-object-thumbnail';
 
+		options.templateResult = function ( data ) {
 			if ( ! data.id ) {
 				return data.text;
 			}
@@ -40,12 +41,8 @@
 			if ( thumb ) {
 				$wrap.append( $( '<img>', {
 					src: thumb,
-					class: 'rwmb-object-thumbnail',
-					width: 20,
-					height: 20,
-					alt: ''
+					class: thumbClass,
 				} ) );
-				$wrap.append( document.createTextNode( ' ' ) );
 			}
 
 			$wrap.append( document.createTextNode( data.text || '' ) );
@@ -61,7 +58,7 @@
 	 */
 	function transform() {
 		var $this = $( this ),
-			options = setObjectThumbnailTemplate( $this.data( 'options' ) || {} );
+			options = setObjectThumbnailTemplate( $this.data( 'options' ) || {}, $this );
 
 		$this.removeClass( 'select2-hidden-accessible' ).removeAttr( 'data-select2-id' );
 		$this.siblings( '.select2-container' ).remove();

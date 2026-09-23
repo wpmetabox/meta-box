@@ -1,6 +1,14 @@
+.rwmb-object-option {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
 .rwmb-object-thumbnail {
 	width: 20px;
 	height: 20px;
 	object-fit: cover;
 	border-radius: 2px;
+}
+.rwmb-object-thumbnail--user {
+	border-radius: 100%;
 }
