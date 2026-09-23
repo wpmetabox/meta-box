@@ -22,14 +22,13 @@
 	}
 
 	function setObjectThumbnailTemplate( options, $select ) {
-		const show = options.show_thumbnail || options.ajax_data?.field?.show_thumbnail;
-
-		if ( ! show ) {
+		if ( ! options.show_thumbnail ) {
 			return options;
 		}
 
-		const isUser = $select.hasClass( 'rwmb-user' ) || options.ajax_data?.field?.type === 'user';
-		const thumbClass = isUser ? 'rwmb-object-thumbnail rwmb-object-thumbnail--user' : 'rwmb-object-thumbnail';
+		const thumbClass = $select.hasClass( 'rwmb-user' )
+			? 'rwmb-object-thumbnail rwmb-object-thumbnail--user'
+			: 'rwmb-object-thumbnail';
 
 		options.templateResult = function ( data ) {
 			if ( ! data.id ) {
@@ -42,6 +41,7 @@
 				$wrap.append( $( '<img>', {
 					src: thumb,
 					class: thumbClass,
+					alt: '',
 				} ) );
 			}
 
