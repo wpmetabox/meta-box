@@ -119,7 +119,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 						break;
 					}
 				}
-				$field['show_thumbnail'] = $supports;
+				$field['show_thumbnail']               = $supports;
 				$field['js_options']['show_thumbnail'] = $supports;
 				if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
 					$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
@@ -201,7 +201,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			];
 
 			if ( $show_thumbnail ) {
-				$thumb_id = $thumbnails[ $post->ID ] ?? 0;
+				$thumb_id            = $thumbnails[ $post->ID ] ?? 0;
 				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
 			}
 
@@ -213,13 +213,14 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		return $options;
 	}
 
-	public static function clear_thumbnail_cache( $meta_id, $object_id, $meta_key ) {
+	public static function clear_thumbnail_cache( $meta_id, $object_id, $meta_key ): void {
 		if ( '_thumbnail_id' !== $meta_key ) {
 			return;
 		}
 
 		wp_cache_set( 'last_changed', microtime(), 'meta-box-post-field' );
 	}
+
 	/**
 	 * Get meta value.
 	 * If field is cloneable, value is saved as a single entry in DB.
