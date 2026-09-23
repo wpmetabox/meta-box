@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || die;
  * The post field which allows users to select existing posts.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
-	public static function admin_enqueue_scripts( $field = null ) {
+	public static function admin_enqueue_scripts( $field = null ): void {
 		parent::admin_enqueue_scripts( $field );
 
 		if ( 'select_advanced' === $field['field_type'] ) {
@@ -162,12 +162,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		// Bulk fetch thumbnail IDs
 		$thumbnails = [];
 		if ( $show_thumbnail && $posts ) {
-			$post_ids = wp_list_pluck( $posts, 'ID' );
-
-			foreach ( $post_ids as $post_id ) {
-				$thumb_id = get_post_meta( $post_id, '_thumbnail_id', true );
+			foreach ( $posts as $post ) {
+				$thumb_id = get_post_meta( $post->ID, '_thumbnail_id', true );
 				if ( $thumb_id ) {
-					$thumbnails[ $post_id ] = (int) $thumb_id;
+					$thumbnails[ $post->ID ] = (int) $thumb_id;
 				}
 			}
 

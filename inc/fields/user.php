@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || die;
  * The user select field.
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
-	public static function admin_enqueue_scripts( $field = null ) {
+	public static function admin_enqueue_scripts( $field = null ): void {
 		parent::admin_enqueue_scripts( $field );
 
 		if ( 'select_advanced' === $field['field_type'] ) {
@@ -139,18 +139,18 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Get from cache to prevent same queries.
-		$last_changed = wp_cache_get_last_changed( 'users' );
+		$last_changed   = wp_cache_get_last_changed( 'users' );
+		$show_thumbnail = ! empty( $field['show_thumbnail'] );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
-		$cache_key = "$key:$last_changed";
+		$cache_key = "$key:$last_changed:" . (int) $show_thumbnail;
 		$options   = wp_cache_get( $cache_key, 'meta-box-user-field' );
 		if ( false !== $options ) {
 			return $options;
 		}
 
-		$users          = get_users( $args );
-		$show_thumbnail = ! empty( $field['show_thumbnail'] );
-		$options        = [];
+		$users   = get_users( $args );
+		$options = [];
 
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
@@ -162,7 +162,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			];
 
 			if ( $show_thumbnail ) {
-				$avatar = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
+				$avatar                            = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
 				$options[ $user->ID ]['thumbnail'] = $avatar ?: '';
 			}
 		}

@@ -28,12 +28,7 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^12.5",
-    "wp-coding-standards/wpcs": "^3.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
-    "phpcompatibility/php-compatibility": "^9.3",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpstan/phpstan": "^2.2"
+    "phpunit/phpunit": "^12.5"
   },
   "require": {
     "wpmetabox/support": "^1.0"
