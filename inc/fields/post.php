@@ -115,14 +115,15 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			$supports = false;
 			foreach ( (array) $field['post_type'] as $pt ) {
 				if ( post_type_supports( $pt, 'thumbnail' ) ) {
-						$supports = true;
-						break;
-					}
+					$supports = true;
+					break;
 				}
-				$field['show_thumbnail']               = $supports;
-				$field['js_options']['show_thumbnail'] = $supports;
-				if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-					$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			}
+
+			$field['show_thumbnail']               = $supports;
+			$field['js_options']['show_thumbnail'] = $supports;
+			if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
 			}
 		}
 

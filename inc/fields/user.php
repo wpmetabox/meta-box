@@ -147,9 +147,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			return $options;
 		}
 
-		$users   = get_users( $args );
-		$options = [];
+		$users          = get_users( $args );
 		$show_thumbnail = ! empty( $field['show_thumbnail'] );
+		$options        = [];
 
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
