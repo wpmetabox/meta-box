@@ -102,7 +102,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		if ( 'select_advanced' === $field['field_type'] ) {
-			$field['show_thumbnail'] = true;
+			$field['show_thumbnail']               = true;
+			$field['js_options']['show_thumbnail'] = true;
 			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
 				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
 			}

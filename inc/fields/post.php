@@ -113,7 +113,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$supports = false;
-			foreach ( (array) $field['post_type'] as $pt ) {
+			foreach ( $field['post_type'] as $pt ) {
 				if ( post_type_supports( $pt, 'thumbnail' ) ) {
 					$supports = true;
 					break;
