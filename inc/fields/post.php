@@ -159,18 +159,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$query = new WP_Query( $args );
 		$posts = $query->posts;
 
-		// Bulk fetch thumbnail IDs
-		$thumbnails = [];
-		if ( $show_thumbnail && $posts ) {
-			foreach ( $posts as $post ) {
-				$thumb_id = get_post_meta( $post->ID, '_thumbnail_id', true );
-				if ( $thumb_id ) {
-					$thumbnails[ $post->ID ] = (int) $thumb_id;
-				}
-			}
-
-			if ( $thumbnails ) {
-				_prime_post_caches( array_values( $thumbnails ), false, true );
+		if ( $show_thumbnail ) {
+			$thumb_ids = array_filter( array_map( 'get_post_thumbnail_id', $posts ) );
+			if ( $thumb_ids ) {
+				_prime_post_caches( $thumb_ids, false, true );
 			}
 		}
 
@@ -190,8 +182,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			];
 
 			if ( $show_thumbnail ) {
-				$thumb_id            = $thumbnails[ $post->ID ] ?? 0;
-				$option['thumbnail'] = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'thumbnail' ) : '';
+				$option['thumbnail'] = get_the_post_thumbnail_url( $post, 'thumbnail' ) ?: '';
 			}
 
 			$options[ $post->ID ] = $option;
