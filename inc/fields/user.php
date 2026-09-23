@@ -5,6 +5,15 @@ defined( 'ABSPATH' ) || die;
  * The user select field.
  */
 class RWMB_User_Field extends RWMB_Object_Choice_Field {
+	public static function admin_enqueue_scripts( $field = null ): void {
+		parent::admin_enqueue_scripts( $field );
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			wp_enqueue_style( 'rwmb-object-thumbnail', RWMB_CSS_URL . 'object-thumbnail.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-object-thumbnail', 'path', RWMB_CSS_DIR . 'object-thumbnail.css' );
+		}
+	}
+
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_users', [ __CLASS__, 'ajax_get_users' ] );
@@ -72,9 +81,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	public static function normalize( $field ) {
 		// Set default field args.
 		$field = wp_parse_args( $field, [
-			'placeholder'   => __( 'Select a user', 'meta-box' ),
-			'query_args'    => [],
-			'display_field' => 'display_name',
+			'placeholder'    => __( 'Select a user', 'meta-box' ),
+			'query_args'     => [],
+			'display_field'  => 'display_name',
+			'show_thumbnail' => false,
 		] );
 
 		$field = parent::normalize( $field );
@@ -89,6 +99,14 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		if ( $field['ajax'] ) {
 			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
+		}
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			$field['show_thumbnail']               = true;
+			$field['js_options']['show_thumbnail'] = true;
+			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			}
 		}
 
 		return $field;
@@ -121,10 +139,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Get from cache to prevent same queries.
-		$last_changed = wp_cache_get_last_changed( 'users' );
+		$last_changed   = wp_cache_get_last_changed( 'users' );
+		$show_thumbnail = ! empty( $field['show_thumbnail'] );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$key       = md5( serialize( $args ) );
-		$cache_key = "$key:$last_changed";
+		$cache_key = "$key:$last_changed:" . (int) $show_thumbnail;
 		$options   = wp_cache_get( $cache_key, 'meta-box-user-field' );
 		if ( false !== $options ) {
 			return $options;
@@ -132,6 +151,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		$users   = get_users( $args );
 		$options = [];
+
 		foreach ( $users as $user ) {
 			$label = $user->$display_field ?? __( '(No title)', 'meta-box' );
 			$label = self::filter( 'choice_label', $label, $field, $user );
@@ -140,6 +160,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 				'value' => $user->ID,
 				'label' => $label,
 			];
+
+			if ( $show_thumbnail ) {
+				$avatar                            = get_avatar_url( $user->ID, [ 'size' => 40 ] ); // 2x for retina screen
+				$options[ $user->ID ]['thumbnail'] = $avatar ?: '';
+			}
 		}
 
 		// Cache the query.

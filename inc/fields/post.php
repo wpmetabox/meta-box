@@ -5,6 +5,15 @@ defined( 'ABSPATH' ) || die;
  * The post field which allows users to select existing posts.
  */
 class RWMB_Post_Field extends RWMB_Object_Choice_Field {
+	public static function admin_enqueue_scripts( $field = null ): void {
+		parent::admin_enqueue_scripts( $field );
+
+		if ( 'select_advanced' === $field['field_type'] ) {
+			wp_enqueue_style( 'rwmb-object-thumbnail', RWMB_CSS_URL . 'object-thumbnail.css', [], RWMB_VER );
+			wp_style_add_data( 'rwmb-object-thumbnail', 'path', RWMB_CSS_DIR . 'object-thumbnail.css' );
+		}
+	}
+
 	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_posts', [ __CLASS__, 'ajax_get_posts' ] );
@@ -54,9 +63,10 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	 */
 	public static function normalize( $field ) {
 		$field = wp_parse_args( $field, [
-			'post_type'  => 'post',
-			'parent'     => false,
-			'query_args' => [],
+			'post_type'      => 'post',
+			'parent'         => false,
+			'query_args'     => [],
+			'show_thumbnail' => false,
 		] );
 
 		$field['post_type'] = (array) $field['post_type'];
@@ -97,14 +107,32 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
+		if ( 'select_advanced' === $field['field_type'] ) {
+			$supports = false;
+			foreach ( $field['post_type'] as $pt ) {
+				if ( post_type_supports( $pt, 'thumbnail' ) ) {
+					$supports = true;
+					break;
+				}
+			}
+
+			$field['show_thumbnail']               = $supports;
+			$field['js_options']['show_thumbnail'] = $supports;
+			if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
+				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
+			}
+		}
+
 		return $field;
 	}
 
 	public static function query( $meta, array $field ): array {
+		$show_thumbnail = ! empty( $field['show_thumbnail'] );
+
 		$args = wp_parse_args( $field['query_args'], [
 			'search_columns'         => [ 'post_title' ],
 			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
+			'update_post_meta_cache' => $show_thumbnail,
 			'update_post_term_cache' => false,
 			'mb_field_id'            => $field['id'],
 		] );
@@ -129,25 +157,39 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		}
 
 		$query = new WP_Query( $args );
+		$posts = $query->posts;
+
+		if ( $show_thumbnail ) {
+			$thumb_ids = array_filter( array_map( 'get_post_thumbnail_id', $posts ) );
+			if ( $thumb_ids ) {
+				_prime_post_caches( $thumb_ids, false, true );
+			}
+		}
 
 		$options = [];
-		foreach ( $query->posts as $post ) {
+		foreach ( $posts as $post ) {
 			if ( ! current_user_can( 'read_post', $post->ID ) ) {
 				continue;
 			}
 
-			$label                = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
-			$label                = self::filter( 'choice_label', $label, $field, $post );
-			$options[ $post->ID ] = [
+			$label = $post->post_title ? $post->post_title : __( '(No title)', 'meta-box' );
+			$label = self::filter( 'choice_label', $label, $field, $post );
+
+			$option = [
 				'value'  => $post->ID,
 				'label'  => $label,
 				'parent' => $post->post_parent,
 			];
+
+			if ( $show_thumbnail ) {
+				$option['thumbnail'] = get_the_post_thumbnail_url( $post, 'thumbnail' ) ?: '';
+			}
+
+			$options[ $post->ID ] = $option;
 		}
 
 		// Cache the query.
 		wp_cache_set( $cache_key, $options, 'meta-box-post-field' );
-
 		return $options;
 	}
 
