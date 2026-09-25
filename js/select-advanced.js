@@ -113,7 +113,7 @@
 					'taxonomy_advanced': 'rwmb_get_terms',
 					'user': 'rwmb_get_users'
 				};
-				params.data.action = actions[ params.data.field.type ];
+				params.data.action = params.data.field.ajax_action || actions[ params.data.field.type ];
 				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {

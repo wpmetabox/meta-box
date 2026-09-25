@@ -101,12 +101,16 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			],
 			$field['js_options']['ajax']
 		);
+		$field_data = [
+			'id'         => $field['id'],
+			'type'       => $field['type'],
+			'query_args' => $field['query_args'],
+		];
+		if ( ! empty( $field['ajax_action'] ) ) {
+			$field_data['ajax_action'] = $field['ajax_action'];
+		}
 		$field['js_options']['ajax_data'] = [
-			'field'    => [
-				'id'         => $field['id'],
-				'type'       => $field['type'],
-				'query_args' => $field['query_args'],
-			],
+			'field'    => $field_data,
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		];
 	}
