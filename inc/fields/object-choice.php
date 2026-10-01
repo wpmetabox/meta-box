@@ -61,11 +61,12 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
-			'flatten'    => true,
-			'query_args' => [],
-			'field_type' => 'select_advanced',
-			'add_new'    => false,
-			'ajax'       => true,
+			'flatten'     => true,
+			'query_args'  => [],
+			'field_type'  => 'select_advanced',
+			'add_new'     => false,
+			'ajax'        => true,
+			'ajax_action' => '',
 		] );
 		if ( 'select_advanced' !== $field['field_type'] ) {
 			$field['ajax'] = false;
