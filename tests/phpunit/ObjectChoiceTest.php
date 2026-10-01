@@ -59,6 +59,37 @@ class ObjectChoiceTest extends TestCase {
 		);
 	}
 
+	public function testNonStringAjaxActionIsOmitted(): void {
+		$field = RWMB_Post_Field::normalize( [
+			'id'          => 'post',
+			'type'        => 'post',
+			'ajax_action' => [ 'not-a-string' ],
+		] );
+
+		$this->assertArrayNotHasKey(
+			'ajax_action',
+			$field['js_options']['ajax_data']['field']
+		);
+	}
+
+	public function testMissingAjaxActionDoesNotWarn(): void {
+		$field = [
+			'id'         => 'post',
+			'type'       => 'post',
+			'ajax'       => true,
+			'query_args' => [],
+			'js_options' => [],
+		];
+
+		$method = new ReflectionMethod( RWMB_Object_Choice_Field::class, 'set_ajax_params' );
+		$method->invokeArgs( null, [ &$field ] );
+
+		$this->assertArrayNotHasKey(
+			'ajax_action',
+			$field['js_options']['ajax_data']['field']
+		);
+	}
+
 	public function testAjaxDataIsNotCreatedWhenAjaxIsDisabled(): void {
 		$field = RWMB_Post_Field::normalize( [
 			'id'         => 'post',
