@@ -67,6 +67,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'parent'         => false,
 			'query_args'     => [],
 			'show_thumbnail' => false,
+			'ajax_action'    => 'rwmb_get_posts',
 		] );
 
 		$field['post_type'] = (array) $field['post_type'];
