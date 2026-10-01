@@ -94,9 +94,9 @@
 				}
 
 				// Create cache key from ajax params from only necessary keys to make cache available for multiple fields.
+				// Keep data.action so different ajax handlers do not share cached results.
 				var data = $.extend( true, {}, params.data );
 				delete data.field.id;
-				delete data.action;
 				if ( !data.term ) {
 					delete data.term;
 				}
@@ -107,8 +107,7 @@
 					return;
 				}
 
-				// Action comes from PHP field.ajax_action (set in each field's normalize()).
-				params.data.action = params.data.field.ajax_action;
+				// Action is set by PHP on ajax_data.action (merged into params.data above).
 				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {

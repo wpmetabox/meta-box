@@ -107,18 +107,18 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			'type'       => $field['type'],
 			'query_args' => $field['query_args'],
 		];
-		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
-		// strips data.action from the cache key, so two fields with the same type +
-		// query_args but different ajax_action would otherwise share a cache entry.
-		$ajax_action = $field['ajax_action'] ?? '';
-		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
-		if ( $ajax_action ) {
-			$field_data['ajax_action'] = $ajax_action;
-		}
-		$field['js_options']['ajax_data'] = [
+		$ajax_data = [
 			'field'    => $field_data,
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		];
+		// Transport-only: set top-level action (not inside field) so it is not echoed
+		// back in $_POST['field']. Keep it in the select2 cache key (see select-advanced.js).
+		$ajax_action = $field['ajax_action'] ?? '';
+		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
+		if ( $ajax_action ) {
+			$ajax_data['action'] = $ajax_action;
+		}
+		$field['js_options']['ajax_data'] = $ajax_data;
 	}
 
 	/**
