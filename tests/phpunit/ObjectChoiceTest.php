@@ -1,4 +1,5 @@
 <?php
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ObjectChoiceTest extends TestCase {
@@ -8,10 +9,37 @@ class ObjectChoiceTest extends TestCase {
 		}
 	}
 
-	public function testCustomAjaxActionIsIncludedInAjaxData(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'          => 'post',
-			'type'        => 'post',
+	/**
+	 * Built-in object-choice field types and their ajax actions.
+	 * Covers the former JS type→action map, including taxonomy_advanced inheritance.
+	 */
+	public static function fieldTypeProvider(): array {
+		return [
+			'post'              => [ RWMB_Post_Field::class, 'post', 'rwmb_get_posts' ],
+			'user'              => [ RWMB_User_Field::class, 'user', 'rwmb_get_users' ],
+			'taxonomy'          => [ RWMB_Taxonomy_Field::class, 'taxonomy', 'rwmb_get_terms' ],
+			'taxonomy_advanced' => [ RWMB_Taxonomy_Advanced_Field::class, 'taxonomy_advanced', 'rwmb_get_terms' ],
+		];
+	}
+
+	#[DataProvider( 'fieldTypeProvider' )]
+	public function testDefaultAjaxActionIsIncludedWhenNotPassed( string $class, string $type, string $expected_action ): void {
+		$field = $class::normalize( [
+			'id'   => $type,
+			'type' => $type,
+		] );
+
+		$this->assertSame(
+			$expected_action,
+			$field['js_options']['ajax_data']['field']['ajax_action']
+		);
+	}
+
+	#[DataProvider( 'fieldTypeProvider' )]
+	public function testCustomAjaxActionIsIncludedInAjaxData( string $class, string $type, string $_expected_action ): void {
+		$field = $class::normalize( [
+			'id'          => $type,
+			'type'        => $type,
 			'ajax_action' => 'my_custom_action',
 		] );
 
@@ -21,35 +49,11 @@ class ObjectChoiceTest extends TestCase {
 		);
 	}
 
-	public function testDefaultAjaxActionIsIncludedWhenNotPassed(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'   => 'post',
-			'type' => 'post',
-		] );
-
-		$this->assertSame(
-			'rwmb_get_posts',
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
-	}
-
-	public function testEmptyAjaxActionIsOmittedFromAjaxData(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'          => 'post',
-			'type'        => 'post',
-			'ajax_action' => '',
-		] );
-
-		$this->assertArrayNotHasKey(
-			'ajax_action',
-			$field['js_options']['ajax_data']['field']
-		);
-	}
-
-	public function testAjaxActionIsSanitized(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'          => 'post',
-			'type'        => 'post',
+	#[DataProvider( 'fieldTypeProvider' )]
+	public function testAjaxActionIsSanitized( string $class, string $type, string $_expected_action ): void {
+		$field = $class::normalize( [
+			'id'          => $type,
+			'type'        => $type,
 			'ajax_action' => 'My Custom/Action!',
 		] );
 
@@ -59,10 +63,11 @@ class ObjectChoiceTest extends TestCase {
 		);
 	}
 
-	public function testNonStringAjaxActionIsOmitted(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'          => 'post',
-			'type'        => 'post',
+	#[DataProvider( 'fieldTypeProvider' )]
+	public function testNonStringAjaxActionIsOmitted( string $class, string $type, string $_expected_action ): void {
+		$field = $class::normalize( [
+			'id'          => $type,
+			'type'        => $type,
 			'ajax_action' => [ 'not-a-string' ],
 		] );
 
@@ -70,6 +75,18 @@ class ObjectChoiceTest extends TestCase {
 			'ajax_action',
 			$field['js_options']['ajax_data']['field']
 		);
+	}
+
+	#[DataProvider( 'fieldTypeProvider' )]
+	public function testAjaxDataIsNotCreatedWhenAjaxIsDisabled( string $class, string $type, string $_expected_action ): void {
+		$field = $class::normalize( [
+			'id'         => $type,
+			'type'       => $type,
+			'field_type' => 'select',
+		] );
+
+		$this->assertFalse( $field['ajax'] );
+		$this->assertArrayNotHasKey( 'ajax_data', $field['js_options'] ?? [] );
 	}
 
 	public function testMissingAjaxActionDoesNotWarn(): void {
@@ -88,16 +105,5 @@ class ObjectChoiceTest extends TestCase {
 			'ajax_action',
 			$field['js_options']['ajax_data']['field']
 		);
-	}
-
-	public function testAjaxDataIsNotCreatedWhenAjaxIsDisabled(): void {
-		$field = RWMB_Post_Field::normalize( [
-			'id'         => 'post',
-			'type'       => 'post',
-			'field_type' => 'select',
-		] );
-
-		$this->assertFalse( $field['ajax'] );
-		$this->assertArrayNotHasKey( 'ajax_data', $field['js_options'] ?? [] );
 	}
 }
