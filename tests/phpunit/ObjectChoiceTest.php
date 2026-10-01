@@ -29,8 +29,10 @@ class ObjectChoiceTest extends TestCase {
 			'type' => $type,
 		] );
 
-		$this->assertSame( $expected_action, $field['js_options']['ajax_data']['action'] );
-		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
+		$this->assertSame(
+			$expected_action,
+			$field['js_options']['ajax_data']['field']['ajax_action']
+		);
 	}
 
 	#[DataProvider( 'fieldTypeProvider' )]
@@ -41,8 +43,10 @@ class ObjectChoiceTest extends TestCase {
 			'ajax_action' => 'my_custom_action',
 		] );
 
-		$this->assertSame( 'my_custom_action', $field['js_options']['ajax_data']['action'] );
-		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
+		$this->assertSame(
+			'my_custom_action',
+			$field['js_options']['ajax_data']['field']['ajax_action']
+		);
 	}
 
 	#[DataProvider( 'fieldTypeProvider' )]
@@ -53,7 +57,10 @@ class ObjectChoiceTest extends TestCase {
 			'ajax_action' => 'My Custom/Action!',
 		] );
 
-		$this->assertSame( 'mycustomaction', $field['js_options']['ajax_data']['action'] );
+		$this->assertSame(
+			'mycustomaction',
+			$field['js_options']['ajax_data']['field']['ajax_action']
+		);
 	}
 
 	#[DataProvider( 'fieldTypeProvider' )]
@@ -64,8 +71,10 @@ class ObjectChoiceTest extends TestCase {
 			'ajax_action' => [ 'not-a-string' ],
 		] );
 
-		$this->assertArrayNotHasKey( 'action', $field['js_options']['ajax_data'] );
-		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
+		$this->assertArrayNotHasKey(
+			'ajax_action',
+			$field['js_options']['ajax_data']['field']
+		);
 	}
 
 	#[DataProvider( 'fieldTypeProvider' )]
@@ -92,7 +101,9 @@ class ObjectChoiceTest extends TestCase {
 		$method = new ReflectionMethod( RWMB_Object_Choice_Field::class, 'set_ajax_params' );
 		$method->invokeArgs( null, [ &$field ] );
 
-		$this->assertArrayNotHasKey( 'action', $field['js_options']['ajax_data'] );
-		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
+		$this->assertArrayNotHasKey(
+			'ajax_action',
+			$field['js_options']['ajax_data']['field']
+		);
 	}
 }
