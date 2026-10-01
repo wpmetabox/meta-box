@@ -71,7 +71,6 @@ class RWMB_Taxonomy_Field extends RWMB_Object_Choice_Field {
 			'taxonomy'       => 'category',
 			'query_args'     => [],
 			'remove_default' => false,
-			'ajax_action'    => 'rwmb_get_terms',
 		] );
 
 		// Force taxonomy to be an array.

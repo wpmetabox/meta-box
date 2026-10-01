@@ -85,7 +85,6 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'query_args'     => [],
 			'display_field'  => 'display_name',
 			'show_thumbnail' => false,
-			'ajax_action'    => 'rwmb_get_users',
 		] );
 
 		$field = parent::normalize( $field );

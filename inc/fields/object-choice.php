@@ -112,6 +112,15 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		// query_args but different ajax_action would otherwise share a cache entry.
 		$ajax_action = $field['ajax_action'] ?? '';
 		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
+		if ( ! $ajax_action ) {
+			$actions = [
+				'post'              => 'rwmb_get_posts',
+				'taxonomy'          => 'rwmb_get_terms',
+				'taxonomy_advanced' => 'rwmb_get_terms',
+				'user'              => 'rwmb_get_users',
+			];
+			$ajax_action = $actions[ $field['type'] ] ?? '';
+		}
 		if ( $ajax_action ) {
 			$field_data['ajax_action'] = $ajax_action;
 		}
