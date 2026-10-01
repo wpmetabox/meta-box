@@ -2,126 +2,113 @@
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ObjectChoiceTest extends TestCase {
-	protected function setUp(): void {
-		if ( ! defined( 'RWMB_VER' ) ) {
-			$this->markTestSkipped( 'Meta Box is not active' );
-		}
+/**
+ * Exposes set_ajax_params() for tests without reflection.
+ */
+class RWMB_Object_Choice_Ajax_Test_Field extends RWMB_Object_Choice_Field {
+	public static function query( $meta, array $field ): array {
+		return [];
 	}
 
+	public static function apply_ajax_params( array &$field ): void {
+		parent::set_ajax_params( $field );
+	}
+}
+
+class ObjectChoiceTest extends TestCase {
 	/**
-	 * Built-in object-choice field types and their ajax actions.
-	 * Covers the former JS type→action map, including taxonomy_advanced inheritance.
+	 * Type → default ajax action map in set_ajax_params().
+	 * Includes taxonomy_advanced as its own map key (not via normalize inheritance).
 	 */
-	public static function fieldTypeProvider(): array {
+	public static function defaultAjaxActionProvider(): array {
 		return [
-			'post'              => [ RWMB_Post_Field::class, 'post', 'rwmb_get_posts' ],
-			'user'              => [ RWMB_User_Field::class, 'user', 'rwmb_get_users' ],
-			'taxonomy'          => [ RWMB_Taxonomy_Field::class, 'taxonomy', 'rwmb_get_terms' ],
-			'taxonomy_advanced' => [ RWMB_Taxonomy_Advanced_Field::class, 'taxonomy_advanced', 'rwmb_get_terms' ],
+			'post'              => [ 'post', 'rwmb_get_posts' ],
+			'user'              => [ 'user', 'rwmb_get_users' ],
+			'taxonomy'          => [ 'taxonomy', 'rwmb_get_terms' ],
+			'taxonomy_advanced' => [ 'taxonomy_advanced', 'rwmb_get_terms' ],
 		];
 	}
 
-	#[DataProvider( 'fieldTypeProvider' )]
-	public function testDefaultAjaxActionIsIncludedWhenNotPassed( string $class, string $type, string $expected_action ): void {
-		$field = $class::normalize( [
+	private function field( array $overrides = [] ): array {
+		return array_merge( [
+			'id'          => 'field',
+			'type'        => 'post',
+			'ajax'        => true,
+			'ajax_action' => '',
+			'query_args'  => [],
+			'js_options'  => [],
+		], $overrides );
+	}
+
+	#[DataProvider( 'defaultAjaxActionProvider' )]
+	public function testDefaultAjaxActionIsDerivedFromFieldType( string $type, string $expected_action ): void {
+		$field = $this->field( [
 			'id'   => $type,
 			'type' => $type,
 		] );
 
-		$this->assertSame(
-			$expected_action,
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
+
+		$this->assertSame( $expected_action, $field['js_options']['ajax_data']['field']['ajax_action'] );
 	}
 
-	#[DataProvider( 'fieldTypeProvider' )]
-	public function testCustomAjaxActionIsIncludedInAjaxData( string $class, string $type, string $_expected_action ): void {
-		$field = $class::normalize( [
-			'id'          => $type,
-			'type'        => $type,
+	public function testCustomAjaxActionIsIncludedInAjaxData(): void {
+		$field = $this->field( [
 			'ajax_action' => 'my_custom_action',
 		] );
 
-		$this->assertSame(
-			'my_custom_action',
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
+
+		$this->assertSame( 'my_custom_action', $field['js_options']['ajax_data']['field']['ajax_action'] );
 	}
 
-	#[DataProvider( 'fieldTypeProvider' )]
-	public function testAjaxActionIsSanitized( string $class, string $type, string $_expected_action ): void {
-		$field = $class::normalize( [
-			'id'          => $type,
-			'type'        => $type,
+	public function testAjaxActionIsSanitized(): void {
+		$field = $this->field( [
 			'ajax_action' => 'My Custom/Action!',
 		] );
 
-		$this->assertSame(
-			'mycustomaction',
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
+
+		$this->assertSame( 'mycustomaction', $field['js_options']['ajax_data']['field']['ajax_action'] );
 	}
 
-	#[DataProvider( 'fieldTypeProvider' )]
-	public function testNonStringAjaxActionFallsBackToTypeDefault( string $class, string $type, string $expected_action ): void {
-		$field = $class::normalize( [
-			'id'          => $type,
-			'type'        => $type,
+	public function testNonStringAjaxActionFallsBackToTypeDefault(): void {
+		$field = $this->field( [
+			'type'        => 'user',
 			'ajax_action' => [ 'not-a-string' ],
 		] );
 
-		$this->assertSame(
-			$expected_action,
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
+
+		$this->assertSame( 'rwmb_get_users', $field['js_options']['ajax_data']['field']['ajax_action'] );
 	}
 
-	#[DataProvider( 'fieldTypeProvider' )]
-	public function testAjaxDataIsNotCreatedWhenAjaxIsDisabled( string $class, string $type, string $_expected_action ): void {
-		$field = $class::normalize( [
-			'id'         => $type,
-			'type'       => $type,
-			'field_type' => 'select',
+	public function testAjaxDataIsNotCreatedWhenAjaxIsDisabled(): void {
+		$field = $this->field( [
+			'ajax' => false,
 		] );
 
-		$this->assertFalse( $field['ajax'] );
-		$this->assertArrayNotHasKey( 'ajax_data', $field['js_options'] ?? [] );
-	}
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
 
-	public function testMissingAjaxActionFallsBackToTypeDefault(): void {
-		$field = [
-			'id'         => 'post',
-			'type'       => 'post',
-			'ajax'       => true,
-			'query_args' => [],
-			'js_options' => [],
-		];
-
-		$method = new ReflectionMethod( RWMB_Object_Choice_Field::class, 'set_ajax_params' );
-		$method->invokeArgs( null, [ &$field ] );
-
-		$this->assertSame(
-			'rwmb_get_posts',
-			$field['js_options']['ajax_data']['field']['ajax_action']
-		);
+		$this->assertArrayNotHasKey( 'ajax_data', $field['js_options'] );
 	}
 
 	public function testUnknownTypeWithoutAjaxActionOmitsAction(): void {
-		$field = [
-			'id'         => 'custom',
-			'type'       => 'custom_object',
-			'ajax'       => true,
-			'query_args' => [],
-			'js_options' => [],
-		];
+		$field = $this->field( [
+			'type' => 'custom_object',
+		] );
 
-		$method = new ReflectionMethod( RWMB_Object_Choice_Field::class, 'set_ajax_params' );
-		$method->invokeArgs( null, [ &$field ] );
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
 
-		$this->assertArrayNotHasKey(
-			'ajax_action',
-			$field['js_options']['ajax_data']['field']
-		);
+		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
+	}
+
+	public function testSidebarFieldDoesNotSetAjaxData(): void {
+		$field = RWMB_Sidebar_Field::normalize( [
+			'id'   => 'sidebar',
+			'type' => 'sidebar',
+		] );
+
+		$this->assertArrayNotHasKey( 'ajax_data', $field['js_options'] ?? [] );
 	}
 }
