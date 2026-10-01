@@ -110,8 +110,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
 		// strips data.action from the cache key, so two fields with the same type +
 		// query_args but different ajax_action would otherwise share a cache entry.
-		if ( ! empty( $field['ajax_action'] ) ) {
-			$field_data['ajax_action'] = $field['ajax_action'];
+		$ajax_action = (string) $field['ajax_action'];
+		if ( $ajax_action ) {
+			$field_data['ajax_action'] = $ajax_action;
 		}
 		$field['js_options']['ajax_data'] = [
 			'field'    => $field_data,
