@@ -26,7 +26,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Auto-merge patch and minor updates
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --squash "$PR_URL"
+        run: |
+          if gh pr merge --auto --rebase "$PR_URL"; then
+            echo "Enabled auto-merge with rebase"
+          else
+            echo "Rebase not available, falling back to squash"
+            gh pr merge --auto --squash "$PR_URL"
+          fi
         env:
           PR_URL: ${{ inputs.pr_url || github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
