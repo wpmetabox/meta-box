@@ -5,6 +5,7 @@ Thumbs.db
 ## Editor
 .vscode
 .cursor
+.commandcode
 
 ## Git
 .git
@@ -21,8 +22,7 @@ phpstan.*
 ## JS
 package.json
 package-lock.json
-pnpm-lock.yaml
-pnpm-workspace.yaml
+pnpm-*.yaml
 webpack.config.js
 esbuild.js
 

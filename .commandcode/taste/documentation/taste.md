@@ -1,0 +1,11 @@
+# documentation
+- When documenting potentially sensitive or controversial behaviors, place them in low-key sections (e.g., FAQ as the last entry) rather than prominently featured areas. Confidence: 0.70
+- When documenting a behavior that has a customization hook, include a concrete code snippet (not just a text description of the hook) so users can copy-paste it. Confidence: 0.75
+- When writing docs, verify the claims actually hold in the codebase before stating them (e.g., trace `rwmb_meta()` / storage resolution for a new integration instead of assuming "works automatically"), and correct the doc when a claim turns out false. Confidence: 0.90
+- Verify that links/references included in docs point to real targets (e.g., functions pages, extension names); drop references that don't exist to avoid broken links. Confidence: 0.85
+- Prefer concise, shortened text over verbose explanations in documentation; avoid lengthy introductory phrases when a shorter sentence suffices. Confidence: 0.60
+- Include links to related public repositories (e.g., GitHub source, Meta Box) in README files, particularly when external reviewers require source-code disclosure. Confidence: 0.65
+- When writing integration docs, cover the full feature scope (e.g., all of WooCommerce — products and orders), not just one special mode; structure by use case with dedicated sections (Products, Orders) and demote special modes to sub-sections (e.g., HPOS under Orders) with a Limitations sub-section. Confidence: 0.85
+- Explicitly document feature limitations (e.g., search/sort by custom field values not supported in HPOS mode) rather than implying full feature parity. Confidence: 0.80
+- Do not use em dashes (—) in docs; replace them with commas, colons, or other punctuation. Confidence: 0.90
+- Prefers Simplified Technical English (STE) style for docs: short sentences (max ~25 words, one idea per sentence), active voice, no contractions, no semicolons, no em dashes, and consistent terminology for the same concept. Confidence: 0.90

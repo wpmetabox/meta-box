@@ -1,0 +1,14 @@
+# code-style
+- Prefer simpler, clearer code over complex or clever solutions; simplify verbose conditions and drop unnecessary logic. Confidence: 0.80
+- Prefer dropping redundant prefixes from class names (e.g., `OrderMetaBox` → `MetaBox`, `OrderStorage` → `Storage`) when the enclosing folder/namespace already provides the context (e.g., an `HPOS` folder). Confidence: 0.75
+- Do not use `empty()` to check field attributes already set in `normalize()`, use `if ( $field['...'] )` or `if ( ! $field['...'] )` instead. Confidence: 0.75
+- Avoid single-file subdirectories; move a lone file up to its parent folder for a flatter, cleaner directory structure. Confidence: 0.70
+- Use `has_*()` boolean method names instead of getters inside conditions for readability. Confidence: 0.65
+- Keep class methods private unless external code needs them; minimize the public API surface. Confidence: 0.60
+- When an API parameter is inherently meaningless for the domain (e.g., `$delete_all` for per-order meta), prefer documenting the deviation in a docblock over adding early-return guard code that changes behavior. Confidence: 0.60
+- Remove leftover debug statements (commented-out `dd()`/`dump()` calls, debug log helpers like `lqm()`) from changes before committing, and proactively flag them when reviewing unstaged diffs. Confidence: 0.60
+- Comments should be short but still clear: prefers a one-line comment that states both the condition/context and the action (e.g., "HPOS without data sync: posts table only has a placeholder post type, so resolve the real order type."). Rejects both overly terse comments that lose meaning and overly long multi-line comments — "ngắn nhưng vẫn phải rõ ràng". Confidence: 0.85
+- Keep diffs minimal and scoped to the task: preserve the existing/base-branch code as much as possible and revert incidental changes (e.g., unneeded `composer.json`/`composer.lock` edits) before committing. Confidence: 0.75
+- In JavaScript, prefer optional chaining (`?.`) to collapse chains of null/undefined checks (e.g., `options.ajax_data?.field?.type`) instead of nested `&&` guards. Confidence: 0.60
+- Add explicit return types (e.g., `: void`) to new methods where possible, matching the conventions of newer classes in the same field hierarchy, while staying PHP 7.4-compatible. Confidence: 0.60
+- Naming: prefer a shared base class name with a BEM-style modifier (e.g., `rwmb-object-thumbnail--user`) over a distinct prefixed class for the same component family (e.g., `rwmb-user-thumbnail`). Confidence: 0.60

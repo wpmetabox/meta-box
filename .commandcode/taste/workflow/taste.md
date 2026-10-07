@@ -1,0 +1,16 @@
+# workflow
+- When asked to "commit & push", stage all changes with `git add -A`, commit with a descriptive message, and push to remote in one workflow. Confidence: 0.80
+- When writing changelogs, use git history between version tags (e.g., `git log <tag>..HEAD`) to discover and include ALL changes since the last release, not just the most recent commits. Confidence: 0.85
+- Write PR descriptions in simple, concise English (Simple English style): state only the changes, no checklist format, no mention of AI tools used. Confidence: 0.80
+- Extract shared functionality into reusable Composer packages so multiple plugins can share it; guard the package so it loads only once even if included by several plugins. Confidence: 0.80
+- When reviewing code, proactively flag obvious issues, redundant methods, and simplification opportunities. Confidence: 0.65
+- When fixing a numbered list of review findings, fix them in batches by number (e.g., first 1-4, then 5-6). Confidence: 0.60
+- When asked to rewrite a changelog to be user-friendly, write entries in plain user-facing language grouped by impact (e.g., "Tighten security for **Abilities**", "Improve the readme", "Fix minor issues") and summarize internal/technical details instead of listing raw commit messages. Confidence: 0.80
+- When asked to verify whether a reported issue is a real bug, trace the actual call flow and call sites first, and distinguish real-world impact from theoretical inconsistency before confirming or fixing. Confidence: 0.80
+- When updating documentation (e.g., the separate docsv2 repo) based on a merged/approved PR, create a new branch before writing anything — and base it on the main branch rather than the current work-in-progress branch. Confidence: 0.90
+- When debugging "this doesn't work" reports that span multiple plugins, verify empirically: activate the involved plugins in the local WP environment and run a reproduction script via WP CLI (register the meta box, create real objects, simulate POST + hooks) instead of relying only on static code analysis; then clean up the test environment (deactivate plugins, drop test tables, remove temporary options) before reporting back. Confidence: 0.80
+- Before reporting a bug fix complete, re-run the reproduction scenario (including related flows such as delete/cleanup paths) to confirm the fix works, and run PHP syntax lint (`php -l`) on the modified file. Confidence: 0.65
+- When the task involves updating docs, read the existing repo's conventions first (sidebar structure, frontmatter, link style, existing integration pages) and follow them for the new content. Confidence: 0.70
+- When restructuring a doc page (e.g., splitting integration docs into sections and renaming the page), update cross-references elsewhere in the repo (e.g., compatibility pages, links to old slugs) to match the new structure and avoid broken links. Confidence: 0.85
+- Do not patch third-party library files directly: move the patch into the project's own file (e.g., `js/validation/validation.js`), upgrade the library to the latest version, and keep the enqueued script version in sync with the library version. Confidence: 0.70
+- When follow-up fixes belong to the same logical change, amend the previous commit and rewrite its message rather than adding another commit. Confidence: 0.60

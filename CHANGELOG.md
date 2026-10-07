@@ -1,6 +1,6 @@
-### Unreleased
+### 5.15.2 - 2026-10-07
 
-- Allow custom `ajax_action` for object-choice `select_advanced` fields (post, user, taxonomy), so third-party field types can reuse select2 ajax
+- Show feature image for post field (if post type supports), and avatar for user field
 
 ### 5.15.1 - 2026-09-17
 

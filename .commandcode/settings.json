@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(git add -A && git commit -F - <<'EOF' Add rwmb_modify_plugin_recommendations filter and FAQ entry Co-authored-by: CommandCodeBot <noreply@commandcode.ai> EOF)",
+      "Shell(git:*)",
+      "Shell(unzip:*)",
+      "Shell(grep:*)",
+      "Shell(ls -la .github/workflows/ 2>/dev/null; echo \"===\"; ls -la bin/ 2>/dev/null; echo \"===\"; cat .gitattributes 2>/dev/null)",
+      "Shell(ls -la .gitattributes 2>&1; echo \"===\"; cat .gitattributes 2>&1; echo \"===\"; git log --oneline --all -- .distignore | head -10)",
+      "Shell(svn:*)",
+      "Shell(ls -la composer.json 2>&1; echo \"=== SVN INFO ===\"; svn info composer.json 2>&1; echo \"=== SVN LS TRUNK ===\"; svn ls trunk 2>&1 | grep -iE \"composer|package|phpcs|phpstan\")",
+      "Shell(svn log --limit 10 trunk/composer.json 2>&1; echo \"=== CHECK LS ===\"; svn ls trunk/composer.json 2>&1)",
+      "Shell(echo \"=== ROOT IGNORE ===\"; svn propget svn:ignore . 2>&1; echo \"=== TRUNK IGNORE ===\"; svn propget svn:ignore trunk 2>&1; echo \"=== GLOBAL IGNORES ===\"; svn propget svn:global-ignores . 2>&1; echo \"=== STATUS NO-IGNORE ===\"; svn status --no-ignore 2>&1 | grep -iE \"composer\" | head -20)",
+      "Shell(S=/private/tmp/commandcode-501/-Users-rilwis-sites-wp-wp-content-plugins-meta-box/0b7c576a-7518-4cbe-a01c-cfecbd2e597c/scratchpad/svntest; rm -rf \"$S\"; svnadmin create \"$S/repo\"; svn mkdir file://$S/repo/trunk -m init >/dev/null 2>&1; svn co file://$S/repo/trunk \"$S/wc\" >/dev/null 2>&1; cd \"$S/wc\"; svn propset svn:ignore \"*.json\" . >/dev/null; echo '{}' > test.json; echo \"=== svn add . --force ===\"; svn add . --force; echo \"=== STATUS ===\"; svn status; echo \"=== STATUS --no-ignore ===\"; svn status --no-ignore)",
+      "Shell(S=/private/tmp/commandcode-501/-Users-rilwis-sites-wp-wp-content-plugins-meta-box/0b7c576a-7518-4cbe-a01c-cfecbd2e597c/scratchpad/svntest; mkdir -p \"$S\"; svnadmin create \"$S/repo\" && echo \"repo ok\"; svn mkdir file://$S/repo/trunk -m init >/dev/null 2>&1; svn co file://$S/repo/trunk \"$S/wc\" >/dev/null 2>&1 && echo \"co ok\"; cd \"$S/wc\"; svn propset svn:ignore \"*.json\" . >/dev/null; svn commit -m ignore >/dev/null 2>&1; echo '{}' > test.json; echo \"=== svn add . --force ===\"; svn add . --force; echo \"=== STATUS ===\"; svn status; echo \"=== STATUS --no-ignore ===\"; svn status --no-ignore)",
+      "Shell(echo \"=== IGNORE TAG 5.14.1 ===\"; svn propget svn:ignore tags/5.14.1 2>&1; echo \"=== FILE TRONG TAG ===\"; svn ls tags/5.14.1/composer.json 2>&1; echo \"=== STATUS NO-IGNORE TAG ===\"; svn status --no-ignore tags/5.14.1 2>&1 | grep -iE \"composer|json\"; echo \"=== LS TAG ROOT ===\"; svn ls tags/5.14.1 2>&1 | grep -iE \"composer|json|\\.md\")",
+      "Shell(php -l src/Integrations/WooCommerce/HPOS/MetaBox.php)",
+      "Shell(php -l src/Integrations/WooCommerce/HPOS/Storage.php)",
+      "Shell(php -l src/Integrations/WooCommerce/HPOS/Manager.php)",
+      "Shell(ls ~/sites/docsv2/docs/functions/ | grep -i \"rwmb-meta\\|rwmb_meta\" ; echo \"===ORDER ITEMS===\"; ls ~/sites/docsv2/extensions/Integration/ 2>/dev/null; ls ~/sites/docsv2/extensions/ | head)",
+      "Shell(npm:*)",
+      "Shell(which wp 2>/dev/null; wp --info 2>/dev/null | head -5; echo \"===DB===\"; ls ~/sites/wp/wp-config.php 2>/dev/null && echo \"wp-config exists\")",
+      "Shell(wp:*)",
+      "Shell(php -l src/Loader.php)",
+      "Shell(php -l inc/fields/post.php)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}
