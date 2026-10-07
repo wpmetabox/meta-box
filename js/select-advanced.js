@@ -107,13 +107,8 @@
 					return;
 				}
 
-				var actions = {
-					'post': 'rwmb_get_posts',
-					'taxonomy': 'rwmb_get_terms',
-					'taxonomy_advanced': 'rwmb_get_terms',
-					'user': 'rwmb_get_users'
-				};
-				params.data.action = actions[ params.data.field.type ];
+				// Action comes from PHP field.ajax_action (set in each field's normalize()).
+				params.data.action = params.data.field.ajax_action;
 				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {

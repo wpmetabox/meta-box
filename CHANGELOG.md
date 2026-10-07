@@ -1,3 +1,7 @@
+### Unreleased
+
+- Allow custom `ajax_action` for object-choice `select_advanced` fields (post, user, taxonomy), so third-party field types can reuse select2 ajax
+
 ### 5.15.1 - 2026-09-17
 
 - Fix multibyte IDs breaking WordPress 7.1 meta box tooltips

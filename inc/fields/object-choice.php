@@ -61,11 +61,12 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	public static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, [
-			'flatten'    => true,
-			'query_args' => [],
-			'field_type' => 'select_advanced',
-			'add_new'    => false,
-			'ajax'       => true,
+			'flatten'     => true,
+			'query_args'  => [],
+			'field_type'  => 'select_advanced',
+			'add_new'     => false,
+			'ajax'        => true,
+			'ajax_action' => '',
 		] );
 		if ( 'select_advanced' !== $field['field_type'] ) {
 			$field['ajax'] = false;
@@ -101,12 +102,30 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			],
 			$field['js_options']['ajax']
 		);
+		$field_data = [
+			'id'         => $field['id'],
+			'type'       => $field['type'],
+			'query_args' => $field['query_args'],
+		];
+		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
+		// strips data.action from the cache key, so two fields with the same type +
+		// query_args but different ajax_action would otherwise share a cache entry.
+		$ajax_action = $field['ajax_action'] ?? '';
+		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
+		if ( ! $ajax_action ) {
+			$actions = [
+				'post'              => 'rwmb_get_posts',
+				'taxonomy'          => 'rwmb_get_terms',
+				'taxonomy_advanced' => 'rwmb_get_terms',
+				'user'              => 'rwmb_get_users',
+			];
+			$ajax_action = $actions[ $field['type'] ] ?? '';
+		}
+		if ( $ajax_action ) {
+			$field_data['ajax_action'] = $ajax_action;
+		}
 		$field['js_options']['ajax_data'] = [
-			'field'    => [
-				'id'         => $field['id'],
-				'type'       => $field['type'],
-				'query_args' => $field['query_args'],
-			],
+			'field'    => $field_data,
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		];
 	}
