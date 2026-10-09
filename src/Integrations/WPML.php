@@ -9,6 +9,14 @@ class WPML {
 	 */
 	private $field_types = [ 'post', 'taxonomy_advanced' ];
 
+	/**
+	 * Field types whose value is text that users write. The values of other field types are choices,
+	 * numbers, colors or IDs, which must not be translated.
+	 *
+	 * @var array
+	 */
+	private $text_field_types = [ 'text', 'textarea', 'wysiwyg' ];
+
 	public function __construct() {
 		// Run before meta boxes are registered (at `init` with priority 20) so it can modify fields.
 		add_action( 'init', [ $this, 'init' ] );
@@ -20,6 +28,9 @@ class WPML {
 		}
 		add_filter( 'wpml_duplicate_generic_string', [ $this, 'translate_ids' ], 10, 3 );
 		add_filter( 'rwmb_normalize_field', [ $this, 'modify_field' ] );
+
+		// Declare the text fields of blocks. Priority 9: WPML reads the blocks config at priority 10.
+		add_filter( 'wpml_config_array', [ $this, 'add_blocks_config' ], 9 );
 
 		// Filter the value on the front end.
 		add_filter( 'rwmb_get_value', [ $this, 'get_translated_value' ], 10, 2 );
@@ -105,6 +116,98 @@ class WPML {
 		}
 
 		return $field;
+	}
+
+	/**
+	 * Declare each block's text fields to WPML, so WPML translates only them.
+	 * Without this, WPML sees a block with no config and offers all its values for translation,
+	 * including select values, colors and the block ID.
+	 * A block without text fields is declared with translate="0": nothing to translate.
+	 *
+	 * @param array $config WPML config.
+	 * @return array
+	 */
+	public function add_blocks_config( $config ) {
+		if ( ! is_array( $config ) || ! isset( $config['wpml-config'] ) ) {
+			return $config;
+		}
+
+		foreach ( rwmb_get_registry( 'meta_box' )->all() as $meta_box ) {
+			if ( 'block' !== ( $meta_box->meta_box['type'] ?? '' ) ) {
+				continue;
+			}
+
+			$keys  = $this->get_text_field_keys( $meta_box->meta_box['fields'] ?? [] );
+			$block = [
+				'value' => '',
+				'attr'  => [
+					'type'      => 'meta-box/' . $meta_box->id,
+					'translate' => $keys ? '1' : '0',
+				],
+			];
+
+			if ( $keys ) {
+				// All field values are saved in the block's "data" attribute.
+				$block['key'] = [
+					[
+						'value' => '',
+						'attr'  => [ 'name' => 'data' ],
+						'key'   => $keys,
+					],
+				];
+			}
+
+			$config['wpml-config']['gutenberg-blocks']['gutenberg-block'][] = $block;
+		}
+
+		return $config;
+	}
+
+	/**
+	 * Get the WPML keys of the text fields, including the text fields inside groups.
+	 *
+	 * @param array $fields Fields.
+	 * @return array
+	 */
+	private function get_text_field_keys( array $fields ): array {
+		$keys = [];
+
+		foreach ( $fields as $field ) {
+			if ( empty( $field['id'] ) ) {
+				continue;
+			}
+
+			$type = $field['type'] ?? 'text';
+			$key  = [
+				'value' => '',
+				'attr'  => [ 'name' => $field['id'] ],
+			];
+
+			if ( 'group' === $type ) {
+				$sub_keys = $this->get_text_field_keys( $field['fields'] ?? [] );
+				if ( ! $sub_keys ) {
+					continue;
+				}
+				$key['key'] = $sub_keys;
+			} elseif ( ! in_array( $type, $this->text_field_types, true ) ) {
+				continue;
+			}
+
+			// A cloneable field saves a list of values: "*" matches each of them.
+			if ( ! empty( $field['clone'] ) ) {
+				$item         = $key;
+				$item['attr'] = [ 'name' => '*' ];
+				$key          = [
+					'value' => '',
+					'attr'  => [ 'name' => $field['id'] ],
+					'key'   => [ $item ],
+				];
+			}
+
+			$keys[] = $key;
+		}
+
+		return $keys;
 	}
 
 	public function get_translated_value( $value, $field ) {
