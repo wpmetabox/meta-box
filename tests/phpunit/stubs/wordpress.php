@@ -32,10 +32,32 @@ if ( ! function_exists( 'sanitize_key' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sanitize_title' ) ) {
+	function sanitize_title( $title ): string {
+		return trim( (string) preg_replace( '/[^a-z0-9_]+/', '-', strtolower( (string) $title ) ), '-' );
+	}
+}
+
 if ( ! function_exists( '__' ) ) {
 	function __( $text, $domain = 'default' ) {
 		return $text;
 	}
+}
+
+if ( ! function_exists( 'esc_html__' ) ) {
+	function esc_html__( $text, $domain = 'default' ) {
+		return $text;
+	}
+}
+
+if ( ! function_exists( 'esc_html' ) ) {
+	function esc_html( $text ) {
+		return $text;
+	}
+}
+
+if ( ! function_exists( '_doing_it_wrong' ) ) {
+	function _doing_it_wrong( $function_name, $message, $version ) {}
 }
 
 if ( ! function_exists( 'admin_url' ) ) {
