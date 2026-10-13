@@ -167,6 +167,30 @@ class BlockBindingsSourceTest extends TestCase {
 		$this->assertSame( 'https://example.com/full.jpg', $result );
 	}
 
+	public function testUserObjectVarsOutsideAllowlistReturnNull(): void {
+		$user_id = self::ensure_test_user();
+		$user    = get_userdata( $user_id );
+		$field   = [
+			'type'     => 'user',
+			'id'       => 'bb_user',
+			'name'     => 'User',
+			'clone'    => false,
+			'multiple' => false,
+		];
+
+		$this->assertSame( 'BB Bindings Test', $this->source->expose_format_value( $user_id, $field, 'display_name' ) );
+
+		$props = array_keys( get_object_vars( $user ) );
+		$this->assertContains( 'ID', $props );
+
+		foreach ( $props as $prop ) {
+			if ( in_array( $prop, [ 'display_name', 'user_url' ], true ) ) {
+				continue;
+			}
+			$this->assertNull( $this->source->expose_format_value( $user_id, $field, $prop ), $prop );
+		}
+	}
+
 	private static function ensure_test_user(): int {
 		$login = 'bb_bindings_test_user';
 		$user  = get_user_by( 'login', $login );
