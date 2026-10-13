@@ -3,9 +3,6 @@ use MetaBox\Integrations\BlockBindings\Source;
 use PHPUnit\Framework\TestCase;
 use WP_Block;
 
-/**
- * Exposes format_value for regression tests.
- */
 class BlockBindings_Source_Test_Double extends Source {
 	protected function name(): string {
 		return 'meta-box/test-field';
@@ -45,10 +42,6 @@ class BlockBindings_Source_Test_Double extends Source {
 
 	public function expose_format_value( $value, array $field, string $key ) {
 		return $this->format_value( $value, $field, $key );
-	}
-
-	public function expose_get_value( array $source_args, WP_Block $block_instance, string $attribute_name ) {
-		return $this->get_value( $source_args, $block_instance, $attribute_name );
 	}
 }
 

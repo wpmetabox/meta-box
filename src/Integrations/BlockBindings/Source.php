@@ -136,13 +136,11 @@ abstract class Source {
 			return null;
 		}
 
-		// `key` is block markup. Reject it before the field value is read.
 		$key = $this->resolve_key( $field, $source_args, $attribute_name );
 		if ( null === $key ) {
 			return null;
 		}
 
-		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
 		$value = $this->get_single_value( RWMB_Field::call( 'get_value', $field, $args, $object_id ), $field );
 		if ( $this->is_empty( $value ) ) {
 			return null;
@@ -249,8 +247,6 @@ abstract class Source {
 	}
 
 	/**
-	 * Keys this field may expose. Empty means a scalar field, so the binding key is ignored.
-	 *
 	 * @return string[]
 	 */
 	protected function allowed_keys( array $field ): array {
@@ -262,24 +258,21 @@ abstract class Source {
 	}
 
 	/**
-	 * Canonical key for one binding, '' for a scalar field, or null to reject.
-	 *
-	 * `key` is untrusted block markup. Core link blocks bind `href`. Video fields store that URL in `src`.
-	 *
 	 * @param array  $field          Field settings.
-	 * @param array  $source_args    Binding args. `key` is untrusted.
-	 * @param string $attribute_name Bound attribute, used when `key` is absent.
-	 * @return string|null
+	 * @param array  $source_args    Binding args.
+	 * @param string $attribute_name Bound attribute when `key` is absent.
+	 * @return string|null Canonical key, or null when the key is not allowed.
 	 */
 	protected function resolve_key( array $field, array $source_args, string $attribute_name ): ?string {
 		$allowed = $this->allowed_keys( $field );
-		if ( ! $allowed ) {
-			return '';
-		}
-
-		$key = $source_args['key'] ?? $attribute_name;
+		$key     = $source_args['key'] ?? $attribute_name;
 		if ( ! is_string( $key ) ) {
 			return null;
+		}
+
+		// Scalar fields have no catalog. The key is unused in format_value().
+		if ( ! $allowed ) {
+			return $key;
 		}
 
 		if ( 'href' === $key ) {
@@ -294,8 +287,6 @@ abstract class Source {
 	}
 
 	/**
-	 * Allowlisted parts of a structured value. The caller key is never a property or offset.
-	 *
 	 * @param object|array $value WP_Post, WP_User, WP_Term, or a field array.
 	 * @return array<string, mixed>
 	 */
@@ -310,7 +301,6 @@ abstract class Source {
 		}
 
 		if ( is_array( $value ) && array_key_exists( 'url', $parts ) ) {
-			// Image info stores the original file URL in full_url.
 			$parts['url'] = $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
 		}
 
@@ -318,10 +308,7 @@ abstract class Source {
 	}
 
 	/**
-	 * Whether the current request may read a post stored in a `post` field.
-	 *
-	 * Same order as Post::has_permission(). A password-protected post is still publicly viewable,
-	 * so the password check runs first and blocks every key.
+	 * A password-protected post still passes is_post_publicly_viewable(), so check the password first.
 	 */
 	protected function can_read_post( WP_Post $post ): bool {
 		if ( post_password_required( $post ) ) {
@@ -336,11 +323,9 @@ abstract class Source {
 	}
 
 	/**
-	 * Map a single field value to an already-resolved key.
-	 *
 	 * @param mixed  $value Single field value.
 	 * @param array  $field Field settings.
-	 * @param string $key   Canonical value key. Empty for a scalar field.
+	 * @param string $key   Canonical value key from resolve_key().
 	 * @return mixed
 	 */
 	protected function format_value( $value, array $field, string $key ) {
