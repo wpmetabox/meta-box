@@ -270,7 +270,7 @@ abstract class Source {
 			return null;
 		}
 
-		// Scalar fields have no catalog. The key is unused in format_value().
+		// No catalog: accept any key; format_value ignores it for scalars.
 		if ( ! $allowed ) {
 			return $key;
 		}
@@ -288,23 +288,22 @@ abstract class Source {
 
 	/**
 	 * @param object|array $value WP_Post, WP_User, WP_Term, or a field array.
-	 * @return array<string, mixed>
+	 * @return mixed
 	 */
-	protected function value_parts( $value, array $field ): array {
-		$parts = [];
-		foreach ( $this->allowed_keys( $field ) as $part ) {
-			if ( is_object( $value ) ) {
-				$parts[ $part ] = $value->$part ?? null;
-			} elseif ( is_array( $value ) ) {
-				$parts[ $part ] = $value[ $part ] ?? null;
-			}
+	protected function value_part( $value, array $field, string $key ) {
+		if ( ! in_array( $key, $this->allowed_keys( $field ), true ) ) {
+			return null;
 		}
 
-		if ( is_array( $value ) && array_key_exists( 'url', $parts ) ) {
-			$parts['url'] = $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
+		if ( is_array( $value ) && 'url' === $key ) {
+			return $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
 		}
 
-		return $parts;
+		if ( is_object( $value ) ) {
+			return $value->$key ?? null;
+		}
+
+		return is_array( $value ) ? ( $value[ $key ] ?? null ) : null;
 	}
 
 	/**
@@ -356,7 +355,7 @@ abstract class Source {
 		}
 
 		if ( is_object( $value ) || is_array( $value ) ) {
-			return $this->to_string( $this->value_parts( $value, $field )[ $key ] ?? null );
+			return $this->to_string( $this->value_part( $value, $field, $key ) );
 		}
 
 		return $this->to_string( $value );

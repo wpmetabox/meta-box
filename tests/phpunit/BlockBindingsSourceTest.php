@@ -1,7 +1,6 @@
 <?php
 use MetaBox\Integrations\BlockBindings\Source;
 use PHPUnit\Framework\TestCase;
-use WP_Block;
 
 class BlockBindings_Source_Test_Double extends Source {
 	protected function name(): string {
