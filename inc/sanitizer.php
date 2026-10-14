@@ -195,9 +195,10 @@ class RWMB_Sanitizer {
 	 * intact while unsafe HTML/attributes are stripped.
 	 *
 	 * @param mixed $value The submitted value.
+	 * @return string
 	 */
 	private function sanitize_block_editor( $value ): string {
-		$value = (string) $value;
+		$value = wp_unslash( (string) $value );
 
 		if ( current_user_can( 'unfiltered_html' ) ) {
 			return $value;
