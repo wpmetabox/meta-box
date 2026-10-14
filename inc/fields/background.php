@@ -144,15 +144,21 @@ class RWMB_Background_Field extends RWMB_Field {
 	 * @return string
 	 */
 	public static function format_single_value( $field, $value, $args, $post_id ) {
-		if ( empty( $value ) ) {
+		if ( empty( $value ) || ! is_array( $value ) ) {
 			return '';
 		}
-		$output = '';
-		$value  = array_filter( $value );
-		foreach ( $value as $key => $subvalue ) {
-			$subvalue = 'image' === $key ? 'url(' . esc_url( $subvalue ) . ')' : esc_attr( $subvalue );
+
+		$allowed = [ 'color', 'image', 'repeat', 'attachment', 'position', 'size' ];
+		$output  = '';
+
+		foreach ( $allowed as $key ) {
+			if ( empty( $value[ $key ] ) ) {
+				continue;
+			}
+			$subvalue = 'image' === $key ? 'url(' . esc_url( $value[ $key ] ) . ')' : esc_attr( $value[ $key ] );
 			$output  .= 'background-' . $key . ': ' . $subvalue . ';';
 		}
+
 		return $output;
 	}
 }
