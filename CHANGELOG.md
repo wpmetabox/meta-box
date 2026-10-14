@@ -1,3 +1,10 @@
+### 5.15.3
+
+- Fix `[rwmb_meta]` shortcode permission bypass for non-post object types (user, term, comment, setting, and custom types)
+- Breaking: user meta via shortcode now requires the `edit_user` capability for the given user
+- Breaking: unknown or custom `object_type` values are denied by default. Use the `rwmb_meta_shortcode_permission` filter to allow them
+- Note: permission checks run only when `object_id` is set in the shortcode. Without `object_id`, the shortcode uses the current object context
+
 ### 5.15.2 - 2026-10-07
 
 - Show feature image for post field (if post type supports), and avatar for user field

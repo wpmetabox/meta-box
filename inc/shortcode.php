@@ -10,7 +10,7 @@ class RWMB_Shortcode {
 	 * Render the [rwmb_meta] shortcode.
 	 *
 	 * @param array|string $atts Shortcode attributes. WordPress may pass an empty string.
-	 * @return string|mixed Field value for output.
+	 * @return mixed Field value for output.
 	 */
 	public function register_shortcode( $atts ) {
 		$atts = wp_parse_args( $atts, [
@@ -55,7 +55,7 @@ class RWMB_Shortcode {
 	private function get_value( string $field_id, $object_id, array $atts ) {
 		// When object_id is set, make sure the current user can view that object.
 		if ( ! is_null( $object_id ) && ! $this->check_object_permission( $object_id, $atts ) ) {
-			return null;
+			return '';
 		}
 
 		$attribute = $atts['attribute'];
@@ -91,7 +91,7 @@ class RWMB_Shortcode {
 	 * @return bool
 	 */
 	private function check_object_permission( $object_id, array $atts ): bool {
-		$object_type = $atts['object_type'] ?? 'post';
+		$object_type = ! empty( $atts['object_type'] ) ? $atts['object_type'] : 'post';
 		$allowed     = $this->user_can_read_object( $object_type, $object_id );
 
 		// Allow or deny access. Example: add_filter( 'rwmb_meta_shortcode_permission', '__return_true' );
@@ -196,12 +196,15 @@ class RWMB_Shortcode {
 	 */
 	private function user_can_read_setting( string $option_name ): bool {
 		foreach ( apply_filters( 'mb_settings_pages', [] ) as $page ) {
-			if ( ! isset( $page['option_name'] ) || $option_name !== $page['option_name'] ) {
+			// Match Factory: empty option_name falls back to id.
+			$page_option = ! empty( $page['option_name'] ) ? $page['option_name'] : ( $page['id'] ?? '' );
+			if ( '' === $page_option || $option_name !== $page_option ) {
 				continue;
 			}
 
 			// Check the capability of this settings page.
-			return current_user_can( $page['capability'] ?? 'edit_theme_options' );
+			$capability = $page['capability'] ?? 'edit_theme_options';
+			return current_user_can( $capability ?: 'edit_theme_options' );
 		}
 
 		return false;
