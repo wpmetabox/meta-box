@@ -2,10 +2,16 @@
 use MetaBox\Support\Arr;
 
 class RWMB_Shortcode {
-	public function init() {
+	public function init(): void {
 		add_shortcode( 'rwmb_meta', [ $this, 'register_shortcode' ] );
 	}
 
+	/**
+	 * Render the [rwmb_meta] shortcode.
+	 *
+	 * @param array|string $atts Shortcode attributes. WordPress may pass an empty string.
+	 * @return string|mixed Field value for output.
+	 */
 	public function register_shortcode( $atts ) {
 		$atts = wp_parse_args( $atts, [
 			'id'                => '',
@@ -38,15 +44,18 @@ class RWMB_Shortcode {
 		return $value;
 	}
 
-	private function get_value( $field_id, $object_id, $atts ) {
-		// If we pass object_id via shortcode, we need to make sure current user
-		// has permission to view the object
-		if ( ! is_null( $object_id ) ) {
-			$has_object_permission = $this->check_object_permission( $object_id, $atts );
-
-			if ( ! $has_object_permission ) {
-				return null;
-			}
+	/**
+	 * Get the field value for the shortcode.
+	 *
+	 * @param string          $field_id  Field ID.
+	 * @param int|string|null $object_id Object ID. Null uses the current object.
+	 * @param array           $atts      Shortcode attributes.
+	 * @return mixed
+	 */
+	private function get_value( string $field_id, $object_id, array $atts ) {
+		// When object_id is set, make sure the current user can view that object.
+		if ( ! is_null( $object_id ) && ! $this->check_object_permission( $object_id, $atts ) ) {
+			return null;
 		}
 
 		$attribute = $atts['attribute'];
@@ -74,29 +83,127 @@ class RWMB_Shortcode {
 		return $value;
 	}
 
-	private function check_object_permission( $object_id, $atts ) {
-		// Skip checking if object_type is not post
-		if ( isset( $atts['object_type'] ) && $atts['object_type'] !== 'post' ) {
-			return true;
-		}
+	/**
+	 * Check if the current user can read the object in the shortcode.
+	 *
+	 * @param int|string $object_id Object ID.
+	 * @param array      $atts      Shortcode attributes.
+	 * @return bool
+	 */
+	private function check_object_permission( $object_id, array $atts ): bool {
+		$object_type = $atts['object_type'] ?? 'post';
+		$allowed     = $this->user_can_read_object( $object_type, $object_id );
 
-		$post = get_post( $object_id );
+		// Allow or deny access. Example: add_filter( 'rwmb_meta_shortcode_permission', '__return_true' );
+		return (bool) apply_filters( 'rwmb_meta_shortcode_permission', $allowed, $object_type, $object_id, $atts );
+	}
+
+	/**
+	 * Route the read check to the handler for the object type.
+	 *
+	 * @param string     $object_type Object type.
+	 * @param int|string $object_id   Object ID.
+	 * @return bool
+	 */
+	private function user_can_read_object( string $object_type, $object_id ): bool {
+		switch ( $object_type ) {
+			case 'post':
+				return $this->user_can_read_post( $object_id );
+
+			case 'term':
+				return $this->user_can_read_term( $object_id );
+
+			case 'comment':
+				return $this->user_can_read_comment( $object_id );
+
+			case 'user':
+				return current_user_can( 'edit_user', $object_id );
+
+			case 'setting':
+				return $this->user_can_read_setting( (string) $object_id );
+
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Check if the current user can read a post.
+	 *
+	 * @param int|string $post_id Post ID.
+	 * @return bool
+	 */
+	private function user_can_read_post( $post_id ): bool {
+		$post = get_post( $post_id );
 		if ( ! $post ) {
 			return false;
 		}
 
-		// Skip checking if post status is publish AND no password is set
+		// Allow a published post that has no password.
 		if ( 'publish' === $post->post_status && ! post_password_required( $post ) ) {
 			return true;
 		}
 
-		$object_type = get_post_type_object( $post->post_type );
-		if ( ! $object_type ) {
+		$post_type_object = get_post_type_object( $post->post_type );
+		if ( ! $post_type_object ) {
 			return false;
 		}
 
-		$read_post = $object_type->cap->read_post;
+		return current_user_can( $post_type_object->cap->read_post, $post_id );
+	}
 
-		return current_user_can( $read_post, $object_id );
+	/**
+	 * Check if the current user can read a term.
+	 *
+	 * @param int|string $term_id Term ID.
+	 * @return bool
+	 */
+	private function user_can_read_term( $term_id ): bool {
+		$term = get_term( $term_id );
+		if ( ! $term || is_wp_error( $term ) ) {
+			return false;
+		}
+
+		// Allow a term that is publicly viewable. For other terms, check edit_term.
+		return is_term_publicly_viewable( $term ) || current_user_can( 'edit_term', $term_id );
+	}
+
+	/**
+	 * Check if the current user can read a comment.
+	 *
+	 * @param int|string $comment_id Comment ID.
+	 * @return bool
+	 */
+	private function user_can_read_comment( $comment_id ): bool {
+		$comment = get_comment( $comment_id );
+		if ( ! $comment ) {
+			return false;
+		}
+
+		// Allow an approved comment when the parent post is readable. For other comments, check edit_comment.
+		if ( '1' === (string) $comment->comment_approved && $this->user_can_read_post( $comment->comment_post_ID ) ) {
+			return true;
+		}
+
+		return current_user_can( 'edit_comment', $comment_id );
+	}
+
+	/**
+	 * Check if the current user can read a settings page by option name.
+	 *
+	 * @param string $option_name Settings page option name.
+	 * @return bool
+	 */
+	private function user_can_read_setting( string $option_name ): bool {
+		foreach ( apply_filters( 'mb_settings_pages', [] ) as $page ) {
+			if ( ! isset( $page['option_name'] ) || $option_name !== $page['option_name'] ) {
+				continue;
+			}
+
+			// Check the capability of this settings page.
+			return current_user_can( $page['capability'] ?? 'edit_theme_options' );
+		}
+
+		return false;
 	}
 }
