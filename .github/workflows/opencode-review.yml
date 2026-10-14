@@ -29,8 +29,9 @@ jobs:
             - Nếu đang có các file PHP/JavaScript/CSS/SCSS/HTML chưa được commit, thì các thay đổi được tính là trong các file đó.
 
             ## Nguyên tắc
-            - Viết bằng tiếng Việt
-            - Chỉ liệt kê các vấn đề cần sửa hoặc lưu ý, không đánh giá & liệt kê các điểm đã làm tốt hoặc đã sửa xong.
+            - Luôn viết bằng tiếng Việt
+            - Nếu không nói rõ thì mặc định output vào file `review.md`. Nếu đã có sẵn file này thì cập nhật nội dung của nó.
+            - Chỉ liệt kê các lỗi cần sửa hoặc các vấn đề cần lưu ý. Không liệt kê các vấn đề đã làm ổn hoặc đã sửa xong. Nếu phần nào không có lỗi hoặc hoặc không cần chú ý thì bỏ qua cả phần đó.
             - Chỉ đánh giá phần code được thay đổi, không đánh giá phần code đã có trước đó.
 
             ## Nội dung
@@ -50,7 +51,7 @@ jobs:
             - Kiểm tra code có tuân thủ các quy tắc viết code của WordPress không? Nếu trong repo có file `phpcs.xml` thì sử dụng file đó để kiểm tra. Hoặc nếu trong `composer.json` có script `phpcs` thì sử dụng `composer run phpcs` để kiểm tra.
             - Kiểm tra lỗi cú pháp.
             - Kiểm tra các hàm có type hint và return type không? Yêu cầu cần có ở tất cả những chỗ có thể, và đảm bảo tương thích với PHP 7.4.
-            - Kiểm tra có dead code không? Dead code là code không được sử dụng và không cần thiết, cần được loại bỏ, VD: 1 hàm/method/biến/import class/import thư viện không được sử dụng.
+            - Kiểm tra có code không được sử dụng, không cần thiết, hoặc cần được loại bỏ không?
 
             ### Tối ưu
             - Code có thể tối ưu để gọn gàng hơn, dễ hiểu hơn và dễ bảo trì hơn không?
