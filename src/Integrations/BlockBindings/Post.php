@@ -37,19 +37,7 @@ class Post extends Source {
 
 	protected function has_permission( $object_id, WP_Block $block_instance ): bool {
 		$post = get_post( (int) $object_id );
-		if ( ! $post ) {
-			return false;
-		}
-
-		if ( post_password_required( $post ) ) {
-			return false;
-		}
-
-		if ( is_post_publicly_viewable( $post ) ) {
-			return true;
-		}
-
-		return current_user_can( 'read_post', $object_id );
+		return $post ? $this->can_read_post( $post ) : false;
 	}
 
 	/**

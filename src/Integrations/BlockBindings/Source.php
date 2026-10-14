@@ -3,6 +3,7 @@ namespace MetaBox\Integrations\BlockBindings;
 
 use RWMB_Field;
 use WP_Block;
+use WP_Post;
 
 /**
  * Block bindings source for Meta Box fields.
@@ -135,14 +136,17 @@ abstract class Source {
 			return null;
 		}
 
-		// Reuse the already-fetched $field instead of rwmb_get_value(), which would look it up again.
+		$key = $this->resolve_key( $field, $source_args, $attribute_name );
+		if ( null === $key ) {
+			return null;
+		}
+
 		$value = $this->get_single_value( RWMB_Field::call( 'get_value', $field, $args, $object_id ), $field );
 		if ( $this->is_empty( $value ) ) {
 			return null;
 		}
 
-		// `key` picks a part of a structured value, falling back to the bound attribute name (e.g. Image block `url`).
-		return $this->format_value( $value, $field, $source_args['key'] ?? $attribute_name );
+		return $this->format_value( $value, $field, $key );
 	}
 
 	/**
@@ -153,14 +157,11 @@ abstract class Source {
 	protected function binding_options( array $field ): array {
 		$name = $field['name'] ?: $field['id'];
 		$id   = $field['id'];
+		$keys = $this->allowed_keys( $field );
 
-		// Keys come from the field's options config.
-		if ( 'fieldset_text' === $field['type'] && ! empty( $field['options'] ) && is_array( $field['options'] ) ) {
-			return $this->value_key_options( $name, $id, array_keys( $field['options'] ), $field['options'] );
-		}
-
-		if ( isset( self::VALUE_KEYS[ $field['type'] ] ) ) {
-			return $this->value_key_options( $name, $id, self::VALUE_KEYS[ $field['type'] ] );
+		if ( $keys ) {
+			$labels = 'fieldset_text' === $field['type'] ? $field['options'] : [];
+			return $this->value_key_options( $name, $id, $keys, $labels );
 		}
 
 		return [
@@ -246,17 +247,90 @@ abstract class Source {
 	}
 
 	/**
-	 * Map a single field value to the requested key / block attribute.
-	 *
+	 * @return string[]
+	 */
+	protected function allowed_keys( array $field ): array {
+		if ( 'fieldset_text' === $field['type'] && ! empty( $field['options'] ) && is_array( $field['options'] ) ) {
+			return array_map( 'strval', array_keys( $field['options'] ) );
+		}
+
+		return self::VALUE_KEYS[ $field['type'] ] ?? [];
+	}
+
+	/**
+	 * @param array  $field          Field settings.
+	 * @param array  $source_args    Binding args.
+	 * @param string $attribute_name Bound attribute when `key` is absent.
+	 * @return string|null Canonical key, or null when the key is not allowed.
+	 */
+	protected function resolve_key( array $field, array $source_args, string $attribute_name ): ?string {
+		$allowed = $this->allowed_keys( $field );
+		$key     = $source_args['key'] ?? $attribute_name;
+		if ( ! is_string( $key ) ) {
+			return null;
+		}
+
+		// No catalog: accept any key; format_value ignores it for scalars.
+		if ( ! $allowed ) {
+			return $key;
+		}
+
+		if ( 'href' === $key ) {
+			$key = 'url';
+		}
+
+		if ( 'url' === $key && in_array( 'src', $allowed, true ) && ! in_array( 'url', $allowed, true ) ) {
+			$key = 'src';
+		}
+
+		return in_array( $key, $allowed, true ) ? $key : null;
+	}
+
+	/**
+	 * @param object|array $value WP_Post, WP_User, WP_Term, or a field array.
+	 * @return mixed
+	 */
+	protected function value_part( $value, array $field, string $key ) {
+		if ( ! in_array( $key, $this->allowed_keys( $field ), true ) ) {
+			return null;
+		}
+
+		if ( is_array( $value ) && 'url' === $key ) {
+			return $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null;
+		}
+
+		if ( is_object( $value ) ) {
+			return $value->$key ?? null;
+		}
+
+		return is_array( $value ) ? ( $value[ $key ] ?? null ) : null;
+	}
+
+	/**
+	 * A password-protected post still passes is_post_publicly_viewable(), so check the password first.
+	 */
+	protected function can_read_post( WP_Post $post ): bool {
+		if ( post_password_required( $post ) ) {
+			return false;
+		}
+
+		if ( is_post_publicly_viewable( $post ) ) {
+			return true;
+		}
+
+		return current_user_can( 'read_post', $post->ID );
+	}
+
+	/**
 	 * @param mixed  $value Single field value.
 	 * @param array  $field Field settings.
-	 * @param string $key   Value key or block attribute name.
+	 * @param string $key   Canonical value key from resolve_key().
 	 * @return mixed
 	 */
 	protected function format_value( $value, array $field, string $key ) {
 		if ( 'post' === $field['type'] ) {
 			$post = get_post( $value );
-			if ( ! $post ) {
+			if ( ! $post || ! $this->can_read_post( $post ) ) {
 				return null;
 			}
 			if ( 'url' === $key ) {
@@ -280,16 +354,8 @@ abstract class Source {
 			return is_wp_error( $url ) ? null : $url;
 		}
 
-		if ( is_object( $value ) ) {
-			return $this->to_string( $value->$key ?? null );
-		}
-
-		if ( is_array( $value ) ) {
-			// Image uses full_url/url; video uses src.
-			if ( in_array( $key, [ 'url', 'href' ], true ) ) {
-				return $this->to_string( $value['full_url'] ?? $value['url'] ?? $value['src'] ?? null );
-			}
-			return $this->to_string( $value[ $key ] ?? null );
+		if ( is_object( $value ) || is_array( $value ) ) {
+			return $this->to_string( $this->value_part( $value, $field, $key ) );
 		}
 
 		return $this->to_string( $value );
