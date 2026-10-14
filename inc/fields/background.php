@@ -143,7 +143,7 @@ class RWMB_Background_Field extends RWMB_Field {
 	 *
 	 * @return string
 	 */
-	public static function format_single_value( $field, $value, $args, $post_id ) {
+	public static function format_single_value( $field, $value, $args, $post_id ): string {
 		if ( empty( $value ) || ! is_array( $value ) ) {
 			return '';
 		}

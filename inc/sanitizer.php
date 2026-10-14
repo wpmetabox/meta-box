@@ -168,7 +168,7 @@ class RWMB_Sanitizer {
 	 * @param  array $value The submitted value.
 	 * @return array
 	 */
-	private function sanitize_background( $value ) {
+	private function sanitize_background( $value ): array {
 		$value = wp_parse_args( (array) $value, [
 			'color'      => '',
 			'image'      => '',
@@ -180,7 +180,7 @@ class RWMB_Sanitizer {
 
 		return [
 			'color'      => $this->sanitize_color( (string) $value['color'] ),
-			'image'      => esc_url_raw( $value['image'] ),
+			'image'      => esc_url_raw( (string) $value['image'] ),
 			'repeat'     => in_array( $value['repeat'], [ 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ], true ) ? $value['repeat'] : '',
 			'position'   => in_array( $value['position'], [ 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ], true ) ? $value['position'] : '',
 			'attachment' => in_array( $value['attachment'], [ 'fixed', 'scroll', 'inherit' ], true ) ? $value['attachment'] : '',
