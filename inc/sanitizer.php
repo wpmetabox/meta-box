@@ -41,6 +41,7 @@ class RWMB_Sanitizer {
 		$callbacks = [
 			'autocomplete'      => [ $this, 'sanitize_choice' ],
 			'background'        => [ $this, 'sanitize_background' ],
+			'block_editor'      => [ $this, 'sanitize_block_editor' ],
 			'button_group'      => [ $this, 'sanitize_choice' ],
 			'checkbox'          => [ $this, 'sanitize_checkbox' ],
 			'checkbox_list'     => [ $this, 'sanitize_choice' ],
@@ -184,6 +185,25 @@ class RWMB_Sanitizer {
 		$value['size']       = in_array( $value['size'], [ 'inherit', 'cover', 'contain' ], true ) ? $value['size'] : '';
 
 		return $value;
+	}
+
+	/**
+	 * Sanitize block editor field content.
+	 *
+	 * Users with unfiltered_html keep raw markup (same as core post content).
+	 * Everyone else goes through filter_block_content() so block delimiters stay
+	 * intact while unsafe HTML/attributes are stripped.
+	 *
+	 * @param mixed $value The submitted value.
+	 */
+	private function sanitize_block_editor( $value ): string {
+		$value = (string) $value;
+
+		if ( current_user_can( 'unfiltered_html' ) ) {
+			return $value;
+		}
+
+		return filter_block_content( $value, 'post' );
 	}
 
 	/**
