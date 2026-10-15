@@ -86,7 +86,8 @@ class RWMB_Sanitizer {
 			'wysiwyg'           => 'wp_kses_post',
 		];
 
-		$type = $field['type'];
+		// Field configs may use hyphens (block-editor); map keys use underscores.
+		$type = str_replace( '-', '_', $field['type'] );
 
 		return $callbacks[ $type ] ?? null;
 	}
@@ -190,21 +191,15 @@ class RWMB_Sanitizer {
 	/**
 	 * Sanitize block editor field content.
 	 *
-	 * Users with unfiltered_html keep raw markup (same as core post content).
-	 * Everyone else goes through filter_block_content() so block delimiters stay
-	 * intact while unsafe HTML/attributes are stripped.
+	 * Users with unfiltered_html keep raw markup. Others get wp_kses_post().
 	 *
-	 * @param mixed $value The submitted value.
+	 * @param mixed $value Submitted value.
 	 * @return string
 	 */
 	private function sanitize_block_editor( $value ): string {
 		$value = wp_unslash( (string) $value );
 
-		if ( current_user_can( 'unfiltered_html' ) ) {
-			return $value;
-		}
-
-		return filter_block_content( $value, 'post' );
+		return current_user_can( 'unfiltered_html' ) ? $value : wp_kses_post( $value );
 	}
 
 	/**
