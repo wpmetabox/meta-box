@@ -190,10 +190,7 @@ class RWMB_Sanitizer {
 	/**
 	 * Sanitize block editor field content.
 	 *
-	 * Users with unfiltered_html keep raw markup. Others get wp_kses_post().
-	 * Do not wp_unslash() here: update_metadata() already unslashes once.
-	 *
-	 * @param mixed $value Submitted value (expected slashed from $_POST).
+	 * @param mixed $value Submitted value.
 	 * @return string
 	 */
 	private function sanitize_block_editor( $value ): string {
