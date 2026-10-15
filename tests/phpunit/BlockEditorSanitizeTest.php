@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 class BlockEditorSanitizeTest extends TestCase {
 	private RWMB_Sanitizer $sanitizer;
 
+	/** @var int[] */
+	private array $user_ids = [];
+
 	protected function setUp(): void {
 		parent::setUp();
 		if ( ! defined( 'RWMB_VER' ) || ! function_exists( 'wp_kses_post' ) || ! function_exists( 'wp_set_current_user' ) ) {
@@ -12,9 +15,22 @@ class BlockEditorSanitizeTest extends TestCase {
 		$this->sanitizer = new RWMB_Sanitizer();
 	}
 
+	protected function tearDown(): void {
+		wp_set_current_user( 0 );
+		if ( ! function_exists( 'wp_delete_user' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/user.php';
+		}
+		foreach ( $this->user_ids as $user_id ) {
+			if ( get_user_by( 'id', $user_id ) ) {
+				wp_delete_user( $user_id );
+			}
+		}
+		$this->user_ids = [];
+		parent::tearDown();
+	}
+
 	public function testStripsScriptWithoutUnfilteredHtml(): void {
-		$user_id = self::ensure_subscriber();
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->create_user( 'subscriber' ) );
 		$this->assertFalse( current_user_can( 'unfiltered_html' ) );
 
 		$dirty  = "<!-- wp:html -->\n<script>alert(1)</script>\n<!-- /wp:html -->";
@@ -28,8 +44,7 @@ class BlockEditorSanitizeTest extends TestCase {
 	}
 
 	public function testKeepsRawMarkupWithUnfilteredHtml(): void {
-		$user_id = self::ensure_admin();
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->create_user( 'administrator' ) );
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			$this->markTestSkipped( 'Admin lacks unfiltered_html (multisite or DISALLOW_UNFILTERED_HTML)' );
 		}
@@ -43,41 +58,33 @@ class BlockEditorSanitizeTest extends TestCase {
 		$this->assertStringContainsString( '<script>alert(1)</script>', $result );
 	}
 
-	private static function ensure_subscriber(): int {
-		$login = 'bb_sanitize_subscriber';
-		$user  = get_user_by( 'login', $login );
-		if ( $user ) {
-			return (int) $user->ID;
+	public function testPreservesSlashedBackslashesForStorage(): void {
+		wp_set_current_user( $this->create_user( 'administrator' ) );
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
+			$this->markTestSkipped( 'Admin lacks unfiltered_html (multisite or DISALLOW_UNFILTERED_HTML)' );
 		}
 
-		$id = wp_insert_user( [
-			'user_login' => $login,
-			'user_pass'  => wp_generate_password( 24 ),
-			'user_email' => 'bb-sanitize-subscriber@example.com',
-			'role'       => 'subscriber',
+		// Mimic magic-quoted $_POST: one logical backslash arrives as two.
+		$slashed = wp_slash( "<!-- wp:code -->\n<pre>path\\to\\file</pre>\n<!-- /wp:code -->" );
+		$result  = $this->sanitizer->sanitize( $slashed, [
+			'type'              => 'block_editor',
+			'sanitize_callback' => null,
 		] );
-		if ( is_wp_error( $id ) ) {
-			self::fail( $id->get_error_message() );
-		}
-		return (int) $id;
+
+		$this->assertSame( $slashed, $result, 'sanitize must leave slashes for update_metadata()' );
 	}
 
-	private static function ensure_admin(): int {
-		$login = 'bb_sanitize_admin';
-		$user  = get_user_by( 'login', $login );
-		if ( $user ) {
-			return (int) $user->ID;
-		}
-
+	private function create_user( string $role ): int {
 		$id = wp_insert_user( [
-			'user_login' => $login,
+			'user_login' => 'bb_sanitize_' . $role . '_' . uniqid(),
 			'user_pass'  => wp_generate_password( 24 ),
-			'user_email' => 'bb-sanitize-admin@example.com',
-			'role'       => 'administrator',
+			'user_email' => 'bb-sanitize-' . $role . '-' . uniqid() . '@example.com',
+			'role'       => $role,
 		] );
 		if ( is_wp_error( $id ) ) {
-			self::fail( $id->get_error_message() );
+			$this->fail( $id->get_error_message() );
 		}
+		$this->user_ids[] = (int) $id;
 		return (int) $id;
 	}
 }
