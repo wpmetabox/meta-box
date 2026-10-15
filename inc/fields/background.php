@@ -152,7 +152,7 @@ class RWMB_Background_Field extends RWMB_Field {
 		$output  = '';
 
 		foreach ( $allowed as $key ) {
-			if ( empty( $value[ $key ] ) ) {
+			if ( empty( $value[ $key ] ) || ! is_string( $value[ $key ] ) ) {
 				continue;
 			}
 			$subvalue = 'image' === $key ? 'url(' . esc_url( $value[ $key ] ) . ')' : esc_attr( $value[ $key ] );
