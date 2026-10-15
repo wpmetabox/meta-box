@@ -61,9 +61,9 @@ class RWMB_Shortcode {
 	 * @return mixed
 	 */
 	private function get_value( string $field_id, $object_id, array $atts ) {
-		// Non-post types need object_id. Without it, use the current post.
+		// Non-post types need object_id. Without it, return nothing.
 		if ( ! empty( $atts['object_type'] ) && 'post' !== $atts['object_type'] && is_null( $object_id ) ) {
-			$atts['object_type'] = 'post';
+			return '';
 		}
 
 		if ( ! is_null( $object_id ) && ! $this->check_object_permission( $field_id, $object_id, $atts ) ) {
@@ -149,7 +149,7 @@ class RWMB_Shortcode {
 				return $this->user_can_read_setting( (string) $object_id, true );
 
 			case 'model':
-				return $this->user_can_read_model( $field_id, $atts );
+				return $this->user_can_read_model( $atts );
 
 			default:
 				return false;
@@ -168,7 +168,11 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// Publicly viewable posts are readable without a capability check.
+		// A password-protected post still passes is_post_publicly_viewable().
+		if ( post_password_required( $post ) ) {
+			return false;
+		}
+
 		if ( is_post_publicly_viewable( $post ) ) {
 			return true;
 		}
@@ -249,27 +253,17 @@ class RWMB_Shortcode {
 	/**
 	 * Check whether the current user can read a custom table model field.
 	 *
-	 * @param string $field_id Field ID.
-	 * @param array  $atts     Shortcode attributes.
+	 * @param array $atts Shortcode attributes.
 	 * @return bool
 	 */
-	private function user_can_read_model( string $field_id, array $atts ): bool {
+	private function user_can_read_model( array $atts ): bool {
 		if ( ! class_exists( '\MetaBox\CustomTable\Model\Factory' ) ) {
 			return false;
 		}
 
-		$model_name = $atts['model'] ?? $atts['type'] ?? '';
-		if ( ! $model_name && $field_id ) {
-			$models = rwmb_get_registry( 'field' )->get_by_object_type( 'model' );
-			foreach ( $models as $name => $fields ) {
-				if ( isset( $fields[ $field_id ] ) ) {
-					$model_name = $name;
-					break;
-				}
-			}
-		}
-
-		$model = $model_name ? \MetaBox\CustomTable\Model\Factory::get( $model_name ) : null;
+		// Same as rwmb_meta(): type is the model name.
+		$model_name = $atts['type'] ?? '';
+		$model      = $model_name ? \MetaBox\CustomTable\Model\Factory::get( $model_name ) : null;
 		if ( ! $model ) {
 			return false;
 		}

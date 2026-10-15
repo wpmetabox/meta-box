@@ -124,22 +124,35 @@ class ShortcodePermissionTest extends TestCase {
 		self::delete_user( $user_id );
 	}
 
-	public function testMissingObjectIdSkipsPermissionCheck(): void {
-		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'rwmb_the_value' ) ) {
-			$this->markTestSkipped( 'WordPress helpers are not available.' );
-		}
-
-		add_filter( 'rwmb_meta_shortcode_permission', function () {
-			$this->fail( 'Permission check must not run when object_id is missing.' );
-		} );
-
-		// object_type=user without object_id falls back to post and skips the permission gate.
-		$this->invoke( 'get_value', 'any_field', null, [
+	public function testMissingObjectIdForNonPostReturnsEmpty(): void {
+		$value = $this->invoke( 'get_value', 'any_field', null, [
 			'object_type' => 'user',
 			'attribute'   => '',
 		] );
 
-		$this->addToAssertionCount( 1 );
+		$this->assertSame( '', $value );
+	}
+
+	public function testPasswordProtectedPostIsDenied(): void {
+		if ( ! function_exists( 'wp_insert_post' ) || ! function_exists( 'wp_set_current_user' ) ) {
+			$this->markTestSkipped( 'WordPress post APIs are not available.' );
+		}
+
+		$post_id = wp_insert_post( [
+			'post_title'    => 'Secret Post',
+			'post_status'   => 'publish',
+			'post_type'     => 'post',
+			'post_password' => 'secret',
+			'post_content'  => '',
+		] );
+		if ( ! $post_id || is_wp_error( $post_id ) ) {
+			$this->markTestSkipped( 'Failed to create password-protected post.' );
+		}
+
+		wp_set_current_user( 0 );
+		$this->assertFalse( $this->invoke( 'user_can_read_post', $post_id ) );
+
+		wp_delete_post( $post_id, true );
 	}
 
 	public function testSettingUsesPageCapability(): void {
