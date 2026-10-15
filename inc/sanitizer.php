@@ -164,11 +164,13 @@ class RWMB_Sanitizer {
 	/**
 	 * Sanitize background field.
 	 *
-	 * @param  array $value The submitted value.
+	 * Keep only color, image, repeat, attachment, position, and size. Drop every other key.
+	 *
+	 * @param mixed $value Submitted value.
 	 * @return array
 	 */
-	private function sanitize_background( $value ) {
-		$value          = wp_parse_args( $value, [
+	private function sanitize_background( $value ): array {
+		$value = wp_parse_args( is_array( $value ) ? $value : [], [
 			'color'      => '',
 			'image'      => '',
 			'repeat'     => '',
@@ -176,15 +178,18 @@ class RWMB_Sanitizer {
 			'position'   => '',
 			'size'       => '',
 		] );
-		$value['color'] = $this->sanitize_color( $value['color'] );
-		$value['image'] = esc_url_raw( $value['image'] );
 
-		$value['repeat']     = in_array( $value['repeat'], [ 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ], true ) ? $value['repeat'] : '';
-		$value['position']   = in_array( $value['position'], [ 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ], true ) ? $value['position'] : '';
-		$value['attachment'] = in_array( $value['attachment'], [ 'fixed', 'scroll', 'inherit' ], true ) ? $value['attachment'] : '';
-		$value['size']       = in_array( $value['size'], [ 'inherit', 'cover', 'contain' ], true ) ? $value['size'] : '';
+		$color = is_string( $value['color'] ) ? $value['color'] : '';
+		$image = is_string( $value['image'] ) ? $value['image'] : '';
 
-		return $value;
+		return [
+			'color'      => $this->sanitize_color( $color ),
+			'image'      => esc_url_raw( $image ),
+			'repeat'     => is_string( $value['repeat'] ) && in_array( $value['repeat'], [ 'no-repeat', 'repeat', 'repeat-x', 'repeat-y', 'inherit' ], true ) ? $value['repeat'] : '',
+			'position'   => is_string( $value['position'] ) && in_array( $value['position'], [ 'top left', 'top center', 'top right', 'center left', 'center center', 'center right', 'bottom left', 'bottom center', 'bottom right' ], true ) ? $value['position'] : '',
+			'attachment' => is_string( $value['attachment'] ) && in_array( $value['attachment'], [ 'fixed', 'scroll', 'inherit' ], true ) ? $value['attachment'] : '',
+			'size'       => is_string( $value['size'] ) && in_array( $value['size'], [ 'inherit', 'cover', 'contain' ], true ) ? $value['size'] : '',
+		];
 	}
 
 	/**
