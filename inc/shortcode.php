@@ -128,7 +128,7 @@ class RWMB_Shortcode {
 	 * @param array      $atts        Shortcode attributes.
 	 * @return bool
 	 */
-	private function user_can_read_object( string $object_type, $object_id, string $field_id = '', array $atts = [] ): bool {
+	private function user_can_read_object( string $object_type, $object_id, string $field_id, array $atts ): bool {
 		switch ( $object_type ) {
 			case 'post':
 				return $this->user_can_read_post( $object_id );
@@ -143,8 +143,10 @@ class RWMB_Shortcode {
 				return current_user_can( 'edit_user', $object_id );
 
 			case 'setting':
+				return $this->user_can_read_setting( (string) $object_id, false );
+
 			case 'network_setting':
-				return $this->user_can_read_setting( (string) $object_id );
+				return $this->user_can_read_setting( (string) $object_id, true );
 
 			case 'model':
 				return $this->user_can_read_model( $field_id, $atts );
@@ -166,8 +168,8 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// Published posts with no password are public.
-		if ( 'publish' === $post->post_status && ! post_password_required( $post ) ) {
+		// Publicly viewable posts are readable without a capability check.
+		if ( is_post_publicly_viewable( $post ) ) {
 			return true;
 		}
 
@@ -219,18 +221,26 @@ class RWMB_Shortcode {
 	 * Check whether the current user can read a settings page.
 	 *
 	 * @param string $option_name Settings page option name.
+	 * @param bool   $network     Whether to match a network settings page.
 	 * @return bool
 	 */
-	private function user_can_read_setting( string $option_name ): bool {
+	private function user_can_read_setting( string $option_name, bool $network = false ): bool {
 		foreach ( $this->get_settings_pages() as $page ) {
+			$is_network = ! empty( $page['network'] );
+			if ( $network !== $is_network ) {
+				continue;
+			}
+
 			// MB Settings Page uses id when option_name is empty.
 			$page_option = ! empty( $page['option_name'] ) ? $page['option_name'] : ( $page['id'] ?? '' );
 			if ( '' === $page_option || $option_name !== $page_option ) {
 				continue;
 			}
 
-			$capability = $page['capability'] ?? 'edit_theme_options';
-			return current_user_can( $capability ?: 'edit_theme_options' );
+			// Network pages default to manage_network_options so site admins cannot read network data.
+			$default_cap = $network ? 'manage_network_options' : 'edit_theme_options';
+			$capability  = ! empty( $page['capability'] ) ? $page['capability'] : $default_cap;
+			return current_user_can( $capability );
 		}
 
 		return false;
@@ -264,8 +274,8 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		$capability = $model->capability ?: 'edit_posts';
-		return current_user_can( $capability );
+		$capability = $model->capability ?? 'edit_posts';
+		return current_user_can( $capability ?: 'edit_posts' );
 	}
 
 	/**

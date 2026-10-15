@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ShortcodePermissionTest extends TestCase {
 	private $shortcode;
+	private $previous_user_id = 0;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -14,7 +15,23 @@ class ShortcodePermissionTest extends TestCase {
 			$this->markTestSkipped( 'RWMB_Shortcode is not available.' );
 		}
 
+		if ( function_exists( 'get_current_user_id' ) ) {
+			$this->previous_user_id = get_current_user_id();
+		}
+
 		$this->shortcode = new RWMB_Shortcode();
+	}
+
+	protected function tearDown(): void {
+		if ( function_exists( 'remove_all_filters' ) ) {
+			remove_all_filters( 'rwmb_meta_shortcode_permission' );
+			remove_all_filters( 'mb_settings_pages' );
+		}
+		if ( function_exists( 'wp_set_current_user' ) ) {
+			wp_set_current_user( $this->previous_user_id );
+		}
+
+		parent::tearDown();
 	}
 
 	/**
@@ -24,20 +41,23 @@ class ShortcodePermissionTest extends TestCase {
 	 */
 	private function invoke( string $method, ...$args ) {
 		$reflection = new ReflectionMethod( RWMB_Shortcode::class, $method );
-		$reflection->setAccessible( true );
+		// Private methods are accessible without this on PHP 8.1+. Calling it warns on PHP 8.5+.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
 		return $reflection->invoke( $this->shortcode, ...$args );
 	}
 
 	public function testUnknownObjectTypeIsDenied(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1 ) );
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1, '', [] ) );
 	}
 
 	public function testNetworkSettingUsesSettingsPageCheck(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option' ) );
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option', '', [] ) );
 	}
 
 	public function testPermissionFilterReceivesFieldId(): void {
-		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'remove_all_filters' ) ) {
+		if ( ! function_exists( 'add_filter' ) ) {
 			$this->markTestSkipped( 'WordPress filters are not available.' );
 		}
 
@@ -55,8 +75,6 @@ class ShortcodePermissionTest extends TestCase {
 		$this->assertSame( 1, $received[2] );
 		$this->assertSame( 'secret_note', $received[4] );
 		$this->assertArrayNotHasKey( 'id', $received[3] );
-
-		remove_all_filters( 'rwmb_meta_shortcode_permission' );
 	}
 
 	public function testDeniedPermissionReturnsEmptyString(): void {
@@ -74,7 +92,6 @@ class ShortcodePermissionTest extends TestCase {
 		] );
 
 		$this->assertSame( '', $value );
-		remove_all_filters( 'rwmb_meta_shortcode_permission' );
 	}
 
 	public function testAnonymousCannotReadUserMetaViaShortcode(): void {
@@ -108,7 +125,7 @@ class ShortcodePermissionTest extends TestCase {
 	}
 
 	public function testMissingObjectIdSkipsPermissionCheck(): void {
-		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'rwmb_the_value' ) || ! function_exists( 'remove_all_filters' ) ) {
+		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'rwmb_the_value' ) ) {
 			$this->markTestSkipped( 'WordPress helpers are not available.' );
 		}
 
@@ -122,7 +139,6 @@ class ShortcodePermissionTest extends TestCase {
 			'attribute'   => '',
 		] );
 
-		remove_all_filters( 'rwmb_meta_shortcode_permission' );
 		$this->addToAssertionCount( 1 );
 	}
 
@@ -142,10 +158,12 @@ class ShortcodePermissionTest extends TestCase {
 
 		$shortcode  = new RWMB_Shortcode();
 		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
-		$reflection->setAccessible( true );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
 
 		wp_set_current_user( 0 );
-		$this->assertFalse( $reflection->invoke( $shortcode, 'theme_slug' ) );
+		$this->assertFalse( $reflection->invoke( $shortcode, 'theme_slug', false ) );
 
 		$admin_id = self::create_user( 'administrator' );
 		if ( ! $admin_id ) {
@@ -153,7 +171,38 @@ class ShortcodePermissionTest extends TestCase {
 		}
 
 		wp_set_current_user( $admin_id );
-		$this->assertTrue( $reflection->invoke( $shortcode, 'theme_slug' ) );
+		$this->assertTrue( $reflection->invoke( $shortcode, 'theme_slug', false ) );
+		self::delete_user( $admin_id );
+	}
+
+	public function testNetworkSettingRequiresNetworkCapability(): void {
+		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_set_current_user' ) ) {
+			$this->markTestSkipped( 'WordPress APIs are not available.' );
+		}
+
+		add_filter( 'mb_settings_pages', function ( $pages ) {
+			$pages[] = [
+				'id'          => 'network-option',
+				'option_name' => 'network_option',
+				'network'     => true,
+			];
+			return $pages;
+		} );
+
+		$shortcode  = new RWMB_Shortcode();
+		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
+
+		$admin_id = self::create_user( 'administrator' );
+		if ( ! $admin_id ) {
+			$this->markTestSkipped( 'Failed to create administrator.' );
+		}
+
+		wp_set_current_user( $admin_id );
+		// Site admin must not read network settings that omit an explicit capability.
+		$this->assertFalse( $reflection->invoke( $shortcode, 'network_option', true ) );
 		self::delete_user( $admin_id );
 	}
 
