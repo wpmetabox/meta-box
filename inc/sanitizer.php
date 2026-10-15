@@ -86,8 +86,7 @@ class RWMB_Sanitizer {
 			'wysiwyg'           => 'wp_kses_post',
 		];
 
-		// Field configs may use hyphens (block-editor); map keys use underscores.
-		$type = str_replace( '-', '_', $field['type'] );
+		$type = $field['type'];
 
 		return $callbacks[ $type ] ?? null;
 	}
