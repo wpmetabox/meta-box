@@ -1,3 +1,11 @@
+### 5.15.3
+
+- Fix a permission bypass in the `[rwmb_meta]` shortcode. The shortcode now checks whether the current user can read the object before it prints a value.
+  - Public posts and terms stay readable. Password-protected posts need `read_post` until the visitor enters the password
+  - Settings pages, network settings pages, and models use their own capability
+  - User meta needs `edit_user`
+  - Use `rwmb_meta_shortcode_permission` to override the check when needed
+
 ### 5.15.2 - 2026-10-07
 
 - Show feature image for post field (if post type supports), and avatar for user field

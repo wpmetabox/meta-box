@@ -1,0 +1,265 @@
+<?php
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Permission checks for the [rwmb_meta] shortcode.
+ */
+class ShortcodePermissionTest extends TestCase {
+	private $shortcode;
+	private $previous_user_id = 0;
+	private $settings_pages_callback;
+	private $permission_callback;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		if ( ! class_exists( 'RWMB_Shortcode' ) ) {
+			$this->markTestSkipped( 'RWMB_Shortcode is not available.' );
+		}
+
+		if ( function_exists( 'get_current_user_id' ) ) {
+			$this->previous_user_id = get_current_user_id();
+		}
+
+		$this->shortcode = new RWMB_Shortcode();
+	}
+
+	protected function tearDown(): void {
+		if ( function_exists( 'remove_filter' ) ) {
+			if ( $this->permission_callback ) {
+				remove_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
+				$this->permission_callback = null;
+			}
+			if ( $this->settings_pages_callback ) {
+				remove_filter( 'mb_settings_pages', $this->settings_pages_callback );
+				$this->settings_pages_callback = null;
+			}
+		}
+		if ( function_exists( 'wp_set_current_user' ) ) {
+			wp_set_current_user( $this->previous_user_id );
+		}
+
+		parent::tearDown();
+	}
+
+	/**
+	 * @param string $method Method name.
+	 * @param mixed  ...$args Method arguments.
+	 * @return mixed
+	 */
+	private function invoke( string $method, ...$args ) {
+		$reflection = new ReflectionMethod( RWMB_Shortcode::class, $method );
+		// Private methods are accessible without this on PHP 8.1+. Calling it warns on PHP 8.5+.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
+		return $reflection->invoke( $this->shortcode, ...$args );
+	}
+
+	public function testUnknownObjectTypeIsDenied(): void {
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1, [] ) );
+	}
+
+	public function testNetworkSettingUsesSettingsPageCheck(): void {
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option', [] ) );
+	}
+
+	public function testPermissionFilterReceivesFieldId(): void {
+		if ( ! function_exists( 'add_filter' ) ) {
+			$this->markTestSkipped( 'WordPress filters are not available.' );
+		}
+
+		$received = null;
+		$this->permission_callback = function ( $allowed, $object_type, $object_id, $atts, $field_id ) use ( &$received ) {
+			$received = [ $allowed, $object_type, $object_id, $atts, $field_id ];
+			return false;
+		};
+		add_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback, 10, 5 );
+
+		$result = $this->invoke( 'check_object_permission', 'secret_note', 1, [ 'object_type' => 'user' ] );
+
+		$this->assertFalse( $result );
+		$this->assertNotNull( $received );
+		$this->assertSame( 'user', $received[1] );
+		$this->assertSame( 1, $received[2] );
+		$this->assertSame( 'secret_note', $received[4] );
+		$this->assertArrayNotHasKey( 'id', $received[3] );
+	}
+
+	public function testDeniedPermissionReturnsEmptyString(): void {
+		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_kses_post' ) ) {
+			$this->markTestSkipped( 'WordPress functions are not available.' );
+		}
+
+		$this->permission_callback = '__return_false';
+		add_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
+
+		$value = $this->shortcode->register_shortcode( [
+			'id'                => 'secret_note',
+			'object_id'         => 1,
+			'object_type'       => 'user',
+			'render_shortcodes' => 'false',
+		] );
+
+		$this->assertSame( '', $value );
+	}
+
+	public function testAnonymousCannotReadUserMetaViaShortcode(): void {
+		if ( ! function_exists( 'wp_set_current_user' ) || ! function_exists( 'update_user_meta' ) || ! function_exists( 'rwmb_get_registry' ) ) {
+			$this->markTestSkipped( 'WordPress user APIs are not available.' );
+		}
+
+		$user_id = self::create_user( 'administrator' );
+		if ( ! $user_id ) {
+			$this->markTestSkipped( 'Failed to create user.' );
+		}
+
+		update_user_meta( $user_id, 'secret_note', 'top-secret' );
+		rwmb_get_registry( 'field' )->add( [
+			'id'   => 'secret_note',
+			'type' => 'text',
+		], 'user', 'user' );
+
+		wp_set_current_user( 0 );
+
+		$value = $this->shortcode->register_shortcode( [
+			'id'                => 'secret_note',
+			'object_id'         => $user_id,
+			'object_type'       => 'user',
+			'type'              => 'user',
+			'render_shortcodes' => 'false',
+		] );
+
+		$this->assertSame( '', $value );
+
+		self::delete_user( $user_id );
+	}
+
+	public function testMissingObjectIdForNonPostReturnsEmpty(): void {
+		$value = $this->invoke( 'get_value', 'any_field', null, [
+			'object_type' => 'user',
+			'attribute'   => '',
+		] );
+
+		$this->assertSame( '', $value );
+	}
+
+	public function testPasswordProtectedPostIsDeniedToGuests(): void {
+		if ( ! function_exists( 'wp_insert_post' ) || ! function_exists( 'wp_set_current_user' ) ) {
+			$this->markTestSkipped( 'WordPress post APIs are not available.' );
+		}
+
+		$post_id = wp_insert_post( [
+			'post_title'    => 'Secret Post',
+			'post_status'   => 'publish',
+			'post_type'     => 'post',
+			'post_password' => 'secret',
+			'post_content'  => '',
+		] );
+		if ( ! $post_id || is_wp_error( $post_id ) ) {
+			$this->markTestSkipped( 'Failed to create password-protected post.' );
+		}
+
+		wp_set_current_user( 0 );
+		$this->assertFalse( $this->invoke( 'user_can_read_post', $post_id ) );
+
+		$editor_id = self::create_user( 'editor' );
+		if ( $editor_id ) {
+			wp_set_current_user( $editor_id );
+			$this->assertTrue( $this->invoke( 'user_can_read_post', $post_id ) );
+			self::delete_user( $editor_id );
+		}
+
+		wp_delete_post( $post_id, true );
+	}
+
+	public function testSettingUsesPageCapability(): void {
+		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_set_current_user' ) ) {
+			$this->markTestSkipped( 'WordPress APIs are not available.' );
+		}
+
+		$this->settings_pages_callback = function ( $pages ) {
+			$pages[] = [
+				'id'          => 'theme-slug',
+				'option_name' => 'theme_slug',
+				'capability'  => 'manage_options',
+			];
+			return $pages;
+		};
+		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
+
+		$shortcode  = new RWMB_Shortcode();
+		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
+
+		wp_set_current_user( 0 );
+		$this->assertFalse( $reflection->invoke( $shortcode, 'theme_slug', false ) );
+
+		$admin_id = self::create_user( 'administrator' );
+		if ( ! $admin_id ) {
+			$this->markTestSkipped( 'Failed to create administrator.' );
+		}
+
+		wp_set_current_user( $admin_id );
+		$this->assertTrue( $reflection->invoke( $shortcode, 'theme_slug', false ) );
+		self::delete_user( $admin_id );
+	}
+
+	public function testNetworkSettingRequiresNetworkCapability(): void {
+		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_set_current_user' ) ) {
+			$this->markTestSkipped( 'WordPress APIs are not available.' );
+		}
+
+		$this->settings_pages_callback = function ( $pages ) {
+			$pages[] = [
+				'id'          => 'network-option',
+				'option_name' => 'network_option',
+				'network'     => true,
+			];
+			return $pages;
+		};
+		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
+
+		$shortcode  = new RWMB_Shortcode();
+		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection->setAccessible( true );
+		}
+
+		$admin_id = self::create_user( 'administrator' );
+		if ( ! $admin_id ) {
+			$this->markTestSkipped( 'Failed to create administrator.' );
+		}
+
+		wp_set_current_user( $admin_id );
+		// Site admin must not read network settings that omit an explicit capability.
+		$this->assertFalse( $reflection->invoke( $shortcode, 'network_option', true ) );
+		self::delete_user( $admin_id );
+	}
+
+	private static function create_user( string $role ) {
+		if ( ! function_exists( 'wp_insert_user' ) ) {
+			return 0;
+		}
+
+		$user_id = wp_insert_user( [
+			'user_login' => 'shortcode_perm_' . uniqid(),
+			'user_email' => 'shortcode_perm_' . uniqid() . '@example.com',
+			'user_pass'  => 'password',
+			'role'       => $role,
+		] );
+
+		return is_wp_error( $user_id ) ? 0 : $user_id;
+	}
+
+	private static function delete_user( int $user_id ): void {
+		if ( ! function_exists( 'wp_delete_user' ) && defined( 'ABSPATH' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/user.php';
+		}
+		if ( function_exists( 'wp_delete_user' ) ) {
+			wp_delete_user( $user_id );
+		}
+	}
+}
