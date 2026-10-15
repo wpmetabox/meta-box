@@ -56,13 +56,17 @@ class RWMB_Shortcode {
 	 * Get the field value for the shortcode.
 	 *
 	 * @param string          $field_id  Field ID.
-	 * @param int|string|null $object_id Object ID. Null uses the current object.
+	 * @param int|string|null $object_id Object ID.
+	 *                                   For `post`, null uses the current post.
+	 *                                   For other types, null returns an empty string.
 	 * @param array           $atts      Shortcode attributes.
 	 * @return mixed
 	 */
 	private function get_value( string $field_id, $object_id, array $atts ) {
-		// Non-post types need object_id. Without it, return nothing.
-		if ( ! empty( $atts['object_type'] ) && 'post' !== $atts['object_type'] && is_null( $object_id ) ) {
+		$object_type = ! empty( $atts['object_type'] ) ? $atts['object_type'] : 'post';
+
+		// Non-post types require object_id.
+		if ( 'post' !== $object_type && is_null( $object_id ) ) {
 			return '';
 		}
 
@@ -105,7 +109,7 @@ class RWMB_Shortcode {
 	 */
 	private function check_object_permission( string $field_id, $object_id, array $atts ): bool {
 		$object_type = ! empty( $atts['object_type'] ) ? $atts['object_type'] : 'post';
-		$allowed     = $this->user_can_read_object( $object_type, $object_id, $field_id, $atts );
+		$allowed     = $this->user_can_read_object( $object_type, $object_id, $atts );
 
 		/**
 		 * Filters whether the shortcode can read the object.
@@ -124,11 +128,10 @@ class RWMB_Shortcode {
 	 *
 	 * @param string     $object_type Object type.
 	 * @param int|string $object_id   Object ID.
-	 * @param string     $field_id    Field ID.
 	 * @param array      $atts        Shortcode attributes.
 	 * @return bool
 	 */
-	private function user_can_read_object( string $object_type, $object_id, string $field_id, array $atts ): bool {
+	private function user_can_read_object( string $object_type, $object_id, array $atts ): bool {
 		switch ( $object_type ) {
 			case 'post':
 				return $this->user_can_read_post( $object_id );
@@ -168,18 +171,19 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// A password-protected post still passes is_post_publicly_viewable().
-		if ( post_password_required( $post ) ) {
+		$post_type_object = get_post_type_object( $post->post_type );
+		if ( ! $post_type_object ) {
 			return false;
+		}
+
+		// A password post is still publicly viewable, so check the password cookie first.
+		// If the visitor has not entered the password, require read_post. Guests fail that check.
+		if ( post_password_required( $post ) ) {
+			return current_user_can( $post_type_object->cap->read_post, $post_id );
 		}
 
 		if ( is_post_publicly_viewable( $post ) ) {
 			return true;
-		}
-
-		$post_type_object = get_post_type_object( $post->post_type );
-		if ( ! $post_type_object ) {
-			return false;
 		}
 
 		return current_user_can( $post_type_object->cap->read_post, $post_id );

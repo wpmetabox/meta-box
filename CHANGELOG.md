@@ -1,11 +1,10 @@
 ### 5.15.3
 
-- Fix `[rwmb_meta]` shortcode permission bypass for non-post object types
-- Check read access for `post`, `term`, `user`, `comment`, `setting`, `network_setting`, and `model`
-- Use `is_post_publicly_viewable()` for posts after `post_password_required()`, and require `manage_network_options` by default for `network_setting`
-- Breaking: `[rwmb_meta]` for user meta requires `edit_user` on that user. Guests cannot read user meta. Use `rwmb_meta_shortcode_permission` to allow specific fields
-- Breaking: unknown `object_type` values are denied. Use `rwmb_meta_shortcode_permission` to allow them. The filter passes `$field_id` as the 5th argument
-- Breaking: if `object_type` is not `post`, pass `object_id`. If you omit `object_id`, the shortcode returns an empty string
+- Fix a permission bypass in the `[rwmb_meta]` shortcode. The shortcode now checks whether the current user can read the object before it prints a value.
+  - Public posts and terms stay readable. Password-protected posts need `read_post` until the visitor enters the password
+  - Settings pages, network settings pages, and models use their own capability
+  - User meta needs `edit_user`
+  - Use `rwmb_meta_shortcode_permission` to override the check when needed
 
 ### 5.15.2 - 2026-10-07
 

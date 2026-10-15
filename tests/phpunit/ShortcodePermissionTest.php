@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 class ShortcodePermissionTest extends TestCase {
 	private $shortcode;
 	private $previous_user_id = 0;
+	private $settings_pages_callback;
+	private $permission_callback;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -23,9 +25,15 @@ class ShortcodePermissionTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		if ( function_exists( 'remove_all_filters' ) ) {
-			remove_all_filters( 'rwmb_meta_shortcode_permission' );
-			remove_all_filters( 'mb_settings_pages' );
+		if ( function_exists( 'remove_filter' ) ) {
+			if ( $this->permission_callback ) {
+				remove_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
+				$this->permission_callback = null;
+			}
+			if ( $this->settings_pages_callback ) {
+				remove_filter( 'mb_settings_pages', $this->settings_pages_callback );
+				$this->settings_pages_callback = null;
+			}
 		}
 		if ( function_exists( 'wp_set_current_user' ) ) {
 			wp_set_current_user( $this->previous_user_id );
@@ -49,11 +57,11 @@ class ShortcodePermissionTest extends TestCase {
 	}
 
 	public function testUnknownObjectTypeIsDenied(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1, '', [] ) );
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1, [] ) );
 	}
 
 	public function testNetworkSettingUsesSettingsPageCheck(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option', '', [] ) );
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option', [] ) );
 	}
 
 	public function testPermissionFilterReceivesFieldId(): void {
@@ -62,10 +70,11 @@ class ShortcodePermissionTest extends TestCase {
 		}
 
 		$received = null;
-		add_filter( 'rwmb_meta_shortcode_permission', function ( $allowed, $object_type, $object_id, $atts, $field_id ) use ( &$received ) {
+		$this->permission_callback = function ( $allowed, $object_type, $object_id, $atts, $field_id ) use ( &$received ) {
 			$received = [ $allowed, $object_type, $object_id, $atts, $field_id ];
 			return false;
-		}, 10, 5 );
+		};
+		add_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback, 10, 5 );
 
 		$result = $this->invoke( 'check_object_permission', 'secret_note', 1, [ 'object_type' => 'user' ] );
 
@@ -82,7 +91,8 @@ class ShortcodePermissionTest extends TestCase {
 			$this->markTestSkipped( 'WordPress functions are not available.' );
 		}
 
-		add_filter( 'rwmb_meta_shortcode_permission', '__return_false' );
+		$this->permission_callback = '__return_false';
+		add_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
 
 		$value = $this->shortcode->register_shortcode( [
 			'id'                => 'secret_note',
@@ -116,6 +126,7 @@ class ShortcodePermissionTest extends TestCase {
 			'id'                => 'secret_note',
 			'object_id'         => $user_id,
 			'object_type'       => 'user',
+			'type'              => 'user',
 			'render_shortcodes' => 'false',
 		] );
 
@@ -133,7 +144,7 @@ class ShortcodePermissionTest extends TestCase {
 		$this->assertSame( '', $value );
 	}
 
-	public function testPasswordProtectedPostIsDenied(): void {
+	public function testPasswordProtectedPostIsDeniedToGuests(): void {
 		if ( ! function_exists( 'wp_insert_post' ) || ! function_exists( 'wp_set_current_user' ) ) {
 			$this->markTestSkipped( 'WordPress post APIs are not available.' );
 		}
@@ -152,6 +163,13 @@ class ShortcodePermissionTest extends TestCase {
 		wp_set_current_user( 0 );
 		$this->assertFalse( $this->invoke( 'user_can_read_post', $post_id ) );
 
+		$editor_id = self::create_user( 'editor' );
+		if ( $editor_id ) {
+			wp_set_current_user( $editor_id );
+			$this->assertTrue( $this->invoke( 'user_can_read_post', $post_id ) );
+			self::delete_user( $editor_id );
+		}
+
 		wp_delete_post( $post_id, true );
 	}
 
@@ -160,14 +178,15 @@ class ShortcodePermissionTest extends TestCase {
 			$this->markTestSkipped( 'WordPress APIs are not available.' );
 		}
 
-		add_filter( 'mb_settings_pages', function ( $pages ) {
+		$this->settings_pages_callback = function ( $pages ) {
 			$pages[] = [
 				'id'          => 'theme-slug',
 				'option_name' => 'theme_slug',
 				'capability'  => 'manage_options',
 			];
 			return $pages;
-		} );
+		};
+		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
 
 		$shortcode  = new RWMB_Shortcode();
 		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
@@ -193,14 +212,15 @@ class ShortcodePermissionTest extends TestCase {
 			$this->markTestSkipped( 'WordPress APIs are not available.' );
 		}
 
-		add_filter( 'mb_settings_pages', function ( $pages ) {
+		$this->settings_pages_callback = function ( $pages ) {
 			$pages[] = [
 				'id'          => 'network-option',
 				'option_name' => 'network_option',
 				'network'     => true,
 			];
 			return $pages;
-		} );
+		};
+		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
 
 		$shortcode  = new RWMB_Shortcode();
 		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
