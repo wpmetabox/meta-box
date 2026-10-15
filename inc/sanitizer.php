@@ -41,6 +41,7 @@ class RWMB_Sanitizer {
 		$callbacks = [
 			'autocomplete'      => [ $this, 'sanitize_choice' ],
 			'background'        => [ $this, 'sanitize_background' ],
+			'block_editor'      => [ $this, 'sanitize_block_editor' ],
 			'button_group'      => [ $this, 'sanitize_choice' ],
 			'checkbox'          => [ $this, 'sanitize_checkbox' ],
 			'checkbox_list'     => [ $this, 'sanitize_choice' ],
@@ -184,6 +185,18 @@ class RWMB_Sanitizer {
 		$value['size']       = in_array( $value['size'], [ 'inherit', 'cover', 'contain' ], true ) ? $value['size'] : '';
 
 		return $value;
+	}
+
+	/**
+	 * Sanitize block editor field content.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return string
+	 */
+	private function sanitize_block_editor( $value ): string {
+		$value = (string) $value;
+
+		return current_user_can( 'unfiltered_html' ) ? $value : wp_kses_post( $value );
 	}
 
 	/**
