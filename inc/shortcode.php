@@ -2,12 +2,19 @@
 use MetaBox\Support\Arr;
 
 class RWMB_Shortcode {
+	/**
+	 * Settings pages from `mb_settings_pages`, cached for this request.
+	 *
+	 * @var array|null
+	 */
+	private $settings_pages = null;
+
 	public function init(): void {
 		add_shortcode( 'rwmb_meta', [ $this, 'register_shortcode' ] );
 	}
 
 	/**
-	 * Render the [rwmb_meta] shortcode.
+	 * Render the `[rwmb_meta]` shortcode.
 	 *
 	 * @param array|string $atts Shortcode attributes. WordPress may pass an empty string.
 	 * @return mixed Field value for output.
@@ -29,6 +36,7 @@ class RWMB_Shortcode {
 		$field_id  = $atts['id'];
 		$object_id = $atts['object_id'];
 
+		// Do not pass id/object_id to rwmb_the_value() as field args.
 		unset( $atts['id'], $atts['object_id'] );
 
 		$value = $this->get_value( $field_id, $object_id, $atts );
@@ -53,8 +61,12 @@ class RWMB_Shortcode {
 	 * @return mixed
 	 */
 	private function get_value( string $field_id, $object_id, array $atts ) {
-		// When object_id is set, make sure the current user can view that object.
-		if ( ! is_null( $object_id ) && ! $this->check_object_permission( $object_id, $atts ) ) {
+		// Non-post types need object_id. Without it, use the current post.
+		if ( ! empty( $atts['object_type'] ) && 'post' !== $atts['object_type'] && is_null( $object_id ) ) {
+			$atts['object_type'] = 'post';
+		}
+
+		if ( ! is_null( $object_id ) && ! $this->check_object_permission( $field_id, $object_id, $atts ) ) {
 			return '';
 		}
 
@@ -84,28 +96,39 @@ class RWMB_Shortcode {
 	}
 
 	/**
-	 * Check if the current user can read the object in the shortcode.
+	 * Check whether the current user can read the object.
 	 *
+	 * @param string     $field_id  Field ID.
 	 * @param int|string $object_id Object ID.
 	 * @param array      $atts      Shortcode attributes.
 	 * @return bool
 	 */
-	private function check_object_permission( $object_id, array $atts ): bool {
+	private function check_object_permission( string $field_id, $object_id, array $atts ): bool {
 		$object_type = ! empty( $atts['object_type'] ) ? $atts['object_type'] : 'post';
-		$allowed     = $this->user_can_read_object( $object_type, $object_id );
+		$allowed     = $this->user_can_read_object( $object_type, $object_id, $field_id, $atts );
 
-		// Allow or deny access. Example: add_filter( 'rwmb_meta_shortcode_permission', '__return_true' );
-		return (bool) apply_filters( 'rwmb_meta_shortcode_permission', $allowed, $object_type, $object_id, $atts );
+		/**
+		 * Filters whether the shortcode can read the object.
+		 *
+		 * @param bool       $allowed     Whether access is allowed.
+		 * @param string     $object_type Object type.
+		 * @param int|string $object_id   Object ID.
+		 * @param array      $atts        Shortcode attributes without id and object_id.
+		 * @param string     $field_id    Field ID.
+		 */
+		return (bool) apply_filters( 'rwmb_meta_shortcode_permission', $allowed, $object_type, $object_id, $atts, $field_id );
 	}
 
 	/**
-	 * Route the read check to the handler for the object type.
+	 * Dispatch the read check by object type.
 	 *
 	 * @param string     $object_type Object type.
 	 * @param int|string $object_id   Object ID.
+	 * @param string     $field_id    Field ID.
+	 * @param array      $atts        Shortcode attributes.
 	 * @return bool
 	 */
-	private function user_can_read_object( string $object_type, $object_id ): bool {
+	private function user_can_read_object( string $object_type, $object_id, string $field_id = '', array $atts = [] ): bool {
 		switch ( $object_type ) {
 			case 'post':
 				return $this->user_can_read_post( $object_id );
@@ -120,7 +143,11 @@ class RWMB_Shortcode {
 				return current_user_can( 'edit_user', $object_id );
 
 			case 'setting':
+			case 'network_setting':
 				return $this->user_can_read_setting( (string) $object_id );
+
+			case 'model':
+				return $this->user_can_read_model( $field_id, $atts );
 
 			default:
 				return false;
@@ -128,7 +155,7 @@ class RWMB_Shortcode {
 	}
 
 	/**
-	 * Check if the current user can read a post.
+	 * Check whether the current user can read a post.
 	 *
 	 * @param int|string $post_id Post ID.
 	 * @return bool
@@ -139,7 +166,7 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// Allow a published post that has no password.
+		// Published posts with no password are public.
 		if ( 'publish' === $post->post_status && ! post_password_required( $post ) ) {
 			return true;
 		}
@@ -153,7 +180,7 @@ class RWMB_Shortcode {
 	}
 
 	/**
-	 * Check if the current user can read a term.
+	 * Check whether the current user can read a term.
 	 *
 	 * @param int|string $term_id Term ID.
 	 * @return bool
@@ -164,12 +191,12 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// Allow a term that is publicly viewable. For other terms, check edit_term.
+		// Public terms are readable. Other terms need edit_term.
 		return is_term_publicly_viewable( $term ) || current_user_can( 'edit_term', $term_id );
 	}
 
 	/**
-	 * Check if the current user can read a comment.
+	 * Check whether the current user can read a comment.
 	 *
 	 * @param int|string $comment_id Comment ID.
 	 * @return bool
@@ -180,7 +207,7 @@ class RWMB_Shortcode {
 			return false;
 		}
 
-		// Allow an approved comment when the parent post is readable. For other comments, check edit_comment.
+		// Approved comments on a readable post are readable. Other comments need edit_comment.
 		if ( '1' === (string) $comment->comment_approved && $this->user_can_read_post( $comment->comment_post_ID ) ) {
 			return true;
 		}
@@ -189,24 +216,69 @@ class RWMB_Shortcode {
 	}
 
 	/**
-	 * Check if the current user can read a settings page by option name.
+	 * Check whether the current user can read a settings page.
 	 *
 	 * @param string $option_name Settings page option name.
 	 * @return bool
 	 */
 	private function user_can_read_setting( string $option_name ): bool {
-		foreach ( apply_filters( 'mb_settings_pages', [] ) as $page ) {
-			// Match Factory: empty option_name falls back to id.
+		foreach ( $this->get_settings_pages() as $page ) {
+			// MB Settings Page uses id when option_name is empty.
 			$page_option = ! empty( $page['option_name'] ) ? $page['option_name'] : ( $page['id'] ?? '' );
 			if ( '' === $page_option || $option_name !== $page_option ) {
 				continue;
 			}
 
-			// Check the capability of this settings page.
 			$capability = $page['capability'] ?? 'edit_theme_options';
 			return current_user_can( $capability ?: 'edit_theme_options' );
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check whether the current user can read a custom table model field.
+	 *
+	 * @param string $field_id Field ID.
+	 * @param array  $atts     Shortcode attributes.
+	 * @return bool
+	 */
+	private function user_can_read_model( string $field_id, array $atts ): bool {
+		if ( ! class_exists( '\MetaBox\CustomTable\Model\Factory' ) ) {
+			return false;
+		}
+
+		$model_name = $atts['model'] ?? $atts['type'] ?? '';
+		if ( ! $model_name && $field_id ) {
+			$models = rwmb_get_registry( 'field' )->get_by_object_type( 'model' );
+			foreach ( $models as $name => $fields ) {
+				if ( isset( $fields[ $field_id ] ) ) {
+					$model_name = $name;
+					break;
+				}
+			}
+		}
+
+		$model = $model_name ? \MetaBox\CustomTable\Model\Factory::get( $model_name ) : null;
+		if ( ! $model ) {
+			return false;
+		}
+
+		$capability = $model->capability ?: 'edit_posts';
+		return current_user_can( $capability );
+	}
+
+	/**
+	 * Return registered settings pages. Loads them once per request.
+	 *
+	 * @return array
+	 */
+	private function get_settings_pages(): array {
+		if ( null === $this->settings_pages ) {
+			$pages                = apply_filters( 'mb_settings_pages', [] );
+			$this->settings_pages = is_array( $pages ) ? $pages : [];
+		}
+
+		return $this->settings_pages;
 	}
 }

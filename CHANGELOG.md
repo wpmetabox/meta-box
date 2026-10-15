@@ -1,9 +1,10 @@
 ### 5.15.3
 
-- Fix `[rwmb_meta]` shortcode permission bypass for non-post object types (user, term, comment, setting, and custom types)
-- Breaking: user meta via shortcode now requires the `edit_user` capability for the given user
-- Breaking: unknown or custom `object_type` values are denied by default. Use the `rwmb_meta_shortcode_permission` filter to allow them
-- Note: permission checks run only when `object_id` is set in the shortcode. Without `object_id`, the shortcode uses the current object context
+- Fix `[rwmb_meta]` shortcode permission bypass for non-post object types
+- Check read access for `post`, `term`, `user`, `comment`, `setting`, `network_setting`, and `model`
+- Breaking: `[rwmb_meta]` for user meta requires `edit_user` on that user. Guests cannot read user meta. Use `rwmb_meta_shortcode_permission` to allow specific fields
+- Breaking: unknown `object_type` values are denied. Use `rwmb_meta_shortcode_permission` to allow them. The filter passes `$field_id` as the 5th argument
+- Breaking: if `object_type` is not `post`, pass `object_id`. If you omit `object_id`, the shortcode sets `object_type` to `post` and uses the current post
 
 ### 5.15.2 - 2026-10-07
 
