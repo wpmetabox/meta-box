@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 class ShortcodePermissionTest extends TestCase {
 	private $shortcode;
 	private $previous_user_id = 0;
-	private $settings_pages_callback;
 	private $permission_callback;
 
 	protected function setUp(): void {
@@ -25,15 +24,9 @@ class ShortcodePermissionTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		if ( function_exists( 'remove_filter' ) ) {
-			if ( $this->permission_callback ) {
-				remove_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
-				$this->permission_callback = null;
-			}
-			if ( $this->settings_pages_callback ) {
-				remove_filter( 'mb_settings_pages', $this->settings_pages_callback );
-				$this->settings_pages_callback = null;
-			}
+		if ( function_exists( 'remove_filter' ) && $this->permission_callback ) {
+			remove_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
+			$this->permission_callback = null;
 		}
 		if ( function_exists( 'wp_set_current_user' ) ) {
 			wp_set_current_user( $this->previous_user_id );
@@ -57,11 +50,13 @@ class ShortcodePermissionTest extends TestCase {
 	}
 
 	public function testUnknownObjectTypeIsDenied(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1, [] ) );
+		$this->assertFalse( $this->invoke( 'user_can_read_object', 'custom_type', 1 ) );
 	}
 
-	public function testNetworkSettingUsesSettingsPageCheck(): void {
-		$this->assertFalse( $this->invoke( 'user_can_read_object', 'network_setting', 'missing_option', [] ) );
+	public function testSettingNetworkSettingAndModelAreAllowed(): void {
+		$this->assertTrue( $this->invoke( 'user_can_read_object', 'setting', 'theme_slug' ) );
+		$this->assertTrue( $this->invoke( 'user_can_read_object', 'network_setting', 'network_option' ) );
+		$this->assertTrue( $this->invoke( 'user_can_read_object', 'model', 1 ) );
 	}
 
 	public function testPermissionFilterReceivesFieldId(): void {
@@ -171,72 +166,6 @@ class ShortcodePermissionTest extends TestCase {
 		}
 
 		wp_delete_post( $post_id, true );
-	}
-
-	public function testSettingUsesPageCapability(): void {
-		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_set_current_user' ) ) {
-			$this->markTestSkipped( 'WordPress APIs are not available.' );
-		}
-
-		$this->settings_pages_callback = function ( $pages ) {
-			$pages[] = [
-				'id'          => 'theme-slug',
-				'option_name' => 'theme_slug',
-				'capability'  => 'manage_options',
-			];
-			return $pages;
-		};
-		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
-
-		$shortcode  = new RWMB_Shortcode();
-		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$reflection->setAccessible( true );
-		}
-
-		wp_set_current_user( 0 );
-		$this->assertFalse( $reflection->invoke( $shortcode, 'theme_slug', false ) );
-
-		$admin_id = self::create_user( 'administrator' );
-		if ( ! $admin_id ) {
-			$this->markTestSkipped( 'Failed to create administrator.' );
-		}
-
-		wp_set_current_user( $admin_id );
-		$this->assertTrue( $reflection->invoke( $shortcode, 'theme_slug', false ) );
-		self::delete_user( $admin_id );
-	}
-
-	public function testNetworkSettingRequiresNetworkCapability(): void {
-		if ( ! function_exists( 'add_filter' ) || ! function_exists( 'wp_set_current_user' ) ) {
-			$this->markTestSkipped( 'WordPress APIs are not available.' );
-		}
-
-		$this->settings_pages_callback = function ( $pages ) {
-			$pages[] = [
-				'id'          => 'network-option',
-				'option_name' => 'network_option',
-				'network'     => true,
-			];
-			return $pages;
-		};
-		add_filter( 'mb_settings_pages', $this->settings_pages_callback );
-
-		$shortcode  = new RWMB_Shortcode();
-		$reflection = new ReflectionMethod( RWMB_Shortcode::class, 'user_can_read_setting' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$reflection->setAccessible( true );
-		}
-
-		$admin_id = self::create_user( 'administrator' );
-		if ( ! $admin_id ) {
-			$this->markTestSkipped( 'Failed to create administrator.' );
-		}
-
-		wp_set_current_user( $admin_id );
-		// Site admin must not read network settings that omit an explicit capability.
-		$this->assertFalse( $reflection->invoke( $shortcode, 'network_option', true ) );
-		self::delete_user( $admin_id );
 	}
 
 	private static function create_user( string $role ) {

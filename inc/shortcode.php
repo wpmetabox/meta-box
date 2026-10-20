@@ -2,13 +2,6 @@
 use MetaBox\Support\Arr;
 
 class RWMB_Shortcode {
-	/**
-	 * Settings pages from `mb_settings_pages`, cached for this request.
-	 *
-	 * @var array|null
-	 */
-	private $settings_pages = null;
-
 	public function init(): void {
 		add_shortcode( 'rwmb_meta', [ $this, 'register_shortcode' ] );
 	}
@@ -109,7 +102,7 @@ class RWMB_Shortcode {
 	 */
 	private function check_object_permission( string $field_id, $object_id, array $atts ): bool {
 		$object_type = ! empty( $atts['object_type'] ) ? $atts['object_type'] : 'post';
-		$allowed     = $this->user_can_read_object( $object_type, $object_id, $atts );
+		$allowed     = $this->user_can_read_object( $object_type, $object_id );
 
 		/**
 		 * Filters whether the shortcode can read the object.
@@ -128,10 +121,9 @@ class RWMB_Shortcode {
 	 *
 	 * @param string     $object_type Object type.
 	 * @param int|string $object_id   Object ID.
-	 * @param array      $atts        Shortcode attributes.
 	 * @return bool
 	 */
-	private function user_can_read_object( string $object_type, $object_id, array $atts ): bool {
+	private function user_can_read_object( string $object_type, $object_id ): bool {
 		switch ( $object_type ) {
 			case 'post':
 				return $this->user_can_read_post( $object_id );
@@ -145,14 +137,11 @@ class RWMB_Shortcode {
 			case 'user':
 				return current_user_can( 'edit_user', $object_id );
 
+			// Capability for settings and models is for admin edit, not shortcode read.
 			case 'setting':
-				return $this->user_can_read_setting( (string) $object_id, false );
-
 			case 'network_setting':
-				return $this->user_can_read_setting( (string) $object_id, true );
-
 			case 'model':
-				return $this->user_can_read_model( $atts );
+				return true;
 
 			default:
 				return false;
@@ -223,70 +212,5 @@ class RWMB_Shortcode {
 		}
 
 		return current_user_can( 'edit_comment', $comment_id );
-	}
-
-	/**
-	 * Check whether the current user can read a settings page.
-	 *
-	 * @param string $option_name Settings page option name.
-	 * @param bool   $network     Whether to match a network settings page.
-	 * @return bool
-	 */
-	private function user_can_read_setting( string $option_name, bool $network = false ): bool {
-		foreach ( $this->get_settings_pages() as $page ) {
-			$is_network = ! empty( $page['network'] );
-			if ( $network !== $is_network ) {
-				continue;
-			}
-
-			// MB Settings Page uses id when option_name is empty.
-			$page_option = ! empty( $page['option_name'] ) ? $page['option_name'] : ( $page['id'] ?? '' );
-			if ( '' === $page_option || $option_name !== $page_option ) {
-				continue;
-			}
-
-			// Network pages default to manage_network_options so site admins cannot read network data.
-			$default_cap = $network ? 'manage_network_options' : 'edit_theme_options';
-			$capability  = ! empty( $page['capability'] ) ? $page['capability'] : $default_cap;
-			return current_user_can( $capability );
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check whether the current user can read a custom table model field.
-	 *
-	 * @param array $atts Shortcode attributes.
-	 * @return bool
-	 */
-	private function user_can_read_model( array $atts ): bool {
-		if ( ! class_exists( '\MetaBox\CustomTable\Model\Factory' ) ) {
-			return false;
-		}
-
-		// Same as rwmb_meta(): type is the model name.
-		$model_name = $atts['type'] ?? '';
-		$model      = $model_name ? \MetaBox\CustomTable\Model\Factory::get( $model_name ) : null;
-		if ( ! $model ) {
-			return false;
-		}
-
-		$capability = $model->capability ?? 'edit_posts';
-		return current_user_can( $capability ?: 'edit_posts' );
-	}
-
-	/**
-	 * Return registered settings pages. Loads them once per request.
-	 *
-	 * @return array
-	 */
-	private function get_settings_pages(): array {
-		if ( null === $this->settings_pages ) {
-			$pages                = apply_filters( 'mb_settings_pages', [] );
-			$this->settings_pages = is_array( $pages ) ? $pages : [];
-		}
-
-		return $this->settings_pages;
 	}
 }
