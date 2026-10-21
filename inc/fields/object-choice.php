@@ -140,7 +140,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Stamp meta box id onto fields and rebuild Ajax payloads after normalization.
+	 * Stamp meta box id onto Ajax fields and rebuild their payloads after normalization.
 	 * Nested fields (groups) are included so their nonce matches the parent box.
 	 */
 	public static function bind_ajax_fields( array $fields, string $meta_box_id ): array {
@@ -149,9 +149,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				continue;
 			}
 
-			$field['meta_box_id'] = $meta_box_id;
-			$ajax_field           = $field['js_options']['ajax_data']['field'] ?? null;
+			$options    = $field['js_options'] ?? null;
+			$ajax_field = is_array( $options ) ? ( $options['ajax_data']['field'] ?? null ) : null;
 			if ( is_array( $ajax_field ) ) {
+				$field['meta_box_id'] = $meta_box_id;
 				unset( $ajax_field['query_args'], $ajax_field['display_field'], $ajax_field['show_thumbnail'] );
 				$ajax_field['meta_box_id']                    = $meta_box_id;
 				$field['js_options']['ajax_data']['field']    = $ajax_field;
@@ -177,8 +178,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		$request = rwmb_request();
 		$posted  = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
 		$posted  = is_array( $posted ) ? $posted : [];
-		$box_id  = trim( (string) ( $posted['meta_box_id'] ?? '' ) );
-		$id      = trim( (string) ( $posted['id'] ?? '' ) );
+		$box_id  = $posted['meta_box_id'] ?? null;
+		$id      = $posted['id'] ?? null;
+		$box_id  = is_string( $box_id ) ? $box_id : '';
+		$id      = is_string( $id ) ? $id : '';
 
 		check_ajax_referer( self::ajax_nonce_action( [
 			'meta_box_id' => $box_id,

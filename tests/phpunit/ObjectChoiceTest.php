@@ -141,6 +141,14 @@ class ObjectChoiceTest extends TestCase {
 							],
 						],
 					],
+					[
+						'id'   => 'title',
+						'type' => 'text',
+					],
+					[
+						'id'         => 'note',
+						'js_options' => 'bad',
+					],
 				],
 			],
 		];
@@ -148,6 +156,9 @@ class ObjectChoiceTest extends TestCase {
 		$bound = RWMB_Object_Choice_Ajax_Test_Field::bind_ajax_fields( $fields, 'box' );
 		$child = $bound[0]['fields'][0]['js_options']['ajax_data']['field'];
 
+		$this->assertArrayNotHasKey( 'meta_box_id', $bound[0] );
+		$this->assertArrayNotHasKey( 'meta_box_id', $bound[0]['fields'][1] );
+		$this->assertArrayNotHasKey( 'meta_box_id', $bound[0]['fields'][2] );
 		$this->assertSame( 'box', $bound[0]['fields'][0]['meta_box_id'] );
 		$this->assertSame( 'box', $child['meta_box_id'] );
 		$this->assertArrayNotHasKey( 'query_args', $child );
