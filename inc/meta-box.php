@@ -52,7 +52,9 @@ class RW_Meta_Box {
 
 		$this->meta_box['fields'] = static::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
-		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
+		$this->meta_box           = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
+		$fields                   = $this->meta_box['fields'] ?? [];
+		$this->meta_box['fields'] = RWMB_Object_Choice_Field::bind_ajax_fields( is_array( $fields ) ? $fields : [], (string) $this->id );
 
 		if ( $this->is_shown() ) {
 			$this->global_hooks();

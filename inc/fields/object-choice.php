@@ -96,24 +96,22 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( empty( $field['js_options']['ajax'] ) ) {
 			$field['js_options']['ajax'] = [];
 		}
-		$field['js_options']['ajax']      = wp_parse_args(
+		$field['js_options']['ajax'] = wp_parse_args(
 			[
 				'url' => admin_url( 'admin-ajax.php' ),
 			],
 			$field['js_options']['ajax']
 		);
-		$field_data = [
-			'id'         => $field['id'],
-			'type'       => $field['type'],
-			'query_args' => $field['query_args'],
+		$field_data                  = [
+			'id'          => $field['id'],
+			'type'        => $field['type'],
+			'meta_box_id' => (string) ( $field['meta_box_id'] ?? '' ),
 		];
-		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
-		// strips data.action from the cache key, so two fields with the same type +
-		// query_args but different ajax_action would otherwise share a cache entry.
+		// ajax_action stays in field. select-advanced.js removes data.action from the cache key.
 		$ajax_action = $field['ajax_action'] ?? '';
 		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
 		if ( ! $ajax_action ) {
-			$actions = [
+			$actions     = [
 				'post'              => 'rwmb_get_posts',
 				'taxonomy'          => 'rwmb_get_terms',
 				'taxonomy_advanced' => 'rwmb_get_terms',
@@ -126,8 +124,123 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		}
 		$field['js_options']['ajax_data'] = [
 			'field'    => $field_data,
-			'_wpnonce' => wp_create_nonce( 'query' ),
+			'_wpnonce' => wp_create_nonce( self::ajax_nonce_action( $field ) ),
 		];
+	}
+
+	/**
+	 * Nonce action bound to one meta box field.
+	 * The length prefix keeps the action unique when both ids contain hyphens.
+	 */
+	public static function ajax_nonce_action( array $field ): string {
+		$box = (string) ( $field['meta_box_id'] ?? '' );
+		$id  = (string) ( $field['id'] ?? '' );
+
+		return sprintf( 'rwmb-query-%d-%s-%s', strlen( $box ), $box, $id );
+	}
+
+	/**
+	 * Stamp meta box id onto fields and rebuild Ajax payloads after normalization.
+	 * Nested fields (groups) are included so their nonce matches the parent box.
+	 */
+	public static function bind_ajax_fields( array $fields, string $meta_box_id ): array {
+		foreach ( $fields as &$field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			$field['meta_box_id'] = $meta_box_id;
+			$ajax_field           = $field['js_options']['ajax_data']['field'] ?? null;
+			if ( is_array( $ajax_field ) ) {
+				unset( $ajax_field['query_args'], $ajax_field['display_field'], $ajax_field['show_thumbnail'] );
+				$ajax_field['meta_box_id']                    = $meta_box_id;
+				$field['js_options']['ajax_data']['field']    = $ajax_field;
+				$field['js_options']['ajax_data']['_wpnonce'] = wp_create_nonce( self::ajax_nonce_action( $field ) );
+			}
+
+			if ( is_array( $field['fields'] ?? null ) ) {
+				$field['fields'] = self::bind_ajax_fields( $field['fields'], $meta_box_id );
+			}
+		}
+		unset( $field );
+
+		return $fields;
+	}
+
+	/**
+	 * Load the registered field for an Ajax query.
+	 * The browser may send the field id, meta box id, search term, and page.
+	 *
+	 * @param string[] $expected_types Field types this handler accepts.
+	 */
+	protected static function resolve_ajax_field( array $expected_types ): array {
+		$request = rwmb_request();
+		$posted  = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$posted  = is_array( $posted ) ? $posted : [];
+		$box_id  = trim( (string) ( $posted['meta_box_id'] ?? '' ) );
+		$id      = trim( (string) ( $posted['id'] ?? '' ) );
+
+		check_ajax_referer( self::ajax_nonce_action( [
+			'meta_box_id' => $box_id,
+			'id'          => $id,
+		] ) );
+
+		$field = self::find_ajax_field( $id, $box_id );
+		if ( ! $field || empty( $field['ajax'] ) || ! in_array( $field['type'] ?? '', $expected_types, true ) ) {
+			self::deny_ajax();
+			return [];
+		}
+
+		$field['clone']        = false;
+		$field['_original_id'] = $field['id'];
+		$field['query_args']   = is_array( $field['query_args'] ?? null ) ? $field['query_args'] : [];
+
+		return $field;
+	}
+
+	/**
+	 * Stop an Ajax query that is not allowed.
+	 *
+	 * @return never
+	 */
+	protected static function deny_ajax(): void {
+		wp_send_json_error( __( 'Invalid request.', 'meta-box' ), 403 );
+	}
+
+	protected static function find_ajax_field( string $field_id, string $meta_box_id ): array {
+		if ( ! $field_id || ! function_exists( 'rwmb_get_registry' ) ) {
+			return [];
+		}
+
+		$matches = [];
+		foreach ( rwmb_get_registry( 'meta_box' )->all() as $meta_box ) {
+			if ( $meta_box_id && (string) $meta_box->id !== $meta_box_id ) {
+				continue;
+			}
+
+			$fields = $meta_box->fields;
+			if ( is_array( $fields ) ) {
+				self::collect_ajax_fields( $fields, $field_id, $matches );
+			}
+		}
+
+		return count( $matches ) === 1 ? $matches[0] : [];
+	}
+
+	private static function collect_ajax_fields( array $fields, string $field_id, array &$matches ): void {
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			if ( ( $field['id'] ?? '' ) === $field_id && ! empty( $field['ajax'] ) ) {
+				$matches[] = $field;
+			}
+
+			if ( is_array( $field['fields'] ?? null ) ) {
+				self::collect_ajax_fields( $field['fields'], $field_id, $matches );
+			}
+		}
 	}
 
 	/**

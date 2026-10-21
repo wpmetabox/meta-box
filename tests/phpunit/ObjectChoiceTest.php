@@ -103,6 +103,58 @@ class ObjectChoiceTest extends TestCase {
 		$this->assertArrayNotHasKey( 'ajax_action', $field['js_options']['ajax_data']['field'] );
 	}
 
+	public function testAjaxPayloadOmitsQuerySettingsAndUsesFieldNonce(): void {
+		$field = $this->field( [
+			'id'          => 'author',
+			'meta_box_id' => 'box',
+			'query_args'  => [ 'post_type' => 'page' ],
+		] );
+
+		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
+
+		$payload = $field['js_options']['ajax_data']['field'];
+		$this->assertSame( [ 'id', 'type', 'meta_box_id', 'ajax_action' ], array_keys( $payload ) );
+		$this->assertSame( 'box', $payload['meta_box_id'] );
+		$this->assertArrayNotHasKey( 'query_args', $payload );
+		$this->assertSame( 'rwmb-query-3-box-author', RWMB_Object_Choice_Ajax_Test_Field::ajax_nonce_action( $field ) );
+		$this->assertNotSame(
+			RWMB_Object_Choice_Ajax_Test_Field::ajax_nonce_action( [ 'meta_box_id' => 'my-box', 'id' => 'author' ] ),
+			RWMB_Object_Choice_Ajax_Test_Field::ajax_nonce_action( [ 'meta_box_id' => 'my', 'id' => 'box-author' ] )
+		);
+	}
+
+	public function testBindAjaxFieldsRebuildsNestedNonceWithoutQueryArgs(): void {
+		$fields = [
+			[
+				'id'     => 'group',
+				'fields' => [
+					[
+						'id'         => 'author',
+						'js_options' => [
+							'ajax_data' => [
+								'field'    => [
+									'id'            => 'author',
+									'query_args'    => [ 'role' => 'subscriber' ],
+									'display_field' => 'user_login',
+								],
+								'_wpnonce' => 'old',
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$bound = RWMB_Object_Choice_Ajax_Test_Field::bind_ajax_fields( $fields, 'box' );
+		$child = $bound[0]['fields'][0]['js_options']['ajax_data']['field'];
+
+		$this->assertSame( 'box', $bound[0]['fields'][0]['meta_box_id'] );
+		$this->assertSame( 'box', $child['meta_box_id'] );
+		$this->assertArrayNotHasKey( 'query_args', $child );
+		$this->assertArrayNotHasKey( 'display_field', $child );
+		$this->assertNotSame( 'old', $bound[0]['fields'][0]['js_options']['ajax_data']['_wpnonce'] );
+	}
+
 	public function testSidebarFieldDoesNotSetAjaxData(): void {
 		$field = RWMB_Sidebar_Field::normalize( [
 			'id'   => 'sidebar',

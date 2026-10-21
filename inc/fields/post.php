@@ -20,15 +20,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function ajax_get_posts() {
-		check_ajax_referer( 'query' );
-
 		$request = rwmb_request();
-
-		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-
-		// Required for 'choice_label' filter. See self::filter().
-		$field['clone']        = false;
-		$field['_original_id'] = $field['id'];
+		$field   = self::resolve_ajax_field( [ 'post' ] );
 
 		// Search.
 		$field['query_args']['s'] = $request->filter_post( 'term' );
@@ -118,9 +111,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 			$field['show_thumbnail']               = $supports;
 			$field['js_options']['show_thumbnail'] = $supports;
-			if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
-			}
 		}
 
 		return $field;
