@@ -130,10 +130,12 @@ class ObjectChoiceTest extends TestCase {
 				'fields' => [
 					[
 						'id'         => 'author',
+						'type'       => 'user',
 						'js_options' => [
 							'ajax_data' => [
 								'field'    => [
-									'id'            => 'author',
+									'id'            => 'stale',
+									'type'          => 'post',
 									'query_args'    => [ 'role' => 'subscriber' ],
 									'display_field' => 'user_login',
 								],
@@ -160,6 +162,8 @@ class ObjectChoiceTest extends TestCase {
 		$this->assertArrayNotHasKey( 'meta_box_id', $bound[0]['fields'][1] );
 		$this->assertArrayNotHasKey( 'meta_box_id', $bound[0]['fields'][2] );
 		$this->assertSame( 'box', $bound[0]['fields'][0]['meta_box_id'] );
+		$this->assertSame( 'author', $child['id'] );
+		$this->assertSame( 'user', $child['type'] );
 		$this->assertSame( 'box', $child['meta_box_id'] );
 		$this->assertArrayNotHasKey( 'query_args', $child );
 		$this->assertArrayNotHasKey( 'display_field', $child );

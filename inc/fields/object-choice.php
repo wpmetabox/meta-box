@@ -154,6 +154,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			if ( is_array( $ajax_field ) ) {
 				$field['meta_box_id'] = $meta_box_id;
 				unset( $ajax_field['query_args'], $ajax_field['display_field'], $ajax_field['show_thumbnail'] );
+				$ajax_field['id']                             = (string) ( $field['id'] ?? '' );
+				$ajax_field['type']                           = $field['type'] ?? '';
 				$ajax_field['meta_box_id']                    = $meta_box_id;
 				$field['js_options']['ajax_data']['field']    = $ajax_field;
 				$field['js_options']['ajax_data']['_wpnonce'] = wp_create_nonce( self::ajax_nonce_action( $field ) );
@@ -236,7 +238,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 				continue;
 			}
 
-			if ( ( $field['id'] ?? '' ) === $field_id && ! empty( $field['ajax'] ) ) {
+			if ( (string) ( $field['id'] ?? '' ) === $field_id && ! empty( $field['ajax'] ) ) {
 				$matches[] = $field;
 			}
 
