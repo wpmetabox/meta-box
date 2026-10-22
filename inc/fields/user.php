@@ -21,15 +21,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function ajax_get_users() {
-		check_ajax_referer( 'query' );
-
 		$request = rwmb_request();
-
-		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-
-		// Required for 'choice_label' filter. See self::filter().
-		$field['clone']        = false;
-		$field['_original_id'] = $field['id'];
+		$field   = self::resolve_ajax_field( [ 'user' ] );
 
 		// Search.
 		$term = (string) $request->filter_post( 'term' );
@@ -38,8 +31,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		// Pagination.
-		$limit = $field['query_args']['number'] ?? 0;
-		$limit = (int) $limit;
+		$limit = (int) ( $field['query_args']['number'] ?? 0 );
 		if ( $limit && 'query:append' === $request->filter_post( '_type' ) ) {
 			$field['query_args']['paged'] = $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT );
 		}
@@ -97,16 +89,9 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 
 		parent::set_ajax_params( $field );
 
-		if ( $field['ajax'] ) {
-			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
-		}
-
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$field['show_thumbnail']               = true;
 			$field['js_options']['show_thumbnail'] = true;
-			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
-			}
 		}
 
 		return $field;
