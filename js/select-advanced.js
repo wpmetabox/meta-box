@@ -48,7 +48,15 @@
 			$wrap.append( document.createTextNode( data.text || '' ) );
 			return $wrap;
 		};
-		options.templateSelection = options.templateResult;
+
+		// selectWoo not support jQuery object
+		if ( $.fn.selectWoo ) {
+			options.templateSelection = function ( data ) {
+				return data.text || '';
+			};
+		} else {
+			options.templateSelection = options.templateResult;
+		}
 
 		return options;
 	}
