@@ -51,9 +51,7 @@
 
 		// selectWoo not support jQuery object
 		if ( $.fn.selectWoo ) {
-			options.templateSelection = function ( data ) {
-				return data.text || '';
-			};
+			options.templateSelection = data => data.text || '';
 		} else {
 			options.templateSelection = options.templateResult;
 		}
