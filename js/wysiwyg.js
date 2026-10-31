@@ -74,8 +74,6 @@
 		settings.tinymce.toolbar1 = 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv';
 		settings.tinymce.toolbar2 = 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help';
 
-		settings.tinymce.extended_valid_elements = rwmbWysiwyg.extendedValidElements;
-
 		settings.quicktags.buttons = 'strong,em,link,block,del,ins,img,ul,ol,li,code,more,close';
 
 		return settings;

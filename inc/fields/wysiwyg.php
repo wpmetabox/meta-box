@@ -5,18 +5,11 @@ defined( 'ABSPATH' ) || die;
  * The WYSIWYG (editor) field.
  */
 class RWMB_Wysiwyg_Field extends RWMB_Field {
-	// TinyMCE removes attribute-less <span> tags when content round-trips through the editor. Keep them with
-	// an explicit attribute whitelist ("span[*]" keeps event handlers, which the default schema strips).
-	const SPAN_VALID_ELEMENTS = 'span[id|accesskey|class|dir|lang|style|tabindex|title|role|contenteditable|contextmenu|draggable|dropzone|hidden|spellcheck|translate]';
-
 	public static function admin_enqueue_scripts() {
 		wp_enqueue_editor();
 		wp_enqueue_style( 'rwmb-wysiwyg', RWMB_CSS_URL . 'wysiwyg.css', [], RWMB_VER );
 		wp_style_add_data( 'rwmb-wysiwyg', 'path', RWMB_CSS_DIR . 'wysiwyg.css' );
 		wp_enqueue_script( 'rwmb-wysiwyg', RWMB_JS_URL . 'wysiwyg.js', [ 'jquery', 'rwmb' ], RWMB_VER, true );
-		wp_localize_script( 'rwmb-wysiwyg', 'rwmbWysiwyg', [
-			'extendedValidElements' => self::SPAN_VALID_ELEMENTS,
-		] );
 	}
 
 	/**
@@ -74,19 +67,14 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		$field['options'] = wp_parse_args( $field['options'], [
 			'editor_class' => 'rwmb-wysiwyg',
 			'dfw'          => true, // Use default WordPress full screen UI.
+			'tinymce'      => [],
 		] );
 
-		if ( ! isset( $field['options']['tinymce'] ) ) {
-			$field['options']['tinymce'] = [];
-		}
-
+		// TinyMCE unwraps <span> without attributes. Re-declare it first, so user-defined span rules still win.
 		if ( is_array( $field['options']['tinymce'] ) ) {
-			$extended = (string) ( $field['options']['tinymce']['extended_valid_elements'] ?? '' );
+			$span = 'span[id|accesskey|class|dir|lang|style|tabindex|title|role|contenteditable|contextmenu|draggable|dropzone|hidden|spellcheck|translate]';
 
-			// Respect user-defined span rules: they already keep attribute-less <span> and control its attributes.
-			if ( ! preg_match( '/(?:^|,)\s*span\s*(?:\[|,|$)/i', $extended ) ) {
-				$field['options']['tinymce']['extended_valid_elements'] = $extended ? $extended . ',' . self::SPAN_VALID_ELEMENTS : self::SPAN_VALID_ELEMENTS;
-			}
+			$field['options']['tinymce']['extended_valid_elements'] = trim( $span . ',' . ( $field['options']['tinymce']['extended_valid_elements'] ?? '' ), ',' );
 		}
 
 		// Keep the filter to be compatible with previous versions.
