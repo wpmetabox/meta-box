@@ -67,7 +67,15 @@ class RWMB_Wysiwyg_Field extends RWMB_Field {
 		$field['options'] = wp_parse_args( $field['options'], [
 			'editor_class' => 'rwmb-wysiwyg',
 			'dfw'          => true, // Use default WordPress full screen UI.
+			'tinymce'      => [],
 		] );
+
+		// TinyMCE unwraps <span> without attributes. Re-declare it first, so user-defined span rules still win.
+		if ( is_array( $field['options']['tinymce'] ) ) {
+			$span = 'span[id|accesskey|class|dir|lang|style|tabindex|title|role|contenteditable|contextmenu|draggable|dropzone|hidden|spellcheck|translate]';
+
+			$field['options']['tinymce']['extended_valid_elements'] = trim( $span . ',' . ( $field['options']['tinymce']['extended_valid_elements'] ?? '' ), ',' );
+		}
 
 		// Keep the filter to be compatible with previous versions.
 		$field['options'] = apply_filters( 'rwmb_wysiwyg_settings', $field['options'] );
