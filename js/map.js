@@ -8,8 +8,51 @@
 
 	// Geocoder service.
 	var geocoder = new google.maps.Geocoder();
-	// Autocomplete Service.
-	var autocomplete = new google.maps.places.AutocompleteService();
+
+	// New Google Cloud projects cannot use the legacy AutocompleteService. Use the Places API (New) first.
+	// Old keys can have only the legacy API. If the new API fails, use the legacy service for the rest of the page.
+	let useLegacyAutocomplete = false;
+
+	async function getSuggestions( input, region ) {
+		if ( !useLegacyAutocomplete ) {
+			try {
+				return await getNewSuggestions( input, region );
+			} catch {
+				// Try the legacy service below.
+			}
+		}
+
+		const suggestions = await getLegacySuggestions( input, region );
+		useLegacyAutocomplete = true;
+		return suggestions;
+	}
+
+	async function getNewSuggestions( input, region ) {
+		const request = region ? { input, includedRegionCodes: [ region ] } : { input };
+		const { suggestions } = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions( request );
+		return suggestions.map( ( { placePrediction } ) => ( {
+			label: placePrediction.text.text,
+			placeid: placePrediction.placeId,
+		} ) );
+	}
+
+	function getLegacySuggestions( input, region ) {
+		const { AutocompleteService, PlacesServiceStatus } = google.maps.places;
+
+		return new Promise( ( resolve, reject ) => {
+			new AutocompleteService().getPlacePredictions( { input, componentRestrictions: { country: region } }, ( results, status ) => {
+				if ( status !== PlacesServiceStatus.OK && status !== PlacesServiceStatus.ZERO_RESULTS ) {
+					reject( status );
+					return;
+				}
+				resolve( ( results || [] ).map( item => ( {
+					label: item.description,
+					placeid: item.place_id,
+				} ) ) );
+			} );
+		} );
+	}
+
 	// Use prototype for better performance
 	MapField.prototype = {
 		// Initialize everything
@@ -164,28 +207,12 @@
 
 			$address.autocomplete( {
 				source: function ( request, response ) {
-					// if add region only search in that region
-					var options = {
-						'input': request.term,
-						'componentRestrictions': { country: that.$canvas.data( 'region' ) }
-					};
-					// Change Geocode to getPlacePredictions .
-					autocomplete.getPlacePredictions( options, function ( results ) {
-						if ( results == null || !results.length ) {
-							response( [ {
-								value: '',
-								label: i18n.no_results_string
-							} ] );
-							return;
-						}
-						response( results.map( function ( item ) {
-							return {
-								label: item.description,
-								value: item.description,
-								placeid: item.place_id,
-							};
-						} ) );
-					} );
+					getSuggestions( request.term, that.$canvas.data( 'region' ) )
+						.catch( () => [] )
+						.then( suggestions => response( suggestions.length ? suggestions : [ {
+							value: '',
+							label: i18n.no_results_string
+						} ] ) );
 				},
 				select: function ( event, ui ) {
 					geocoder.geocode( {
