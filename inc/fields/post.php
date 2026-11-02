@@ -20,15 +20,8 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function ajax_get_posts() {
-		check_ajax_referer( 'query' );
-
 		$request = rwmb_request();
-
-		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-
-		// Required for 'choice_label' filter. See self::filter().
-		$field['clone']        = false;
-		$field['_original_id'] = $field['id'];
+		$field   = self::get_ajax_field();
 
 		// Search.
 		$field['query_args']['s'] = $request->filter_post( 'term' );
@@ -47,7 +40,7 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 		$data = [ 'items' => $items ];
 
 		// More items for pagination.
-		$limit = (int) $field['query_args']['posts_per_page'];
+		$limit = (int) ( $field['query_args']['posts_per_page'] ?? -1 );
 		if ( -1 !== $limit && count( $items ) === $limit ) {
 			$data['more'] = true;
 		}
@@ -105,8 +98,6 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 			'posts_per_page' => $posts_per_page,
 		] );
 
-		parent::set_ajax_params( $field );
-
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$supports = false;
 			foreach ( $field['post_type'] as $pt ) {
@@ -118,10 +109,9 @@ class RWMB_Post_Field extends RWMB_Object_Choice_Field {
 
 			$field['show_thumbnail']               = $supports;
 			$field['js_options']['show_thumbnail'] = $supports;
-			if ( $supports && ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
-			}
 		}
+
+		parent::set_ajax_params( $field );
 
 		return $field;
 	}

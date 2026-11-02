@@ -44,9 +44,70 @@ if ( ! function_exists( 'admin_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
+if ( ! function_exists( 'wp_slash' ) ) {
+	function wp_slash( $value ) {
+		if ( is_array( $value ) ) {
+			return array_map( 'wp_slash', $value );
+		}
+		return is_string( $value ) ? addslashes( $value ) : $value;
+	}
+}
+
+if ( ! function_exists( 'wp_unslash' ) ) {
+	function wp_unslash( $value ) {
+		if ( is_array( $value ) ) {
+			return array_map( 'wp_unslash', $value );
+		}
+		return is_string( $value ) ? stripslashes( $value ) : $value;
+	}
+}
+
 if ( ! function_exists( 'wp_create_nonce' ) ) {
 	function wp_create_nonce( $action = -1 ): string {
-		return 'test-nonce';
+		return 'nonce-' . md5( (string) $action );
+	}
+}
+
+if ( ! function_exists( 'wp_verify_nonce' ) ) {
+	function wp_verify_nonce( $nonce, $action = -1 ) {
+		return $nonce === wp_create_nonce( $action ) ? 1 : false;
+	}
+}
+
+if ( ! function_exists( 'check_ajax_referer' ) ) {
+	function check_ajax_referer( $action = -1, $query_arg = false, $stop = true ) {
+		$query_arg = $query_arg ? $query_arg : '_wpnonce';
+		$nonce     = isset( $_REQUEST[ $query_arg ] ) ? wp_unslash( $_REQUEST[ $query_arg ] ) : '';
+
+		if ( wp_verify_nonce( $nonce, $action ) ) {
+			return 1;
+		}
+		if ( $stop ) {
+			throw new RuntimeException( 'Invalid Ajax nonce.', 403 );
+		}
+		return false;
+	}
+}
+
+if ( ! function_exists( 'wp_send_json_error' ) ) {
+	function wp_send_json_error( $data = null, $status_code = null ) {
+		throw new RuntimeException( 'wp_send_json_error', (int) $status_code );
+	}
+}
+
+if ( ! function_exists( 'wp_die' ) ) {
+	function wp_die( $message = '', $title = '', $args = [] ) {
+		if ( is_int( $title ) ) {
+			$args = [ 'response' => $title ];
+		}
+		$status = is_array( $args ) ? (int) ( $args['response'] ?? 0 ) : (int) $args;
+		throw new RuntimeException( (string) $message, $status );
 	}
 }
 
