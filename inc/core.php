@@ -5,6 +5,10 @@ class RWMB_Core {
 
 		// Uses priority 20 to support custom post types registered using the default priority.
 		add_action( 'init', [ $this, 'register_meta_boxes' ], 20 );
+
+		// Run last, so field groups added by any other filter callback can be reused.
+		add_filter( 'rwmb_meta_boxes', [ $this, 'expand_field_groups' ], PHP_INT_MAX );
+
 		add_action( 'edit_page_form', [ $this, 'fix_page_template' ] );
 		$this->add_context_hooks();
 	}
@@ -32,6 +36,87 @@ class RWMB_Core {
 			$meta_box = $registry->make( $config );
 			$meta_box->register_fields();
 		}
+	}
+
+	/**
+	 * Replace `[ 'use_field_group' => 'meta-box-id' ]` entries with the fields of that meta box.
+	 * The referenced meta box can be left unassigned with `'post_types' => []`, so it works as a template.
+	 *
+	 * @param mixed $configs Meta box configs.
+	 * @return mixed
+	 */
+	public function expand_field_groups( $configs ) {
+		if ( ! is_array( $configs ) ) {
+			return $configs;
+		}
+
+		// Use the same ID the meta box gets when registered, so titles and unsanitized IDs work as references.
+		$ids       = [];
+		$templates = [];
+		foreach ( $configs as $key => $config ) {
+			if ( is_array( $config ) && isset( $config['fields'] ) && is_array( $config['fields'] ) ) {
+				$ids[ $key ]               = RW_Meta_Box::normalize( $config )['id'];
+				$templates[ $ids[ $key ] ] = $config['fields'];
+			}
+		}
+
+		foreach ( $configs as $key => $config ) {
+			if ( isset( $ids[ $key ] ) && is_array( $config ) && is_array( $config['fields'] ) ) {
+				$config['fields'] = $this->expand_fields( $config['fields'], $templates, [ $ids[ $key ] ] );
+				$configs[ $key ]  = $config;
+			}
+		}
+
+		return $configs;
+	}
+
+	/**
+	 * Expand `use_field_group` references in a list of fields, including nested ones.
+	 *
+	 * @param array<int|string, mixed>                $fields    List of fields.
+	 * @param array<string, array<int|string, mixed>> $templates Fields of every meta box, keyed by meta box ID.
+	 * @param string[]                                $stack     IDs of the meta boxes being expanded, to stop circular references.
+	 * @return array<int, mixed>
+	 */
+	private function expand_fields( array $fields, array $templates, array $stack ): array {
+		$expanded = [];
+
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) ) {
+				$expanded[] = $field;
+				continue;
+			}
+
+			if ( array_key_exists( 'use_field_group', $field ) ) {
+				$reference = $field['use_field_group'];
+				$id        = is_string( $reference ) ? RWMB_Helpers_String::sanitize_id( $reference ) : '';
+
+				if ( ! isset( $templates[ $id ] ) || in_array( $id, $stack, true ) ) {
+					_doing_it_wrong(
+						'use_field_group',
+						sprintf(
+							// translators: %s is the field group ID.
+							esc_html__( 'Field group %s does not exist or includes itself. It was skipped.', 'meta-box' ),
+							esc_html( is_string( $reference ) ? $reference : gettype( $reference ) )
+						),
+						'5.16.0'
+					);
+					continue;
+				}
+
+				$stack[]  = $id;
+				$expanded = array_merge( $expanded, $this->expand_fields( $templates[ $id ], $templates, $stack ) );
+				array_pop( $stack );
+				continue;
+			}
+
+			if ( ! empty( $field['fields'] ) && is_array( $field['fields'] ) ) {
+				$field['fields'] = $this->expand_fields( $field['fields'], $templates, $stack );
+			}
+			$expanded[] = $field;
+		}
+
+		return $expanded;
 	}
 
 	/**
