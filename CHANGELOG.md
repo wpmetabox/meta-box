@@ -1,3 +1,9 @@
+### Unreleased
+
+- Security: prevent changing the query of post, taxonomy and user fields via Ajax requests
+- User field: Ajax search no longer searches by email by default
+- Developers: changing `ajax_data.field.query_args` in JavaScript no longer has effect. Custom `ajax_action` handlers must not trust the `field` data sent in the request
+
 ### 5.15.3 - 2026-10-20
 
 - Fix stored XSS in background field via unexpected array keys

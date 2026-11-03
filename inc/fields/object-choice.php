@@ -86,6 +86,10 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
 	 * Set ajax parameters.
 	 *
+	 * For core Ajax actions, `field` is a JSON string and the nonce is made from it.
+	 * If a visitor changes a value, the nonce is not correct.
+	 * Custom Ajax actions keep the old array format. They must check the request themselves.
+	 *
 	 * @param array $field Field settings.
 	 */
 	protected static function set_ajax_params( &$field ) {
@@ -96,12 +100,25 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		if ( empty( $field['js_options']['ajax'] ) ) {
 			$field['js_options']['ajax'] = [];
 		}
-		$field['js_options']['ajax']      = wp_parse_args(
+		$field['js_options']['ajax'] = wp_parse_args(
 			[
 				'url' => admin_url( 'admin-ajax.php' ),
 			],
 			$field['js_options']['ajax']
 		);
+
+		$ajax_action = $field['ajax_action'] ?? '';
+		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
+		if ( ! $ajax_action ) {
+			$actions     = [
+				'post'              => 'rwmb_get_posts',
+				'taxonomy'          => 'rwmb_get_terms',
+				'taxonomy_advanced' => 'rwmb_get_terms',
+				'user'              => 'rwmb_get_users',
+			];
+			$ajax_action = $actions[ $field['type'] ] ?? '';
+		}
+
 		$field_data = [
 			'id'         => $field['id'],
 			'type'       => $field['type'],
@@ -110,24 +127,53 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
 		// strips data.action from the cache key, so two fields with the same type +
 		// query_args but different ajax_action would otherwise share a cache entry.
-		$ajax_action = $field['ajax_action'] ?? '';
-		$ajax_action = is_string( $ajax_action ) ? sanitize_key( $ajax_action ) : '';
-		if ( ! $ajax_action ) {
-			$actions = [
-				'post'              => 'rwmb_get_posts',
-				'taxonomy'          => 'rwmb_get_terms',
-				'taxonomy_advanced' => 'rwmb_get_terms',
-				'user'              => 'rwmb_get_users',
-			];
-			$ajax_action = $actions[ $field['type'] ] ?? '';
-		}
 		if ( $ajax_action ) {
 			$field_data['ajax_action'] = $ajax_action;
 		}
+		if ( array_key_exists( 'display_field', $field ) ) {
+			$field_data['display_field'] = $field['display_field'];
+		}
+		if ( array_key_exists( 'show_thumbnail', $field ) ) {
+			$field_data['show_thumbnail'] = (bool) $field['show_thumbnail'];
+		}
+
+		if ( in_array( $ajax_action, [ 'rwmb_get_posts', 'rwmb_get_terms', 'rwmb_get_users' ], true ) ) {
+			$payload                          = wp_json_encode( $field_data );
+			$field['js_options']['ajax_data'] = [
+				'field'    => $payload,
+				'_wpnonce' => wp_create_nonce( 'rwmb-query-' . $payload ),
+			];
+			return;
+		}
+
 		$field['js_options']['ajax_data'] = [
 			'field'    => $field_data,
 			'_wpnonce' => wp_create_nonce( 'query' ),
 		];
+	}
+
+	/**
+	 * Get the field settings from a core Ajax request.
+	 * Stop the request if the nonce or the action is not correct.
+	 *
+	 * @return array
+	 */
+	protected static function get_ajax_field(): array {
+		$request = rwmb_request();
+		$payload = $request->post( 'field' );
+		$payload = is_string( $payload ) ? wp_unslash( $payload ) : '';
+
+		check_ajax_referer( 'rwmb-query-' . $payload );
+
+		$field = json_decode( $payload, true );
+		if ( $field['ajax_action'] !== $request->post( 'action' ) ) {
+			wp_die( -1, 403 );
+		}
+
+		$field['clone']        = false;
+		$field['_original_id'] = $field['id'];
+
+		return $field;
 	}
 
 	/**

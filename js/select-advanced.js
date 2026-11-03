@@ -99,8 +99,11 @@
 					delete params.data.page;
 				}
 
+				// Core Ajax fields send the field settings as a JSON string.
+				var field = typeof params.data.field === 'string' ? JSON.parse( params.data.field ) : params.data.field;
+
 				// Create cache key from ajax params from only necessary keys to make cache available for multiple fields.
-				var data = $.extend( true, {}, params.data );
+				var data = $.extend( true, {}, params.data, { field: field } );
 				delete data.field.id;
 				delete data.action;
 				if ( !data.term ) {
@@ -114,7 +117,7 @@
 				}
 
 				// Action comes from PHP field.ajax_action (set in each field's normalize()).
-				params.data.action = params.data.field.ajax_action;
+				params.data.action = field.ajax_action;
 				params.method = 'POST';
 
 				return $.ajax( params ).then( function ( data ) {

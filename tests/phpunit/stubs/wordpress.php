@@ -44,9 +44,30 @@ if ( ! function_exists( 'admin_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
+if ( ! function_exists( 'wp_slash' ) ) {
+	function wp_slash( $value ) {
+		if ( is_array( $value ) ) {
+			return array_map( 'wp_slash', $value );
+		}
+		return is_string( $value ) ? addslashes( $value ) : $value;
+	}
+}
+
 if ( ! function_exists( 'wp_create_nonce' ) ) {
 	function wp_create_nonce( $action = -1 ): string {
-		return 'test-nonce';
+		return 'nonce-' . md5( (string) $action );
+	}
+}
+
+if ( ! function_exists( 'wp_verify_nonce' ) ) {
+	function wp_verify_nonce( $nonce, $action = -1 ) {
+		return $nonce === wp_create_nonce( $action ) ? 1 : false;
 	}
 }
 

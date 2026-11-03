@@ -21,15 +21,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 	}
 
 	public static function ajax_get_users() {
-		check_ajax_referer( 'query' );
-
 		$request = rwmb_request();
-
-		$field = $request->filter_post( 'field', FILTER_DEFAULT, FILTER_FORCE_ARRAY );
-
-		// Required for 'choice_label' filter. See self::filter().
-		$field['clone']        = false;
-		$field['_original_id'] = $field['id'];
+		$field   = self::get_ajax_field();
 
 		// Search.
 		$term = (string) $request->filter_post( 'term' );
@@ -95,19 +88,12 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 			'number' => $limit,
 		] );
 
-		parent::set_ajax_params( $field );
-
-		if ( $field['ajax'] ) {
-			$field['js_options']['ajax_data']['field']['display_field'] = $field['display_field'];
-		}
-
 		if ( 'select_advanced' === $field['field_type'] ) {
 			$field['show_thumbnail']               = true;
 			$field['js_options']['show_thumbnail'] = true;
-			if ( ! empty( $field['js_options']['ajax_data']['field'] ) ) {
-				$field['js_options']['ajax_data']['field']['show_thumbnail'] = true;
-			}
 		}
+
+		parent::set_ajax_params( $field );
 
 		return $field;
 	}
@@ -116,8 +102,10 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$display_field = $field['display_field'];
 
 		$args = wp_parse_args( $field['query_args'], [
-			'orderby' => $display_field,
-			'order'   => 'asc',
+			'orderby'        => $display_field,
+			'order'          => 'asc',
+			// If the search term has "@", WordPress also searches user_email. This lets visitors find emails.
+			'search_columns' => [ 'user_login', 'user_nicename', 'display_name' ],
 		] );
 
 		$args['fields'] = [
