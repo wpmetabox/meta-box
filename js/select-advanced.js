@@ -99,6 +99,7 @@
 					delete params.data.page;
 				}
 
+				// Core Ajax fields send the field settings as a JSON string.
 				var field = typeof params.data.field === 'string' ? JSON.parse( params.data.field ) : params.data.field;
 
 				// Create cache key from ajax params from only necessary keys to make cache available for multiple fields.
@@ -115,7 +116,7 @@
 					return;
 				}
 
-				// Core Ajax fields send the signed configuration as a JSON string.
+				// Action comes from PHP field.ajax_action (set in each field's normalize()).
 				params.data.action = field.ajax_action;
 				params.method = 'POST';
 

@@ -86,10 +86,9 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	/**
 	 * Set ajax parameters.
 	 *
-	 * Core Ajax actions receive the field configuration as a signed JSON string
-	 * in `field`, so changing any value invalidates the nonce. Custom Ajax
-	 * actions keep the legacy array format and must validate the request
-	 * themselves.
+	 * For core Ajax actions, `field` is a JSON string and the nonce is made from it.
+	 * If a visitor changes a value, the nonce is not correct.
+	 * Custom Ajax actions keep the old array format. They must check the request themselves.
 	 *
 	 * @param array $field Field settings.
 	 */
@@ -123,8 +122,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		$field_data = [
 			'id'         => $field['id'],
 			'type'       => $field['type'],
-			'query_args' => is_array( $field['query_args'] ?? null ) ? $field['query_args'] : [],
+			'query_args' => $field['query_args'],
 		];
+		// Keep ajax_action inside field (not top-level ajax_data): select-advanced.js
+		// strips data.action from the cache key, so two fields with the same type +
+		// query_args but different ajax_action would otherwise share a cache entry.
 		if ( $ajax_action ) {
 			$field_data['ajax_action'] = $ajax_action;
 		}
@@ -135,8 +137,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 			$field_data['show_thumbnail'] = (bool) $field['show_thumbnail'];
 		}
 
-		$core = in_array( $ajax_action, [ 'rwmb_get_posts', 'rwmb_get_terms', 'rwmb_get_users' ], true );
-		if ( $core ) {
+		if ( in_array( $ajax_action, [ 'rwmb_get_posts', 'rwmb_get_terms', 'rwmb_get_users' ], true ) ) {
 			$payload                          = wp_json_encode( $field_data );
 			$field['js_options']['ajax_data'] = [
 				'field'    => $payload,
@@ -152,9 +153,8 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	}
 
 	/**
-	 * Load the signed field configuration sent by a core Ajax handler.
-	 *
-	 * The payload is the JSON string in `field`.
+	 * Get the field settings from a core Ajax request.
+	 * Stop the request if the nonce or the action is not correct.
 	 *
 	 * @return array
 	 */
@@ -166,7 +166,7 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 		check_ajax_referer( 'rwmb-query-' . $payload );
 
 		$field = json_decode( $payload, true );
-		if ( ( $field['ajax_action'] ?? '' ) !== $request->post( 'action' ) ) {
+		if ( $field['ajax_action'] !== $request->post( 'action' ) ) {
 			wp_die( -1, 403 );
 		}
 

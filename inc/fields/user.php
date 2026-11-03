@@ -102,14 +102,11 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$display_field = $field['display_field'];
 
 		$args = wp_parse_args( $field['query_args'], [
-			'orderby' => $display_field,
-			'order'   => 'asc',
+			'orderby'        => $display_field,
+			'order'          => 'asc',
+			// If the search term has "@", WordPress also searches user_email. This lets visitors find emails.
+			'search_columns' => [ 'user_login', 'user_nicename', 'display_name' ],
 		] );
-
-		// Do not let WordPress search user_email by default when the term contains "@".
-		if ( empty( $args['search_columns'] ) ) {
-			$args['search_columns'] = [ 'user_login', 'user_nicename', 'display_name' ];
-		}
 
 		$args['fields'] = [
 			'ID',
