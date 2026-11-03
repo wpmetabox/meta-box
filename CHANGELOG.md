@@ -1,3 +1,14 @@
+### 5.15.4 - 2026-11-03
+
+- Secure Ajax field queries for post, taxonomy, and user fields by signing the field configuration sent to core Ajax actions
+  - Core handlers (`rwmb_get_posts`, `rwmb_get_terms`, `rwmb_get_users`) now verify a nonce created from `wp_json_encode($field_data)` before trusting the payload
+  - The signed configuration is sent in `ajax_data.field` as a JSON string; custom Ajax actions keep the legacy `field` array + `wp_create_nonce('query')` for backward compatibility
+  - This prevents tampering with `query_args` (e.g. adding `meta_query`, changing `post_type`, or injecting `search` terms) even when a nonce is leaked from a valid page
+- Limit user field Ajax search to `user_login`, `user_nicename`, and `display_name` by default. Email search must be enabled explicitly via `search_columns` to prevent user enumeration
+- Fix the post field sending an invalid `posts_per_page` when it is not configured
+- Compatibility: custom JavaScript that modifies `ajax_data.field.query_args` after the field is normalized no longer affects core Ajax queries because the server-signed payload is used
+- Compatibility: custom Ajax action handlers must not trust `field['query_args']` sent in the request; validate or reload their own configuration
+
 ### 5.15.3 - 2026-10-20
 
 - Fix stored XSS in background field via unexpected array keys

@@ -33,6 +33,15 @@ class ObjectChoiceTest extends TestCase {
 		];
 	}
 
+	public static function forbiddenAjaxProvider(): array {
+		return [
+			'tampered payload'  => [ 'tampered', 'rwmb_get_users', true ],
+			'mismatched action' => [ 'valid', 'rwmb_get_posts', true ],
+			'missing payload'   => [ 'missing', 'rwmb_get_users', true ],
+			'invalid nonce'     => [ 'valid', 'rwmb_get_users', false ],
+		];
+	}
+
 	private function field( array $overrides = [] ): array {
 		return array_merge( [
 			'id'          => 'field',
@@ -295,7 +304,8 @@ class ObjectChoiceTest extends TestCase {
 		$this->assertFalse( $resolved['clone'] );
 	}
 
-	public function testTamperedPayloadReturnsForbidden(): void {
+	#[DataProvider( 'forbiddenAjaxProvider' )]
+	public function testInvalidAjaxPayloadReturnsForbidden( string $payload_type, string $action, bool $valid_nonce ): void {
 		if ( ! function_exists( 'rwmb_request' ) ) {
 			$this->markTestSkipped( 'Meta Box request helper unavailable' );
 		}
@@ -310,131 +320,22 @@ class ObjectChoiceTest extends TestCase {
 
 		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
 
-		$data                          = $field['js_options']['ajax_data'];
-		$decoded                       = json_decode( $data['field'], true );
-		$decoded['query_args']['role'] = 'administrator';
-		$tampered                      = wp_json_encode( $decoded );
+		$data    = $field['js_options']['ajax_data'];
+		$payload = $data['field'];
+		if ( 'tampered' === $payload_type ) {
+			$decoded                       = json_decode( $payload, true );
+			$decoded['query_args']['role'] = 'administrator';
+			$payload                       = wp_json_encode( $decoded );
+		}
+		if ( 'missing' === $payload_type ) {
+			$payload = '';
+		}
 
 		rwmb_request()->set_post_data( [
-			'field'  => wp_slash( $tampered ),
-			'action' => 'rwmb_get_users',
+			'field'  => wp_slash( $payload ),
+			'action' => $action,
 		] );
-		$_REQUEST['_wpnonce'] = $data['_wpnonce'];
-
-		try {
-			$status = $this->get_ajax_die_status( static function () {
-				RWMB_Object_Choice_Ajax_Test_Field::get_field();
-			} );
-		} finally {
-			rwmb_request()->set_post_data( [
-				'field'  => '',
-				'action' => '',
-			] );
-			unset( $_REQUEST['_wpnonce'] );
-		}
-
-		$this->assertSame( 403, $status );
-	}
-
-	public function testMismatchedActionReturnsForbidden(): void {
-		if ( ! function_exists( 'rwmb_request' ) ) {
-			$this->markTestSkipped( 'Meta Box request helper unavailable' );
-		}
-
-		wp_set_current_user( 0 );
-
-		$field = $this->field( [
-			'id'         => 'author',
-			'type'       => 'user',
-			'query_args' => [ 'role' => 'subscriber' ],
-		] );
-
-		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
-
-		$data = $field['js_options']['ajax_data'];
-
-		rwmb_request()->set_post_data( [
-			'field'  => wp_slash( $data['field'] ),
-			'action' => 'rwmb_get_posts',
-		] );
-		$_REQUEST['_wpnonce'] = $data['_wpnonce'];
-
-		try {
-			$status = $this->get_ajax_die_status( static function () {
-				RWMB_Object_Choice_Ajax_Test_Field::get_field();
-			} );
-		} finally {
-			rwmb_request()->set_post_data( [
-				'field'  => '',
-				'action' => '',
-			] );
-			unset( $_REQUEST['_wpnonce'] );
-		}
-
-		$this->assertSame( 403, $status );
-	}
-
-	public function testMissingPayloadReturnsForbidden(): void {
-		if ( ! function_exists( 'rwmb_request' ) ) {
-			$this->markTestSkipped( 'Meta Box request helper unavailable' );
-		}
-
-		wp_set_current_user( 0 );
-
-		$field = $this->field( [
-			'id'         => 'author',
-			'type'       => 'user',
-			'query_args' => [ 'role' => 'subscriber' ],
-		] );
-
-		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
-
-		$data = $field['js_options']['ajax_data'];
-
-		rwmb_request()->set_post_data( [
-			'field'  => '',
-			'action' => 'rwmb_get_users',
-		] );
-		$_REQUEST['_wpnonce'] = $data['_wpnonce'];
-
-		try {
-			$status = $this->get_ajax_die_status( static function () {
-				RWMB_Object_Choice_Ajax_Test_Field::get_field();
-			} );
-		} finally {
-			rwmb_request()->set_post_data( [
-				'field'  => '',
-				'action' => '',
-			] );
-			unset( $_REQUEST['_wpnonce'] );
-		}
-
-		$this->assertSame( 403, $status );
-	}
-
-	public function testInvalidNonceReturnsForbidden(): void {
-		if ( ! function_exists( 'rwmb_request' ) ) {
-			$this->markTestSkipped( 'Meta Box request helper unavailable' );
-		}
-
-		wp_set_current_user( 0 );
-
-		$field = $this->field( [
-			'id'         => 'author',
-			'type'       => 'user',
-			'query_args' => [ 'role' => 'subscriber' ],
-		] );
-
-		RWMB_Object_Choice_Ajax_Test_Field::apply_ajax_params( $field );
-
-		$data = $field['js_options']['ajax_data'];
-
-		rwmb_request()->set_post_data( [
-			'field'  => wp_slash( $data['field'] ),
-			'action' => 'rwmb_get_users',
-		] );
-		// Provide a wrong nonce
-		$_REQUEST['_wpnonce'] = 'wrong-nonce';
+		$_REQUEST['_wpnonce'] = $valid_nonce ? $data['_wpnonce'] : 'wrong-nonce';
 
 		try {
 			$status = $this->get_ajax_die_status( static function () {

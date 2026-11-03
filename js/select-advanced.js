@@ -99,21 +99,10 @@
 					delete params.data.page;
 				}
 
-				var field = params.data.field;
-				if ( typeof field === 'string' ) {
-					try {
-						field = JSON.parse( field );
-					} catch ( error ) {
-						failure( error );
-						return;
-					}
-				}
+				var field = typeof params.data.field === 'string' ? JSON.parse( params.data.field ) : params.data.field;
 
 				// Create cache key from ajax params from only necessary keys to make cache available for multiple fields.
-				var data = $.extend( true, {}, params.data );
-				if ( typeof params.data.field === 'string' ) {
-					data.field = $.extend( true, {}, field );
-				}
+				var data = $.extend( true, {}, params.data, { field: field } );
 				delete data.field.id;
 				delete data.action;
 				if ( !data.term ) {

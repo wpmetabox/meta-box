@@ -137,13 +137,11 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 
 		$core = in_array( $ajax_action, [ 'rwmb_get_posts', 'rwmb_get_terms', 'rwmb_get_users' ], true );
 		if ( $core ) {
-			$payload = wp_json_encode( $field_data );
-			if ( is_string( $payload ) && '' !== $payload ) {
-				$field['js_options']['ajax_data'] = [
-					'field'    => $payload,
-					'_wpnonce' => wp_create_nonce( 'rwmb-query-' . $payload ),
-				];
-			}
+			$payload                          = wp_json_encode( $field_data );
+			$field['js_options']['ajax_data'] = [
+				'field'    => $payload,
+				'_wpnonce' => wp_create_nonce( 'rwmb-query-' . $payload ),
+			];
 			return;
 		}
 
@@ -163,35 +161,19 @@ abstract class RWMB_Object_Choice_Field extends RWMB_Choice_Field {
 	protected static function get_ajax_field(): array {
 		$request = rwmb_request();
 		$payload = $request->post( 'field' );
-		$payload = is_string( $payload ) ? (string) wp_unslash( $payload ) : '';
-		$action  = $request->post( 'action' ) ?: $request->get( 'action' );
-		$action  = is_string( $action ) ? $action : '';
-
-		if ( ! $payload ) {
-			self::deny_ajax();
-		}
+		$payload = is_string( $payload ) ? wp_unslash( $payload ) : '';
 
 		check_ajax_referer( 'rwmb-query-' . $payload );
 
 		$field = json_decode( $payload, true );
-		if ( ! is_array( $field ) || ( $field['ajax_action'] ?? '' ) !== $action ) {
-			self::deny_ajax();
+		if ( ( $field['ajax_action'] ?? '' ) !== $request->post( 'action' ) ) {
+			wp_die( -1, 403 );
 		}
 
-		$field['query_args']   = is_array( $field['query_args'] ?? null ) ? $field['query_args'] : [];
 		$field['clone']        = false;
-		$field['_original_id'] = is_string( $field['id'] ?? null ) ? $field['id'] : '';
+		$field['_original_id'] = $field['id'];
 
 		return $field;
-	}
-
-	/**
-	 * Stop an Ajax query that is not allowed.
-	 *
-	 * @return never
-	 */
-	protected static function deny_ajax(): void {
-		wp_die( -1, 403 );
 	}
 
 	/**
