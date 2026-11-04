@@ -250,7 +250,7 @@
 			this.showMessage();
 			// Group field will automatically expand and show an error warning when collapsing
 			for ( var i = 0; i < this.$form.data( 'validator' ).errorList.length; i++ ) {
-				$( '#' + this.$form.data( 'validator' ).errorList[ i ].element.id ).closest( '.rwmb-group-collapsed' ).removeClass( 'rwmb-group-collapsed' );
+				$( this.$form.data( 'validator' ).errorList[ i ].element ).closest( '.rwmb-group-collapsed' ).removeClass( 'rwmb-group-collapsed' );
 			}
 			// Custom event for showing error fields inside tabs/hidden divs. Use setTimeout() to run after error class is added to inputs.
 			var that = this;
