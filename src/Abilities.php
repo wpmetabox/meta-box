@@ -95,12 +95,13 @@ class Abilities {
 				'additionalProperties' => false,
 			],
 			'meta'                => [
-				'annotations' => [
+				'show_in_rest' => true,
+				'annotations'  => [
 					'readonly'      => true,
 					'destructive'   => false,
 					'openWorldHint' => false,
 				],
-				'mcp'         => [
+				'mcp'          => [
 					'public' => true,
 					'type'   => 'tool',
 				],
@@ -137,12 +138,13 @@ class Abilities {
 				'additionalProperties' => false,
 			],
 			'meta'                => [
-				'annotations' => [
+				'show_in_rest' => true,
+				'annotations'  => [
 					'readonly'      => true,
 					'destructive'   => false,
 					'openWorldHint' => false,
 				],
-				'mcp'         => [
+				'mcp'          => [
 					'public' => true,
 					'type'   => 'tool',
 				],
@@ -169,13 +171,14 @@ class Abilities {
 				'additionalProperties' => false,
 			],
 			'meta'                => [
-				'annotations' => [
+				'show_in_rest' => true,
+				'annotations'  => [
 					'readonly'      => false,
 					'destructive'   => false,
 					'idempotent'    => true,
 					'openWorldHint' => false,
 				],
-				'mcp'         => [
+				'mcp'          => [
 					'public' => true,
 					'type'   => 'tool',
 				],
@@ -202,12 +205,13 @@ class Abilities {
 				'additionalProperties' => false,
 			],
 			'meta'                => [
-				'annotations' => [
+				'show_in_rest' => true,
+				'annotations'  => [
 					'readonly'      => false,
 					'destructive'   => true,
 					'openWorldHint' => false,
 				],
-				'mcp'         => [
+				'mcp'          => [
 					'public' => true,
 					'type'   => 'tool',
 				],
