@@ -193,6 +193,9 @@ class RWMB_Map_Field extends RWMB_Field {
 			'openInfoWindow' => false,
 		] );
 
+		// Google Maps renders the info window as HTML.
+		$args['info_window'] = is_string( $args['info_window'] ) ? wp_kses_post( $args['info_window'] ) : '';
+
 		$output = sprintf(
 			'<div class="rwmb-map-canvas" data-map_options="%s" style="width:%s;height:%s"></div>',
 			esc_attr( wp_json_encode( $args ) ),

@@ -157,6 +157,9 @@ class RWMB_OSM_Field extends RWMB_Field {
 			'zoom' => $args['zoom'],
 		] );
 
+		// Leaflet renders the info window as HTML.
+		$args['info_window'] = is_string( $args['info_window'] ) ? wp_kses_post( $args['info_window'] ) : '';
+
 		$output = sprintf(
 			'<div class="rwmb-osm-canvas" data-osm_options="%s" style="width:%s;height:%s"></div>',
 			esc_attr( wp_json_encode( $args ) ),
