@@ -39,10 +39,10 @@ class RWMB_Slider_Field extends RWMB_Field {
 			</div>',
 			esc_attr( $field['id'] ),
 			esc_attr( wp_json_encode( $field['js_options'] ) ),
-			$field['prefix'],
-			$meta,
-			$field['suffix'],
-			$meta,
+			wp_kses_post( $field['prefix'] ),
+			esc_html( $meta ),
+			wp_kses_post( $field['suffix'] ),
+			esc_attr( $meta ),
 			self::render_attributes( $attributes )
 		);
 	}
