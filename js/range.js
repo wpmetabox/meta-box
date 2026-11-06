@@ -8,8 +8,8 @@
 		const $this = $( this ),
 			$output = $this.siblings( '.rwmb-range-output' );
 
-		$output.html( $this.val() );
-		$this.on( 'input propertychange change', () => $output.html( $this.val() ) );
+		$output.text( $this.val() );
+		$this.on( 'input propertychange change', () => $output.text( $this.val() ) );
 	}
 
 	function init( e ) {
