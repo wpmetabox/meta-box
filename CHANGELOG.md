@@ -1,8 +1,12 @@
-### Unreleased
+### 5.15.4 - 2026-11-06
 
 - Security: prevent stored XSS via slider, range and file input field values and map info window content
 - Security: prevent changing the query of post, taxonomy and user fields via Ajax requests
 - User field: Ajax search no longer searches by email by default
+- Map field: use Places API (New) for address autocomplete, so new Google Cloud projects work. Old API keys still work
+- Fix the wysiwyg field removing `<span>` tags without attributes (#1719)
+- Fix the post field with select advanced and multiple values in WooCommerce (#1716)
+- Show Meta Box abilities in the REST API
 - Developers: changing `ajax_data.field.query_args` in JavaScript no longer has effect. Custom `ajax_action` handlers must not trust the `field` data sent in the request
 
 ### 5.15.3 - 2026-10-20
