@@ -1,6 +1,6 @@
 ### Unreleased
 
-- Security: prevent stored XSS via slider field values and map info window content
+- Security: prevent stored XSS via slider, range and file input field values and map info window content
 - Security: prevent changing the query of post, taxonomy and user fields via Ajax requests
 - User field: Ajax search no longer searches by email by default
 - Developers: changing `ajax_data.field.query_args` in JavaScript no longer has effect. Custom `ajax_action` handlers must not trust the `field` data sent in the request
