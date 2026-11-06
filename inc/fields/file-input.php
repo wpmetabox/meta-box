@@ -41,7 +41,7 @@ class RWMB_File_Input_Field extends RWMB_Input_Field {
 				<a href="#" class="rwmb-file-input-remove button %s">%s</a>
 			</div>',
 			in_array( $file_ext, $extensions, true ) ? '' : 'rwmb-file-input-hidden',
-			$meta,
+			esc_url( $meta ),
 			self::render_attributes( $attributes ),
 			esc_html__( 'Select', 'meta-box' ),
 			$meta ? '' : 'hidden',

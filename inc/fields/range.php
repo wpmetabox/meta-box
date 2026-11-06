@@ -19,7 +19,7 @@ class RWMB_Range_Field extends RWMB_Number_Field {
 				<span class="rwmb-range-output">%s</span>
 			</div>',
 			parent::html( $meta, $field ),
-			$meta
+			esc_html( $meta )
 		);
 	}
 
