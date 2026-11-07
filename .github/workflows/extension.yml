@@ -33,7 +33,16 @@ jobs:
           name=$(basename -s .git $(git config --get remote.origin.url))
           git archive -o $name.zip --prefix=$name/ HEAD
           rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}
-          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          # Tag push: version = tag. Manual re-release on master: version = "Version:" header of the main file, so the zip of that version is overwritten.
+          if [ "${{ github.ref_type }}" = tag ]; then
+            tag=${{ github.ref_name }}
+          else
+            tag=$(sed -n 's/^[ *]*Version:[ ]*//p' $name.php | head -1 | tr -d '\r ')
+          fi
+          if [ -n "$tag" ]; then
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "mkdir -p ${{ secrets.DOWNLOADS_DIR }}/versions/$name"
+            rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}/versions/$name/$name-$tag.zip"
+          fi
           curl -X POST --data-urlencode "payload={\"channel\": \"#meta-box\", \"username\": \"Bot\", \"text\": \"New version $tag for $name has been just released!\", \"icon_emoji\": \":tada:\"}" ${{ secrets.SLACK_WEBHOOK }}
           curl -X POST --url "https://metabox.io/wp-json/buse2/version/?secret=${{ secrets.VERSION_SECRET }}&slug=$name&version=$tag"
           [ -f CHANGELOG.md ] && rsync -e "ssh -o StrictHostKeyChecking=no" -avz CHANGELOG.md "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}/changelogs/$name.md"
