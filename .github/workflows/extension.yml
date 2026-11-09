@@ -32,17 +32,22 @@ jobs:
         run: |
           name=$(basename -s .git $(git config --get remote.origin.url))
           git archive -o $name.zip --prefix=$name/ HEAD
-          rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}
           # Tag push: version = tag. Manual re-release on master: version = "Version:" header of the main file, so the zip of that version is overwritten.
           if [ "${{ github.ref_type }}" = tag ]; then
             tag=${{ github.ref_name }}
           else
             tag=$(sed -n 's/^[ *]*Version:[ ]*//p' $name.php | head -1 | tr -d '\r ')
           fi
+          # Beta (e.g. 2.13.0-beta.1): only in versions/ for manual download on My Account. Don't touch the latest zip, so users don't get it via auto update.
+          case $tag in *-*) beta=1 ;; *) beta= ;; esac
+          [ -n "$beta" ] || rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}
           if [ -n "$tag" ]; then
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "mkdir -p ${{ secrets.DOWNLOADS_DIR }}/versions/$name"
             rsync -e "ssh -o StrictHostKeyChecking=no" $name.zip "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}/versions/$name/$name-$tag.zip"
           fi
-          curl -X POST --data-urlencode "payload={\"channel\": \"#meta-box\", \"username\": \"Bot\", \"text\": \"New version $tag for $name has been just released!\", \"icon_emoji\": \":tada:\"}" ${{ secrets.SLACK_WEBHOOK }}
+          label=$tag; [ -z "$beta" ] || label="$tag (beta)"
+          curl -X POST --data-urlencode "payload={\"channel\": \"#meta-box\", \"username\": \"Bot\", \"text\": \"New version $label for $name has been just released!\", \"icon_emoji\": \":tada:\"}" ${{ secrets.SLACK_WEBHOOK }}
+          # Beta: don't update the version (the updater would push it to users) or the public changelog.
+          [ -z "$beta" ] || exit 0
           curl -X POST --url "https://metabox.io/wp-json/buse2/version/?secret=${{ secrets.VERSION_SECRET }}&slug=$name&version=$tag"
           [ -f CHANGELOG.md ] && rsync -e "ssh -o StrictHostKeyChecking=no" -avz CHANGELOG.md "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.DOWNLOADS_DIR }}/changelogs/$name.md"

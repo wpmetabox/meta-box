@@ -8,6 +8,8 @@ on:
 
 jobs:
   trigger-update:
+    # Bundles only take stable versions: skip beta tags (e.g. 2.13.0-beta.1).
+    if: ${{ !contains(github.ref_name, '-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Trigger update on Meta Box AIO
