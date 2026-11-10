@@ -119,7 +119,8 @@
 	}
 
 	function init( e ) {
-		$( e.target ).find( '.rwmb-wysiwyg' ).each( transform );
+		const $scope = ( e && e.target && e.target !== document ) ? $( e.target ) : $( document );
+		$scope.find( '.rwmb-wysiwyg' ).each( transform );
 	}
 
 	/**
