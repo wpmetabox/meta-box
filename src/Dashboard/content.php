@@ -80,16 +80,26 @@
 					echo esc_html( sprintf( __( 'Welcome to %s,', 'meta-box' ), 'Meta Box' ) );
 					?>
 				</div>
-				<div class="mb-dashboard__intro__text">
-					<?php
-					// Translators: %s - Meta Box (plugin name).
-					echo esc_html( sprintf( __( '%s is a powerful, lightweight WordPress plugin for creating custom post types, fields, relationships, and more. With a user-friendly interface and flexible options, it simplifies dynamic content creation without complex coding. Free and reliable, it\'s perfect for beginners and experts alike.', 'meta-box' ), 'Meta Box' ) );
-					?>
-				</div>
-
-				<?php if ( ! $this->has_actions ) : ?>
-					<a class="mb-dashboard__external mb-dashboard__button" href="https://docs.metabox.io/introduction/" target="_blank">
-						<?php esc_html_e( 'Get started', 'meta-box' ); ?>
+				<?php if ( $this->has_actions ) : ?>
+					<div class="mb-dashboard__intro__text">
+						<?php
+						// Translators: %s - Meta Box (plugin name).
+						echo esc_html( sprintf( __( '%s is a powerful, lightweight WordPress plugin for creating custom post types, fields, relationships, and more. With a user-friendly interface and flexible options, it simplifies dynamic content creation without complex coding. Free and reliable, it\'s perfect for beginners and experts alike.', 'meta-box' ), 'Meta Box' ) );
+						?>
+					</div>
+				<?php else : ?>
+					<div class="mb-dashboard__intro__text">
+						<?php
+						// Translators: %1$s - Meta Box, %2$s - Meta Box Lite.
+						echo esc_html( sprintf( __( '%1$s is a framework for developers: you create custom fields with code, and it doesn\'t add any admin menu. To create custom post types, custom fields and relationships with a UI, install %2$s. It\'s free.', 'meta-box' ), 'Meta Box', 'Meta Box Lite' ) );
+						?>
+					</div>
+					<a class="mb-dashboard__external mb-dashboard__button" href="https://metabox.io/lite/" target="_blank">
+						<?php esc_html_e( 'Get Meta Box Lite', 'meta-box' ); ?>
+						<svg><use xlink:href="#external-link"></use></svg>
+					</a>
+					<a class="mb-dashboard__external" href="https://docs.metabox.io/creating-fields-with-code/" target="_blank">
+						<?php esc_html_e( 'Or create fields with code', 'meta-box' ); ?>
 						<svg><use xlink:href="#external-link"></use></svg>
 					</a>
 				<?php endif; ?>

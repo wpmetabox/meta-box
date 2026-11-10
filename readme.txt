@@ -8,13 +8,15 @@ Tested up to: 7.1
 Stable tag: 5.15.4
 License: GPLv2 or later
 
-Meta Box plugin is a powerful, professional developer toolkit to create custom meta boxes and custom fields for your custom post types in WordPress.
+Developer framework to create custom fields and meta boxes with code. No admin UI: for a UI, install the free Meta Box Lite.
 
 == Description ==
 
 You want to add events, team members, testimonials, or listings to your WordPress site. But the standard editor only handles posts and pages. You need something more, but you don't want to overcomplicate things or slow down your site.
 
 **Meta Box** gives you everything you need to build dynamic WordPress sites - with over **40+ field types** for adding custom fields to posts, pages, custom post types, taxonomies, settings pages, users, and comments. It's **lightweight** (no bloat), **flexible** (works with any theme or plugin), and **fast** (uses native WordPress storage). No lock-in, no extra baggage.
+
+> **Want a UI instead of code?** This plugin is a framework: you register fields with code and it doesn't add an admin menu. To create custom fields, post types and relationships with a UI, install [Meta Box Lite](https://metabox.io/lite/), which is also free.
 
 ### Any type of custom fields, anywhere
 
