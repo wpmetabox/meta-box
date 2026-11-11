@@ -1,5 +1,5 @@
 name: Reusable workflow for checking PHP compatibility of Meta Box plugins
-# Supported: WordPress 6.7+, PHP 7.4+. Fails on any PHP error or deprecation from the plugin's own files.
+# Supported: WordPress 6.7+, PHP 7.4+. Fails on any PHP error or deprecation from the plugin's own files, and on JavaScript errors in the pages it opens.
 on:
   workflow_call:
     inputs:
@@ -193,6 +193,7 @@ jobs:
           cookie=$(wp eval --path=$WP --user=admin '
             $u = wp_get_current_user(); $exp = time() + 3600;
             echo AUTH_COOKIE, "=", wp_generate_auth_cookie( $u->ID, $exp, "auth" ), "; ", LOGGED_IN_COOKIE, "=", wp_generate_auth_cookie( $u->ID, $exp, "logged_in" );')
+          echo "COOKIE=$cookie" >> $GITHUB_ENV
           fail=0
           check() {
             code=$(curl -s -o /tmp/page.html -w '%{http_code}' -b "$cookie" "$URL/$1")
@@ -201,10 +202,48 @@ jobs:
             else
               echo "OK $1"
             fi
+            echo "$1" >> /tmp/pages.txt
           }
           for p in "" "?p=$POST_ID" "wp-admin/" "wp-admin/edit.php" "wp-admin/post-new.php" "wp-admin/post.php?post=$POST_ID&action=edit" "wp-admin/post-new.php?post_type=page" "wp-admin/plugins.php" "wp-admin/options-general.php"; do check "$p"; done
           for p in ${{ inputs.pages }}; do check "wp-admin/$p"; done
           exit $fail
+      - name: Check pages for JavaScript errors
+        if: always()
+        run: |
+          mkdir -p /tmp/js && cd /tmp/js
+          npm install --silent --no-save puppeteer-core@23
+          cat > check.mjs <<'JS'
+          import fs from 'fs';
+          import puppeteer from 'puppeteer-core';
+          const { URL: base, COOKIE } = process.env;
+          const browser = await puppeteer.launch( { executablePath: '/usr/bin/google-chrome', args: [ '--no-sandbox' ] } );
+          const page = await browser.newPage();
+          await page.setCookie( ...COOKIE.split( '; ' ).map( c => ( { name: c.split( '=' )[0], value: c.slice( c.indexOf( '=' ) + 1 ), url: base } ) ) );
+          let errors = [];
+          page.on( 'pageerror', e => errors.push( e.message ) );
+          // The built-in PHP server has no favicon.ico.
+          page.on( 'console', m => m.type() === 'error' && ! m.location()?.url?.includes( 'favicon' ) && errors.push( `${ m.text() } (${ m.location()?.url || '' })` ) );
+          let fail = 0;
+          for ( const p of fs.readFileSync( '/tmp/pages.txt', 'utf8' ).split( '\n' ).slice( 0, -1 ) ) {
+            errors = [];
+            try {
+              await page.goto( `${ base }/${ p }`, { waitUntil: 'networkidle0', timeout: 60000 } );
+              await new Promise( r => setTimeout( r, 1000 ) );
+            } catch ( e ) {
+              errors.push( e.message );
+            }
+            if ( errors.length ) {
+              fail = 1;
+              console.log( `::error::JavaScript errors on /${ p }` );
+              errors.forEach( e => console.log( `  ${ e }` ) );
+            } else {
+              console.log( `OK /${ p }` );
+            }
+          }
+          await browser.close();
+          process.exit( fail );
+          JS
+          node check.mjs
       - name: Check debug.log for errors from the plugin
         if: always()
         run: |
