@@ -1,0 +1,212 @@
+name: Reusable workflow for checking PHP compatibility of Meta Box plugins
+# Supported: WordPress 6.7+, PHP 7.4+. Fails on any PHP error or deprecation from the plugin's own files.
+on:
+  workflow_call:
+    inputs:
+      composer:
+        description: Run "composer install --no-dev" first (for repos that don't commit vendor/)
+        type: boolean
+        default: false
+      requires:
+        description: Space-separated WordPress.org plugin slugs to install and activate before the plugin (e.g. "meta-box")
+        type: string
+        default: ""
+      pages:
+        description: Extra admin pages to open, space-separated, relative to wp-admin/ (e.g. "admin.php?page=meta-box")
+        type: string
+        default: ""
+
+env:
+  # Polyfills load only on the PHP version they target, so they can use newer syntax.
+  EXCLUDE: "*/node_modules/*,*/tests/*,*/Symfony/Polyfill/*"
+
+jobs:
+  lint:
+    name: Lint (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["7.4", "8.1", "8.2", "8.3", "8.4", "8.5"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+          coverage: none
+      - if: inputs.composer
+        run: composer install --no-dev --no-interaction --no-progress
+      - name: php -l with all errors and deprecations on
+        run: |
+          find . -name '*.php' -not -path './.git/*' -not -path '*/node_modules/*' -not -path '*/tests/*' -not -path '*/Symfony/Polyfill/*' -print0 \
+            | xargs -0 -n1 -P4 php -d error_reporting=-1 -d display_errors=1 -l 2>&1 \
+            | grep -v -e '^No syntax errors' -e '^$' > lint.txt || true
+          cat lint.txt
+          test ! -s lint.txt
+
+  compatibility:
+    name: PHPCompatibility (7.4+)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer
+          coverage: none
+      - if: inputs.composer
+        run: composer install --no-dev --no-interaction --no-progress
+      - name: Install PHPCompatibilityWP
+        run: |
+          composer global config minimum-stability dev
+          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require --no-interaction --no-progress "phpcompatibility/phpcompatibility-wp:^3.0@dev"
+      - name: Run phpcs
+        run: |
+          cat > /tmp/phpcompat.xml <<'XML'
+          <?xml version="1.0"?>
+          <ruleset name="Meta Box PHP compatibility">
+            <config name="testVersion" value="7.4-"/>
+            <rule ref="PHPCompatibilityWP">
+              <!-- Attributes are comments on PHP 7.4. -->
+              <exclude name="PHPCompatibility.Attributes"/>
+              <!-- Only matters for PHP 5. -->
+              <exclude name="PHPCompatibility.Variables.NewUniformVariableSyntax"/>
+              <!-- Advice, not an error. -->
+              <exclude name="PHPCompatibility.Interfaces.RemovedSerializable"/>
+            </rule>
+            <!-- Polyfilled by symfony/polyfill-php80. -->
+            <rule ref="PHPCompatibility.FunctionUse.NewFunctions.get_debug_typeFound"><severity>0</severity></rule>
+            <rule ref="PHPCompatibility.Classes.NewClasses.attributeFound"><severity>0</severity></rule>
+            <!-- View files with HTML only. -->
+            <rule ref="Internal.NoCodeFound"><severity>0</severity></rule>
+          </ruleset>
+          XML
+          ~/.composer/vendor/bin/phpcs --standard=/tmp/phpcompat.xml --extensions=php -q --parallel=4 --ignore="$EXCLUDE" .
+
+  smoke:
+    name: Smoke test (WP ${{ matrix.wp }}, PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: "7.4", wp: "6.7" }
+          - { php: "8.5", wp: "latest" }
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wp
+        ports: ["3306:3306"]
+        options: --health-cmd="mysqladmin ping -proot" --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      WP: /tmp/wp
+      URL: http://127.0.0.1:8080
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: plugin
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          tools: composer, wp-cli
+          coverage: none
+      - if: inputs.composer
+        working-directory: plugin
+        run: composer install --no-dev --no-interaction --no-progress
+      - name: Install WordPress
+        run: |
+          wp core download --path=$WP --version=${{ matrix.wp }}
+          wp config create --path=$WP --dbname=wp --dbuser=root --dbpass=root --dbhost=127.0.0.1 --extra-php <<'PHP'
+          define( 'WP_DEBUG', true );
+          define( 'WP_DEBUG_LOG', '/tmp/debug.log' );
+          define( 'WP_DEBUG_DISPLAY', false );
+          PHP
+          wp core install --path=$WP --url=$URL --title=Smoke --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
+      - name: Install the plugin
+        run: |
+          slug=$(basename "$GITHUB_REPOSITORY")
+          echo "SLUG=$slug" >> $GITHUB_ENV
+          for p in ${{ inputs.requires }}; do wp plugin install $p --activate --path=$WP; done
+          rsync -a --exclude=.git --exclude=node_modules plugin/ $WP/wp-content/plugins/$slug/
+          wp plugin activate $slug --path=$WP
+      - name: Add sample fields and content
+        run: |
+          mkdir -p $WP/wp-content/mu-plugins
+          cat > $WP/wp-content/mu-plugins/smoke.php <<'PHP'
+          <?php
+          add_filter( 'rwmb_meta_boxes', function ( $meta_boxes ) {
+              $types  = [ 'text', 'textarea', 'wysiwyg', 'number', 'email', 'url', 'select', 'select_advanced', 'checkbox', 'checkbox_list', 'radio', 'button_group', 'switch', 'date', 'datetime', 'time', 'color', 'slider', 'range', 'image_select', 'file_advanced', 'image_advanced', 'single_image', 'post', 'taxonomy', 'taxonomy_advanced', 'user', 'oembed', 'key_value', 'text_list', 'fieldset_text', 'autocomplete', 'password', 'hidden', 'heading', 'divider', 'custom_html' ];
+              $fields = [];
+              foreach ( $types as $type ) {
+                  $fields[] = [
+                      'id'         => "smoke_$type",
+                      'name'       => $type,
+                      'type'       => $type,
+                      'options'    => [ 'a' => 'A', 'b' => 'B' ],
+                      'post_type'  => 'post',
+                      'taxonomy'   => 'category',
+                      'clone'      => in_array( $type, [ 'text', 'select', 'date' ], true ),
+                      'sort_clone' => true,
+                  ];
+              }
+              $fields[] = [
+                  'id'     => 'smoke_group',
+                  'name'   => 'Group',
+                  'type'   => 'group',
+                  'clone'  => true,
+                  'fields' => [
+                      [ 'id' => 'name', 'name' => 'Name', 'type' => 'text' ],
+                      [ 'id' => 'sub', 'name' => 'Sub', 'type' => 'group', 'clone' => true, 'fields' => [ [ 'id' => 'date', 'type' => 'date' ] ] ],
+                  ],
+              ];
+              $meta_boxes[] = [ 'title' => 'Smoke', 'post_types' => [ 'post', 'page' ], 'fields' => $fields ];
+              return $meta_boxes;
+          } );
+          add_filter( 'the_content', function ( $content ) {
+              if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
+                  return $content;
+              }
+              foreach ( array_keys( rwmb_get_object_fields( get_the_ID() ) ) as $id ) {
+                  $content .= rwmb_the_value( $id, [], null, false );
+              }
+              return $content;
+          } );
+          PHP
+          id=$(wp post create --path=$WP --post_title=Smoke --post_status=publish --porcelain)
+          wp post meta update $id smoke_text '["one","two"]' --format=json --path=$WP
+          wp post meta update $id smoke_select '["a"]' --format=json --path=$WP
+          wp post meta update $id smoke_date '["2026-01-02"]' --format=json --path=$WP
+          wp post meta update $id smoke_checkbox_list a --path=$WP
+          wp post meta update $id smoke_group '[{"name":"x","sub":[{"date":"2026-01-02"}]}]' --format=json --path=$WP
+          echo "POST_ID=$id" >> $GITHUB_ENV
+      - name: Open pages
+        run: |
+          php -S 127.0.0.1:8080 -t $WP > /tmp/server.log 2>&1 &
+          sleep 2
+          cookie=$(wp eval --path=$WP --user=admin '
+            $u = wp_get_current_user(); $exp = time() + 3600;
+            echo AUTH_COOKIE, "=", wp_generate_auth_cookie( $u->ID, $exp, "auth" ), "; ", LOGGED_IN_COOKIE, "=", wp_generate_auth_cookie( $u->ID, $exp, "logged_in" );')
+          fail=0
+          check() {
+            code=$(curl -s -o /tmp/page.html -w '%{http_code}' -b "$cookie" "$URL/$1")
+            if [ "$code" != 200 ] || grep -q -i -e 'critical error' -e 'fatal error' /tmp/page.html; then
+              echo "::error::$1 returned $code"; fail=1
+            else
+              echo "OK $1"
+            fi
+          }
+          for p in "" "?p=$POST_ID" "wp-admin/" "wp-admin/edit.php" "wp-admin/post-new.php" "wp-admin/post.php?post=$POST_ID&action=edit" "wp-admin/post-new.php?post_type=page" "wp-admin/plugins.php" "wp-admin/options-general.php"; do check "$p"; done
+          for p in ${{ inputs.pages }}; do check "wp-admin/$p"; done
+          exit $fail
+      - name: Check debug.log for errors from the plugin
+        if: always()
+        run: |
+          touch /tmp/debug.log
+          grep "/plugins/$SLUG/" /tmp/debug.log > errors.txt || true
+          cat errors.txt
+          test ! -s errors.txt

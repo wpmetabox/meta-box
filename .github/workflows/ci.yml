@@ -1,0 +1,11 @@
+name: CI
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  php:
+    uses: ./.github/workflows/php-compat.yml
+    with:
+      composer: true
