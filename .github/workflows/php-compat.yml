@@ -67,7 +67,8 @@ jobs:
           cat > /tmp/phpcompat.xml <<'XML'
           <?xml version="1.0"?>
           <ruleset name="Meta Box PHP compatibility">
-            <config name="testVersion" value="7.4-"/>
+            <!-- Up to the newest PHP we support. -->
+            <config name="testVersion" value="7.4-8.5"/>
             <rule ref="PHPCompatibilityWP">
               <!-- Attributes are comments on PHP 7.4. -->
               <exclude name="PHPCompatibility.Attributes"/>
@@ -154,7 +155,8 @@ jobs:
                       'sort_clone' => true,
                   ];
               }
-              $fields[] = [
+              // Group only works when the Meta Box Group extension is loaded.
+              if ( class_exists( 'RWMB_Group_Field' ) ) $fields[] = [
                   'id'     => 'smoke_group',
                   'name'   => 'Group',
                   'type'   => 'group',
