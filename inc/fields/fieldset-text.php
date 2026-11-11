@@ -67,6 +67,10 @@ class RWMB_Fieldset_Text_Field extends RWMB_Input_Field {
 	 * @return string
 	 */
 	public static function format_value( $field, $value, $args, $post_id ) {
+		// No saved value: get_value() returns an empty string.
+		if ( ! is_array( $value ) ) {
+			return '';
+		}
 		$output = '<table><thead><tr>';
 		foreach ( $field['options'] as $label ) {
 			$output .= '<th>' . esc_html( $label ) . '</th>';
