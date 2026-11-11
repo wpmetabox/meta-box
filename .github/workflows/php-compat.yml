@@ -148,7 +148,8 @@ jobs:
                       'id'         => "smoke_$type",
                       'name'       => $type,
                       'type'       => $type,
-                      'options'    => [ 'a' => 'A', 'b' => 'B' ],
+                      // image_select uses option labels as image URLs.
+                      'options'    => 'image_select' === $type ? [ 'a' => admin_url( 'images/w-logo-blue.png' ), 'b' => admin_url( 'images/wordpress-logo.svg' ) ] : [ 'a' => 'A', 'b' => 'B' ],
                       'post_type'  => 'post',
                       'taxonomy'   => 'category',
                       'clone'      => in_array( $type, [ 'text', 'select', 'date' ], true ),
@@ -227,8 +228,9 @@ jobs:
           for ( const p of fs.readFileSync( '/tmp/pages.txt', 'utf8' ).split( '\n' ).slice( 0, -1 ) ) {
             errors = [];
             try {
-              await page.goto( `${ base }/${ p }`, { waitUntil: 'networkidle0', timeout: 60000 } );
-              await new Promise( r => setTimeout( r, 1000 ) );
+              // The block editor keeps polling the server, so wait for 'load' and give scripts time to run.
+              await page.goto( `${ base }/${ p }`, { waitUntil: 'load', timeout: 60000 } );
+              await new Promise( r => setTimeout( r, 3000 ) );
             } catch ( e ) {
               errors.push( e.message );
             }
