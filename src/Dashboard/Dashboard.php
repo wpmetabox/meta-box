@@ -148,6 +148,7 @@ class Dashboard {
 	}
 
 	private function has_menu(): bool {
+		// @internal Not a public hook, can change without notice.
 		return apply_filters( 'rwmb_admin_menu', false );
 	}
 

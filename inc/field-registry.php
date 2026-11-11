@@ -27,6 +27,7 @@ class RWMB_Field_Registry {
 		}
 		$this->data[ $object_type ][ $type ][ $field['id'] ] = $field;
 
+		// @internal Not a public hook, can change without notice.
 		do_action( 'rwmb_field_registered', $field, $type, $object_type );
 	}
 

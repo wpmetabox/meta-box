@@ -55,6 +55,7 @@ if ( ! function_exists( 'rwmb_set_meta' ) ) {
 		RWMB_Field::call( $field, 'save', $new, $old, $object_id );
 
 		// For MB Custom Table to flush data from the cache to the database.
+		// @internal Not a public hook, can change without notice.
 		do_action( 'rwmb_flush_data', $object_id, $field, $args );
 	}
 }
@@ -84,6 +85,7 @@ if ( ! function_exists( 'rwmb_delete_meta' ) ) {
 		do_action( 'rwmb_after_delete_field', $object_id, $key, $args, $result );
 
 		// For MB Custom Table to flush data from the cache to the database.
+		// @internal Not a public hook, can change without notice.
 		do_action( 'rwmb_flush_data', $object_id, $field, $args );
 
 		return (bool) $result;
@@ -113,6 +115,7 @@ if ( ! function_exists( 'rwmb_get_field_settings' ) ) {
 		 * @var string       Object type.
 		 * @var ?string|?int Object id.
 		 */
+		// @internal Not a public hook, can change without notice.
 		$type = apply_filters( 'rwmb_meta_type', $args['type'], $args['object_type'], $object_id );
 		if ( ! $type ) {
 			$type = get_post_type( $object_id );
@@ -344,6 +347,7 @@ if ( ! function_exists( 'rwmb_get_storage' ) ) {
 		$class   = class_exists( $class ) ? $class : 'RWMB_Post_Storage';
 		$storage = rwmb_get_registry( 'storage' )->get( $class );
 
+		// @internal Not a public hook, can change without notice.
 		return apply_filters( 'rwmb_get_storage', $storage, $object_type, $meta_box );
 	}
 }

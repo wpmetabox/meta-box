@@ -54,6 +54,7 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			do_action( 'enqueue_block_editor_assets' );
 		}
 
+		// @internal Not a public hook, can change without notice.
 		do_action( 'rwmb_enqueue_block_editor_assets' );
 	}
 

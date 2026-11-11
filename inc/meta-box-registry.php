@@ -14,6 +14,7 @@ class RWMB_Meta_Box_Registry {
 	 * @return \RW_Meta_Box
 	 */
 	public function make( array $settings ) {
+		// @internal Not a public hook, can change without notice.
 		$class_name = apply_filters( 'rwmb_meta_box_class_name', 'RW_Meta_Box', $settings );
 
 		$meta_box = new $class_name( $settings );

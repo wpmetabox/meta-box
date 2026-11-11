@@ -57,6 +57,7 @@ class RWMB_Media_Modal {
 			RWMB_Field::call( 'show', $field, true, $post->ID );
 
 			// For MB Custom Table to flush data from the cache to the database.
+			// @internal Not a public hook, can change without notice.
 			do_action( 'rwmb_flush_data', $post->ID, $field, [] );
 
 			$form_field['html'] = ob_get_clean();
@@ -88,6 +89,7 @@ class RWMB_Media_Modal {
 			RWMB_Field::call( $field, 'save', $new, $old, $post['ID'] );
 
 			// For MB Custom Table to flush data from the cache to the database.
+			// @internal Not a public hook, can change without notice.
 			do_action( 'rwmb_flush_data', $post['ID'], $field, [] );
 		}
 

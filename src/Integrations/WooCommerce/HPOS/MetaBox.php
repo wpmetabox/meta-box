@@ -81,6 +81,7 @@ class MetaBox extends \RW_Meta_Box {
 		if ( ! $this->storage ) {
 			$storage = new Storage();
 			// Use filter to allow MB Custom Table to hook.
+			// @internal Not a public hook, can change without notice.
 			$storage = apply_filters( 'rwmb_get_storage', $storage, 'post', $this );
 			$this->storage = $storage;
 		}
