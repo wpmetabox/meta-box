@@ -153,7 +153,7 @@ class Dashboard {
 	}
 
 	private function is_bundled(): bool {
-		// @codingStandardsIgnoreLine
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		foreach ( $_REQUEST as $key => $value ) {
 			if ( str_contains( $key, 'tgmpa' ) || ( is_string( $value ) && str_contains( $value, 'tgmpa' ) ) ) {
 				return true;

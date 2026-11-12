@@ -300,7 +300,7 @@ class RWMB_File_Field extends RWMB_Field {
 	public static function value( $new, $old, $post_id, $field ) {
 		$input = $field['index'] ?? $field['input_name'];
 
-		// @codingStandardsIgnoreLine
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( empty( $input ) || empty( $_FILES[ $input ] ) ) {
 			return $new;
 		}
@@ -331,7 +331,7 @@ class RWMB_File_Field extends RWMB_Field {
 	 */
 	public static function clone_value( $new, $old, $object_id, $field, $data_source = null ) {
 		if ( ! $data_source ) {
-			// @codingStandardsIgnoreLine
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$data_source = $_POST;
 		}
 
@@ -508,12 +508,12 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return string URL to uploaded file.
 	 */
 	public static function handle_upload_custom_dir( $file_id, $field ) {
-		// @codingStandardsIgnoreStart
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		if ( empty( $_FILES[ $file_id ] ) ) {
 			return;
 		}
 		$file = $_FILES[ $file_id ];
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 		// Use a closure to filter upload directory. Requires PHP >= 5.3.0.
 		$filter_upload_dir = function ( $uploads ) use ( $field ) {

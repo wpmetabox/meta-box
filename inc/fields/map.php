@@ -142,8 +142,9 @@ class RWMB_Map_Field extends RWMB_Field {
 		if ( is_string( $location ) ) {
 			list( $latitude, $longitude, $zoom ) = explode( ',', $location . ',,' );
 		} else {
-			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-			extract( $location );
+			$latitude  = $location['latitude'] ?? '';
+			$longitude = $location['longitude'] ?? '';
+			$zoom      = $location['zoom'] ?? '';
 		}
 
 		if ( ! $latitude || ! $longitude ) {
