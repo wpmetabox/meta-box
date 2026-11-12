@@ -7,6 +7,10 @@ on:
         description: Run "composer install --no-dev" first (for repos that don't commit vendor/)
         type: boolean
         default: false
+      php_min:
+        description: Lowest PHP version the plugin supports (e.g. "8.0"). Lint, PHPCompatibility and smoke test run from this version up to 8.5.
+        type: string
+        default: "7.4"
       requires:
         description: Space-separated WordPress.org plugin slugs to install and activate before the plugin (e.g. "meta-box")
         type: string
@@ -35,13 +39,24 @@ jobs:
           if [ -n "$dev" ]; then echo "::error::vendor/ has dev packages: $dev. Run \"composer install --no-dev\" and commit vendor/."; exit 1; fi
           echo "OK"
 
+  versions:
+    name: PHP versions from ${{ inputs.php_min }}
+    runs-on: ubuntu-latest
+    outputs:
+      php: ${{ steps.list.outputs.php }}
+    steps:
+      - id: list
+        run: |
+          echo "php=$(printf '%s\n' 7.4 8.0 8.1 8.2 8.3 8.4 8.5 | awk -v min=${{ inputs.php_min }} '$1 + 0 >= min + 0' | jq -R . | jq -sc .)" >> $GITHUB_OUTPUT
+
   lint:
     name: Lint (PHP ${{ matrix.php }})
+    needs: versions
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.1", "8.2", "8.3", "8.4", "8.5"]
+        php: ${{ fromJSON(needs.versions.outputs.php) }}
     steps:
       - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
@@ -60,7 +75,7 @@ jobs:
           test ! -s lint.txt
 
   compatibility:
-    name: PHPCompatibility (7.4+)
+    name: PHPCompatibility (${{ inputs.php_min }}+)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -78,11 +93,11 @@ jobs:
           composer global require --no-interaction --no-progress "phpcompatibility/phpcompatibility-wp:^3.0@dev"
       - name: Run phpcs
         run: |
-          cat > /tmp/phpcompat.xml <<'XML'
+          cat > /tmp/phpcompat.xml <<XML
           <?xml version="1.0"?>
-          <ruleset name="Meta Box PHP compatibility">
-            <!-- Up to the newest PHP we support. -->
-            <config name="testVersion" value="7.4-8.5"/>
+          <ruleset name="PHP compatibility">
+            <!-- From the lowest PHP the plugin supports, up to the newest we test. -->
+            <config name="testVersion" value="${{ inputs.php_min }}-8.5"/>
             <rule ref="PHPCompatibilityWP">
               <!-- Attributes are comments on PHP 7.4. -->
               <exclude name="PHPCompatibility.Attributes"/>
@@ -107,7 +122,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { php: "7.4", wp: "6.7" }
+          - { php: "${{ inputs.php_min }}", wp: "6.7" }
           - { php: "8.5", wp: "latest" }
     services:
       mysql:

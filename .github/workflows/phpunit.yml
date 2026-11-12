@@ -14,8 +14,22 @@ on:
         default: latest
 
 jobs:
+  check:
+    name: Has PHPUnit config
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: check
+        run: |
+          # Repos without tests (no phpunit.xml) skip this workflow.
+          if [ -f phpunit.xml ] || [ -f phpunit.xml.dist ]; then echo "run=true" >> $GITHUB_OUTPUT; else echo "No phpunit.xml, skipping"; echo "run=false" >> $GITHUB_OUTPUT; fi
+
   phpunit:
     name: PHPUnit (WP ${{ inputs.wp }}, PHP ${{ inputs.php }})
+    needs: check
+    if: needs.check.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:
       WP_CORE_DIR: /tmp/wordpress
