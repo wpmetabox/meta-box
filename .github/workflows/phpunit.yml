@@ -1,0 +1,43 @@
+name: Reusable workflow for running PHPUnit tests
+# Runs `composer test` against a fresh WordPress. The calling repo needs the files from the unit test standard:
+# phpunit.xml, tests/bootstrap.php, tests/wp-config.php and the "test" script in composer.json.
+on:
+  workflow_call:
+    inputs:
+      php:
+        description: PHP version
+        type: string
+        default: "8.3"
+      wp:
+        description: WordPress version ("latest", "nightly" or a number like "6.9")
+        type: string
+        default: latest
+
+jobs:
+  phpunit:
+    name: PHPUnit (WP ${{ inputs.wp }}, PHP ${{ inputs.php }})
+    runs-on: ubuntu-latest
+    env:
+      WP_CORE_DIR: /tmp/wordpress
+      COMPOSER_TOKEN: ${{ secrets.COMPOSER_TOKEN }}
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports: ["3306:3306"]
+        options: --health-cmd="mysqladmin ping -proot" --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php }}
+          extensions: mysqli
+          tools: composer, wp-cli
+          coverage: none
+      # Only for repos that need private packages: pass the org secret with `secrets: inherit`.
+      - if: env.COMPOSER_TOKEN != ''
+        run: composer config --global github-oauth.github.com "$COMPOSER_TOKEN"
+      - run: wp core download --path="$WP_CORE_DIR" --version="${{ inputs.wp }}"
+      - run: composer install --no-interaction --no-progress
+      - run: composer test
