@@ -5,7 +5,7 @@ class MetaBox extends \RW_Meta_Box {
 	private $storage;
 
 	const SUPPORTED_ORDER_TYPES = [ 'shop_order', 'shop_subscription' ];
-	const SAVE_HOOKS = [
+	const SAVE_HOOKS            = [
 		'shop_order'        => 'woocommerce_process_shop_order_meta',
 		'shop_subscription' => 'woocommerce_process_shop_subscription_meta',
 	];
@@ -82,7 +82,7 @@ class MetaBox extends \RW_Meta_Box {
 			$storage = new Storage();
 			// Use filter to allow MB Custom Table to hook.
 			// @internal Not a public hook, can change without notice.
-			$storage = apply_filters( 'rwmb_get_storage', $storage, 'post', $this );
+			$storage       = apply_filters( 'rwmb_get_storage', $storage, 'post', $this );
 			$this->storage = $storage;
 		}
 

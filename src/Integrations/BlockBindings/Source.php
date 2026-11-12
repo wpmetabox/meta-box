@@ -54,6 +54,8 @@ abstract class Source {
 	abstract protected function context_key(): string;
 
 	/**
+	 * Resolve the object ID that owns the bound field value.
+	 *
 	 * @param array    $source_args    Binding args (field id, optional key, …).
 	 * @param WP_Block $block_instance Block instance.
 	 * @return int|string|null Object ID for value resolution.
@@ -174,6 +176,8 @@ abstract class Source {
 	}
 
 	/**
+	 * Build one binding option per allowed value key.
+	 *
 	 * @param string   $name   Field label.
 	 * @param string   $id     Field id.
 	 * @param string[] $keys   Value keys to expose (url, alt, caption, …).
@@ -247,6 +251,8 @@ abstract class Source {
 	}
 
 	/**
+	 * Value keys that may be bound for the given field.
+	 *
 	 * @return string[]
 	 */
 	protected function allowed_keys( array $field ): array {
@@ -258,6 +264,8 @@ abstract class Source {
 	}
 
 	/**
+	 * Map a requested key (or bound attribute) to a canonical value key.
+	 *
 	 * @param array  $field          Field settings.
 	 * @param array  $source_args    Binding args.
 	 * @param string $attribute_name Bound attribute when `key` is absent.
@@ -287,6 +295,8 @@ abstract class Source {
 	}
 
 	/**
+	 * Extract a single value part (url, title, …) from a complex field value.
+	 *
 	 * @param object|array $value WP_Post, WP_User, WP_Term, or a field array.
 	 * @return mixed
 	 */
@@ -322,6 +332,8 @@ abstract class Source {
 	}
 
 	/**
+	 * Convert a resolved field value into the string the block renders.
+	 *
 	 * @param mixed  $value Single field value.
 	 * @param array  $field Field settings.
 	 * @param string $key   Canonical value key from resolve_key().
@@ -362,14 +374,18 @@ abstract class Source {
 	}
 
 	/**
-	 * @param mixed $value
+	 * Whether a resolved value should be treated as "no value".
+	 *
+	 * @param mixed $value Value to test.
 	 */
 	protected function is_empty( $value ): bool {
 		return null === $value || '' === $value || false === $value;
 	}
 
 	/**
-	 * @param mixed $value
+	 * Cast a scalar value to string, or null when it cannot be rendered.
+	 *
+	 * @param mixed $value Value to cast.
 	 */
 	protected function to_string( $value ): ?string {
 		return is_scalar( $value ) ? (string) $value : null;

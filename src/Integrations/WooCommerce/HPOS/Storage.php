@@ -58,7 +58,8 @@ class Storage implements \RWMB_Storage_Interface {
 
 	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): bool {
 		foreach ( $order->get_meta( $name, false ) as $meta ) {
-			if ( $meta->value == $prev_value ) {
+			// Match on the serialized form, mirroring how WordPress compares `$prev_value` in update_metadata().
+			if ( maybe_serialize( $meta->value ) === maybe_serialize( $prev_value ) ) {
 				$meta->value = $new_value;
 				return true;
 			}

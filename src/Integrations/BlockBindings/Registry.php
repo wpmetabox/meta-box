@@ -6,6 +6,8 @@ namespace MetaBox\Integrations\BlockBindings;
  */
 class Registry {
 	/**
+	 * Registered block bindings sources.
+	 *
 	 * @var Source[]
 	 */
 	private $sources = [];
@@ -15,6 +17,8 @@ class Registry {
 	}
 
 	/**
+	 * Get all registered sources.
+	 *
 	 * @return Source[]
 	 */
 	public function all(): array {
