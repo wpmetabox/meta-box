@@ -20,6 +20,7 @@ jobs:
     env:
       WP_CORE_DIR: /tmp/wordpress
       COMPOSER_TOKEN: ${{ secrets.COMPOSER_TOKEN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
     services:
       mysql:
         image: mysql:8.0
@@ -35,7 +36,12 @@ jobs:
           extensions: mysqli
           tools: composer, wp-cli
           coverage: none
-      # Only for repos that need private packages: pass the org secret with `secrets: inherit`.
+      # Only for repos that need private packages, with `secrets: inherit`: SSH_KEY for git@ URLs, or COMPOSER_TOKEN.
+      - if: env.SSH_KEY != ''
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       - if: env.COMPOSER_TOKEN != ''
         run: composer config --global github-oauth.github.com "$COMPOSER_TOKEN"
       - run: wp core download --path="$WP_CORE_DIR" --version="${{ inputs.wp }}"
