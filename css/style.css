@@ -17,7 +17,7 @@
 
 .rwmb-label > label {
 	font-weight: 600;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 }
 .rwmb-required {
 	color: #dc3232;
