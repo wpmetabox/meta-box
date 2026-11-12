@@ -21,6 +21,20 @@ env:
   EXCLUDE: "*/node_modules/*,*/tests/*,*/Symfony/Polyfill/*"
 
 jobs:
+  vendor:
+    name: vendor/ has no dev packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check vendor/composer/installed.json
+        run: |
+          # vendor/ is committed and released as is, so it must come from "composer install --no-dev".
+          f=vendor/composer/installed.json
+          if ! git ls-files --error-unmatch $f >/dev/null 2>&1; then echo "vendor/ is not committed"; exit 0; fi
+          dev=$(jq -r '."dev-package-names" // [] | join(" ")' $f)
+          if [ -n "$dev" ]; then echo "::error::vendor/ has dev packages: $dev. Run \"composer install --no-dev\" and commit vendor/."; exit 1; fi
+          echo "OK"
+
   lint:
     name: Lint (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest

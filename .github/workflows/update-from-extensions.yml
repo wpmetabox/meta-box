@@ -30,7 +30,8 @@ jobs:
       - name: Remove vendor folder and reinstall extensions
         run: |
           rm -rf vendor modules
-          composer update
+          # vendor/ is committed and released: never include dev packages (phpunit...).
+          composer update --no-dev
       - name: Commit changes
         run: |
           git config --global user.name 'github-actions[bot]'
