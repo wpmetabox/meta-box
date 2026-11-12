@@ -18,9 +18,8 @@ jobs:
       pull-requests: write
       issues: write
     steps:
+      # Keep the checkout token: opencode runs "git fetch origin <branch>", which needs auth on private repos.
       - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
       - name: Run opencode review
         uses: anomalyco/opencode/github@latest
         env:
