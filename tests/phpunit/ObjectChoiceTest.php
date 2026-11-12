@@ -1,6 +1,4 @@
 <?php
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Exposes set_ajax_params() and get_ajax_field() for tests without reflection.
@@ -19,7 +17,7 @@ class RWMB_Object_Choice_Ajax_Test_Field extends RWMB_Object_Choice_Field {
 	}
 }
 
-class ObjectChoiceTest extends TestCase {
+class ObjectChoiceTest extends WP_UnitTestCase {
 	/**
 	 * Type → default ajax action map in set_ajax_params().
 	 * Includes taxonomy_advanced as its own map key (not via normalize inheritance).
@@ -136,7 +134,9 @@ class ObjectChoiceTest extends TestCase {
 		return $captured;
 	}
 
-	#[DataProvider( 'defaultAjaxActionProvider' )]
+	/**
+	 * @dataProvider defaultAjaxActionProvider
+	 */
 	public function testDefaultAjaxActionIsDerivedFromFieldType( string $type, string $expected_action ): void {
 		$field = $this->field( [
 			'id'   => $type,
@@ -304,7 +304,9 @@ class ObjectChoiceTest extends TestCase {
 		$this->assertFalse( $resolved['clone'] );
 	}
 
-	#[DataProvider( 'forbiddenAjaxProvider' )]
+	/**
+	 * @dataProvider forbiddenAjaxProvider
+	 */
 	public function testInvalidAjaxPayloadReturnsForbidden( string $payload_type, string $action, bool $valid_nonce ): void {
 		if ( ! function_exists( 'rwmb_request' ) ) {
 			$this->markTestSkipped( 'Meta Box request helper unavailable' );

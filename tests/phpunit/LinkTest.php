@@ -1,7 +1,6 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-class LinkTest extends TestCase {
+class LinkTest extends WP_UnitTestCase {
 	public function testNormalize() {
 		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active' );

@@ -1,21 +1,20 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-class BlockEditorSanitizeTest extends TestCase {
+class BlockEditorSanitizeTest extends WP_UnitTestCase {
 	private RWMB_Sanitizer $sanitizer;
 
 	/** @var int[] */
 	private array $user_ids = [];
 
-	protected function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		if ( ! defined( 'RWMB_VER' ) || ! function_exists( 'wp_kses_post' ) || ! function_exists( 'wp_set_current_user' ) ) {
 			$this->markTestSkipped( 'Meta Box or WordPress user APIs unavailable' );
 		}
 		$this->sanitizer = new RWMB_Sanitizer();
 	}
 
-	protected function tearDown(): void {
+	public function tear_down(): void {
 		wp_set_current_user( 0 );
 		if ( ! function_exists( 'wp_delete_user' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/user.php';
@@ -26,7 +25,7 @@ class BlockEditorSanitizeTest extends TestCase {
 			}
 		}
 		$this->user_ids = [];
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testStripsScriptWithoutUnfilteredHtml(): void {

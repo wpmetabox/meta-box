@@ -9,3 +9,6 @@ jobs:
     uses: ./.github/workflows/php-compat.yml
     with:
       composer: true
+  phpunit:
+    uses: ./.github/workflows/phpunit.yml
+    secrets: inherit

@@ -1,7 +1,6 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-class WpmlBlocksTest extends TestCase {
+class WpmlBlocksTest extends WP_UnitTestCase {
 	/**
 	 * Get the WPML config of a block, or null when the block is not declared.
 	 */

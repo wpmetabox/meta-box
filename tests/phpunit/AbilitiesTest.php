@@ -1,23 +1,16 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
 /**
  * Abilities API integration tests.
  *
- * Runs against a live WordPress install (see tests/bootstrap.php).
  * Requires WordPress 6.9+ for the Abilities API; otherwise skips.
- *
- * Note: abilities must be registered during the `wp_abilities_api_init` action,
- * so the test re-fires that action after wiring the class.
  */
-class AbilitiesTest extends TestCase {
+class AbilitiesTest extends WP_UnitTestCase {
 	private $user_id;
 	private $post_id;
-	private $abilities;
-	private $filter_added = false;
 
-	protected function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active.' );
@@ -27,20 +20,9 @@ class AbilitiesTest extends TestCase {
 			$this->markTestSkipped( 'Abilities API not available (WordPress < 6.9).' );
 		}
 
-		// Register a field so rwmb_get_field_settings() can resolve it.
-		if ( ! $this->filter_added ) {
-			add_filter( 'rwmb_meta_boxes', [ $this, 'register_test_meta_box' ] );
-			$this->filter_added = true;
-		}
-
-		$this->abilities = new \MetaBox\Abilities();
-		$this->abilities->init();
-
-		// Fields register on `init` priority 20; the category/abilities register
-		// on their own dedicated actions. Drive both so the test has a populated registry.
-		do_action( 'init' );
-		do_action( 'wp_abilities_api_categories_init' );
-		do_action( 'wp_abilities_api_init' );
+		// The plugin has registered its abilities; register the test field the way Meta Box does on `init`.
+		add_filter( 'rwmb_meta_boxes', [ $this, 'register_test_meta_box' ] );
+		( new RWMB_Core() )->register_meta_boxes();
 
 		$this->user_id = self::create_editor();
 		if ( ! $this->user_id ) {
@@ -59,14 +41,14 @@ class AbilitiesTest extends TestCase {
 		}
 	}
 
-	protected function tearDown(): void {
+	public function tear_down(): void {
 		if ( $this->post_id && get_post( $this->post_id ) ) {
 			wp_delete_post( $this->post_id, true );
 		}
 		if ( $this->user_id && get_user_by( 'id', $this->user_id ) ) {
 			wp_delete_user( $this->user_id );
 		}
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	private static function create_editor() {

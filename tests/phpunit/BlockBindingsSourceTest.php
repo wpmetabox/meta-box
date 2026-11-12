@@ -1,6 +1,5 @@
 <?php
 use MetaBox\Integrations\BlockBindings\Source;
-use PHPUnit\Framework\TestCase;
 
 class BlockBindings_Source_Test_Double extends Source {
 	protected function name(): string {
@@ -44,11 +43,11 @@ class BlockBindings_Source_Test_Double extends Source {
 	}
 }
 
-class BlockBindingsSourceTest extends TestCase {
+class BlockBindingsSourceTest extends WP_UnitTestCase {
 	private BlockBindings_Source_Test_Double $source;
 
-	protected function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		if ( ! class_exists( Source::class ) || ! function_exists( 'get_userdata' ) ) {
 			$this->markTestSkipped( 'Block bindings source or WordPress user APIs unavailable' );
 		}

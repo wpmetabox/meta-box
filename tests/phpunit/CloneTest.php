@@ -1,7 +1,6 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-class CloneTest extends TestCase {
+class CloneTest extends WP_UnitTestCase {
 	/**
 	 * Mock the post meta data
 	 * Note that we use 'key' => ['value'] to simulate the actual get_metadata() function return
@@ -35,7 +34,8 @@ class CloneTest extends TestCase {
 		],
 	];
 
-	protected function setUp(): void {
+	public function set_up(): void {
+		parent::set_up();
 		// Filter the post meta data so get_post_meta() returns our mock data
 		add_filter('get_post_metadata', function ( $value, $object_id, $meta_key, $single ) {
 			// We simulate is_saved check by checking if $object_id is odd or even

@@ -132,6 +132,8 @@ class Abilities {
 				'type'                 => 'object',
 				'properties'           => [
 					'value' => [
+						// Any JSON type: the format depends on the field type.
+						'type'        => [ 'string', 'number', 'boolean', 'array', 'object', 'null' ],
 						'description' => __( 'The stored field value.', 'meta-box' ),
 					],
 				],
@@ -246,6 +248,8 @@ class Abilities {
 					'description' => __( 'The object type the field belongs to.', 'meta-box' ),
 				],
 				'value'       => [
+					// Any JSON type: the format depends on the field type.
+					'type'        => [ 'string', 'number', 'boolean', 'array', 'object', 'null' ],
 					'description' => __( 'The value to store. Required for update; ignored for get and delete. Use meta-box/get-field-value-format ability to get expected format for a specific field type.', 'meta-box' ),
 				],
 			],

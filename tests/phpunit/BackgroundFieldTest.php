@@ -1,11 +1,10 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-class BackgroundFieldTest extends TestCase {
+class BackgroundFieldTest extends WP_UnitTestCase {
 	private RWMB_Sanitizer $sanitizer;
 
-	protected function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active' );
 		}

@@ -1,16 +1,15 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
 /**
  * Permission checks for the [rwmb_meta] shortcode.
  */
-class ShortcodePermissionTest extends TestCase {
+class ShortcodePermissionTest extends WP_UnitTestCase {
 	private $shortcode;
 	private $previous_user_id = 0;
 	private $permission_callback;
 
-	protected function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		if ( ! class_exists( 'RWMB_Shortcode' ) ) {
 			$this->markTestSkipped( 'RWMB_Shortcode is not available.' );
@@ -23,7 +22,7 @@ class ShortcodePermissionTest extends TestCase {
 		$this->shortcode = new RWMB_Shortcode();
 	}
 
-	protected function tearDown(): void {
+	public function tear_down(): void {
 		if ( function_exists( 'remove_filter' ) && $this->permission_callback ) {
 			remove_filter( 'rwmb_meta_shortcode_permission', $this->permission_callback );
 			$this->permission_callback = null;
@@ -32,7 +31,7 @@ class ShortcodePermissionTest extends TestCase {
 			wp_set_current_user( $this->previous_user_id );
 		}
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -183,12 +182,4 @@ class ShortcodePermissionTest extends TestCase {
 		return is_wp_error( $user_id ) ? 0 : $user_id;
 	}
 
-	private static function delete_user( int $user_id ): void {
-		if ( ! function_exists( 'wp_delete_user' ) && defined( 'ABSPATH' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/user.php';
-		}
-		if ( function_exists( 'wp_delete_user' ) ) {
-			wp_delete_user( $user_id );
-		}
-	}
 }

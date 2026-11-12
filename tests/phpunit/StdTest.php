@@ -1,8 +1,7 @@
 <?php
-use PHPUnit\Framework\TestCase;
 use MetaBox\Support\Arr;
 
-class StdTest extends TestCase {
+class StdTest extends WP_UnitTestCase {
 	public function testTextStd() {
 		if ( ! defined( 'RWMB_VER' ) ) {
 			$this->markTestSkipped( 'Meta Box is not active' );
