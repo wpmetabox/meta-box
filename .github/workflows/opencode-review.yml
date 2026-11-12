@@ -22,8 +22,8 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Title generation only; a free model avoids picking an image model by default.
-          OPENCODE_CONFIG_CONTENT: '{"small_model":"openrouter/google/gemma-4-26b-a4b-it:free"}'
+          # Title generation only. Explicit model avoids opencode picking an image model by default.
+          OPENCODE_CONFIG_CONTENT: '{"small_model":"openrouter/google/gemini-2.5-flash-lite"}'
         with:
           model: openrouter/anthropic/claude-haiku-5.5
           use_github_token: true
