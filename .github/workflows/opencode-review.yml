@@ -10,7 +10,6 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       pull-requests: write
       issues: write
@@ -20,8 +19,12 @@ jobs:
           persist-credentials: false
       - name: Run opencode review
         uses: anomalyco/opencode/github@latest
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: opencode/beam-free
+          model: openrouter/anthropic/claude-haiku-5.5
+          use_github_token: true
           prompt: |
             Review pull request này và đăng kết quả thành comment lên PR.
 
