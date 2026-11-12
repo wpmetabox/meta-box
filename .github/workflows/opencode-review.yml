@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_call:
+    # secrets: inherit does not reach this workflow from other orgs (e.g. elightup); those callers pass it explicitly.
+    secrets:
+      OPENROUTER_API_KEY:
+        required: true
 
 jobs:
   review:
