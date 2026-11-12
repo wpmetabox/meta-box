@@ -15,6 +15,10 @@ on:
         description: "Load SSH_KEY so composer can fetch private git@ packages. Caller passes SSH_KEY and SSH_KNOWN_HOSTS (secrets: inherit works only inside the wpmetabox org)."
         type: boolean
         default: false
+      build:
+        description: Run "pnpm run build" (or "npm run build") before the smoke test, for repos that don't commit built JS/CSS
+        type: boolean
+        default: false
       requires:
         description: Space-separated WordPress.org plugin slugs to install and activate before the plugin (e.g. "meta-box")
         type: string
@@ -168,6 +172,11 @@ jobs:
       - if: inputs.composer
         working-directory: plugin
         run: composer install --no-dev --no-interaction --no-progress
+      - if: inputs.build
+        name: Build assets
+        working-directory: plugin
+        run: |
+          if [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm install --frozen-lockfile && pnpm run build; else npm ci && npm run build; fi
       - name: Install WordPress
         run: |
           wp core download --path=$WP --version=${{ matrix.wp }}
@@ -268,6 +277,7 @@ jobs:
           const { URL: base, COOKIE } = process.env;
           const browser = await puppeteer.launch( { executablePath: '/usr/bin/google-chrome', args: [ '--no-sandbox' ] } );
           const page = await browser.newPage();
+          if ( ! COOKIE ) { console.log( '::error::No login cookie: the site broke in an earlier step' ); process.exit( 1 ); }
           await page.setCookie( ...COOKIE.split( '; ' ).map( c => ( { name: c.split( '=' )[0], value: c.slice( c.indexOf( '=' ) + 1 ), url: base } ) ) );
           let errors = [];
           page.on( 'pageerror', e => errors.push( e.message ) );
