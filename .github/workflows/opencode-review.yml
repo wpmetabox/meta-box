@@ -26,7 +26,7 @@ jobs:
           model: openrouter/anthropic/claude-haiku-5.5
           use_github_token: true
           prompt: |
-            Review pull request này và đăng kết quả thành comment lên PR.
+            Review pull request này. Trả kết quả làm câu trả lời cuối cùng; hệ thống sẽ tự đăng thành một comment lên PR. Không tự đăng comment bằng `gh`.
 
             ## Nguyên tắc
             - Viết tiếng Việt, câu ngắn, từ đơn giản.
