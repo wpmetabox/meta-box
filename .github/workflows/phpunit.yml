@@ -12,6 +12,14 @@ on:
         description: WordPress version ("latest", "nightly" or a number like "6.9")
         type: string
         default: latest
+    # secrets: inherit does not reach this workflow from other orgs (e.g. elightup); those callers pass them explicitly.
+    secrets:
+      SSH_KEY:
+        required: false
+      SSH_KNOWN_HOSTS:
+        required: false
+      COMPOSER_TOKEN:
+        required: false
 
 jobs:
   check:
@@ -50,7 +58,7 @@ jobs:
           extensions: mysqli
           tools: composer, wp-cli
           coverage: none
-      # Only for repos that need private packages, with `secrets: inherit`: SSH_KEY for git@ URLs, or COMPOSER_TOKEN.
+      # Only for repos that need private packages: SSH_KEY for git@ URLs, or COMPOSER_TOKEN.
       - if: env.SSH_KEY != ''
         uses: shimataro/ssh-key-action@v2
         with:

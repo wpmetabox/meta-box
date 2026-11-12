@@ -4,13 +4,17 @@ on:
   workflow_call:
     inputs:
       composer:
-        description: Run "composer install --no-dev" first (for repos that don't commit vendor/)
+        description: Run "composer install --no-dev" before the smoke test (for repos that don't commit vendor/)
         type: boolean
         default: false
       php_min:
         description: Lowest PHP version the plugin supports (e.g. "8.0"). Lint, PHPCompatibility and smoke test run from this version up to 8.5.
         type: string
         default: "7.4"
+      ssh:
+        description: "Load SSH_KEY so composer can fetch private git@ packages. Caller passes SSH_KEY and SSH_KNOWN_HOSTS (secrets: inherit works only inside the wpmetabox org)."
+        type: boolean
+        default: false
       requires:
         description: Space-separated WordPress.org plugin slugs to install and activate before the plugin (e.g. "meta-box")
         type: string
@@ -19,6 +23,12 @@ on:
         description: Extra admin pages to open, space-separated, relative to wp-admin/ (e.g. "admin.php?page=meta-box")
         type: string
         default: ""
+    # secrets: inherit does not reach this workflow from other orgs (e.g. elightup); those callers pass them explicitly.
+    secrets:
+      SSH_KEY:
+        required: false
+      SSH_KNOWN_HOSTS:
+        required: false
 
 env:
   # Polyfills load only on the PHP version they target, so they can use newer syntax.
@@ -62,10 +72,12 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer
           coverage: none
-      - if: inputs.composer
-        run: composer install --no-dev --no-interaction --no-progress
+      - name: Skip bundled packages
+        # Only the plugin's own code: vendor/ and Composer installer-paths (e.g. modules/) have their own CI.
+        run: |
+          rm -rf vendor
+          [ -f composer.json ] && jq -r '.extra["installer-paths"] // {} | keys[] | sub("\\{\\$name\\}.*"; "")' composer.json | grep . | xargs -r rm -rf || true
       - name: php -l with all errors and deprecations on
         run: |
           find . -name '*.php' -not -path './.git/*' -not -path '*/node_modules/*' -not -path '*/tests/*' -not -path '*/Symfony/Polyfill/*' -print0 \
@@ -84,8 +96,11 @@ jobs:
           php-version: "8.3"
           tools: composer
           coverage: none
-      - if: inputs.composer
-        run: composer install --no-dev --no-interaction --no-progress
+      - name: Skip bundled packages
+        # Only the plugin's own code: vendor/ and Composer installer-paths (e.g. modules/) have their own CI.
+        run: |
+          rm -rf vendor
+          [ -f composer.json ] && jq -r '.extra["installer-paths"] // {} | keys[] | sub("\\{\\$name\\}.*"; "")' composer.json | grep . | xargs -r rm -rf || true
       - name: Install PHPCompatibilityWP
         run: |
           composer global config minimum-stability dev
@@ -145,6 +160,11 @@ jobs:
           extensions: mysqli
           tools: composer, wp-cli
           coverage: none
+      - if: inputs.ssh
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       - if: inputs.composer
         working-directory: plugin
         run: composer install --no-dev --no-interaction --no-progress
