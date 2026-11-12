@@ -1,3 +1,10 @@
+### 5.15.5 - 2026-11-12
+
+- Fix form being saved when a required checkbox or radio list is empty (#1725)
+- Fix a PHP warning when showing a fieldset text field that has no value
+- Dashboard: explain that Meta Box is a code framework, and point to Meta Box Lite for a UI
+- Require WordPress 6.7+ and PHP 7.4+
+
 ### 5.15.4 - 2026-11-06
 
 - Security: prevent stored XSS via slider, range and file input field values and map info window content

@@ -5,7 +5,7 @@ Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 5.15.4
+Stable tag: 5.15.5
 License: GPLv2 or later
 
 Developer framework to create custom fields and meta boxes with code. No admin UI: for a UI, install the free Meta Box Lite.
@@ -117,6 +117,13 @@ This service is provided by the OpenStreetMap Foundation: [terms of use](https:/
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.15.5 - 2026-11-12 =
+
+- Fix form being saved when a required checkbox or radio list is empty (#1725)
+- Fix a PHP warning when showing a fieldset text field that has no value
+- Dashboard: explain that Meta Box is a code framework, and point to Meta Box Lite for a UI
+- Require WordPress 6.7+ and PHP 7.4+
 
 = 5.15.4 - 2026-11-06 =
 
