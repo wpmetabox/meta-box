@@ -30,14 +30,13 @@ jobs:
       WP_CORE_DIR: /tmp/wordpress
       COMPOSER_TOKEN: ${{ secrets.COMPOSER_TOKEN }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports: ["3306:3306"]
-        options: --health-cmd="mysqladmin ping -proot" --health-interval=5s --health-timeout=5s --health-retries=20
+    # On PRs a new push cancels the old run; pushes to the default branch each run in full.
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.job }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+      cancel-in-progress: true
     steps:
+      # The runner's own MySQL (root/root) starts in seconds; a mysql service container takes 20-30.
+      - run: sudo systemctl start mysql.service
       - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:

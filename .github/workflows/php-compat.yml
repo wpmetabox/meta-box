@@ -39,50 +39,6 @@ env:
   EXCLUDE: "*/node_modules/*,*/tests/*,*/Symfony/Polyfill/*"
 
 jobs:
-  compatibility:
-    name: PHPCompatibility (${{ inputs.php_min }}+)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
-          tools: composer
-          coverage: none
-      - name: Skip bundled packages
-        # Only the plugin's own code: vendor/ and Composer installer-paths (e.g. modules/) have their own CI.
-        run: |
-          rm -rf vendor
-          [ -f composer.json ] && jq -r '.extra["installer-paths"] // {} | keys[] | sub("\\{\\$name\\}.*"; "")' composer.json | grep . | xargs -r rm -rf || true
-      - name: Install PHPCompatibilityWP
-        run: |
-          composer global config minimum-stability dev
-          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-          composer global require --no-interaction --no-progress "phpcompatibility/phpcompatibility-wp:^3.0@dev"
-      - name: Run phpcs
-        run: |
-          cat > /tmp/phpcompat.xml <<XML
-          <?xml version="1.0"?>
-          <ruleset name="PHP compatibility">
-            <!-- From the lowest PHP the plugin supports, up to the newest we test. -->
-            <config name="testVersion" value="${{ inputs.php_min }}-8.5"/>
-            <rule ref="PHPCompatibilityWP">
-              <!-- Attributes are comments on PHP 7.4. -->
-              <exclude name="PHPCompatibility.Attributes"/>
-              <!-- Only matters for PHP 5. -->
-              <exclude name="PHPCompatibility.Variables.NewUniformVariableSyntax"/>
-              <!-- Advice, not an error. -->
-              <exclude name="PHPCompatibility.Interfaces.RemovedSerializable"/>
-            </rule>
-            <!-- Polyfilled by symfony/polyfill-php80. -->
-            <rule ref="PHPCompatibility.FunctionUse.NewFunctions.get_debug_typeFound"><severity>0</severity></rule>
-            <rule ref="PHPCompatibility.Classes.NewClasses.attributeFound"><severity>0</severity></rule>
-            <!-- View files with HTML only. -->
-            <rule ref="Internal.NoCodeFound"><severity>0</severity></rule>
-          </ruleset>
-          XML
-          ~/.composer/vendor/bin/phpcs --standard=/tmp/phpcompat.xml --extensions=php -q --parallel=4 --ignore="$EXCLUDE" .
-
   smoke:
     name: Smoke test (WP ${{ matrix.wp }}, PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
@@ -92,18 +48,18 @@ jobs:
         include:
           - { php: "${{ inputs.php_min }}", wp: "6.7" }
           - { php: "8.5", wp: "latest" }
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: wp
-        ports: ["3306:3306"]
-        options: --health-cmd="mysqladmin ping -proot" --health-interval=5s --health-timeout=5s --health-retries=20
+    # On PRs a new push cancels the old run; pushes to the default branch each run in full.
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.job }}-${{ matrix.php }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+      cancel-in-progress: true
     env:
       WP: /tmp/wp
       URL: http://127.0.0.1:8080
     steps:
+      # The runner's own MySQL (root/root) starts in seconds; a mysql service container takes 20-30.
+      - run: |
+          sudo systemctl start mysql.service
+          mysql -uroot -proot -h127.0.0.1 -e 'CREATE DATABASE wp'
       - uses: actions/checkout@v7
         with:
           path: plugin
@@ -196,7 +152,7 @@ jobs:
           echo "POST_ID=$id" >> $GITHUB_ENV
       - name: Open pages
         run: |
-          php -S 127.0.0.1:8080 -t $WP > /tmp/server.log 2>&1 &
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t $WP > /tmp/server.log 2>&1 &
           sleep 2
           cookie=$(wp eval --path=$WP --user=admin '
             $u = wp_get_current_user(); $exp = time() + 3600;
@@ -225,16 +181,16 @@ jobs:
           import puppeteer from 'puppeteer-core';
           const { URL: base, COOKIE } = process.env;
           const browser = await puppeteer.launch( { executablePath: '/usr/bin/google-chrome', args: [ '--no-sandbox' ] } );
-          const page = await browser.newPage();
           if ( ! COOKIE ) { console.log( '::error::No login cookie: the site broke in an earlier step' ); process.exit( 1 ); }
-          await page.setCookie( ...COOKIE.split( '; ' ).map( c => ( { name: c.split( '=' )[0], value: c.slice( c.indexOf( '=' ) + 1 ), url: base } ) ) );
-          let errors = [];
-          page.on( 'pageerror', e => errors.push( e.message ) );
-          // The built-in PHP server has no favicon.ico.
-          page.on( 'console', m => m.type() === 'error' && ! m.location()?.url?.includes( 'favicon' ) && errors.push( `${ m.text() } (${ m.location()?.url || '' })` ) );
+          const cookies = COOKIE.split( '; ' ).map( c => ( { name: c.split( '=' )[0], value: c.slice( c.indexOf( '=' ) + 1 ), url: base } ) );
           let fail = 0;
-          for ( const p of fs.readFileSync( '/tmp/pages.txt', 'utf8' ).split( '\n' ).slice( 0, -1 ) ) {
-            errors = [];
+          const check = async ( p ) => {
+            const page = await browser.newPage();
+            await page.setCookie( ...cookies );
+            const errors = [];
+            page.on( 'pageerror', e => errors.push( e.message ) );
+            // The built-in PHP server has no favicon.ico.
+            page.on( 'console', m => m.type() === 'error' && ! m.location()?.url?.includes( 'favicon' ) && errors.push( `${ m.text() } (${ m.location()?.url || '' })` ) );
             try {
               // The block editor keeps polling the server, so wait for 'load' and give scripts time to run.
               await page.goto( `${ base }/${ p }`, { waitUntil: 'load', timeout: 60000 } );
@@ -242,6 +198,12 @@ jobs:
             } catch ( e ) {
               errors.push( e.message );
             }
+            await page.close();
+            return { p, errors };
+          };
+          // All pages at once: the PHP server runs several workers (PHP_CLI_SERVER_WORKERS).
+          const pages = fs.readFileSync( '/tmp/pages.txt', 'utf8' ).split( '\n' ).slice( 0, -1 );
+          for ( const { p, errors } of await Promise.all( pages.map( check ) ) ) {
             if ( errors.length ) {
               fail = 1;
               console.log( `::error::JavaScript errors on /${ p }` );
@@ -288,3 +250,35 @@ jobs:
             | grep -v -e '^No syntax errors' -e '^$' > /tmp/lint.txt || true
           cat /tmp/lint.txt
           test ! -s /tmp/lint.txt
+      - name: Install PHPCompatibilityWP
+        if: always() && matrix.php == '8.5'
+        run: |
+          composer global config minimum-stability dev
+          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require --no-interaction --no-progress "phpcompatibility/phpcompatibility-wp:^3.0@dev"
+      - name: PHPCompatibility (${{ inputs.php_min }}+)
+        # Static check of every version from php_min to 8.5, whatever PHP runs it.
+        if: always() && matrix.php == '8.5'
+        working-directory: /tmp/src
+        run: |
+          cat > /tmp/phpcompat.xml <<XML
+          <?xml version="1.0"?>
+          <ruleset name="PHP compatibility">
+            <!-- From the lowest PHP the plugin supports, up to the newest we test. -->
+            <config name="testVersion" value="${{ inputs.php_min }}-8.5"/>
+            <rule ref="PHPCompatibilityWP">
+              <!-- Attributes are comments on PHP 7.4. -->
+              <exclude name="PHPCompatibility.Attributes"/>
+              <!-- Only matters for PHP 5. -->
+              <exclude name="PHPCompatibility.Variables.NewUniformVariableSyntax"/>
+              <!-- Advice, not an error. -->
+              <exclude name="PHPCompatibility.Interfaces.RemovedSerializable"/>
+            </rule>
+            <!-- Polyfilled by symfony/polyfill-php80. -->
+            <rule ref="PHPCompatibility.FunctionUse.NewFunctions.get_debug_typeFound"><severity>0</severity></rule>
+            <rule ref="PHPCompatibility.Classes.NewClasses.attributeFound"><severity>0</severity></rule>
+            <!-- View files with HTML only. -->
+            <rule ref="Internal.NoCodeFound"><severity>0</severity></rule>
+          </ruleset>
+          XML
+          ~/.composer/vendor/bin/phpcs --standard=/tmp/phpcompat.xml --extensions=php -q --parallel=4 --ignore="$EXCLUDE" .
