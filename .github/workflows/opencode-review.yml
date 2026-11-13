@@ -14,6 +14,12 @@ jobs:
   review:
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
+    # opencode sometimes hangs until GitHub's 6-hour limit; a normal review takes about a minute.
+    timeout-minutes: 20
+    # A new push to the PR cancels the review of the old commit.
+    concurrency:
+      group: opencode-review-${{ github.repository }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     permissions:
       contents: read
       pull-requests: write

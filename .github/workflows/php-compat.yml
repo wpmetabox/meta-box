@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
       php_min:
-        description: Lowest PHP version the plugin supports (e.g. "8.0"). Lint, PHPCompatibility and smoke test run from this version up to 8.5.
+        description: Lowest PHP version the plugin supports (e.g. "8.0"). PHPCompatibility checks from this version up to 8.5; lint and smoke test run on this version and 8.5.
         type: string
         default: "7.4"
       ssh:
@@ -39,57 +39,6 @@ env:
   EXCLUDE: "*/node_modules/*,*/tests/*,*/Symfony/Polyfill/*"
 
 jobs:
-  vendor:
-    name: vendor/ has no dev packages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Check vendor/composer/installed.json
-        run: |
-          # vendor/ is committed and released as is, so it must come from "composer install --no-dev".
-          f=vendor/composer/installed.json
-          if ! git ls-files --error-unmatch $f >/dev/null 2>&1; then echo "vendor/ is not committed"; exit 0; fi
-          dev=$(jq -r '."dev-package-names" // [] | join(" ")' $f)
-          if [ -n "$dev" ]; then echo "::error::vendor/ has dev packages: $dev. Run \"composer install --no-dev\" and commit vendor/."; exit 1; fi
-          echo "OK"
-
-  versions:
-    name: PHP versions from ${{ inputs.php_min }}
-    runs-on: ubuntu-latest
-    outputs:
-      php: ${{ steps.list.outputs.php }}
-    steps:
-      - id: list
-        run: |
-          echo "php=$(printf '%s\n' 7.4 8.0 8.1 8.2 8.3 8.4 8.5 | awk -v min=${{ inputs.php_min }} '$1 + 0 >= min + 0' | jq -R . | jq -sc .)" >> $GITHUB_OUTPUT
-
-  lint:
-    name: Lint (PHP ${{ matrix.php }})
-    needs: versions
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ${{ fromJSON(needs.versions.outputs.php) }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          coverage: none
-      - name: Skip bundled packages
-        # Only the plugin's own code: vendor/ and Composer installer-paths (e.g. modules/) have their own CI.
-        run: |
-          rm -rf vendor
-          [ -f composer.json ] && jq -r '.extra["installer-paths"] // {} | keys[] | sub("\\{\\$name\\}.*"; "")' composer.json | grep . | xargs -r rm -rf || true
-      - name: php -l with all errors and deprecations on
-        run: |
-          find . -name '*.php' -not -path './.git/*' -not -path '*/node_modules/*' -not -path '*/tests/*' -not -path '*/Symfony/Polyfill/*' -print0 \
-            | xargs -0 -n1 -P4 php -d error_reporting=-1 -d display_errors=1 -l 2>&1 \
-            | grep -v -e '^No syntax errors' -e '^$' > lint.txt || true
-          cat lint.txt
-          test ! -s lint.txt
-
   compatibility:
     name: PHPCompatibility (${{ inputs.php_min }}+)
     runs-on: ubuntu-latest
@@ -312,3 +261,30 @@ jobs:
           grep "/plugins/$SLUG/" /tmp/debug.log > errors.txt || true
           cat errors.txt
           test ! -s errors.txt
+      - name: Copy committed files
+        # Lint and vendor checks use the committed files, not the ones changed by composer install or the build above.
+        if: always()
+        run: git -C plugin checkout-index -a --prefix=/tmp/src/
+      - name: vendor/ has no dev packages
+        if: always() && matrix.php == '8.5'
+        working-directory: /tmp/src
+        run: |
+          # vendor/ is committed and released as is, so it must come from "composer install --no-dev".
+          f=vendor/composer/installed.json
+          if [ ! -f $f ]; then echo "vendor/ is not committed"; exit 0; fi
+          dev=$(jq -r '."dev-package-names" // [] | join(" ")' $f)
+          if [ -n "$dev" ]; then echo "::error::vendor/ has dev packages: $dev. Run \"composer install --no-dev\" and commit vendor/."; exit 1; fi
+          echo "OK"
+      - name: php -l with all errors and deprecations on
+        # Lowest and newest PHP only: PHPCompatibility covers the versions in between.
+        if: always()
+        working-directory: /tmp/src
+        run: |
+          # Only the plugin's own code: vendor/ and Composer installer-paths (e.g. modules/) have their own CI.
+          rm -rf vendor
+          [ -f composer.json ] && jq -r '.extra["installer-paths"] // {} | keys[] | sub("\\{\\$name\\}.*"; "")' composer.json | grep . | xargs -r rm -rf || true
+          find . -name '*.php' -not -path '*/node_modules/*' -not -path '*/tests/*' -not -path '*/Symfony/Polyfill/*' -print0 \
+            | xargs -0 -n1 -P4 php -d error_reporting=-1 -d display_errors=1 -l 2>&1 \
+            | grep -v -e '^No syntax errors' -e '^$' > /tmp/lint.txt || true
+          cat /tmp/lint.txt
+          test ! -s /tmp/lint.txt
