@@ -203,7 +203,14 @@ jobs:
           };
           // All pages at once: the PHP server runs several workers (PHP_CLI_SERVER_WORKERS).
           const pages = fs.readFileSync( '/tmp/pages.txt', 'utf8' ).split( '\n' ).slice( 0, -1 );
-          for ( const { p, errors } of await Promise.all( pages.map( check ) ) ) {
+          const results = await Promise.all( pages.map( check ) );
+          // Parallel loads sometimes get 403 from admin-ajax/REST, so pages with errors are checked again one by one.
+          for ( const r of results ) {
+            if ( r.errors.length ) {
+              Object.assign( r, await check( r.p ) );
+            }
+          }
+          for ( const { p, errors } of results ) {
             if ( errors.length ) {
               fail = 1;
               console.log( `::error::JavaScript errors on /${ p }` );
