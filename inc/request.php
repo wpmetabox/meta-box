@@ -12,9 +12,9 @@ class RWMB_Request {
 	private $post_data = [];
 
 	public function __construct() {
-		// @codingStandardsIgnoreLine
-		$this->get_data  = $_GET;
-		// @codingStandardsIgnoreLine
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$this->get_data = $_GET;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$this->post_data = $_POST;
 
 		// Cleanup data
