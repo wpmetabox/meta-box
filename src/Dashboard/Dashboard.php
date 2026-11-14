@@ -206,6 +206,13 @@ class Dashboard {
 			wp_send_json_error();
 		}
 
+		// Installing or activating a plugin is an administrator-level action, so
+		// require the matching capability in addition to the nonce check above.
+		$capability = 'install' === $action ? 'install_plugins' : 'activate_plugins';
+		if ( ! current_user_can( $capability ) ) {
+			wp_send_json_error();
+		}
+
 		if ( $action === 'install' ) {
 			$this->install_plugin( $plugin );
 			$this->activate_plugin( $plugin );
@@ -278,6 +285,11 @@ class Dashboard {
 
 	public function get_feed(): void {
 		check_ajax_referer( 'feed' );
+
+		// The feed is only shown on the Dashboard, which requires this capability.
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error();
+		}
 
 		$rss = fetch_feed( 'https://feeds.feedburner.com/metaboxio' );
 
