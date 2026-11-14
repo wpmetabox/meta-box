@@ -58,7 +58,8 @@ class Storage implements \RWMB_Storage_Interface {
 
 	private function update_first_matching_meta( \WC_Order $order, string $name, $prev_value, $new_value ): bool {
 		foreach ( $order->get_meta( $name, false ) as $meta ) {
-			if ( $meta->value == $prev_value ) {
+			// Loose on purpose: order meta can come back as strings while $prev_value is typed.
+			if ( $meta->value == $prev_value ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 				$meta->value = $new_value;
 				return true;
 			}
