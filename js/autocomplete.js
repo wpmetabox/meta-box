@@ -33,6 +33,7 @@
 
 				// Reinitialize value.
 				$search.val( '' ).trigger( 'change' );
+
 				return false;
 			}
 		} );
