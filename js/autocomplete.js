@@ -19,17 +19,20 @@
 			minLength: 0,
 			source: $this.data( 'options' ),
 			select: function ( event, ui ) {
+				var text = typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label;
+
 				$result.append(
-					'<div class="rwmb-autocomplete-result">' +
-					'<div class="label">' + ( typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label ) + '</div>' +
-					'<div class="actions">' + i18n.delete + '</div>' +
-					'<input type="hidden" class="rwmb-autocomplete-value" name="' + name + '" value="' + ui.item.value + '">' +
-					'</div>'
+					$( '<div class="rwmb-autocomplete-result">' ).append(
+						$( '<div class="label">' ).text( text ),
+						$( '<div class="actions">' ).text( i18n.delete ),
+						$( '<input type="hidden" class="rwmb-autocomplete-value">' )
+							.attr( 'name', name )
+							.val( ui.item.value )
+					)
 				);
 
 				// Reinitialize value.
 				$search.val( '' ).trigger( 'change' );
-
 				return false;
 			}
 		} );
