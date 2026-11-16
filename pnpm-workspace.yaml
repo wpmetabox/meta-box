@@ -1,3 +1,5 @@
 allowBuilds:
   core-js: true
   core-js-pure: false
+  "@parcel/watcher": false
+  unrs-resolver: false
