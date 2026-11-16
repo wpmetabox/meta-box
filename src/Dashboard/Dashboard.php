@@ -206,11 +206,12 @@ class Dashboard {
 			wp_send_json_error();
 		}
 
-		// Installing or activating a plugin is an administrator-level action, so
-		// require the matching capability in addition to the nonce check above.
-		$capability = 'install' === $action ? 'install_plugins' : 'activate_plugins';
-		if ( ! current_user_can( $capability ) ) {
-			wp_send_json_error();
+		// Installing also activates the plugin, so it needs both capabilities.
+		$capabilities = 'install' === $action ? [ 'install_plugins', 'activate_plugins' ] : [ 'activate_plugins' ];
+		foreach ( $capabilities as $capability ) {
+			if ( ! current_user_can( $capability ) ) {
+				wp_send_json_error();
+			}
 		}
 
 		if ( $action === 'install' ) {
