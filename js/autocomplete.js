@@ -5,7 +5,7 @@
 	 * Transform an input into an autocomplete.
 	 */
 	function transform( e ) {
-		var $this = $( this ),
+		const $this = $( this ),
 			$search = $this.siblings( '.rwmb-autocomplete-search' ),
 			$result = $this.siblings( '.rwmb-autocomplete-results' ),
 			name = $this.attr( 'name' );
@@ -19,7 +19,7 @@
 			minLength: 0,
 			source: $this.data( 'options' ),
 			select: function ( event, ui ) {
-				var text = typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label;
+				const text = typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label;
 
 				$result.append(
 					$( '<div class="rwmb-autocomplete-result">' ).append(
@@ -41,7 +41,7 @@
 
 	function deleteSelection( e ) {
 		e.preventDefault();
-		var $item = $( this ).parent(),
+		const $item = $( this ).parent(),
 			$search = $item.parent().siblings( '.rwmb-autocomplete-search' );
 
 		$item.remove();
