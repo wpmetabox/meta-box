@@ -28,17 +28,22 @@ jobs:
     steps:
       # Keep the checkout token: opencode runs "git fetch origin <branch>", which needs auth on private repos.
       - uses: actions/checkout@v6
+      # Replaces anomalyco/opencode/github@latest: opencode dropped that action, and its unauthenticated GitHub API version lookup failed on rate limits.
+      # The v1 installer resolves the latest 1.x via npm; OpenCode 2 has no "github run" command.
+      - name: Install opencode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> "$GITHUB_PATH"
       - name: Run opencode review
-        uses: anomalyco/opencode/github@latest
+        run: opencode github run
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Without small_model, opencode picks a random OpenRouter model for session titles (once Nano Banana, an image model at ~$0.04/call).
           OPENCODE_CONFIG_CONTENT: '{"small_model":"openrouter/anthropic/claude-haiku-5.5"}'
-        with:
-          model: openrouter/anthropic/claude-sonnet-5.5
-          use_github_token: true
-          prompt: |
+          MODEL: openrouter/anthropic/claude-sonnet-5.5
+          USE_GITHUB_TOKEN: "true"
+          PROMPT: |
             Review pull request này. Trả kết quả làm câu trả lời cuối cùng; hệ thống sẽ tự đăng thành một comment lên PR. Không tự đăng comment bằng `gh`.
 
             ## Nguyên tắc
