@@ -5,7 +5,7 @@
 	 * Transform an input into an autocomplete.
 	 */
 	function transform( e ) {
-		var $this = $( this ),
+		const $this = $( this ),
 			$search = $this.siblings( '.rwmb-autocomplete-search' ),
 			$result = $this.siblings( '.rwmb-autocomplete-results' ),
 			name = $this.attr( 'name' );
@@ -19,12 +19,16 @@
 			minLength: 0,
 			source: $this.data( 'options' ),
 			select: function ( event, ui ) {
+				const text = typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label;
+
 				$result.append(
-					'<div class="rwmb-autocomplete-result">' +
-					'<div class="label">' + ( typeof ui.item.excerpt !== 'undefined' ? ui.item.excerpt : ui.item.label ) + '</div>' +
-					'<div class="actions">' + i18n.delete + '</div>' +
-					'<input type="hidden" class="rwmb-autocomplete-value" name="' + name + '" value="' + ui.item.value + '">' +
-					'</div>'
+					$( '<div class="rwmb-autocomplete-result">' ).append(
+						$( '<div class="label">' ).text( text ),
+						$( '<div class="actions">' ).text( i18n.delete ),
+						$( '<input type="hidden" class="rwmb-autocomplete-value">' )
+							.attr( 'name', name )
+							.val( ui.item.value )
+					)
 				);
 
 				// Reinitialize value.
@@ -37,7 +41,7 @@
 
 	function deleteSelection( e ) {
 		e.preventDefault();
-		var $item = $( this ).parent(),
+		const $item = $( this ).parent(),
 			$search = $item.parent().siblings( '.rwmb-autocomplete-search' );
 
 		$item.remove();
