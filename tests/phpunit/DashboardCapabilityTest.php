@@ -1,77 +1,42 @@
 <?php
-use PHPUnit\Framework\TestCase;
+use MetaBox\Dashboard\Dashboard;
 
 /**
  * Dashboard AJAX handlers must check user capabilities, not only nonces.
- *
- * Runs against a live WordPress install (see tests/bootstrap.php).
  */
-class DashboardCapabilityTest extends TestCase {
-	private $user_id;
+class DashboardCapabilityTest extends WP_UnitTestCase {
+	public static function forbiddenRequestProvider(): array {
+		return [
+			'subscriber installs'        => [ [], 'handle_plugin_action', 'plugin', [ 'mb_plugin' => 'foo', 'mb_action' => 'install' ] ],
+			'subscriber activates'       => [ [], 'handle_plugin_action', 'plugin', [ 'mb_plugin' => 'foo', 'mb_action' => 'activate' ] ],
+			'install-only user installs' => [ [ 'install_plugins' ], 'handle_plugin_action', 'plugin', [ 'mb_plugin' => 'foo', 'mb_action' => 'install' ] ],
+			'subscriber reads feed'      => [ [], 'get_feed', 'feed', [] ],
+		];
+	}
 
-	protected function setUp(): void {
-		parent::setUp();
-
-		if ( ! defined( 'RWMB_VER' ) || ! function_exists( 'add_role' ) ) {
-			$this->markTestSkipped( 'Needs a live WordPress install with Meta Box active.' );
+	/**
+	 * @dataProvider forbiddenRequestProvider
+	 */
+	public function testHandlerRejectsUserWithoutCapability( array $caps, string $method, string $nonce_action, array $get ): void {
+		$user = self::factory()->user->create_and_get( [ 'role' => 'subscriber' ] );
+		foreach ( $caps as $cap ) {
+			$user->add_cap( $cap );
 		}
+		wp_set_current_user( $user->ID );
 
-		// Role with install rights only, to prove activate rights are checked too.
-		add_role( 'mb_test_installer', 'MB Test Installer', [ 'read' => true, 'install_plugins' => true ] );
-		$this->user_id = wp_insert_user(
-			[
-				'user_login' => 'mb_dashboard_test_' . wp_generate_password( 6, false ),
-				'user_pass'  => wp_generate_password(),
-				'role'       => 'subscriber',
-			]
-		);
+		$_GET     = $get;
+		$_REQUEST = array_merge( $get, [ '_ajax_nonce' => wp_create_nonce( $nonce_action ) ] );
+
+		$this->assertSame( [ 'success' => false ], $this->call_ajax( $method ) );
 	}
 
-	protected function tearDown(): void {
-		if ( $this->user_id ) {
-			wp_set_current_user( 0 );
-			wp_delete_user( $this->user_id );
-			remove_role( 'mb_test_installer' );
-		}
-		$_GET = $_REQUEST = [];
-		parent::tearDown();
-	}
-
-	public function test_subscriber_cannot_install_plugin(): void {
-		$this->login( 'subscriber' );
-		$response = $this->call_handler( 'handle_plugin_action', [ 'mb_plugin' => 'foo', 'mb_action' => 'install' ], 'plugin' );
-
-		$this->assertFalse( $response['success'] ?? true );
-	}
-
-	public function test_install_only_user_cannot_install_and_activate(): void {
-		$this->login( 'mb_test_installer' );
-		$response = $this->call_handler( 'handle_plugin_action', [ 'mb_plugin' => 'foo', 'mb_action' => 'install' ], 'plugin' );
-
-		$this->assertFalse( $response['success'] ?? true );
-	}
-
-	public function test_subscriber_cannot_read_feed(): void {
-		$this->login( 'subscriber' );
-		$response = $this->call_handler( 'get_feed', [], 'feed' );
-
-		$this->assertFalse( $response['success'] ?? true );
-	}
-
-	private function login( string $role ): void {
-		wp_update_user( [ 'ID' => $this->user_id, 'role' => $role ] );
-		wp_set_current_user( $this->user_id );
-	}
-
-	private function call_handler( string $method, array $get, string $nonce_action ): array {
-		$_GET                = $get;
-		$_REQUEST            = [ '_ajax_nonce' => wp_create_nonce( $nonce_action ) ];
-		$_REQUEST            = array_merge( $_REQUEST, $get );
-		$dashboard           = ( new ReflectionClass( \MetaBox\Dashboard\Dashboard::class ) )->newInstanceWithoutConstructor();
-		$doing_ajax          = static function () {
+	private function call_ajax( string $method ): array {
+		// Skip the constructor: it registers hooks and reads update data.
+		$dashboard   = ( new ReflectionClass( Dashboard::class ) )->newInstanceWithoutConstructor();
+		$doing_ajax  = static function () {
 			return true;
 		};
-		$die_handler         = static function () {
+		$die_handler = static function () {
 			return static function () {
 				throw new RuntimeException( 'wp_die' );
 			};
@@ -89,6 +54,8 @@ class DashboardCapabilityTest extends TestCase {
 			$output = ob_get_clean();
 			remove_filter( 'wp_doing_ajax', $doing_ajax );
 			remove_filter( 'wp_die_ajax_handler', $die_handler );
+			$_GET     = [];
+			$_REQUEST = [];
 		}
 
 		return json_decode( $output, true ) ?: [];
