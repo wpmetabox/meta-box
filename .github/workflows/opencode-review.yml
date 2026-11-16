@@ -12,7 +12,8 @@ on:
 
 jobs:
   review:
-    if: github.actor != 'dependabot[bot]'
+    # Fork PRs get no secrets and a read-only token, so the review can't run there.
+    if: github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     # opencode sometimes hangs until GitHub's 6-hour limit; a normal review takes about a minute.
     timeout-minutes: 20
