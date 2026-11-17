@@ -39,8 +39,9 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		] );
 
 		if ( $field['upload_dir'] ) {
-			$field['js_options']['uploadDir'] = true;
-			$field['js_options']['fieldId']   = $field['id'];
+			$field['js_options']['uploadDir']      = true;
+			$field['js_options']['fieldId']        = $field['id'];
+			$field['js_options']['uploadDirNonce'] = wp_create_nonce( 'rwmb-upload-dir_' . $field['id'] );
 		}
 
 		return $field;
@@ -53,24 +54,36 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	 * @param array $file A single $_FILES item.
 	 */
 	public static function filter_upload( array $file ): array {
+		self::reset_upload_state();
+
 		$field_id    = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_field_id', '' ) );
 		$meta_box_id = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_meta_box_id', '' ) );
 		$field       = $field_id && $meta_box_id ? self::find_upload_field( $meta_box_id, $field_id ) : null;
-		$dir         = is_array( $field ) ? $field['upload_dir'] : '';
+		$dir         = $field['upload_dir'] ?? '';
 
-		if ( $dir && RWMB_File_Field::is_path_inside( $dir, self::uploads_basedir() ) ) {
-			self::$upload_dir = $dir;
-			add_filter( 'upload_dir', [ __CLASS__, 'custom_upload_dir' ] );
-			if ( is_callable( $field['unique_filename_callback'] ) ) {
-				self::$filename_callback = $field['unique_filename_callback'];
-				add_filter( 'wp_handle_upload_overrides', [ __CLASS__, 'upload_overrides' ] );
-			}
+		if ( ! $dir ) {
 			return $file;
 		}
 
-		if ( $field_id && $meta_box_id ) {
+		if ( ! RWMB_File_Field::is_path_inside( $dir, self::uploads_basedir() ) ) {
 			$file['error'] = __( 'The upload folder must be inside the WordPress uploads directory.', 'meta-box' );
+
+			return $file;
 		}
+
+		$nonce = (string) rwmb_request()->post( 'rwmb_upload_dir_nonce', '' );
+		if ( ! wp_verify_nonce( $nonce, 'rwmb-upload-dir_' . $field_id ) ) {
+			$file['error'] = __( 'You are not allowed to upload to this folder.', 'meta-box' );
+
+			return $file;
+		}
+
+		$callback                = $field['unique_filename_callback'] ?? null;
+		self::$upload_dir        = $dir;
+		self::$filename_callback = is_callable( $callback ) ? $callback : null;
+		add_filter( 'upload_dir', [ __CLASS__, 'custom_upload_dir' ] );
+		add_filter( 'wp_handle_upload_overrides', [ __CLASS__, 'upload_overrides' ] );
+		add_filter( 'wp_handle_upload', [ __CLASS__, 'finish_upload' ] );
 
 		return $file;
 	}
@@ -81,31 +94,56 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	 * @param array $uploads Value from the upload_dir filter.
 	 */
 	public static function custom_upload_dir( array $uploads ): array {
-		// _wp_handle_upload() reads this once, then keeps the returned path and url.
-		remove_filter( 'upload_dir', [ __CLASS__, 'custom_upload_dir' ] );
-		remove_filter( 'wp_handle_upload_overrides', [ __CLASS__, 'upload_overrides' ] );
+		// _wp_handle_upload() keeps this return value, so the filter only needs to run once.
+		$dir = self::$upload_dir;
+		self::reset_upload_state();
 
-		return RWMB_File_Field::filter_custom_upload_dir( $uploads, self::$upload_dir );
+		return RWMB_File_Field::filter_custom_upload_dir( $uploads, $dir );
 	}
 
 	/**
-	 * Pass the field's filename callback through to wp_handle_upload().
+	 * Pass the filename callback through, and clear the custom folder if the upload fails.
 	 *
 	 * @param array|false $overrides Upload overrides.
 	 * @return array
 	 */
 	public static function upload_overrides( $overrides ): array {
-		$overrides                             = is_array( $overrides ) ? $overrides : [];
-		$overrides['unique_filename_callback'] = self::$filename_callback;
+		$overrides                         = is_array( $overrides ) ? $overrides : [];
+		$overrides['upload_error_handler'] = [ __CLASS__, 'upload_error' ];
+		if ( self::$filename_callback ) {
+			$overrides['unique_filename_callback'] = self::$filename_callback;
+		}
 
 		return $overrides;
 	}
 
+	/**
+	 * Drop the custom folder after a failed upload, before the next file in this request.
+	 *
+	 * @param array  $file    Single $_FILES item.
+	 * @param string $message Upload error message.
+	 */
+	public static function upload_error( &$file, $message ): array {
+		self::reset_upload_state();
+
+		return [ 'error' => $message ];
+	}
+
+	/**
+	 * Drop the custom folder after a successful move.
+	 *
+	 * @param array $upload Upload result.
+	 */
+	public static function finish_upload( array $upload ): array {
+		self::reset_upload_state();
+
+		return $upload;
+	}
+
 	private static function find_upload_field( string $meta_box_id, string $field_id ): ?array {
 		$meta_box = rwmb_get_registry( 'meta_box' )->get( $meta_box_id );
-		$field    = $meta_box ? self::search_fields( $meta_box->fields, $field_id ) : null;
 
-		return $field ? RWMB_Field::call( 'normalize', $field ) : null;
+		return $meta_box ? self::search_fields( $meta_box->fields, $field_id ) : null;
 	}
 
 	private static function search_fields( array $fields, string $field_id ): ?array {
@@ -131,8 +169,17 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	}
 
 	private static function uploads_basedir(): string {
+		// wp_get_upload_dir() already applies upload_dir, so another plugin's basedir is included once.
 		$uploads = wp_get_upload_dir();
 
 		return $uploads['error'] ? '' : $uploads['basedir'];
+	}
+
+	private static function reset_upload_state(): void {
+		remove_filter( 'upload_dir', [ __CLASS__, 'custom_upload_dir' ] );
+		remove_filter( 'wp_handle_upload_overrides', [ __CLASS__, 'upload_overrides' ] );
+		remove_filter( 'wp_handle_upload', [ __CLASS__, 'finish_upload' ] );
+		self::$upload_dir        = '';
+		self::$filename_callback = null;
 	}
 }

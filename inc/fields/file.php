@@ -230,7 +230,7 @@ class RWMB_File_Field extends RWMB_Field {
 			return '';
 		}
 
-		if ( $field['upload_dir'] ) {
+		if ( $field['upload_dir'] && ! ctype_digit( (string) $file ) ) {
 			$data = self::file_info_custom_dir( $file, $field );
 		} else {
 			$data      = [
@@ -552,10 +552,9 @@ class RWMB_File_Field extends RWMB_Field {
 		$basedir = wp_normalize_path( untrailingslashit( $uploads['basedir'] ) );
 
 		if ( self::is_path_inside( $dir, $basedir ) ) {
-			$subdir            = substr( $dir, strlen( $basedir ) );
-			$uploads['subdir'] = $subdir;
-			$uploads['path']   = $basedir . $subdir;
-			$uploads['url']    = untrailingslashit( $uploads['baseurl'] ) . $subdir;
+			$uploads['subdir'] = substr( $dir, strlen( $basedir ) );
+			$uploads['path']   = $basedir . $uploads['subdir'];
+			$uploads['url']    = untrailingslashit( $uploads['baseurl'] ) . $uploads['subdir'];
 
 			return $uploads;
 		}

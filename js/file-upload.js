@@ -71,6 +71,7 @@
 			if ( metaBoxId ) {
 				options.params.rwmb_field_id = this.controller.get( 'fieldId' );
 				options.params.rwmb_meta_box_id = metaBoxId;
+				options.params.rwmb_upload_dir_nonce = this.controller.get( 'uploadDirNonce' );
 			}
 
 			// Initialize the plupload instance.
