@@ -464,7 +464,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success.
 	 */
 	public static function file_info( $file, $args = [], $field = [] ) {
-		if ( ! empty( $field['upload_dir'] ) ) {
+		// A digit string is an attachment id. Custom-folder file and image fields store a URL.
+		if ( ! empty( $field['upload_dir'] ) && ! ctype_digit( (string) $file ) ) {
 			return self::file_info_custom_dir( $file, $field );
 		}
 
@@ -515,22 +516,17 @@ class RWMB_File_Field extends RWMB_Field {
 		$file = $_FILES[ $file_id ];
 		// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		// Use a closure to filter upload directory. Requires PHP >= 5.3.0.
-		$filter_upload_dir = function ( $uploads ) use ( $field ) {
-			$uploads['path']    = $field['upload_dir'];
-			$uploads['url']     = self::convert_path_to_url( $field['upload_dir'] );
-			$uploads['subdir']  = '';
-			$uploads['basedir'] = $field['upload_dir'];
-
-			return $uploads;
-		};
-
 		// Make sure upload dir is inside WordPress.
 		$upload_dir = wp_normalize_path( untrailingslashit( $field['upload_dir'] ) );
 		$root       = wp_normalize_path( untrailingslashit( ABSPATH ) );
 		if ( ! str_starts_with( $upload_dir, $root ) ) {
 			return;
 		}
+
+		$dir               = $field['upload_dir'];
+		$filter_upload_dir = static function ( $uploads ) use ( $dir ) {
+			return self::filter_custom_upload_dir( $uploads, $dir );
+		};
 
 		// Let WordPress handle upload to the custom directory.
 		add_filter( 'upload_dir', $filter_upload_dir );
@@ -542,6 +538,46 @@ class RWMB_File_Field extends RWMB_Field {
 		remove_filter( 'upload_dir', $filter_upload_dir );
 
 		return empty( $file_info['url'] ) ? null : $file_info['url'];
+	}
+
+	/**
+	 * Point an upload at a custom directory.
+	 * Directories inside the uploads folder keep the original basedir so attachment URLs stay valid.
+	 *
+	 * @param array  $uploads Value from the upload_dir filter.
+	 * @param string $dir     Absolute custom directory.
+	 */
+	public static function filter_custom_upload_dir( array $uploads, string $dir ): array {
+		$dir     = wp_normalize_path( untrailingslashit( $dir ) );
+		$basedir = wp_normalize_path( untrailingslashit( $uploads['basedir'] ) );
+
+		if ( self::is_path_inside( $dir, $basedir ) ) {
+			$subdir            = substr( $dir, strlen( $basedir ) );
+			$uploads['subdir'] = $subdir;
+			$uploads['path']   = $basedir . $subdir;
+			$uploads['url']    = untrailingslashit( $uploads['baseurl'] ) . $subdir;
+
+			return $uploads;
+		}
+
+		$url                = self::convert_path_to_url( $dir );
+		$uploads['path']    = $dir;
+		$uploads['url']     = $url;
+		$uploads['subdir']  = '';
+		$uploads['basedir'] = $dir;
+		$uploads['baseurl'] = $url;
+
+		return $uploads;
+	}
+
+	/**
+	 * Whether $path is $base or a folder inside it.
+	 */
+	public static function is_path_inside( string $path, string $base ): bool {
+		$path = wp_normalize_path( untrailingslashit( $path ) );
+		$base = wp_normalize_path( untrailingslashit( $base ) );
+
+		return $path && $base && ! str_contains( $path, '..' ) && ( $path === $base || str_starts_with( $path, "{$base}/" ) );
 	}
 
 	public static function convert_path_to_url( string $path ): string {

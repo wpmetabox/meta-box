@@ -206,11 +206,12 @@ class RW_Meta_Box {
 
 		// Container.
 		printf(
-			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
+			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s" data-meta-box-id="%s">',
 			esc_attr( trim( "rwmb-meta-box {$this->class}" ) ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type ),
-			esc_attr( $this->object_id )
+			esc_attr( $this->object_id ),
+			esc_attr( $this->id )
 		);
 
 		wp_nonce_field( "rwmb-save-{$this->id}", "nonce_{$this->id}" );

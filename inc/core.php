@@ -5,6 +5,8 @@ class RWMB_Core {
 
 		// Uses priority 20 to support custom post types registered using the default priority.
 		add_action( 'init', [ $this, 'register_meta_boxes' ], 20 );
+		// Upload requests have no admin screen, so field add_actions() does not run there.
+		add_filter( 'wp_handle_upload_prefilter', [ 'RWMB_File_Upload_Field', 'filter_upload' ] );
 		add_action( 'edit_page_form', [ $this, 'fix_page_template' ] );
 		$this->add_context_hooks();
 	}

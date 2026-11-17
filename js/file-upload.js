@@ -66,6 +66,13 @@
 					}
 				};
 
+			// Send ids only. The folder is read from the field config on the server.
+			var metaBoxId = this.controller.get( 'uploadDir' ) && $this.closest( '.rwmb-meta-box' ).attr( 'data-meta-box-id' );
+			if ( metaBoxId ) {
+				options.params.rwmb_field_id = this.controller.get( 'fieldId' );
+				options.params.rwmb_meta_box_id = metaBoxId;
+			}
+
 			// Initialize the plupload instance.
 			this.uploader = new wp.Uploader( options );
 
