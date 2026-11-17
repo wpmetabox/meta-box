@@ -93,3 +93,11 @@
 .rwmb-switch-off {
 	padding-left: calc(var(--size) + var(--padding));
 }
+
+.rwmb-switch-label:has(.rwmb-switch:disabled) {
+	opacity: .5;
+}
+.rwmb-switch-label:has(.rwmb-switch:disabled),
+.rwmb-switch-label:has(.rwmb-switch:disabled) * {
+	cursor: not-allowed;
+}
