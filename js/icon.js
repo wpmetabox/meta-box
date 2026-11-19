@@ -16,11 +16,14 @@
 		return option.id ? $( `<span class="rwmb-icon-select" title=${ option.text }><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
 	};
 
+	const label = option => option.text.replace( /<svg.*?>.*?<\/svg>/s, '' ).trim();
+
 	function initIconField( event, options ) {
 		$( this ).select2( {
 			...options,
 			templateResult: template,
-			templateSelection: template,
+			// selectWoo (loaded by WooCommerce) does not support jQuery objects and shows "[object Object]".
+			templateSelection: $.fn.selectWoo ? label : template,
 		} );
 	}
 
