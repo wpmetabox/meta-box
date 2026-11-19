@@ -223,7 +223,8 @@ class RW_Meta_Box {
 		do_action( "rwmb_before_{$this->id}", $this );
 
 		foreach ( $this->fields as $field ) {
-			RWMB_Field::call( 'show', $field, $saved, $this->object_id );
+			// normalize() does not know which meta box the field belongs to.
+			RWMB_Field::call( 'show', self::with_upload_nonce( $field, $this->id ), $saved, $this->object_id );
 		}
 
 		$this->render_cleanup();
@@ -235,6 +236,19 @@ class RW_Meta_Box {
 
 		// End container.
 		echo '</div>';
+	}
+
+	private static function with_upload_nonce( array $field, string $meta_box_id ): array {
+		if ( $field['upload_dir'] ?? '' ) {
+			$field['js_options']['uploadDirNonce'] = wp_create_nonce( RWMB_File_Upload_Field::upload_nonce_action( $meta_box_id, (string) $field['id'] ) );
+		}
+		if ( is_array( $field['fields'] ?? null ) ) {
+			foreach ( $field['fields'] as $index => $child ) {
+				$field['fields'][ $index ] = is_array( $child ) ? self::with_upload_nonce( $child, $meta_box_id ) : $child;
+			}
+		}
+
+		return $field;
 	}
 
 	protected function get_cleanup_fields( $fields, $prefix = '' ) {

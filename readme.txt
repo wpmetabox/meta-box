@@ -120,7 +120,7 @@ This service is provided by the OpenStreetMap Foundation: [terms of use](https:/
 
 = Unreleased =
 
-- `image_upload` and `file_upload`: support `upload_dir` for drag-and-drop uploads. The folder must be inside the WordPress uploads directory, and files are still saved as attachments
+- `image_upload` and `file_upload`: support `upload_dir` for drag-and-drop uploads. The folder must be inside the WordPress uploads directory. Files stay public attachments in the Media Library
 
 = 5.15.5 - 2026-11-12 =
 

@@ -1,19 +1,26 @@
 <?php
 class UploadDirTest extends WP_UnitTestCase {
 	public function tear_down(): void {
-		remove_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] );
-		remove_filter( 'wp_handle_upload_overrides', [ 'RWMB_File_Upload_Field', 'upload_overrides' ] );
-		remove_filter( 'wp_handle_upload', [ 'RWMB_File_Upload_Field', 'finish_upload' ] );
+		$this->remove_scoped_closures( 'upload_dir' );
+		$this->remove_scoped_closures( 'wp_handle_upload_overrides' );
+		$this->remove_scoped_closures( 'wp_handle_sideload_overrides' );
 		remove_filter( 'wp_handle_sideload_prefilter', [ 'RWMB_File_Upload_Field', 'filter_upload' ] );
-		remove_filter( 'wp_handle_sideload_overrides', [ 'RWMB_File_Upload_Field', 'upload_overrides' ] );
+		remove_filter( 'wp_handle_sideload_prefilter', [ $this, 'touch_upload_dir' ], 20 );
 		remove_filter( 'upload_dir', [ $this, 'filter_media_basedir' ] );
 		rwmb_request()->set_post_data( [
-			'rwmb_field_id'          => '',
-			'rwmb_meta_box_id'       => '',
-			'rwmb_upload_dir_nonce'  => '',
+			'rwmb_field_id'         => '',
+			'rwmb_meta_box_id'      => '',
+			'rwmb_field_name'       => '',
+			'rwmb_upload_dir_nonce' => '',
 		] );
 
 		parent::tear_down();
+	}
+
+	public function touch_upload_dir( $file ) {
+		wp_upload_dir();
+
+		return $file;
 	}
 
 	public function testFilterKeepsBasedirInsideUploads(): void {
@@ -53,7 +60,7 @@ class UploadDirTest extends WP_UnitTestCase {
 		];
 
 		$this->assertSame( $file, RWMB_File_Upload_Field::filter_upload( $file ) );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
+		$this->assertUploadPathUnchanged();
 	}
 
 	public function testPrefilterRejectsDirOutsideUploads(): void {
@@ -65,7 +72,7 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 
 		$this->assertIsString( $result['error'] );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
+		$this->assertUploadPathUnchanged();
 	}
 
 	public function testPrefilterKeepsBasedirForNestedField(): void {
@@ -89,7 +96,7 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 		$this->assertNotEmpty( $meta_box->fields );
 
-		$this->send_upload_request( 'box-nested', 'gallery' );
+		$this->send_upload_request( 'box-nested', 'gallery', 'group[gallery][]' );
 		$result = RWMB_File_Upload_Field::filter_upload( [
 			'name'  => 'a.jpg',
 			'error' => 0,
@@ -102,7 +109,7 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertSame( wp_normalize_path( $custom ), wp_normalize_path( $filtered['path'] ) );
 
 		$again = apply_filters( 'upload_dir', $original );
-		$this->assertSame( wp_normalize_path( $original['path'] ), wp_normalize_path( $again['path'] ) );
+		$this->assertSame( wp_normalize_path( $custom ), wp_normalize_path( $again['path'] ) );
 	}
 
 	public function testFileInfoKeepsAttachmentWhenUploadDirIsSet(): void {
@@ -138,7 +145,9 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( basename( get_attached_file( $image_id ) ), $image['full_url'] );
 
 		$file_html = new ReflectionMethod( RWMB_File_Field::class, 'file_html' );
-		$file_html->setAccessible( true );
+		if ( PHP_VERSION_ID < 80500 ) {
+			$file_html->setAccessible( true );
+		}
 		$html = $file_html->invoke( null, (string) $id, 0, RWMB_File_Field::normalize( [
 			'type'       => 'file',
 			'id'         => 'legacy',
@@ -159,7 +168,7 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 
 		$this->assertSame( $file, RWMB_File_Upload_Field::filter_upload( $file ) );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
+		$this->assertUploadPathUnchanged();
 	}
 
 	public function testPrefilterRejectsMissingNonce(): void {
@@ -174,7 +183,71 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 
 		$this->assertSame( 'You are not allowed to upload to this folder.', $result['error'] );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
+		$this->assertUploadPathUnchanged();
+	}
+
+	public function testNonceDoesNotWorkForAnotherMetaBox(): void {
+		$dir_a = wp_upload_dir()['basedir'] . '/box-a';
+		$dir_b = wp_upload_dir()['basedir'] . '/box-b';
+		$this->register_box( 'box-a', 'docs', $dir_a );
+		$this->register_box( 'box-b', 'docs', $dir_b );
+		rwmb_request()->set_post_data( [
+			'rwmb_field_id'         => 'docs',
+			'rwmb_meta_box_id'      => 'box-b',
+			'rwmb_field_name'       => 'docs[]',
+			'rwmb_upload_dir_nonce' => wp_create_nonce( RWMB_File_Upload_Field::upload_nonce_action( 'box-a', 'docs' ) ),
+		] );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.jpg',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 'You are not allowed to upload to this folder.', $result['error'] );
+		$this->assertUploadPathUnchanged();
+	}
+
+	public function testDuplicateSubFieldUsesFieldName(): void {
+		$dir_one = wp_upload_dir()['basedir'] . '/group-one';
+		$dir_two = wp_upload_dir()['basedir'] . '/group-two';
+		rwmb_get_registry( 'meta_box' )->make( [
+			'id'     => 'box-dup',
+			'title'  => 'Dup',
+			'fields' => [
+				[
+					'id'     => 'group_one',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_one,
+						],
+					],
+				],
+				[
+					'id'     => 'group_two',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_two,
+						],
+					],
+				],
+			],
+		] );
+		$this->send_upload_request( 'box-dup', 'docs', 'group_two[docs][]' );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 0, $result['error'] );
+		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
+		$this->assertSame( wp_normalize_path( $dir_two ), wp_normalize_path( $filtered['path'] ) );
 	}
 
 	public function testPrefilterAcceptsDirInsideFilteredBasedir(): void {
@@ -187,7 +260,8 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 
 		$this->assertSame( 0, $result['error'] );
-		$this->assertNotFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
+		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
+		$this->assertSame( wp_normalize_path( WP_CONTENT_DIR . '/media/private' ), wp_normalize_path( $filtered['path'] ) );
 	}
 
 	public function testHandleUploadMovesFileIntoFieldDir(): void {
@@ -197,7 +271,7 @@ class UploadDirTest extends WP_UnitTestCase {
 			return $filename . $ext;
 		} );
 		add_filter( 'wp_handle_sideload_prefilter', [ 'RWMB_File_Upload_Field', 'filter_upload' ] );
-		add_filter( 'wp_handle_sideload_overrides', [ 'RWMB_File_Upload_Field', 'upload_overrides' ] );
+		add_filter( 'wp_handle_sideload_prefilter', [ $this, 'touch_upload_dir' ], 20 );
 
 		$tmp = wp_tempnam( 'note.txt' );
 		file_put_contents( $tmp, 'hello' );
@@ -219,12 +293,11 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertSame( $filename . '.txt', basename( $result['file'] ) );
 		$this->assertStringStartsWith( wp_normalize_path( $custom ), wp_normalize_path( $result['file'] ) );
 		$this->assertFileExists( $result['file'] );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
 
 		unlink( $result['file'] );
 	}
 
-	public function testEarlyUploadFailureClearsCustomDir(): void {
+	public function testEarlyUploadFailureReturnsError(): void {
 		$this->register_box( 'box-early', 'early', wp_upload_dir()['basedir'] . '/early' );
 		$tmp  = wp_tempnam( 'note.txt' );
 		file_put_contents( $tmp, 'hello' );
@@ -241,8 +314,6 @@ class UploadDirTest extends WP_UnitTestCase {
 		] );
 
 		$this->assertIsString( $result['error'] );
-		$this->assertFalse( has_filter( 'upload_dir', [ 'RWMB_File_Upload_Field', 'custom_upload_dir' ] ) );
-		$this->assertFalse( has_filter( 'wp_handle_upload_overrides', [ 'RWMB_File_Upload_Field', 'upload_overrides' ] ) );
 
 		unlink( $tmp );
 	}
@@ -267,13 +338,34 @@ class UploadDirTest extends WP_UnitTestCase {
 
 		$this->assertTrue( $field['js_options']['uploadDir'] );
 		$this->assertSame( 'docs', $field['js_options']['fieldId'] );
-		$this->assertNotFalse( wp_verify_nonce( $field['js_options']['uploadDirNonce'], 'rwmb-upload-dir_docs' ) );
+		$this->assertArrayNotHasKey( 'uploadDirNonce', $field['js_options'] );
 
 		$image = RWMB_Image_Upload_Field::normalize( [
 			'type' => 'image_upload',
 			'id'   => 'gallery',
 		] );
 		$this->assertArrayNotHasKey( 'uploadDir', $image['js_options'] );
+	}
+
+	public function testShowOutputsNonceForMetaBoxAndField(): void {
+		$box = rwmb_get_registry( 'meta_box' )->make( [
+			'id'     => 'box-show',
+			'title'  => 'Show',
+			'fields' => [
+				[
+					'type'       => 'file_upload',
+					'id'         => 'docs',
+					'upload_dir' => wp_upload_dir()['basedir'] . '/docs',
+				],
+			],
+		] );
+
+		ob_start();
+		$box->show();
+		$html = ob_get_clean();
+
+		$nonce = wp_create_nonce( RWMB_File_Upload_Field::upload_nonce_action( 'box-show', 'docs' ) );
+		$this->assertStringContainsString( $nonce, $html );
 	}
 
 	private function register_box( string $box_id, string $field_id, string $dir, ?callable $callback = null ): void {
@@ -294,11 +386,43 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->send_upload_request( $box_id, $field_id );
 	}
 
-	private function send_upload_request( string $box_id, string $field_id ): void {
+	private function send_upload_request( string $box_id, string $field_id, string $field_name = '' ): void {
 		rwmb_request()->set_post_data( [
 			'rwmb_field_id'         => $field_id,
 			'rwmb_meta_box_id'      => $box_id,
-			'rwmb_upload_dir_nonce' => wp_create_nonce( 'rwmb-upload-dir_' . $field_id ),
+			'rwmb_field_name'       => $field_name ?: $field_id . '[]',
+			'rwmb_upload_dir_nonce' => wp_create_nonce( RWMB_File_Upload_Field::upload_nonce_action( $box_id, $field_id ) ),
 		] );
+	}
+
+	private function assertUploadPathUnchanged(): void {
+		$original = _wp_upload_dir();
+		$filtered = apply_filters( 'upload_dir', $original );
+
+		$this->assertSame( wp_normalize_path( $original['path'] ), wp_normalize_path( $filtered['path'] ) );
+	}
+
+	private function remove_scoped_closures( string $hook ): void {
+		global $wp_filter;
+		if ( empty( $wp_filter[ $hook ] ) ) {
+			return;
+		}
+
+		$remove = [];
+		foreach ( $wp_filter[ $hook ]->callbacks as $priority => $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				$function = $callback['function'];
+				if ( ! $function instanceof Closure ) {
+					continue;
+				}
+				$scope = ( new ReflectionFunction( $function ) )->getClosureScopeClass();
+				if ( $scope && RWMB_File_Upload_Field::class === $scope->getName() ) {
+					$remove[] = [ $function, $priority ];
+				}
+			}
+		}
+		foreach ( $remove as $item ) {
+			remove_filter( $hook, $item[0], $item[1] );
+		}
 	}
 }

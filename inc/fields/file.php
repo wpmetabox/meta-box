@@ -230,7 +230,7 @@ class RWMB_File_Field extends RWMB_Field {
 			return '';
 		}
 
-		if ( $field['upload_dir'] && ! ctype_digit( (string) $file ) ) {
+		if ( $field['upload_dir'] && ! is_numeric( $file ) ) {
 			$data = self::file_info_custom_dir( $file, $field );
 		} else {
 			$data      = [
@@ -464,8 +464,8 @@ class RWMB_File_Field extends RWMB_Field {
 	 * @return array|bool False if file not found. Array of (id, name, path, url) on success.
 	 */
 	public static function file_info( $file, $args = [], $field = [] ) {
-		// A digit string is an attachment id. Custom-folder file and image fields store a URL.
-		if ( ! empty( $field['upload_dir'] ) && ! ctype_digit( (string) $file ) ) {
+		// A numeric value is an attachment ID. Custom-folder file and image fields store a URL.
+		if ( ! empty( $field['upload_dir'] ) && ! is_numeric( $file ) ) {
 			return self::file_info_custom_dir( $file, $field );
 		}
 
