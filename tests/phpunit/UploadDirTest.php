@@ -157,17 +157,18 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( 'rwmb-file-title">' . $id, $html );
 	}
 
-	public function testPrefilterIgnoresUnknownField(): void {
-		$file = [
-			'name'  => 'a.jpg',
-			'error' => 0,
-		];
+	public function testPrefilterRejectsUnknownField(): void {
 		rwmb_request()->set_post_data( [
 			'rwmb_field_id'    => 'missing',
 			'rwmb_meta_box_id' => 'missing-box',
 		] );
 
-		$this->assertSame( $file, RWMB_File_Upload_Field::filter_upload( $file ) );
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.jpg',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
 		$this->assertUploadPathUnchanged();
 	}
 
@@ -248,6 +249,48 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertSame( 0, $result['error'] );
 		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
 		$this->assertSame( wp_normalize_path( $dir_two ), wp_normalize_path( $filtered['path'] ) );
+	}
+
+	public function testNestedNameDoesNotUseAnotherFieldWithTheSameId(): void {
+		$dir_one = wp_upload_dir()['basedir'] . '/group-one-miss';
+		$dir_two = wp_upload_dir()['basedir'] . '/group-two-miss';
+		rwmb_get_registry( 'meta_box' )->make( [
+			'id'     => 'box-dup-miss',
+			'title'  => 'Dup miss',
+			'fields' => [
+				[
+					'id'     => 'group_one',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_one,
+						],
+					],
+				],
+				[
+					'id'     => 'group_two',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_two,
+						],
+					],
+				],
+			],
+		] );
+		$this->send_upload_request( 'box-dup-miss', 'docs', 'g2[docs][]' );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertUploadPathUnchanged();
 	}
 
 	public function testPrefilterAcceptsDirInsideFilteredBasedir(): void {

@@ -51,9 +51,18 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		$field_id    = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_field_id', '' ) );
 		$meta_box_id = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_meta_box_id', '' ) );
 		$field_name  = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_field_name', '' ) );
-		$field       = $field_id && $meta_box_id ? self::find_upload_field( $meta_box_id, $field_id, $field_name ) : null;
-		$dir         = $field['upload_dir'] ?? '';
+		if ( ! $field_id || ! $meta_box_id ) {
+			return $file;
+		}
 
+		$field = self::find_upload_field( $meta_box_id, $field_id, $field_name );
+		if ( ! $field ) {
+			$file['error'] = __( 'The field for this upload could not be found.', 'meta-box' );
+
+			return $file;
+		}
+
+		$dir = $field['upload_dir'] ?? '';
 		if ( ! $dir ) {
 			return $file;
 		}
@@ -92,16 +101,20 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			return null;
 		}
 
-		$by_name = self::find_by_name( $meta_box->fields, $field_name );
+		$ids     = self::name_ids( $field_name );
+		$by_name = self::find_by_path( $meta_box->fields, $ids );
+		if ( ( $by_name['id'] ?? '' ) === $field_id ) {
+			return $by_name;
+		}
 
-		return ( $by_name['id'] ?? '' ) === $field_id ? $by_name : self::search_fields( $meta_box->fields, $field_id );
+		// A nested name that missed its parent must not use another field with the same id.
+		return count( $ids ) < 2 ? self::search_fields( $meta_box->fields, $field_id ) : null;
 	}
 
-	private static function find_by_name( array $fields, string $field_name ): ?array {
+	private static function name_ids( string $field_name ): array {
 		preg_match_all( '/([^\[\]]+)/', $field_name, $matches );
-		$ids = array_filter( $matches[1], fn( $part ) => ! is_numeric( $part ) );
 
-		return $ids ? self::find_by_path( $fields, $ids ) : null;
+		return array_filter( $matches[1], fn( $part ) => ! is_numeric( $part ) );
 	}
 
 	private static function find_by_path( array $fields, array $ids ): ?array {
