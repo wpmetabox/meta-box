@@ -5,18 +5,17 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
+	const label = option => option.text.replace( /<svg.*?>.*?<\/svg>/s, '' ).trim();
+
 	const template = option => {
 		if ( option.text.includes( '<svg' ) ) {
-			const title = option.text.replace( /<svg.*?>.*?<\/svg>/s, '' );
-			const $span = $( '<span>', { class: 'rwmb-icon-select', title } );
+			const $span = $( '<span>', { class: 'rwmb-icon-select', title: label( option ) } );
 			$span.html( option.text );
 			return $span;
 		}
 
 		return option.id ? $( `<span class="rwmb-icon-select" title=${ option.text }><i class="${ option.id }"></i>${ option.text }</span>` ) : option.text;
 	};
-
-	const label = option => option.text.replace( /<svg.*?>.*?<\/svg>/s, '' ).trim();
 
 	function initIconField( event, options ) {
 		$( this ).select2( {
