@@ -22,4 +22,14 @@ class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 		$field = parent::normalize( $field );
 		return RWMB_File_Upload_Field::normalize( $field );
 	}
+
+	/**
+	 * Get field HTML.
+	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 */
+	public static function html( $meta, $field ) {
+		return parent::html( $meta, RWMB_File_Upload_Field::prepare_upload_dir( $field ) );
+	}
 }

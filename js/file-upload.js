@@ -66,11 +66,10 @@
 					}
 				};
 
-			// Ids only. The folder is read on the server; fieldName picks the group when two sub-fields share an id.
-			var metaBoxId = this.controller.get( 'uploadDir' ) && $this.closest( '.rwmb-meta-box' ).attr( 'data-meta-box-id' );
-			if ( metaBoxId ) {
+			// Ids only. The folder is read on the server. metaBoxId comes from the field so the media modal can upload too.
+			if ( this.controller.get( 'uploadDir' ) ) {
 				options.params.rwmb_field_id = this.controller.get( 'fieldId' );
-				options.params.rwmb_meta_box_id = metaBoxId;
+				options.params.rwmb_meta_box_id = this.controller.get( 'metaBoxId' );
 				options.params.rwmb_field_name = this.controller.get( 'fieldName' );
 				options.params.rwmb_upload_dir_nonce = this.controller.get( 'uploadDirNonce' );
 			}

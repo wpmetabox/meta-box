@@ -29,16 +29,42 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			'maxFileSize' => $field['max_file_size'],
 		] );
 
-		if ( $field['upload_dir'] ) {
-			$field['js_options']['uploadDir'] = true;
-			$field['js_options']['fieldId']   = $field['id'];
+		return $field;
+	}
+
+	/**
+	 * Get field HTML.
+	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 */
+	public static function html( $meta, $field ) {
+		return parent::html( $meta, self::prepare_upload_dir( $field ) );
+	}
+
+	/**
+	 * JS options are set here, after normalize filters may have changed upload_dir.
+	 * The nonce includes the rendered field name so two fields that share an id stay distinct.
+	 */
+	public static function prepare_upload_dir( array $field ): array {
+		if ( ! ( $field['upload_dir'] ?? '' ) ) {
+			return $field;
 		}
+
+		$field_name  = (string) ( $field['field_name'] ?? $field['id'] );
+		$field_name .= str_ends_with( $field_name, '[]' ) ? '' : '[]';
+		$meta_box_id = (string) ( $field['meta_box_id'] ?? '' );
+
+		$field['js_options']['uploadDir']      = true;
+		$field['js_options']['fieldId']        = $field['id'];
+		$field['js_options']['metaBoxId']      = $meta_box_id;
+		$field['js_options']['uploadDirNonce'] = wp_create_nonce( self::upload_nonce_action( $meta_box_id, (string) $field['id'], $field_name ) );
 
 		return $field;
 	}
 
-	public static function upload_nonce_action( string $meta_box_id, string $field_id ): string {
-		return "rwmb-upload-dir_{$meta_box_id}_{$field_id}";
+	public static function upload_nonce_action( string $meta_box_id, string $field_id, string $field_name ): string {
+		return "rwmb-upload-dir|{$meta_box_id}|{$field_id}|{$field_name}";
 	}
 
 	/**
@@ -74,7 +100,7 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		}
 
 		$nonce = (string) rwmb_request()->post( 'rwmb_upload_dir_nonce', '' );
-		if ( ! wp_verify_nonce( $nonce, self::upload_nonce_action( $meta_box_id, $field_id ) ) ) {
+		if ( ! wp_verify_nonce( $nonce, self::upload_nonce_action( $meta_box_id, $field_id, $field_name ) ) ) {
 			$file['error'] = __( 'You are not allowed to upload to this folder.', 'meta-box' );
 
 			return $file;
@@ -112,15 +138,24 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	}
 
 	private static function name_ids( string $field_name ): array {
+		// Media modal prefixes the input with attachments[post_id].
+		$field_name = preg_replace( '/^attachments\[\d+\]/', '', $field_name ) ?? $field_name;
 		preg_match_all( '/([^\[\]]+)/', $field_name, $matches );
 
-		return array_filter( $matches[1], fn( $part ) => ! is_numeric( $part ) );
+		return array_filter( $matches[1] ?? [], fn( $part ) => $part && ! is_numeric( $part ) );
+	}
+
+	private static function matches_segment( array $field, string $segment ): bool {
+		$name = (string) ( $field['field_name'] ?? '' );
+		$name = strstr( $name, '[', true ) ?: $name;
+
+		return ( $field['id'] ?? '' ) === $segment || $name === $segment;
 	}
 
 	private static function find_by_path( array $fields, array $ids ): ?array {
 		$id = array_shift( $ids );
 		foreach ( $fields as $field ) {
-			if ( ! is_array( $field ) || ( $field['id'] ?? '' ) !== $id ) {
+			if ( ! is_array( $field ) || ! self::matches_segment( $field, $id ) ) {
 				continue;
 			}
 
