@@ -100,11 +100,11 @@ class UploadDirTest extends WP_UnitTestCase {
 			'error' => 0,
 		] );
 
-		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertSame( 'The upload folder for this field could not be determined.', $result['error'] );
 		$this->assertUploadPathUnchanged();
 	}
 
-	public function testChangedFolderIsRejected(): void {
+	public function testSignedDirWinsWhenRegistryDiffers(): void {
 		$current = wp_upload_dir()['basedir'] . '/post-0';
 		$signed  = wp_upload_dir()['basedir'] . '/post-123';
 		$this->register_box( 'box-post', 'docs', $current );
@@ -118,8 +118,23 @@ class UploadDirTest extends WP_UnitTestCase {
 			'error' => 0,
 		] );
 
-		$this->assertSame( 'The upload folder for this field has changed.', $result['error'] );
-		$this->assertUploadPathUnchanged();
+		$this->assertSame( 0, $result['error'] );
+		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
+		$this->assertSame( wp_normalize_path( $signed ), wp_normalize_path( $filtered['path'] ) );
+	}
+
+	public function testSignedDirWorksWithoutRegistry(): void {
+		$dir = wp_upload_dir()['basedir'] . '/post-123';
+		$this->send_upload_request( 'missing-box', 'docs', 'docs[]', $dir );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 0, $result['error'] );
+		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
+		$this->assertSame( wp_normalize_path( $dir ), wp_normalize_path( $filtered['path'] ) );
 	}
 
 	public function testDragDropStaysOffOutsideUploads(): void {
@@ -256,7 +271,7 @@ class UploadDirTest extends WP_UnitTestCase {
 			'error' => 0,
 		] );
 
-		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertSame( 'The upload folder for this field could not be determined.', $result['error'] );
 		$this->assertUploadPathUnchanged();
 	}
 
@@ -413,14 +428,17 @@ class UploadDirTest extends WP_UnitTestCase {
 				],
 			],
 		] );
-		$this->send_upload_request( 'box-dup-miss', 'docs', 'g2[docs][]' );
+		$this->send_upload_request( 'box-dup-miss', 'docs', 'g2[docs][]', $dir_two );
+		rwmb_request()->set_post_data( [
+			'rwmb_upload_dir_nonce' => wp_create_nonce( RWMB_File_Upload_Field::upload_nonce_action( 'box-dup-miss', 'docs', 'g2[docs][]', $dir_one ) ),
+		] );
 
 		$result = RWMB_File_Upload_Field::filter_upload( [
 			'name'  => 'a.txt',
 			'error' => 0,
 		] );
 
-		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertSame( 'You are not allowed to upload to this folder.', $result['error'] );
 		$this->assertUploadPathUnchanged();
 	}
 
@@ -668,7 +686,7 @@ class UploadDirTest extends WP_UnitTestCase {
 			'error' => 0,
 		] );
 
-		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertSame( 'You are not allowed to upload to this folder.', $result['error'] );
 		$this->assertUploadPathUnchanged();
 	}
 

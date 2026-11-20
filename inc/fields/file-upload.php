@@ -83,8 +83,8 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	}
 
 	/**
-	 * Point this request at the field folder stored in the registry.
-	 * The filters stay until the request ends, so a later wp_upload_dir() still uses that folder.
+	 * Use the folder signed at render time. The registry may compute a different folder on this request.
+	 * The filter stays until the request ends, so a later wp_upload_dir() still uses that folder.
 	 *
 	 * @param array $file A single $_FILES item.
 	 */
@@ -97,15 +97,7 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			return $file;
 		}
 
-		$field = $field_name ? self::find_upload_field( $meta_box_id, $field_id, $field_name ) : null;
-		if ( ! $field ) {
-			$file['error'] = __( 'The field for this upload could not be found.', 'meta-box' );
-
-			return $file;
-		}
-
-		$dir = self::nonce_dir( (string) ( $field['upload_dir'] ?? '' ) );
-		// The folder is read again on this request. An empty value must not use the monthly uploads folder.
+		$dir = self::nonce_dir( (string) rwmb_request()->post( 'rwmb_upload_dir', '' ) );
 		if ( ! $dir ) {
 			$file['error'] = __( 'The upload folder for this field could not be determined.', 'meta-box' );
 
@@ -114,14 +106,6 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 
 		if ( ! RWMB_File_Field::is_path_inside( $dir, self::uploads_basedir() ) ) {
 			$file['error'] = __( 'The upload folder must be inside the WordPress uploads directory.', 'meta-box' );
-
-			return $file;
-		}
-
-		$signed_dir = self::nonce_dir( (string) rwmb_request()->post( 'rwmb_upload_dir', '' ) );
-		// The nonce was signed for the folder at render time. A different folder now must not receive the file.
-		if ( $signed_dir !== $dir ) {
-			$file['error'] = __( 'The upload folder for this field has changed.', 'meta-box' );
 
 			return $file;
 		}
@@ -135,7 +119,9 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 
 		add_filter( 'upload_dir', fn( $uploads ) => RWMB_File_Field::filter_custom_upload_dir( $uploads, $dir ) );
 
-		$callback = $field['unique_filename_callback'] ?? null;
+		// The callback still comes from the field. A missing field does not change the signed folder.
+		$field    = $field_name ? self::find_upload_field( $meta_box_id, $field_id, $field_name ) : null;
+		$callback = ( $field ?? [] )['unique_filename_callback'] ?? null;
 		if ( is_callable( $callback ) ) {
 			// wp_handle_sideload reads a different overrides hook than wp_handle_upload.
 			$overrides = fn( $overrides ) => array_merge( $overrides ?: [], [
