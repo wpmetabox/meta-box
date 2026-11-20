@@ -47,24 +47,32 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	 * Cloned inputs keep one nonce: the id is the original id, and clone indexes are left out of the field name.
 	 */
 	public static function prepare_upload_dir( array $field ): array {
-		if ( ! ( $field['upload_dir'] ?? '' ) ) {
+		$dir = (string) ( $field['upload_dir'] ?? '' );
+		// Drag-drop stores a public attachment, so a folder outside uploads keeps the normal media uploader.
+		if ( ! $dir || ! RWMB_File_Field::is_path_inside( $dir, self::uploads_basedir() ) ) {
 			return $field;
 		}
 
 		$field_id    = (string) ( $field['_original_id'] ?? $field['id'] );
 		$field_name  = (string) ( $field['field_name'] ?? $field_id );
 		$meta_box_id = (string) ( $field['meta_box_id'] ?? '' );
+		$dir         = self::nonce_dir( $dir );
 
 		$field['js_options']['uploadDir']      = true;
 		$field['js_options']['fieldId']        = $field_id;
 		$field['js_options']['metaBoxId']      = $meta_box_id;
-		$field['js_options']['uploadDirNonce'] = wp_create_nonce( self::upload_nonce_action( $meta_box_id, $field_id, $field_name ) );
+		$field['js_options']['uploadDirPath']  = $dir;
+		$field['js_options']['uploadDirNonce'] = wp_create_nonce( self::upload_nonce_action( $meta_box_id, $field_id, $field_name, $dir ) );
 
 		return $field;
 	}
 
-	public static function upload_nonce_action( string $meta_box_id, string $field_id, string $field_name ): string {
-		return 'rwmb-upload-dir|' . $meta_box_id . '|' . $field_id . '|' . self::nonce_field_name( $field_name );
+	public static function upload_nonce_action( string $meta_box_id, string $field_id, string $field_name, string $dir = '' ): string {
+		return 'rwmb-upload-dir|' . $meta_box_id . '|' . $field_id . '|' . self::nonce_field_name( $field_name ) . '|' . self::nonce_dir( $dir );
+	}
+
+	private static function nonce_dir( string $dir ): string {
+		return wp_normalize_path( untrailingslashit( $dir ) );
 	}
 
 	private static function nonce_field_name( string $field_name ): string {
@@ -96,7 +104,7 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			return $file;
 		}
 
-		$dir = $field['upload_dir'] ?? '';
+		$dir = self::nonce_dir( (string) ( $field['upload_dir'] ?? '' ) );
 		// The folder is read again on this request. An empty value must not use the monthly uploads folder.
 		if ( ! $dir ) {
 			$file['error'] = __( 'The upload folder for this field could not be determined.', 'meta-box' );
@@ -110,8 +118,16 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			return $file;
 		}
 
+		$signed_dir = self::nonce_dir( (string) rwmb_request()->post( 'rwmb_upload_dir', '' ) );
+		// The nonce was signed for the folder at render time. A different folder now must not receive the file.
+		if ( $signed_dir !== $dir ) {
+			$file['error'] = __( 'The upload folder for this field has changed.', 'meta-box' );
+
+			return $file;
+		}
+
 		$nonce = (string) rwmb_request()->post( 'rwmb_upload_dir_nonce', '' );
-		if ( ! wp_verify_nonce( $nonce, self::upload_nonce_action( $meta_box_id, $field_id, $field_name ) ) ) {
+		if ( ! wp_verify_nonce( $nonce, self::upload_nonce_action( $meta_box_id, $field_id, $field_name, $dir ) ) ) {
 			$file['error'] = __( 'You are not allowed to upload to this folder.', 'meta-box' );
 
 			return $file;
