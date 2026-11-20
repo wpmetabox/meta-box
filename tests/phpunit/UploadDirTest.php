@@ -65,6 +65,44 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertUploadPathUnchanged();
 	}
 
+	public function testEmptyUploadDirDoesNotUseMonthlyFolder(): void {
+		rwmb_get_registry( 'meta_box' )->make( [
+			'id'     => 'box-no-dir',
+			'title'  => 'No dir',
+			'fields' => [
+				[
+					'type' => 'file_upload',
+					'id'   => 'docs',
+				],
+			],
+		] );
+		$this->send_upload_request( 'box-no-dir', 'docs' );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 'The upload folder for this field could not be determined.', $result['error'] );
+		$this->assertUploadPathUnchanged();
+	}
+
+	public function testMissingMetaBoxIdDoesNotUseMonthlyFolder(): void {
+		rwmb_request()->set_post_data( [
+			'rwmb_field_id'    => 'docs',
+			'rwmb_meta_box_id' => '',
+			'rwmb_field_name'  => 'docs[]',
+		] );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 'The field for this upload could not be found.', $result['error'] );
+		$this->assertUploadPathUnchanged();
+	}
+
 	public function testPrefilterRejectsDirOutsideUploads(): void {
 		$this->register_box( 'box-outside', 'outside', ABSPATH . 'uploads' );
 
@@ -252,6 +290,49 @@ class UploadDirTest extends WP_UnitTestCase {
 		$this->assertSame( 0, $result['error'] );
 		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
 		$this->assertSame( wp_normalize_path( $dir_two ), wp_normalize_path( $filtered['path'] ) );
+	}
+
+	public function testNumericGroupIdDoesNotUseAnotherField(): void {
+		$dir_year  = wp_upload_dir()['basedir'] . '/year-2026';
+		$dir_other = wp_upload_dir()['basedir'] . '/year-other';
+		rwmb_get_registry( 'meta_box' )->make( [
+			'id'     => 'box-year',
+			'title'  => 'Year',
+			'fields' => [
+				[
+					'id'     => 'other',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_other,
+						],
+					],
+				],
+				[
+					'id'     => '2026',
+					'type'   => 'group',
+					'fields' => [
+						[
+							'type'       => 'file_upload',
+							'id'         => 'docs',
+							'upload_dir' => $dir_year,
+						],
+					],
+				],
+			],
+		] );
+		$this->send_upload_request( 'box-year', 'docs', '2026[1][docs][]' );
+
+		$result = RWMB_File_Upload_Field::filter_upload( [
+			'name'  => 'a.txt',
+			'error' => 0,
+		] );
+
+		$this->assertSame( 0, $result['error'] );
+		$filtered = apply_filters( 'upload_dir', _wp_upload_dir() );
+		$this->assertSame( wp_normalize_path( $dir_year ), wp_normalize_path( $filtered['path'] ) );
 	}
 
 	public function testNestedNameDoesNotUseAnotherFieldWithTheSameId(): void {

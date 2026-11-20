@@ -84,7 +84,8 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		$field_id    = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_field_id', '' ) );
 		$meta_box_id = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_meta_box_id', '' ) );
 		$field_name  = sanitize_text_field( (string) rwmb_request()->post( 'rwmb_field_name', '' ) );
-		if ( ! $field_id || ! $meta_box_id ) {
+		// A normal upload sends neither id. One id means the client asked for a custom folder.
+		if ( ! $field_id && ! $meta_box_id ) {
 			return $file;
 		}
 
@@ -96,7 +97,10 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		}
 
 		$dir = $field['upload_dir'] ?? '';
+		// The folder is read again on this request. An empty value must not use the monthly uploads folder.
 		if ( ! $dir ) {
+			$file['error'] = __( 'The upload folder for this field could not be determined.', 'meta-box' );
+
 			return $file;
 		}
 
@@ -149,7 +153,8 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 		$field_name = preg_replace( '/^attachments\[\d+\]/', '', $field_name ) ?? $field_name;
 		preg_match_all( '/([^\[\]]+)/', $field_name, $matches );
 
-		return array_filter( $matches[1] ?? [], fn( $part ) => $part && ! is_numeric( $part ) );
+		// Keep numeric ids such as group 2026. '0' is a real segment, so skip only empty parts.
+		return array_values( array_filter( $matches[1] ?? [], fn( $part ) => $part !== '' ) );
 	}
 
 	private static function matches_segment( array $field, string $segment ): bool {
@@ -170,14 +175,21 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 				continue;
 			}
 
-			if ( $ids ) {
-				return is_array( $field['fields'] ?? null ) ? self::find_by_path( $field['fields'], $ids ) : null;
+			if ( $ids && is_array( $field['fields'] ?? null ) ) {
+				$found = self::find_by_path( $field['fields'], $ids );
+				if ( $found ) {
+					return $found;
+				}
 			}
 
-			return self::is_upload_field( $field ) ? $field : null;
+			// docs[1][] leaves the clone index after the field.
+			$pending = array_filter( $ids, fn( $part ) => ! is_numeric( $part ) );
+
+			return self::is_upload_field( $field ) && ! $pending ? $field : null;
 		}
 
-		return null;
+		// A number that matches no field is a clone index. A matching number is a field id, such as group 2026.
+		return is_numeric( $id ) ? self::find_by_path( $fields, $ids ) : null;
 	}
 
 	private static function search_fields( array $fields, string $field_id ): ?array {
