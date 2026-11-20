@@ -226,14 +226,8 @@ class RWMB_Sanitizer {
 			return $this->sanitize_object( $value );
 		}
 
-		// An attachment ID must stay numeric. esc_url_raw( '123' ) becomes http://123.
+		// Security: sanitize URLs and reject path traversal sequences.
 		return array_filter( array_map( function ( $url ) {
-			if ( is_numeric( $url ) ) {
-				return absint( $url );
-			}
-
-			$url = (string) $url;
-
 			return str_contains( $url, '..' ) ? '' : esc_url_raw( $url );
 		}, $value ) );
 	}

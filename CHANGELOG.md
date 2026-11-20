@@ -1,6 +1,6 @@
 ### Unreleased
 
-- `image_upload` and `file_upload`: support `upload_dir` for drag-and-drop uploads. The folder must be inside the WordPress uploads directory. Files stay public attachments in the Media Library
+- `image_upload` and `file_upload`: support `upload_dir` for drag-and-drop uploads. A folder outside the uploads directory is ignored and the file goes to the default folder. Files stay public attachments in the Media Library
 
 ### 5.15.5 - 2026-11-12
 

@@ -52,9 +52,7 @@ class RW_Meta_Box {
 
 		$this->meta_box['fields'] = static::normalize_fields( $meta_box['fields'], $this->get_storage() );
 
-		$this->meta_box           = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
-		$fields                   = $this->fields;
-		$this->meta_box['fields'] = is_array( $fields ) ? self::stamp_meta_box_id( $fields, (string) $this->id ) : $fields;
+		$this->meta_box = apply_filters( 'rwmb_meta_box_settings', $this->meta_box );
 
 		if ( $this->is_shown() ) {
 			$this->global_hooks();
@@ -208,12 +206,11 @@ class RW_Meta_Box {
 
 		// Container.
 		printf(
-			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s" data-meta-box-id="%s">',
+			'<div class="%s" data-autosave="%s" data-object-type="%s" data-object-id="%s">',
 			esc_attr( trim( "rwmb-meta-box {$this->class}" ) ),
 			esc_attr( $this->autosave ? 'true' : 'false' ),
 			esc_attr( $this->object_type ),
-			esc_attr( $this->object_id ),
-			esc_attr( $this->id )
+			esc_attr( $this->object_id )
 		);
 
 		wp_nonce_field( "rwmb-save-{$this->id}", "nonce_{$this->id}" );
@@ -237,21 +234,6 @@ class RW_Meta_Box {
 
 		// End container.
 		echo '</div>';
-	}
-
-	private static function stamp_meta_box_id( array $fields, string $meta_box_id ): array {
-		foreach ( $fields as $index => $field ) {
-			if ( ! is_array( $field ) ) {
-				continue;
-			}
-			$field['meta_box_id'] = $meta_box_id;
-			if ( is_array( $field['fields'] ?? null ) ) {
-				$field['fields'] = self::stamp_meta_box_id( $field['fields'], $meta_box_id );
-			}
-			$fields[ $index ] = $field;
-		}
-
-		return $fields;
 	}
 
 	protected function get_cleanup_fields( $fields, $prefix = '' ) {

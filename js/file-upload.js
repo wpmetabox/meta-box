@@ -66,13 +66,10 @@
 					}
 				};
 
-			// The path only proves which folder was signed. The server still reads the folder from the field.
-			if ( this.controller.get( 'uploadDir' ) ) {
-				options.params.rwmb_field_id = this.controller.get( 'fieldId' );
-				options.params.rwmb_meta_box_id = this.controller.get( 'metaBoxId' );
-				options.params.rwmb_field_name = this.controller.get( 'fieldName' );
-				options.params.rwmb_upload_dir = this.controller.get( 'uploadDirPath' );
-				options.params.rwmb_upload_dir_nonce = this.controller.get( 'uploadDirNonce' );
+			var subdir = this.controller.get( 'uploadSubdir' );
+			if ( subdir ) {
+				options.params.rwmb_upload_subdir = subdir;
+				options.params.rwmb_upload_nonce = this.controller.get( 'uploadNonce' );
 			}
 
 			// Initialize the plupload instance.

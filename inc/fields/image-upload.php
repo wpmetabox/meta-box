@@ -30,6 +30,6 @@ class RWMB_Image_Upload_Field extends RWMB_Image_Advanced_Field {
 	 * @param array $field Field parameters.
 	 */
 	public static function html( $meta, $field ) {
-		return parent::html( $meta, RWMB_File_Upload_Field::prepare_upload_dir( $field ) );
+		return parent::html( $meta, RWMB_File_Upload_Field::sign_upload_dir( $field ) );
 	}
 }
