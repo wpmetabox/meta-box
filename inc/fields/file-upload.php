@@ -44,27 +44,34 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 
 	/**
 	 * JS options are set here, after normalize filters may have changed upload_dir.
-	 * The nonce includes the rendered field name so two fields that share an id stay distinct.
+	 * Cloned inputs keep one nonce: the id is the original id, and clone indexes are left out of the field name.
 	 */
 	public static function prepare_upload_dir( array $field ): array {
 		if ( ! ( $field['upload_dir'] ?? '' ) ) {
 			return $field;
 		}
 
-		$field_name  = (string) ( $field['field_name'] ?? $field['id'] );
-		$field_name .= str_ends_with( $field_name, '[]' ) ? '' : '[]';
+		$field_id    = (string) ( $field['_original_id'] ?? $field['id'] );
+		$field_name  = (string) ( $field['field_name'] ?? $field_id );
 		$meta_box_id = (string) ( $field['meta_box_id'] ?? '' );
 
 		$field['js_options']['uploadDir']      = true;
-		$field['js_options']['fieldId']        = $field['id'];
+		$field['js_options']['fieldId']        = $field_id;
 		$field['js_options']['metaBoxId']      = $meta_box_id;
-		$field['js_options']['uploadDirNonce'] = wp_create_nonce( self::upload_nonce_action( $meta_box_id, (string) $field['id'], $field_name ) );
+		$field['js_options']['uploadDirNonce'] = wp_create_nonce( self::upload_nonce_action( $meta_box_id, $field_id, $field_name ) );
 
 		return $field;
 	}
 
 	public static function upload_nonce_action( string $meta_box_id, string $field_id, string $field_name ): string {
-		return "rwmb-upload-dir|{$meta_box_id}|{$field_id}|{$field_name}";
+		return 'rwmb-upload-dir|' . $meta_box_id . '|' . $field_id . '|' . self::nonce_field_name( $field_name );
+	}
+
+	private static function nonce_field_name( string $field_name ): string {
+		// clone.js rewrites indexes after render, so docs[0][] and docs[1][] share one nonce.
+		$field_name = preg_replace( '/\[\d+\]/', '', $field_name ) ?? $field_name;
+
+		return str_ends_with( $field_name, '[]' ) ? $field_name : $field_name . '[]';
 	}
 
 	/**
@@ -81,7 +88,7 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 			return $file;
 		}
 
-		$field = self::find_upload_field( $meta_box_id, $field_id, $field_name );
+		$field = $field_name ? self::find_upload_field( $meta_box_id, $field_id, $field_name ) : null;
 		if ( ! $field ) {
 			$file['error'] = __( 'The field for this upload could not be found.', 'meta-box' );
 
@@ -153,7 +160,11 @@ class RWMB_File_Upload_Field extends RWMB_Media_Field {
 	}
 
 	private static function find_by_path( array $fields, array $ids ): ?array {
-		$id = array_shift( $ids );
+		if ( ! $ids ) {
+			return null;
+		}
+
+		$id = (string) array_shift( $ids );
 		foreach ( $fields as $field ) {
 			if ( ! is_array( $field ) || ! self::matches_segment( $field, $id ) ) {
 				continue;
