@@ -5,10 +5,11 @@
 ( function ( $, rwmb ) {
 	'use strict';
 
+	const label = option => option.text.replace( /<svg.*?>.*?<\/svg>/s, '' ).trim();
+
 	const template = option => {
 		if ( option.text.includes( '<svg' ) ) {
-			const title = option.text.replace( /<svg.*?>.*?<\/svg>/s, '' );
-			const $span = $( '<span>', { class: 'rwmb-icon-select', title } );
+			const $span = $( '<span>', { class: 'rwmb-icon-select', title: label( option ) } );
 			$span.html( option.text );
 			return $span;
 		}
@@ -20,7 +21,8 @@
 		$( this ).select2( {
 			...options,
 			templateResult: template,
-			templateSelection: template,
+			// selectWoo (loaded by WooCommerce) does not support jQuery objects and shows "[object Object]".
+			templateSelection: $.fn.selectWoo ? label : template,
 		} );
 	}
 
