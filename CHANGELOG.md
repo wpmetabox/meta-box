@@ -1,3 +1,7 @@
+### Unreleased
+
+- `file` and `image`: keep a numeric attachment ID when `upload_dir` is set
+
 ### 5.15.5 - 2026-11-12
 
 - Fix form being saved when a required checkbox or radio list is empty (#1725)
