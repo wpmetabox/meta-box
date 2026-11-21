@@ -95,7 +95,8 @@ class RWMB_Image_Field extends RWMB_File_Field {
 	 * @return array|bool False if file not found. Array of image info on success.
 	 */
 	public static function file_info( $file, $args = [], $field = [] ) {
-		if ( ! empty( $field['upload_dir'] ) ) {
+		// A numeric value is an attachment ID. Custom-folder image fields store a URL.
+		if ( ! empty( $field['upload_dir'] ) && ! is_numeric( $file ) ) {
 			return self::file_info_custom_dir( $file, $field );
 		}
 

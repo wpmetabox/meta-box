@@ -1,3 +1,7 @@
+### Unreleased
+
+- `image_upload` and `file_upload`: support `upload_dir` for drag-and-drop uploads. A folder outside the uploads directory is ignored and the file goes to the default folder. Files stay public attachments in the Media Library
+
 ### 5.15.5 - 2026-11-12
 
 - Fix form being saved when a required checkbox or radio list is empty (#1725)

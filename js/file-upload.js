@@ -66,6 +66,12 @@
 					}
 				};
 
+			var subdir = this.controller.get( 'uploadSubdir' );
+			if ( subdir ) {
+				options.params.rwmb_upload_subdir = subdir;
+				options.params.rwmb_upload_nonce = this.controller.get( 'uploadNonce' );
+			}
+
 			// Initialize the plupload instance.
 			this.uploader = new wp.Uploader( options );
 
