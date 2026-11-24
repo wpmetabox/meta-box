@@ -34,6 +34,11 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'editor_settings' => $editor_settings,
 		] );
 
+		// Preload server-registered block schemas.
+		if ( ! function_exists( 'get_block_editor_server_block_settings' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/post.php';
+		}
+
 		// Load block categories.
 		wp_add_inline_script(
 			'wp-blocks',
