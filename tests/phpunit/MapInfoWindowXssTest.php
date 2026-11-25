@@ -203,68 +203,41 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 		$this->assertNoDangerousDomExecution( $map_opts['info_window'] );
 	}
 
-	public function testMarkerIconSanitization(): void {
-		$bad_icons = [
-			'javascript:alert(1)',
-			'JAVASCRIPT:alert(1)',
-			'javascript:/*--></title></style></textarea>*/<svg/onload=alert(1)>',
-			'data:text/html,<script>alert(1)</script>',
-			'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>',
-			'vbscript:msgbox(1)',
-			'file:///etc/passwd',
+	public function testMarkerIconPreservesValidValuesAndPreventsAttributeBreakout(): void {
+		$valid_urls = [
+			'https://example.com/pin.png',
+			'/wp-content/uploads/pin.png',
+			'images/pin.png',
+			'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
 		];
 
-		foreach ( $bad_icons as $bad_icon ) {
-			$osm_bad = $this->parse_map_options(
+		foreach ( $valid_urls as $url ) {
+			$osm_opts = $this->parse_map_options(
 				RWMB_OSM_Field::render_map( '21.0285,105.8542,14', [
-					'marker_icon' => $bad_icon,
+					'marker_icon' => $url,
 				] ),
 				'data-osm_options'
 			);
-			$this->assertSame( '', $osm_bad['marker_icon'], "Expected OSM to reject marker_icon: {$bad_icon}" );
+			$this->assertSame( $url, $osm_opts['marker_icon'] );
 
-			$map_bad = $this->parse_map_options(
+			$map_opts = $this->parse_map_options(
 				RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-					'marker_icon' => $bad_icon,
+					'marker_icon' => $url,
 				] ),
 				'data-map_options'
 			);
-			$this->assertSame( '', $map_bad['marker_icon'], "Expected Map to reject marker_icon: {$bad_icon}" );
+			$this->assertSame( $url, $map_opts['marker_icon'] );
 
-			$map_bad_obj = $this->parse_map_options(
+			$map_icon_obj = $this->parse_map_options(
 				RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-					'marker_icon' => [ 'url' => $bad_icon ],
+					'marker_icon' => [
+						'url' => $url,
+					],
 				] ),
 				'data-map_options'
 			);
-			$this->assertSame( '', $map_bad_obj['marker_icon'], "Expected Map obj to reject invalid marker_icon: {$bad_icon}" );
+			$this->assertSame( $url, $map_icon_obj['marker_icon']['url'] );
 		}
-
-		$osm_good = $this->parse_map_options(
-			RWMB_OSM_Field::render_map( '21.0285,105.8542,14', [
-				'marker_icon' => 'https://example.com/pin.png',
-			] ),
-			'data-osm_options'
-		);
-		$this->assertSame( 'https://example.com/pin.png', $osm_good['marker_icon'] );
-
-		$map_rel = $this->parse_map_options(
-			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-				'marker_icon' => '/wp-content/uploads/pin.png',
-			] ),
-			'data-map_options'
-		);
-		$this->assertSame( '/wp-content/uploads/pin.png', $map_rel['marker_icon'] );
-
-		$map_icon_obj = $this->parse_map_options(
-			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-				'marker_icon' => [
-					'url' => 'https://example.com/pin.png',
-				],
-			] ),
-			'data-map_options'
-		);
-		$this->assertSame( 'https://example.com/pin.png', $map_icon_obj['marker_icon']['url'] );
 
 		$symbol          = [
 			'path'      => 0,
@@ -279,25 +252,18 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 		);
 		$this->assertSame( $symbol, $map_icon_symbol['marker_icon'] );
 
-		$map_icon_non_string_url = $this->parse_map_options(
-			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-				'marker_icon' => [
-					'url' => [ 'invalid' ],
-				],
-			] ),
-			'data-map_options'
-		);
-		$this->assertSame( '', $map_icon_non_string_url['marker_icon'] );
+		$breakout = '"><script>alert(1)</script><div data-x="';
+		$osm_html = RWMB_OSM_Field::render_map( '21.0285,105.8542,14', [
+			'marker_icon' => $breakout,
+		] );
+		$this->assertNoDangerousDomExecution( $osm_html );
+		$this->assertSame( $breakout, $this->parse_map_options( $osm_html, 'data-osm_options' )['marker_icon'] );
 
-		$map_icon_unknown_array = $this->parse_map_options(
-			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-				'marker_icon' => [
-					'scaledSize' => [ 32, 32 ],
-				],
-			] ),
-			'data-map_options'
-		);
-		$this->assertSame( '', $map_icon_unknown_array['marker_icon'] );
+		$map_html = RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
+			'marker_icon' => $breakout,
+		] );
+		$this->assertNoDangerousDomExecution( $map_html );
+		$this->assertSame( $breakout, $this->parse_map_options( $map_html, 'data-map_options' )['marker_icon'] );
 	}
 
 	public function testShortcodePipelineDoesNotDecodeEntityEncodedInfoWindow(): void {

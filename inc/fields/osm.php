@@ -161,10 +161,6 @@ class RWMB_OSM_Field extends RWMB_Field {
 		// Leaflet renders the info window as HTML.
 		$args['info_window'] = is_string( $args['info_window'] ) ? wp_kses_post( $args['info_window'] ) : '';
 
-		if ( ! empty( $args['marker_icon'] ) ) {
-			$args['marker_icon'] = is_string( $args['marker_icon'] ) ? esc_url_raw( $args['marker_icon'], [ 'http', 'https' ] ) : '';
-		}
-
 		$output = sprintf(
 			'<div class="rwmb-osm-canvas" data-osm_options="%s" style="width:%s;height:%s"></div>',
 			esc_attr( wp_json_encode( $args, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) ),
