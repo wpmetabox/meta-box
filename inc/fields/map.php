@@ -197,9 +197,20 @@ class RWMB_Map_Field extends RWMB_Field {
 		// Google Maps renders the info window as HTML.
 		$args['info_window'] = is_string( $args['info_window'] ) ? wp_kses_post( $args['info_window'] ) : '';
 
+		if ( ! empty( $args['marker_icon'] ) ) {
+			if ( is_string( $args['marker_icon'] ) ) {
+				$args['marker_icon'] = esc_url_raw( $args['marker_icon'], [ 'http', 'https' ] );
+			} elseif ( is_array( $args['marker_icon'] ) && is_string( $args['marker_icon']['url'] ?? null ) ) {
+				$url                 = esc_url_raw( $args['marker_icon']['url'], [ 'http', 'https' ] );
+				$args['marker_icon'] = $url ? array_merge( $args['marker_icon'], [ 'url' => $url ] ) : '';
+			} else {
+				$args['marker_icon'] = '';
+			}
+		}
+
 		$output = sprintf(
 			'<div class="rwmb-map-canvas" data-map_options="%s" style="width:%s;height:%s"></div>',
-			esc_attr( wp_json_encode( $args ) ),
+			esc_attr( wp_json_encode( $args, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) ),
 			esc_attr( $args['width'] ),
 			esc_attr( $args['height'] )
 		);
