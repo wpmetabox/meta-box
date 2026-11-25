@@ -200,10 +200,10 @@ class RWMB_Map_Field extends RWMB_Field {
 		if ( ! empty( $args['marker_icon'] ) ) {
 			if ( is_string( $args['marker_icon'] ) ) {
 				$args['marker_icon'] = esc_url_raw( $args['marker_icon'], [ 'http', 'https' ] );
-			} elseif ( is_array( $args['marker_icon'] ) && is_string( $args['marker_icon']['url'] ?? null ) ) {
-				$url                 = esc_url_raw( $args['marker_icon']['url'], [ 'http', 'https' ] );
+			} elseif ( is_array( $args['marker_icon'] ) && array_key_exists( 'url', $args['marker_icon'] ) ) {
+				$url                 = is_string( $args['marker_icon']['url'] ) ? esc_url_raw( $args['marker_icon']['url'], [ 'http', 'https' ] ) : '';
 				$args['marker_icon'] = $url ? array_merge( $args['marker_icon'], [ 'url' => $url ] ) : '';
-			} else {
+			} elseif ( ! is_array( $args['marker_icon'] ) || ! array_key_exists( 'path', $args['marker_icon'] ) ) {
 				$args['marker_icon'] = '';
 			}
 		}

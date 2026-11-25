@@ -265,6 +265,39 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 			'data-map_options'
 		);
 		$this->assertSame( 'https://example.com/pin.png', $map_icon_obj['marker_icon']['url'] );
+
+		$symbol          = [
+			'path'      => 0,
+			'scale'     => 8,
+			'fillColor' => '#f00',
+		];
+		$map_icon_symbol = $this->parse_map_options(
+			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
+				'marker_icon' => $symbol,
+			] ),
+			'data-map_options'
+		);
+		$this->assertSame( $symbol, $map_icon_symbol['marker_icon'] );
+
+		$map_icon_non_string_url = $this->parse_map_options(
+			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
+				'marker_icon' => [
+					'url' => [ 'invalid' ],
+				],
+			] ),
+			'data-map_options'
+		);
+		$this->assertSame( '', $map_icon_non_string_url['marker_icon'] );
+
+		$map_icon_unknown_array = $this->parse_map_options(
+			RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
+				'marker_icon' => [
+					'scaledSize' => [ 32, 32 ],
+				],
+			] ),
+			'data-map_options'
+		);
+		$this->assertSame( '', $map_icon_unknown_array['marker_icon'] );
 	}
 
 	public function testShortcodePipelineDoesNotDecodeEntityEncodedInfoWindow(): void {
@@ -274,6 +307,7 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 			'post_type'    => 'post',
 			'post_content' => '',
 		] );
+
 		if ( ! $post_id || is_wp_error( $post_id ) ) {
 			$this->markTestSkipped( 'Failed to create test post.' );
 		}
