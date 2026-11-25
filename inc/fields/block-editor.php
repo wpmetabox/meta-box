@@ -34,17 +34,15 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'editor_settings' => $editor_settings,
 		] );
 
-		// Preload server-registered block schemas.
-		if ( ! function_exists( 'get_block_editor_server_block_settings' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/post.php';
-		}
-
 		// Load block categories.
 		wp_add_inline_script(
 			'wp-blocks',
 			sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $block_editor_context ) ) ),
 			'after'
 		);
+
+		// Front end (e.g. MB Frontend Submission) doesn't load this admin file.
+		require_once ABSPATH . 'wp-admin/includes/post.php';
 
 		// Preload server-registered block schemas.
 		wp_add_inline_script(
