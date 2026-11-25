@@ -41,6 +41,9 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 			'after'
 		);
 
+		// Front end (e.g. MB Frontend Submission) doesn't load this admin file.
+		require_once ABSPATH . 'wp-admin/includes/post.php';
+
 		// Preload server-registered block schemas.
 		wp_add_inline_script(
 			'wp-blocks',
