@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Regression tests for map info_window entity-encoding XSS and marker_icon sanitization.
+ * Regression tests for map info_window entity-encoding XSS.
  */
 class MapInfoWindowXssTest extends WP_UnitTestCase {
 	public function set_up(): void {
@@ -67,34 +67,18 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 		}
 	}
 
-	public function testOsmEntityEncodedHtmlInInfoWindowIsNotDecoded(): void {
-		$payloads = [
-			'&lt;img src=x onerror=alert(1)&gt;',
-			'&LT;IMG SRC=X ONERROR=ALERT(1)&GT;',
-			'&#60;svg onload=alert(1)&#62;',
-			'&#060;svg onload=alert(1)&#062;',
-			'&#0000060;svg onload=alert(1)&#0000062;',
-			'&#x3c;script&#x3e;alert(1)&#x3c;/script&#x3e;',
-			'&#x3C;SCRIPT&#x3E;alert(1)&#x3C;/SCRIPT&#x3E;',
-			'&lt;iframe src=javascript:alert(1)&gt;',
-			'&lt;details open ontoggle=alert(1)&gt;',
-			'&lt;body onload=alert(1)&gt;',
-			'&lt;a href="javascript:alert(1)"&gt;click&lt;/a&gt;',
-		];
+	/**
+	 * @dataProvider entityPayloads
+	 */
+	public function testEntityEncodedHtmlInInfoWindowIsNotDecoded( string $field_class, string $attr, string $payload ): void {
+		$options = $this->parse_map_options( $field_class::render_map( '21.0285,105.8542,14', [ 'info_window' => $payload ] ), $attr );
 
-		foreach ( $payloads as $payload ) {
-			$html    = RWMB_OSM_Field::render_map( '21.0285,105.8542,14', [
-				'info_window' => $payload,
-			] );
-			$options = $this->parse_map_options( $html, 'data-osm_options' );
-
-			$this->assertStringNotContainsString( '<', $options['info_window'] );
-			$this->assertStringNotContainsString( '>', $options['info_window'] );
-			$this->assertNoDangerousDomExecution( $options['info_window'] );
-		}
+		$this->assertStringNotContainsString( '<', $options['info_window'] );
+		$this->assertStringNotContainsString( '>', $options['info_window'] );
+		$this->assertNoDangerousDomExecution( $options['info_window'] );
 	}
 
-	public function testMapEntityEncodedHtmlInInfoWindowIsNotDecoded(): void {
+	public function entityPayloads(): array {
 		$payloads = [
 			'&lt;img src=x onerror=alert(1)&gt;',
 			'&LT;IMG SRC=X ONERROR=ALERT(1)&GT;',
@@ -109,16 +93,12 @@ class MapInfoWindowXssTest extends WP_UnitTestCase {
 			'&lt;a href="javascript:alert(1)"&gt;click&lt;/a&gt;',
 		];
 
+		$cases = [];
 		foreach ( $payloads as $payload ) {
-			$html    = RWMB_Map_Field::render_map( '21.0285,105.8542,14', [
-				'info_window' => $payload,
-			] );
-			$options = $this->parse_map_options( $html, 'data-map_options' );
-
-			$this->assertStringNotContainsString( '<', $options['info_window'] );
-			$this->assertStringNotContainsString( '>', $options['info_window'] );
-			$this->assertNoDangerousDomExecution( $options['info_window'] );
+			$cases[] = [ RWMB_OSM_Field::class, 'data-osm_options', $payload ];
+			$cases[] = [ RWMB_Map_Field::class, 'data-map_options', $payload ];
 		}
+		return $cases;
 	}
 
 	public function testAttributeBreakoutAttempts(): void {
