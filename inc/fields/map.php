@@ -199,7 +199,7 @@ class RWMB_Map_Field extends RWMB_Field {
 
 		$output = sprintf(
 			'<div class="rwmb-map-canvas" data-map_options="%s" style="width:%s;height:%s"></div>',
-			esc_attr( wp_json_encode( $args ) ),
+			esc_attr( wp_json_encode( $args, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) ),
 			esc_attr( $args['width'] ),
 			esc_attr( $args['height'] )
 		);
