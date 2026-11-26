@@ -68,6 +68,34 @@ class IconFieldTest extends WP_UnitTestCase {
 		$this->assertNotEmpty( $this->field( [ 'ajax' => false ] )['options'] );
 	}
 
+	public function testHtmlShowsOnlySelectedIcons(): void {
+		$field = $this->field();
+
+		$html = RWMB_Icon_Field::html( 'fa-solid fa-circle-user', $field );
+		// One placeholder option and one selected icon.
+		$this->assertSame( 2, substr_count( $html, '<option' ) );
+		$this->assertStringContainsString( "value=\"fa-solid fa-circle-user\"  selected='selected'", $html );
+
+		$this->assertSame( 1, substr_count( RWMB_Icon_Field::html( '', $field ), '<option' ) );
+	}
+
+	public function testAjaxDataHasNoServerPath(): void {
+		$root  = wp_normalize_path( ABSPATH );
+		$field = $this->field( [ 'icon_file' => $root . 'wp-content/icons.json' ] );
+
+		$data = json_decode( $field['js_options']['ajax_data']['field'], true );
+		$this->assertSame( 'wp-content/icons.json', $data['icon_file'] );
+	}
+
+	public function testAjaxSearchZero(): void {
+		$items = $this->ajax( $this->ajax_post( $this->field(), [ 'term' => '0' ] ) );
+
+		$this->assertNotEmpty( $items );
+		foreach ( $items as $item ) {
+			$this->assertStringContainsString( '0', $item['value'] . wp_strip_all_tags( $item['label'] ) );
+		}
+	}
+
 	public function testAjaxSearchAndPagination(): void {
 		$field = $this->field();
 

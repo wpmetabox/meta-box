@@ -10,21 +10,23 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	const CACHE_GROUP = 'meta-box-icon-field';
 	const PER_PAGE    = 50;
 
-	public static function add_actions() {
+	public static function add_actions(): void {
 		add_action( 'wp_ajax_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
 	}
 
-	public static function ajax_get_icons() {
-		$request = rwmb_request();
-		$field   = self::get_ajax_field();
+	public static function ajax_get_icons(): void {
+		$request            = rwmb_request();
+		$field              = self::get_ajax_field();
+		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
+		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
 
 		// shortcut: without a persistent object cache, each request parses the full icon file. Cache the parsed icons if large sets (Font Awesome Pro) are slow.
 		$icons = self::get_icons( $field );
 
 		// Search.
 		$term = (string) $request->filter_post( 'term' );
-		if ( $term ) {
+		if ( '' !== $term ) {
 			$icons = array_filter( $icons, fn( $icon ) => false !== stripos( $icon['label'], $term ) || false !== stripos( $icon['value'], $term ) );
 		}
 
@@ -46,25 +48,23 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	/**
-	 * Show only the selected icons. Ajax loads the other icons,
+	 * Get field HTML with only the selected icons. Ajax loads the other icons,
 	 * because all icons (for example, Font Awesome Pro) make the page HTML too large.
 	 *
-	 * @param array $field   Field parameters.
-	 * @param bool  $saved   Whether the meta box is saved at least once.
-	 * @param int   $post_id Post ID.
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 * @return string
 	 */
-	public static function show( array $field, bool $saved, $post_id = 0 ) {
+	public static function html( $meta, $field ) {
 		if ( $field['ajax'] ) {
-			$meta = self::call( $field, 'meta', $post_id, $saved );
-			$meta = self::filter( 'field_meta', $meta, $field, $saved );
-			$meta = array_filter( Arr::flatten( (array) $meta ) );
+			$values = array_filter( Arr::flatten( (array) $meta ) );
 
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-			$icons            = $meta ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $meta ) ) : [];
+			$icons            = $values ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $values ) ) : [];
 			$field['options'] = self::get_options( $field, $icons );
 		}
 
-		parent::show( $field, $saved, $post_id );
+		return parent::html( $meta, $field );
 	}
 
 	public static function admin_enqueue_scripts() {
@@ -333,8 +333,9 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'type'            => $field['type'],
 			'ajax_action'     => 'rwmb_get_icons',
 			'icon_set'        => $field['icon_set'],
-			'icon_file'       => $field['icon_file'],
-			'icon_dir'        => $field['icon_dir'],
+			// Do not show the full server paths in the page HTML.
+			'icon_file'       => self::to_relative_path( $field['icon_file'] ),
+			'icon_dir'        => self::to_relative_path( $field['icon_dir'] ),
 			'icon_css'        => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
 			'icon_base_class' => $field['icon_base_class'],
 		] );
@@ -395,6 +396,13 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$path = wp_normalize_path( $path );
 
 		return str_starts_with( $path, $root ) ? $path : trailingslashit( $root ) . ltrim( $path, '/' );
+	}
+
+	private static function to_relative_path( string $path ): string {
+		$root = wp_normalize_path( ABSPATH );
+		$path = wp_normalize_path( $path );
+
+		return str_starts_with( $path, $root ) ? substr( $path, strlen( $root ) ) : $path;
 	}
 
 	private static function ensure_absolute_url( string $url ): string {
