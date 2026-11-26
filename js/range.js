@@ -16,7 +16,14 @@
 		$( e.target ).find( '.rwmb-range' ).each( update );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-range' ).each( function () {
+			$( this ).siblings( '.rwmb-range-output' ).text( this.value );
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-range', update );
 } )( jQuery, rwmb );

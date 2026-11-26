@@ -51,10 +51,12 @@
 			} ).addTo( this.map );
 
 			// If there is a saved location, don't set the default location.
-			if ( this.$coordinate.val() ) {
-				return;
+			if ( !this.$coordinate.val() ) {
+				this.setDefaultLocation();
 			}
+		},
 
+		setDefaultLocation: function () {
 			// Load default location if it's set.
 			const defaultLoc = this.$canvas.data( 'default-loc' );
 			if ( defaultLoc ) {
@@ -83,6 +85,16 @@
 			} else if ( this.addressField ) {
 				this.geocodeAddress( false );
 			}
+		},
+
+		// Show the location from the input value, or the default location, like when the page loaded.
+		reset: function () {
+			if ( !this.$coordinate.val() ) {
+				this.setDefaultLocation();
+				this.map.setZoom( 14, { animate: false } );
+				this.$coordinate.val( '' ); // Changing the zoom updates the input.
+			}
+			this.initMarkerPosition();
 		},
 
 		// Add event listeners for 'click' & 'drag'
@@ -288,7 +300,14 @@
 		$( '.rwmb-osm-field' ).each( createController );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-osm-field' ).each( function () {
+			$( this ).data( 'osmController' )?.reset();
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-input', restart );
 } )( jQuery, L, rwmb, RWMB_Osm );

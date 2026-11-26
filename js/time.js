@@ -51,8 +51,19 @@
 		$( e.target ).find( '.rwmb-time' ).each( transform );
 	}
 
+	// Inline pickers show the time separately from the input.
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-time' ).each( function () {
+			const $this = $( this );
+			$this.siblings( '.rwmb-datetime-inline' )
+				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) )
+				.timepicker( 'setTime', this.value );
+		} );
+	}
+
 	setTimeI18n();
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-time', transform );
 } )( jQuery, rwmb, RWMB_Time );

@@ -100,7 +100,6 @@
 		}, 0 );
 	}
 
-	setTimeI18n();
 	// Inline pickers show the date separately from the input.
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-datetime' ).each( function () {
@@ -111,6 +110,7 @@
 		} );
 	}
 
+	setTimeI18n();
 	rwmb.$document
 		.on( 'mb_ready', init )
 		.on( 'mb_reset', reset )

@@ -305,7 +305,7 @@
 		$( e.target ).find( '.rwmb-input' ).each( start );
 	}
 
-	// Remove the clones added after the page loaded, like when clicking the remove buttons.
+	// Keep the initial number of clones, like when clicking the remove buttons. Removed clones with saved values aren't restored.
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-input' ).each( function () {
 			const $container = $( this ),

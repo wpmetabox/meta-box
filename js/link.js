@@ -8,6 +8,32 @@
 	const textareaId = 'rwmb-link-textarea';
 	$( `<textarea id="${ textareaId }" style="display:none"></textarea>` ).appendTo( 'body' );
 
+	// Show the link from the inputs' values.
+	const render = $link => {
+		const url    = $link.find( 'input[name$="[url]"]' ).val(),
+			title    = $link.find( 'input[name$="[title]"]' ).val(),
+			newTab   = $link.find( 'input[name$="[target]"]' ).val() === '_blank',
+			$display = $link.find( '.rwmb-link-display' );
+
+		if ( ! url ) {
+			$display.html( `<a href="#" class="rwmb-link-select">${ i18n.selectLinkText }</a>` );
+			return;
+		}
+
+		const $text = $( '<span class="rwmb-link-text"></span>' );
+		$text.append( '<span class="dashicons dashicons-admin-links"></span> ' );
+		$text.append( $( '<a>', { href: url, target: '_blank', text: title } ) );
+		if ( newTab ) {
+			$text.append( `<span class="rwmb-link-target">${ i18n.newTabText }</span>` );
+		}
+
+		$display.empty().append(
+			$text,
+			$( '<a>', { href: '#', class: 'rwmb-link-edit', text: i18n.editText } ),
+			$( '<a>', { href: '#', class: 'rwmb-link-remove', text: i18n.removeText } )
+		);
+	};
+
 	rwmb.$document.on( 'click', '.rwmb-link-select, .rwmb-link-edit', ( e ) => {
 		e.preventDefault();
 
@@ -43,19 +69,7 @@
 			const postData = $( '#wp-link-wrap' ).data( 'selectedPost' );
 			$postId.val( postData && postData.ID ? postData.ID : 0 );
 
-			const $display  = $( '<span class="rwmb-link-text"></span>' );
-			$display.append( '<span class="dashicons dashicons-admin-links"></span> ' );
-			$display.append( $( '<a>', { href: attrs.href, target: '_blank', text: $title.val() } ) );
-			if ( $target.val() === '_blank' ) {
-				$display.append( `<span class="rwmb-link-target">${ i18n.newTabText }</span>` );
-			}
-
-			const $wrapper = $( '<div></div>' );
-			$wrapper.append( $display );
-			$wrapper.append( $( '<a>', { href: '#', class: 'rwmb-link-edit', text: i18n.editText } ) );
-			$wrapper.append( $( '<a>', { href: '#', class: 'rwmb-link-remove', text: i18n.removeText } ) );
-
-			$link.find( '.rwmb-link-display' ).empty().append( $wrapper.children() );
+			render( $link );
 			wpLink.close();
 		} );
 
@@ -72,7 +86,11 @@
 		$link.find( 'input[name$="[title]"]' ).val( '' );
 		$link.find( 'input[name$="[target]"]' ).val( '' );
 		$link.find( 'input[name$="[post_id]"]' ).val( 0 );
-		$link.find( '.rwmb-link-display' ).html( `<a href="#" class="rwmb-link-select">${ i18n.selectLinkText }</a>` );
+		render( $link );
 	} );
+
+	rwmb.$document.on( 'mb_reset', e => $( e.target ).find( '.rwmb-link' ).each( function () {
+		render( $( this ) );
+	} ) );
 
 } )( jQuery, rwmb, rwmbLink );
