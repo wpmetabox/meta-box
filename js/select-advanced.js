@@ -159,7 +159,9 @@
 	}
 
 	function reset( e ) {
-		$( e.target ).find( '.rwmb-select_advanced, .rwmb-icon' ).trigger( 'change.select2' );
+		$( e.target ).find( '.rwmb-select_advanced, .rwmb-icon' ).each( function () {
+			reorderSelected( $( this ) );
+		} ).trigger( 'change.select2' );
 	}
 
 	function fixDropdownPosition( e ) {

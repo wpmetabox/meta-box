@@ -656,7 +656,10 @@
 		$( e.target ).find( '.rwmb-media' ).each( function () {
 			const view = $( this ).data( 'view' );
 			if ( view ) {
-				view.controller.get( 'items' ).reset();
+				// Not reset(): it doesn't fire 'remove', which file_upload needs to update its file count.
+				// Not items.remove(): it needs a click event and can delete attachments (force_delete).
+				const items = view.controller.get( 'items' );
+				Backbone.Collection.prototype.remove.call( items, items.models );
 				view.loadInitialAttachments();
 			}
 		} );

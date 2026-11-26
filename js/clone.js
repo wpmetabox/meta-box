@@ -161,7 +161,7 @@
 			$inputs.each( cloneValue.clear );
 		}
 
-		$clone = $clone.removeClass( 'rwmb-clone-template' );
+		$clone = $clone.removeClass( 'rwmb-clone-template' ).addClass( 'rwmb-clone-added' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
 
@@ -315,7 +315,9 @@
 				return;
 			}
 
-			$container.children( '.rwmb-clone' ).slice( initial ).trigger( 'remove' ).remove();
+			// Remove added clones first, so sorting doesn't remove the initial clones.
+			const $clones = $container.children( '.rwmb-clone' );
+			$( [ ...$clones.not( '.rwmb-clone-added' ), ...$clones.filter( '.rwmb-clone-added' ) ].slice( initial ) ).trigger( 'remove' ).remove();
 			toggleRemoveButtons( $container );
 			toggleAddButton( $container );
 		} );
