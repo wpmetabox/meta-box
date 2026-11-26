@@ -10,7 +10,7 @@
 	 */
 	function reorderSelected( $select2 ) {
 		var selected = $select2.data( 'selected' );
-		if ( !selected ) {
+		if ( !Array.isArray( selected ) ) {
 			return;
 		}
 		selected.forEach( function ( value ) {

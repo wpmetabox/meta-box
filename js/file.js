@@ -142,6 +142,7 @@
 		$el.find( '.rwmb-file-wrapper, .rwmb-image-wrapper' ).each( file.setRequired );
 	}
 
+	// Deleted saved files aren't restored, they might be deleted on the server (force_delete).
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-file-new' ).each( function () {
 			$( this ).find( '.rwmb-file-input' ).slice( 1 ).remove();

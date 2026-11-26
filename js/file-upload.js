@@ -38,9 +38,11 @@
 
 			this.collection = this.controller.get( 'items' );
 			this.listenTo( this.collection, 'remove', function ( item ) {
-				if ( item.get( 'file' ) !== undefined ) {
-					this.uploader.uploader.removeFile( item.get( 'file' ) );
+				// Only files uploaded in this session are counted in totalFiles.
+				if ( item.get( 'file' ) === undefined ) {
+					return;
 				}
+				this.uploader.uploader.removeFile( item.get( 'file' ) );
 				const totalFiles = parseInt( this.uploader.uploader.getOption( 'totalFiles' ) );
 				this.uploader.uploader.setOption( 'totalFiles', totalFiles - 1 );
 			} );
