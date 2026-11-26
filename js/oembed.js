@@ -4,9 +4,7 @@
 	/**
 	 * Show preview of oembeded media.
 	 */
-	function showPreview( e ) {
-		e.preventDefault();
-
+	function showPreview() {
 		var $this = $( this ),
 			$spinner = $this.siblings( '.spinner' ),
 			data = {
@@ -30,7 +28,14 @@
 		$( this ).siblings( '.rwmb-embed-media' ).html( '' );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-oembed' ).each( function () {
+			( this.value ? showPreview : removePreview ).call( this );
+		} );
+	}
+
 	rwmb.$document
+		.on( 'mb_reset', reset )
 		.on( 'change', '.rwmb-oembed', _.debounce( showPreview, 250 ) )
 	    .on( 'clone', '.rwmb-oembed', removePreview );
 } )( jQuery, _, rwmb );

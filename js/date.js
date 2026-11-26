@@ -91,7 +91,18 @@
 		}, 0 );
 	}
 
+	// Inline pickers show the date separately from the input.
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-date' ).each( function () {
+			const $this = $( this );
+			$this.siblings( '.rwmb-datetime-inline' )
+				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) )
+				.datepicker( 'setDate', this.value );
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-date', transform );
 } )( jQuery, _, rwmb );

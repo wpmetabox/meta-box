@@ -297,6 +297,7 @@
 		toggleAddButton( $container );
 
 		$container.data( 'next-index', $container.children( '.rwmb-clone' ).length );
+		$container.data( 'initial-clones', $container.children( '.rwmb-clone' ).length );
 		sortClones.apply( this );
 	}
 
@@ -304,8 +305,25 @@
 		$( e.target ).find( '.rwmb-input' ).each( start );
 	}
 
+	// Remove the clones added after the page loaded, like when clicking the remove buttons.
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-input' ).each( function () {
+			const $container = $( this ),
+				initial = $container.data( 'initial-clones' );
+
+			if ( undefined === initial ) {
+				return;
+			}
+
+			$container.children( '.rwmb-clone' ).slice( initial ).trigger( 'remove' ).remove();
+			toggleRemoveButtons( $container );
+			toggleAddButton( $container );
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'click', '.add-clone', addClone )
 		.on( 'click', '.remove-clone', removeClone );
 

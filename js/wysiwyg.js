@@ -168,7 +168,14 @@
 		}
 	} );
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-wysiwyg' ).each( function () {
+			window.tinymce?.get( this.id )?.setContent( this.value );
+		} );
+	}
+
 	rwmb.$document
+		.on( 'mb_reset', reset )
 		.on( 'mb_blocks_edit', init )
 		.on( 'mb_init_editors', init )
 		.on( 'clone', '.rwmb-wysiwyg', function() {

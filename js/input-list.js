@@ -33,7 +33,7 @@
 	}
 
 	rwmb.$document
-		.on( 'mb_ready', init )
+		.on( 'mb_ready mb_reset', init )
 		.on( 'change', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', toggleTree )
 		.on( 'clone', '.rwmb-input-list.rwmb-collapse input[type="checkbox"]', toggleTree )
 		.on( 'click', '.rwmb-input-list-select-all-none', toggleAll );

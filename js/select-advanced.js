@@ -158,6 +158,10 @@
 		$( e.target ).find( '.rwmb-select_advanced, .rwmb-icon' ).each( transform );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-select_advanced, .rwmb-icon' ).trigger( 'change.select2' );
+	}
+
 	function fixDropdownPosition( e ) {
 		if ( $( "#wpadminbar" ).length === 0 ) {
 			return;
@@ -173,6 +177,7 @@
 
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-select_advanced, .rwmb-icon', transform )
 		.on( 'select2:open', fixDropdownPosition );
 } )( jQuery, rwmb );

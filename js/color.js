@@ -49,7 +49,18 @@
 		$( e.target ).find( '.rwmb-color' ).each( transform );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-color' ).each( function () {
+			if ( this.value ) {
+				$( this ).wpColorPicker( 'color', this.value );
+			} else {
+				$( this ).closest( '.wp-picker-container' ).find( '.wp-color-result' ).css( 'background-color', '' );
+			}
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-color', transform );
 } )( jQuery, rwmb );

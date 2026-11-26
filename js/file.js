@@ -142,8 +142,16 @@
 		$el.find( '.rwmb-file-wrapper, .rwmb-image-wrapper' ).each( file.setRequired );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-file-new' ).each( function () {
+			$( this ).find( '.rwmb-file-input' ).slice( 1 ).remove();
+		} );
+		$( e.target ).find( '.rwmb-files' ).each( file.updateVisibility );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'click', '.rwmb-file-add', file.addHandler )
 		.on( 'click', '.rwmb-file-delete', file.deleteHandler )
 		.on( 'clone', '.rwmb-file-input', file.resetClone );

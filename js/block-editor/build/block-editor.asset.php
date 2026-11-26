@@ -14,5 +14,5 @@
 		'wp-media-utils',
 		'wp-primitives'
 	),
-	'version' => 'af54fae1eba0e8a80a99'
+	'version' => 'bf77f8a765f7214067ea'
 );

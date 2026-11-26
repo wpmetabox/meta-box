@@ -651,8 +651,20 @@
 		$( e.target ).find( '.rwmb-file_advanced' ).each( initMediaField );
 	}
 
+	// For all media fields (file_advanced, image_advanced, image_upload, file_upload, single_image, video).
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-media' ).each( function () {
+			const view = $( this ).data( 'view' );
+			if ( view ) {
+				view.controller.get( 'items' ).reset();
+				view.loadInitialAttachments();
+			}
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-file_advanced', initMediaField );
 
 	wp?.hooks?.addAction( 'mb_ready', 'meta-box/ready/media', ref => {

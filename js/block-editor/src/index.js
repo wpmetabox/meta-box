@@ -15,6 +15,9 @@ import './style.scss';
 
 registerCoreBlocks();
 
+// Render functions of the editors, used to re-render an editor from its textarea value.
+const renders = new WeakMap();
+
 function attachEditor( textarea ) {
 	// Create a node after the textarea
 	const editor = document.createElement( 'div' );
@@ -39,7 +42,10 @@ function attachEditor( textarea ) {
 	textarea.parentNode.insertBefore( editor, textarea.nextSibling );
 	textarea.style.display = 'none';
 
-	root.render( <Editor textarea={ textarea } /> );
+	// A new key re-mounts the editor, so it reads the textarea value again.
+	const render = () => root.render( <Editor key={ Date.now() } textarea={ textarea } /> );
+	renders.set( textarea, render );
+	render();
 }
 
 const transform = textarea => {
@@ -56,8 +62,13 @@ const init = () => {
 	document.querySelectorAll( '.rwmb-block_editor-wrapper textarea' ).forEach( transform );
 };
 
+const reset = e => {
+	e.target.querySelectorAll( '.rwmb-block_editor-wrapper textarea' ).forEach( textarea => renders.get( textarea )?.() );
+};
+
 rwmb.$document
 	.on( 'mb_ready', init )
+	.on( 'mb_reset', reset )
 	.on( 'clone', '.rwmb-block_editor', function() {
 		// Transform a textarea to an editor is a heavy task.
 		// Moving it to the end of task queue with setTimeout makes cloning faster.

@@ -50,10 +50,20 @@
 
 	function init( e ) {
 		$( e.target ).find( '.rwmb-autocomplete-wrapper input[type="hidden"]' ).each( transform );
+		$( e.target ).find( '.rwmb-autocomplete-results' ).each( function () {
+			$( this ).data( 'initial', this.innerHTML );
+		} );
+	}
+
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-autocomplete-results' ).each( function () {
+			$( this ).html( $( this ).data( 'initial' ) || '' );
+		} );
 	}
 
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-autocomplete', transform )
 		.on( 'click', '.rwmb-autocomplete-result .actions', deleteSelection );
 } )( jQuery, rwmb, RWMB_Autocomplete );

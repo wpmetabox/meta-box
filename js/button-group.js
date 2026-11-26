@@ -36,7 +36,7 @@
 	}
 
 	rwmb.$document
-		.on( 'mb_ready', init )
+		.on( 'mb_ready mb_reset', init )
 		.on( 'click', '.rwmb-button-input-list label', clickHandler )
 		.on( 'clone', '.rwmb-button-input-list label', setActiveClass );
 } )( jQuery, rwmb );

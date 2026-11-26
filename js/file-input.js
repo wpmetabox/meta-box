@@ -29,8 +29,7 @@
 		} );
 	}
 
-	function changeValueInput( e ) {
-		e.preventDefault();
+	function changeValueInput() {
 		var $el = $( this ),
 			url = $el.val(),
 			fileType = url.split( '.' ).pop().toLowerCase(),
@@ -54,7 +53,14 @@
 		$( this ).siblings( '.rwmb-file-input-remove' ).addClass( 'hidden' );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-file_input' ).each( changeValueInput ).each( function () {
+			$( this ).siblings( '.rwmb-file-input-remove' ).toggleClass( 'hidden', ! this.value );
+		} );
+	}
+
 	rwmb.$document
+		.on( 'mb_reset', reset )
 		.on( 'click', '.rwmb-file-input-select', openSelectPopup )
 		.on( 'input change', '.rwmb-file_input', changeValueInput )
 		.on( 'click', '.rwmb-file-input-remove', clearSelection )

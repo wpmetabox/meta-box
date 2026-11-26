@@ -58,8 +58,13 @@
 		} );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-select-tree > select' ).each( toggleTree ).trigger( 'change.select2' );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'change', '.rwmb-select-tree > select', toggleTree )
 		.on( 'clone', '.rwmb-select-tree > select', instantiateSelect2 );
 } )( jQuery, rwmb );

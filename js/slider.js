@@ -35,7 +35,18 @@
 		$( e.target ).find( '.rwmb-slider' ).each( transform );
 	}
 
+	function reset( e ) {
+		$( e.target ).find( '.rwmb-slider' ).each( function () {
+			const $slider = $( this ).siblings( '.rwmb-slider-ui' ),
+				range = true === $slider.slider( 'option', 'range' );
+
+			$slider.slider( 'option', range ? 'values' : 'value', range ? this.value.split( '|' ) : this.value );
+			$slider.siblings( '.rwmb-slider-label' ).find( 'span' ).text( this.value );
+		} );
+	}
+
 	rwmb.$document
 		.on( 'mb_ready', init )
+		.on( 'mb_reset', reset )
 		.on( 'clone', '.rwmb-slider', transform );
 } )( jQuery, rwmb );
