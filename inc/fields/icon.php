@@ -185,11 +185,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		foreach ( $files as $file ) {
 			$filename = substr( basename( $file ), 0, -4 );
-			$icons[]  = [
+			// No SVG here: get_options() reads it only for the icons it outputs.
+			$icons[] = [
 				'value' => $filename,
 				'label' => $filename,
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-				'svg'   => file_get_contents( $file ),
+				'svg'   => '',
 			];
 		}
 

@@ -97,8 +97,8 @@ class IconFieldTest extends WP_UnitTestCase {
 	public function testHtmlKeepsZeroValue(): void {
 		$dir = get_temp_dir() . 'rwmb-icons-' . wp_generate_password( 6, false );
 		mkdir( $dir );
-		file_put_contents( "$dir/0.svg", '<svg></svg>' );
-		file_put_contents( "$dir/1.svg", '<svg></svg>' );
+		file_put_contents( "$dir/0.svg", '<svg id="zero"></svg>' );
+		file_put_contents( "$dir/1.svg", '<svg id="one"></svg>' );
 
 		$html = RWMB_Icon_Field::html( '0', $this->field( [ 'icon_dir' => $dir ] ) );
 
@@ -106,7 +106,22 @@ class IconFieldTest extends WP_UnitTestCase {
 		rmdir( $dir );
 
 		$this->assertStringContainsString( "value=\"0\"  selected='selected'", $html );
+		$this->assertStringContainsString( 'id=&quot;zero&quot;', $html );
 		$this->assertStringNotContainsString( 'value="1"', $html );
+	}
+
+	public function testEachCloneHasOnlyItsIcon(): void {
+		$field = $this->field( [ 'clone' => true ] );
+
+		$html = RWMB_Clone::html( [ 'fa-solid fa-house', 'fa-solid fa-star' ], $field );
+
+		// Each select has the placeholder and its own icon only.
+		preg_match_all( '#<select.*?</select>#s', $html, $selects );
+		$this->assertCount( 2, $selects[0] );
+		foreach ( $selects[0] as $i => $select ) {
+			$this->assertSame( 2, substr_count( $select, '<option' ) );
+			$this->assertStringContainsString( [ 'fa-solid fa-house', 'fa-solid fa-star' ][ $i ], $select );
+		}
 	}
 
 	public function testAjaxSearchZero(): void {
