@@ -1,11 +1,71 @@
 <?php
 defined( 'ABSPATH' ) || die;
 
+use MetaBox\Support\Arr;
+
 /**
  * The icon field.
  */
 class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	const CACHE_GROUP = 'meta-box-icon-field';
+	const PER_PAGE    = 50;
+
+	public static function add_actions() {
+		add_action( 'wp_ajax_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
+		add_action( 'wp_ajax_nopriv_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
+	}
+
+	public static function ajax_get_icons() {
+		$request = rwmb_request();
+		$field   = self::get_ajax_field();
+
+		// shortcut: without a persistent object cache, each request parses the full icon file. Cache the parsed icons if large sets (Font Awesome Pro) are slow.
+		$icons = self::get_icons( $field );
+
+		// Search.
+		$term = (string) $request->filter_post( 'term' );
+		if ( $term ) {
+			$icons = array_filter( $icons, fn( $icon ) => false !== stripos( $icon['label'], $term ) || false !== stripos( $icon['value'], $term ) );
+		}
+
+		// Pagination.
+		$page  = max( 1, (int) $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT ) );
+		$items = array_slice( array_values( $icons ), ( $page - 1 ) * self::PER_PAGE, self::PER_PAGE );
+		$items = self::get_options( $field, $items );
+
+		$items = apply_filters( 'rwmb_ajax_get_icons', $items, $field, $request );
+
+		$data = [ 'items' => $items ];
+
+		// More items for pagination.
+		if ( count( $icons ) > $page * self::PER_PAGE ) {
+			$data['more'] = true;
+		}
+
+		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Show only the selected icons. Ajax loads the other icons,
+	 * because all icons (for example, Font Awesome Pro) make the page HTML too large.
+	 *
+	 * @param array $field   Field parameters.
+	 * @param bool  $saved   Whether the meta box is saved at least once.
+	 * @param int   $post_id Post ID.
+	 */
+	public static function show( array $field, bool $saved, $post_id = 0 ) {
+		if ( $field['ajax'] ) {
+			$meta = self::call( $field, 'meta', $post_id, $saved );
+			$meta = self::filter( 'field_meta', $meta, $field, $saved );
+			$meta = array_filter( Arr::flatten( (array) $meta ) );
+
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			$icons            = $meta ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $meta ) ) : [];
+			$field['options'] = self::get_options( $field, $icons );
+		}
+
+		parent::show( $field, $saved, $post_id );
+	}
 
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -200,9 +260,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return file_exists( $file ) ? file_get_contents( $file ) : '';
 	}
 
-	private static function get_options( array $field ): array {
-		$icons = self::get_icons( $field );
-
+	private static function get_options( array $field, array $icons ): array {
 		$options = [];
 		foreach ( $icons as $icon ) {
 			$svg = ! $icon['svg'] && $field['icon_dir'] ? self::get_svg( $field, $icon['value'] ) : $icon['svg'];
@@ -230,6 +288,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_file'       => '',
 			'icon_dir'        => '',
 			'icon_base_class' => '',
+			'ajax'            => true,
 		] );
 
 		// Ensure absolute paths and URLs.
@@ -252,11 +311,42 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			$field['icon_file'] = RWMB_DIR . 'css/fontawesome/icons.json';
 		}
 
-		$field['options'] = self::get_options( $field );
+		$field['options'] = $field['ajax'] ? [] : self::get_options( $field, self::get_icons( $field ) );
 
 		$field = parent::normalize( $field );
 
+		if ( $field['ajax'] ) {
+			self::set_ajax_params( $field );
+		}
+
 		return $field;
+	}
+
+	/**
+	 * Set ajax parameters. The nonce is made from the field data, so the icon paths in it are safe to use.
+	 *
+	 * @param array $field Field settings.
+	 */
+	private static function set_ajax_params( array &$field ): void {
+		$payload = wp_json_encode( [
+			'id'              => $field['id'],
+			'type'            => $field['type'],
+			'ajax_action'     => 'rwmb_get_icons',
+			'icon_set'        => $field['icon_set'],
+			'icon_file'       => $field['icon_file'],
+			'icon_dir'        => $field['icon_dir'],
+			'icon_css'        => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
+			'icon_base_class' => $field['icon_base_class'],
+		] );
+
+		$field['js_options']['ajax']      = wp_parse_args( $field['js_options']['ajax'] ?? [], [
+			'url'   => admin_url( 'admin-ajax.php' ),
+			'delay' => 250,
+		] );
+		$field['js_options']['ajax_data'] = [
+			'field'    => $payload,
+			'_wpnonce' => wp_create_nonce( 'rwmb-query-' . $payload ),
+		];
 	}
 
 	/**

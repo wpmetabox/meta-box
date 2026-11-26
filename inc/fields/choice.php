@@ -66,4 +66,28 @@ abstract class RWMB_Choice_Field extends RWMB_Field {
 		$options = self::transform_options( $field['options'] );
 		return isset( $options[ $value ] ) ? $options[ $value ]->label : '';
 	}
+
+	/**
+	 * Get the field settings from a core Ajax request.
+	 * Stop the request if the nonce or the action is not correct.
+	 *
+	 * @return array
+	 */
+	protected static function get_ajax_field(): array {
+		$request = rwmb_request();
+		$payload = $request->post( 'field' );
+		$payload = is_string( $payload ) ? wp_unslash( $payload ) : '';
+
+		check_ajax_referer( 'rwmb-query-' . $payload );
+
+		$field = json_decode( $payload, true );
+		if ( $field['ajax_action'] !== $request->post( 'action' ) ) {
+			wp_die( -1, 403 );
+		}
+
+		$field['clone']        = false;
+		$field['_original_id'] = $field['id'];
+
+		return $field;
+	}
 }
