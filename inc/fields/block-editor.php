@@ -29,7 +29,24 @@ class RWMB_Block_Editor_Field extends RWMB_Field {
 		);
 
 		$block_editor_context = new WP_Block_Editor_Context();
-		$editor_settings      = get_block_editor_settings( [], $block_editor_context );
+
+		// get_block_editor_settings() fires 'wp_print_footer_scripts' into a buffer to collect the iframe assets.
+		// On the front end, TinyMCE prints its scripts into that buffer, marks them as printed and doesn't print them
+		// again in the real footer, so wysiwyg fields don't work. Detach TinyMCE's callbacks while getting the settings.
+		$tinymce_callbacks = array_filter( [
+			'print_default_editor_scripts' => has_action( 'wp_print_footer_scripts', [ '_WP_Editors', 'print_default_editor_scripts' ] ),
+			'editor_js'                    => has_action( 'wp_print_footer_scripts', [ '_WP_Editors', 'editor_js' ] ),
+		] );
+		foreach ( $tinymce_callbacks as $method => $priority ) {
+			remove_action( 'wp_print_footer_scripts', [ '_WP_Editors', $method ], $priority );
+		}
+
+		$editor_settings = get_block_editor_settings( [], $block_editor_context );
+
+		foreach ( $tinymce_callbacks as $method => $priority ) {
+			add_action( 'wp_print_footer_scripts', [ '_WP_Editors', $method ], $priority );
+		}
+
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-block-editor', 'rwmbBlockEditor', [
 			'editor_settings' => $editor_settings,
 		] );
