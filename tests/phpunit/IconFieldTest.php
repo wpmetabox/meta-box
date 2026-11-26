@@ -80,11 +80,33 @@ class IconFieldTest extends WP_UnitTestCase {
 	}
 
 	public function testAjaxDataHasNoServerPath(): void {
-		$root  = wp_normalize_path( ABSPATH );
-		$field = $this->field( [ 'icon_file' => $root . 'wp-content/icons.json' ] );
+		$content = wp_normalize_path( WP_CONTENT_DIR );
+		$root    = wp_normalize_path( ABSPATH );
+		file_put_contents( "$content/icons.json", '{}' );
+		$field = $this->field( [
+			'icon_file' => "$content/icons.json",
+			'icon_dir'  => "{$root}wp-icons",
+		] );
+		unlink( "$content/icons.json" );
 
 		$data = json_decode( $field['js_options']['ajax_data']['field'], true );
-		$this->assertSame( 'wp-content/icons.json', $data['icon_file'] );
+		$this->assertSame( 'content:icons.json', $data['icon_file'] );
+		$this->assertStringNotContainsString( $root, $data['icon_dir'] );
+	}
+
+	public function testHtmlKeepsZeroValue(): void {
+		$dir = get_temp_dir() . 'rwmb-icons-' . wp_generate_password( 6, false );
+		mkdir( $dir );
+		file_put_contents( "$dir/0.svg", '<svg></svg>' );
+		file_put_contents( "$dir/1.svg", '<svg></svg>' );
+
+		$html = RWMB_Icon_Field::html( '0', $this->field( [ 'icon_dir' => $dir ] ) );
+
+		array_map( 'unlink', glob( "$dir/*.svg" ) );
+		rmdir( $dir );
+
+		$this->assertStringContainsString( "value=\"0\"  selected='selected'", $html );
+		$this->assertStringNotContainsString( 'value="1"', $html );
 	}
 
 	public function testAjaxSearchZero(): void {

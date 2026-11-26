@@ -18,8 +18,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	public static function ajax_get_icons(): void {
 		$request            = rwmb_request();
 		$field              = self::get_ajax_field();
-		$field['icon_file'] = self::ensure_absolute_path( $field['icon_file'] );
-		$field['icon_dir']  = self::ensure_absolute_path( $field['icon_dir'] );
+		$field['icon_file'] = self::to_absolute_path( $field['icon_file'] );
+		$field['icon_dir']  = self::to_absolute_path( $field['icon_dir'] );
 
 		// shortcut: without a persistent object cache, each request parses the full icon file. Cache the parsed icons if large sets (Font Awesome Pro) are slow.
 		$icons = self::get_icons( $field );
@@ -57,7 +57,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function html( $meta, $field ) {
 		if ( $field['ajax'] ) {
-			$values = array_filter( Arr::flatten( (array) $meta ) );
+			$values = array_filter( Arr::flatten( (array) $meta ), fn( $value ) => null !== $value && '' !== $value );
 
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			$icons            = $values ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $values ) ) : [];
@@ -398,11 +398,34 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return str_starts_with( $path, $root ) ? $path : trailingslashit( $root ) . ltrim( $path, '/' );
 	}
 
+	/**
+	 * Replace the WordPress root folder in a path with a key, for example "content:plugins/...".
+	 * Paths outside these folders do not change.
+	 */
 	private static function to_relative_path( string $path ): string {
-		$root = wp_normalize_path( ABSPATH );
 		$path = wp_normalize_path( $path );
+		foreach ( self::get_root_paths() as $key => $root ) {
+			if ( str_starts_with( $path, $root ) ) {
+				return $key . ':' . substr( $path, strlen( $root ) );
+			}
+		}
+		return $path;
+	}
 
-		return str_starts_with( $path, $root ) ? substr( $path, strlen( $root ) ) : $path;
+	private static function to_absolute_path( string $path ): string {
+		foreach ( self::get_root_paths() as $key => $root ) {
+			if ( str_starts_with( $path, "$key:" ) ) {
+				return $root . substr( $path, strlen( $key ) + 1 );
+			}
+		}
+		return $path;
+	}
+
+	private static function get_root_paths(): array {
+		return [
+			'content' => trailingslashit( wp_normalize_path( WP_CONTENT_DIR ) ),
+			'abspath' => trailingslashit( wp_normalize_path( ABSPATH ) ),
+		];
 	}
 
 	private static function ensure_absolute_url( string $url ): string {
