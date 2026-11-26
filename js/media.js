@@ -273,10 +273,9 @@
 			this.collection.remove( item );
 		},
 
-		resetItemViews: function( items ){
-			var that = this;
-			_.each( that.models, that.removeItemView );
-			items.each( that.addItemView );
+		resetItemViews: function( items, options ) {
+			_.each( options.previousModels, this.removeItemView, this );
+			items.each( this.addItemView, this );
 		},
 
 		switchItem: function ( item ) {
