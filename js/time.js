@@ -54,10 +54,14 @@
 	// Inline pickers show the time separately from the input.
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-time' ).each( function () {
-			const $this = $( this );
+			const $this = $( this ),
+				value = this.value;
+
+			// setTime( '' ) keeps the old hour and minute, so set midnight like on page load.
 			$this.siblings( '.rwmb-datetime-inline' )
 				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) )
-				.timepicker( 'setTime', this.value );
+				.timepicker( 'setTime', value || new Date( 2000, 0, 1 ) );
+			this.value = value; // setTime() updates the input.
 		} );
 	}
 
