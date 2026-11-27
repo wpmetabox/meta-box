@@ -189,8 +189,9 @@ jobs:
             await page.setCookie( ...cookies );
             const errors = [];
             page.on( 'pageerror', e => errors.push( e.message ) );
-            // The built-in PHP server has no favicon.ico.
-            page.on( 'console', m => m.type() === 'error' && ! m.location()?.url?.includes( 'favicon' ) && errors.push( `${ m.text() } (${ m.location()?.url || '' })` ) );
+            // The built-in PHP server has no favicon.ico. Newer Chrome blocks the unload handler in core TinyMCE: a warning, not a broken page.
+            const ignored = m => m.location()?.url?.includes( 'favicon' ) || m.text().startsWith( 'Permissions policy violation: unload is not allowed' );
+            page.on( 'console', m => m.type() === 'error' && ! ignored( m ) && errors.push( `${ m.text() } (${ m.location()?.url || '' })` ) );
             try {
               // The block editor keeps polling the server, so wait for 'load' and give scripts time to run.
               await page.goto( `${ base }/${ p }`, { waitUntil: 'load', timeout: 60000 } );
