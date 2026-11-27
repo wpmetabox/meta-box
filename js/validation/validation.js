@@ -358,7 +358,7 @@
 	let blockInstance = null;
 
 	// Run on document ready.
-	function init() {
+	function init( e ) {
 		if ( rwmb.isGutenberg ) {
 			// In Gutenberg, when we switch to a block, `.mb_ready` is triggered, thus creating new instances of the validation.
 
@@ -384,18 +384,21 @@
 		}
 
 		// Edit post, edit term, edit user, front-end form.
-		const $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+		const selector = '#post, #edittag, #your-profile, .rwmb-form';
+		const $forms = $( e.target ).find( selector ).addBack( selector );
 		$forms.each( function () {
 			const form = new Validation( this );
 			form.init();
 		} );
 
-		const $addTag = $( '#addtag' );
-		if ( $addTag.length ) {
-			new TaxonomyValidation( '#addtag' ).init();
-			$( '#submit' ).on( 'click', function () {
+		if ( e.target === document ) {
+			const $addTag = $( '#addtag' );
+			if ( $addTag.length ) {
 				new TaxonomyValidation( '#addtag' ).init();
-			} );
+				$( '#submit' ).on( 'click', function () {
+					new TaxonomyValidation( '#addtag' ).init();
+				} );
+			}
 		}
 	};
 
