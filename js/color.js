@@ -51,10 +51,21 @@
 
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-color' ).each( function () {
+			const $this = $( this );
 			if ( this.value ) {
-				$( this ).wpColorPicker( 'color', this.value );
-			} else {
-				$( this ).closest( '.wp-picker-container' ).find( '.wp-color-result' ).css( 'background-color', '' );
+				$this.wpColorPicker( 'color', this.value );
+				return;
+			}
+
+			$this.closest( '.wp-picker-container' ).find( '.wp-color-result, .color-alpha' ).css( 'background-color', '' );
+			const iris = $this.iris( 'instance' );
+			if ( iris ) {
+				// Iris ignores empty colors in option('color', ''), so reset state without triggering change or writing the input.
+				iris._color = new Color( '' ).setHSpace( iris.options.mode );
+				iris.hue = 0;
+				iris.active = 'external';
+				iris._inited = false;
+				iris._change();
 			}
 		} );
 	}

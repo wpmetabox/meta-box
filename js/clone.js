@@ -315,11 +315,13 @@
 				return;
 			}
 
-			// Remove added clones first, so sorting doesn't remove the initial clones.
-			const $clones = $container.children( '.rwmb-clone' );
-			$( [ ...$clones.not( '.rwmb-clone-added' ), ...$clones.filter( '.rwmb-clone-added' ) ].slice( initial ) ).trigger( 'remove' ).remove();
+			$container.children( '.rwmb-clone-added' ).trigger( 'remove' ).remove();
+			while ( $container.children( '.rwmb-clone' ).length < initial ) {
+				clone( $container );
+			}
 			toggleRemoveButtons( $container );
 			toggleAddButton( $container );
+			sortClones.apply( $container[ 0 ] );
 		} );
 	}
 

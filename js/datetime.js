@@ -100,13 +100,23 @@
 		}, 0 );
 	}
 
-	// Inline pickers show the date separately from the input.
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-datetime' ).each( function () {
-			const $this = $( this );
-			$this.siblings( '.rwmb-datetime-inline' )
-				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) )
-				.datepicker( 'setDate', this.value );
+			const $this = $( this ),
+				value = this.value;
+			let $picker = $this.siblings( '.rwmb-datetime-inline' )
+				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) );
+
+			if ( !$picker.length && !value && $this.hasClass( 'hasDatepicker' ) ) {
+				$picker = $this;
+			}
+			if ( !$picker.length ) {
+				return;
+			}
+
+			// setDate( '' ) keeps the old hour and minute in the timepicker addon, so set midnight first.
+			$picker.datepicker( 'setDate', value || new Date( new Date().setHours( 0, 0, 0, 0 ) ) );
+			this.value = value; // setDate() updates the input.
 		} );
 	}
 

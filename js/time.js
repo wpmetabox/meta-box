@@ -51,16 +51,22 @@
 		$( e.target ).find( '.rwmb-time' ).each( transform );
 	}
 
-	// Inline pickers show the time separately from the input.
 	function reset( e ) {
 		$( e.target ).find( '.rwmb-time' ).each( function () {
 			const $this = $( this ),
 				value = this.value;
+			let $picker = $this.siblings( '.rwmb-datetime-inline' )
+				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) );
+
+			if ( !$picker.length && !value && $this.hasClass( 'hasDatepicker' ) ) {
+				$picker = $this;
+			}
+			if ( !$picker.length ) {
+				return;
+			}
 
 			// setTime( '' ) keeps the old hour and minute, so set midnight like on page load.
-			$this.siblings( '.rwmb-datetime-inline' )
-				.add( $this.closest( '.rwmb-input-group' ).siblings( '.rwmb-datetime-inline' ) )
-				.timepicker( 'setTime', value || new Date( 2000, 0, 1 ) );
+			$picker.timepicker( 'setTime', value || new Date( 2000, 0, 1 ) );
 			this.value = value; // setTime() updates the input.
 		} );
 	}
