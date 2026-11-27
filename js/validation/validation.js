@@ -386,7 +386,10 @@
 
 		// Edit post, edit term, edit user, front-end form.
 		const selector = '#post, #edittag, #your-profile, .rwmb-form';
-		const $forms = $( e.target ).find( selector ).addBack( selector );
+		const $forms = $( e.target ).find( selector ).addBack( selector )
+			.filter( function () {
+				return !$.data( this, 'validator' ); // Skip initialized forms.
+			} );
 		$forms.each( function () {
 			const form = new Validation( this );
 			form.init();
