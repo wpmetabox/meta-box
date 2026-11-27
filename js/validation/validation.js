@@ -206,6 +206,7 @@
 		}
 
 		showAsterisks() {
+			const $form = this.$form;
 			this.validationElements.each( function () {
 				const data = $( this ).data( 'validation' );
 
@@ -213,12 +214,12 @@
 					if ( !v[ 'required' ] ) {
 						return;
 					}
-					let $el = $( '[name="' + k + '"]' );
+					let $el = $form.find( '[name="' + k + '"]' );
 					if ( !$el.length ) {
-						$el = $( '[name*="[' + k + ']"]' ); // Subfields in groups.
+						$el = $form.find( '[name*="[' + k + ']"]' ); // Subfields in groups.
 					}
 					if ( !$el.length ) {
-						$el = $( '[name*="' + k + '"]' ); // contains field ID.
+						$el = $form.find( '[name*="' + k + '"]' ); // contains field ID.
 					}
 
 					if ( $el.length ) {
@@ -358,7 +359,7 @@
 	let blockInstance = null;
 
 	// Run on document ready.
-	function init() {
+	function init( e ) {
 		if ( rwmb.isGutenberg ) {
 			// In Gutenberg, when we switch to a block, `.mb_ready` is triggered, thus creating new instances of the validation.
 
@@ -384,18 +385,24 @@
 		}
 
 		// Edit post, edit term, edit user, front-end form.
-		const $forms = $( '#post, #edittag, #your-profile, .rwmb-form' );
+		const selector = '#post, #edittag, #your-profile, .rwmb-form';
+		const $forms = $( e.target ).find( selector ).addBack( selector )
+			.filter( function () {
+				return !$.data( this, 'validator' ); // Skip initialized forms.
+			} );
 		$forms.each( function () {
 			const form = new Validation( this );
 			form.init();
 		} );
 
-		const $addTag = $( '#addtag' );
-		if ( $addTag.length ) {
-			new TaxonomyValidation( '#addtag' ).init();
-			$( '#submit' ).on( 'click', function () {
+		if ( e.target === document ) {
+			const $addTag = $( '#addtag' );
+			if ( $addTag.length ) {
 				new TaxonomyValidation( '#addtag' ).init();
-			} );
+				$( '#submit' ).on( 'click', function () {
+					new TaxonomyValidation( '#addtag' ).init();
+				} );
+			}
 		}
 	};
 
