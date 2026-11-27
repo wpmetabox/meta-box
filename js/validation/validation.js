@@ -206,6 +206,7 @@
 		}
 
 		showAsterisks() {
+			const $form = this.$form;
 			this.validationElements.each( function () {
 				const data = $( this ).data( 'validation' );
 
@@ -213,12 +214,12 @@
 					if ( !v[ 'required' ] ) {
 						return;
 					}
-					let $el = $( '[name="' + k + '"]' );
+					let $el = $form.find( '[name="' + k + '"]' );
 					if ( !$el.length ) {
-						$el = $( '[name*="[' + k + ']"]' ); // Subfields in groups.
+						$el = $form.find( '[name*="[' + k + ']"]' ); // Subfields in groups.
 					}
 					if ( !$el.length ) {
-						$el = $( '[name*="' + k + '"]' ); // contains field ID.
+						$el = $form.find( '[name*="' + k + '"]' ); // contains field ID.
 					}
 
 					if ( $el.length ) {
