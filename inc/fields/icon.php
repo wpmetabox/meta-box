@@ -1,11 +1,72 @@
 <?php
 defined( 'ABSPATH' ) || die;
 
+use MetaBox\Support\Arr;
+
 /**
  * The icon field.
  */
 class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	const CACHE_GROUP = 'meta-box-icon-field';
+	const PER_PAGE    = 50;
+
+	public static function add_actions() {
+		add_action( 'wp_ajax_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
+		add_action( 'wp_ajax_nopriv_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
+	}
+
+	public static function ajax_get_icons(): void {
+		$request            = rwmb_request();
+		$field              = self::get_ajax_field();
+		$field['icon_file'] = self::to_absolute_path( $field['icon_file'] );
+		$field['icon_dir']  = self::to_absolute_path( $field['icon_dir'] );
+
+		// shortcut: without a persistent object cache, each request parses the full icon file.
+		// Cache the parsed icons if large icon sets (for example, Font Awesome Pro) are slow.
+		$icons = self::get_icons( $field );
+
+		// Search.
+		$term = (string) $request->filter_post( 'term' );
+		if ( '' !== $term ) {
+			$icons = array_filter( $icons, fn( $icon ) => false !== stripos( $icon['label'], $term ) || false !== stripos( $icon['value'], $term ) );
+		}
+
+		// Pagination.
+		$page  = max( 1, (int) $request->filter_post( 'page', FILTER_SANITIZE_NUMBER_INT ) );
+		$items = array_slice( array_values( $icons ), ( $page - 1 ) * self::PER_PAGE, self::PER_PAGE );
+		$items = self::get_options( $field, $items );
+
+		$items = apply_filters( 'rwmb_ajax_get_icons', $items, $field, $request );
+
+		$data = [ 'items' => $items ];
+
+		// More items for pagination.
+		if ( count( $icons ) > $page * self::PER_PAGE ) {
+			$data['more'] = true;
+		}
+
+		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Get field HTML with only the selected icons. Ajax loads the other icons,
+	 * because all icons (for example, Font Awesome Pro) make the page HTML too large.
+	 *
+	 * @param mixed $meta  Meta value.
+	 * @param array $field Field parameters.
+	 * @return string
+	 */
+	public static function html( $meta, $field ) {
+		if ( $field['ajax'] ) {
+			$values = array_filter( Arr::flatten( (array) $meta ), fn( $value ) => '' !== (string) $value );
+
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			$icons            = $values ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $values ) ) : [];
+			$field['options'] = self::get_options( $field, $icons );
+		}
+
+		return parent::html( $meta, $field );
+	}
 
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
@@ -125,11 +186,11 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 
 		foreach ( $files as $file ) {
 			$filename = substr( basename( $file ), 0, -4 );
-			$icons[]  = [
+			// No SVG here: get_options() reads it only for the icons it outputs.
+			$icons[] = [
 				'value' => $filename,
 				'label' => $filename,
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-				'svg'   => file_get_contents( $file ),
+				'svg'   => '',
 			];
 		}
 
@@ -200,9 +261,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		return file_exists( $file ) ? file_get_contents( $file ) : '';
 	}
 
-	private static function get_options( array $field ): array {
-		$icons = self::get_icons( $field );
-
+	private static function get_options( array $field, array $icons ): array {
 		$options = [];
 		foreach ( $icons as $icon ) {
 			$svg = ! $icon['svg'] && $field['icon_dir'] ? self::get_svg( $field, $icon['value'] ) : $icon['svg'];
@@ -230,6 +289,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			'icon_file'       => '',
 			'icon_dir'        => '',
 			'icon_base_class' => '',
+			'ajax'            => true,
 		] );
 
 		// Ensure absolute paths and URLs.
@@ -252,11 +312,43 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 			$field['icon_file'] = RWMB_DIR . 'css/fontawesome/icons.json';
 		}
 
-		$field['options'] = self::get_options( $field );
+		$field['options'] = $field['ajax'] ? [] : self::get_options( $field, self::get_icons( $field ) );
 
 		$field = parent::normalize( $field );
 
+		if ( $field['ajax'] ) {
+			self::set_ajax_params( $field );
+		}
+
 		return $field;
+	}
+
+	/**
+	 * Set ajax parameters. The nonce comes from the field data, so the Ajax handler can trust the icon paths in it.
+	 *
+	 * @param array $field Field settings.
+	 */
+	private static function set_ajax_params( array &$field ): void {
+		$payload = wp_json_encode( [
+			'id'              => $field['id'],
+			'type'            => $field['type'],
+			'ajax_action'     => 'rwmb_get_icons',
+			'icon_set'        => $field['icon_set'],
+			// Do not show the full server paths in the page HTML.
+			'icon_file'       => self::to_relative_path( $field['icon_file'] ),
+			'icon_dir'        => self::to_relative_path( $field['icon_dir'] ),
+			'icon_css'        => is_string( $field['icon_css'] ) ? $field['icon_css'] : '',
+			'icon_base_class' => $field['icon_base_class'],
+		] );
+
+		$field['js_options']['ajax']      = wp_parse_args( $field['js_options']['ajax'] ?? [], [
+			'url'   => admin_url( 'admin-ajax.php' ),
+			'delay' => 250,
+		] );
+		$field['js_options']['ajax_data'] = [
+			'field'    => $payload,
+			'_wpnonce' => wp_create_nonce( 'rwmb-query-' . $payload ),
+		];
 	}
 
 	/**
@@ -305,6 +397,36 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$path = wp_normalize_path( $path );
 
 		return str_starts_with( $path, $root ) ? $path : trailingslashit( $root ) . ltrim( $path, '/' );
+	}
+
+	/**
+	 * Replace the WordPress root folder in a path with a key, for example "content:plugins/...".
+	 * Paths outside these folders do not change.
+	 */
+	private static function to_relative_path( string $path ): string {
+		$path = wp_normalize_path( $path );
+		foreach ( self::get_root_paths() as $key => $root ) {
+			if ( str_starts_with( $path, $root ) ) {
+				return $key . ':' . substr( $path, strlen( $root ) );
+			}
+		}
+		return $path;
+	}
+
+	private static function to_absolute_path( string $path ): string {
+		foreach ( self::get_root_paths() as $key => $root ) {
+			if ( str_starts_with( $path, "$key:" ) ) {
+				return $root . substr( $path, strlen( $key ) + 1 );
+			}
+		}
+		return $path;
+	}
+
+	private static function get_root_paths(): array {
+		return [
+			'content' => trailingslashit( wp_normalize_path( WP_CONTENT_DIR ) ),
+			'abspath' => trailingslashit( wp_normalize_path( ABSPATH ) ),
+		];
 	}
 
 	private static function ensure_absolute_url( string $url ): string {

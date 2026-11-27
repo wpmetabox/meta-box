@@ -1,0 +1,173 @@
+<?php
+
+class IconFieldTest extends WP_UnitTestCase {
+	private function field( array $args = [] ): array {
+		return RWMB_Icon_Field::normalize( array_merge( [
+			'id'   => 'icon',
+			'type' => 'icon',
+		], $args ) );
+	}
+
+	/**
+	 * Run the Ajax handler and return the items it gives to the filter.
+	 * A status code is returned instead if the request stops with wp_die().
+	 *
+	 * @return array|int
+	 */
+	private function ajax( array $post ) {
+		rwmb_request()->set_post_data( $post );
+
+		$result = 0;
+		$filter = static function ( $items ) use ( &$result ) {
+			$result = $items;
+			throw new RuntimeException( 'captured' );
+		};
+		$die    = static function () use ( &$result ) {
+			return static function ( $message, $title, $args ) use ( &$result ) {
+				$result = (int) ( $args['response'] ?? $title );
+				throw new RuntimeException( 'wp_die' );
+			};
+		};
+
+		add_filter( 'wp_doing_ajax', '__return_true' );
+		add_filter( 'wp_die_ajax_handler', $die );
+		add_filter( 'rwmb_ajax_get_icons', $filter );
+		ob_start();
+		try {
+			RWMB_Icon_Field::ajax_get_icons();
+		} catch ( RuntimeException $e ) {
+			// Expected: stop before the response is sent.
+		} finally {
+			ob_end_clean();
+			remove_filter( 'wp_doing_ajax', '__return_true' );
+			remove_filter( 'wp_die_ajax_handler', $die );
+			remove_filter( 'rwmb_ajax_get_icons', $filter );
+			// set_post_data() merges, so clear each key.
+			rwmb_request()->set_post_data( array_fill_keys( array_keys( $post ), '' ) );
+			unset( $_REQUEST['_wpnonce'] );
+		}
+
+		return $result;
+	}
+
+	private function ajax_post( array $field, array $extra = [] ): array {
+		$data                 = $field['js_options']['ajax_data'];
+		$_REQUEST['_wpnonce'] = $data['_wpnonce'];
+
+		return array_merge( [
+			'field'  => wp_slash( $data['field'] ),
+			'action' => 'rwmb_get_icons',
+		], $extra );
+	}
+
+	public function testAjaxFieldDoesNotOutputAllIcons(): void {
+		$field = $this->field();
+
+		$this->assertSame( [], $field['options'] );
+		$this->assertArrayHasKey( 'ajax_data', $field['js_options'] );
+		$this->assertNotEmpty( $this->field( [ 'ajax' => false ] )['options'] );
+	}
+
+	public function testHtmlShowsOnlySelectedIcons(): void {
+		$field = $this->field();
+
+		$html = RWMB_Icon_Field::html( 'fa-solid fa-circle-user', $field );
+		// One placeholder option and one selected icon.
+		$this->assertSame( 2, substr_count( $html, '<option' ) );
+		$this->assertStringContainsString( "value=\"fa-solid fa-circle-user\"  selected='selected'", $html );
+
+		$this->assertSame( 1, substr_count( RWMB_Icon_Field::html( '', $field ), '<option' ) );
+	}
+
+	public function testAjaxDataHasNoServerPath(): void {
+		$content = wp_normalize_path( WP_CONTENT_DIR );
+		$root    = wp_normalize_path( ABSPATH );
+		file_put_contents( "$content/icons.json", '{}' );
+		$field = $this->field( [
+			'icon_file' => "$content/icons.json",
+			'icon_dir'  => "{$root}wp-icons",
+		] );
+		unlink( "$content/icons.json" );
+
+		$data = json_decode( $field['js_options']['ajax_data']['field'], true );
+		$this->assertSame( 'content:icons.json', $data['icon_file'] );
+		$this->assertStringNotContainsString( $root, $data['icon_dir'] );
+	}
+
+	public function testHtmlKeepsZeroValue(): void {
+		$dir = get_temp_dir() . 'rwmb-icons-' . wp_generate_password( 6, false );
+		mkdir( $dir );
+		file_put_contents( "$dir/0.svg", '<svg id="zero"></svg>' );
+		file_put_contents( "$dir/1.svg", '<svg id="one"></svg>' );
+
+		$html = RWMB_Icon_Field::html( '0', $this->field( [ 'icon_dir' => $dir ] ) );
+
+		array_map( 'unlink', glob( "$dir/*.svg" ) );
+		rmdir( $dir );
+
+		$this->assertStringContainsString( "value=\"0\"  selected='selected'", $html );
+		$this->assertStringContainsString( 'id=&quot;zero&quot;', $html );
+		$this->assertStringNotContainsString( 'value="1"', $html );
+	}
+
+	public function testEachCloneHasOnlyItsIcon(): void {
+		$field = $this->field( [ 'clone' => true ] );
+
+		$html = RWMB_Clone::html( [ 'fa-solid fa-house', 'fa-solid fa-star' ], $field );
+
+		// Each select has the placeholder and its own icon only.
+		preg_match_all( '#<select.*?</select>#s', $html, $selects );
+		$this->assertCount( 2, $selects[0] );
+		foreach ( $selects[0] as $i => $select ) {
+			$this->assertSame( 2, substr_count( $select, '<option' ) );
+			$this->assertStringContainsString( [ 'fa-solid fa-house', 'fa-solid fa-star' ][ $i ], $select );
+		}
+	}
+
+	public function testMultipleShowsAllSelectedIcons(): void {
+		$field = $this->field( [ 'multiple' => true ] );
+
+		$html = RWMB_Icon_Field::html( [ 'fa-solid fa-house', 'fa-solid fa-star' ], $field );
+
+		$this->assertSame( 2, substr_count( $html, "selected='selected'" ) );
+		$this->assertStringNotContainsString( 'fa-solid fa-user"', $html );
+	}
+
+	public function testAjaxSearchZero(): void {
+		$items = $this->ajax( $this->ajax_post( $this->field(), [ 'term' => '0' ] ) );
+
+		$this->assertNotEmpty( $items );
+		foreach ( $items as $item ) {
+			$this->assertStringContainsString( '0', $item['value'] . wp_strip_all_tags( $item['label'] ) );
+		}
+	}
+
+	public function testAjaxSearchAndPagination(): void {
+		$field = $this->field();
+
+		$items = $this->ajax( $this->ajax_post( $field, [ 'term' => 'circle-user' ] ) );
+		$this->assertContains( 'fa-solid fa-circle-user', array_column( $items, 'value' ) );
+		$this->assertStringContainsString( '<svg', $items[0]['label'] );
+
+		$page1 = $this->ajax( $this->ajax_post( $field ) );
+		$page2 = $this->ajax( $this->ajax_post( $field, [ 'page' => 2 ] ) );
+		$this->assertCount( RWMB_Icon_Field::PER_PAGE, $page1 );
+		$this->assertNotSame( $page1[0]['value'], $page2[0]['value'] );
+	}
+
+	public function testAjaxRejectsOtherFieldPayload(): void {
+		$field = $this->field();
+
+		// A valid payload and nonce of another Ajax field type.
+		$payload              = wp_json_encode( [ 'id' => 'p', 'type' => 'post', 'ajax_action' => 'rwmb_get_posts' ] );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'rwmb-query-' . $payload );
+		$this->assertSame( 403, $this->ajax( [ 'field' => wp_slash( $payload ), 'action' => 'rwmb_get_icons' ] ) );
+
+		// Changed icon path: the nonce does not match.
+		$post          = $this->ajax_post( $field );
+		$data          = json_decode( wp_unslash( $post['field'] ), true );
+		$data['icon_file'] = '/etc/passwd';
+		$post['field'] = wp_slash( wp_json_encode( $data ) );
+		$this->assertSame( 403, $this->ajax( $post ) );
+	}
+}
