@@ -124,6 +124,15 @@ class IconFieldTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function testMultipleShowsAllSelectedIcons(): void {
+		$field = $this->field( [ 'multiple' => true ] );
+
+		$html = RWMB_Icon_Field::html( [ 'fa-solid fa-house', 'fa-solid fa-star' ], $field );
+
+		$this->assertSame( 2, substr_count( $html, "selected='selected'" ) );
+		$this->assertStringNotContainsString( 'fa-solid fa-user"', $html );
+	}
+
 	public function testAjaxSearchZero(): void {
 		$items = $this->ajax( $this->ajax_post( $this->field(), [ 'term' => '0' ] ) );
 

@@ -10,7 +10,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	const CACHE_GROUP = 'meta-box-icon-field';
 	const PER_PAGE    = 50;
 
-	public static function add_actions(): void {
+	public static function add_actions() {
 		add_action( 'wp_ajax_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
 		add_action( 'wp_ajax_nopriv_rwmb_get_icons', [ __CLASS__, 'ajax_get_icons' ] );
 	}
@@ -21,7 +21,8 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 		$field['icon_file'] = self::to_absolute_path( $field['icon_file'] );
 		$field['icon_dir']  = self::to_absolute_path( $field['icon_dir'] );
 
-		// shortcut: without a persistent object cache, each request parses the full icon file. Cache the parsed icons if large sets (Font Awesome Pro) are slow.
+		// shortcut: without a persistent object cache, each request parses the full icon file.
+		// Cache the parsed icons if large icon sets (for example, Font Awesome Pro) are slow.
 		$icons = self::get_icons( $field );
 
 		// Search.
@@ -57,7 +58,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	 */
 	public static function html( $meta, $field ) {
 		if ( $field['ajax'] ) {
-			$values = array_filter( Arr::flatten( (array) $meta ), fn( $value ) => null !== $value && '' !== $value );
+			$values = array_filter( Arr::flatten( (array) $meta ), fn( $value ) => '' !== (string) $value );
 
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			$icons            = $values ? array_filter( self::get_icons( $field ), fn( $icon ) => in_array( $icon['value'], $values ) ) : [];
@@ -323,7 +324,7 @@ class RWMB_Icon_Field extends RWMB_Select_Advanced_Field {
 	}
 
 	/**
-	 * Set ajax parameters. The nonce is made from the field data, so the icon paths in it are safe to use.
+	 * Set ajax parameters. The nonce comes from the field data, so the Ajax handler can trust the icon paths in it.
 	 *
 	 * @param array $field Field settings.
 	 */
