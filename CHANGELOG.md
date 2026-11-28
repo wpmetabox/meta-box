@@ -1,3 +1,17 @@
+### 5.15.6 - 2026-11-28
+
+- Security: prevent stored XSS via entity-encoded content in the map info window (#1749)
+- Security: prevent XSS in the autocomplete field (#1737)
+- Security: check user capabilities for Dashboard Ajax requests (#1734)
+- Load icon field options via Ajax to reduce the page size when there are many icons (#1753)
+- Fix a fatal error with the block editor field on the front end (#1748)
+- Fix TinyMCE not loading on the front end when a form has a block editor field (#1750)
+- Fix media fields not clearing the list when the form is reset (#1751)
+- Fix the icon field showing [object Object] on pages that load selectWoo (#1746)
+- Fix validation running on forms outside the area being initialized (#1754)
+- Fix columns overflowing on small screens (#1732)
+- Show a disabled state for the switch field
+
 ### 5.15.5 - 2026-11-12
 
 - Fix form being saved when a required checkbox or radio list is empty (#1725)

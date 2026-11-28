@@ -5,7 +5,7 @@ Tags: custom fields, custom post types, post type, custom taxonomies, meta box
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 5.15.5
+Stable tag: 5.15.6
 License: GPLv2 or later
 
 Developer framework to create custom fields and meta boxes with code. No admin UI: for a UI, install the free Meta Box Lite.
@@ -117,6 +117,20 @@ This service is provided by the OpenStreetMap Foundation: [terms of use](https:/
 1. Post Taxonomy Fields
 
 == Changelog ==
+
+= 5.15.6 - 2026-11-28 =
+
+- Security: prevent stored XSS via entity-encoded content in the map info window (#1749)
+- Security: prevent XSS in the autocomplete field (#1737)
+- Security: check user capabilities for Dashboard Ajax requests (#1734)
+- Load icon field options via Ajax to reduce the page size when there are many icons (#1753)
+- Fix a fatal error with the block editor field on the front end (#1748)
+- Fix TinyMCE not loading on the front end when a form has a block editor field (#1750)
+- Fix media fields not clearing the list when the form is reset (#1751)
+- Fix the icon field showing [object Object] on pages that load selectWoo (#1746)
+- Fix validation running on forms outside the area being initialized (#1754)
+- Fix columns overflowing on small screens (#1732)
+- Show a disabled state for the switch field
 
 = 5.15.5 - 2026-11-12 =
 
